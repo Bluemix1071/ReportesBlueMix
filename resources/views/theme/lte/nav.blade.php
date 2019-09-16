@@ -133,7 +133,7 @@
           <img src="{{asset("assets/$theme/dist/img/user2-160x160.jpg")}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block"> hola, {{session()->get('nombre')}} </a>
         </div>
       </div>
 
@@ -191,15 +191,15 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../layout/top-nav.html" class="nav-link">
+              <a href="{{route('inicioAdmin')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
+                  <p>Admin</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../layout/boxed.html" class="nav-link">
+              <a href="{{route('Publico')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
+                  <p>Publico</p>
                 </a>
               </li>
               <li class="nav-item">

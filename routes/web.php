@@ -26,9 +26,19 @@ Route::get('/registrar','AdminController@registrar')->name('registrar');
 //Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function(){
+//rutas globales autenticadas
+Route::prefix('publicos')->middleware('auth')->group(function(){
 
-    Route::get('/','AdminController@index');
+    Route::get('/','InicioController@index')->name('Publico');
+
+
+});
+
+
+//rutas de administrador 
+Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->group(function(){
+
+    Route::get('/','AdminController@index')->name('inicioAdmin');
 
 
 });

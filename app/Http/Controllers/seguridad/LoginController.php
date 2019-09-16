@@ -12,7 +12,7 @@ class LoginController extends Controller
   
     use AuthenticatesUsers;
 
-    protected $redirectTo = '/admin';//configurar una ves que se haga login 
+    protected $redirectTo = '/publicos';//configurar una ves que se haga login 
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -38,7 +38,23 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
     }
+  
 
+    protected function authenticated(Request $request, $user)
+    {
+       // dd($user);
+        
+        if ($user->tipo_usuario == null || $user->estado== 0) {
+            $this->guard()->logout();
+            $request->session()->invalidate();
+            return redirect('/')->withErrors(['error'=>'Este usuario no tiene cargo asignado o esta deshabilitado ']);
+        }else{
+            $user->setSession();
+       
+
+        }
+  
+    }
 
 
     

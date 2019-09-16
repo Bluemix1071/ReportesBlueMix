@@ -18,6 +18,7 @@ class AdminController extends Controller
     public function index()
     {
       $accesos=DB::table('accesos')->select('username','uscl01',)->get();
+      //dd(session()->all());
       //dd($accesos);
      
      /* $acee = new Accesos();
