@@ -15,7 +15,7 @@ class EditarUserController extends Controller
      */
     public function index()
     {
-        $notas=DB::table('users')->select('id','name','email','tipo_usuario','estado')->get();
-        return view('admin.EditarUser',compact('notas'));
+        $editar=DB::table('users')->select('id','name','email','tipo_usuario','estado')->get();
+        return view('admin.EditarUser',compact('editar'));
     }
 }

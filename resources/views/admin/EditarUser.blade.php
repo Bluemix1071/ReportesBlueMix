@@ -19,7 +19,7 @@
             </tr>
           </thead>
           <tbody>
-          @foreach($notas as $item)
+          @foreach($editar as $item)
             <tr>
               <th scope="row">{{$item->id}}</th>
               <td>{{$item->name}}</td>
