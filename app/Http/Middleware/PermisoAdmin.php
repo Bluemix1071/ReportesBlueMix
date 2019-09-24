@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Session;
 
 class PermisoAdmin
 {
@@ -18,7 +19,8 @@ class PermisoAdmin
         if ($this->permiso()) {
             return $next($request);    
         }
-        return redirect('/publicos')->with('mensaje','no tiene permiso para acceder aca ');
+        Session::flash('error','No tiene los permisos para entrar a esta pagina');
+        return redirect('/publicos')->with('mensaje','No tiene los permisos para entrar a esta pagina');
        
     }
 

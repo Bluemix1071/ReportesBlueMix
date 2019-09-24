@@ -2,3 +2,8 @@
 @section('titulo')
 Espacio Publico Bluemix
 @endsection
+
+@section('contenido')
+
+@endsection
+

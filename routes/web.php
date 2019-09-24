@@ -34,11 +34,18 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
 
 });
 
+//rutas de registro
+Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+    Route::post('register', 'Auth\RegisterController@register');
+});
+
 
 //rutas de administrador 
 Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->group(function(){
 
     Route::get('/','AdminController@index')->name('inicioAdmin');
+    Route::get('/Editar','EditarUserController@index')->name('editarUser');
 
 
 });

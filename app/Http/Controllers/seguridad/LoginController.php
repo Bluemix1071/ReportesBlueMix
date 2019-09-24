@@ -44,7 +44,7 @@ class LoginController extends Controller
     {
        // dd($user);
         
-        if ($user->tipo_usuario == null || $user->estado== 0) {
+        if ($user->tipo_usuario == null || $user->estado== 0 || $user->tipo_usuario == '....') {
             $this->guard()->logout();
             $request->session()->invalidate();
             return redirect('/')->withErrors(['error'=>'Este usuario no tiene cargo asignado o esta deshabilitado ']);
