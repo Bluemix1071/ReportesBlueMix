@@ -14,7 +14,7 @@
         <a href="{{ route('register') }}" class="nav-link">Agregar Usuarios</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ route('editarUser') }}" class="nav-link">Editar Usuarios</a>
+        <a href="{{ route('ListarUser') }}" class="nav-link">Editar Usuarios</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{ route('logout') }}" class="nav-link">salir</a>
