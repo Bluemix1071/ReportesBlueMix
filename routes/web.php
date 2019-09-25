@@ -45,7 +45,8 @@ Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
 Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->group(function(){
 
     Route::get('/','AdminController@index')->name('inicioAdmin');
-    Route::get('/Editar','EditarUserController@index')->name('editarUser');
+    Route::get('/ListaUsuarios','EditarUserController@index')->name('ListarUser');
+    
 
 
 });
