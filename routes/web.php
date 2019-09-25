@@ -46,6 +46,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/','AdminController@index')->name('inicioAdmin');
     Route::get('/Editar','EditarUserController@index')->name('editarUser');
+    Route::get('/ordenesDeCompras','AdminController@Ordenes')->name('ordenes');
 
 
 });

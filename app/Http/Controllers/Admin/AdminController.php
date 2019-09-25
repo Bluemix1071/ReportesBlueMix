@@ -33,6 +33,13 @@ class AdminController extends Controller
       
     return view('auth.register');
     }
+    
+    public function Ordenes()
+    {
+      $productos=DB::table('productos_negativos')->paginate(20);
+      return view('admin.productosNegativos',compact('productos'));
+    
+    }
 
 
 
