@@ -49,7 +49,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ListaUsuarios','EditarUserController@index')->name('ListarUser');
     
     Route::get('/Editar','EditarUserController@index')->name('editarUser');
-    Route::get('/ordenesDeCompras','AdminController@Ordenes')->name('ordenes');
+    Route::get('/ProductosNegativos','AdminController@Ordenes')->name('ProductosNegativos');
 
 
 

@@ -155,9 +155,9 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('ordenes')}}" class="nav-link">
+                <a href="{{route('ProductosNegativos')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Ordenes de Compra</p>
+                  <p>Productos Negativos</p>
                 </a>
               </li>
               <li class="nav-item">
