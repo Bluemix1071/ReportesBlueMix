@@ -20,4 +20,5 @@ class EditarUserController extends Controller
     }
 
 
+
 }
