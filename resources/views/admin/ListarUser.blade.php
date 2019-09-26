@@ -12,7 +12,7 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Editar Usuarios</h3>
-            <table class="table">
+            <table class="table table-sm table-hover">
               <thead>
                 <tr>
                   <th scope="col">id</th>

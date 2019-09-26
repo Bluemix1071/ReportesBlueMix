@@ -1,13 +1,13 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Ordenes de compra
+  Productos Negativos
 @endsection
 
 @section('contenido')
-<div class="container my-4">
+<div class="container">
     <h3 class="display-4">Productos Negativos</h3>
     
-    <table class="table">
+    <table class="table table-sm table-hover">
         <thead>
           <tr>
             <th scope="col">nombre</th>
@@ -20,7 +20,7 @@
         <tbody>
         @foreach($productos as $item)
           <tr>
-            <th scope="row">{{$item->nombre}}</th>
+            <th >{{$item->nombre}}</th>
             <td>{{$item->ubicacion}}</td>
             <td>{{$item->codigo}}</td>
             <td>{{$item->bodega_stock}}</td>

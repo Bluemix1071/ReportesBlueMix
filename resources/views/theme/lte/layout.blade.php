@@ -24,7 +24,7 @@
 @yield('styles')
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-fixed sidebar-collapse">
         <!-- Site wrapper -->
             <div class="wrapper"> 
                 <!-- Inicio Header -->
@@ -71,6 +71,7 @@
 <!-- Bootstrap 4 -->
 <script src="{{asset("assets/$theme/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
+<script src="{{asset("assets/$theme/plugins/moment/moment.min.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js")}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset("assets/$theme/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
@@ -79,6 +80,7 @@
 <!-- Toastr -->
 <script src="{{asset("assets/$theme/plugins/toastr/toastr.min.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/sweetalert2/sweetalert2.min.js")}}"></script>
+
 @include('theme.mensajes')
 
 
