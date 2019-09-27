@@ -81,6 +81,24 @@
 <script src="{{asset("assets/$theme/plugins/toastr/toastr.min.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/sweetalert2/sweetalert2.min.js")}}"></script>
 
+<script> $('#mimodalejemplo').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var id = button.data('id')
+        var name = button.data('nombre') 
+        var email = button.data('correo') 
+        var tipo = button.data('tipo') 
+        var estado = button.data('estado') 
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #name').val(name);
+        modal.find('.modal-body #email').val(email);
+        modal.find('.modal-body #tipo').val(tipo);
+        modal.find('.modal-body #Estado').val(estado);
+  })</script>
+=======
+@yield('script')
+
+
 @include('theme.mensajes')
 
 

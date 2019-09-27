@@ -38,6 +38,7 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
 Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'Auth\RegisterController@register');
+    
 });
 
 
@@ -48,6 +49,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/ListaUsuarios','EditarUserController@index')->name('ListarUser');
     Route::get('/ProductosNegativos','AdminController@Ordenes')->name('ProductosNegativos');
+    Route::post('/update', 'EditarUserController@update')->name('update');
 
 
 

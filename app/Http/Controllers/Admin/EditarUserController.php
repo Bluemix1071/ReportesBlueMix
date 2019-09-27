@@ -32,7 +32,7 @@ class EditarUserController extends Controller
         $usuario->estado=$request->get('Estado');
         $usuario->update();
         return back();
-        //xd
+
     }
 
     

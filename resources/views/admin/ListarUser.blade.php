@@ -31,7 +31,8 @@
                   <td>{{$item->email}}</td>
                   <td>{{$item->tipo_usuario}}</td>
                   <td>{{$item->estado}}</td>
-                  <td><a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-warning btm-sm">Editar</a></td>
+                  <td><a href="" data-toggle="modal" data-target="#mimodalejemplo"
+                    data-id='{{$item->id}}' data-nombre='{{$item->name}}' data-correo='{{$item->email}}' data-tipo='{{$item->tipo_usuario}}' data-estado='{{$item->estado}}' class="btn btn-primary btm-sm">Editar</a></td>
                   
                 </tr>
                 @endforeach
@@ -54,8 +55,11 @@
          </div>
          <div class="modal-body">
             <div class="card-body">
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{route('update')}}">
+                  {{method_field('post')}}
+      	          	{{csrf_field()}}
                     @csrf
+                    <input type="hidden" name="id" id="id" value="">
                     <div class="form-group row">
                         <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nombre') }}</label>
 
@@ -89,10 +93,10 @@
 
                         <div class="col-md-6">
                             <select id="tipo" list="tipo" class="form-control" name="tipo" value="" required >
-                                <option value="....">...........</option> 
                                 <option value="admin">Administrador</option> 
                                 <option value="sala">Sala</option> 
                                 <option value="bodega">Bodega</option>
+                                <option value="ventas">ventas</option>
                              </select>
                         </div>
                     </div>
@@ -101,18 +105,17 @@
 
                         <div class="col-md-6">
                             <select id="Estado" list="Estado" class="form-control" name="Estado" value="" required >
-                                <option value="sala">1</option> 
-                                <option value="bodega">2</option>
+                                <option value="1">activo</option> 
+                                <option value="0">no activo</option>
                              </select>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Editar</button>
+                      <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                   </div>
                 </form>
               </div>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-warning">Editar</button>
-            <button type="button" data-dismiss="modal" class="btn btn-danger">Cerrar</button>
-          
          </div>
        </div>
      </div>

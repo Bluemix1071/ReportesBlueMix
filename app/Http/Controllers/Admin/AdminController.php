@@ -34,10 +34,19 @@ class AdminController extends Controller
     return view('auth.register');
     }
     
-    public function Ordenes()
+    public function Ordenes(Request $request)
     {
-      $productos=DB::table('productos_negativos')->paginate(20);
-      return view('admin.productosNegativos',compact('productos'));
+      if($request){
+        $query=trim($request->get('searchText'));
+      $productos=DB::table('productos_negativos')
+      ->where('nombre','LIKE','%'.$query.'%')
+      ->orwhere('codigo','LIKE','%'.$query.'%')->get();
+      //dd($productos);
+      return view('admin.productosNegativos',compact('productos','query'));
+
+
+
+      }
     
     }
 
