@@ -36,21 +36,27 @@ class AdminController extends Controller
     
     public function Ordenes(Request $request)
     {
+      
       if($request){
         $query=trim($request->get('searchText'));
       $productos=DB::table('productos_negativos')
       ->where('nombre','LIKE','%'.$query.'%')
       ->orwhere('codigo','LIKE','%'.$query.'%')->get();
       //dd($productos);
-      return view('admin.productosNegativos',compact('productos','query'));
+
+     // $productos= datatables()->query(DB::table('productos_negativos'))->toJson();
+
+     //dd($productos);
+      return view('admin.productosNegativos',compact('productos'));
 
 
 
-      }
+      
     
     }
 
 
 
    
+}
 }
