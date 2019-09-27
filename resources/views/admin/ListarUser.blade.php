@@ -2,17 +2,23 @@
 @section('titulo')
     Administrador
 @endsection
+@section('styles')
 
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
+
+@endsection
 @section('contenido')
     <div class="container my-4">
       <h1 class="display-4">Librería Blue Mix
       </h1>
-      
+      <hr>
+      <a href="{{route('register')}}" type="button" class="btn btn-success">Agregar Usuarios</a>
+      <hr>
       <section class="content">
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Editar Usuarios</h3>
-            <table class="table table-sm table-hover">
+            <table id="users" class="table table-sm table-hover">
               <thead>
                 <tr>
                   <th scope="col">id</th>
@@ -30,10 +36,13 @@
                   <td>{{$item->name}}</td>
                   <td>{{$item->email}}</td>
                   <td>{{$item->tipo_usuario}}</td>
-                  <td>{{$item->estado}}</td>
+                  @if ($item->estado =='1')
+                  <td>Activo</td>
+                  @else
+                  <td>No Activo</td>
+                  @endif
                   <td><a href="" data-toggle="modal" data-target="#mimodalejemplo"
                     data-id='{{$item->id}}' data-nombre='{{$item->name}}' data-correo='{{$item->email}}' data-tipo='{{$item->tipo_usuario}}' data-estado='{{$item->estado}}' class="btn btn-primary btm-sm">Editar</a></td>
-                  
                 </tr>
                 @endforeach
               </tbody>
@@ -45,6 +54,7 @@
           </div>
         </div>
       </section>
+      
 
    <!-- Modal -->
    <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -105,8 +115,8 @@
 
                         <div class="col-md-6">
                             <select id="Estado" list="Estado" class="form-control" name="Estado" value="" required >
-                                <option value="1">activo</option> 
-                                <option value="0">no activo</option>
+                                <option value="1">Activo</option> 
+                                <option value="0">No Activo</option>
                              </select>
                         </div>
                     </div>
@@ -121,4 +131,17 @@
      </div>
    </div>
     <!-- FIN Modal -->
+@endsection
+@section('script')
+
+<script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
+<script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
+
+<script>
+  $(document).ready( function () {
+    $('#users').DataTable();
+} );
+</script>
+
+    
 @endsection

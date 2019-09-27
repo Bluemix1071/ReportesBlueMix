@@ -5,16 +5,10 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="../../index3.html" class="nav-link">Home</a>
+        <a href="{{route('Publico')}}" class="nav-link">Menu Principal</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contacto</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ route('register') }}" class="nav-link">Agregar Usuarios</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ route('ListarUser') }}" class="nav-link">Editar Usuarios</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{ route('logout') }}" class="nav-link">salir</a>
@@ -120,7 +114,7 @@
   </nav>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../../index3.html" class="brand-link">
+    <a href="{{route('Publico')}}" class="brand-link">
       <img src="{{asset("assets/$theme/dist/img/AdminLTELogo.png")}}"
            alt="AdminLTE Logo"
            class="brand-image img-circle elevation-3"
@@ -163,13 +157,13 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="../../index2.html" class="nav-link">
+                    <a href="{{route('ListarUser')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v2</p>
+                      <p>Control De Usuarios </p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="../../index3.html" class="nav-link">
+                    <a href="{{route('ListarUser')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Dashboard v3</p>
                     </a>

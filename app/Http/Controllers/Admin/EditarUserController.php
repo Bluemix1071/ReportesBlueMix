@@ -32,6 +32,21 @@ class EditarUserController extends Controller
         $usuario->estado=$request->get('Estado');
         $usuario->update();
         return back();
+
+    }
+
+    public function buscaruser(Request $request)
+    {
+      if($request){
+        $query=trim($request->get('searchText'));
+      $item=DB::table('users')->get();
+      //dd($productos);
+      return view('admin.ListarUser',compact('item'));
+
+
+
+      }
+    
     }
 
     

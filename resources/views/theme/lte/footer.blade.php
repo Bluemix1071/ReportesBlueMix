@@ -2,6 +2,5 @@
         <div class="float-right d-none d-sm-block">
          
         </div>
-        <strong>Copyright &copy;2019 </strong> All rights
-        reserved.
+        <strong>BlueMix &copy;2019 </strong> Todos los derechos reservados.
 </footer>
