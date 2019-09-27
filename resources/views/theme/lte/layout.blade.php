@@ -80,6 +80,7 @@
 <!-- Toastr -->
 <script src="{{asset("assets/$theme/plugins/toastr/toastr.min.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/sweetalert2/sweetalert2.min.js")}}"></script>
+@yield('script')
 
 @include('theme.mensajes')
 
