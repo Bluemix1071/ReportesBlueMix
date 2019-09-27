@@ -35,6 +35,20 @@ class EditarUserController extends Controller
 
     }
 
+    public function buscaruser(Request $request)
+    {
+      if($request){
+        $query=trim($request->get('searchText'));
+      $item=DB::table('users')->get();
+      //dd($productos);
+      return view('admin.ListarUser',compact('item'));
+
+
+
+      }
+    
+    }
+
     
    
 
