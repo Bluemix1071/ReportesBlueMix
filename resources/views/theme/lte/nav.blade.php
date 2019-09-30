@@ -163,9 +163,9 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{route('ListarUser')}}" class="nav-link">
+                    <a href="{{route('cuadroMando')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v3</p>
+                      <p>Cuadro De Mando</p>
                     </a>
                   </li>
                 </ul>

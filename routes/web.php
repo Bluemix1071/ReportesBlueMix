@@ -34,8 +34,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/','AdminController@index')->name('inicioAdmin');
 
     Route::get('/ListaUsuarios','EditarUserController@index')->name('ListarUser');
-    Route::get('/ProductosNegativos','AdminController@Ordenes')->name('ProductosNegativos');
+    Route::get('/ProductosNegativos','AdminController@ProductosNegativos')->name('ProductosNegativos');
     Route::post('/update', 'EditarUserController@update')->name('update');
+    Route::get('/CuadroMando', 'AdminController@CuadroDeMAndo')->name('cuadroMando');
 
 
 

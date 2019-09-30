@@ -34,7 +34,7 @@ class AdminController extends Controller
     return view('auth.register');
     }
     
-    public function Ordenes(Request $request)
+    public function ProductosNegativos(Request $request)
     {
       
       if($request){
@@ -48,15 +48,15 @@ class AdminController extends Controller
 
      //dd($productos);
       return view('admin.productosNegativos',compact('productos'));
+    }}
+
+    public function CuadroDeMAndo(){
+      $productos=DB::table('productos_negativos')->get();
 
 
-
-      
-    
+    return view('admin.CuadroDeMando',compact('productos'));
     }
 
 
 
-   
-}
 }
