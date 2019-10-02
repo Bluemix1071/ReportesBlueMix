@@ -39,9 +39,7 @@ class AdminController extends Controller
       
       if($request){
         $query=trim($request->get('searchText'));
-      $productos=DB::table('productos_negativos')
-      ->where('nombre','LIKE','%'.$query.'%')
-      ->orwhere('codigo','LIKE','%'.$query.'%')->get();
+      $productos=DB::table('productos_negativos')->get();
       //dd($productos);
 
      // $productos= datatables()->query(DB::table('productos_negativos'))->toJson();
