@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Charts;
+namespace App\graficos\Charts\chartJS;
 
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
