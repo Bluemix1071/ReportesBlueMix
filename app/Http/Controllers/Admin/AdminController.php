@@ -55,6 +55,20 @@ class AdminController extends Controller
     return view('admin.CuadroDeMando',compact('productos'));
     }
 
+    public function ProductosPorMarca(Request $request)
+    {
+      
+      if($request){
+        $query=trim($request->get('searchText'));
+      $productos=DB::table('Productos_x_Marca')->get();
+      //dd($productos);
+
+     // $productos= datatables()->query(DB::table('productos_negativos'))->toJson();
+
+     //dd($productos);
+      return view('admin.productospormarca',compact('productos'));
+    }}
+
 
 
 }
