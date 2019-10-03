@@ -38,6 +38,11 @@
                 </table>
           </div>
         </div>
+        <div class="row">
+          <div class="co-md-12">
+
+          </div>
+        </div>
        
     
 </div>
@@ -45,6 +50,7 @@
 @endsection
 
 @section('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>

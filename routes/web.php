@@ -6,6 +6,7 @@ Route::get('/','seguridad\LoginController@index')->name('login');
 Route::post('/','seguridad\LoginController@login')->name('login_post');
 Route::get('/logout','seguridad\LoginController@logout')->name('logout');
 Route::get('/registrar','AdminController@registrar')->name('registrar');
+Route::get('/graficos', 'ChartControllers\PulseChartController@index')->name('chart');
 
 //Auth::routes();
 
@@ -37,6 +38,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ProductosNegativos','AdminController@ProductosNegativos')->name('ProductosNegativos');
     Route::post('/update', 'EditarUserController@update')->name('update');
     Route::get('/CuadroMando', 'AdminController@CuadroDeMAndo')->name('cuadroMando');
+    
 
 
 
