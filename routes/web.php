@@ -38,7 +38,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ProductosNegativos','AdminController@ProductosNegativos')->name('ProductosNegativos');
     Route::post('/update', 'EditarUserController@update')->name('update');
     Route::get('/CuadroMando', 'AdminController@CuadroDeMAndo')->name('cuadroMando');
-    
+    Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
 
 
 

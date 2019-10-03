@@ -169,11 +169,19 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{route('chart')}}" class="nav-link">
+                    <a href="{{route('ProductosPorMarca')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Producto Por Marca</p>
+                    </a>
+                  </li>
+                 
+                   <li class="nav-item">
+                   <a href="{{route('chart')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Graficos</p>
                     </a>
                   </li>
+                  
                 </ul>
               </li>
                @endif
