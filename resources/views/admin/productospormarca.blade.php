@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 
+
 @endsection
 
 @section('contenido')
@@ -27,18 +28,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                  @foreach($productos as $item)
-                    <tr>
-                      <th >{{$item->nombre_del_producto}}</th>
-                      <td>{{$item->codigo_producto}}</td>
-                      <td>{{$item->MARCA_DEL_PRODUCTO}}</td>
-                      <td>{{$item->cantidad_en_bodega}}</td>
-                      <td>{{$item->cantidad_en_sala}}</td>
-                      <td>{{$item->precio_costo_neto}}</td>
-                      <td>{{$item->total_costo}}</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
+                    @foreach($productos as $item)
+                      <tr>
+                        <th >{{$item->nombre_del_producto}}</th>
+                        <td>{{$item->codigo_producto}}</td>
+                        <td>{{$item->MARCA_DEL_PRODUCTO}}</td>
+                        <td>{{$item->cantidad_en_bodega}}</td>
+                        <td>{{$item->cantidad_en_sala}}</td>
+                        <td>{{$item->precio_costo_neto}}</td>
+                        <td>{{$item->total_costo}}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+               
                 </table>
           </div>
         </div>
@@ -50,14 +52,14 @@
 
 @section('script')
 
+
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
+
 
 <script>
   $(document).ready( function () {
     $('#productos').DataTable();
 } );
 </script>
-
-    
 @endsection

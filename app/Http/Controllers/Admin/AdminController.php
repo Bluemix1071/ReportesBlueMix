@@ -58,8 +58,7 @@ class AdminController extends Controller
     public function ProductosPorMarca(Request $request)
     {
       
-      if($request){
-        $query=trim($request->get('searchText'));
+      //if($request){
       $productos=DB::table('Productos_x_Marca')->get();
       //dd($productos);
 
@@ -67,8 +66,40 @@ class AdminController extends Controller
 
      //dd($productos);
       return view('admin.productospormarca',compact('productos'));
-    }}
+    }
+
+/*
+    public function ProductosPorMarcaAjax(Request $request)
+    {
+      
+     
+      $productos= datatables()->query(DB::table('productos_negativos'))->toJson();
+     
+ 
+      return view('admin.productospormarca',compact('productos'));
+    }
 
 
+
+/*
+<script>
+  $(document).ready( function () {
+    $('#productos').DataTable({
+      "serverSide": true,
+      "ajax":"{{url('api/ProductosMarca')}}",
+      "columns":[
+        {data:'nombre_del_producto'},
+        {data:'codigo_producto'},
+        {data:'MARCA_DEL_PRODUCTO'},
+        {data:'cantidad_en_bodega'},
+        {data:'cantidad_en_sala'},
+        {data:'precio_costo_neto'},
+        {data:'total_costo'},
+      ]
+    });
+} );
+</script>
+
+ */
 
 }
