@@ -19,8 +19,39 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-10">
             {!! $C3->container() !!}
+          </div>
+          <div class="col-md-2">
+              <form class="form-inline">
+                  <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Preference</label>
+                  <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                    <option selected>años...</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                  </select>
+                  <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                      <option selected>Choose...</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                        <option selected>Choose...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                
+                  <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                  
+                  </div>
+                
+                  <button type="submit" class="btn btn-primary my-1">Submit</button>
+                </form>
+            
+          
           </div>
         </div>
         

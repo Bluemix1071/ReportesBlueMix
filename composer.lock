@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80620dc41f0bc9e5a5d5a768392aff9d",
+    "content-hash": "013ba9d90d6ffd70c03ad01432b15d24",
     "packages": [
         {
             "name": "balping/json-raw-encoder",
@@ -3226,16 +3226,16 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v9.6.1",
+            "version": "v9.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "42cba7ffae2e7b41981dacf7257c681f00aee1a5"
+                "reference": "bb6ff7b76bd6253396cb7a5a7b6c51c5ab14b1a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/42cba7ffae2e7b41981dacf7257c681f00aee1a5",
-                "reference": "42cba7ffae2e7b41981dacf7257c681f00aee1a5",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/bb6ff7b76bd6253396cb7a5a7b6c51c5ab14b1a8",
+                "reference": "bb6ff7b76bd6253396cb7a5a7b6c51c5ab14b1a8",
                 "shasum": ""
             },
             "require": {
@@ -3293,7 +3293,7 @@
                 "jquery",
                 "laravel"
             ],
-            "time": "2019-09-26T08:35:02+00:00"
+            "time": "2019-10-02T05:58:48+00:00"
         }
     ],
     "packages-dev": [

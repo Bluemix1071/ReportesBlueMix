@@ -10,9 +10,6 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contacto</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ route('logout') }}" class="nav-link">salir</a>
-      </li>
       
     </ul>
 
@@ -106,8 +103,8 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-          <i class="fas fa-th-large"></i>
+        <a href="{{ route('logout') }}" class="nav-link">
+          <i class="fas fa-sign-out-alt"></i>
         </a>
       </li>
     </ul>
