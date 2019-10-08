@@ -7,6 +7,7 @@ Route::post('/','seguridad\LoginController@login')->name('login_post');
 Route::get('/logout','seguridad\LoginController@logout')->name('logout');
 //Route::get('/registrar','AdminController@registrar')->name('registrar');
 Route::get('/graficos', 'ChartControllers\PulseChartController@index')->name('chart');
+Route::post('/graficos', 'ChartControllers\PulseChartController@cargarC3')->name('cargarChart');
 
 Route::get('/pdf',function(){
 

@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-  Productos Negativos
+Graficos
 @endsection
 @section('styles')
 <link rel="stylesheet" href="{{asset("assets/$theme/C3/css/c3.css")}}">
@@ -23,34 +23,41 @@
             {!! $C3->container() !!}
           </div>
           <div class="col-md-2">
-              <form class="form-inline">
-                  <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Preference</label>
-                  <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                    <option selected>años...</option>
-                    <option value="2015">2015</option>
-                    <option value="2016">2016</option>
-                    <option value="2017">2017</option>
+            <hr>
+          <form action="{{route('cargarChart')}}" method="POST">
+            @csrf
+              <div class="form-group">
+                <label for="años">Grafico 1</label>
+                <select name="select1"class="form-control">
+                    <option value="">......</option> 
+                    <option value="2016" >2016</option>
+                    <option value="2017" >2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
                   </select>
-                  <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                      <option selected>Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+              </div>
+              <div class="form-group">
+                  <label for="años">Grafico 2</label>
+                  <select name="select2"class="form-control">
+                      <option value="">......</option> 
+                      <option value="2016" >2016</option>
+                      <option value="2017" >2017</option>
+                      <option value="2018">2018</option>
+                      <option value="2019">2019</option>
                     </select>
-                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
-                
-                  <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                  
-                  </div>
-                
-                  <button type="submit" class="btn btn-primary my-1">Submit</button>
-                </form>
-            
+              </div>
+              <div class="form-group">
+                  <label for="años">Grafico 3</label>
+                  <select name="select3"class="form-control">
+                      <option value="">......</option> 
+                      <option value="2016" >2016</option>
+                      <option value="2017" >2017</option>
+                      <option value="2018">2018</option>
+                      <option value="2019">2019</option>
+                    </select>
+              </div>
+              <button type="submit" class="btn btn-succes">Submit</button>
+            </form>
           
           </div>
         </div>
