@@ -111,6 +111,7 @@ class AdminController extends Controller
 
   return Excel::download(new AdminExport, 'productos negativos.xlsx');
 
+
  }
 
 }
