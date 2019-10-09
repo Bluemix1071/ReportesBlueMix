@@ -15,7 +15,7 @@ class AdminExport implements FromCollection
     */
     public function collection()
     {
-        return $productos=DB::table('Productos_negativos')->get();
+        return $productos=DB::table('productos_negativos')->get();
     }
     public function headings(): array
     {
