@@ -36,7 +36,7 @@
                     @endforeach
                   </tbody>
                 </table>
-                
+                <center><a type="button" class="btn btn-success" href="{{route('excel')}}">excel</a><center>
           </div>
         </div>
         <div class="row">
