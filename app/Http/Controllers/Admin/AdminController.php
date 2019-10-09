@@ -103,14 +103,14 @@ class AdminController extends Controller
 
  */
 
- public function exportpdf(){
+ /*public function exportpdf(){
 
 
   $productos=DB::table('productos_negativos')->get();
 
-  $pdf = PDF::loadView('admin.productosnegativos', compact('productos'));
+  $pdf = PDF::loadView('admin.productosNegativos', compact('productos'));
 
   return $pdf->stream();
- }
+ }*/
 
 }
