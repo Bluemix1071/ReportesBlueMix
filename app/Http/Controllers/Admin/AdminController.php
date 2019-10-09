@@ -108,7 +108,7 @@ class AdminController extends Controller
 
   $productos=DB::table('productos_negativos')->get();
 
-  $pdf = PDF::loadView('admin.productosnegativos', compact('productos'));
+  $pdf = PDF::loadView('admin.productosNegativos', compact('productos'));
 
   return $pdf->stream();
  }
