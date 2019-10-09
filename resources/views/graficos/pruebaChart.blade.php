@@ -14,11 +14,6 @@ Graficos
     <div class="container-fluid">
         <h3 class="display-3">Graficos</h3>
         <div class="row">
-          <div class="col-md-12">
-            {!! $chart->container() !!}
-          </div>
-        </div>
-        <div class="row">
           <div class="col-md-10">
             {!! $C3->container() !!}
           </div>
@@ -33,7 +28,7 @@ Graficos
                     <option value="2016" >2016</option>
                     <option value="2017" >2017</option>
                     <option value="2018">2018</option>
-                    <option value="2019">2019</option>
+                   
                   </select>
               </div>
               <div class="form-group">
@@ -43,7 +38,7 @@ Graficos
                       <option value="2016" >2016</option>
                       <option value="2017" >2017</option>
                       <option value="2018">2018</option>
-                      <option value="2019">2019</option>
+                     
                     </select>
               </div>
               <div class="form-group">
@@ -53,10 +48,10 @@ Graficos
                       <option value="2016" >2016</option>
                       <option value="2017" >2017</option>
                       <option value="2018">2018</option>
-                      <option value="2019">2019</option>
+                  
                     </select>
               </div>
-              <button type="submit" class="btn btn-succes">Submit</button>
+              <button type="submit" class="btn btn-success">Submit</button>
             </form>
           
           </div>
@@ -75,7 +70,6 @@ Graficos
 
 
 {!! $C3->script() !!}
-{!! $chart->script() !!}
 
 
     
