@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Barryvdh\DomPDF\Facade as PDf;
+use App\Exports\AdminExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class AdminController extends Controller
 {
@@ -103,14 +106,12 @@ class AdminController extends Controller
 
  */
 
- public function exportpdf(){
+ public function exportExcel(){
 
 
-  $productos=DB::table('productos_negativos')->get();
+  return Excel::download(new AdminExport, 'productos negativos.xlsx');
 
-  $pdf = PDF::loadView('admin.productosNegativos', compact('productos'));
 
-  return $pdf->stream();
  }
 
 }
