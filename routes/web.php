@@ -17,7 +17,6 @@ Route::get('/pdf',function(){
     return $pdf->stream();
 
 });
-//Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
@@ -48,6 +47,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/update', 'EditarUserController@update')->name('update');
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');
    Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
+   Route::get('/user-list-pdf','AdminController@exportpdf')->name('users.pdf');
+
 
 
 
