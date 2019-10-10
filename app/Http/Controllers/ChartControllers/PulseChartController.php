@@ -116,6 +116,22 @@ class PulseChartController extends Controller
       $C3->dataset(''.$request->select1.'', 'line', [$a1[0]->total,$a1[1]->total,$a1[2]->total,$a1[3]->total,$a1[4]->total,$a1[5]->total,$a1[6]->total,$a1[7]->total,$a1[8]->total,$a1[9]->total,$a1[10]->total,$a1[11]->total,]);
       $C3->dataset(''.$request->select2.'', 'line', [$a2[0]->total,$a2[1]->total,$a2[2]->total,$a2[3]->total,$a2[4]->total,$a2[5]->total,$a2[6]->total,$a2[7]->total,$a2[8]->total,$a2[9]->total,$a2[10]->total,$a2[11]->total,]); 
 
+   }else{
+      $a1=DB::table('ventas_x_mes_y_anio')
+      ->where('anio','=',''.$request->select1.'')
+      ->get();
+      $a2=DB::table('ventas_x_mes_y_anio')
+      ->where('anio','=',''.$request->select2.'')
+      ->get();
+      $a3=DB::table('ventas_x_mes_y_anio')
+      ->where('anio','=',''.$request->select3.'')
+      ->get();
+
+      $C3->dataset(''.$request->select1.'', 'line', [$a1[0]->total,$a1[1]->total,$a1[2]->total,$a1[3]->total,$a1[4]->total,$a1[5]->total,$a1[6]->total,$a1[7]->total,$a1[8]->total,$a1[9]->total,$a1[10]->total,$a1[11]->total,]);
+      $C3->dataset(''.$request->select2.'', 'line', [$a2[0]->total,$a2[1]->total,$a2[2]->total,$a2[3]->total,$a2[4]->total,$a2[5]->total,$a2[6]->total,$a2[7]->total,$a2[8]->total,$a2[9]->total,$a2[10]->total,$a2[11]->total,]); 
+      $C3->dataset(''.$request->select3.'', 'line', [$a3[0]->total,$a3[1]->total,$a3[2]->total,$a3[3]->total,$a3[4]->total,$a3[5]->total,$a3[6]->total,$a3[7]->total,$a3[8]->total,$a3[9]->total,$a3[10]->total,$a3[11]->total,]); 
+
+
    }
      $a2019=DB::table('ventas_x_mes_y_anio')
      ->where('anio','=','2019')

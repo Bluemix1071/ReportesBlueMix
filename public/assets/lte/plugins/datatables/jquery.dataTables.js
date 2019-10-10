@@ -11466,7 +11466,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+			"sInfo": " _START_ de _END_ de _TOTAL_ registros",
 	
 	
 			/**
@@ -11627,7 +11627,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Show _MENU_ entries",
+			"sLengthMenu": "Mostrar _MENU_ registros",
 	
 	
 			/**
@@ -11707,7 +11707,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "Buscar:",
 	
 	
 			/**
