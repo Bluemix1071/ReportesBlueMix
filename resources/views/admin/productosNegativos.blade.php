@@ -58,8 +58,18 @@
 
 <script>
   $(document).ready( function () {
-    $('#productos').DataTable();
-} );
+    $('#productos').DataTable({
+
+      "language":{
+        "info": "_TOTAL_ registros",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+        }
+      }
+
+    });
+});
 </script>
 
     
