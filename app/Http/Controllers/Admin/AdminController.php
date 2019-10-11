@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Input;
-use Barryvdh\DomPDF\Facade as PDf;
 use App\Exports\AdminExport;
+use App\Exports\ProductospormarcaExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -106,10 +106,18 @@ class AdminController extends Controller
 
  */
 
- public function exportExcel(){
+ public function exportExcelproductosnegativos(){
 
 
   return Excel::download(new AdminExport, 'productos negativos.xlsx');
+
+
+ }
+
+ public function exportExcelproductospormarca(){
+
+
+  return Excel::download(new ProductospormarcaExport, 'productos por marca.xlsx');
 
 
  }
