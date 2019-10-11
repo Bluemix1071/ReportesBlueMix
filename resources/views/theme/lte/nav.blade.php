@@ -166,6 +166,12 @@
                       <p>Producto Por Marca</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a href="{{route('ordenesdecompra')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Ordenes De Compra</p>
+                    </a>
+                  </li>
                  
                    <li class="nav-item">
                    <a href="{{route('chart')}}" class="nav-link">
