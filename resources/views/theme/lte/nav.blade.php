@@ -140,19 +140,14 @@
                @if (session()->get('tipo_usuario')=='admin')
                <li class="nav-item has-treeview">
                 <a href="" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fas fa-user-lock"></i>
                   <p>
                     Administrador
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{route('ProductosNegativos')}}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Productos Negativos</p>
-                    </a>
-                  </li>
+                
                   <li class="nav-item">
                     <a href="{{route('ListarUser')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
@@ -174,8 +169,11 @@
                  
                    <li class="nav-item">
                    <a href="{{route('chart')}}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Graficos</p>
+                      <i class="nav-icon fas fa-chart-pie"></i>
+                      <p>Graficos
+                        
+                      </p>
+                      
                     </a>
                   </li>
                   
@@ -184,7 +182,7 @@
                @endif
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-copy"></i>
+              <i class="nav-icon fas fa-users"></i>
               <p>
                 Publico
                 <i class="fas fa-angle-left right"></i>
@@ -193,46 +191,22 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-              <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>algo</p>
-                </a>
-              </li>
-              <li class="nav-item">
               <a href="{{route('Publico')}}" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Publico</p>
+                  <p>Inicio</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../layout/fixed-sidebar.html" class="nav-link ">
+                <a href="{{route('ProductosNegativos')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/fixed-topnav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Navbar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/fixed-footer.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Footer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/collapsed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Collapsed Sidebar</p>
+                  <p>Productos Negativos</p>
                 </a>
               </li>
             </ul>
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+              <i class="nav-icon fas fa-search-dollar"></i>
               <p>
                 Sala
                 <i class="right fas fa-angle-left"></i>
@@ -261,7 +235,7 @@
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tree"></i>
+              <i class="nav-icon fas fa-warehouse"></i>
               <p>
                 Bodega
                 <i class="fas fa-angle-left right"></i>

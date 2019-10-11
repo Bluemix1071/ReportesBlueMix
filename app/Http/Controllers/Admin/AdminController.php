@@ -38,19 +38,7 @@ class AdminController extends Controller
     return view('auth.register');
     }
     
-    public function ProductosNegativos(Request $request)
-    {
-      
-      if($request){
-        $query=trim($request->get('searchText'));
-      $productos=DB::table('productos_negativos')->get();
-      //dd($productos);
-
-     // $productos= datatables()->query(DB::table('productos_negativos'))->toJson();
-
-     //dd($productos);
-      return view('admin.productosNegativos',compact('productos'));
-    }}
+   
 
     public function CuadroDeMAndo(){
       $productos=DB::table('productos_negativos')->get();

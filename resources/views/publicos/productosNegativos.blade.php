@@ -65,7 +65,14 @@
         "paginate":{
           "next": "Siguiente",
           "previous": "Anterior",
-        }
+        
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
       }
 
     });
