@@ -72,6 +72,14 @@ class AdminController extends Controller
       return view('admin.productospormarca',compact('productos'));
     }
 
+    public function ordenesdecompra(Request $request)
+    {
+      
+      $productos=DB::table('ordenesdecompra')->get();
+
+      return view('admin.ordenesdecompra',compact('productos'));
+    }
+
 /*
     public function ProductosPorMarcaAjax(Request $request)
     {
