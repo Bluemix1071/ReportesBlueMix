@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Input;
 use App\Exports\AdminExport;
 use App\Exports\ProductospormarcaExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade as PDF;
+use App;
 
 
 class AdminController extends Controller
@@ -117,5 +119,13 @@ class AdminController extends Controller
 
 
  }
+
+ public function exportpdf($numero_de_orden_de_compra){
+  //dd($numero_de_orden_de_compra);
+  $productos = DB::table('ordenesdecompra')
+  ->where('numero_de_orden_de_compra','=',$numero_de_orden_de_compra)
+  ->get();
+  return View('exports.orden_de_compra', compact('productos'));
+}
 
 }

@@ -29,8 +29,8 @@
                   <tbody>
                     @foreach($productos as $item)
                       <tr>
+                          <td>{{$item->nombre_del_proveedor}}</td>
                         <th >{{$item->numero_de_orden_de_compra}}</th>
-                        <td>{{$item->nombre_del_proveedor}}</td>
                         <td>{{$item->fecha}}</td>
                         <td>{{$item->total}}</td>
                         @if ($item->estado =='Autorizada')
@@ -40,7 +40,7 @@
                         @else
                         <td><font color="red">Nula</font></td>
                         @endif
-                        <td><a href="" type="button" class="btn btn-info">Imprimir</a></td>
+                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Imprimir</a></td>
                       </tr>
                       @endforeach
                     </tbody>
