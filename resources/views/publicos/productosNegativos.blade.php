@@ -36,7 +36,13 @@
                     @endforeach
                   </tbody>
                 </table>
-                <center><a type="button" class="btn btn-success" href="{{route('excel')}}">excel</a><center>
+
+                <form action="{{route('excel')}}" method="POST">
+                  @csrf
+                    <center><button type="submit" class="btn btn-success" id="excel" >Excel </button><center>
+                </form>
+
+        
           </div>
         </div>
         <div class="row">
@@ -55,6 +61,8 @@
 
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
+
+
 
 <script>
   $(document).ready( function () {
