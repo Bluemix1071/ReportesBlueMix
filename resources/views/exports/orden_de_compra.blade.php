@@ -19,28 +19,12 @@
                   <thead>
                     <tr>
                       <th scope="col">Nro De Orden</th>
-                      <th scope="col">Nombre Del Proveedor</th>
-                      <th scope="col">Fecha</th>
-                      <th scope="col">Total</th>
-                      <th scope="col">Estado</th>
-                      <th scope="col">Ación</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($productos as $item)
                       <tr>
                         <th >{{$item->numero_de_orden_de_compra}}</th>
-                        <td>{{$item->nombre_del_proveedor}}</td>
-                        <td>{{$item->fecha}}</td>
-                        <td>{{$item->total}}</td>
-                        @if ($item->estado =='Autorizada')
-                        <td><font color="Lime">Autorizada</font></td>
-                        @elseif ($item->estado =='creada')
-                        <td><font color="Blue">Creada</font></td>
-                        @else
-                        <td><font color="red">Nula</font></td>
-                        @endif
-                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Imprimir</a></td>
                       </tr>
                       @endforeach
                     </tbody>

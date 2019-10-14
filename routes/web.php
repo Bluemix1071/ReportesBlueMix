@@ -42,6 +42,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
     Route::get('/Ordenesdecompra','AdminController@ordenesdecompra')->name('ordenesdecompra');
     Route::get('/excel','AdminController@exportExcelproductosnegativos')->name('excel');
+    Route::get('/pdf/{numero_de_orden_de_compra}','AdminController@exportpdf')->name('pdf.orden');
     Route::get('/excelproductospormarca','AdminController@exportExcelproductospormarca')->name('excelproductopormarca');
 
 
