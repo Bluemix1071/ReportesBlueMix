@@ -125,7 +125,9 @@ class AdminController extends Controller
   $productos = DB::table('ordenesdecompra')
   ->where('numero_de_orden_de_compra','=',$numero_de_orden_de_compra)
   ->get();
-  return View('exports.orden_de_compra', compact('productos'));
+  $pdf =PDF::loadView('exports.orden_de_compra', compact('productos'));
+
+  return $pdf->stream('Orden De Compra.pdf');
 }
 
 }
