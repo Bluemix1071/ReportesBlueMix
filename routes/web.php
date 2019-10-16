@@ -33,18 +33,25 @@ Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
 //rutas de administrador 
 Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->group(function(){
 
-    Route::get('/','AdminController@index')->name('inicioAdmin');
 
+    //----------------------------------LISTADO DE DATOS-----------------//
+    Route::get('/','AdminController@index')->name('inicioAdmin');
     Route::get('/ListaUsuarios','EditarUserController@index')->name('ListarUser');
-    
     Route::post('/update', 'EditarUserController@update')->name('update');
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
     Route::get('/Ordenesdecompra','AdminController@ordenesdecompra')->name('ordenesdecompra');
-    Route::post('/excel','AdminController@exportExcelproductosnegativos')->name('excel');
-    Route::get('/pdf/{numero_de_orden_de_compra}','AdminController@exportpdf')->name('pdf.orden');
-    Route::get('/excelproductospormarca','AdminController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::get('/Desviacion','AdminController@porcentajeDesviacion')->name('desviacion');
+
+    //---------------------Exportaciones----------------------//
+    Route::post('/excel','exports\ExportsController@exportExcelproductosnegativos')->name('excel');
+    Route::get('/pdf/{numero_de_orden_de_compra}','exports\ExportsController@exportpdf')->name('pdf.orden');
+    Route::get('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
+
+
+
+
+    Route::get('/Desviacion/{codigo}','AdminController@exportpdf')->name('ExcelDesviacion');
 
 
 

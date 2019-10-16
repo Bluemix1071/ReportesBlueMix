@@ -18,8 +18,8 @@
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
                     <tr>
-                      <th scope="col">Nro De Orden</th>
                       <th scope="col">Nombre Del Proveedor</th>
+                      <th scope="col">Nro De Orden</th>
                       <th scope="col">Fecha</th>
                       <th scope="col">Total</th>
                       <th scope="col">Estado</th>

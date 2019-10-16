@@ -36,7 +36,8 @@ Porcentaje Desviacion
                     <td>{{$item->ultima_fecha}}</td>
                     <td>{{$item->penultima_fecha}}</td>
 
-                    <td><a href="{{route('pdf.orden', $item->codigo)}}" class="btn btn-info">Imprimir</a></td>
+                    <td> <a href="{{route('ExcelDesviacion', $item->codigo)}}" class="btn btn-info">Imprimir</a> </td>
+
                   </tr>
                 @endforeach
             </tbody>
