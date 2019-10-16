@@ -44,7 +44,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/excel','AdminController@exportExcelproductosnegativos')->name('excel');
     Route::get('/pdf/{numero_de_orden_de_compra}','AdminController@exportpdf')->name('pdf.orden');
     Route::get('/excelproductospormarca','AdminController@exportExcelproductospormarca')->name('excelproductopormarca');
-
+    Route::get('/Desviacion','AdminController@porcentajeDesviacion')->name('desviacion');
 
 
 

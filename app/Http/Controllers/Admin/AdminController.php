@@ -70,6 +70,11 @@ class AdminController extends Controller
       return view('admin.ordenesdecompra',compact('productos'));
     }
 
+    public function porcentajeDesviacion (){
+      $porcentaje=DB::table('porcentaje_desviacion')->get();
+      return view('admin.PorcentajeDesviacion',compact('porcentaje'));
+    }
+
 /*
     public function ProductosPorMarcaAjax(Request $request)
     {
@@ -121,7 +126,6 @@ class AdminController extends Controller
  }
 
  public function exportpdf($numero_de_orden_de_compra){
-  //dd($numero_de_orden_de_compra);
   $productos = DB::table('ordenesdecompra')
   ->where('numero_de_orden_de_compra','=',$numero_de_orden_de_compra)
   ->get();

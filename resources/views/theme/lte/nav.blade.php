@@ -177,11 +177,17 @@
                    <a href="{{route('chart')}}" class="nav-link">
                       <i class="nav-icon fas fa-chart-pie"></i>
                       <p>Graficos
-                        
                       </p>
-                      
                     </a>
                   </li>
+
+                  <li class="nav-item">
+                    <a href="{{route('desviacion')}}" class="nav-link">
+                   
+                       <p>Desviacion
+                       </p>
+                     </a>
+                   </li>
                   
                 </ul>
               </li>
