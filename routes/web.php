@@ -45,7 +45,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     //---------------------Exportaciones----------------------//
     Route::post('/excel','exports\ExportsController@exportExcelproductosnegativos')->name('excel');
-    Route::get('/pdf/{numero_de_orden_de_compra}','exports\ExportsController@exportpdf')->name('pdf.orden');
+    Route::get('/pdf/{NroOrden}','exports\ExportsController@exportpdf')->name('pdf.orden');
     Route::get('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
 
 

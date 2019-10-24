@@ -1,0 +1,85 @@
+
+
+.numeroorden{
+    position: absolute;
+    top:0 px;
+    left:550 px;
+}
+
+.fecha{
+    position: absolute;
+    top:30 px;
+    left:555 px;
+
+}
+
+.rut{
+    position: absolute;
+    top:50 px;
+    left:500 px;
+
+}
+
+.bluemix{
+
+    position: absolute;
+    top:20 px;
+    left:23 px;
+
+}
+
+.logo{
+    width: 100px;
+    height: 50px;
+}
+
+.sr{
+    position: absolute;
+    top:50 px;
+    left:100 px;
+}
+
+.atte{
+    position: absolute;
+    top:70 px;
+    left:100 px;
+}
+
+.linea{
+    position: absolute;
+    top:135 px;
+    left:0 px;
+
+}
+.linea2{
+    position: absolute;
+    top:155 px;
+    left:0 px;
+
+}
+
+.solicitud{
+    position: absolute;
+    top:105 px;
+    left:0 px;
+}
+
+.titulo{
+    position: absolute;
+    top:-20 px;
+    left:250 px;
+}
+
+.tabla{
+    position: relative;
+    top:100 px;
+    left:0 px;
+}
+
+td{
+    font-size: 10;
+}
+
+th{
+    font-size: 10;
+}
