@@ -17,6 +17,12 @@ class AdminExport implements FromView
     * @return \Illuminate\Support\Collection
     */
 
+
+    public function __construct( $variable)
+    {
+        $this->search = $variable;
+    }
+
     public function view(): View
     {
         return view('exports.productos_negativos', [

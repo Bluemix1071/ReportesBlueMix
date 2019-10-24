@@ -11,9 +11,31 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Productos Negativos</h3>
+      <div class="row">
+        <div class="col-md-6">
+            <h3 class="display-3">Productos Negativos</h3>
+        </div>
+        <div class="col md-6">
+        {{-- algo al lado del titulo --}}
+            
+        </div>
+
+      </div>
         <div class="row">
           <div class="col-md-12">
+
+            <div class="form-group">
+              <form action="{{route('filtrar')}}" role="search" method="POST" id="form">
+                  @csrf
+                          <div class="input-group">
+                              <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar...">
+                              <span class="input-group-btn">
+                                 {{-- <button id="boton" type="submit" class="btn btn-primary">Buscar </button> --}}
+                              </span>
+                          </div>
+                       </form>
+                   </div>
+            
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
                     <tr>
@@ -24,7 +46,7 @@
                       <th scope="col">Stock Sala</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="res">
                   @foreach($productos as $item)
                     <tr>
                       <th >{{$item->nombre}}</th>
@@ -37,17 +59,15 @@
                   </tbody>
                 </table>
 
-                <form action="{{route('excel')}}" method="POST">
-                  @csrf
-                    <center><button type="submit" class="btn btn-success" id="excel" >Excel </button><center>
-                </form>
+                <form action="{{route('excel')}}" method="get">
+                    
+
+                    <input id="valorBuscar" type="text" value="">
+
+                    <button type="submit" class="btn btn-success" id="excel" >Excel </button>
+                  </form>
 
         
-          </div>
-        </div>
-        <div class="row">
-          <div class="co-md-12">
-
           </div>
         </div>
        
@@ -86,6 +106,7 @@
     });
 });
 </script>
+<script src="{{asset("js/ajaxProductosNegativos.js")}}"></script>
 
     
 @endsection
