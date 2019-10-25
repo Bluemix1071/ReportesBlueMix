@@ -12,27 +12,14 @@ var form = $(this);
 var url = form.attr('action');
 
 
-console.log(excel);
 
 
 $.post(url,data,function(result){
     //console.log(result.productos);
     let res =document.querySelector('#res');
-    res.innerHTML='';
-
-for(let item of result.productos){
-    res.innerHTML += `
-    <tr>
-    <th>${item.nombre}</th>
-    <td>${item.ubicacion}</td>
-    <td>${item.codigo}</td>
-    <td>${item.bodega_stock}</td>
-    <td>${item.sala_stock}</td>
-    </tr>
-    
-    `
-
-}
+   // let pagination = document.querySelector('#productos_paginate');
+   
+    $(".productosNegativos").html(result);
 
 
 }).fail(function(){
@@ -43,6 +30,42 @@ for(let item of result.productos){
 
 });
 
+
+
+});
+
+$(document).on('click','.pagination a',function(e){
+e.preventDefault();
+
+
+var text = document.getElementById('xd').value;
+if(text==''){ 
+var page = $(this).attr('href').split('page=')[1];
+var route= "ProductosNegativos"
+$.ajax({
+    url:route,
+    data: {page :page},
+    type: 'GET',
+    dataType: 'json',
+    success: function (data){
+    $(".productosNegativos").html(data);
+    }
+});
+
+}else{
+var page = $(this).attr('href').split('page=')[1];
+var route= "ProductosNegativos2"+"/"+text
+$.ajax({
+    url:route,
+    data: {page: page},
+    type: 'GET',
+    dataType: 'json',
+    success: function (data){
+    $(".productosNegativos").html(data);
+    }
+});
+
+}
 
 
 });

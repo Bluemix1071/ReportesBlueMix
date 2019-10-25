@@ -36,39 +36,46 @@
                        </form>
                    </div>
             
-              <table id="productos" class="table table-bordered table-hover dataTable">
-                  <thead>
-                    <tr>
-                      <th scope="col">Nombre</th>
-                      <th scope="col">Ubicacion</th>
-                      <th scope="col">Codigo</th>
-                      <th scope="col">Stock Bodega</th>
-                      <th scope="col">Stock Sala</th>
-                    </tr>
-                  </thead>
-                  <tbody id="res">
-                  @foreach($productos as $item)
-                    <tr>
-                      <th >{{$item->nombre}}</th>
-                      <td>{{$item->ubicacion}}</td>
-                      <td>{{$item->codigo}}</td>
-                      <td>{{$item->bodega_stock}}</td>
-                      <td>{{$item->sala_stock}}</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                   <div class="productosNegativos">
+                              <table id="productos" class="table table-bordered table-hover dataTable">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">Nombre</th>
+                                      <th scope="col">Ubicacion</th>
+                                      <th scope="col">Codigo</th>
+                                      <th scope="col">Stock Bodega</th>
+                                      <th scope="col">Stock Sala</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="res">
+                                  @foreach($productos as $item)
+                                    <tr>
+                                      <th >{{$item->nombre}}</th>
+                                      <td>{{$item->ubicacion}}</td>
+                                      <td>{{$item->codigo}}</td>
+                                      <td>{{$item->bodega_stock}}</td>
+                                      <td>{{$item->sala_stock}}</td>
+                                    </tr>
+                                    @endforeach
+                                  </tbody>
+                                </table>
+                                {{$productos->links()}}
+                              </div>
 
-                <form action="{{route('excel')}}" method="get">
-                    
-
-                    <input id="valorBuscar" type="text" value="">
-
-                    <button type="submit" class="btn btn-success" id="excel" >Excel </button>
-                  </form>
-
-        
+          </div> 
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+              <form action="{{route('excel')}}" method="post">
+                  @csrf
+                  <input id="valorBuscar" type="hidden" name="search">
+                  <button type="submit" class="btn btn-success" id="excel" >Excel </button>
+                </form>
           </div>
+          <div class="col-md-6">
+             
+          </div>
+
         </div>
        
     
@@ -84,28 +91,6 @@
 
 
 
-<script>
-  $(document).ready( function () {
-    $('#productos').DataTable({
-
-      "language":{
-        "info": "_TOTAL_ registros",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
-        
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
-
-    });
-});
-</script>
 <script src="{{asset("js/ajaxProductosNegativos.js")}}"></script>
 
     
