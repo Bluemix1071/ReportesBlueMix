@@ -4,32 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../Orden.css">
   <title>OrdendecompraPDF</title>
 </head>
 <body>
-    <img src="../logo.png">
-  <center><h3>Orden De Compra BlueMix</h3></center>
-  <right><h3>O.C.N°:</h3></right>
-  <table id="productos" class="table table-bordered table-hover dataTable">
+    <img class="logo" src="../logo.png">
+    <h6 class="bluemix">BlueMix</h6>
+  <h3 class="titulo">Orden de Compra BlueMix</h3>
+  <h4 class="rut">Rut: </h4>
+  <h3 class="numeroorden">O.C. N° : {{$productos[0]->NroOC}}</h3>
+  <h4 class="sr">Sr(es):</h4>
+  <h4 class="atte">Atte. Sr(a):</h4>
+  <h5 class="fecha">Fecha :</h5>
+  <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente:</h6>
+  <div class="linea">_______________________________________________________________________________________</div>
+  <div class="linea2">_______________________________________________________________________________________</div>
+  <table  class="tabla" >
     <thead>
-      <tr>
-        <th scope="col">Nro De Orden</th>
-        <th scope="col">Nombre Del Proveedor</th>
-        <th scope="col">Fecha</th>
+      <tr style="text-align:center;">
+        <th scope="col">Cód int.</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Marca</th>
+        <th scope="col">Unidad</th>
+        <th scope="col">Neto</th>
+        <th scope="col">Cantidad</th>
         <th scope="col">Total</th>
-        <th scope="col">Estado</th>
       </tr>
     </thead>
     <tbody>
-      @foreach($productos as $item)
-        <tr>
-          <th >{{$item->numero_de_orden_de_compra}}</th>
-          <td>{{$item->nombre_del_proveedor}}</td>
-          <td>{{$item->fecha}}</td>
-          <td>{{$item->total}}</td>
-          <td>{{$item->estado}}</td>
-        </tr>
-        @endforeach
+      
+
       </tbody>
   </table>
 </body>

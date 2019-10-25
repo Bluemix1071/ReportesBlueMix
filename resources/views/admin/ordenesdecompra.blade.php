@@ -27,7 +27,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($productos as $item)
+                    @foreach($ordendecompra as $item)
                       <tr>
                           <td>{{$item->nombre_del_proveedor}}</td>
                         <th >{{$item->numero_de_orden_de_compra}}</th>

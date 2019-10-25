@@ -38,11 +38,16 @@ class ExportsController extends Controller
 
   
 public function exportpdf($numero_de_orden_de_compra){
-  //dd($numero_de_orden_de_compra);
-  $productos = DB::table('ordenesdecompra')
+
+  $ordendecompra = DB::table('ordenesdecompra')
   ->where('numero_de_orden_de_compra','=',$numero_de_orden_de_compra)
   ->get();
-  $pdf =PDF::loadView('exports.orden_de_compra', compact('productos'));
+  
+  $ordendecompradetalle = DB::table('ordenesdecomprapdf')
+  ->where('NroOC','=',$numero_de_orden_de_compra)
+  ->get();
+
+  $pdf =PDF::loadView('exports.orden_de_compra', compact('ordendecompra','ordendecompradetalle'));
 
   return $pdf->stream('Orden De Compra.pdf');
 }
