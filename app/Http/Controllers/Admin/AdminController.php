@@ -55,14 +55,14 @@ class AdminController extends Controller
     public function ordenesdecompra(Request $request)
     {
       
-      $productos=DB::table('ordenesdecompra')->get();
+      $ordendecompra =DB::table('ordenesdecompra')->get();
 
-      return view('admin.ordenesdecompra',compact('productos'));
+      return view('admin.ordenesdecompra',compact('ordendecompra'));
     }
 
     public function porcentajeDesviacion (){
       $porcentaje=DB::table('porcentaje_desviacion')->get();
-      
+
       return view('admin.PorcentajeDesviacion',compact('porcentaje'));
     }
 
