@@ -16,7 +16,7 @@
   <h4 class="sr">Sr(es):</h4>
   <h4 class="atte">Atte. Sr(a):</h4>
   <h5 class="fecha">Fecha :</h5>
-  <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente:</h6>
+  <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente :</h6>
   <div class="linea">_______________________________________________________________________________________</div>
   <div class="linea2">_______________________________________________________________________________________</div>
   <table  class="tabla" >
