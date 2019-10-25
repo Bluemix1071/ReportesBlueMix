@@ -31,12 +31,12 @@ Porcentaje Desviacion
                   <tr>
                     <td>{{$item->codigo}}</td>
                     <th >{{$item->descripcion}}</th>
+
                     <td>{{$item->desv}}</td>
+
                     <td>{{$item->diferencia}}</td>
                     <td>{{$item->ultima_fecha}}</td>
                     <td>{{$item->penultima_fecha}}</td>
-
-                    <td> <a href="{{route('ExcelDesviacion', $item->codigo)}}" class="btn btn-info">Imprimir</a> </td>
 
                   </tr>
                 @endforeach

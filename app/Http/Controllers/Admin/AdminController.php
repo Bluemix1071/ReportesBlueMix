@@ -62,6 +62,7 @@ class AdminController extends Controller
 
     public function porcentajeDesviacion (){
       $porcentaje=DB::table('porcentaje_desviacion')->get();
+      
       return view('admin.PorcentajeDesviacion',compact('porcentaje'));
     }
 

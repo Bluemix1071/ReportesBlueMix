@@ -55,7 +55,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 
 
-    Route::get('/Desviacion/{codigo}','AdminController@exportpdf')->name('ExcelDesviacion');
+    Route::get('/Desviacion','AdminController@porcentajeDesviacion')->name('porcentaje');
 
 
 
