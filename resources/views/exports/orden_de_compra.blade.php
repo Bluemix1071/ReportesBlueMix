@@ -11,12 +11,21 @@
     <img class="logo" src="../logo.png">
     <h6 class="bluemix">BlueMix</h6>
   <h3 class="titulo">Orden de Compra BlueMix</h3>
+<<<<<<< HEAD
   <h4 class="rut">Rut: </h4>
   <h3 class="numeroorden">O.C. N° : {{$productos[0]->NroOC}}</h3>
   <h4 class="sr">Sr(es):</h4>
   <h4 class="atte">Atte. Sr(a):</h4>
   <h5 class="fecha">Fecha :</h5>
   <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente :</h6>
+=======
+  <h4 class="rut">Rut: {{$productos[0]->RutProveedor}}</h4>
+  <h3 class="numeroorden">O.C. N° : {{$productos[0]->NroOrden}}</h3>
+  <h4 class="sr">Sr(es): {{$productos[0]->NombreProveedor}}</h4>
+  <h4 class="atte">Atte. Sr(a):</h4>
+  <h5 class="fecha">Fecha :{{$productos[0]->Fecha}}</h5>
+  <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente:</h6>
+>>>>>>> f54ed3c855305a909d09d439b520fea54b63a5ce
   <div class="linea">_______________________________________________________________________________________</div>
   <div class="linea2">_______________________________________________________________________________________</div>
   <table  class="tabla" >
@@ -32,8 +41,22 @@
       </tr>
     </thead>
     <tbody>
+<<<<<<< HEAD
       
 
+=======
+      @foreach($productos as $item)
+        <tr>
+          <th>{{$item->Codigo}}</th>
+          <td>{{$item->Descripcion}}</td>
+          <td>{{$item->Marca}}</td>
+          <td>{{$item->Unidad}}</td>
+          <td>{{$item->Precio}}</td>
+          <td style="text-align:center;">{{$item->Cantidad}}</td>
+          <td>{{$item->Total}}</td>
+        </tr>
+        @endforeach
+>>>>>>> f54ed3c855305a909d09d439b520fea54b63a5ce
       </tbody>
   </table>
 </body>

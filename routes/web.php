@@ -17,7 +17,11 @@ Route::post('/graficos', 'ChartControllers\PulseChartController@cargarC3')->name
 Route::prefix('publicos')->middleware('auth')->group(function(){
 
     Route::get('/','InicioController@index')->name('Publico');
-    Route::get('/ProductosNegativos','publico\PublicoController@ProductosNegativos')->name('ProductosNegativos');
+    Route::get('/ProductosNegativos','publico\PublicoController@index')->name('ProductosNegativos');
+    Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
+    Route::get('/ProductosNegativos/{texto}','publico\PublicoController@listarFiltrados')->name('filtro2');
+//------------------------EXPORTACIONES----------------------------------//
+Route::post('/excel','Admin\exports\ExportsController@exportExcelproductosnegativos')->name('excel');
 
 
 });
@@ -44,8 +48,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Desviacion','AdminController@porcentajeDesviacion')->name('desviacion');
 
     //---------------------Exportaciones----------------------//
-    Route::post('/excel','exports\ExportsController@exportExcelproductosnegativos')->name('excel');
-    Route::get('/pdf/{numero_de_orden_de_compra}','exports\ExportsController@exportpdf')->name('pdf.orden');
+  
+    Route::get('/pdf/{NroOrden}','exports\ExportsController@exportpdf')->name('pdf.orden');
     Route::get('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
 
 

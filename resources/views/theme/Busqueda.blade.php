@@ -1,9 +1,10 @@
 <div class="form-group">
-<form action="{{route('ProductosNegativos')}}" role="search" method="GET">
+<form action="{{route('filtrar')}}" role="search" method="POST" id="form">
+    @csrf
             <div class="input-group">
-                <input type="text" name="searchText" class="form-control" placeholder="Buscar..." value="{{$query}}">
+                <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar...">
                 <span class="input-group-btn">
-                   <button type="submit" class="btn btn-primary">Buscar </button> 
+                   <button id="boton" type="submit" class="btn btn-primary">Buscar </button> 
                 </span>
             </div>
          </form>
