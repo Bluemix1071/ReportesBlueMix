@@ -27,20 +27,20 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($ordendecompra as $item)
+                    @foreach($productos as $item)
                       <tr>
-                          <td>{{$item->NombreProveedor}}</td>
-                        <th >{{$item->NroOrden}}</th>
-                        <td>{{$item->Fecha}}</td>
-                        <td>{{$item->TotalOC}}</td>
-                        @if ($item->Estado =='Autorizada')
+                          <td>{{$item->nombre_del_proveedor}}</td>
+                        <th >{{$item->numero_de_orden_de_compra}}</th>
+                        <td>{{$item->fecha}}</td>
+                        <td>{{$item->total}}</td>
+                        @if ($item->estado =='Autorizada')
                         <td><font color="Lime">Autorizada</font></td>
-                        @elseif ($item->Estado =='creada')
+                        @elseif ($item->estado =='creada')
                         <td><font color="Blue">Creada</font></td>
                         @else
                         <td><font color="red">Nula</font></td>
                         @endif
-                        <td><a href="{{route('pdf.orden', $item->NroOrden)}}"class="btn btn-info">Imprimir</a></td>
+                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Imprimir</a></td>
                       </tr>
                       @endforeach
                     </tbody>

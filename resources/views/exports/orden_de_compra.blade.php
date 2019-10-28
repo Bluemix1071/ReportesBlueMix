@@ -7,25 +7,16 @@
   <link rel="stylesheet" href="../Orden.css">
   <title>OrdendecompraPDF</title>
 </head>
-<body>
+<body>       
     <img class="logo" src="../logo.png">
     <h6 class="bluemix">BlueMix</h6>
   <h3 class="titulo">Orden de Compra BlueMix</h3>
-<<<<<<< HEAD
-  <h4 class="rut">Rut: </h4>
-  <h3 class="numeroorden">O.C. N° : {{$productos[0]->NroOC}}</h3>
-  <h4 class="sr">Sr(es):</h4>
-  <h4 class="atte">Atte. Sr(a):</h4>
-  <h5 class="fecha">Fecha :</h5>
-  <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente :</h6>
-=======
   <h4 class="rut">Rut: {{$productos[0]->RutProveedor}}</h4>
-  <h3 class="numeroorden">O.C. N° : {{$productos[0]->NroOrden}}</h3>
+  <h3 class="numeroorden">O.C. N° : {{$productos[0]->numero_de_orden_de_compra}}</h3>
   <h4 class="sr">Sr(es): {{$productos[0]->NombreProveedor}}</h4>
-  <h4 class="atte">Atte. Sr(a):</h4>
-  <h5 class="fecha">Fecha :{{$productos[0]->Fecha}}</h5>
-  <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente:</h6>
->>>>>>> f54ed3c855305a909d09d439b520fea54b63a5ce
+  <h4 class="atte">Atte. Sr(a): {{$productos[0]->QuienRecibe}}</h4>
+  <h5 class="fecha">Fecha :{{$productos[0]->fecha}}</h5>
+  <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente :</h6>
   <div class="linea">_______________________________________________________________________________________</div>
   <div class="linea2">_______________________________________________________________________________________</div>
   <table  class="tabla" >
@@ -41,11 +32,7 @@
       </tr>
     </thead>
     <tbody>
-<<<<<<< HEAD
-      
-
-=======
-      @foreach($productos as $item)
+      @foreach($ordendecompradetalle as $item)
         <tr>
           <th>{{$item->Codigo}}</th>
           <td>{{$item->Descripcion}}</td>
@@ -56,8 +43,35 @@
           <td>{{$item->Total}}</td>
         </tr>
         @endforeach
->>>>>>> f54ed3c855305a909d09d439b520fea54b63a5ce
       </tbody>
   </table>
+  <div class="caja">
+  <h6 class="linea3">___________________________________________________________________________________________________________________________________</h6>
+  <div class="condiciones">Condiciones:  {{$productos[0]->Condiciones}}</div>
+  <div class="flete">Valor Flete:  {{$productos[0]->ValorFlete}}</div>
+  <div class="transporte">Transporte:  {{$productos[0]->Transporte}}</div>
+  <div class="comentario">Comentario:  {{$productos[0]->Glosa}}</div>
+
+  <h5 class="neto">Neto:  {{$productos[0]->NetoOC}}</h5>
+  <h5 class="iva">I.V.A.:            {{$productos[0]->IvaOC}}</h5>
+  <h5 class="total">Total:            {{$productos[0]->TotalOC}}</h5>
+
+  <h5 class="facturar">Facturar a:</h5>
+  <h5 class="soc">Soc. com. Blue Mix Ltda.</h5>
+  <h5 class="n">5 de Abril N° 1071 Chillán</h5>
+  <h5 class="giro">Giro: librería Paqueteria</h5>
+
+  <h5 class="ru">Rut: 77.283.950-2</h5>
+  <h5 class="fono">Fono: 42-229496</h5>
+
+  <h5 class="nombre">Juan Escrig Fernandez</h5>
+  <h5 class="pp">pp. Soc. Com. Blue Mix Ltda.</h5>
+
+
+  <div class="soli">Solicitada por: {{$productos[0]->QuienEmite}}</div>
+
+  <h6 class="firma">____________________________________</h6>
+
+  </div>
 </body>
 </html>
