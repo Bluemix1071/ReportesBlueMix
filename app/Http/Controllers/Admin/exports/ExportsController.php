@@ -16,11 +16,10 @@ class ExportsController extends Controller
 
   //------------------------EXCEL-------------------------------//
     
- public function exportExcelproductosnegativos(Request $request){
+ public function exportExcelproductosnegativos(){
 
- //dd($request->all());
 
-    return Excel::download(new AdminExport($request->search), 'productos negativos.xlsx');
+    return Excel::download(new AdminExport, 'productos negativos.xlsx');
   
   
    }
@@ -40,7 +39,7 @@ class ExportsController extends Controller
   
 public function exportpdf($numero_de_orden_de_compra){
 
-  $ordendecompra = DB::table('ordenesdecompra')
+  $productos = DB::table('ordenesdecompra')
   ->where('numero_de_orden_de_compra','=',$numero_de_orden_de_compra)
   ->get();
   
@@ -48,8 +47,8 @@ public function exportpdf($numero_de_orden_de_compra){
   ->where('NroOC','=',$numero_de_orden_de_compra)
   ->get();
 
-  $pdf =PDF::loadView('exports.orden_de_compra', compact('ordendecompra','ordendecompradetalle'));
+  $pdf =PDF::loadView('exports.orden_de_compra', compact('productos','ordendecompradetalle'));
 
   return $pdf->stream('Orden De Compra.pdf');
-  }
+}
 }
