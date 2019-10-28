@@ -60,8 +60,13 @@ class AdminController extends Controller
       return view('admin.ordenesdecompra',compact('ordendecompra'));
     }
 
+
+
     public function porcentajeDesviacion (){
-      $porcentaje=DB::table('porcentaje_desviacion')->get();
+      
+      $porcentaje=DB::table('porcentaje_desviacion')
+      ->where( 'desv', '<=','100','and','desv','>=','-100')
+      ->get();
 
       return view('admin.PorcentajeDesviacion',compact('porcentaje'));
     }

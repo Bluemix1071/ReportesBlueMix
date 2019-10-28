@@ -35,7 +35,7 @@
                         <td>{{$item->total}}</td>
                         @if ($item->estado =='Autorizada')
                         <td><font color="Lime">Autorizada</font></td>
-                        @elseif ($item->Estado =='creada')
+                        @elseif ($item->estado =='creada')
                         <td><font color="Blue">Creada</font></td>
                         @else
                         <td><font color="red">Nula</font></td>

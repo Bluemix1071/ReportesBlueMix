@@ -14,6 +14,32 @@ Porcentaje Desviacion
 <div class="container-fluid">
     <h3 class="display-3">Porcentaje Desviacion</h3>
     <div class="row">
+        <div class="col-md-12">
+
+            <form class="form-inline">
+                <div class="form-group mb-2">
+                  <label for="staticEmail2" class="sr-only">Email</label>
+                  <input type="text"  class="form-control" value="">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="inputPassword2" class="sr-only">Password</label>
+                  <input type="text" class="form-control">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="inputPassword2" class="sr-only">Password</label>
+                    <input type="text" class="form-control"  >
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                      <label for="inputPassword2" class="sr-only">Password</label>
+                      <input type="text" class="form-control"  >
+                    </div>
+                <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+              </form>
+              <hr>
+        </div>
+    </div>
+    <div class="row">
+      
       <div class="col-md-12">
           <table id="desv" class="table table-bordered table-hover dataTable">
               <thead>
@@ -43,6 +69,7 @@ Porcentaje Desviacion
             </tbody>
         </table>
       </div>
+
     </div>
 </div>
 
