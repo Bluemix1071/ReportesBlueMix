@@ -64,7 +64,7 @@ class AdminController extends Controller
 
     public function porcentajeDesviacion (){
       
-      //dd($request->all());
+
       $porcentaje=DB::table('porcentaje_desviacion')
       ->where( 'desv', '<=','100','and','desv','>=','-100')
       ->paginate(10);
