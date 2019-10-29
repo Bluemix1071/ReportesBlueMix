@@ -185,7 +185,7 @@
                   <li class="nav-item">
                     <a href="{{route('porcentaje')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                       <p>Desviacion
+                       <p>Desviacion.
                        </p>
                      </a>
                    </li>
