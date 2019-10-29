@@ -30,11 +30,13 @@
               <img src="{{asset("assets/$theme/dist/img/user1-128x128.jpg")}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  Brad Diesel
+                  Pablo Arteaga
                   <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
                 </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                <p class="text-sm">
+                  Llámame cuando puedas...</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
+                  hace 4 horas</p>
               </div>
             </div>
             <!-- Message End -->
@@ -46,11 +48,12 @@
               <img src="{{asset("assets/$theme/dist/img/user8-128x128.jpg")}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  John Pierce
+                  John San Martin
                   <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
                 </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                <p class="text-sm">Recibí tu mensaje </p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
+                  hace 4 horas</p>
               </div>
             </div>
             <!-- Message End -->
@@ -62,17 +65,19 @@
               <img src="{{asset("assets/$theme/dist/img/user3-128x128.jpg")}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  Nora Silvester
+                  Nora Martinez
                   <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
                 </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                <p class="text-sm">El tema va aqui</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
+                  hace 4 horas</p>
               </div>
             </div>
             <!-- Message End -->
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+          <a href="#" class="dropdown-item dropdown-footer">
+            Ver todos los mensajes</a>
         </div>
       </li>
       <!-- Notifications Dropdown Menu -->
@@ -82,24 +87,26 @@
           <span class="badge badge-warning navbar-badge">15</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header">15 Notificaciones</span>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+            <i class="fas fa-envelope mr-2"></i> 4 nuevos mensajes
+            <span class="float-right text-muted text-sm">3 minutos</span>
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
+            <i class="fas fa-users mr-2"></i> 8 
+            peticiones de amistad
+            <span class="float-right text-muted text-sm">12 horas</span>
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
+            <i class="fas fa-file mr-2"></i> 3 nuevos reportes
+            <span class="float-right text-muted text-sm">2 dias</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          <a href="#" class="dropdown-item dropdown-footer">
+            Ver todas las notificaciones</a>
         </div>
       </li>
       <li class="nav-item">
@@ -124,7 +131,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{asset("assets/$theme/dist/img/user2-160x160.jpg")}}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{asset("assets/$theme/dist/img/user2-160x160.png")}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block"> hola, {{session()->get('nombre')}} </a>
@@ -222,19 +229,19 @@
               <li class="nav-item">
                 <a href="../charts/chartjs.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
+                  <p>Consulta</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../charts/flot.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
+                  <p>Consulta</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../charts/inline.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Inline</p>
+                  <p>Consulta</p>
                 </a>
               </li>
             </ul>
@@ -257,43 +264,43 @@
               <li class="nav-item">
                 <a href="../UI/icons.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Icons</p>
+                  <p>Consulta</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../UI/buttons.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Buttons</p>
+                  <p>Consulta</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../UI/sliders.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Sliders</p>
+                  <p>Consulta</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../UI/modals.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Modals & Alerts</p>
+                  <p>Consulta</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../UI/navbar.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Navbar & Tabs</p>
+                  <p>Consulta</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../UI/timeline.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Timeline</p>
+                  <p>Consulta</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../UI/ribbons.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Ribbons</p>
+                  <p>Consulta</p>
                 </a>
               </li>
             </ul>
