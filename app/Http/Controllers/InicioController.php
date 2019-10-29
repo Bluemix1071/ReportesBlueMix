@@ -8,6 +8,7 @@ class InicioController extends Controller
 {
     public function index()
     {
+   
   
     return view('publicos.index');
     }

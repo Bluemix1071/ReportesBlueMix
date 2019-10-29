@@ -8,7 +8,7 @@
         <a href="{{route('Publico')}}" class="nav-link">Menu Principal</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{route('informacion')}}" class="nav-link">Informacion</a>
+        <a href="{{route('informacion')}}" class="nav-link">Información</a>
       </li>
       
     </ul>
@@ -185,7 +185,7 @@
                   <li class="nav-item">
                     <a href="{{route('porcentaje')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                       <p>Desviacion.
+                       <p>Desviacion
                        </p>
                      </a>
                    </li>

@@ -73,10 +73,10 @@
         <br>
         <div class="text-muted">
           <p class="text-sm">Felipe Martinez
-            <b class="d-block">Alumnos Practicante</b>
+            <b class="d-block">Alumno Practicante</b>
           </p>
           <p class="text-sm">Leandro Sepulveda
-            <b class="d-block">Alumnos Practicante</b>
+            <b class="d-block">Alumno Practicante</b>
           </p>
         </div>
 

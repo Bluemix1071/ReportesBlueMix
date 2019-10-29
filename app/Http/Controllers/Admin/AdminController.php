@@ -73,16 +73,41 @@ class AdminController extends Controller
     }
 
     public function filtrarDesviacion (Request $request){
-      
+
+      $fecha1=$request->fecha1;
+      $fecha2=$request->fecha2;
       //dd($request->all());
       //dd($request->fecha1,$request->fecha2);
       $porcentaje=DB::table('porcentaje_desviacion')
       ->whereBetween('ultima_fecha', array($request->fecha1,$request->fecha2))
+      ->orderBy('desv', 'desc')
       ->paginate(2000);
   
 
 
-      return view('admin.PorcentajeDesviacion',compact('porcentaje'));
+      return view('admin.PorcentajeDesviacion',compact('porcentaje','fecha1','fecha2'));
+    }
+
+
+
+
+    public function filtarProductospormarca (Request $request){
+      
+      if ($request->searchText==null) {
+       $productos=DB::table('Productos_x_Marca')->paginate(10);
+       return view('admin.productospormarca',compact('productos'));
+       }else{
+        $buscador=$request->searchText;
+    // dd($buscador);
+        $productos=DB::table('Productos_x_Marca')
+        ->where('nombre_del_producto','LIKE','%'.$request->searchText.'%')
+        ->orwhere('codigo_producto','LIKE','%'.$request->searchText.'%')
+        ->orwhere('MARCA_DEL_PRODUCTO','LIKE','%'.$request->searchText.'%')
+        ->orwhere('cantidad_en_bodega','LIKE','%'.$request->searchText.'%')
+        ->orwhere('cantidad_en_sala','LIKE','%'.$request->searchText.'%')
+        ->paginate(2000);
+       }
+       return view('admin.productospormarca',compact('productos','buscador'));
     }
     
 
