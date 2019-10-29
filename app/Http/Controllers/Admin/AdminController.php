@@ -84,6 +84,28 @@ class AdminController extends Controller
 
       return view('admin.PorcentajeDesviacion',compact('porcentaje'));
     }
+
+
+
+
+    public function filtarProductospormarca (Request $request){
+      
+      if ($request->searchText==null) {
+       $productos=DB::table('Productos_x_Marca')->paginate(10);
+       return view('admin.productospormarca',compact('productos'));
+       }else{
+        $buscador=$request->searchText;
+    // dd($buscador);
+        $productos=DB::table('Productos_x_Marca')
+        ->where('nombre_del_producto','LIKE','%'.$request->searchText.'%')
+        ->orwhere('codigo_producto','LIKE','%'.$request->searchText.'%')
+        ->orwhere('MARCA_DEL_PRODUCTO','LIKE','%'.$request->searchText.'%')
+        ->orwhere('cantidad_en_bodega','LIKE','%'.$request->searchText.'%')
+        ->orwhere('cantidad_en_sala','LIKE','%'.$request->searchText.'%')
+        ->paginate(2000);
+       }
+       return view('admin.productospormarca',compact('productos','buscador'));
+    }
     
 
 

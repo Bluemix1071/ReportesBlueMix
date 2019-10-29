@@ -24,10 +24,10 @@ class ExportsController extends Controller
   
    }
   
-   public function exportExcelproductospormarca(){
+   public function exportExcelproductospormarca(Request $request){
   
-  
-    return Excel::download(new ProductospormarcaExport, 'productos por marca.xlsx');
+
+    return Excel::download(new ProductospormarcaExport($request->search), 'productos por marca.xlsx');
   
   
    }
