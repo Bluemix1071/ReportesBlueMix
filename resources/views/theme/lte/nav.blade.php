@@ -177,7 +177,7 @@
                    <li class="nav-item">
                    <a href="{{route('chart')}}" class="nav-link">
                       <i class="nav-icon fas fa-chart-pie"></i>
-                      <p>Ingresos por año
+                      <p>Ingresos Por Año
                       </p>
                     </a>
                   </li>
