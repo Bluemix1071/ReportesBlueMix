@@ -12,12 +12,12 @@
     <tbody>
     @foreach($desviacion as $xd)
         <tr>
-                     <td>{{$item->codigo}}</td>
-                    <th >{{$item->descripcion}}</th>
-                    <td>{{$item->desv}}</td>
-                    <td>{{$item->diferencia}}</td>
-                    <td>{{$item->ultima_fecha}}</td>
-                    <td>{{$item->penultima_fecha}}</td>
+                     <td>{{$xd->codigo}}</td>
+                    <th >{{$xd->descripcion}}</th>
+                    <td>{{$xd->desv}}</td>
+                    <td>{{$xd->diferencia}}</td>
+                    <td>{{$xd->ultima_fecha}}</td>
+                    <td>{{$xd->penultima_fecha}}</td>
          
         </tr>
     @endforeach

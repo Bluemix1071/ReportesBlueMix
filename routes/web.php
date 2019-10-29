@@ -23,7 +23,7 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::get('/Informacion','publico\PublicoController@informacion')->name('informacion');
 
 //------------------------EXPORTACIONES----------------------------------//
-Route::post('/excel','Admin\exports\ExportsController@exportExcelproductosnegativos')->name('excel');
+Route::post('/excel','Admin\exports\ExportsController@exportExcelproductosnegativos')->name('excelProductosNegativos');
 
 
 });
@@ -53,15 +53,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');
 
 
-
-
-
-
-
     //---------------------Exportaciones----------------------//
   
     Route::get('/pdf/{NroOrden}','exports\ExportsController@exportpdf')->name('pdf.orden');
     Route::get('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
+    Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
 
 
 

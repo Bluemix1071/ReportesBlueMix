@@ -14,17 +14,30 @@ Porcentaje Desviacion
 <div class="container-fluid">
     <h3 class="display-3">Porcentaje Desviacion</h3>
     <div class="row">
-        <div class="col-md-12">
+    <div class="col-md-10">
 
-        <form action="{{route('filtrarDesv')}}" method="post" class="form-inline">
+        <form action="{{route('filtrarDesv')}}" method="post"  id="desvForm" class="form-inline">
           @csrf
+                 Desde  
                 <div class="form-group mb-2">
-                  <label for="staticEmail2" class="sr-only">Email</label>
-                  <input type="date"  class="form-control" name="fecha1" value="">
+                  @if (empty($fecha1))
+                  <label for="staticEmail2" class="sr-only">Fecha 1</label>
+                  <input type="date" id="fecha1" class="form-control" name="fecha1" >
+                  @else
+                <input type="date" id="fecha1" class="form-control" name="fecha1"  value="{{$fecha1}}">
+                  @endif
+           
                 </div>
+                 Hasta  
                 <div class="form-group mx-sm-3 mb-2">
-                  <label for="inputPassword2" class="sr-only">Password</label>
-                  <input type="date" name="fecha2" class="form-control">
+                  
+                  @if (empty($fecha2))
+                  <label for="inputPassword2" class="sr-only">Fecha 2</label>
+                  <input type="date" id="fecha2" name="fecha2" class="form-control">
+                  @else
+                <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{$fecha2}}">
+                  @endif
+             
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="inputPassword2" class="sr-only">Password</label>
@@ -35,11 +48,23 @@ Porcentaje Desviacion
                       <input type="text" class="form-control"  >
                     </div>
                 <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+            
+               
               </form>
               <hr>
         </div>
-    </div>
-    <div class="row">
+    <div class="col-md-2 ml-auto">
+    <form action="{{route('excelDesviacion')}}" method="post">
+        @csrf
+        <input type="hidden" id="fecha1Envio" name="fecha1" class="form-control">
+        <input type="hidden" id="fecha2Envio" name="fecha2" class="form-control">
+       <button type="submit" class="btn btn-success">Excel</button>
+        </form>
+      </div>
+    
+      </div>
+   
+      <div class="row">
       
       <div class="col-md-12">
           <table id="desv" class="table table-bordered table-hover dataTable">
@@ -107,4 +132,5 @@ Porcentaje Desviacion
     });
 });
 </script> --}}
+<script src="{{asset("js/desviacion.js")}}"></script>
 @endsection
