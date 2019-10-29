@@ -58,9 +58,7 @@ Porcentaje Desviacion
                   <tr>
                     <td>{{$item->codigo}}</td>
                     <th >{{$item->descripcion}}</th>
-
                     <td>{{$item->desv}}</td>
-
                     <td>{{$item->diferencia}}</td>
                     <td>{{$item->ultima_fecha}}</td>
                     <td>{{$item->penultima_fecha}}</td>
@@ -69,6 +67,7 @@ Porcentaje Desviacion
                 @endforeach
             </tbody>
         </table>
+        {{$porcentaje->links()}}
       </div>
 
     </div>
@@ -85,7 +84,7 @@ Porcentaje Desviacion
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
 
-
+{{-- 
 <script>
  $(document).ready( function () {
     $('#desv').DataTable({
@@ -107,5 +106,5 @@ Porcentaje Desviacion
 
     });
 });
-</script>
+</script> --}}
 @endsection
