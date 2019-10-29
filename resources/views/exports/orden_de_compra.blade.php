@@ -7,19 +7,22 @@
   <link rel="stylesheet" href="../Orden.css">
   <title>OrdendecompraPDF</title>
 </head>
-<body>       
+<body>
+  <div class="caja1">     
     <img class="logo" src="../logo.png">
-    <h6 class="bluemix">BlueMix</h6>
+    <div class="bluemix">BlueMix</div>
   <h3 class="titulo">Orden de Compra BlueMix</h3>
-  <h4 class="rut">Rut: {{$productos[0]->RutProveedor}}</h4>
+  <h5 class="rut">Rut: {{$productos[0]->RutProveedor}}</h5>
   <h3 class="numeroorden">O.C. N° : {{$productos[0]->numero_de_orden_de_compra}}</h3>
   <h4 class="sr">Sr(es): {{$productos[0]->NombreProveedor}}</h4>
   <h4 class="atte">Atte. Sr(a): {{$productos[0]->QuienRecibe}}</h4>
   <h5 class="fecha">Fecha :{{$productos[0]->fecha}}</h5>
   <h6 class="solicitud">Solicitamos a Ud. despachar lo siguiente :</h6>
-  <div class="linea">_______________________________________________________________________________________</div>
-  <div class="linea2">_______________________________________________________________________________________</div>
-  <table  class="tabla" >
+</div>
+<div class="lineas">
+  <h6 class="linea2">___________________________________________________________________________________________________________________________________</h6>
+</div>
+  <table class="tabla" >
     <thead>
       <tr style="text-align:center;">
         <th scope="col">Cód int.</th>
@@ -36,10 +39,10 @@
         <tr>
           <th>{{$item->Codigo}}</th>
           <td>{{$item->Descripcion}}</td>
-          <td>{{$item->Marca}}</td>
-          <td>{{$item->Unidad}}</td>
+          <td style="text-align:center;">{{$item->Marca}}</td>
+          <td style="text-align:center;">{{$item->Unidad}}</td>
           <td>{{$item->Precio}}</td>
-          <td style="text-align:center;">{{$item->Cantidad}}</td>
+          <td style="text-align:center;">{{$item->cantidad}}</td>
           <td>{{$item->Total}}</td>
         </tr>
         @endforeach
@@ -53,8 +56,8 @@
   <div class="comentario">Comentario:  {{$productos[0]->Glosa}}</div>
 
   <h5 class="neto">Neto:  {{$productos[0]->NetoOC}}</h5>
-  <h5 class="iva">I.V.A.:            {{$productos[0]->IvaOC}}</h5>
-  <h5 class="total">Total:            {{$productos[0]->TotalOC}}</h5>
+  <h5 class="iva">I.V.A.:  {{$productos[0]->IvaOC}}</h5>
+  <h5 class="total">Total: {{$productos[0]->TotalOC}}</h5>
 
   <h5 class="facturar">Facturar a:</h5>
   <h5 class="soc">Soc. com. Blue Mix Ltda.</h5>
