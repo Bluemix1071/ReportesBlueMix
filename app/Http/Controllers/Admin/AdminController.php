@@ -66,7 +66,7 @@ class AdminController extends Controller
       
 
       $porcentaje=DB::table('porcentaje_desviacion')
-      ->where( 'desv', '<=','100','and','desv','>=','-100')
+      ->orderBy('desv', 'desc')
       ->paginate(10);
 
       return view('admin.PorcentajeDesviacion',compact('porcentaje'));
