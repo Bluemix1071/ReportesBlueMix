@@ -73,7 +73,7 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-              <form action="{{route('excel')}}" method="post">
+              <form action="{{route('excelProductosNegativos')}}" method="post">
                   @csrf
                   <input id="valorBuscar" type="hidden" name="search">
                   <button type="submit" class="btn btn-success" id="excel" >Excel</button>

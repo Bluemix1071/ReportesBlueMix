@@ -8,6 +8,7 @@ use DB;
 use Illuminate\Support\Facades\Input;
 use App\Exports\AdminExport;
 use App\Exports\ProductospormarcaExport;
+use App\Exports\DesviacionExports;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -18,7 +19,7 @@ class ExportsController extends Controller
     
  public function exportExcelproductosnegativos(Request $request){
 
-
+    //dd($request->all());
     return Excel::download(new AdminExport($request->search), 'productos negativos.xlsx');
   
   
@@ -28,6 +29,14 @@ class ExportsController extends Controller
   
 
     return Excel::download(new ProductospormarcaExport($request->search), 'productos por marca.xlsx');
+  
+  
+   }
+
+   public function exportExcelDesviacion(Request $request){
+  
+  //dd($request->all());
+    return Excel::download(new DesviacionExports($request->fecha1,$request->fecha2), 'Desviacion.xlsx');
   
   
    }

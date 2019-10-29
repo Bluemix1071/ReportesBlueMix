@@ -73,16 +73,19 @@ class AdminController extends Controller
     }
 
     public function filtrarDesviacion (Request $request){
-      
+
+      $fecha1=$request->fecha1;
+      $fecha2=$request->fecha2;
       //dd($request->all());
       //dd($request->fecha1,$request->fecha2);
       $porcentaje=DB::table('porcentaje_desviacion')
       ->whereBetween('ultima_fecha', array($request->fecha1,$request->fecha2))
+      ->orderBy('desv', 'desc')
       ->paginate(2000);
   
 
 
-      return view('admin.PorcentajeDesviacion',compact('porcentaje'));
+      return view('admin.PorcentajeDesviacion',compact('porcentaje','fecha1','fecha2'));
     }
 
 
