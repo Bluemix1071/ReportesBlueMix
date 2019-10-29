@@ -16,10 +16,10 @@ class ExportsController extends Controller
 
   //------------------------EXCEL-------------------------------//
     
- public function exportExcelproductosnegativos(){
+ public function exportExcelproductosnegativos(Request $request){
 
 
-    return Excel::download(new AdminExport, 'productos negativos.xlsx');
+    return Excel::download(new AdminExport($request->search), 'productos negativos.xlsx');
   
   
    }

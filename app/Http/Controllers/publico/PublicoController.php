@@ -23,37 +23,35 @@ class PublicoController extends Controller
 
     public function filtarProductosNegativos(Request  $request)
     {
-     // dd($request->searchText);
-
-      if ($request->ajax()) {
-      //  dd($request->searchText);
        if ($request->searchText==null) {
         //Session::flash('error','No tiene los permisos para entrar a esta pagina');
        // return redirect('/publicos.productosNegativos')->with('mensaje','No tiene los permisos para entrar a esta pagina');}
        $productos=DB::table('productos_negativos')->paginate(10);
-       return response()->json(view('partials.productosNegativos',compact('productos'))->render());
+       return view('publicos.productosNegativos',compact('productos'));
        }else{
+        $buscador=$request->searchText;
+    // dd($buscador);
         $productos=DB::table('productos_negativos')
         ->where('codigo','LIKE','%'.$request->searchText.'%')
         ->orwhere('nombre','LIKE','%'.$request->searchText.'%')
         ->orwhere('ubicacion','LIKE','%'.$request->searchText.'%')
         ->orwhere('bodega_stock','LIKE','%'.$request->searchText.'%')
         ->orwhere('sala_stock','LIKE','%'.$request->searchText.'%')
-        ->paginate(1);
+        ->paginate(2000);
        }
-        return response()->json(view('partials.productosNegativos',compact('productos'))->render());
+        return view('publicos.productosNegativos',compact('productos','buscador'));
         /*
         return response()->json([
           'productos'=> $productos
         ]);
 */
-      }
+      
     }
 
 
-    public function listarFiltrados($text)
+    public function listarFiltrados(Request  $request)
     {
-      dd($text);
+      dd($request->all());
 
       if ($request->ajax()) {
       //  dd($request->searchText);
@@ -64,7 +62,7 @@ class PublicoController extends Controller
         ->orwhere('ubicacion','LIKE','%'.$request->searchText.'%')
         ->orwhere('bodega_stock','LIKE','%'.$request->searchText.'%')
         ->orwhere('sala_stock','LIKE','%'.$request->searchText.'%')
-        ->paginate(1);
+        ->paginate(4);
        
         return response()->json(view('partials.productosNegativos',compact('productos'))->render());
 

@@ -1,13 +1,14 @@
 $(document).ready(function(){
 
-
+/*
 $('#form').on('submit',function(e){
 e.preventDefault();
 
-var data =$(this).serialize();
+var data =$(this).serialize();*/
 var text = document.getElementById('xd').value;
 var excel= document.getElementById('valorBuscar').value = text;
- 
+console.log(excel);
+ /*
 var form = $(this);
 var url = form.attr('action');
 
@@ -29,9 +30,9 @@ $.post(url,data,function(result){
 });
 
 });
+*/
 
-
-
+/*
 });
 
 $(document).on('click','.pagination a',function(e){
@@ -54,7 +55,7 @@ $.ajax({
 
 }else{
 var page = $(this).attr('href').split('page=')[1];
-var route= "ProductosNegativos2"+"/"+text
+var route= "ProductosNegativos2"
 $.ajax({
     url:route,
     data: {page: page},
@@ -66,7 +67,7 @@ $.ajax({
 });
 
 }
-
+*/
 
 });
 

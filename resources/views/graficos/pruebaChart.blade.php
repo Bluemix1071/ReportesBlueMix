@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Graficos
+Ingresos por año
 @endsection
 @section('styles')
 <link rel="stylesheet" href="{{asset("assets/$theme/C3/css/c3.css")}}">
@@ -12,7 +12,7 @@ Graficos
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Graficos</h3>
+        <h3 class="display-3">Ingresos por año</h3>
         <div class="row">
           <div class="col-md-10">
             {!! $C3->container() !!}

@@ -16,14 +16,15 @@ Porcentaje Desviacion
     <div class="row">
         <div class="col-md-12">
 
-            <form class="form-inline">
+        <form action="{{route('filtrarDesv')}}" method="post" class="form-inline">
+          @csrf
                 <div class="form-group mb-2">
                   <label for="staticEmail2" class="sr-only">Email</label>
-                  <input type="text"  class="form-control" value="">
+                  <input type="date"  class="form-control" name="fecha1" value="">
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
                   <label for="inputPassword2" class="sr-only">Password</label>
-                  <input type="text" class="form-control">
+                  <input type="date" name="fecha2" class="form-control">
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="inputPassword2" class="sr-only">Password</label>
@@ -33,7 +34,7 @@ Porcentaje Desviacion
                       <label for="inputPassword2" class="sr-only">Password</label>
                       <input type="text" class="form-control"  >
                     </div>
-                <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+                <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
               </form>
               <hr>
         </div>

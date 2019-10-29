@@ -28,7 +28,14 @@
               <form action="{{route('filtrar')}}" role="search" method="POST" id="form">
                   @csrf
                           <div class="input-group">
-                              <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar...">
+                            @if (empty($buscador))
+                            <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar..." >
+                            @else
+                              <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar..." value="{{$buscador}}">
+                            
+                            @endif
+                           
+                             
                               <span class="input-group-btn">
                                  {{-- <button id="boton" type="submit" class="btn btn-primary">Buscar </button> --}}
                               </span>
@@ -84,6 +91,29 @@
 @endsection
 
 @section('script')
+
+{{-- <script>
+  $(document).ready( function () {
+     $('#productos').DataTable({
+ 
+       "language":{
+         "info": "_TOTAL_ registros",
+         "paginate":{
+           "next": "Siguiente",
+           "previous": "Anterior",
+         
+       },
+       "loadingRecords": "cargando",
+       "processing": "procesando",
+       "emptyTable": "no hay resultados",
+       "zeroRecords": "no hay coincidencias",
+       "infoEmpty": "",
+       "infoFiltered": ""
+       }
+ 
+     });
+ });
+ </script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>

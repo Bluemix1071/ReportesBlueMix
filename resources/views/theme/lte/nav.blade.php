@@ -155,12 +155,6 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{route('cuadroMando')}}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Cuadro De Mando</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
                     <a href="{{route('ProductosPorMarca')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Producto Por Marca</p>
@@ -176,7 +170,7 @@
                    <li class="nav-item">
                    <a href="{{route('chart')}}" class="nav-link">
                       <i class="nav-icon fas fa-chart-pie"></i>
-                      <p>Graficos
+                      <p>Ingresos por año
                       </p>
                     </a>
                   </li>
