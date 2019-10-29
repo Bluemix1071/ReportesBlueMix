@@ -10,6 +10,12 @@ class PublicoController extends Controller
 {
 
 
+  public function informacion(){
+
+    return view ('publicos.informacion');
+  }
+
+
   public function  index(Request $request){
     $productos=DB::table('productos_negativos')->paginate(10);
     if ($request->ajax()) {
@@ -67,6 +73,8 @@ class PublicoController extends Controller
         return response()->json(view('partials.productosNegativos',compact('productos'))->render());
 
       }
+
+      
         /*
         return response()->json([
           'productos'=> $productos

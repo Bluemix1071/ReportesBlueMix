@@ -8,7 +8,7 @@
         <a href="{{route('Publico')}}" class="nav-link">Menu Principal</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contacto</a>
+        <a href="{{route('informacion')}}" class="nav-link">Informacion</a>
       </li>
       
     </ul>

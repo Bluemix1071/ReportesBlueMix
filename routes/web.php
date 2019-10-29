@@ -20,6 +20,8 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::get('/ProductosNegativos','publico\PublicoController@index')->name('ProductosNegativos');
     Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
     Route::get('/ProductosNegativos2','publico\PublicoController@listarFiltrados')->name('filtro2');
+    Route::get('/Informacion','publico\PublicoController@informacion')->name('informacion');
+
 //------------------------EXPORTACIONES----------------------------------//
 Route::post('/excel','Admin\exports\ExportsController@exportExcelproductosnegativos')->name('excel');
 
