@@ -19,7 +19,7 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::get('/','InicioController@index')->name('Publico');
     Route::get('/ProductosNegativos','publico\PublicoController@index')->name('ProductosNegativos');
     Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
-    Route::get('/ProductosNegativos/{texto}','publico\PublicoController@listarFiltrados')->name('filtro2');
+    Route::get('/ProductosNegativos2','publico\PublicoController@listarFiltrados')->name('filtro2');
 //------------------------EXPORTACIONES----------------------------------//
 Route::post('/excel','Admin\exports\ExportsController@exportExcelproductosnegativos')->name('excel');
 
@@ -45,7 +45,16 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
     Route::get('/Ordenesdecompra','AdminController@ordenesdecompra')->name('ordenesdecompra');
-    Route::get('/Desviacion','AdminController@porcentajeDesviacion')->name('desviacion');
+    Route::get('/Desviacion','AdminController@porcentajeDesviacion')->name('porcentaje');
+
+    //------------------------------FILTROS Y OTRAS COSAS XD----------------------------------------------//
+    Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');
+
+
+
+
+
+
 
     //---------------------Exportaciones----------------------//
   
@@ -55,7 +64,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 
 
-    Route::get('/Desviacion/{codigo}','AdminController@exportpdf')->name('ExcelDesviacion');
+   
 
 
 
