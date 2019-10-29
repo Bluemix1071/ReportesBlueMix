@@ -24,7 +24,7 @@ class DesviacionExports implements FromView
 
     public function view(): View
     {
-        if (empty($fecha1) || empty($fecha2)) {
+        if ($this->fecha1==null || $this->fecha2==null) {
             return view('exports.desviacion', [
                 'desviacion' => DB::table('porcentaje_desviacion')
                 ->orderBy('desv', 'desc')
