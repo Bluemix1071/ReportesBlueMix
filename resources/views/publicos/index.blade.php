@@ -13,7 +13,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>999</h3>
+              <h3>100</h3>
 
               <p>Compras en el dia</p>
             </div>
@@ -30,7 +30,7 @@ Espacio Publico Bluemix
             <div class="inner">
               <h3>100<sup style="font-size: 20px">%</sup></h3>
 
-              <p>algun porcentaje XD</p>
+              <p>Pronto Disponible</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
