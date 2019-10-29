@@ -23,10 +23,10 @@ class AdminController extends Controller
      */
     public function index()
     {
-      $accesos=DB::table('accesos')->select('username','uscl01',)->get();
+    
 
 
-    return view('admin.index',compact('accesos'));
+    return view('/publicos',);
     }
 
     public function registrar()
