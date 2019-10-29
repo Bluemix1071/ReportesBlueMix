@@ -1,28 +1,35 @@
 
-
+.caja{
+    position: relative;
+    width: 700px;
+    height: 250px;
+    
+}
 .numeroorden{
+    position: absolute;
     top:0 px;
     left:550 px;
 }
 
 .fecha{
-    position: static;
+    position: absolute;
+    font: 90%;
     top:30 px;
     left:555 px;
 
 }
 
 .rut{
-    position: static;
+    position: absolute;
     top:50 px;
     left:500 px;
 
 }
 
 .bluemix{
-
-    position: static;
-    top:20 px;
+    position: absolute;
+    font: 70%;
+    top:45 px;
     left:23 px;
 
 }
@@ -33,38 +40,40 @@
 }
 
 .sr{
-    position: static;
+    position: absolute;
     top:50 px;
     left:100 px;
 }
 
 .atte{
-    position: static;
+    position: absolute;
     top:70 px;
     left:100 px;
 }
 
-.linea{
-    position: static;
-    top:135 px;
-    left:0 px;
-
+.lineas{
+    position: relative;
+    width: 400px;
+    height: 50px;
 }
+
 .linea2{
-    position: static;
-    top:155 px;
-    left:0 px;
+    position: absolute;
+    top: 50;
+    right: 0;
+    left: 0;
+    bottom: 0;
 
 }
 
 .solicitud{
-    position: static;
-    top:105 px;
+    position: absolute;
+    top:135 px;
     left:0 px;
 }
 
 .titulo{
-    position: static;
+    position: absolute;
     top:-20 px;
     left:250 px;
 }
@@ -80,14 +89,14 @@ td{
 }
 
 th{
+
     font-size: 10;
 }
 
 .caja{
     position: relative;
     width: 700px;
-    height: 200px;
-    background:#ffffff;
+    height: 250px;
     
 }
 .linea3{
@@ -100,6 +109,7 @@ th{
 
 .condiciones{
     position: absolute;
+    font: 90%;
     top: 10;
     right: 0;
     left: 0;
@@ -108,6 +118,7 @@ th{
 
 .flete{
     position: absolute;
+    font: 90%;
     top: 25;
     right: 0;
     left: 0;
@@ -116,6 +127,7 @@ th{
 
 .transporte{
     position: absolute;
+    font: 90%;
     top: 40;
     right: 0;
     left: 0;
@@ -123,6 +135,7 @@ th{
 }
 .comentario{
     position: absolute;
+    font: 90%;
     top: 55;
     right: 0;
     left: 0;
@@ -221,6 +234,7 @@ th{
 
 .soli{
     position: absolute;
+    font: 90%;
     top: 150;
     right: 0;
     left: 160;
