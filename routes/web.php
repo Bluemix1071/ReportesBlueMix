@@ -21,11 +21,14 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
     Route::get('/ProductosNegativos2','publico\PublicoController@listarFiltrados')->name('filtro2');
     Route::get('/Informacion','publico\PublicoController@informacion')->name('informacion');
+    Route::get('/Cambiodeprecios','publico\PublicoController@cambiodeprecios')->name('cambiodeprecios');
+    Route::post('/cambioprecio','publico\PublicoController@filtrarcambioprecios')->name('filtrarcambioprecios');
 
 //------------------------EXPORTACIONES----------------------------------//
 
 
 Route::post('/excel','Admin\exports\ExportsController@exportExcelproductosnegativos')->name('excelProductosNegativos');
+Route::post('/Excelcambioprecio','Admin\exports\ExportsController@exportexcelcambioprecios')->name('excelcambioprecios');
 
 
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use App\Exports\AdminExport;
 use App\Exports\ProductospormarcaExport;
 use App\Exports\DesviacionExports;
+use App\Exports\CambiodepreciosExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -40,6 +41,15 @@ class ExportsController extends Controller
   
   
    }
+
+
+   public function exportexcelcambioprecios(Request $request){
+  
+    //dd($request->all());
+      return Excel::download(new CambiodepreciosExport($request->fecha1,$request->fecha2), 'cambio de precios.xlsx');
+    
+    
+     }
 
 
 
