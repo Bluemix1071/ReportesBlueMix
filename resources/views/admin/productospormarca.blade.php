@@ -35,11 +35,21 @@
           </div>
           </div>
           <div class="col-md-2">
-            <form action="{{route('excelproductopormarca')}}" method="post">
-              @csrf
-              <input id="valorBuscarmarca" type="hidden" name="search">
-              <button type="submit" class="btn btn-success" id="excel" >Excel</button>
-            </form>
+            <div class="row">
+              <div class="col-md-6">
+                  <form action="{{route('excelproductopormarca')}}" method="post">
+                      @csrf
+                      <input id="valorBuscarmarca" type="hidden" name="search">
+                      <button type="submit" class="btn btn-success" id="excel"  >Excel</button>
+                    </form>
+              </div>
+              <div class="col-md-6">
+                  <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-primary btm-sm mb-2">Info.</a>
+              </div>
+            </div>
+          
+            
+           
           </div>
         </div>
         <div class="row">
@@ -77,10 +87,24 @@
           </div>
         </div>
        
-       
-    
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Productos Por Marca</h4>
+      </div>
+      <div class="modal-body">
+         <div class="card-body">Información de la Consulta</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+     </div>
+    </div>
+  </div>
+</div>
+ <!-- FIN Modal -->
 @endsection
 
 @section('script')
