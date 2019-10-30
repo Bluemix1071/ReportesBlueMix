@@ -47,7 +47,7 @@ class AdminController extends Controller
     public function ProductosPorMarca(Request $request)
     {
       
-      $productos=DB::table('Productos_x_Marca')->get();
+      $productos=DB::table('Productos_x_Marca')->paginate(10);
      
       return view('admin.productospormarca',compact('productos'));
     }

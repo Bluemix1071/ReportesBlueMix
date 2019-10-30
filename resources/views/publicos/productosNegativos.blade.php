@@ -21,27 +21,41 @@
         </div>
 
       </div>
+
+      <div class="row">
+        <div class="col-md-10">
+          <div class="form-group">
+            <form action="{{route('filtrar')}}" role="search" method="POST" id="form">
+                @csrf
+                        <div class="input-group">
+                          @if (empty($buscador))
+                          <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar..." >
+                          @else
+                            <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar..." value="{{$buscador}}">
+                          
+                          @endif
+                         
+                           
+                            <span class="input-group-btn">
+                               {{-- <button id="boton" type="submit" class="btn btn-primary">Buscar </button> --}}
+                            </span>
+                        </div>
+                     </form>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <form action="{{route('excelProductosNegativos')}}" method="post">
+            @csrf
+            <input id="valorBuscar" type="hidden" name="search">
+            <button type="submit" class="btn btn-success" id="excel" >Excel</button>
+          </form>
+        </div>
+        
+      </div>
         <div class="row">
           <div class="col-md-12">
 
-            <div class="form-group">
-              <form action="{{route('filtrar')}}" role="search" method="POST" id="form">
-                  @csrf
-                          <div class="input-group">
-                            @if (empty($buscador))
-                            <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar..." >
-                            @else
-                              <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar..." value="{{$buscador}}">
-                            
-                            @endif
-                           
-                             
-                              <span class="input-group-btn">
-                                 {{-- <button id="boton" type="submit" class="btn btn-primary">Buscar </button> --}}
-                              </span>
-                          </div>
-                       </form>
-                   </div>
+            
             
                    <div class="productosNegativos">
                               <table id="productos" class="table table-bordered table-hover dataTable">
@@ -71,19 +85,7 @@
 
           </div> 
         </div>
-        <div class="row">
-          <div class="col-md-6">
-              <form action="{{route('excelProductosNegativos')}}" method="post">
-                  @csrf
-                  <input id="valorBuscar" type="hidden" name="search">
-                  <button type="submit" class="btn btn-success" id="excel" >Excel</button>
-                </form>
-          </div>
-          <div class="col-md-6">
-             
-          </div>
-
-        </div>
+       
        
     
 </div>
