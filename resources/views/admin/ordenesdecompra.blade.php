@@ -64,7 +64,7 @@
         <h4 class="modal-title" id="myModalLabel">Orden de Compra</h4>
       </div>
       <div class="modal-body">
-         <div class="card-body">Seleccione el código con la cual desea imprimir la orden de compra.</div>
+         <div class="card-body">Seleccione el Código Con La Cual Desea Imprimir La Orden de Compra.</div>
       </div>
       <div class="modal-footer">
         <a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a>
