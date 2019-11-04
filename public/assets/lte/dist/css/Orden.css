@@ -1,0 +1,252 @@
+
+.caja{
+    position: relative;
+    width: 700px;
+    height: 250px;
+    
+}
+.numeroorden{
+    position: absolute;
+    top:0 px;
+    left:550 px;
+}
+
+.fecha{
+    position: absolute;
+    font: 90%;
+    top:30 px;
+    left:555 px;
+
+}
+
+.rut{
+    position: absolute;
+    top:50 px;
+    left:500 px;
+
+}
+
+.bluemix{
+    position: absolute;
+    font: 70%;
+    top:45 px;
+    left:23 px;
+
+}
+
+.logo{
+    width: 100px;
+    height: 50px;
+}
+
+.sr{
+    position: absolute;
+    top:50 px;
+    left:100 px;
+}
+
+.atte{
+    position: absolute;
+    top:70 px;
+    left:100 px;
+}
+
+.lineas{
+    position: relative;
+    width: 400px;
+    height: 50px;
+}
+
+.linea2{
+    position: absolute;
+    top: 50;
+    right: 0;
+    left: 0;
+    bottom: 0;
+
+}
+
+.solicitud{
+    position: absolute;
+    top:135 px;
+    left:0 px;
+}
+
+.titulo{
+    position: absolute;
+    top:-20 px;
+    left:250 px;
+}
+
+.tabla{
+    position: static;
+    top:100 px;
+    left:0 px;
+}
+
+td{
+    font-size: 10;
+}
+
+th{
+
+    font-size: 10;
+}
+
+.caja{
+    position: relative;
+    width: 700px;
+    height: 250px;
+    
+}
+.linea3{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.condiciones{
+    position: absolute;
+    font: 90%;
+    top: 10;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.flete{
+    position: absolute;
+    font: 90%;
+    top: 25;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.transporte{
+    position: absolute;
+    font: 90%;
+    top: 40;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+.comentario{
+    position: absolute;
+    font: 90%;
+    top: 55;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.neto{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 430;
+    bottom: 0;
+}
+
+.iva{
+    position: absolute;
+    top: 15;
+    right: 0;
+    left: 430;
+    bottom: 0;
+}
+
+.total{
+    position: absolute;
+    top: 30;
+    right: 0;
+    left: 430;
+    bottom: 0;
+}
+
+.facturar{
+    position: absolute;
+    top: 65;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.soc{
+    position: absolute;
+    top: 75;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.n{
+    position: absolute;
+    top: 85;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.giro{
+    position: absolute;
+    top: 95;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+
+.ru{
+    position: absolute;
+    top: 75;
+    right: 0;
+    left: 150;
+    bottom: 0;
+}
+
+.fono{
+    position: absolute;
+    top: 85;
+    right: 0;
+    left: 150;
+    bottom: 0;
+}
+
+.nombre{
+    position: absolute;
+    top: 85;
+    right: 0;
+    left: 295;
+    bottom: 0;
+}
+
+.pp{
+    position: absolute;
+    top: 103;
+    right: 0;
+    left: 280;
+    bottom: 0;
+}
+
+
+.soli{
+    position: absolute;
+    font: 90%;
+    top: 150;
+    right: 0;
+    left: 160;
+    bottom: 0;
+}
+
+
+.firma{
+    position: absolute;
+    top: 90;
+    right: 0;
+    left: 268;
+    bottom: 0;
+}
+

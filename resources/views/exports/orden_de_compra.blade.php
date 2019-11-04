@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="../Orden.css">
+  <link rel="stylesheet" href="../public/assets/lte/dist/css/Orden.css">
   <title>OrdendecompraPDF</title>
 </head>
 <body>
   <div class="caja1">     
-    <img class="logo" src="../logo.png">
+    <img class="logo" src="../public/assets/lte/dist/img/logo.png">
     <div class="bluemix">BlueMix</div>
   <h3 class="titulo">Orden de Compra BlueMix</h3>
   <h5 class="rut">Rut: {{$productos[0]->RutProveedor}}</h5>

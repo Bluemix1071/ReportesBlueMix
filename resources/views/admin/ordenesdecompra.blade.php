@@ -23,7 +23,8 @@
                       <th scope="col">Fecha</th>
                       <th scope="col">Total</th>
                       <th scope="col">Estado</th>
-                      <th scope="col">Imprimir</th>
+                      <th scope="col">cod.Int</th>
+                      <th scope="col">cod.Prov</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -40,21 +41,16 @@
                         @else
                         <td><font color="red">Nula</font></td>
                         @endif
-                        <td></div>
-                          <div class="col-md-6">
-                              <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-primary btm-sm mb-2">Imprimir</a>
-                          </div>
+                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a></td></div>
+                          
+                          <td><a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Proveedor</a></td>
                         </div></td>
-
                       </tr>
                       @endforeach
                     </tbody>
                 </table>
-
           </div>
-        </div>
-       
-    
+        </div>  
 </div>
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
