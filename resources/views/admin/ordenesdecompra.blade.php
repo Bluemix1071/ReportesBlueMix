@@ -84,6 +84,7 @@
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
 
 
+
 <script>
   $(document).ready( function () {
     $('#productos').DataTable();
