@@ -23,7 +23,7 @@
                       <th scope="col">Fecha</th>
                       <th scope="col">Total</th>
                       <th scope="col">Estado</th>
-                      <th scope="col">Ación</th>
+                      <th scope="col">Imprimir</th>
                     </tr>
                   </thead>
                   <tbody>
