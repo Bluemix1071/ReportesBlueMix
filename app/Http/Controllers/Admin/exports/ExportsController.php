@@ -70,4 +70,25 @@ public function exportpdf($numero_de_orden_de_compra){
 
   return $pdf->stream('Orden De Compra.pdf');
 }
+
+
+public function exportpdfprov($numero_de_orden_de_compra){
+
+  $productos = DB::table('ordenesdecompra')
+  ->where('numero_de_orden_de_compra','=',$numero_de_orden_de_compra)
+  ->get();
+  
+  $ordendecompradetalle = DB::table('ordenesdecomprapdf')
+  ->where('NroOC','=',$numero_de_orden_de_compra)
+  ->get();
+
+  $pdf =PDF::loadView('exports.orden_de_compraprov', compact('productos','ordendecompradetalle'));
+
+  return $pdf->stream('Orden De Compraprov.pdf');
+}
+
+
+
+
+
 }

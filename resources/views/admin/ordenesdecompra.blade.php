@@ -40,7 +40,12 @@
                         @else
                         <td><font color="red">Nula</font></td>
                         @endif
-                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Imprimir</a></td>
+                        <td></div>
+                          <div class="col-md-6">
+                              <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-primary btm-sm mb-2">Imprimir</a>
+                          </div>
+                        </div></td>
+
                       </tr>
                       @endforeach
                     </tbody>
@@ -51,6 +56,24 @@
        
     
 </div>
+<!-- Modal -->
+<div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Orden de Compra</h4>
+      </div>
+      <div class="modal-body">
+         <div class="card-body">Seleccione el código con la cual desea imprimir la orden de compra.</div>
+      </div>
+      <div class="modal-footer">
+        <a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a>
+        <a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Proveedor</a>
+     </div>
+    </div>
+  </div>
+</div>
+ <!-- FIN Modal -->
 
 @endsection
 
