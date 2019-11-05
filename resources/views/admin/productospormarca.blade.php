@@ -60,25 +60,35 @@
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
                     <tr>
-                      <th scope="col">Nombre Del Producto</th>
-                      <th scope="col">Codigo</th>
-                      <th scope="col">Marca</th>
-                      <th scope="col">Stock Bodega</th>
-                      <th scope="col">Stock Sala</th>
-                      <th scope="col">Precio Costo Neto</th>
-                      <th scope="col">Total Costo</th>
+                        <th scope="col" colspan="3" style="color:#F4F6F9"></th>
+                        
+                        <th scope="col" colspan="3" style="text-align:center">Stock</th>
+                        <th  style="color:#F4F6F9" colspan="2" ></th>
+                       
+                    </tr>
+                    <tr>
+                      <th scope="col" >Nombre Del Producto</th>
+                      <th scope="col" style="text-align:center">Codigo</th>
+                      <th scope="col" style="text-align:center">Marca</th>
+                      <th scope="col" style="text-align:center"> Bodega</th>
+                      <th scope="col" style="text-align:center"> Sala</th>
+                      <th scope="col" style="text-align:center">Total</th>
+                      <th scope="col" style="text-align:center">Precio Costo Neto</th>
+                      <th scope="col" style="text-align:center">Total Costo</th>
                     </tr>
                   </thead>
+              
                   <tbody>
                     @foreach($productos as $item)
                       <tr>
                         <th >{{$item->nombre_del_producto}}</th>
-                        <td>{{$item->codigo_producto}}</td>
-                        <td>{{$item->MARCA_DEL_PRODUCTO}}</td>
-                        <td>{{$item->cantidad_en_bodega}}</td>
-                        <td>{{$item->cantidad_en_sala}}</td>
-                        <td>{{$item->precio_costo_neto}}</td>
-                        <td>{{$item->total_costo}}</td>
+                        <td style="text-align:center">{{$item->codigo_producto}}</td>
+                        <td style="text-align:center">{{$item->MARCA_DEL_PRODUCTO}}</td>
+                        <td style="text-align:center">{{$item->cantidad_en_bodega}}</td>
+                        <td style="text-align:center">{{$item->cantidad_en_sala}}</td>
+                        <td style="text-align:center">{{$item->cantidad_en_bodega+$item->cantidad_en_sala}}</td>
+                        <td style="text-align:center">{{number_format($item->precio_costo_neto,0,',','.')}}</td>
+                        <td style="text-align:center">{{number_format($item->total_costo,0,',','.')}}</td>
                       </tr>
                       @endforeach
                     </tbody>             
