@@ -86,7 +86,7 @@
                         <td style="text-align:center">{{$item->MARCA_DEL_PRODUCTO}}</td>
                         <td style="text-align:center">{{$item->cantidad_en_bodega}}</td>
                         <td style="text-align:center">{{$item->cantidad_en_sala}}</td>
-                        <td style="text-align:center">{{$item->cantidad_en_bodega+$item->cantidad_en_sala}}</td>
+                        <td style="text-align:center">{{$item->total}}</td>
                         <td style="text-align:center">{{number_format($item->precio_costo_neto,0,',','.')}}</td>
                         <td style="text-align:center">{{number_format($item->total_costo,0,',','.')}}</td>
                       </tr>
