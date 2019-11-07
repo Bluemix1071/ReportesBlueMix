@@ -4,7 +4,7 @@
 @endsection
 @section('styles')
 
-<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
+{{-- <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}"> --}}
 
 @endsection
 
@@ -21,42 +21,8 @@
         </div>
 
       </div>
-
-      <div class="row">
-        <div class="col-md-10">
-          <div class="form-group">
-            <form action="{{route('filtrar')}}" role="search" method="POST" id="form">
-                @csrf
-                        <div class="input-group">
-                          @if (empty($buscador))
-                          <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar..." >
-                          @else
-                            <input id="xd" type="text" name="searchText" class="form-control" placeholder="Buscar..." value="{{$buscador}}">
-                          
-                          @endif
-                         
-                           
-                            <span class="input-group-btn">
-                               {{-- <button id="boton" type="submit" class="btn btn-primary">Buscar </button> --}}
-                            </span>
-                        </div>
-                     </form>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <form action="{{route('excelProductosNegativos')}}" method="post">
-            @csrf
-            <input id="valorBuscar" type="hidden" name="search">
-            <button type="submit" class="btn btn-success" id="excel" >Excel</button>
-          </form>
-        </div>
-        
-      </div>
         <div class="row">
           <div class="col-md-12">
-
-            
-            
                    <div class="productosNegativos">
                               <table id="productos" class="table table-bordered table-hover dataTable">
                                   <thead>
@@ -80,19 +46,47 @@
                                     @endforeach
                                   </tbody>
                                 </table>
-                                {{$productos->links()}}
-                              </div>
-
+                      </div>
           </div> 
-        </div>
-       
-       
-    
+        </div>  
 </div>
-
 @endsection
-
 @section('script')
+<script>
+  $(document).ready(function() {
+    $('#productos').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "language":{
+      "info": "_TOTAL_ registros",
+      "paginate":{
+        "next": "Siguiente",
+        "previous": "Anterior",
+      
+    },
+    "loadingRecords": "cargando",
+    "processing": "procesando",
+    "emptyTable": "no hay resultados",
+    "zeroRecords": "no hay coincidencias",
+    "infoEmpty": "",
+    "infoFiltered": ""
+    }
+    });
+  } );
+  </script>
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
+<script src="{{asset("js/jquery-3.3.1.js")}}"></script>
+<script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
+<script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
+<script src="{{asset("js/buttons.flash.min.js")}}"></script>
+<script src="{{asset("js/jszip.min.js")}}"></script>
+<script src="{{asset("js/pdfmake.min.js")}}"></script>
+<script src="{{asset("js/vfs_fonts.js")}}"></script>
+<script src="{{asset("js/buttons.html5.min.js")}}"></script>
+<script src="{{asset("js/buttons.print.min.js")}}"></script>
 
 {{-- <script>
   $(document).ready( function () {
@@ -116,10 +110,10 @@
      });
  });
  </script> --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
-<script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
+<script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script> --}}
 
 
 
