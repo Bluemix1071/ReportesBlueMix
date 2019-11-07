@@ -14,7 +14,7 @@ Cambio De Precios
 <div class="container-fluid">
     <h3 class="display-3">Lista Cambio De Precios</h3>
     <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-12">
 
         <form action="{{route('filtrarcambioprecios')}}" method="post"  id="desvForm" class="form-inline">
           @csrf
@@ -45,21 +45,13 @@ Cambio De Precios
               </form>
               <hr>
         </div>
-    <div class="col-md-2 ml-auto">
-    <form action="{{route('excelcambioprecios')}}" method="post">
-        @csrf
-        <input type="hidden" id="fecha1Envio" name="fecha1" class="form-control">
-        <input type="hidden" id="fecha2Envio" name="fecha2" class="form-control">
-       <button type="submit" class="btn btn-success">Excel</button>
-        </form>
-      </div>
     
       </div>
    
       <div class="row">
       
       <div class="col-md-12">
-          <table id="desv" class="table table-bordered table-hover dataTable">
+          <table id="cambioPrec" class="table table-bordered table-hover dataTable">
               <thead>
                 <tr>
                   <th scope="col">Fecha</th>
@@ -70,21 +62,26 @@ Cambio De Precios
                   <th scope="col">Detalle</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody> 
+                @if (empty($porcentaje))
+                    
+                @else
                 @foreach($porcentaje as $item)
-                  <tr>
-                    <td>{{$item->FechaCambioPrecio}}</td>
-                    <th >{{$item->codigo}}</th>
-                    <td>{{$item->descripcion}}</td>
-                    <td>{{$item->marca}}</td>
-                    <td>{{$item->mayor}}</td>
-                    <td>{{$item->detalle}}</td>
-
-                  </tr>
-                @endforeach
+                <tr>
+                  <td>{{$item->FechaCambioPrecio}}</td>
+                  <th >{{$item->codigo}}</th>
+                  <td>{{$item->descripcion}}</td>
+                  <td>{{$item->marca}}</td>
+                  <td>{{$item->mayor}}</td>
+                  <td>{{$item->detalle}}</td>
+                </tr>
+              @endforeach
+                    
+                @endif
+          
             </tbody>
         </table>
-        {{$porcentaje->links()}}
+        {{-- {{$porcentaje->links()}} --}}
       </div>
 
     </div>
@@ -96,10 +93,44 @@ Cambio De Precios
 
 @endsection
 @section('script')
+<script>
+    $(document).ready(function() {
+      $('#cambioPrec').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+          ],
+          "language":{
+        "info": "_TOTAL_ registros",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+        
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
+      }
+      });
+    } );
+    </script>
+  <link href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" rel="stylesheet"/>
+  <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"/>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 
-
-<script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
-<script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
+{{-- <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
+<script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script> --}}
 
 {{-- 
 <script>

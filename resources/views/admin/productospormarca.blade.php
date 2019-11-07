@@ -85,7 +85,23 @@
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+            
+        ],
+          "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+        
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
+      }
     } );
   } );
   </script>

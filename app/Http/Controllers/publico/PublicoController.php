@@ -77,27 +77,5 @@ class PublicoController extends Controller
     }
 
 
-    public function cambiodeprecios (){
-      
-
-      $porcentaje=DB::table('cambio_de_precios')
-      ->paginate(10);
-
-      return view('publicos.cambiodeprecios',compact('porcentaje'));
-    }
-
-
-    public function filtrarcambioprecios (Request $request){
-
-      $fecha1=$request->fecha1;
-      $fecha2=$request->fecha2;
-      $porcentaje=DB::table('cambio_de_precios')
-      ->whereBetween('FechaCambioPrecio', array($request->fecha1,$request->fecha2))
-      ->paginate(2000);
-  
-
-
-      return view('publicos.cambiodeprecios',compact('porcentaje','fecha1','fecha2'));
-    }
 
 }

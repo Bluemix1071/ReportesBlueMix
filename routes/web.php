@@ -9,6 +9,11 @@ Route::get('/logout','seguridad\LoginController@logout')->name('logout');
 Route::get('/graficos', 'ChartControllers\PulseChartController@index')->name('chart');
 Route::post('/graficos', 'ChartControllers\PulseChartController@cargarC3')->name('cargarChart');
 
+Route::get('/sala/Cambiodeprecios','sala\SalaController@index')->name('cambiodeprecios');
+Route::post('/sala/Cambiodeprecios','sala\SalaController@filtrarcambioprecios')->name('filtrarcambioprecios');
+
+
+
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
@@ -21,17 +26,13 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
     Route::get('/ProductosNegativos2','publico\PublicoController@listarFiltrados')->name('filtro2');
     Route::get('/Informacion','publico\PublicoController@informacion')->name('informacion');
-    Route::get('/Cambiodeprecios','publico\PublicoController@cambiodeprecios')->name('cambiodeprecios');
-    Route::post('/cambioprecio','publico\PublicoController@filtrarcambioprecios')->name('filtrarcambioprecios');
+  
 
 //------------------------EXPORTACIONES----------------------------------//
 
 
 Route::post('/excel','Admin\exports\ExportsController@exportExcelproductosnegativos')->name('excelProductosNegativos');
 Route::post('/Excelcambioprecio','Admin\exports\ExportsController@exportexcelcambioprecios')->name('excelcambioprecios');
-
-
-
 });
 
 //rutas de registro
