@@ -14,14 +14,16 @@
     <div class="container-fluid">
         <h3 class="display-3">Ordenes de Compra</h3>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-8">
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
                     <tr>
                       <th scope="col">Nombre Del Proveedor</th>
                       <th scope="col">Nro De Orden</th>
                       <th scope="col">Fecha</th>
-                      <th scope="col">Total</th>
+                      <th scope="col">Neto</th>
+                      <th scope="col">IVA</th>
+                      <th scope="col">Total O/C</th>
                       <th scope="col">Estado</th>
                       <th scope="col">cod.Int</th>
                       <th scope="col">cod.Prov</th>
@@ -33,7 +35,9 @@
                           <td>{{$item->nombre_del_proveedor}}</td>
                         <th >{{$item->numero_de_orden_de_compra}}</th>
                         <td>{{$item->fecha}}</td>
-                        <td>{{$item->total}}</td>
+                        <td style="text-align:center">{{number_format($item->NetoOC,0,',','.')}}</td>
+                        <td style="text-align:center">{{number_format($item->IvaOC,0,',','.')}}</td>
+                        <td style="text-align:center">{{number_format($item->total,0,',','.')}}</td>
                         @if ($item->estado =='Autorizada')
                         <td><font color="Lime">Autorizada</font></td>
                         @elseif ($item->estado =='creada')
@@ -41,10 +45,16 @@
                         @else
                         <td><font color="red">Nula</font></td>
                         @endif
-                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a></td></div>
+                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a></td>
+          
+                      </div>
+          <div class="col-md-4">
+
+          </div>
+         
                           
-                          <td><a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Proveedor</a></td>
-                        </div></td>
+                <td><a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Proveedor</a></td>
+        </div>
                       </tr>
                       @endforeach
                     </tbody>

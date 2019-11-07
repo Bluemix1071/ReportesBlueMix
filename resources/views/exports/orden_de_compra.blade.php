@@ -41,9 +41,10 @@
           <td>{{$item->Descripcion}}</td>
           <td style="text-align:center;">{{$item->Marca}}</td>
           <td style="text-align:center;">{{$item->Unidad}}</td>
-          <td>{{$item->Precio}}</td>
+          <td>{{number_format($item->Precio,2,',','.')}}</td>
           <td style="text-align:center;">{{$item->cantidad}}</td>
-          <td>{{$item->Total}}</td>
+          <td>{{number_format($item->Total,0,',','.')}}</td>
+          
         </tr>
         @endforeach
       </tbody>
@@ -55,9 +56,10 @@
   <div class="transporte">Transporte:  {{$productos[0]->Transporte}}</div>
   <div class="comentario">Comentario:  {{$productos[0]->Glosa}}</div>
 
-  <h5 class="neto">Neto:  {{$productos[0]->NetoOC}}</h5>
-  <h5 class="iva">I.V.A.:  {{$productos[0]->IvaOC}}</h5>
-  <h5 class="total">Total: {{$productos[0]->TotalOC}}</h5>
+  <h5 class="neto">Neto:  {{number_format($productos[0]->NetoOC,0,',','.')}}</h5>
+  <h5 class="iva">I.V.A.:  {{number_format($productos[0]->IvaOC,0,',','.')}}</h5>
+  <h5 class="total">Total: {{number_format($productos[0]->IvaOC,0,',','.')}}</h5>
+
 
   <h5 class="facturar">Facturar a:</h5>
   <h5 class="soc">Soc. com. Blue Mix Ltda.</h5>
@@ -67,7 +69,7 @@
   <h5 class="ru">Rut: 77.283.950-2</h5>
   <h5 class="fono">Fono: 42-229496</h5>
 
-  <h5 class="nombre">Juan Escrig Fernandez</h5>
+  <h5 class="nombre">Fernando Escrig Miranda</h5>
   <h5 class="pp">pp. Soc. Com. Blue Mix Ltda.</h5>
 
 
