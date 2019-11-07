@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <h3 class="display-3">Ordenes de Compra</h3>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
                     <tr>
@@ -48,11 +48,7 @@
                         <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a></td>
           
                       </div>
-          <div class="col-md-4">
-
-          </div>
-         
-                          
+            
                 <td><a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Proveedor</a></td>
         </div>
                       </tr>
