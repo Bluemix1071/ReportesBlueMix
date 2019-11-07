@@ -14,45 +14,6 @@
     <div class="container-fluid">
         <h3 class="display-3">Productos Por Marca</h3>
         <div class="row">
-          <div class="col-md-10">
-            <div class="form-group">
-              <form action="{{route('filtrarpormarca')}}" role="search" method="POST" id="form">
-                  @csrf
-                          <div class="input-group">
-                            @if (empty($buscador))
-                            <input id="pormarca" type="text" name="searchText" class="form-control" placeholder="Buscar..." >
-                            @else
-                              <input id="pormarca" type="text" name="searchText" class="form-control" placeholder="Buscar..." value="{{$buscador}}">
-                            
-                            @endif
-                           
-                             
-                              <span class="input-group-btn">
-                                 {{-- <button id="boton" type="submit" class="btn btn-primary">Buscar </button> --}}
-                              </span>
-                          </div>
-                </form>
-          </div>
-          </div>
-          <div class="col-md-2">
-            <div class="row">
-              <div class="col-md-6">
-                  <form action="{{route('excelproductopormarca')}}" method="post">
-                      @csrf
-                      <input id="valorBuscarmarca" type="hidden" name="search">
-                      <button type="submit" class="btn btn-success" id="excel"  >Excel</button>
-                    </form>
-              </div>
-              <div class="col-md-6">
-                  <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-primary btm-sm mb-2">Info.</a>
-              </div>
-            </div>
-          
-            
-           
-          </div>
-        </div>
-        <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
               
