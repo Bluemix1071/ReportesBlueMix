@@ -15,6 +15,7 @@ class PublicoController extends Controller
     return view ('publicos.informacion');
   }
 
+  
 
   public function  index(Request $request){
     $productos=DB::table('productos_negativos')->paginate(10);
