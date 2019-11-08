@@ -16,7 +16,8 @@
         <div class="row">
             <div class="col-md-12">
                 @if (!empty($productos))
-                    
+               <a href="{{route('productos')}}" class="btn btn-primary">Volver a Buscar</a>
+               <hr>
                 @else
                     <form action="{{route('filtrarProductos')}}" method="post"  id="desvForm" class="form-inline">
                             @csrf
