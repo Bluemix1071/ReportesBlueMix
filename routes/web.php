@@ -24,7 +24,7 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
 
     Route::get('/','InicioController@index')->name('Publico');
     Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
-    Route::get('/ProductosNegativos','publico\PublicoController@index')->name('ProductosNegativos');
+    Route::get('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('ProductosNegativos');
     Route::get('/ProductosNegativos2','publico\PublicoController@listarFiltrados')->name('filtro2');
     Route::get('/Informacion','publico\PublicoController@informacion')->name('informacion');
   
