@@ -52,6 +52,14 @@ class AdminController extends Controller
       return view('admin.productospormarca',compact('productos'));
     }
 
+    public function comprassegunprov(Request $request)
+    {
+      
+      $comprasprove=DB::table('compras_por_año_segun_proveedor')->get();
+     
+      return view('admin.comprassegunproveedor',compact('comprasprove'));
+    }
+
     public function ordenesdecompra(Request $request)
     {
       

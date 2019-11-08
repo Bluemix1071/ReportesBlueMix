@@ -298,7 +298,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../UI/ribbons.html" class="nav-link">
+              <a href="{{route('comprassegunprov')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Consulta</p>
                 </a>
