@@ -29,28 +29,10 @@ class PublicoController extends Controller
 
     public function filtarProductosNegativos(Request  $request)
     {
-       if ($request->searchText==null) {
-        //Session::flash('error','No tiene los permisos para entrar a esta pagina');
-       // return redirect('/publicos.productosNegativos')->with('mensaje','No tiene los permisos para entrar a esta pagina');}
-       $productos=DB::table('productos_negativos')->paginate(10);
+      
+       $productos=DB::table('productos_negativos')->get();
        return view('publicos.productosNegativos',compact('productos'));
-       }else{
-        $buscador=$request->searchText;
-    // dd($buscador);
-        $productos=DB::table('productos_negativos')
-        ->where('codigo','LIKE','%'.$request->searchText.'%')
-        ->orwhere('nombre','LIKE','%'.$request->searchText.'%')
-        ->orwhere('ubicacion','LIKE','%'.$request->searchText.'%')
-        ->orwhere('bodega_stock','LIKE','%'.$request->searchText.'%')
-        ->orwhere('sala_stock','LIKE','%'.$request->searchText.'%')
-        ->paginate(2000);
-       }
-        return view('publicos.productosNegativos',compact('productos','buscador'));
-        /*
-        return response()->json([
-          'productos'=> $productos
-        ]);
-*/
+      
       
     }
 
