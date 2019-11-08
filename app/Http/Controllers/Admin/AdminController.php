@@ -88,9 +88,6 @@ class AdminController extends Controller
       return view('admin.PorcentajeDesviacion',compact('porcentaje','fecha1','fecha2'));
     }
 
-
-
-
     public function filtarProductospormarca (Request $request){
       
       if ($request->searchText==null) {
@@ -111,7 +108,21 @@ class AdminController extends Controller
     }
     
 
+    public function Productos(){
+      //$productos=DB::table('Vista_Productos')->get();
+      return view('admin.Productos');
+    }
 
+
+    public function FiltrarProductos(Request $request){
+      $productos=DB::table('Vista_Productos')
+      ->where('interno','LIKE','%'.$request->searchText.'%')
+      ->orwhere('descripcion','LIKE','%'.$request->searchText.'%')
+      ->orwhere('marca','LIKE','%'.$request->searchText.'%')
+      ->get();
+      return view('admin.Productos',compact('productos'));
+
+    }
 
 
 
