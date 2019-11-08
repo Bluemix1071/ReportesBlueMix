@@ -56,7 +56,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
     Route::get('/Ordenesdecompra','AdminController@ordenesdecompra')->name('ordenesdecompra');
     Route::get('/Desviacion','AdminController@porcentajeDesviacion')->name('porcentaje');
+    Route::get('/comprassegunprov','AdminController@comprassegunprov')->name('comprassegunprov');
     Route::get('/Productos','AdminController@Productos')->name('productos');
+
 
     //------------------------------FILTROS Y OTRAS COSAS XD----------------------------------------------//
     Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');

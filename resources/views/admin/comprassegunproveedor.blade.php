@@ -1,56 +1,37 @@
 @extends("theme.$theme.layout")
 @section('titulo')
- Ordenes de Compra
+ Compras Por Año Según Proveedor
 @endsection
 @section('styles')
 
-<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
-
+{{-- <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}"> --}}
 
 @endsection
 
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Ordenes de Compra</h3>
+        <h3 class="display-3">Compras Por Año Según Proveedor</h3>
         <div class="row">
           <div class="col-md-12">
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
                     <tr>
-                      <th scope="col">Nombre Del Proveedor</th>
-                      <th scope="col">Nro De Orden</th>
-                      <th scope="col">Fecha</th>
-                      <th scope="col">Neto</th>
-                      <th scope="col">IVA</th>
-                      <th scope="col">Total O/C</th>
-                      <th scope="col">Estado</th>
-                      <th scope="col">cod.Int</th>
-                      <th scope="col">cod.Prov</th>
+                      <th scope="col">Año</th>
+                      <th scope="col">Cantidad</th>
+                      <th scope="col">Nombre Proveedor</th>
+                      <th scope="col">Rut Proveedor</th>
+                      <th scope="col">Monto</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($ordendecompra as $item)
+                    @foreach($comprasprove as $item)
                       <tr>
-                          <td>{{$item->nombre_del_proveedor}}</td>
-                        <th >{{$item->numero_de_orden_de_compra}}</th>
-                        <td>{{$item->fecha}}</td>
-                        <td style="text-align:center">{{number_format($item->NetoOC,0,',','.')}}</td>
-                        <td style="text-align:center">{{number_format($item->IvaOC,0,',','.')}}</td>
-                        <td style="text-align:center">{{number_format($item->total,0,',','.')}}</td>
-                        @if ($item->estado =='Autorizada')
-                        <td><font color="Lime">Autorizada</font></td>
-                        @elseif ($item->estado =='creada')
-                        <td><font color="Blue">Creada</font></td>
-                        @else
-                        <td><font color="red">Nula</font></td>
-                        @endif
-                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a></td>
-          
-                      </div>
-            
-                <td><a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Proveedor</a></td>
-        </div>
+                        <td>{{$item->anio}}</td>
+                        <th >{{$item->cantidad}}</th>
+                        <td>{{$item->nombreprov}}</td>
+                        <td>{{$item->rutprov}}</td>
+                        <td style="text-align:center">{{number_format($item->Monto,0,',','.')}}</td>
                       </tr>
                       @endforeach
                     </tbody>
@@ -69,8 +50,7 @@
          <div class="card-body">Seleccione el Código Con La Cual Desea Imprimir La Orden de Compra.</div>
       </div>
       <div class="modal-footer">
-        <a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a>
-        <a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Proveedor</a>
+        <!-- contenido -->
      </div>
     </div>
   </div>
@@ -118,15 +98,4 @@
 <script src="{{asset("js/buttons.html5.min.js")}}"></script>
 <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
-{{-- 
-<script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
-<script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
-
-
-
-<script>
-  $(document).ready( function () {
-    $('#productos').DataTable();
-} );
-</script> --}}
 @endsection
