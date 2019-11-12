@@ -128,10 +128,49 @@ class AdminController extends Controller
       ->orwhere('descripcion','LIKE','%'.$request->searchText.'%')
       ->orwhere('marca','LIKE','%'.$request->searchText.'%')
       ->get();
+
+      dd($productos);
       return view('admin.Productos',compact('productos'));
+
+    }
+
+    public function IndexVentaProductos(){
+    
+      return view('admin.VentasProductosPorFecha');
+    }
+
+
+    public function VentaProductosPorFechas (Request $request){
+     
+
+      $marca = $request->marca;
+      $fecha1=$request->fecha1;
+      $fecha2=$request->fecha2;
+
+  
+
+      $productos=DB::select('select 
+      p.ARCODI as "codigo",
+      p.ARCBAR as "barra",
+      p.ARCOPV as "proveedor",
+      p.ardesc as "descripcion",
+      p.armarca as "marca",
+      sum(dc.DECANT) as "total_productos",
+      max(dc.DEFECO)as "ultima_fecha"
+      from dcargos as dc ,
+      producto as p 
+      where p.ARCODI=dc.DECODI and  p.ARMARCA= ? and 
+      dc.DEFECO between ? and ? 
+      group by p.ARCODI   order by max(dc.defeco) desc', [$marca,$fecha1,$fecha2]);
+      
+
+     //dd($productos);
+      return view('admin.VentasProductosPorFecha',compact('productos'));
+
 
     }
 
 
 
 }
+

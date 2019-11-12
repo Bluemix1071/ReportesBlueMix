@@ -58,12 +58,14 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Desviacion','AdminController@porcentajeDesviacion')->name('porcentaje');
     Route::get('/comprassegunprov','AdminController@comprassegunprov')->name('comprassegunprov');
     Route::get('/Productos','AdminController@Productos')->name('productos');
+    Route::get('VentasProdutos','AdminController@IndexVentaProductos')->name('ventaProd');
 
 
     //------------------------------FILTROS Y OTRAS COSAS XD----------------------------------------------//
     Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');
     Route::post('/Productospormarca','AdminController@filtarProductospormarca')->name('filtrarpormarca');
     Route::post('/Productos','AdminController@FiltrarProductos')->name('filtrarProductos');
+    Route::post('VentasProdutos','AdminController@VentaProductosPorFechas')->name('ventaProdFiltro');
 
 
 
