@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Venta Productos
+Compras Por Horas
 @endsection
 @section('styles')
 
@@ -12,15 +12,15 @@ Venta Productos
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Venta Productos</h3>
+        <h3 class="display-3">Compras Por Hora</h3>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
             @if (!empty($productos))
-            <a href="{{route('ventaProd')}}" class="btn btn-primary">Volver a Buscar</a>
+            <a href="{{route('ComprasPorHoraIndex')}}" class="btn btn-primary">Volver a Buscar</a>
             <hr>
              @else
-                 <form action="{{route('ventaProdFiltro')}}" method="post"  id="desvForm" class="form-inline">
+                 <form action="{{route('ComprasPorHora')}}" method="post"  id="desvForm" class="form-inline">
                          @csrf
                                
                                <div class="form-group mx-sm-3 mb-2">

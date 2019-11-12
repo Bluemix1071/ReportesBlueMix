@@ -213,6 +213,15 @@
                        </p>
                      </a>
                    </li>
+
+                   <li class="nav-item">
+                    <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Compras Por Hora
+                       
+                       </p>
+                     </a>
+                   </li>
                   
                 </ul>
               </li>

@@ -171,6 +171,33 @@ class AdminController extends Controller
     }
 
 
+    public function DocumentosPorHoraIndex(){
+      $productos=DB::select( 'select
+       tipo as "Tipo" , 
+       count(cantidad) as "cantidad",
+       Sum(bruto*1.19) as "bruto"
+       from compras_x_hora
+       where
+       fecha_real between "2019-10-01" and "2019-10-31"and
+       tiempo Between 90000 And 95900 group by tipo' )->dd();
+
+
+    }
+
+    public function DocumentosPorHora(){
+      $productos=DB::select( "select
+       tipo as 'Tipo' , 
+       count(cantidad) as 'cantidad',
+       Sum(bruto*1.19) as 'bruto'
+       from compras_x_hora
+       where
+       fecha_real between '2019-10-01' and '2019-10-31'and
+       tiempo Between 90000 And 95900 group by tipo;" ,)->dd();
+
+
+    }
+
+
 
 }
 
