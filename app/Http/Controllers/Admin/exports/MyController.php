@@ -49,4 +49,18 @@ class MyController extends Controller
            
         return back();
     }
+
+    public function descargaEncabezado()
+    {
+        return response()->download(public_path('../public/assets/lte/descargas/plantilla orden de compra (detalle).xlsx'));
+    }
+
+    
+
+    public function descargadetalle()
+    {
+        return response()->download(public_path('../public/assets/lte/descargas/plantilla orden de compra (detalle).xlsx'));
+    }
+
+
 }

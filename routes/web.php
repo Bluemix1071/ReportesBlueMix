@@ -72,7 +72,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 
 
-    //---------------------Exportaciones----------------------//
+    //---------------------Exportaciones----------------------------------------------//
   
     Route::get('/pdf/{NroOrden}','exports\ExportsController@exportpdf')->name('pdf.orden');
     Route::get('/pdfprov/{NroOrden}','exports\ExportsController@exportpdfprov')->name('pdf.ordenprov');
@@ -85,6 +85,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/importarordendecompra', 'exports\MyController@importExportView')->name('cargaroc');
     Route::post('/import', 'exports\MyController@import')->name('import');
     Route::post('/importdetalle', 'exports\MyController@importdetalle')->name('importdetalle');
+    Route::get('/descargadetalle', 'exports\MyController@descargadetalle')->name('descargadetalle');
+    Route::get('/descargaencabezado', 'exports\MyController@descargaEncabezado')->name('descargaencabezado');
+
 
    
 
