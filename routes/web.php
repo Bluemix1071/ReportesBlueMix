@@ -27,9 +27,12 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::get('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('ProductosNegativos');
     Route::get('/ProductosNegativos2','publico\PublicoController@listarFiltrados')->name('filtro2');
     Route::get('/Informacion','publico\PublicoController@informacion')->name('informacion');
+
+
+
   
 
-//------------------------EXPORTACIONES----------------------------------//
+//------------------------EXPORTACIONES------------------------------------//
 
 
 Route::post('/excel','Admin\exports\ExportsController@exportExcelproductosnegativos')->name('excelProductosNegativos');
@@ -76,8 +79,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
 
+    //---------------------Exportaciones orden de compra----------------------//
 
-
+    Route::get('/export', 'exports\MyController@export')->name('export');
+    Route::get('/importarordendecompra', 'exports\MyController@importExportView')->name('cargaroc');
+    Route::post('/import', 'exports\MyController@import')->name('import');
+    Route::post('/importdetalle', 'exports\MyController@importdetalle')->name('importdetalle');
 
    
 
@@ -87,3 +94,4 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 });
 
 
+   
