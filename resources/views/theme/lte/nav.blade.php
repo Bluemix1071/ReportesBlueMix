@@ -197,10 +197,18 @@
                        </p>
                      </a>
                    </li>
+
                    <li class="nav-item">
                     <a href="{{route('cargaroc')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                        <p>Cargar Orden De Compra
+
+
+                   <li class="nav-item">
+                    <a href="{{route('ventaProd')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>VentaProductos
+                       
                        </p>
                      </a>
                    </li>
