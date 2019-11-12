@@ -129,7 +129,7 @@ class AdminController extends Controller
       ->orwhere('marca','LIKE','%'.$request->searchText.'%')
       ->get();
 
-      dd($productos);
+    
       return view('admin.Productos',compact('productos'));
 
     }
