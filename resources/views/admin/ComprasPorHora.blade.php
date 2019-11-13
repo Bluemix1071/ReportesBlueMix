@@ -76,18 +76,13 @@ Compras Por Horas
                   </thead>
               
                   <tbody>
-                        @if (empty($productos))
-                    
-                        @else
-                    @foreach($productos as $item)
+                     
+                    @foreach($doc1 as $item)
                       <tr>
-                        <th >{{$item->codigo}}</th>
-                        <td style="text-align:center">{{$item->barra}}</td>
-                        <td style="text-align:center">{{$item->proveedor}}</td>
-                        <td style="text-align:center">{{$item->descripcion}}</td>
-                        <td style="text-align:center">{{$item->marca}}</td>
-                        <td style="text-align:center">{{$item->total_productos}}</td>
-                        <td style="text-align:center">{{$item->ultima_fecha}}</td>
+                        
+                        <td style="text-align:center">{{$item->Tipo}}</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                      
                       
                       </tr>
                       @endforeach

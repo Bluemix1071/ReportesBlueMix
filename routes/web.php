@@ -62,7 +62,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/comprassegunprov','AdminController@comprassegunprov')->name('comprassegunprov');
     Route::get('/Productos','AdminController@Productos')->name('productos');
     Route::get('VentasProdutos','AdminController@IndexVentaProductos')->name('ventaProd');
-    Route::get('/ComprasPorHora','AdminController@')->name('ComprasPorHoraIndex');
+    Route::get('/ComprasPorHora','AdminController@DocumentosPorHoraIndex')->name('ComprasPorHoraIndex');
 
 
 

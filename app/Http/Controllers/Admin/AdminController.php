@@ -128,6 +128,7 @@ class AdminController extends Controller
       ->orwhere('descripcion','LIKE','%'.$request->searchText.'%')
       ->orwhere('marca','LIKE','%'.$request->searchText.'%')
       ->get();
+      dd($productos);
 
     
       return view('admin.Productos',compact('productos'));
@@ -172,15 +173,37 @@ class AdminController extends Controller
 
 
     public function DocumentosPorHoraIndex(){
-      $productos=DB::select( 'select
+      $doc1=DB::select( 'select
        tipo as "Tipo" , 
        count(cantidad) as "cantidad",
        Sum(bruto*1.19) as "bruto"
        from compras_x_hora
        where
        fecha_real between "2019-10-01" and "2019-10-31"and
-       tiempo Between 90000 And 95900 group by tipo' )->dd();
+       tiempo Between 90000 And 95900 group by tipo');
 
+       $doc2=DB::select( 'select
+       tipo as "Tipo" , 
+       count(cantidad) as "cantidad",
+       Sum(bruto*1.19) as "bruto"
+       from compras_x_hora
+       where
+       fecha_real between "2019-10-01" and "2019-10-31"and
+       tiempo Between 100000 And 105959 group by tipo');
+      
+       $data =array(
+         'TipoBoleta'=>  $doc1[0]->Tipo,
+         'TipoFactura'=> $doc1[1]->Tipo,
+         'CantidadBoleta'=>$doc1[0]->cantidad,
+         'CantidadFactura'=>$doc1[1]->cantidad,
+         'BrutoBoleta'=>$doc1[0]->bruto,
+         'BrutoFactura'=>$doc1[1]->bruto,
+
+       );
+    
+     //  dd($doc1,$doc2,$data);
+
+       return view('admin.ComprasPorHora',compact('doc1'));
 
     }
 
