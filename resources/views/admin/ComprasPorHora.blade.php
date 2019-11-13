@@ -48,45 +48,244 @@ Compras Por Horas
                                         @endif
                                    
                                 </div>
-                               <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                               <button   type="submit" class="btn btn-primary mb-2">Filtrar</button>
                              
                  </form>
              @endif
               
                        {{-- FIN BUSCADOR--}}
-              <table id="productos" class="table table-bordered table-hover dataTable table-sm">
+              <table id="productos" class="table table-striped table-bordered">
                   <thead>
                     <tr>
-                        <th scope="col" colspan="3"  style="text-align:center" >Codigo</th>
+                        <th scope="col" style="text-align:center"></th>
+                        <th scope="col" colspan="2" style="text-align:center">Boleta</th>
+                        <th scope="col" colspan="2" style="text-align:center"> Factura</th>
                         
-                        <th scope="col" colspan="3" style="text-align:center"></th>
-                        <th  style="color:#F4F6F9" colspan="2" ></th>
+                       
                        
                     </tr>
                     <tr>
-                      <th scope="col" style="text-align:center">Interno</th>
-                      <th scope="col" style="text-align:center">Barra</th>
-                      <th scope="col" style="text-align:center"> Proveedor</th>
-                      <th scope="col" style="text-align:center"> descripcion</th>
-                      <th scope="col" style="text-align:center">Marca</th>
-                      <th scope="col" style="text-align:center">Total Productos</th>
-                      <th scope="col" style="text-align:center">Ultima Fecha</th>
-                     
+                      <th scope="col" style="text-align:center">Rango Hora</th>
+                      <th scope="col" style="text-align:center">Cantidad</th>
+                      <th scope="col" style="text-align:center"> Bruto</th>
+                      <th scope="col" style="text-align:center">Cantidad</th>
+                      <th scope="col" style="text-align:center">Bruto</th>
                     </tr>
+                   
                   </thead>
               
                   <tbody>
+                    @php
+                        $cont =0;
+                    @endphp
                      
-                    @foreach($doc1 as $item)
-                      <tr>
-                        
-                        <td style="text-align:center">{{$item->Tipo}}</td>
+                    @foreach($collection as $item)
+
+                   @if ($cont == 0 || $cont == 1)
+                        @if($cont ==0)
+                        <tr>
+                        <td style="text-align:center">09:00 - 09:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                       </tr>
+                     
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+                   
+                   @elseif($cont == 2 || $cont == 3)
+                        @if($cont ==2)
+                        <tr>
+                        <td style="text-align:center">10:00 - 10:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+                      
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                   @elseif($cont == 4 || $cont == 5)   
+                        @if($cont ==4)
+                        <tr>
+                        <td style="text-align:center">11:00 - 11:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+                      
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                    @elseif($cont == 6 || $cont == 7)   
+                        @if($cont ==6)
+                        <tr>
+                        <td style="text-align:center">12:00 - 12:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                    @elseif($cont == 8 || $cont == 9)   
+                        @if($cont ==8)
+                        <tr>
+                        <td style="text-align:center">13:00 - 13:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+                    @elseif($cont == 10 || $cont == 11)   
+                        @if($cont ==10)
+                        <tr>
+                        <td style="text-align:center">14:00 - 14:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                    @elseif($cont == 12 || $cont == 13)   
+                        @if($cont ==12)
+                        <tr>
+                        <td style="text-align:center">15:00 - 15:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                    @elseif($cont == 14 || $cont == 15)   
+                        @if($cont ==14)
+                        <tr>
+                        <td style="text-align:center">16:00 - 16:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                    @elseif($cont == 16 || $cont == 17)   
+                        @if($cont ==16)
+                        <tr>
+                        <td style="text-align:center">17:00 - 17:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                    @elseif($cont == 18 || $cont == 19)   
+                        @if($cont ==18)
+                        <tr>
+                        <td style="text-align:center">18:00 - 18:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                    @elseif($cont == 20 || $cont == 21)   
+                        @if($cont ==20)
+                        <tr>
+                        <td style="text-align:center">19:00 - 19:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        </tr>
+
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                    @elseif($cont == 22 || $cont == 23)   
+                        @if($cont ==22)
+                        <tr>
+                        <td style="text-align:center">20:00 - 20:59</td>
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        @else
+                        <td style="text-align:center">{{$item->cantidad}}</td>
+                        <td style="text-align:center">{{number_format($item->bruto,0,'.',',')}}</td>
+                        </tr>
+                       
+                        @endif
+                        @php
+                        $cont = $cont+1;
+                        @endphp
+
+                   @else
+                       
+                   @endif
+                    
+
+
                       
                       
-                      </tr>
+                  
+
+
+
+
                       @endforeach
-                      @endif
                     </tbody>             
                 </table>
                 {{-- {{$productos->links()}} --}}
@@ -122,6 +321,9 @@ Compras Por Horas
             'copy', 'csv', 'excel', 'pdf', 'print'
             
         ],
+        "paging":   false,
+        
+
           "language":{
         "info": "_TOTAL_ registros",
         "search":  "Buscar",
