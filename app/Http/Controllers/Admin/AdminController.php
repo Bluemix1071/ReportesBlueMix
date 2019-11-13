@@ -12,6 +12,7 @@ use App\Exports\ProductospormarcaExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 use App;
+use Illuminate\Support\Collection as Collection;
 
 
 class AdminController extends Controller
@@ -128,7 +129,7 @@ class AdminController extends Controller
       ->orwhere('descripcion','LIKE','%'.$request->searchText.'%')
       ->orwhere('marca','LIKE','%'.$request->searchText.'%')
       ->get();
-      dd($productos);
+     // dd($productos);
 
     
       return view('admin.Productos',compact('productos'));
@@ -173,37 +174,157 @@ class AdminController extends Controller
 
 
     public function DocumentosPorHoraIndex(){
+      //Rango de las 9:00:00 a las 9:59:59
       $doc1=DB::select( 'select
        tipo as "Tipo" , 
        count(cantidad) as "cantidad",
-       Sum(bruto*1.19) as "bruto"
+       round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
        fecha_real between "2019-10-01" and "2019-10-31"and
        tiempo Between 90000 And 95900 group by tipo');
+       //convertir array en coleccion
 
+
+      $doc1[0]->bruto ;
+      $doc1[1]->bruto;
+
+       $collection = Collection::make($doc1);
+
+      //Rango de las 10:00:00 a las 10:59:59
        $doc2=DB::select( 'select
        tipo as "Tipo" , 
        count(cantidad) as "cantidad",
-       Sum(bruto*1.19) as "bruto"
+       round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
        fecha_real between "2019-10-01" and "2019-10-31"and
        tiempo Between 100000 And 105959 group by tipo');
+
+        //añadir mas rangos a la coleccion 
+       $collection = $collection->merge(Collection::make($doc2)); 
+
+       //Rango de las 11:00:00 a las 11:59:59
+       $doc3=DB::select('select
+       tipo as "Tipo" , 
+       count(cantidad) as "cantidad",
+       round(Sum(bruto*1.19)) as "bruto"
+       from compras_x_hora
+       where
+       fecha_real between "2019-10-01" and "2019-10-31"and
+       tiempo Between 110000 And 115959 group by tipo');
+       $collection = $collection->merge(Collection::make($doc3)); 
+
+        //Rango de las 12:00:00 a las 12:59:59
+       $doc4=DB::select('select
+       tipo as "Tipo" , 
+       count(cantidad) as "cantidad",
+       round(Sum(bruto*1.19)) as "bruto"
+       from compras_x_hora
+       where
+       fecha_real between "2019-10-01" and "2019-10-31"and
+       tiempo Between 120000 And 125959 group by tipo');
+       $collection = $collection->merge(Collection::make($doc4)); 
+
+        //Rango de las 13:00:00 a las 13:59:59
+       $doc5=DB::select('select
+       tipo as "Tipo" , 
+       count(cantidad) as "cantidad",
+       round(Sum(bruto*1.19)) as "bruto"
+       from compras_x_hora
+       where
+       fecha_real between "2019-10-01" and "2019-10-31"and
+       tiempo Between 130000 And 135959 group by tipo');
+
+       $collection = $collection->merge(Collection::make($doc5)); 
+
+        //Rango de las 14:00:00 a las 14:59:59
+        $doc6=DB::select('select
+        tipo as "Tipo" , 
+        count(cantidad) as "cantidad",
+        round(Sum(bruto*1.19)) as "bruto"
+        from compras_x_hora
+        where
+        fecha_real between "2019-10-01" and "2019-10-31"and
+        tiempo Between 140000 And 145959 group by tipo');
+        
+        $collection = $collection->merge(Collection::make($doc6)); 
+
+        //Rango de las 15:00:00 a las 15:59:59
+        $doc7=DB::select('select
+        tipo as "Tipo" , 
+        count(cantidad) as "cantidad",
+        round(Sum(bruto*1.19)) as "bruto"
+        from compras_x_hora
+        where
+        fecha_real between "2019-10-01" and "2019-10-31"and
+        tiempo Between 150000 And 155959 group by tipo');
+        
+        $collection = $collection->merge(Collection::make($doc7));
+
+        //Rango de las 16:00:00 a las 16:59:59
+        $doc8=DB::select('select
+        tipo as "Tipo" , 
+        count(cantidad) as "cantidad",
+        round(Sum(bruto*1.19)) as "bruto"
+        from compras_x_hora
+        where
+        fecha_real between "2019-10-01" and "2019-10-31"and
+        tiempo Between 160000 And 165959 group by tipo');
+        
+        $collection = $collection->merge(Collection::make($doc8));
+
+        //Rango de las 17:00:00 a las 17:59:59
+        $doc9=DB::select('select
+        tipo as "Tipo" , 
+        count(cantidad) as "cantidad",
+        round(Sum(bruto*1.19)) as "bruto"
+        from compras_x_hora
+        where
+        fecha_real between "2019-10-01" and "2019-10-31"and
+        tiempo Between 170000 And 175959 group by tipo');
+        
+        $collection = $collection->merge(Collection::make($doc9));  
       
-       $data =array(
-         'TipoBoleta'=>  $doc1[0]->Tipo,
-         'TipoFactura'=> $doc1[1]->Tipo,
-         'CantidadBoleta'=>$doc1[0]->cantidad,
-         'CantidadFactura'=>$doc1[1]->cantidad,
-         'BrutoBoleta'=>$doc1[0]->bruto,
-         'BrutoFactura'=>$doc1[1]->bruto,
+        //Rango de las 18:00:00 a las 18:59:59
+        $doc10=DB::select('select
+        tipo as "Tipo" , 
+        count(cantidad) as "cantidad",
+        round(Sum(bruto*1.19)) as "bruto"
+        from compras_x_hora
+        where
+        fecha_real between "2019-10-01" and "2019-10-31"and
+        tiempo Between 180000 And 185959 group by tipo');
+        
+        $collection = $collection->merge(Collection::make($doc10));
+        
+        //Rango de las 19:00:00 a las 19:59:59
+        $doc11=DB::select('select
+        tipo as "Tipo" , 
+        count(cantidad) as "cantidad",
+        round(Sum(bruto*1.19)) as "bruto"
+        from compras_x_hora
+        where
+        fecha_real between "2019-10-01" and "2019-10-31"and
+        tiempo Between 190000 And 195959 group by tipo');
+        
+        $collection = $collection->merge(Collection::make($doc11)); 
 
-       );
+         //Rango de las 20:00:00 a las 20:59:59
+         $doc12=DB::select('select
+         tipo as "Tipo" , 
+         count(cantidad) as "cantidad",
+         round(Sum(bruto*1.19)) as "bruto"
+         from compras_x_hora
+         where
+         fecha_real between "2019-10-01" and "2019-10-31"and
+         tiempo Between 200000 And 205959 group by tipo');
+         
+         $collection = $collection->merge(Collection::make($doc12)); 
     
-     //  dd($doc1,$doc2,$data);
+       // dd($collection);
 
-       return view('admin.ComprasPorHora',compact('doc1'));
+       return view('admin.ComprasPorHora',compact('collection'));
 
     }
 
