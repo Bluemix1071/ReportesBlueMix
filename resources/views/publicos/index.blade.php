@@ -27,14 +27,14 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>100<sup style="font-size: 20px">%</sup></h3>
+              <h3>{{$negativo1}}<sup style="font-size: 20px"><!--%--></sup></h3>
 
-              <p>Pronto Disponible</p>
+              <p>Productos Negativos</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">{{$date}}<i class=""></i></a>
+            <a href="{{route('ProductosNegativos')}}" class="small-box-footer">Mas info.<i class=""></i></a>
           </div>
         </div>
         <!-- ./col -->

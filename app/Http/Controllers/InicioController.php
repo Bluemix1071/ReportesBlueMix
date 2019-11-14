@@ -14,9 +14,13 @@ class InicioController extends Controller
         $date = $date->format('d-m-Y');
         $compras=DB::table('comprasdehoy')->get();
         $variable1=$compras[0]->id;
+
+
+        $pronegativo=DB::table('pronegativo')->get();
+        $negativo1=$pronegativo[0]->negativo;
         // dd($variable1,$compras);
   
-    return view('publicos.index',compact('date','variable1'));
+    return view('publicos.index',compact('date','variable1','negativo1'));
     }
 
 
