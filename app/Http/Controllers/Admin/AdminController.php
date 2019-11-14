@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 use App;
 use Illuminate\Support\Collection as Collection;
+use Carbon\Carbon;
 
 
 class AdminController extends Controller
@@ -24,10 +25,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-    
 
 
-    return view('/publicos',);
+    return view('/publicos');
+
+
     }
 
     public function registrar()
@@ -174,8 +176,9 @@ class AdminController extends Controller
     }
 
     public function IndexCompraProductos(){
+
     
-      return view('admin.CompraProductosPorFecha');
+      return view('admin.CompraProductosPorFecha',compact('productos'));
     }
 
     public function CompraProductosPorFechas (Request $request){

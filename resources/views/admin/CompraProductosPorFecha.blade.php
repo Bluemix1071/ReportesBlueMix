@@ -25,7 +25,7 @@ Compra Productos
                                
                                <div class="form-group mx-sm-3 mb-2">
                                    <label for="inputPassword2" class="sr-only"></label>
-                                   <input type="text" name="marca" class="form-control" placeholder="Marca...."  >
+                                   <input type="text" name="marca" class="form-control" placeholder="Marca...." >
                                  </div>
 
                                  <div class="form-group mb-2">
