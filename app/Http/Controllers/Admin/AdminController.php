@@ -238,18 +238,20 @@ class AdminController extends Controller
        fecha_real between ? and ? and
        tiempo Between 90000 And 95959 group by tipo', [$fecha1,$fecha2]);
        //convertir array en coleccion
-      
-    
+      /*
+      dd($doc1);
       if(empty($doc1)){
 
-
+       
       }else{
-        $TotalBoleta = $doc1[0]->bruto;
-        $TotalFactura =$doc1[1]->bruto;
-        $TotalCantBoletas =$doc1[0]->cantidad;
-        $TotalCantFacturas =$doc1[1]->cantidad;
-        $collection = Collection::make($doc1);
-      }
+            if(array_key_exists('')){
+            $TotalBoleta = $doc1[0]->bruto;
+            $TotalFactura =$doc1[1]->bruto;
+            $TotalCantBoletas =$doc1[0]->cantidad;
+            $TotalCantFacturas =$doc1[1]->cantidad;
+            $collection = Collection::make($doc1);
+            }
+      }*/
 
 
       //Rango de las 10:00:00 a las 10:59:59
@@ -261,6 +263,7 @@ class AdminController extends Controller
        where
        fecha_real between ? and ? and
        tiempo Between 100000 And 105959 group by tipo', [$fecha1,$fecha2]);
+       dd($doc2);
        if(empty($doc2)){
 
        }else{
