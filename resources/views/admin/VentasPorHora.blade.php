@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Compras Por Horas
+Ventas Por Horas
 @endsection
 @section('styles')
 
@@ -12,7 +12,7 @@ Compras Por Horas
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Compras Por Hora</h3>
+        <h3 class="display-3">Ventas Por Hora</h3>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
@@ -22,12 +22,6 @@ Compras Por Horas
              @else
                  <form action="{{route('ComprasPorHora')}}" method="post"  id="desvForm" class="form-inline">
                          @csrf
-                               
-                               <div class="form-group mx-sm-3 mb-2">
-                                   <label for="inputPassword2" class="sr-only"></label>
-                                   <input type="text" name="marca" class="form-control" placeholder="Marca...."  >
-                                 </div>
-
                                  <div class="form-group mb-2">
                                         @if (empty($fecha1))
                                         <label for="staticEmail2" class="sr-only">Fecha 1</label>
@@ -35,7 +29,6 @@ Compras Por Horas
                                         @else
                                       <input type="date" id="fecha1" class="form-control" name="fecha1"  value="{{$fecha1}}">
                                         @endif
-
                                 </div>
                                        
                                  <div class="form-group mx-sm-3 mb-2">
@@ -58,8 +51,8 @@ Compras Por Horas
                   <thead>
                     <tr>
                         <th scope="col" style="text-align:center"></th>
-                        <th scope="col" colspan="2" style="text-align:center">Boleta</th>
-                        <th scope="col" colspan="2" style="text-align:center"> Factura</th>
+                        <th scope="col" colspan="3" style="text-align:center">Boleta</th>
+                        <th scope="col" colspan="3" style="text-align:center"> Factura</th>
                         
                        
                        
@@ -68,8 +61,11 @@ Compras Por Horas
                       <th scope="col" style="text-align:center">Rango Hora</th>
                       <th scope="col" style="text-align:center">Cantidad</th>
                       <th scope="col" style="text-align:center"> Bruto</th>
+                      <td style="text-align:center">%</td>
                       <th scope="col" style="text-align:center">Cantidad</th>
                       <th scope="col" style="text-align:center">Bruto</th>
+                      <td style="text-align:center">%</td>
+                      
                     </tr>
                    
                   </thead>
@@ -78,6 +74,13 @@ Compras Por Horas
                     @php
                         $cont =0;
                     @endphp
+                    
+                    @if (empty($collection))
+                        
+
+                    @else
+                        
+                  
                      
                     @foreach($collection as $item)
 
@@ -86,10 +89,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">09:00 - 09:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td> 
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')    }}</td>  
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                        </tr>
                      
                         @endif
@@ -102,10 +107,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">10:00 - 10:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>  
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td> 
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
                       
                         @endif
@@ -118,10 +125,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">11:00 - 11:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td> 
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td>  
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
                       
                         @endif
@@ -134,10 +143,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">12:00 - 12:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td> 
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td>  
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
 
                         @endif
@@ -150,10 +161,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">13:00 - 13:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td> 
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td>  
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
 
                         @endif
@@ -166,9 +179,11 @@ Compras Por Horas
                         <td style="text-align:center">14:00 - 14:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td>
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
 
                         @endif
@@ -181,10 +196,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">15:00 - 15:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td> 
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td>  
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
 
                         @endif
@@ -198,9 +215,11 @@ Compras Por Horas
                         <td style="text-align:center">16:00 - 16:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td>
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
 
                         @endif
@@ -213,10 +232,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">17:00 - 17:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td> 
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td>  
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
 
                         @endif
@@ -229,10 +250,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">18:00 - 18:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td> 
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td>  
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
 
                         @endif
@@ -245,10 +268,12 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">19:00 - 19:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>  
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td> 
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
 
                         @endif
@@ -261,16 +286,19 @@ Compras Por Horas
                         <tr>
                         <td style="text-align:center">20:00 - 20:59</td>
                         <td style="text-align:center">{{$item->cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>   
+                        <td style="text-align:center">{{number_format($item->bruto,0,',','.')}}</td>  
+                        <td style="text-align:center">{{number_format( (($item->bruto/$TotalBoleta)*100) ,2,',','.')}}</td> 
                         @else
                         <td style="text-align:center">{{$item->cantidad}}</td>
                         <td style="text-align:center">{{number_format($item->bruto,0,'.',',')}}</td>
+                        <td style="text-align:center">{{ number_format( (($item->bruto/$TotalFactura)*100) ,2,',','.')}}</td>
                         </tr>
                        
                         @endif
                         @php
                         $cont = $cont+1;
                         @endphp
+
 
                    @else
                        
@@ -286,6 +314,18 @@ Compras Por Horas
 
 
                       @endforeach
+                      <tr>
+                          <td style="text-align:center" >Totales</td>
+                      <td style="text-align:center">{{number_format($TotalCantBoletas,0,',','.')}}</td>
+                      <td style="text-align:center">{{number_format($TotalBoleta,0,',','.')}}</td>
+                      <td style="text-align:center"></td>
+                     
+                      <td style="text-align:center">{{number_format($TotalCantFacturas,0,',','.')}}</td>
+                      <td style="text-align:center">{{number_format($TotalFactura,0,',','.')}}</td>
+                      <td style="text-align:center"></td>
+                          
+                      </tr>
+                      @endif
                     </tbody>             
                 </table>
                 {{-- {{$productos->links()}} --}}

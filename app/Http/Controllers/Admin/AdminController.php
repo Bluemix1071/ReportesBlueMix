@@ -173,7 +173,15 @@ class AdminController extends Controller
     }
 
 
-    public function DocumentosPorHoraIndex(){
+    public function DocumentosPorHora(Request $request){
+
+   // dd($request->all());
+    
+    $fecha1=$request->fecha1;
+    $fecha2=$request->fecha2;
+
+   // dd($fecha1,$fecha2);
+
       //Rango de las 9:00:00 a las 9:59:59
       $doc1=DB::select( 'select
        tipo as "Tipo" , 
@@ -181,14 +189,17 @@ class AdminController extends Controller
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
-       fecha_real between "2019-10-01" and "2019-10-31"and
-       tiempo Between 90000 And 95900 group by tipo');
+       fecha_real between ? and ? and
+       tiempo Between 90000 And 95959 group by tipo', [$fecha1,$fecha2]);
        //convertir array en coleccion
 
+       
 
-      $doc1[0]->bruto ;
-      $doc1[1]->bruto;
-
+      $TotalBoleta = $doc1[0]->bruto;
+      $TotalFactura =$doc1[1]->bruto;
+      $TotalCantBoletas =$doc1[0]->cantidad;
+      $TotalCantFacturas =$doc1[1]->cantidad;
+   
        $collection = Collection::make($doc1);
 
       //Rango de las 10:00:00 a las 10:59:59
@@ -198,8 +209,14 @@ class AdminController extends Controller
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
-       fecha_real between "2019-10-01" and "2019-10-31"and
-       tiempo Between 100000 And 105959 group by tipo');
+       fecha_real between ? and ? and
+       tiempo Between 100000 And 105959 group by tipo', [$fecha1,$fecha2]);
+       
+       $TotalBoleta = $TotalBoleta + $doc2[0]->bruto;
+       $TotalFactura =$TotalFactura + $doc2[1]->bruto;
+
+       $TotalCantBoletas = $TotalCantBoletas+$doc2[0]->cantidad;
+       $TotalCantFacturas =$TotalCantFacturas+$doc2[1]->cantidad;
 
         //añadir mas rangos a la coleccion 
        $collection = $collection->merge(Collection::make($doc2)); 
@@ -211,8 +228,16 @@ class AdminController extends Controller
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
-       fecha_real between "2019-10-01" and "2019-10-31"and
-       tiempo Between 110000 And 115959 group by tipo');
+       fecha_real between ? and ? and
+       tiempo Between 110000 And 115959 group by tipo', [$fecha1,$fecha2]);
+       $TotalBoleta = $TotalBoleta + $doc3[0]->bruto;
+       $TotalFactura =$TotalFactura + $doc3[1]->bruto;
+
+       $TotalCantBoletas = $TotalCantBoletas+$doc3[0]->cantidad;
+       $TotalCantFacturas =$TotalCantFacturas+$doc3[1]->cantidad;
+
+      
+
        $collection = $collection->merge(Collection::make($doc3)); 
 
         //Rango de las 12:00:00 a las 12:59:59
@@ -222,8 +247,14 @@ class AdminController extends Controller
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
-       fecha_real between "2019-10-01" and "2019-10-31"and
-       tiempo Between 120000 And 125959 group by tipo');
+       fecha_real between ? and ? and
+       tiempo Between 120000 And 125959 group by tipo', [$fecha1,$fecha2]);
+       $TotalBoleta = $TotalBoleta + $doc4[0]->bruto;
+       $TotalFactura =$TotalFactura + $doc4[1]->bruto;
+
+       $TotalCantBoletas = $TotalCantBoletas+$doc4[0]->cantidad;
+       $TotalCantFacturas =$TotalCantFacturas+$doc4[1]->cantidad;
+
        $collection = $collection->merge(Collection::make($doc4)); 
 
         //Rango de las 13:00:00 a las 13:59:59
@@ -233,8 +264,13 @@ class AdminController extends Controller
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
-       fecha_real between "2019-10-01" and "2019-10-31"and
-       tiempo Between 130000 And 135959 group by tipo');
+       fecha_real between ? and ? and
+       tiempo Between 130000 And 135959 group by tipo' , [$fecha1,$fecha2]);
+       $TotalBoleta = $TotalBoleta + $doc5[0]->bruto;
+       $TotalFactura =$TotalFactura + $doc5[1]->bruto;
+
+       $TotalCantBoletas = $TotalCantBoletas+$doc5[0]->cantidad;
+       $TotalCantFacturas =$TotalCantFacturas+$doc5[1]->cantidad;
 
        $collection = $collection->merge(Collection::make($doc5)); 
 
@@ -245,20 +281,30 @@ class AdminController extends Controller
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
-        fecha_real between "2019-10-01" and "2019-10-31"and
-        tiempo Between 140000 And 145959 group by tipo');
+        fecha_real between ? and ? and
+        tiempo Between 140000 And 145959 group by tipo', [$fecha1,$fecha2]);
+        $TotalBoleta = $TotalBoleta + $doc6[0]->bruto;
+        $TotalFactura =$TotalFactura + $doc6[1]->bruto;
+
+        $TotalCantBoletas = $TotalCantBoletas+$doc6[0]->cantidad;
+        $TotalCantFacturas =$TotalCantFacturas+$doc6[1]->cantidad;
         
         $collection = $collection->merge(Collection::make($doc6)); 
 
         //Rango de las 15:00:00 a las 15:59:59
         $doc7=DB::select('select
-        tipo as "Tipo" , 
+        tipo as "Tipo", 
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
-        fecha_real between "2019-10-01" and "2019-10-31"and
-        tiempo Between 150000 And 155959 group by tipo');
+        fecha_real between ? and ? and
+        tiempo Between 150000 And 155959 group by tipo', [$fecha1,$fecha2]);
+        $TotalBoleta = $TotalBoleta + $doc7[0]->bruto;
+        $TotalFactura =$TotalFactura + $doc7[1]->bruto;
+
+        $TotalCantBoletas = $TotalCantBoletas+$doc7[0]->cantidad;
+        $TotalCantFacturas =$TotalCantFacturas+$doc7[1]->cantidad;
         
         $collection = $collection->merge(Collection::make($doc7));
 
@@ -269,8 +315,13 @@ class AdminController extends Controller
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
-        fecha_real between "2019-10-01" and "2019-10-31"and
-        tiempo Between 160000 And 165959 group by tipo');
+        fecha_real between ? and ? and
+        tiempo Between 160000 And 165959 group by tipo', [$fecha1,$fecha2]);
+        $TotalBoleta = $TotalBoleta + $doc8[0]->bruto;
+        $TotalFactura =$TotalFactura + $doc8[1]->bruto;
+
+        $TotalCantBoletas = $TotalCantBoletas+$doc8[0]->cantidad;
+        $TotalCantFacturas =$TotalCantFacturas+$doc8[1]->cantidad;
         
         $collection = $collection->merge(Collection::make($doc8));
 
@@ -281,9 +332,14 @@ class AdminController extends Controller
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
-        fecha_real between "2019-10-01" and "2019-10-31"and
-        tiempo Between 170000 And 175959 group by tipo');
-        
+        fecha_real between ? and ? and
+        tiempo Between 170000 And 175959 group by tipo', [$fecha1,$fecha2]);
+        $TotalBoleta = $TotalBoleta + $doc9[0]->bruto;
+        $TotalFactura =$TotalFactura + $doc9[1]->bruto;
+
+        $TotalCantBoletas = $TotalCantBoletas+$doc9[0]->cantidad;
+        $TotalCantFacturas =$TotalCantFacturas+$doc9[1]->cantidad;
+
         $collection = $collection->merge(Collection::make($doc9));  
       
         //Rango de las 18:00:00 a las 18:59:59
@@ -293,8 +349,13 @@ class AdminController extends Controller
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
-        fecha_real between "2019-10-01" and "2019-10-31"and
-        tiempo Between 180000 And 185959 group by tipo');
+        fecha_real between ? and ? and
+        tiempo Between 180000 And 185959 group by tipo', [$fecha1,$fecha2]);
+        $TotalBoleta = $TotalBoleta + $doc10[0]->bruto;
+        $TotalFactura =$TotalFactura + $doc10[1]->bruto;
+
+        $TotalCantBoletas = $TotalCantBoletas+$doc10[0]->cantidad;
+        $TotalCantFacturas =$TotalCantFacturas+$doc10[1]->cantidad;
         
         $collection = $collection->merge(Collection::make($doc10));
         
@@ -305,9 +366,14 @@ class AdminController extends Controller
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
-        fecha_real between "2019-10-01" and "2019-10-31"and
-        tiempo Between 190000 And 195959 group by tipo');
+        fecha_real between ? and ? and
+        tiempo Between 190000 And 195959 group by tipo', [$fecha1,$fecha2]);
+        $TotalBoleta = $TotalBoleta + $doc11[0]->bruto;
+        $TotalFactura =$TotalFactura + $doc11[1]->bruto;
         
+        $TotalCantBoletas = $TotalCantBoletas+$doc11[0]->cantidad;
+        $TotalCantFacturas =$TotalCantFacturas+$doc11[1]->cantidad;
+
         $collection = $collection->merge(Collection::make($doc11)); 
 
          //Rango de las 20:00:00 a las 20:59:59
@@ -317,27 +383,21 @@ class AdminController extends Controller
          round(Sum(bruto*1.19)) as "bruto"
          from compras_x_hora
          where
-         fecha_real between "2019-10-01" and "2019-10-31"and
-         tiempo Between 200000 And 205959 group by tipo');
+         fecha_real between ? and ? and
+         tiempo Between 200000 And 205959 group by tipo', [$fecha1,$fecha2]);
+         
          
          $collection = $collection->merge(Collection::make($doc12)); 
     
-       // dd($collection);
+         
 
-       return view('admin.ComprasPorHora',compact('collection'));
+       return view('admin.VentasPorHora',compact('collection','TotalFactura','TotalBoleta','TotalCantBoletas','TotalCantFacturas'));
 
     }
 
-    public function DocumentosPorHora(){
-      $productos=DB::select( "select
-       tipo as 'Tipo' , 
-       count(cantidad) as 'cantidad',
-       Sum(bruto*1.19) as 'bruto'
-       from compras_x_hora
-       where
-       fecha_real between '2019-10-01' and '2019-10-31'and
-       tiempo Between 90000 And 95900 group by tipo;" ,)->dd();
-
+    public function DocumentosPorHoraIndex(){
+     
+      return view('admin.VentasPorHora');
 
     }
 

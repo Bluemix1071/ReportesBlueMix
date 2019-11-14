@@ -62,7 +62,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/comprassegunprov','AdminController@comprassegunprov')->name('comprassegunprov');
     Route::get('/Productos','AdminController@Productos')->name('productos');
     Route::get('VentasProdutos','AdminController@IndexVentaProductos')->name('ventaProd');
-    Route::get('/ComprasPorHora','AdminController@DocumentosPorHoraIndex')->name('ComprasPorHoraIndex');
+    Route::get('/VentasPorHora','AdminController@DocumentosPorHoraIndex')->name('ComprasPorHoraIndex');
 
 
 
@@ -71,7 +71,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/Productospormarca','AdminController@filtarProductospormarca')->name('filtrarpormarca');
     Route::post('/Productos','AdminController@FiltrarProductos')->name('filtrarProductos');
     Route::post('VentasProdutos','AdminController@VentaProductosPorFechas')->name('ventaProdFiltro');
-    Route::post('/ComprasPorHora','AdminController@DocumentosPorHora')->name('ComprasPorHora');
+    Route::post('/VentasPorHora','AdminController@DocumentosPorHora')->name('ComprasPorHora');
 
 
 
