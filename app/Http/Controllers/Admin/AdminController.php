@@ -141,6 +141,8 @@ class AdminController extends Controller
       return view('admin.VentasProductosPorFecha');
     }
 
+    
+
 
     public function VentaProductosPorFechas (Request $request){
      
@@ -168,6 +170,48 @@ class AdminController extends Controller
 
      //dd($productos);
       return view('admin.VentasProductosPorFecha',compact('productos'));
+
+
+    }
+
+    public function IndexCompraProductos(){
+    
+      return view('admin.CompraProductosPorFecha');
+    }
+
+    public function CompraProductosPorFechas (Request $request){
+     
+
+      $marca = $request->marca;
+      $fecha1=$request->fecha1;
+      $fecha2=$request->fecha2;
+
+  
+
+      $productos=DB::select('select 
+      p.ARMARCA as "marca",
+      d.DMVPROD AS "Cod_Producto",
+      p.ARDESC AS "Descripción_Producto",
+      SUM(d.DMVCANT * 1) AS "Cantidad",
+      AVG(pr.PCCOSTO * 1) AS "Costo_Unitario_actual",
+      (SUM(d.DMVCANT * 1)) * (AVG(pr.PCCOSTO * 1)) AS "Costo_Total"
+  FROM
+      cmovim as c,
+      dmovim as d,
+      precios as pr,
+      producto as p
+  WHERE
+      d.DMVNGUI = c.CMVNGUI
+          AND d.DMVPROD = p.ARCODI
+          AND p.ARMARCA LIKE ?
+          AND c.CMVFECG BETWEEN  ?  AND  ? 
+          AND pr.PCCODI = LEFT(p.ARCODI, 5)
+  GROUP BY p.ARMARCA , d.DMVPROD , p.ARDESC
+  ORDER BY d.DMVPROD', [$marca,$fecha1,$fecha2]);
+      
+
+     //dd($productos);
+      return view('admin.CompraProductosPorFecha',compact('productos'));
 
 
     }

@@ -213,6 +213,14 @@
                        </p>
                      </a>
                    </li>
+                   <li class="nav-item">
+                    <a href="{{route('compraProd')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Compra Productos
+                       
+                       </p>
+                     </a>
+                   </li>
 
                    <li class="nav-item">
                     <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link">

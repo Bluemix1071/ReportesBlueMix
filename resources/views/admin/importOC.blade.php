@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="file" name="file" class="form-control">
+                        <input type="file" required name="file" class="form-control">
                         <br>
                         <button class="btn btn-success">Importar Orden De Compra 'Encabezado'</button>
                         <a class="btn btn-warning" href="{{ route('descargaencabezado') }}">Descargar plantilla de trabajo </a>
@@ -40,7 +40,7 @@
                   <div class="card-body">
                       <form action="{{ route('importdetalle') }}" method="POST" enctype="multipart/form-data">
                           @csrf
-                          <input type="file" name="file" class="form-control">
+                          <input type="file" name="file" required class="form-control">
                           <br>
                           <button class="btn btn-success">Importar Orden De Compra 'Detalle'</button>
                           <a href="{{route('descargadetalle')}}"class="btn btn-warning">

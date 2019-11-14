@@ -43,7 +43,7 @@ class MyController extends Controller
 
     public function importdetalle() 
     {
-     
+        
     
         Excel::import(new ordendetalleImport,request()->file('file'));
            
