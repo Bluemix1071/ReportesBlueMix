@@ -13,14 +13,13 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>100</h3>
-
+                <h3>{{$variable1}}</h3>
               <p>Compras en el dia</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">Fecha del dia </a>
+            <a href="#" class="small-box-footer">{{$date}}</a>
           </div>
         </div>
         <!-- ./col -->
@@ -35,7 +34,7 @@ Espacio Publico Bluemix
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">fecha del dia <i class=""></i></a>
+            <a href="#" class="small-box-footer">{{$date}}<i class=""></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -50,7 +49,7 @@ Espacio Publico Bluemix
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">Fecha del dia<i class=""></i></a>
+            <a href="#" class="small-box-footer">{{$date}}<i class=""></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -65,7 +64,7 @@ Espacio Publico Bluemix
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">Fecha del dia<i class=""></i></a>
+            <a href="#" class="small-box-footer">{{$date}}<i class=""></i></a>
           </div>
         </div>
         <!-- ./col -->
