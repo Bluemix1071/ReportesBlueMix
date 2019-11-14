@@ -52,7 +52,7 @@ class MyController extends Controller
 
     public function descargaEncabezado()
     {
-        return response()->download(public_path('../public/assets/lte/descargas/plantilla Orden de compra (Encabezado).xlsx'));
+        return response()->download(public_path('../public/assets/lte/descargas/plantilla Orden De Compra (Encabezado).xlsx'));
     }
 
     
