@@ -23,6 +23,8 @@ Route::prefix('Ssla')->namespace('sala')->middleware('auth')->group(function(){
 Route::prefix('publicos')->middleware('auth')->group(function(){
 
     Route::get('/','InicioController@index')->name('Publico');
+    Route::post('/mensaje','InicioController@store')->name('mensaje');
+    Route::post('/nav','InicioController@nav');
     Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
     Route::get('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('ProductosNegativos');
     Route::get('/ProductosNegativos2','publico\PublicoController@listarFiltrados')->name('filtro2');

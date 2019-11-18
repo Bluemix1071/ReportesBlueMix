@@ -26,53 +26,21 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
+            @foreach ($mensaje as $item)
             <div class="media">
-              <img src="{{asset("assets/$theme/dist/img/user1-128x128.jpg")}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <img src="{{asset("assets/$theme/dist/img/images.png")}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  Pablo Arteaga
+                    {{$item->name}}
                   <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
                 </h3>
                 <p class="text-sm">
-                  Llámame cuando puedas...</p>
+                    {{$item->body}}</p>
                 <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
                   hace 4 horas</p>
               </div>
             </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{asset("assets/$theme/dist/img/user8-128x128.jpg")}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John San Martin
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Recibí tu mensaje </p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
-                  hace 4 horas</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{asset("assets/$theme/dist/img/user3-128x128.jpg")}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Martinez
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">El tema va aqui</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
-                  hace 4 horas</p>
-              </div>
-            </div>
+            @endforeach
             <!-- Message End -->
           </a>
           <div class="dropdown-divider"></div>
