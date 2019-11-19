@@ -67,10 +67,46 @@ Espacio Publico Bluemix
             <a href="#" class="small-box-footer">{{$date}}<i class=""></i></a>
           </div>
         </div>
-        <!-- ./col -->
       </div>
     </div>
-    <!-- /.container-fluid -->
+    <br>
+    <div class="row justify-content-right">
+        <div class="col-md-3 col-md offset-9">
+            <div class="panel-heading">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Enviar Mensaje</h4>
+                  </div>
+                  <div class="modal-body">
+                     <div class="card-body">
+                         <form method="POST" action="{{route('mensaje')}}">
+                             @csrf
+                             <!-- Tipo de Usuario -->
+                             <div class="form-group row">         
+                                 <div class="col-md-6">
+                                     <select class="form-control" name="recipient_id" value="" required >
+                                         <option value="">Usuarios</option> 
+                                         @foreach ($users as $user)
+                                         <option value="{{$user->id}}">{{$user->name}}</option>
+                                             
+                                         @endforeach
+                                      </select>
+                                 </div>
+                             </div>
+                             <div>
+                               <textarea name="body" id="body" cols="20" rows="10" required placeholder="Escribe aqui tu mensaje" class="form-control"></textarea>
+                             </div>
+                             <div class="modal-footer">
+                               <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                            </div>
+                         </form>
+                       </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
   </section>
 
   

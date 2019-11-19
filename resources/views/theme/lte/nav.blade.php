@@ -21,59 +21,35 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
+          @if (empty($conteo1))
+          <span class="badge badge-danger navbar-badge">0</span>
+          @else
+          <span class="badge badge-danger navbar-badge">{{$conteo1}}</span>
+          @endif
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
+            @if (empty($mensaje))
+
+            @else
+            <!-- Message Start -->      
+            @foreach ($mensaje as $item)
+          <a href="" class="dropdown-item" data-toggle="modal" data-target="#mimodalejemplo1" data-estado='{{$item->estado}}' data-id='{{$item->id}}' data-body='{{$item->body}}' data-name='{{$item->name}}' data-created_at='{{$item->created_at}}' >    
             <div class="media">
-              <img src="{{asset("assets/$theme/dist/img/user1-128x128.jpg")}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <img src="{{asset("assets/$theme/dist/img/images.png")}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  Pablo Arteaga
+                    {{$item->name}}
                   <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
                 </h3>
                 <p class="text-sm">
-                  Llámame cuando puedas...</p>
+                    {{$item->body}}</p>
                 <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
-                  hace 4 horas</p>
+                  Fecha: {{$item->created_at}}</p>
               </div>
             </div>
+            @endforeach
             <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{asset("assets/$theme/dist/img/user8-128x128.jpg")}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John San Martin
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Recibí tu mensaje </p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
-                  hace 4 horas</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{asset("assets/$theme/dist/img/user3-128x128.jpg")}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Martinez
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">El tema va aqui</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
-                  hace 4 horas</p>
-              </div>
-            </div>
-            <!-- Message End -->
+            @endif
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">
@@ -352,3 +328,35 @@
     </div>
     <!-- /.sidebar -->
   </aside>
+  <div class="modal fade" id="mimodalejemplo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+              <form method="POST" action="{{route('updatemensaje')}}">
+                  {{method_field('post')}}
+      	          	{{csrf_field()}}
+                    @csrf
+          <div class="modal-body">
+              <div class="card-body">
+                  <h4 class="modal-title" >Nombre Remitente:</h4>
+                  <input type="text" id="name" >
+                </div>
+             <div class="card-body">
+               <textarea  id="body"  cols="56" rows="5"></textarea>
+             </div>
+             <div class="card-body">
+                <h5 class="modal-title" >Fecha De Envio:</h5>
+                <input type="text" id="created_at" >
+              </div>
+              <div class="card-body">
+                  <input type="text" id="estado" >
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Eliminar Mensaje</button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+         </div>
+        </form>
+        </div>
+      </div>
+    </div>
+     <!-- FIN Modal -->

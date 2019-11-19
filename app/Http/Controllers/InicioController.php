@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
+use App\User;
+use App\mensajes;
+use Session;
 
 class InicioController extends Controller
 {
@@ -19,9 +23,55 @@ class InicioController extends Controller
         $pronegativo=DB::table('pronegativo')->get();
         $negativo1=$pronegativo[0]->negativo;
         // dd($variable1,$compras);
+        $users = User::where('id','!=',auth()->id())->
+                        where('estado',1)->get();
+
+        $mensaje=DB::table('users')
+        ->join('mensajes', 'mensajes.sender_id', '=', 'users.id')
+        ->where('users.id','!=',auth()->id())
+        ->where('users.estado',1)
+        ->where('mensajes.estado',1)
+        ->where('mensajes.recipient_id','=', auth()->id())
+        ->get();
+
+        $conteo=DB::table('mensajes')
+        ->where('mensajes.estado',1)
+        ->where('mensajes.recipient_id','=', auth()->id())
+        ->get();
+        $conteo1 = $conteo->count();
+
+        // $updatee=DB::table('post')
+        // ->where('mensajes.estado',1)
+        // ->where('mensajes.recipient_id','=', auth()->id())
+        // ->update(['estado' => "0"]);
+
+       // dd($mensaje);
   
-    return view('publicos.index',compact('date','variable1','negativo1'));
+    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1'));
     }
+
+    public function store(Request $request)
+    {
+        mensajes::create([
+
+            'sender_id' => auth()->id(),
+            'recipient_id' => $request->recipient_id,
+            'body' => $request->body,
+
+        ]);
+
+        Session::flash('success','tu mensaje fue enviado');
+
+        return back()->with('flash', 'tu mensaje fue enviado');
+
+    }
+
+
+    
+
+
+ 
+
 
 
 
