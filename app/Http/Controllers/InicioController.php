@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
@@ -32,17 +33,21 @@ class InicioController extends Controller
         ->where('mensajes.estado',1)
         ->where('mensajes.recipient_id','=', auth()->id())
         ->get();
-    //     $mensaje=DB::select('select
-    //     name AS "envia",
-    //      body AS "mensaje"
-    // FROM
-    //     mensajes,
-    //     users AS p
-    // WHERE
-    //     sender_id = p.id');
-        // dd($mensaje);
+
+        $conteo=DB::table('mensajes')
+        ->where('mensajes.estado',1)
+        ->where('mensajes.recipient_id','=', auth()->id())
+        ->get();
+        $conteo1 = $conteo->count();
+
+        // $updatee=DB::table('post')
+        // ->where('mensajes.estado',1)
+        // ->where('mensajes.recipient_id','=', auth()->id())
+        // ->update(['estado' => "0"]);
+
+       // dd($mensaje);
   
-    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje'));
+    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1'));
     }
 
     public function store(Request $request)
@@ -62,21 +67,11 @@ class InicioController extends Controller
     }
 
 
-    // public function nav()
-    // {
+    
 
 
-    //     $mensaje=DB::select('select
-    //     name AS "envia",
-    //      body AS "mensaje"
-    // FROM
-    //     mensajes,
-    //     users AS p
-    // WHERE
-    //     sender_id = p.id');
-  
-    // return view('theme.lte.nav',compact('mensaje'));
-    // }
+ 
+
 
 
 

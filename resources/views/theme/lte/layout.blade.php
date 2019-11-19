@@ -95,6 +95,28 @@
         modal.find('.modal-body #tipo').val(tipo);
         modal.find('.modal-body #Estado').val(estado);
   })</script>
+
+
+<script> $('#mimodalejemplo1').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var id = button.data('id')
+        var body = button.data('body') 
+        var name = button.data('name') 
+        var created_at = button.data('created_at') 
+        var estado = button.data('estado') 
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #body').val(body);
+        modal.find('.modal-body #name').val(name);
+        modal.find('.modal-body #created_at').val(created_at);
+        modal.find('.modal-body #estado').val(estado);
+
+
+  })</script>
+
+
+
+
 =======
 @yield('script')
 
