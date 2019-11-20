@@ -177,7 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        MaddHatter\LaravelFullcalendar\ServiceProvider::class,
+        //MaddHatter\LaravelFullcalendar\ServiceProvider::class,
 
     ],
 
@@ -232,7 +232,7 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
+        //'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
 
     ],
 
