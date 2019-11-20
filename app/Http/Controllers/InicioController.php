@@ -72,13 +72,9 @@ class InicioController extends Controller
     
 
 
-<<<<<<< HEAD
-=======
- 
 
 
 
->>>>>>> 3ee7c5cc8012a42126d6b62a98c112730787ddca
 
 
 }
