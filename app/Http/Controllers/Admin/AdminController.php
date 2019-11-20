@@ -220,25 +220,7 @@ class AdminController extends Controller
 
     }
 
-    public function updatemensaje(Request $request)
-    {
 
-        $usuario=mensajes::findOrfail($request->id);
-        $usuario->id=$request->get('id');
-        $usuario->sender_id=$request->get('sender_id');
-        $usuario->recipient_id=$request->get('recipient_id');
-        $usuario->body=$request->get('body');
-        $usuario->created_at=$request->get('created_at');
-        $usuario->updated_at=$request->get('updated_at');
-        $usuario->estado=$request->get('estado');
-        $usuario->update();
-        dd($usuario);
-        return back();
-
-        
-        // return view('publicos.index');
-
-    }
 
 
     public function DocumentosPorHora(Request $request){

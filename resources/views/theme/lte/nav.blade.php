@@ -33,7 +33,7 @@
             @else
             <!-- Message Start -->      
             @foreach ($mensaje as $item)
-          <a href="" class="dropdown-item" data-toggle="modal" data-target="#mimodalejemplo1" data-estado='{{$item->estado}}' data-id='{{$item->id}}' data-body='{{$item->body}}' data-name='{{$item->name}}' data-created_at='{{$item->created_at}}' >    
+          <a href="" class="dropdown-item" data-toggle="modal" data-target="#mimodalejemplo5"  data-id='{{$item->id}}' data-estado='{{$item->estado}}' data-created_at='{{$item->created_at}}' data-name='{{$item->name}}' data-body='{{$item->body}}'>    
             <div class="media">
               <img src="{{asset("assets/$theme/dist/img/images.png")}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
@@ -328,31 +328,29 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-  <div class="modal fade" id="mimodalejemplo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal fade" id="mimodalejemplo5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
               <form method="POST" action="{{route('updatemensaje')}}">
-                  {{method_field('post')}}
-      	          	{{csrf_field()}}
                     @csrf
           <div class="modal-body">
               <div class="card-body">
-                  <h4 class="modal-title" >Nombre Remitente:</h4>
-                  <input type="text" id="name" >
+                  <h3>Envía</h3>
+                  <input type="text" disabled name="name" id="name">
                 </div>
              <div class="card-body">
-               <textarea  id="body"  cols="56" rows="5"></textarea>
+                <h6>Mensaje</h6>
+               <textarea name="body" id="body" disabled cols="57" rows="5"></textarea>
              </div>
              <div class="card-body">
-                <h5 class="modal-title" >Fecha De Envio:</h5>
-                <input type="text" id="created_at" >
+               <h6>Fecha</h6>
+                <input type="text" disabled name="created_at" id="created_at">
               </div>
-              <div class="card-body">
-                  <input type="text" id="estado" >
-                </div>
+                  <input type="hidden" name='estado' id='estado'>     
+                    <input type="hidden" name='id' id='id'>     
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-danger">Eliminar Mensaje</button>
+            <button type="submit" class="btn btn-warning">Eliminar Mensaje</button>
             <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
          </div>
         </form>

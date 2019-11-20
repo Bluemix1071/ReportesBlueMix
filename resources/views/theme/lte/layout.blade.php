@@ -109,7 +109,7 @@
   })</script>
 
 
-<script> $('#mimodalejemplo1').on('show.bs.modal', function (event) {
+<script> $('#mimodalejemplo5').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
         var id = button.data('id')
         var body = button.data('body') 
