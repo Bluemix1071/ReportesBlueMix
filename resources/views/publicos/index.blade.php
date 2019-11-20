@@ -3,6 +3,13 @@
 Espacio Publico Bluemix
 @endsection
 
+@section('styles')
+
+    
+@endsection
+
+
+
 @section('contenido')
 <br>
 <section class="content">
@@ -69,14 +76,18 @@ Espacio Publico Bluemix
         </div>
         <!-- ./col -->
       </div>
+
     </div>
     <!-- /.container-fluid -->
   </section>
-
   
 
 
 
+
+@endsection
+
+@section('script')
 
 @endsection
 

@@ -14,6 +14,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use App;
 use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 
 class AdminController extends Controller
@@ -225,8 +226,13 @@ class AdminController extends Controller
     
     $fecha1=$request->fecha1;
     $fecha2=$request->fecha2;
+    $TotalBoleta;
+    $TotalFactura ;
+    $TotalCantBoletas;
+    $TotalCantFacturas ;
+    $collection = Collection::make($vacio=[]);
 
-  
+    //dd($fecha1,$fecha2);
 
       //Rango de las 9:00:00 a las 9:59:59
       $doc1=DB::select( 'select
@@ -238,20 +244,44 @@ class AdminController extends Controller
        fecha_real between ? and ? and
        tiempo Between 90000 And 95959 group by tipo', [$fecha1,$fecha2]);
        //convertir array en coleccion
-      /*
-      dd($doc1);
+      //dd($doc1);
+      //dd($doc1);
       if(empty($doc1)){
 
        
       }else{
-            if(array_key_exists('')){
-            $TotalBoleta = $doc1[0]->bruto;
-            $TotalFactura =$doc1[1]->bruto;
-            $TotalCantBoletas =$doc1[0]->cantidad;
+            //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc1[0] )){
+
+           
+            $TotalBoleta =   0;
+             $TotalCantBoletas =0;
+             
+              
+  
+            }else{
+  
+              $TotalBoleta =  $doc1[0]->bruto;
+              $TotalCantBoletas = $doc1[0]->cantidad;
+            }
+  
+            if(! isset($doc1[1] )){
+               $TotalFactura = 0;
+              $TotalCantFacturas = 0;
+
+           
+                
+            }else{
+  
+            $TotalFactura = $doc1[1]->bruto;
             $TotalCantFacturas =$doc1[1]->cantidad;
             $collection = Collection::make($doc1);
-            }
-      }*/
+          }
+          
+             
+         
+      }
 
 
       //Rango de las 10:00:00 a las 10:59:59
@@ -263,15 +293,33 @@ class AdminController extends Controller
        where
        fecha_real between ? and ? and
        tiempo Between 100000 And 105959 group by tipo', [$fecha1,$fecha2]);
-       dd($doc2);
+    
        if(empty($doc2)){
 
        }else{
-      
-       $TotalBoleta = $TotalBoleta + $doc2[0]->bruto;
-       $TotalFactura =$TotalFactura + $doc2[1]->bruto;
-       $TotalCantBoletas = $TotalCantBoletas+$doc2[0]->cantidad;
-       $TotalCantFacturas =$TotalCantFacturas+$doc2[1]->cantidad;
+      //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc2[0] )){
+
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc2[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc2[0]->cantidad;
+            }
+  
+            if(! isset($doc2[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc2[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc2[1]->cantidad;
+            
+          }
        
         //añadir mas rangos a la coleccion 
        $collection = $collection->merge(Collection::make($doc2)); 
@@ -290,12 +338,29 @@ class AdminController extends Controller
 
 
        }else{
-       
-       $TotalBoleta = $TotalBoleta + $doc3[0]->bruto;
-       $TotalFactura =$TotalFactura + $doc3[1]->bruto;
+       //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc3[0] )){
 
-       $TotalCantBoletas = $TotalCantBoletas+$doc3[0]->cantidad;
-       $TotalCantFacturas =$TotalCantFacturas+$doc3[1]->cantidad;
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc3[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc3[0]->cantidad;
+            }
+  
+            if(! isset($doc3[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc3[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc3[1]->cantidad;
+            
+          }
 
        $collection = $collection->merge(Collection::make($doc3)); 
        }
@@ -314,12 +379,29 @@ class AdminController extends Controller
 
 
        }else{
-     
-       $TotalBoleta = $TotalBoleta + $doc4[0]->bruto;
-       $TotalFactura =$TotalFactura + $doc4[1]->bruto;
+     //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc4[0] )){
 
-       $TotalCantBoletas = $TotalCantBoletas+$doc4[0]->cantidad;
-       $TotalCantFacturas =$TotalCantFacturas+$doc4[1]->cantidad;
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc4[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc4[0]->cantidad;
+            }
+  
+            if(! isset($doc4[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc4[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc4[1]->cantidad;
+            
+          }
 
        $collection = $collection->merge(Collection::make($doc4)); 
        }  
@@ -336,12 +418,29 @@ class AdminController extends Controller
        if(empty($doc5)){
 
        }else{
-      
-       $TotalBoleta = $TotalBoleta + $doc5[0]->bruto;
-       $TotalFactura =$TotalFactura + $doc5[1]->bruto;
+      //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc5[0] )){
 
-       $TotalCantBoletas = $TotalCantBoletas+$doc5[0]->cantidad;
-       $TotalCantFacturas =$TotalCantFacturas+$doc5[1]->cantidad;
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc5[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc5[0]->cantidad;
+            }
+  
+            if(! isset($doc5[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc5[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc5[1]->cantidad;
+            
+          }
 
        $collection = $collection->merge(Collection::make($doc5)); 
        }
@@ -357,13 +456,29 @@ class AdminController extends Controller
         if(empty($doc6)){
 
         }else{
-       
-        
-        $TotalBoleta = $TotalBoleta + $doc6[0]->bruto;
-        $TotalFactura =$TotalFactura + $doc6[1]->bruto;
+       //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc6[0] )){
 
-        $TotalCantBoletas = $TotalCantBoletas+$doc6[0]->cantidad;
-        $TotalCantFacturas =$TotalCantFacturas+$doc6[1]->cantidad;
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc6[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc6[0]->cantidad;
+            }
+  
+            if(! isset($doc6[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc6[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc6[1]->cantidad;
+            
+          }
         
         $collection = $collection->merge(Collection::make($doc6)); 
         }
@@ -381,11 +496,29 @@ class AdminController extends Controller
         if(empty($doc7)){
          
         }else{
-        $TotalBoleta = $TotalBoleta + $doc7[0]->bruto;
-        $TotalFactura =$TotalFactura + $doc7[1]->bruto;
+       //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc7[0] )){
 
-        $TotalCantBoletas = $TotalCantBoletas+$doc7[0]->cantidad;
-        $TotalCantFacturas =$TotalCantFacturas+$doc7[1]->cantidad;
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc7[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc7[0]->cantidad;
+            }
+  
+            if(! isset($doc7[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc7[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc7[1]->cantidad;
+            
+          }
         
         $collection = $collection->merge(Collection::make($doc7));
         
@@ -404,11 +537,29 @@ class AdminController extends Controller
 
 
         }else{
-        $TotalBoleta = $TotalBoleta + $doc8[0]->bruto;
-        $TotalFactura =$TotalFactura + $doc8[1]->bruto;
+     //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc8[0] )){
 
-        $TotalCantBoletas = $TotalCantBoletas+$doc8[0]->cantidad;
-        $TotalCantFacturas =$TotalCantFacturas+$doc8[1]->cantidad;
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc8[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc8[0]->cantidad;
+            }
+  
+            if(! isset($doc8[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc8[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc8[1]->cantidad;
+            
+          }
         
         $collection = $collection->merge(Collection::make($doc8));
        }
@@ -426,11 +577,29 @@ class AdminController extends Controller
 
 
         }else{
-        $TotalBoleta = $TotalBoleta + $doc9[0]->bruto;
-        $TotalFactura =$TotalFactura + $doc9[1]->bruto;
+        //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc9[0] )){
 
-        $TotalCantBoletas = $TotalCantBoletas+$doc9[0]->cantidad;
-        $TotalCantFacturas =$TotalCantFacturas+$doc9[1]->cantidad;
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc9[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc9[0]->cantidad;
+            }
+  
+            if(! isset($doc9[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc9[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc9[1]->cantidad;
+            
+          }
 
         $collection = $collection->merge(Collection::make($doc9));  
         }
@@ -447,12 +616,29 @@ class AdminController extends Controller
         if(empty($doc10)){
 
         }else{
-       
-        $TotalBoleta = $TotalBoleta + $doc10[0]->bruto;
-        $TotalFactura =$TotalFactura + $doc10[1]->bruto;
+        //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc10[0] )){
 
-        $TotalCantBoletas = $TotalCantBoletas+$doc10[0]->cantidad;
-        $TotalCantFacturas =$TotalCantFacturas+$doc10[1]->cantidad;
+           
+            $TotalBoleta = $TotalBoleta + 0;
+             $TotalCantBoletas = $TotalCantBoletas+0;
+  
+            }else{
+  
+              $TotalBoleta = $TotalBoleta + $doc10[0]->bruto;
+              $TotalCantBoletas = $TotalCantBoletas+$doc10[0]->cantidad;
+            }
+  
+            if(! isset($doc10[1] )){
+               $TotalFactura = $TotalFactura +0;
+              $TotalCantFacturas = $TotalCantFacturas+0;
+            }else{
+  
+            $TotalFactura =$TotalFactura + $doc10[1]->bruto;
+            $TotalCantFacturas =$TotalCantFacturas+$doc10[1]->cantidad;
+            
+          }
         
         $collection = $collection->merge(Collection::make($doc10));
         }
@@ -465,19 +651,40 @@ class AdminController extends Controller
         where
         fecha_real between ? and ? and
         tiempo Between 190000 And 195959 group by tipo', [$fecha1,$fecha2]);
+      // dd('varaible 11',$doc11);
         if(empty($doc11)){
 
 
         }else{
-      
-        $TotalBoleta = $TotalBoleta + $doc11[0]->bruto;
-        $TotalFactura =$TotalFactura + $doc11[1]->bruto;
-        
-        $TotalCantBoletas = $TotalCantBoletas+$doc11[0]->cantidad;
-        $TotalCantFacturas =$TotalCantFacturas+$doc11[1]->cantidad;
+          //posicion [0] Boletas 
+          //posicion [1] Facturas
+          if(! isset($doc11[0] )){
 
-        $collection = $collection->merge(Collection::make($doc11)); 
+           
+          $TotalBoleta = $TotalBoleta + 0;
+           $TotalCantBoletas = $TotalCantBoletas+0;
+
+          }else{
+
+            $TotalBoleta = $TotalBoleta + $doc11[0]->bruto;
+            $TotalCantBoletas = $TotalCantBoletas+$doc11[0]->cantidad;
+          }
+
+          if(! isset($doc11[1] )){
+             $TotalFactura = $TotalFactura +0;
+            $TotalCantFacturas = $TotalCantFacturas+0;
+          }else{
+
+          $TotalFactura =$TotalFactura + $doc11[1]->bruto;
+          $TotalCantFacturas =$TotalCantFacturas+$doc11[1]->cantidad;
+          
         }
+         
+        
+          $collection = $collection->merge(Collection::make($doc11));
+
+        }
+        /*
          //Rango de las 20:00:00 a las 20:59:59
          $doc12=DB::select('select
          tipo as "Tipo" , 
@@ -487,19 +694,22 @@ class AdminController extends Controller
          where
          fecha_real between ? and ? and
          tiempo Between 200000 And 205959 group by tipo', [$fecha1,$fecha2]);
+         */
          
-         
-         if(empty($collection)){
+         if(!isset($collection[0])){
          
           $collection=null;
           $TotalBoleta = 0;
           $TotalFactura =0;
           $TotalCantBoletas = 0;
           $TotalCantFacturas =0;
-
+        
          }
        
-    
+        //
+       // dd($collection[0]);
+        
+      
      
 
        return view('admin.VentasPorHora',compact('collection','TotalFactura','TotalBoleta','TotalCantBoletas','TotalCantFacturas'));

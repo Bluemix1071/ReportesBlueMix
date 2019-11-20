@@ -16,6 +16,15 @@
     <link rel="stylesheet" href="{{asset("assets/$theme/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset("assets/$theme/dist/css/adminlte.min.css")}}">
+
+      {{-- <!-- Full calendar -->
+      <link rel="stylesheet" href="{{asset("assets/$theme/plugins/fullcalendar/main.min.css")}}">
+     
+      <link rel="stylesheet" href="{{asset("assets/$theme/plugins/fullcalendar-daygrid/main.min.css")}}">
+      <link rel="stylesheet" href="{{asset("assets/$theme/plugins/fullcalendar-timegrid/main.min.css")}}">
+      <link rel="stylesheet" href="{{asset("assets/$theme/plugins/fullcalendar-bootstrap/main.min.css")}}">
+ --}}
+
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- Ionicons -->
@@ -61,17 +70,17 @@
     
 
 
-    <script src="{{asset("assets/$theme/plugins/jquery/jquery.min.js")}}"></script>
+   <script src="{{asset("assets/$theme/plugins/jquery/jquery.min.js")}}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset("assets/$theme/plugins/jquery-ui/jquery-ui.min.js")}}"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->  --}}
+ <script>
   $.widget.bridge('uibutton', $.ui.button)
-</script>
+</script> 
 <!-- Bootstrap 4 -->
 <script src="{{asset("assets/$theme/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="{{asset("assets/$theme/plugins/moment/moment.min.js")}}"></script>
+<script src="{{asset("assets/$theme/plugins/moment/moment.min.js")}}"></script> 
 <script src="{{asset("assets/$theme/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js")}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset("assets/$theme/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
@@ -80,6 +89,9 @@
 <!-- Toastr -->
 <script src="{{asset("assets/$theme/plugins/toastr/toastr.min.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/sweetalert2/sweetalert2.min.js")}}"></script>
+
+
+
 
 <script> $('#mimodalejemplo').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
@@ -95,7 +107,7 @@
         modal.find('.modal-body #tipo').val(tipo);
         modal.find('.modal-body #Estado').val(estado);
   })</script>
-=======
+
 @yield('script')
 
 

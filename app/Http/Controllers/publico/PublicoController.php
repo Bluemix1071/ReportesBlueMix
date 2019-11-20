@@ -44,7 +44,6 @@ class PublicoController extends Controller
 
       if ($request->ajax()) {
       //  dd($request->searchText);
-      
         $productos=DB::table('productos_negativos')
         ->where('codigo','LIKE','%'.$request->searchText.'%')
         ->orwhere('nombre','LIKE','%'.$request->searchText.'%')
