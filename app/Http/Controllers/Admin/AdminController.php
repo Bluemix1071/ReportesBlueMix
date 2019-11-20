@@ -221,22 +221,15 @@ class AdminController extends Controller
 
     public function updatemensaje(Request $request)
     {
+ 
+      $mensajes = mensajes::findOrFail($request->id);
 
-        $usuario=mensajes::findOrfail($request->id);
-        $usuario->id=$request->get('id');
-        $usuario->sender_id=$request->get('sender_id');
-        $usuario->recipient_id=$request->get('recipient_id');
-        $usuario->body=$request->get('body');
-        $usuario->created_at=$request->get('created_at');
-        $usuario->updated_at=$request->get('updated_at');
-        $usuario->estado=$request->get('estado');
-        $usuario->update();
-        dd($usuario);
-        return back();
+      $mensajes->estado= 0;
+      $mensajes->update();
+      
 
         
-        // return view('publicos.index');
-
+      return back();
     }
 
 

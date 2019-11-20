@@ -26,6 +26,7 @@ class InicioController extends Controller
         $users = User::where('id','!=',auth()->id())->
                         where('estado',1)->get();
 
+      
         $mensaje=DB::table('users')
         ->join('mensajes', 'mensajes.sender_id', '=', 'users.id')
         ->where('users.id','!=',auth()->id())
@@ -34,18 +35,13 @@ class InicioController extends Controller
         ->where('mensajes.recipient_id','=', auth()->id())
         ->get();
 
+   
         $conteo=DB::table('mensajes')
         ->where('mensajes.estado',1)
         ->where('mensajes.recipient_id','=', auth()->id())
         ->get();
         $conteo1 = $conteo->count();
 
-        // $updatee=DB::table('post')
-        // ->where('mensajes.estado',1)
-        // ->where('mensajes.recipient_id','=', auth()->id())
-        // ->update(['estado' => "0"]);
-
-       // dd($mensaje);
   
     return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1'));
     }

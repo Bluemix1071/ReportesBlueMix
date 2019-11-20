@@ -8,7 +8,7 @@ class mensajes extends Model
 {
     // protected $guarded  = ['id'];
 
-
+    protected $table = 'mensajes';
     public $timestamps=false;
     use Notifiable;
 
