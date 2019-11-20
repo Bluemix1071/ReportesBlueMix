@@ -219,18 +219,7 @@ class AdminController extends Controller
 
     }
 
-    public function updatemensaje(Request $request)
-    {
- 
-      $mensajes = mensajes::findOrFail($request->id);
 
-      $mensajes->estado= 0;
-      $mensajes->update();
-      
-
-        
-      return back();
-    }
 
 
     public function DocumentosPorHora(Request $request){

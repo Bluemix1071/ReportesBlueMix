@@ -5,6 +5,8 @@ namespace App\Http\Controllers\publico;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+use App\mensajes;
+
 
 class PublicoController extends Controller
 {
@@ -57,6 +59,19 @@ class PublicoController extends Controller
 
       }
 
+    }
+
+    public function updatemensaje(Request $request)
+    {
+ 
+      $mensajes = mensajes::findOrFail($request->id);
+
+      $mensajes->estado= 0;
+      $mensajes->update();
+      
+
+        
+      return back();
     }
 
 
