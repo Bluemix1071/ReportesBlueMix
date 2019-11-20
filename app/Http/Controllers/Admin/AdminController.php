@@ -12,6 +12,7 @@ use App\Exports\ProductospormarcaExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 use App;
+use App\mensajes;
 use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -216,6 +217,26 @@ class AdminController extends Controller
      
       return view('admin.CompraProductosPorFecha',compact('productos'));
 
+
+    }
+
+    public function updatemensaje(Request $request)
+    {
+
+        $usuario=mensajes::findOrfail($request->id);
+        $usuario->id=$request->get('id');
+        $usuario->sender_id=$request->get('sender_id');
+        $usuario->recipient_id=$request->get('recipient_id');
+        $usuario->body=$request->get('body');
+        $usuario->created_at=$request->get('created_at');
+        $usuario->updated_at=$request->get('updated_at');
+        $usuario->estado=$request->get('estado');
+        $usuario->update();
+        dd($usuario);
+        return back();
+
+        
+        // return view('publicos.index');
 
     }
 
