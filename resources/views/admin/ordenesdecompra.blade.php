@@ -25,8 +25,9 @@
                       <th scope="col">IVA</th>
                       <th scope="col">Total O/C</th>
                       <th scope="col">Estado</th>
-                      <th scope="col">cod.Int</th>
-                      <th scope="col">cod.Prov</th>
+                      <th scope="col">Codigo</th>
+                      <th scope="col">Codigo</th>
+                      <th scope="col">Excel</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -34,7 +35,7 @@
                       <tr>
                           <td>{{$item->nombre_del_proveedor}}</td>
                         <th >{{$item->numero_de_orden_de_compra}}</th>
-                        <td>{{$item->fecha}}</td>
+                        <td>{{$item->fecha }}</td>
                         <td style="text-align:center">{{number_format($item->NetoOC,0,',','.')}}</td>
                         <td style="text-align:center">{{number_format($item->IvaOC,0,',','.')}}</td>
                         <td style="text-align:center">{{number_format($item->total,0,',','.')}}</td>
@@ -45,19 +46,18 @@
                         @else
                         <td><font color="red">Nula</font></td>
                         @endif
-                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Interno</a></td>
-          
-                      </div>
+                        <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}" class="btn btn-primary" > Interno</a></td>
+                        <td><a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}" class="btn btn-primary" > Proveedor</a></td>
+                        <td><a href="{{route('ordenExcel', $item->numero_de_orden_de_compra)}}" class="btn btn-success" >Excel</a></td>
             
-                <td><a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}"class="btn btn-info">Codigo Proveedor</a></td>
-        </div>
                       </tr>
                       @endforeach
                     </tbody>
-                </table>
+            </table>
           </div>
-        </div>  
-</div>
+        </div>
+     </div>
+ 
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">

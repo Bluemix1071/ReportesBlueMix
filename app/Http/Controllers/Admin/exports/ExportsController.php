@@ -10,6 +10,7 @@ use App\Exports\AdminExport;
 use App\Exports\ProductospormarcaExport;
 use App\Exports\DesviacionExports;
 use App\Exports\CambiodepreciosExport;
+use App\Exports\ordenExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -50,6 +51,15 @@ class ExportsController extends Controller
     
     
      }
+
+
+     public function exportExelOrdenDeCompra($numero_de_orden_de_compra){
+  
+     // dd($numero_de_orden_de_compra);
+        return Excel::download(new ordenExport($numero_de_orden_de_compra), 'OrdenDeCompra'.$numero_de_orden_de_compra.'.xlsx');
+      
+      
+       }
 
 
 
