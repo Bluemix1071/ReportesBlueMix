@@ -24,7 +24,8 @@
 <table >
     <thead>
       <tr >
-        <th >Cód prov.</th>
+        <th >Cód Proveedor</th>
+        <th >Cód Interno</th>
         <th >Descripción</th>
         <th >Marca</th>
         <th >Unidad</th>
@@ -36,7 +37,8 @@
     <tbody>
       @foreach($ordendecompradetalle as $item)
         <tr>
-          <th>{{$item->CodProveedor,}}</th>
+          <th>{{$item->CodProveedor}}</th>
+          <th>{{$item->Codigo}}</th>
           <td>{{$item->Descripcion}}</td>
           <td >{{$item->Marca}}</td>
           <td >{{$item->Unidad}}</td>

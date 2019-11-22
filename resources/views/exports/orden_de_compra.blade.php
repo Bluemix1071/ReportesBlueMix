@@ -58,7 +58,7 @@
 
   <h5 class="neto">Neto:  {{number_format($productos[0]->NetoOC,0,',','.')}}</h5>
   <h5 class="iva">I.V.A.:  {{number_format($productos[0]->IvaOC,0,',','.')}}</h5>
-  <h5 class="total">Total: {{number_format($productos[0]->IvaOC,0,',','.')}}</h5>
+  <h5 class="total">Total: {{number_format($productos[0]->TotalOC,0,',','.')}}</h5>
 
 
   <h5 class="facturar">Facturar a:</h5>
