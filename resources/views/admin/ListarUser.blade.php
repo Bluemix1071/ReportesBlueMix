@@ -97,7 +97,7 @@
                             @enderror
                         </div>
                     </div>
-                    <!-- Tipo de Usuario -->
+                    <!-- Tipo de Usuarioo -->
                     <div class="form-group row">
                         <label for="Tipo" class="col-md-4 col-form-label text-md-right">Tipo Usuario</label>
 
@@ -130,7 +130,7 @@
        </div>
      </div>
    </div>
-    <!-- FIN Modal -->
+    <!-- FIN Modall -->
 @endsection
 @section('script')
 
