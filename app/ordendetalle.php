@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class ordendetalle extends Model
 {
     public $timestamps=false;
-    protected $table = 'ordendecompradetalle';
+    protected $table = 'OrdenDeCompraDetalle';
     use Notifiable;
 
     /**
