@@ -91,7 +91,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
 
-    //---------------------Exportaciones orden de compra----------------------//
+    //---------------------Exportaciones orden de compra------  vgf----------------//
 
     Route::get('/export', 'exports\MyController@export')->name('export');
     Route::get('/importarordendecompra', 'exports\MyController@importExportView')->name('cargaroc');
