@@ -13,7 +13,7 @@ Route::post('/graficos', 'ChartControllers\PulseChartController@cargarC3')->name
 
 
 //Rutas autenticadas de sala
-Route::prefix('Ssla')->namespace('sala')->middleware('auth')->group(function(){
+Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/Cambiodeprecios','SalaController@index')->name('cambiodeprecios');
     Route::post('/Cambiodeprecios','SalaController@filtrarcambioprecios')->name('filtrarcambioprecios');
 });

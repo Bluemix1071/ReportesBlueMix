@@ -136,7 +136,7 @@ class PulseChartController extends Controller
      $a2019=DB::table('ventas_x_mes_y_anio')
      ->where('anio','=','2019')
      ->get();
-      $C3->dataset('2019', 'line', [$a2019[0]->total,$a2019[1]->total,$a2019[2]->total,$a2019[3]->total,$a2019[4]->total,$a2019[5]->total,$a2019[6]->total,$a2019[7]->total]);
+      $C3->dataset('2019', 'line', [$a2019[0]->total,$a2019[1]->total,$a2019[2]->total,$a2019[3]->total,$a2019[4]->total,$a2019[5]->total,$a2019[6]->total,$a2019[7]->total,$a2019[8]->total,$a2019[9]->total,$a2019[10]->total]);
       return view('graficos/pruebaChart', compact('C3'));
 
    
