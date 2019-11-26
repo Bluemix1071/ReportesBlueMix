@@ -55,7 +55,7 @@ Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
 Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->group(function(){
 
 
-    //----------------------------------LISTADO DE DATOS-----------------//
+    //----------------------------------LISTADO DE DATOS------------------//
     Route::get('/','AdminController@index')->name('inicioAdmin');
     Route::get('/ListaUsuarios','EditarUserController@index')->name('ListarUser');
     Route::post('/update', 'EditarUserController@update')->name('update');
@@ -72,7 +72,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 
 
-    //------------------------------FILTROS Y OTRAS COSAS XD----------------------------------------------//
+    //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
     Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');
     Route::post('/Productospormarca','AdminController@filtarProductospormarca')->name('filtrarpormarca');
     Route::post('/Productos','AdminController@FiltrarProductos')->name('filtrarProductos');
@@ -91,7 +91,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
 
-    //---------------------Exportaciones orden de compra----------------------//
+    //---------------------Exportaciones orden de compra------  vgf----------------//
 
     Route::get('/export', 'exports\MyController@export')->name('export');
     Route::get('/importarordendecompra', 'exports\MyController@importExportView')->name('cargaroc');

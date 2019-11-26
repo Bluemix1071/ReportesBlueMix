@@ -9,11 +9,11 @@ use Illuminate\Notifications\Notifiable;
 class ordendetalle extends Model
 {
     public $timestamps=false;
-    protected $table = 'ordendecompradetalle';
+    protected $table = 'OrdenDeCompraDetalle';
     use Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are mass assignablee.
      *
      * @var array
      */
@@ -22,7 +22,7 @@ class ordendetalle extends Model
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be hidden for arrayss.
      *
      * @var array
      */
