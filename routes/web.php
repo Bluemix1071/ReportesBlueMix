@@ -70,6 +70,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('compraProdutos','AdminController@IndexCompraProductos')->name('compraProd');
     Route::get('/ComprasPorHora','AdminController@DocumentosPorHoraIndex')->name('ComprasPorHoraIndex');
     Route::get('/Proyeccion','AdminController@ProyeccionIndex')->name('proyeccion');
+    Route::get('/areaproveedor','AdminController@areaproveedor')->name('areaproveedor');
+    Route::get('/areaproveedorfamilia','AdminController@areaproveedorfamilia')->name('areaproveedorfamilia');
+
 
 
 
@@ -94,7 +97,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
 
-    //---------------------Exportaciones orden de compra------  vgf----------------//
+    //---------------------Exportaciones orden de compra----------------------//
 
     Route::get('/export', 'exports\MyController@export')->name('export');
     Route::get('/importarordendecompra', 'exports\MyController@importExportView')->name('cargaroc');
