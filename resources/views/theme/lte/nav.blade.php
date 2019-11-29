@@ -206,6 +206,15 @@
                        </p>
                      </a>
                    </li>
+
+                   <li class="nav-item">
+                    <a href="{{route('proyeccion')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Proyeccion De Compras
+                       
+                       </p>
+                     </a>
+                   </li>
                   
                 </ul>
               </li>

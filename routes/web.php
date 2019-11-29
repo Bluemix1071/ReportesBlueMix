@@ -69,6 +69,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/VentasPorHora','AdminController@DocumentosPorHoraIndex')->name('ComprasPorHoraIndex');
     Route::get('compraProdutos','AdminController@IndexCompraProductos')->name('compraProd');
     Route::get('/ComprasPorHora','AdminController@DocumentosPorHoraIndex')->name('ComprasPorHoraIndex');
+    Route::get('/Proyeccion','AdminController@ProyeccionIndex')->name('proyeccion');
 
 
 
@@ -80,6 +81,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/VentasPorHora','AdminController@DocumentosPorHora')->name('ComprasPorHora');
     Route::post('ComprasProdutos','AdminController@CompraProductosPorFechas')->name('compraProdFiltro');
     Route::post('/ComprasPorHora','AdminController@DocumentosPorHora')->name('ComprasPorHora');
+    Route::post('/Proyeccion','AdminController@ProyeccionDeCompras')->name('proyeccionFiltro');
+
 
 
 

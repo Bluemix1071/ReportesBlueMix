@@ -203,6 +203,6 @@ Venta Productos
 </script> --}}
 
 {{--buscador js --}}
-<script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
+
 
 @endsection

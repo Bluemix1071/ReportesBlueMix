@@ -223,7 +223,7 @@ class AdminController extends Controller
 
 
 
-    public function DocumentosPorHora(Request $request){
+  public function DocumentosPorHora(Request $request){
 
  
     
@@ -719,9 +719,41 @@ class AdminController extends Controller
 
     }
 
+
     public function DocumentosPorHoraIndex(){
      
       return view('admin.VentasPorHora');
+
+    }
+
+
+ 
+    public function ProyeccionDeCompras(Request $request){
+    // dd($request->all());
+       $proyeccion_compra=DB::table('Proyeccion_compra_vendedor')
+       ->whereBetween('fecha_ingreso', array($request->fecha1,$request->fecha2))
+       ->where([
+        ['codigo', 'like', '%'.$request->codigo.'%'],
+        ['proveedor', 'Like', '%'.$request->proveedor.'%'],
+        ])->get();
+
+        //dd($proyeccion_compra);
+
+
+/*
+       ->whereBetween('fecha_ingreso', array($request->fecha1,$request->fecha2))
+       ->get();
+*/
+    
+       return view('admin.ProyeccionCompras',compact('proyeccion_compra'));
+
+    }
+
+    public function ProyeccionIndex(){
+
+
+      return view('admin.ProyeccionCompras');
+
 
     }
 
