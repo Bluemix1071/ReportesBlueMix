@@ -73,6 +73,23 @@ class AdminController extends Controller
       return view('admin.ordenesdecompra',compact('ordendecompra'));
     }
 
+    public function areaproveedor()
+    {
+      
+
+      return view('admin.areaproveedor');
+    }
+
+
+    public function areaproveedorfamilia(Request $request)
+    {
+
+      $familia =DB::table('stock_productos_area_proveedor_familia')->get();
+      
+
+      return view('admin.areaproveedorfamilia',compact('familia'));
+    }
+
 
 
     public function porcentajeDesviacion (){
