@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Session;
 
-class PermisoAdmin
+class GiftCard
 {
     /**
      * Handle an incoming request.
@@ -16,24 +16,23 @@ class PermisoAdmin
      */
     public function handle($request, Closure $next)
     {
-      // dd($this->permiso(),session()->get('tipo_usuario'));
         if ($this->permiso()) {
             return $next($request);    
         }
         Session::flash('error','No tiene los permisos para entrar a esta pagina');
         return redirect('/publicos')->with('mensaje','No tiene los permisos para entrar a esta pagina');
-       
     }
+
+
 
     private function permiso(){
+    
+        return session()->get('tipo_usuario') =='adminGiftCard' ;
+           
 
-        if(session()->get('tipo_usuario') =='admin' || session()->get('tipo_usuario') == 'adminGiftCard' ){
-            return true;
-
-        }else{
-
-        return false;
-
-        }
     }
 }
+
+
+
+

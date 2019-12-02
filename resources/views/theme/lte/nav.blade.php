@@ -119,8 +119,40 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library
+              Agregar items de giftcard -->
+              @if (session()->get('tipo_usuario') == 'adminGiftCard' )
+               <li class="nav-item has-treeview">
+                <a href="" class="nav-link">
+                  <i class="nav-icon fas fa-credit-card"></i>
+                  <p>
+                    Gift Card
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                
+                  <li class="nav-item">
+                    <a href="{{route('indexGiftCard')}}" class="nav-link">
+                      <i class="fas fa-cog"></i>
+                      <p>Mantencion De GiftCard</p>
+                    </a>
+                  </li>
+                  
+                </ul>
+              </li>
+              @endif
+
+
+
+
+
+
+
+
+               <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library
               Agregar items de administrador -->
-               @if (session()->get('tipo_usuario')=='admin')
+               @if (session()->get('tipo_usuario')=='admin'|| session()->get('tipo_usuario') == 'adminGiftCard' )
                <li class="nav-item has-treeview">
                 <a href="" class="nav-link">
                   <i class="nav-icon fas fa-user-lock"></i>
