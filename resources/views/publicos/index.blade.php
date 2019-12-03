@@ -78,8 +78,35 @@ Espacio Publico Bluemix
 
     </div>
     <br>
+    
     <div class="row justify-content-right">
-        <div class="col-md-3 col-md offset-9">
+        <div class="col-md-3">
+            <!-- Widget: user widget style 1 -->
+            <div class="card card-widget widget-user">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-info">
+                <h3 class="widget-user-username">Consulta de Saldo</h3>
+                <h5 class="widget-user-desc">Tarjeta Gift Card  </h5>
+              </div>
+              <div class="widget-user-image">
+                <img class="img-circle elevation-2" src="{{asset("assets/$theme/dist/img/giftcard.png")}}"  alt="User Avatar">
+              </div>
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-12 border-right">
+                    <div class="description-block">
+                      <a href="#" type="btn btn-success">CONSULTAR</a>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+              </div>
+            </div>
+            <!-- /.widget-user -->
+          </div>
+        <div class="col-md-3 col-md offset-6">
             <div class="panel-heading">
               <div class="modal-content">
                   <div class="modal-header">
@@ -112,6 +139,7 @@ Espacio Publico Bluemix
                   </div>
                 </div>
             </div>
+            
         </div>
     </div>
 
