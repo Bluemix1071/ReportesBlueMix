@@ -128,13 +128,13 @@ Proyección de Compras
           </thead>
       
           <tbody>
-                @if (empty($proyeccion_venta))
+                @if (empty($proyeccion_compra_venta))
             
                 @else
-            @foreach($proyeccion_venta as $item)
+            @foreach($proyeccion_compra_venta as $item)
               <tr>
-                <th >{{$item->codigo}}</th>
-                <td style="text-align:center">{{$item->Descripcion}}</td>
+                <td> {{$item->total}}</td>
+                <td style="text-align:center">{{$item->precio}}</td>
 
               </tr>
               @endforeach

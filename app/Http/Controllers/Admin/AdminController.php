@@ -754,15 +754,21 @@ class AdminController extends Controller
         ['proveedor', 'Like', '%'.$request->proveedor.'%'],
         ])->get();
 
-        //dd($proyeccion_compra);
+      $proyeccion_compra_venta =DB::table('vista_ventas_proyeccion')
+      ->select('deprec as precio',DB::raw('sum(decant) as total'))
+      ->whereBetween('defeco', array($request->fecha1,$request->fecha2))
+      ->where([
+       ['decodi', 'like', '%'.$request->codigo.'%'],
+       ])->get();
 
+      /// dd($proyeccion_compra_venta);
 
 /*
        ->whereBetween('fecha_ingreso', array($request->fecha1,$request->fecha2))
        ->get();
 */
     
-       return view('admin.ProyeccionCompras',compact('proyeccion_compra'));
+       return view('admin.ProyeccionCompras',compact('proyeccion_compra','proyeccion_compra_venta'));
 
     }
 
