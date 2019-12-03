@@ -249,9 +249,9 @@
 
 
                     <li class="nav-item">
-                    <a href="{{route('areaproveedor')}}" class="nav-link">
+                    <a href="{{route('comprassegunprov')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                       <p>Stock area/proveedor
+                       <p>Compras Segun Proveedor
                        </p>
                      </a>
                    </li>
@@ -364,7 +364,7 @@
                 </a>
               </li>
               <li class="nav-item">
-              <a href="{{route('comprassegunprov')}}" class="nav-link">
+              <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Consulta</p>
                 </a>
