@@ -112,7 +112,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')->group(function(){
 
-    Route::get('/','GiftCardController@index')->name('indexGiftCard');
+    Route::get('/Activacion','GiftCardController@index')->name('indexGiftCard');
+    Route::post('/Activacion','GiftCardController@generarGiftCard')->name('generarGiftCard');
     
 });
 
