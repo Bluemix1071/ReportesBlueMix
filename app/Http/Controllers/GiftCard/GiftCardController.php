@@ -71,7 +71,7 @@ class GiftCardController extends Controller
            $date = Carbon::now();
            $date = $date->format('Y-m-d');
            $User= session()->get('nombre');
-
+          
            try{
 
             DB::transaction(function () use ($date ,$User,$cantidadIteracion,$id,$params_array) {
@@ -81,13 +81,21 @@ class GiftCardController extends Controller
                         for ($i = 1; $i <= $cantidadIteracion; $i++)  {
                             $Ean13= $this->ean13_check_digit($id);
 
-                            $user= new User();
-                            $user->name=$params_array['name'];
-                            $user->surname=$params_array['surname'];
-                            $user->email=$params_array['email'];
+                            $gift= new \GiftCard();
+                            $gift->TARJ_ID=$id;
+                            $gift->TARJ_CODIGO=$Ean13;
+                            $gift->TARJ_MONTO_INICIAL=$params_array['Monto'];
+                            $gift->TARJ_MONTO_ACTUAL=$params_array['Monto'];
+                            $gift->TARJ_FECHA_ACTIVACIÓN=$date;
+                            $gift->TARJ_FECHA_VENCIMIENTO=$params_array['FechaVencimiento'];
+                            $gift->TARJ_COMPRADOR_NOMBRE=$params_array['NombreComprador'];
+                            $gift->TARJ_COMPRADOR_RUT=$params_array['RutComprador'];
+                            $gift->TARJ_RUT_USUARIO=$User;
+                            $gift->TARJ_ESTADO='V';
+                            $gift->save();
+                           
 
-
-                            
+                            /*
                             DB::table('tarjeta_gift_card')->insert([
                                 'TARJ_ID' => $id,
                                 'TARJ_CODIGO'=>$Ean13,
@@ -100,7 +108,7 @@ class GiftCardController extends Controller
                                 'TARJ_RUT_USUARIO'=>$User,
                                 'TARJ_ESTADO'=>'V'
                                 ]);
-                                $id=$id+1;
+                                $id=$id+1;*/
                         }
                         
                          
@@ -134,7 +142,7 @@ class GiftCardController extends Controller
             ->take(5)
             ->get();
             dd($UltimasTagjetas);*/
-        
+       // dd($gift);
         $date = Carbon::now();
        
         $date->addMonth(6);
