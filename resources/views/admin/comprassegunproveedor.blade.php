@@ -21,7 +21,7 @@
                       <th scope="col">Cantidad</th>
                       <th scope="col">Nombre Proveedor</th>
                       <th scope="col">Rut Proveedor</th>
-                      <th scope="col">Monto</th>
+                      <th scope="col">Total Bruto</th>
                     </tr>
                   </thead>
                   <tbody>

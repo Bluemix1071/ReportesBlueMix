@@ -24,17 +24,16 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
 
     Route::get('/','InicioController@index')->name('Publico');
     Route::post('/mensaje','InicioController@store')->name('mensaje');
-    // Route::post('/nav','InicioController@nav');
     Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
     Route::get('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('ProductosNegativos');
     Route::get('/ProductosNegativos2','publico\PublicoController@listarFiltrados')->name('filtro2');
     Route::get('/Informacion','publico\PublicoController@informacion')->name('informacion');
     Route::post('/updatemensaje', 'publico\PublicoController@updatemensaje')->name('updatemensaje');
+    Route::get('/ConsultaSaldoenvio','publico\PublicoController@ConsultaSaldo')->name('ConsultaSaldo');
+    Route::post('/ConsultaSaldoenvio', 'publico\PublicoController@ConsultaSaldoenvio')->name('ConsultaSaldoenvio');
 
 
 
-
-  
 
 //------------------------EXPORTACIONES------------------------------------//
 
@@ -117,5 +116,4 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 });
 
 
-   //hola
    

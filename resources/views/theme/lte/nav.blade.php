@@ -137,21 +137,20 @@
                       <p>Mantencion De GiftCard</p>
                     </a>
                   </li>
-                  
+                  <li class="nav-item">
+                      <a href="{{route('indexGiftCard')}}" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <p>Consumo De GiftCard</p>
+                      </a>
+                    </li>
+
                 </ul>
+                
               </li>
               @endif
 
 
-
-
-
-
-
-
-               <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library
-              Agregar items de administrador -->
+              <!-- Agregar items de administrador -->
                @if (session()->get('tipo_usuario')=='admin'|| session()->get('tipo_usuario') == 'adminGiftCard' )
                <li class="nav-item has-treeview">
                 <a href="" class="nav-link">
@@ -270,9 +269,9 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-              <a href="{{route('Publico')}}" class="nav-link ">
+              <a href="{{route('ConsultaSaldo')}}" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Inicio</p>
+                  <p>Gift Card</p>
                 </a>
               </li>
               <li class="nav-item">

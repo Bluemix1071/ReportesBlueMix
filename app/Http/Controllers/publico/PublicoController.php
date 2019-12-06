@@ -14,7 +14,26 @@ class PublicoController extends Controller
 
   public function informacion(){
 
-    return view ('publicos.informacion');
+    return view('publicos.informacion');
+  }
+
+  public function ConsultaSaldo(){
+
+    return view('publicos.consultadesaldogiftcard');
+  }
+
+  public function ConsultaSaldoenvio(Request $request){
+
+    // dd($request->all());
+
+    $saldo=DB::table('tarjeta_gift_card')
+      ->where('TARJ_CODIGO',$request->tarjeta)
+      ->where('TARJ_ESTADO','V')
+      ->get();
+     // dd($saldo);
+
+    return view('publicos.consultadesaldogiftcard',compact('saldo'));
+        
   }
 
   
