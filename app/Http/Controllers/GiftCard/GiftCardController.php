@@ -80,22 +80,7 @@ class GiftCardController extends Controller
 
                         for ($i = 1; $i <= $cantidadIteracion; $i++)  {
                             $Ean13= $this->ean13_check_digit($id);
-
-                            $gift= new \GiftCard();
-                            $gift->TARJ_ID=$id;
-                            $gift->TARJ_CODIGO=$Ean13;
-                            $gift->TARJ_MONTO_INICIAL=$params_array['Monto'];
-                            $gift->TARJ_MONTO_ACTUAL=$params_array['Monto'];
-                            $gift->TARJ_FECHA_ACTIVACIÓN=$date;
-                            $gift->TARJ_FECHA_VENCIMIENTO=$params_array['FechaVencimiento'];
-                            $gift->TARJ_COMPRADOR_NOMBRE=$params_array['NombreComprador'];
-                            $gift->TARJ_COMPRADOR_RUT=$params_array['RutComprador'];
-                            $gift->TARJ_RUT_USUARIO=$User;
-                            $gift->TARJ_ESTADO='V';
-                            $gift->save();
-                           
-
-                            /*
+                            
                             DB::table('tarjeta_gift_card')->insert([
                                 'TARJ_ID' => $id,
                                 'TARJ_CODIGO'=>$Ean13,
@@ -108,7 +93,7 @@ class GiftCardController extends Controller
                                 'TARJ_RUT_USUARIO'=>$User,
                                 'TARJ_ESTADO'=>'V'
                                 ]);
-                                $id=$id+1;*/
+                                $id=$id+1;
                         }
                         
                          
@@ -138,11 +123,19 @@ class GiftCardController extends Controller
 
         }
 
-       /* $UltimasTagjetas = GiftCard::latest()
-            ->take(5)
-            ->get();
-            dd($UltimasTagjetas);*/
-       // dd($gift);
+       $giftCreadas=DB::table('tarjeta_gift_card')
+       ->where('TARJ_COMPRADOR_RUT','=',$params_array['RutComprador'])
+       ->orderBy('TARJ_ID', 'desc')
+       ->take( $cantidadIteracion)
+       ->get();
+      
+
+
+
+
+       
+
+
         $date = Carbon::now();
        
         $date->addMonth(6);
@@ -151,7 +144,68 @@ class GiftCardController extends Controller
         
         
         //dd('cagasteXDD');
-        return view('giftCard.index',compact('date'));
+        return view('giftCard.index',compact('date','giftCreadas','params_array'));
+
+    }
+
+    public function BloqueoTarjetasIndex(){
+
+        return view('giftCard.BloqueoTargetas');
+    }
+
+    public function BloqueoTarjetas(Request $request){
+        dd($request->all());
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function imprimir($giftcard){
+        dd($giftcard);
+       // dd($request->all());
+        // $oculto = $request->oculto;
+        // dd($oculto);
+
     }
 
 

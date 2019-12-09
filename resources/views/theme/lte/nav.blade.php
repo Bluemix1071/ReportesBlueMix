@@ -137,6 +137,13 @@
                       <p>Mantencion De GiftCard</p>
                     </a>
                   </li>
+
+                  <li class="nav-item">
+                    <a href="{{route('Bloqueo')}}" class="nav-link">
+                      <i class="fas fa-cog"></i>
+                      <p>Bloqueo Gift Cards</p>
+                    </a>
+                  </li>
                   
                 </ul>
               </li>

@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Nota Pago</title>
+
 <script type="text/javascript" src="./JavaScript Print Link_files/jquery.js.descarga"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -22,26 +23,47 @@ p { margin-bottom: 30px; }
 ul { list-style: square; margin: 0 0 20px 20px; }
 pre{font-size: 1.7em;  }
 </style>
+
+<SCRIPT language="javascript">
+        function imprimir2()
+        { if ((navigator.appName == "Netscape")) { window.print() ;
+        }
+        else
+        { var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>';
+        document.body.insertAdjacentHTML('beforeEnd', WebBrowser); WebBrowser1.ExecWB(6, -1); WebBrowser1.outerHTML = "";
+        }
+        }
+        </SCRIPT>
+
+
+
+
+
 </head>
 
 <body cz-shortcut-listen="true" onload="Imprimir()" >
 <div id="container">
-<h1>Sociedad comercial Bluemix Ltda</h1>
-<pre>Rut : 727.283.950-2
-Giro : Articulos de escritorio libreria
-Rut : 727.283.950-2
-</pre>
-<h1>Nota De Pago</h1>
-<pre>
-<Strong>Datos Cliente</Strong>
-
-Nombre : Leeandro Sepulveda
-Rut : 19.796.665-3
-Direccion : mi casa
+<h1>SOCIEDAD COMERCIAL BLUE MIX LTDA.</h1>
+<pre>C.M.: 5 DE ABRIL 1071 – CHILLAN
+GIRO:LIBRERÍA,JUGIETERIA POR MAYOR Y DETALLE
+RUT Nro: 77.283.950-2
+LOC.: 5 DE ABRIL 1071 – CHILLAN
+Nro. Caja: 001    Nota de cobro Nro. {{$idBoleta[0]->id_bueno}}
+Fecha: 07-12-2019
 </pre>
 <pre>
-<strong> Codigo</strong>      <strong>Monto</strong>
-
+<strong> Codigo</strong>           <strong>Monto</strong>    
+                               
+@foreach ($giftCreadas as $item)
+{{$item->TARJ_CODIGO}}  |    ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}
+    
+@endforeach 
+        
+</pre>
+<h1>FORMA DE PAGO: EFECTIVO</h1>
+<pre>
+El uso de la Giftcard está sujeto a las
+condiciones impresas en la misma tarjeta
 
 </pre>
 
@@ -62,8 +84,9 @@ pageTracker._trackPageview();
 <script>
 
 function Imprimir(){
-	window.print();
-		return false;
+    window.print();
+  return false;
+		
 }
 		
 
@@ -71,6 +94,5 @@ function Imprimir(){
 
 
 
-</script>
 </body>
 </html>

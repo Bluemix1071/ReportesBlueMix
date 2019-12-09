@@ -114,6 +114,9 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
     Route::get('/Activacion','GiftCardController@index')->name('indexGiftCard');
     Route::post('/Activacion','GiftCardController@generarGiftCard')->name('generarGiftCard');
+    Route::get('/imprimir/{giftCreadas}','GiftCardController@imprimir')->name('imprimir');
+    Route::get('/BloqueoGiftCards','GiftCardController@BloqueoTarjetasIndex')->name('Bloqueo');
+    Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
     
 });
 
