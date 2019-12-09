@@ -78,7 +78,7 @@ Gift Card
                   </div>
                 </div>
                 <div class="form-group col-md-12 btn-group btn-group-block">
-                <button type="submit" class="btn btn-success" onclick="limpiarFormulario()">Activar</button>
+                <button type="submit" class="btn btn-success" onclick="limpiarFormulario()">Vender</button>
                 </div>
               </form>
         </div>
