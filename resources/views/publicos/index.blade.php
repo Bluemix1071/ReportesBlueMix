@@ -95,7 +95,7 @@ Espacio Publico Bluemix
                 <div class="row">
                   <div class="col-sm-12 border-right">
                     <div class="description-block">
-                      <a href="#" type="btn btn-success">CONSULTAR</a>
+                      <a href="{{route('ConsultaSaldo')}}" type="btn btn-success">CONSULTAR</a>
                     </div>
                     <!-- /.description-block -->
                   </div>
