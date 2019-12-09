@@ -138,8 +138,8 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{route('indexGiftCard')}}" class="nav-link">
-                        <i class="fas fa-cog"></i>
+                      <a href="{{route('consumotarj')}}" class="nav-link">
+                        <i class="fas fa-book"></i>
                         <p>Consumo De GiftCard</p>
                       </a>
                     </li>

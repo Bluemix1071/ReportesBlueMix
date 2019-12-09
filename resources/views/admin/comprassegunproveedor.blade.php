@@ -18,7 +18,7 @@
                   <thead>
                     <tr>
                       <th scope="col">Año</th>
-                      <th scope="col">Cantidad</th>
+                      <th scope="col">Cantidad O/C</th>
                       <th scope="col">Nombre Proveedor</th>
                       <th scope="col">Rut Proveedor</th>
                       <th scope="col">Total Bruto</th>

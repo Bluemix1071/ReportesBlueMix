@@ -73,6 +73,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/areaproveedorfamilia','AdminController@areaproveedorfamilia')->name('areaproveedorfamilia');
 
 
+    Route::get('/ConsumoTarjeta','AdminController@vistaconsumotarjeta')->name('consumotarj');
+    Route::post('/ConsumoTarjeta','AdminController@filtrarcambioprecios')->name('filtrartarjeta');
+
+
 
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
