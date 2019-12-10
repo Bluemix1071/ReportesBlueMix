@@ -84,6 +84,7 @@ public function exportpdf($numero_de_orden_de_compra){
 
 public function exportpdfprov($numero_de_orden_de_compra){
 
+  
   $productos = DB::table('ordenesdecompra')
   ->where('numero_de_orden_de_compra','=',$numero_de_orden_de_compra)
   ->get();

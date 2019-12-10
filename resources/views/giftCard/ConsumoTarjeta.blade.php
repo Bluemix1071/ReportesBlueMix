@@ -41,6 +41,7 @@ Consumo GiftCard
                   <th scope="col">Rut Cliente</th>
                   <th scope="col">Fecha De Consumo</th>
                   <th scope="col">Monto Consumido</th>
+                  <th scope="col">Acciones</th>
                 </tr>
               </thead>
               <tbody> 
@@ -52,6 +53,7 @@ Consumo GiftCard
                   <th >{{$item->CONTARJ_CLIENTE}}</th>
                   <td>{{$item->CONTARJ_FECHA}}</td>
                   <td style="text-align:center">{{number_format($item->CONTARJ_MONTO,0,',','.')}}</td>
+                  <td><a href="{{route('detalletarjeta', $item->fk_cargos)}}" class="btn btn-primary" >Detalle</a></td>
                 </tr>
               @endforeach     
              @endif
@@ -165,6 +167,8 @@ Consumo GiftCard
         </div>
     </div>
 </div>
+
+
 
 
 
