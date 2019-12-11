@@ -116,9 +116,18 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')->group(function(){
 
     Route::get('/Activacion','GiftCardController@index')->name('indexGiftCard');
-    Route::post('/Activacion','GiftCardController@generarGiftCard')->name('generarGiftCard');
     Route::get('/imprimir/{giftCreadas}','GiftCardController@imprimir')->name('imprimir');
     Route::get('/BloqueoGiftCards','GiftCardController@BloqueoTarjetasIndex')->name('Bloqueo');
+    Route::get('/Load/{Monto}','GiftCardController@CargarTablaCodigos')->name('cargarCodigos');
+    Route::get('/VentasGiftCards','GiftCardController@IndexVentasGiftCard')->name('indexVentas');
+    Route::get('/LoadVenta/{Monto}','GiftCardController@CargarTablaCodigosVenta')->name('cargarCodigosVenta');
+
+
+
+
+
+
+    Route::post('/Activacion','GiftCardController@generarGiftCard')->name('generarGiftCard');
     Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
     
 });

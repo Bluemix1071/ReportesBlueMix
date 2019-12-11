@@ -18,17 +18,7 @@ Gift Card
           <h3 class="display-4 m-2 pb-2" >Activacion Gif Cards</h3>  
       </div>
       <div class="col-md-6">
-        <br>
-        @if (empty($giftCreadas))
-        <span class="float-right"><button class="btn btn-danger"><i class="fas fa-print"></i></button> </span>
-        @else
-        {{-- <form action="{{route('imprimir')}}" method="POST">
-          @csrf
-          <input  type="hidden" name="oculto" value="{{$giftCreadas}}" >
-          <span class="float-right"><button class="btn btn-danger"><i class="fas fa-print"></i></button> </span>
-        </form> --}}
-      
-        @endif
+        
       </div>
       
         
@@ -47,40 +37,114 @@ Gift Card
             
         <form action="{{route('generarGiftCard')}}" name="formulario" method="POST" onsubmit="limpiar()">
           @csrf
-                    <span>Cantidad de Tarjetas</span> 
-                    <hr>
-                <div class="form-row">
-                  <div class="form-group col-md-12">
-                    <label for="inputPassword4">¿Cuantas Tarjetas?</label>
-                    <input type="number" class="form-control" id="cantidad" name="Cantidad"  required>
+
+          <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="inputPassword4">Cantidad de tarjetas</label>
+              <input type="number" class="form-control" id="Cantidad" name="Cantidad"  required >
+              </div>
+           
+            </div>
+                {{-- <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputPassword4">Desde</label>
+                  <input type="number" class="form-control" id="Desde" name="Desde"  value="{{$idBD}}" required readonly>
                   </div>
-                </div>
-                <hr>
+                  <div class="form-group col-md-6">
+                    <label for="inputPassword4">hasta</label>
+                    <input type="number" class="form-control" id="hasta" name="hasta"  required>
+                  </div>
+                </div> --}}
+               
                 <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="inputCity">Monto</label>
-                        <input type="number" class="form-control" name="Monto" id="Monto" required >
+                          <select name="Monto" class="form-control">
+                            <option value="">Selecione</option>
+                            <option value="20000">$20.000</option>
+                            <option value="40000">$40.000</option>
+                            <option value="60000">$60.000</option>
+                            <option value="100000">$100.000</option>
+                          </select>
                         </div>
-                        <div class="form-group col-md-6">
-                          <label for="inputState">Fecha Vencimiento (Sugerido 6 meses)</label>
-                        <input type="date" class="form-control" name="FechaVencimiento" id="FechaVencimiento" required value="{{$date}}">
-                        </div>
+                       {{-- <div class="form-group col-md-6">
+                            <label for="inputPassword4">Fecha Vencimiento</label>
+                            <input type="date" class="form-control" id="FechaVencimiento" name="FechaVencimiento"  required>
+                       </div> --}}
                       </div>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="inputCity">Nombre Comprador</label>
-                    <input type="text" class="form-control" pattern="[a-z A-Z]{3,20}"  name="NombreComprador" id="NombreComprador"   required>
-                    <p class="note">solo se pueden ingresar letras entre 3 a 20 caracteres </p>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="inputState">Rut</label>
-                      <input type="text" class="form-control" name="RutComprador" required  oninput="checkRut(this)" id="rut" >
-                  </div>
-                </div>
                 <div class="form-group col-md-12 btn-group btn-group-block">
-                <button type="submit" class="btn btn-success" onclick="limpiarFormulario()">Vender</button>
+                <button type="submit" class="btn btn-success" onclick="limpiarFormulario()">Activar</button>
                 </div>
               </form>
+
+              
+              <div class="card-group">
+                  <div class="card">
+                    <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap">
+                    <div class="card-body">
+                      @if (!empty($codigo))
+
+                      @else
+                      <h5 class="card-title">Stock: <strong>{{$cantGift[0]->CantidadGift}}</strong> </h5>
+                      @endif
+                      <hr>
+                      <p class="card-text">  <a href="{{route('cargarCodigos',20000)}}" class="btn btn-danger"> <i class="fas fa-file-upload"></i> </a>  </p>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted">GiftCard $20.000</small>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <img class="card-img-top" src="{{asset("giftcard/img/40.000.jpg")}}" alt="Card image cap">
+                    <div class="card-body">
+                        @if (!empty($codigo))
+
+                        @else
+                        <h5 class="card-title">Stock: <strong>{{$cantGift[1]->CantidadGift}}</strong> </h5>
+                        @endif
+                        <hr>
+                        <p class="card-text">  <a href="{{route('cargarCodigos',40000)}}" class="btn btn-danger "> <i class="fas fa-file-upload"></i> </a>  </p>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted">GiftCard $40.000</small>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <img class="card-img-top" src="{{asset("giftcard/img/60.000.jpg")}}" alt="Card image cap">
+                    <div class="card-body">
+                        @if (!empty($codigo))
+
+                        @else
+                        <h5 class="card-title">Stock: <strong>{{$cantGift[2]->CantidadGift}}</strong> </h5>
+
+                        @endif
+                        <hr>
+                        <p class="card-text">  <a href="{{route('cargarCodigos',60000)}}" class="btn btn-danger"> <i class="fas fa-file-upload"></i> </a>  </p>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted">GiftCard $60.000</small>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <img class="card-img-top" src="{{asset("giftcard/img/100.000.jpg")}}" alt="Card image cap">
+                    <div class="card-body">
+                        @if (!empty($codigo))
+
+                        @else
+                        <h5 class="card-title">Stock: <strong>{{$cantGift[3]->CantidadGift}}</strong> </h5>
+                        @endif
+                        <hr>
+                    <p class="card-text">  <a href="{{route('cargarCodigos',100000)}}" class="btn btn-danger"> <i class="fas fa-file-upload"></i> </a>  </p>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted">GiftCard $100.000</small>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
         </div>
         <div class="col-md-6">
          
@@ -127,7 +191,7 @@ Gift Card
     $('#tarjetas').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-           
+          'copy', 'csv', 'excel', 'pdf', 'print'
             
         ],
           "language":{

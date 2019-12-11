@@ -137,6 +137,13 @@
                       <p>Mantencion De GiftCard</p>
                     </a>
                   </li>
+                  
+                  <li class="nav-item">
+                      <a href="{{route('indexVentas')}}" class="nav-link">
+                          <i class="nav-icon fas fa-search-dollar"></i>
+                        <p>Ventas GiftCards</p>
+                      </a>
+                  </li>
 
                   <li class="nav-item">
                     <a href="{{route('Bloqueo')}}" class="nav-link">
@@ -150,9 +157,10 @@
                         <i class="fas fa-book"></i>
                         <p>Consumo De GiftCard</p>
                       </a>
-                    </li>
+                  </li>
 
-                </ul>
+
+                </ul> 
                 
               </li>
               @endif
