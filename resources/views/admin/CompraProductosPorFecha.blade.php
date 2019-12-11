@@ -77,9 +77,8 @@ Compra Productos
                         <td style="text-align:center">{{$item->Cod_Producto}}</td>
                         <td style="text-align:center">{{$item->Descripción_Producto}}</td>
                         <td style="text-align:center">{{$item->Cantidad}}</td>
-                        <td style="text-align:center">{{$item->Costo_Unitario_actual}}</td>
-                        <td style="text-align:center">{{$item->Costo_Total}}</td>
-                      
+                        <td style="text-align:center">{{number_format($item->Costo_Unitario_actual,0,',','.')}}</td>
+                        <td style="text-align:center">{{number_format($item->Costo_Total,0,',','.')}}</td>
                       </tr>
                       @endforeach
                       @endif
