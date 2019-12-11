@@ -252,38 +252,42 @@ class GiftCardController extends Controller
     }
 
 
+    public function vistaconsumotarjeta(){
 
 
+        return view('giftCard.ConsumoTarjeta');
+  
+  
+      }
+      public function filtrarcambioprecios (Request $request){
+          
+        $codigo=$request->codigo;
+        $consulta=DB::table('consumo_tarjeta')
+        ->where('TARJ_CODIGO',$request->codigo)
+        ->get();
+  
+        $consulta2=DB::table('tarjeta_gift_card')
+        ->where('TARJ_CODIGO',$request->codigo)
+        ->get();
+  
+        
+    
+  
+        return view('giftCard.ConsumoTarjeta',compact('consulta','codigo','consulta2'));
+      }
 
 
+      public function detalletarjeta($fk_cargos){
 
 
+        $detalle = DB::table('dcargos')
+        ->where('id_cargos','=',$fk_cargos)
+        ->get();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return view('giftCard.DetallecompraGiftcard',compact('detalle'));
+          
+        
+      }
 
 
 
@@ -299,58 +303,6 @@ class GiftCardController extends Controller
         // dd($oculto);
 
     }
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

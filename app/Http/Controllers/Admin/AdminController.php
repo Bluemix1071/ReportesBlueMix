@@ -780,29 +780,7 @@ class AdminController extends Controller
 
     }
 
-    public function vistaconsumotarjeta(){
 
-
-      return view('admin.ConsumoTarjeta');
-
-
-    }
-    public function filtrarcambioprecios (Request $request){
-        
-      $codigo=$request->codigo;
-      $consulta=DB::table('consumo_tarjeta')
-      ->where('TARJ_CODIGO',$request->codigo)
-      ->get();
-
-      $consulta2=DB::table('tarjeta_gift_card')
-      ->where('TARJ_CODIGO',$request->codigo)
-      ->get();
-
-      
-  
-
-      return view('admin.ConsumoTarjeta',compact('consulta','codigo','consulta2'));
-    }
 
 
     
