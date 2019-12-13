@@ -1,4 +1,4 @@
-$(document).ready(function(){
+/*$(document).ready(function(){
 
     var text = document.getElementById('pormarca').value;
     var excel= document.getElementById('valorBuscarmarca').value = text;
@@ -6,4 +6,4 @@ $(document).ready(function(){
     
     });
     
-    
+    */

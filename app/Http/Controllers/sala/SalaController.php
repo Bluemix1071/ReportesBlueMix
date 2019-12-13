@@ -38,4 +38,20 @@ class SalaController extends Controller
   
         return view('sala.cambiodeprecios',compact('porcentaje','fecha1','fecha2'));
       }
+
+
+      public function indexGiftCard(){
+        return view('sala.VoucherDatos');
+      }
+
+
+      public function generarVoucher(Request $request){
+
+
+        return view('sala.ImprecionSala');
+      }
+
+
+
+
 }

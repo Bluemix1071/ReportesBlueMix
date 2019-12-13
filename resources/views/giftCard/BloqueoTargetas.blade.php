@@ -20,19 +20,19 @@ Bloqueo Targetas
         <div class="form-row">
             <div class="form-group col-md-3">
               <label for="inputEmail4">Nombre</label>
-              <input type="text" class="form-control" id="inputEmail4" placeholder="Email">
+              <input type="text" class="form-control" id="inputEmail4" >
             </div>
             <div class="form-group col-md-3">
               <label for="inputPassword4">Rut</label>
-              <input type="rut" class="form-control" id="inputPassword4" placeholder="Password">
+              <input type="rut" class="form-control" id="inputPassword4">
             </div>
             <div class="form-group col-md-3">
                 <label for="inputPassword4">Fecha Inicio</label>
-                <input type="date" class="form-control" id="inputPassword4" placeholder="Password">
+                <input type="date" class="form-control" id="inputPassword4" >
             </div>
             <div class="form-group col-md-3">
                   <label for="inputPassword4">Fecha Termino</label>
-                  <input type="date" class="form-control" id="inputPassword4" placeholder="Password">
+                  <input type="date" class="form-control" id="inputPassword4" >
             </div>
         </div>
     </form>
@@ -41,7 +41,9 @@ Bloqueo Targetas
         <thead>
           <tr>
             <th scope="col" style="text-align:center">codigo</th>
+            <th scope="col" style="text-align:center">Codigo Barra</th>
             <th scope="col" style="text-align:center"> Monto Tarjeta</th>
+            <th scope="col" style="text-align:center"> Seleccionar Todos <input type="checkbox" id="selectall"> </th>
           </tr>
         </thead>
           @if (empty($giftCreadas))

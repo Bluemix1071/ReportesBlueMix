@@ -16,11 +16,7 @@ Venta GiftCards
                 <h3 class="display-4 m-2 pb-2" >Venta de GifCards</h3>  
         </div>
         <div class="col-md-6">
-
-        </div>
-    </div>
-    <div class="row">
-            @if ($errors->any())
+          @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -29,13 +25,17 @@ Venta GiftCards
                 </ul>
             </div>
             @endif
+        </div>
+    </div>
+    <div class="row">
+            
         <div class="col-md-6">
                 <div class="card-group">
                         <div class="card">
                           <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap">
                           <div class="card-body">
-                            @if (!empty($codigo))
-      
+                            @if (empty($cantGift[0]))
+                            <h5 class="card-title">Stock: <strong>0</strong> </h5>
                             @else
                             <h5 class="card-title">Stock: <strong>{{$cantGift[0]->CantidadGift}}</strong> </h5>
                             @endif
@@ -49,8 +49,8 @@ Venta GiftCards
                         <div class="card">
                           <img class="card-img-top" src="{{asset("giftcard/img/40.000.jpg")}}" alt="Card image cap">
                           <div class="card-body">
-                              @if (!empty($codigo))
-      
+                              @if (empty($cantGift[1]))
+                              <h5 class="card-title">Stock: <strong>0</strong> </h5>
                               @else
                               <h5 class="card-title">Stock: <strong>{{$cantGift[1]->CantidadGift}}</strong> </h5>
                               @endif
@@ -64,8 +64,8 @@ Venta GiftCards
                         <div class="card">
                           <img class="card-img-top" src="{{asset("giftcard/img/60.000.jpg")}}" alt="Card image cap">
                           <div class="card-body">
-                              @if (!empty($codigo))
-      
+                              @if (empty($cantGift[2]))
+                              <h5 class="card-title">Stock: <strong>0</strong> </h5>
                               @else
                               <h5 class="card-title">Stock: <strong>{{$cantGift[2]->CantidadGift}}</strong> </h5>
       
@@ -80,8 +80,8 @@ Venta GiftCards
                         <div class="card">
                           <img class="card-img-top" src="{{asset("giftcard/img/100.000.jpg")}}" alt="Card image cap">
                           <div class="card-body">
-                              @if (!empty($codigo))
-      
+                              @if (empty($cantGift[3]))
+                              <h5 class="card-title">Stock: <strong>0</strong> </h5>
                               @else
                               <h5 class="card-title">Stock: <strong>{{$cantGift[3]->CantidadGift}}</strong> </h5>
                               @endif
@@ -97,6 +97,8 @@ Venta GiftCards
 
         </div>
         <div class="col-md-6">
+        <form action="{{route('ventaGiftCard')}}" method="POST" >
+            @csrf
                 <table id="tarjetas" class="table table-bordered table-hover dataTable">
                         <thead>
                           <tr>
@@ -115,12 +117,13 @@ Venta GiftCards
                                   <th >{{$item->TARJ_ID}}</th>
                                   <th >{{$item->TARJ_CODIGO}}</th>
                                   <td style="text-align:center">${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</td>
-                                  <td style="text-align:center"><input type="checkbox" name="{{$item->TARJ_ID}}" id="" value="{{$item->TARJ_CODIGO}}"> <label for="cbox2">Selecciona para vender</label></td>
+                                  <td style="text-align:center"><input type="checkbox" name="tarjetas[]" id="" value="{{$item->TARJ_CODIGO}}"> <label for="cbox2">Selecciona para vender</label></td>
                                 </tr>
                                 @endforeach
                               </tbody>   
                           @endif
-                                  
+                          <button class="btn btn-success"> Vender</button>
+                        </form>          
                       </table>
         </div>
     </div>
@@ -136,7 +139,7 @@ Venta GiftCards
   $(document).ready(function() {
     $('#tarjetas').DataTable( {
         dom: 'Bfrtip',
-        "iDisplayLength": 5,
+       
         "searching": false,
         
         buttons: [
@@ -166,6 +169,7 @@ Venta GiftCards
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
   <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
   <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
+  <script src="{{asset("js/ValidaCheck.js")}}"></script>
   {{-- <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
   <script src="{{asset("js/buttons.flash.min.js")}}"></script>
   <script src="{{asset("js/jszip.min.js")}}"></script>
