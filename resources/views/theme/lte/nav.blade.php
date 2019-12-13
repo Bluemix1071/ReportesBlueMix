@@ -287,7 +287,7 @@
               <li class="nav-item">
               <a href="{{route('ConsultaSaldo')}}" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Gift Card</p>
+                  <p>Saldo Gift Card</p>
                 </a>
               </li>
               <li class="nav-item">

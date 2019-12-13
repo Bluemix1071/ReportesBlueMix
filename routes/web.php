@@ -76,9 +76,6 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/areaproveedorfamilia','AdminController@areaproveedorfamilia')->name('areaproveedorfamilia');
 
 
-    Route::get('/ConsumoTarjeta','AdminController@vistaconsumotarjeta')->name('consumotarj');
-    Route::post('/ConsumoTarjeta','AdminController@filtrarcambioprecios')->name('filtrartarjeta');
-
 
 
 
@@ -136,6 +133,10 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
     Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
     Route::post('/VentasGiftcards','GiftCardController@VenderGiftcard')->name('venderGiftCard');
     
+    Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
+    Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambioprecios')->name('filtrartarjeta');
+    Route::get('/detalle/{fk_cargos}','GiftCardController@detalletarjeta')->name('detalletarjeta');
+
 });
 
 
