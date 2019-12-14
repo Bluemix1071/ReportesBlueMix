@@ -96,10 +96,10 @@
             <h4 class="modal-title" id="myModalLabel">Saldo Targeta Gift Card:</h4>
           </div>
           <div class="modal-body">
-             <h5>Saldo Total: <span class="price text-success">${{number_format($saldo[0]->TARJ_MONTO_ACTUAL,0,',','.')}}</span></h5>
+             <h3>Saldo Disponible: <span class="price text-success">${{number_format($saldo[0]->TARJ_MONTO_ACTUAL,0,',','.')}}</span></h3>
           </div>
           <div class="modal-footer">
-            <h6>Valida Hasta: <span class="price text-success">{{$saldo[0]->TARJ_FECHA_VENCIMIENTO}}</span></h6>
+            <h5>Valida Hasta: <span class="price text-success">{{$saldo[0]->TARJ_FECHA_VENCIMIENTO}}</span></h5>
          </div>
         </div>
         @endif

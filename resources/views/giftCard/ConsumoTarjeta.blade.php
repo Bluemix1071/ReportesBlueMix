@@ -68,7 +68,7 @@ Consumo GiftCard
                         <input type="text" class="form-control" id="validationTooltip01" readonly value="" required>
                       </div>
                       <div class="col-md-4 mb-3">
-                        <label for="validationTooltip02">Monto Actual</label>
+                        <label for="validationTooltip02">Saldo Disponible</label>
                         <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
                       </div>
                       <div class="col-md-4 mb-3">
