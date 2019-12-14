@@ -55,9 +55,8 @@ Fecha:{{$date}}
 <strong> Codigo</strong>           <strong>Monto</strong>    
                                
 
-  {{$params_array['codigo']}}      |    ${{$params_array['monto']}}  
+  {{$params_array['codigo']}}      |    ${{number_format($params_array['monto'],0,',','.')}}  
     
-
         
 </pre>
 <pre>
