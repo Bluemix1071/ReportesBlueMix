@@ -17,6 +17,7 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/Cambiodeprecios','SalaController@index')->name('cambiodeprecios');
     Route::post('/Cambiodeprecios','SalaController@filtrarcambioprecios')->name('filtrarcambioprecios');
     Route::get('/GiftCard','SalaController@indexGiftCard')->name('GiftCardVenta');
+    Route::get('/GiftCardVoucher','SalaController@generarVoucher')->name('GiftCardVoucherIndex');
     Route::post('/GiftCardVoucher','SalaController@generarVoucher')->name('GiftCardVoucher');
 
 });

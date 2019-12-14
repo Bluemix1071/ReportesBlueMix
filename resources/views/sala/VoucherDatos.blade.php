@@ -44,21 +44,21 @@
                 <div class="wrap-input100">
 					<div class="label-input100">Selecciona El Monto</div>
 					<div>
-						<select class="js-select2" name="service">
-                            <option>........</option>
-							<option>$20.000</option>
-							<option>$40.000</option>
-							<option>$60.000</option>
-							<option>$100.000</option>
+						<select class="js-select2" name="monto" required>
+                            <option value="">........</option>
+							<option value="20000">$20.000</option>
+							<option value="40000">$40.000</option>
+							<option value="60000">$60.000</option>
+							<option value="100000">$100.000</option>
 						</select>
 						<div class="dropDownSelect2"></div>
 					</div>
 					<span class="focus-input100"></span>
 				</div>
 
-				<div class="wrap-input100 validate-input" data-validate="Name is required">
+				<div class="wrap-input100 validate-input" data-validate="Ingrese el codigo de barra">
 					<label class="label-input100" for="name">Codigo De La Tarjeta ( Barra)</label>
-					<input id="name" class="input100" type="text" name="name" placeholder="">
+					<input id="name" class="input100" type="text" name="codigo" maxlength="12" placeholder="">
 					<span class="focus-input100"></span>
 				</div>
 

@@ -43,24 +43,23 @@ pre{font-size: 1.7em;  }
 
 <body cz-shortcut-listen="true" onload="Imprimir()" >
 <div id="container">
-<h1>SOCIEDAD COMERCIAL <a style="text-decoration:none" href="{{route('ventaGiftCard')}}">BLUE</a>  MIX LTDA.</h1>
+<h1>SOCIEDAD COMERCIAL <a style="text-decoration:none" href="{{route('GiftCardVoucherIndex')}}">BLUE</a>  MIX LTDA.</h1>
 <pre>C.M.: 5 DE ABRIL 1071 – CHILLAN
-GIRO:LIBRERÍA,JUGIETERIA POR MAYOR Y DETALLE
+GIRO:LIBRERÍA,JUGUETERIA POR MAYOR Y DETALLE
 RUT Nro: 77.283.950-2
 LOC.: 5 DE ABRIL 1071 – CHILLAN
-Nro. Caja: 001    Nota de cobro Nro. 1
-Fecha: 13-12-2019
+Nro. Caja: 001    Nota de cobro Nro. {{$idCobro[0]->id_bueno}}
+Fecha:{{$date}}
 </pre>
 <pre>
 <strong> Codigo</strong>           <strong>Monto</strong>    
                                
 
-000000051194         |    $20.000
+  {{$params_array['codigo']}}      |    ${{$params_array['monto']}}  
     
 
         
 </pre>
-<h1>FORMA DE PAGO: EFECTIVO</h1>
 <pre>
 El uso de la Giftcard está sujeto a las
 condiciones impresas en la misma tarjeta
