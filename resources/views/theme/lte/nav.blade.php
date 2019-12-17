@@ -140,14 +140,14 @@
                   
                   <li class="nav-item">
                       <a href="{{route('indexVentas')}}" class="nav-link">
-                          <i class="nav-icon fas fa-search-dollar"></i>
+                          <i class="fas fa-search-dollar"></i>
                         <p>Ventas GiftCards</p>
                       </a>
                   </li>
 
                   <li class="nav-item">
                     <a href="{{route('Bloqueo')}}" class="nav-link">
-                      <i class="fas fa-cog"></i>
+                      <i class="far fa-times-circle"></i>
                       <p>Bloqueo Gift Cards</p>
                     </a>
                   </li>
@@ -158,13 +158,9 @@
                         <p>Consumo De GiftCard</p>
                       </a>
                   </li>
-
-
-                </ul> 
-                
+                </ul>   
               </li>
               @endif
-
 
               <!-- Agregar items de administrador -->
                @if (session()->get('tipo_usuario')=='admin'|| session()->get('tipo_usuario') == 'adminGiftCard' )

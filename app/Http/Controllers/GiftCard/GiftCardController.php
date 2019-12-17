@@ -402,51 +402,6 @@ class GiftCardController extends Controller
 
 
 
-
-
-
-    public function BloqueoTarjetasIndex(){
-
-        return view('giftCard.BloqueoTargetas');
-    }
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function BloqueoTarjetas(Request $request){
-        dd($request->all());
-
-
-    }
-
-
     public function vistaconsumotarjeta(){
 
 
@@ -454,22 +409,87 @@ class GiftCardController extends Controller
   
   
       }
-      public function filtrarcambioprecios (Request $request){
+      public function filtrarcambiotarjeta (Request $request){
           
         $codigo=$request->codigo;
         $consulta=DB::table('consumo_tarjeta')
         ->where('TARJ_CODIGO',$request->codigo)
         ->get();
+
   
         $consulta2=DB::table('tarjeta_gift_card')
         ->where('TARJ_CODIGO',$request->codigo)
         ->get();
   
-        
-    
+ 
   
         return view('giftCard.ConsumoTarjeta',compact('consulta','codigo','consulta2'));
       }
+
+
+
+      public function BloqueoTarjetasIndex(){
+
+        return view('giftCard.BloqueoTargetas');
+    }
+
+
+
+
+
+    public function filtrarbloqueo (Request $request){
+          
+
+
+        $rut=$request->codigo;
+
+        $consulta = DB::table('tarjeta_gift_card')
+        ->where('TARJ_ESTADO', '=', 'V')
+        ->where('TARJ_COMPRADOR_RUT' ,'=', $rut)
+        ->get();
+
+        return view('giftCard.BloqueoTargetas',compact('consulta'));
+      }
+
+
+
+
+
+      public function bloqueotrajeta (Request $request){
+
+
+        
+         $wea=$request->case;
+
+         $conteo=count($request->case);
+         $conteo = $conteo-1;
+
+
+        for ($i = 0; $i <= $conteo; $i++){
+
+        $bloqueoupdate = DB::table('tarjeta_gift_card')
+        ->where('TARJ_CODIGO', $wea[$i])
+        ->Update(['TARJ_MOTIVO_BLOQUEO' => $request->bloqueo,
+                  'TARJ_ESTADO' => 'B'
+
+
+        ]);
+        
+
+        }
+
+
+        Session::flash('success','Bloqueo Realizado');
+
+    
+        return view('giftCard.BloqueoTargetas');
+
+      }
+
+
+
+
+
 
 
       public function detalletarjeta($fk_cargos){
