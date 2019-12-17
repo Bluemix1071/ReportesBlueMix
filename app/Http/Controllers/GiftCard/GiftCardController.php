@@ -200,26 +200,71 @@ class GiftCardController extends Controller
     }
 
     public function CargarVenta(Request $request){//  carga las giftcar seleccionadas en la pantalla para rellenar los datos de la venta 
-      if(empty($request->all())){                  // caso contrario si se recarga devolvera  a la seleccion de giftcards
-        //dd('nulo');
-        $cantGift=DB::table('CantidadGiftCard')
-        ->get();
+      // dd($request->all());
+        $params_array = $request->all();
+        //dd($params_array);
+        unset( $params_array['_token']);
+        if(empty($params_array)){
+            Session::flash('info','ingrese nuevamente los datos');
+            return redirect('Giftcard/VentasGiftCards'); 
+        }
+        $collection = Collection::make($vacio=[]);
 
-        return view('giftCard.VentaSeleccion',compact('cantGift'));
-      }
+        if($request->cantidad20 != null){
+            $cant=$request->cantidad20;
+           // dd($cant);
+            $gift20=DB::table('tarjeta_gift_card')
+            ->where('TARJ_MONTO_INICIAL',20000)
+            ->where('TARJ_ESTADO','A')
+            ->take($cant)
+            ->get();
+            //dd($gift20);
+        $collection = $collection->merge(Collection::make($gift20));
+        }
+        //dd('fuera if');
 
-     // dd('no es nulo');
-     // dd($request->tarjetas);
-       //$collection = Collection::make($request->tarjetas);
-       //dd($collection);
+        if($request->cantidad40 != null ){
+            $cant=$request->cantidad40;
+            // dd($cant);
+             $gift40=DB::table('tarjeta_gift_card')
+             ->where('TARJ_MONTO_INICIAL',40000)
+             ->where('TARJ_ESTADO','A')
+             ->take($cant)
+             ->get();
+             //dd($gift40);
+             $collection = $collection->merge(Collection::make($gift40));
+        }
+        //dd($gift20,$gift40);
 
-       $vender = DB::table('tarjeta_gift_card')
-                    ->whereIn('TARJ_CODIGO',$request->tarjetas )
-                    ->get();
-                    
-                 // dd($request->tarjetas,$vender);
+        if($request->cantidad60 != null){
+            $cant=$request->cantidad60;
+            // dd($cant);
+             $gift60=DB::table('tarjeta_gift_card')
+             ->where('TARJ_MONTO_INICIAL',60000)
+             ->where('TARJ_ESTADO','A')
+             ->take($cant)
+             ->get();
+            // dd($gift60);
+            $collection = $collection->merge(Collection::make($gift60));
+        }
+        if($request->cantidad100 != null ){
+            $cant=$request->cantidad100;
+            // dd($cant);
+             $gift100=DB::table('tarjeta_gift_card')
+             ->where('TARJ_MONTO_INICIAL',100000)
+             ->where('TARJ_ESTADO','A')
+             ->take($cant)
+             ->get();
+            // dd($gift100);
+            $collection = $collection->merge(Collection::make($gift100));
 
-        return view('giftCard.VentaGiftCard.VentaForm',compact('vender'));
+        }
+
+       // dd($gift20,$gift40,$gift60,$gift100);
+      // dd($collection);
+
+
+        return view('giftCard.VentaGiftCard.VentaForm',compact('collection'));
     }
 
     
@@ -248,20 +293,22 @@ class GiftCardController extends Controller
 
 
         }else{
-
+            
             $TarjetasSeleccionadas = DB::table('tarjeta_gift_card')
                     ->whereIn('TARJ_CODIGO',$request->Codigos )
                     ->get();
             $cantidad = count($TarjetasSeleccionadas);
             //dd($cantidad);
                 $Ncodigos=$request->Codigos;
+              //  dd($Ncodigos);
                 $date = Carbon::now();
        
                 $date->addMonth(6);
                 $date = $date->format('Y-m-d');
+                $User= session()->get('nombre');
                 
                 try{
-                DB::transaction(function () use ($TarjetasSeleccionadas,$Ncodigos,$date,$params_array,$cantidad) {
+                DB::transaction(function () use ($TarjetasSeleccionadas,$Ncodigos,$date,$params_array,$cantidad,$User) {
                     $j=0;
                         for ($i = 1; $i <= $cantidad; $i++)  {
                            
@@ -276,9 +323,40 @@ class GiftCardController extends Controller
                                 ]);
                                 $j=$j+1;
                         }
-                       
+
+                        $idVou=0;
+                        $idBD_vou = DB::table('tabla_voucher')->max('vou_folio');
+                        //dd($idBD);
+                        if(empty($idBD_vou)){
+                            $idVou=1;
+                            //dd($idVou);
+                        }else{
+                            $idVou=$idVou+$idBD_vou;
+                            $idVou=$idVou+1;
+                           // dd($idVou);
+                        }
+                        $dateVou = Carbon::now();
+                        $dateVou = $dateVou->format('Y-m-d');
+                        DB::table('tabla_voucher')->insert([
+                            'vou_folio' => $idVou,
+                            'vou_fecha'=>$dateVou,
+                            'vou_nombre_vendedor'=>$User,
+                            ]);
+
+
+                            $jj=0;
+                           
+                        for ($i=0; $i  <$cantidad ; $i++) { 
+
+                            DB::table('tabla_voucher_detalle')->insert([
+                                'vou_folio' => $idVou,
+                                'tarj_codigo'=>$Ncodigos[$jj],
+                                ]);
+                                $jj=$jj+1;
+                        }
                             
-                    }); // acepta un numero que es la cantidad de veces q intenta hacer el procedimietno 
+                            
+                    }); // acepta un numero que es la cantidad de veces q intenta hacer el procedimietno  
 
                 }catch(Exception $e){
                     DB::rollBack();
@@ -286,12 +364,12 @@ class GiftCardController extends Controller
                     ->get();
                    
                     Session::flash('error','Algo ha salido mal intentalo nuevamente');
-                    dd($e);
+                   // dd($e);
                     return view('giftCard.VentaSeleccion',compact('cantGift'));
 
                 } catch (\Throwable $e) {
                     DB::rollBack();
-                    dd($e);
+                   // dd($e);
                     $cantGift=DB::table('CantidadGiftCard')
                     ->get();
                     Session::flash('error','Algo ha salido mal intentalo nuevamente');
@@ -301,9 +379,13 @@ class GiftCardController extends Controller
                 $cantGift=DB::table('CantidadGiftCard')
                 ->get();
 
+                $idBD_vou = DB::table('tabla_voucher')->max('vou_folio');
+                $dateVou = Carbon::now();
+                $dateVou = $dateVou->format('d-m-Y');
+                
 
                 Session::flash('success','Tarjetas Vendidas con Exito!!!');
-                return view('giftCard.imprecion',compact('cantGift','TarjetasSeleccionadas'));
+                return view('giftCard.imprecion',compact('cantGift','TarjetasSeleccionadas','dateVou','idBD_vou'));
         }
 
     }
@@ -455,5 +537,37 @@ class GiftCardController extends Controller
     
     }
 
+
+
+    /* RESPALDO METODOS
+    ------CARGA DE GIFTCARDS SELECIONADAS
+
+    public function CargarVenta(Request $request){//  carga las giftcar seleccionadas en la pantalla para rellenar los datos de la venta 
+      dd($request->all());
+      
+        if(empty($request->all())){                  // caso contrario si se recarga devolvera  a la seleccion de giftcards
+        //dd('nulo');
+        $cantGift=DB::table('CantidadGiftCard')
+        ->get();
+
+        return view('giftCard.VentaSeleccion',compact('cantGift'));
+      }
+
+     // dd('no es nulo');
+     // dd($request->tarjetas);
+       //$collection = Collection::make($request->tarjetas);
+       //dd($collection);
+
+       $vender = DB::table('tarjeta_gift_card')
+                    ->whereIn('TARJ_CODIGO',$request->tarjetas )
+                    ->get();
+                    
+                 // dd($request->tarjetas,$vender);
+
+        return view('giftCard.VentaGiftCard.VentaForm',compact('vender'));
+    }
+
+
+    */
 
 }

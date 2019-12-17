@@ -15,10 +15,16 @@ Gift Card
 
 
 <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="display-4 m-2 pb-2" >Venta De GiftCards</h3> 
+    </div>
+  </div>
     <div class="row">
         <div class="col-md-6">
-                <form action="{{route('ventaGiftCard')}}" method="POST">
-                        @csrf
+                      
+                      <br>
+                      <br>
                             <table id="tarjetas" class="table table-bordered table-hover dataTable">
                                     <thead>
                                       <tr>
@@ -28,11 +34,11 @@ Gift Card
                                       
                                       </tr>
                                     </thead>
-                                      @if (empty($vender))
+                                      @if (empty($collection))
                                           
                                       @else
                                       <tbody>
-                                          @foreach($vender as $item)
+                                          @foreach($collection as $item)
                                             <tr>
                                               <th >{{$item->TARJ_ID}}</th>
                                               <th >{{$item->TARJ_CODIGO}}</th>
@@ -40,10 +46,10 @@ Gift Card
                                             </tr>
                                             @endforeach
                                           </tbody>   
-                                          <button class="btn btn-success"> Vender</button>
+                                         
                                       @endif
                                      
-                                    </form>          
+                                          
                             </table>
         </div>
 
@@ -52,7 +58,7 @@ Gift Card
         <form action="{{route('venderGiftCard')}}" method="POST">
           @csrf
             <div class="form-group">
-              @foreach ($vender as $item)
+              @foreach ($collection as $item)
 
               <input type="hidden" name="Codigos[]" class="form-control" value="{{$item->TARJ_CODIGO}}" aria-describedby="emailHelp">
 
@@ -61,12 +67,12 @@ Gift Card
               <br>
               <div class="form-group">
                 <label for="exampleInputEmail1">Nombre Comprador</label>
-                <input type="text" class="form-control" name="nombreComprador" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="text" class="form-control" name="nombreComprador" required id="exampleInputEmail1" aria-describedby="emailHelp">
               </div>
 
               <div class="form-group">
                 <label for="exampleInputPassword1">Rut Comprador</label>
-                <input type="text" class="form-control" name="RutComprador" id="exampleInputPassword1">
+                <input type="text" class="form-control" name="RutComprador" id="rut" maxlength="10" required oninput="checkRut(this)" id="exampleInputPassword1">
               </div>
 
 
@@ -87,6 +93,8 @@ Gift Card
 @endsection
 
 @section('script')
+
+
 <script>
   $(document).ready(function() {
     $('#tarjetas').DataTable( {
@@ -130,9 +138,7 @@ Gift Card
   <script src="{{asset("js/pdfmake.min.js")}}"></script>
   <script src="{{asset("js/vfs_fonts.js")}}"></script>
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
-  <script src="{{asset("js/buttons.print.min.js")}}"></script>
-  <script src="{{asset("js/validarRUT.js")}}"></script> --}}
-
-<script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
+  <script src="{{asset("js/buttons.print.min.js")}}"></script>--}}
+  <script src="{{asset("js/validarRUT.js")}}"></script> 
 
 @endsection

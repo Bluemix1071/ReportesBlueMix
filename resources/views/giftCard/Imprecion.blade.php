@@ -48,8 +48,8 @@ pre{font-size: 1.7em;  }
 GIRO:LIBRERÍA,JUGIETERIA POR MAYOR Y DETALLE
 RUT Nro: 77.283.950-2
 LOC.: 5 DE ABRIL 1071 – CHILLAN
-Nro. Caja: 001    Nota de cobro Nro. 1
-Fecha: 07-12-2019
+Nro. Caja: 001    Nota de cobro Nro. {{$idBD_vou}}
+Fecha: {{$dateVou}}
 </pre>
 <pre>
 <strong> Codigo</strong>           <strong>Monto</strong>    
@@ -60,7 +60,7 @@ Fecha: 07-12-2019
 @endforeach 
         
 </pre>
-<h1>FORMA DE PAGO: EFECTIVO</h1>
+
 <pre>
 El uso de la Giftcard está sujeto a las
 condiciones impresas en la misma tarjeta

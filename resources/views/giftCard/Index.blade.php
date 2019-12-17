@@ -72,9 +72,10 @@ Gift Card
                             <input type="date" class="form-control" id="FechaVencimiento" name="FechaVencimiento"  required>
                        </div> --}}
                       </div>
-                <div class="form-group col-md-12 btn-group btn-group-block">
-                <button type="submit" class="btn btn-success" onclick="limpiarFormulario()">Activar</button>
-                </div>
+                      <div class="form-group col-md-12 btn-group btn-group-block">
+                         <button type="submit" class="btn btn-success" >Activar</button>
+                      </div>
+               
               </form>
 
               

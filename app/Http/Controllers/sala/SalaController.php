@@ -57,7 +57,7 @@ class SalaController extends Controller
       //  dd('no nuñp');
 
        // dd($request->all());
-
+        
        $idCobro=DB::table('nota_cobro')
        ->get();
        DB::table('nota_cobro')->increment('id_bueno');

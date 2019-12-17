@@ -5,17 +5,6 @@ Venta GiftCards
 
 @section('styles')
 
-<style>
-
-.tableFixHead          { overflow-y: auto; height: 260px; }
-.tableFixHead thead th { position: sticky; top: 0; }
-
-/* Just common table stuff. Really. */
-
-table  { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px 16px; }
-th     { background:#eee; }
-</style>
     
 @endsection
 
@@ -40,7 +29,7 @@ th     { background:#eee; }
     </div>
     <div class="row">
             
-        <div class="col-md-6">
+        <div class="col-md-4">
                 <div class="card-group">
                         <div class="card">
                           <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap">
@@ -51,6 +40,7 @@ th     { background:#eee; }
                             <h5 class="card-title">Stock: <strong>{{$cantGift[0]->CantidadGift}}</strong> </h5>
                             @endif
                             <hr>
+                            <p class="card-text">  <a href="{{route('cargarCodigosVenta',20000)}}" class="btn btn-success"> <i class="fas fa-dollar-sign"></i> </a>  </p>
                           </div>
                           <div class="card-footer">
                             <small class="text-muted">GiftCard $20.000</small>
@@ -65,14 +55,12 @@ th     { background:#eee; }
                               <h5 class="card-title">Stock: <strong>{{$cantGift[1]->CantidadGift}}</strong> </h5>
                               @endif
                               <hr>
-                              
+                              <p class="card-text">  <a href="{{route('cargarCodigosVenta',40000)}}" class="btn btn-success "> <i class="fas fa-dollar-sign"></i></a>  </p>
                           </div>
                           <div class="card-footer">
                             <small class="text-muted">GiftCard $40.000</small>
                           </div>
                         </div>
-                      </div>
-                        <div class="card-group">
                         <div class="card">
                           <img class="card-img-top" src="{{asset("giftcard/img/60.000.jpg")}}" alt="Card image cap">
                           <div class="card-body">
@@ -83,6 +71,7 @@ th     { background:#eee; }
       
                               @endif
                               <hr>
+                              <p class="card-text">  <a href="{{route('cargarCodigosVenta',60000)}}" class="btn btn-success"> <i class="fas fa-dollar-sign"></i> </a>  </p>
                           </div>
                           <div class="card-footer">
                             <small class="text-muted">GiftCard $60.000</small>
@@ -97,80 +86,46 @@ th     { background:#eee; }
                               <h5 class="card-title">Stock: <strong>{{$cantGift[3]->CantidadGift}}</strong> </h5>
                               @endif
                               <hr>
+                          <p class="card-text">  <a href="{{route('cargarCodigosVenta',100000)}}" class="btn btn-success"> <i class="fas fa-dollar-sign"></i></a>  </p>
                           </div>
                           <div class="card-footer">
                             <small class="text-muted">GiftCard $100.000</small>
                           </div>
                         </div>
                       </div>
-                    </div>
 
 
-        
-        <div class="col-md-6">
-          <form action="{{route('ventaGiftCard')}}" method="POST">
+        </div>
+        <div class="col-md-8">
+        <form action="{{route('ventaGiftCard')}}" method="POST" >
             @csrf
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$20.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label>
-                <input type="number" class="form-control" name="cantidad20" min="1" required disabled id="cantidad20" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar20(this);" >
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$40.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label> 
-                <input type="number" class="form-control" name="cantidad40" min="1" required disabled id="cantidad40" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar40(this);" >
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$60.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label>
-                <input type="number" class="form-control" name="cantidad60"  min="1" required disabled id="cantidad60" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar60(this);" >
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$100.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label>
-                <input type="number" class="form-control" name="cantidad100" min="1" required disabled id="cantidad100" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar100(this);" >
-              </div>
-            </div>
-            <button class="btn btn-success"> Vender</button>
-           
-          </form>
-        </div>            
-        {{--  finf col md 8 --}}
+                <table id="tarjetas" class="table table-bordered table-hover dataTable">
+                        <thead>
+                          <tr>
+                            <th scope="col" style="text-align:center">codigo</th>
+                            <th scope="col" style="text-align:center">Codigo Barra</th>
+                            <th scope="col" style="text-align:center"> Monto Tarjeta</th>
+                            <th scope="col" style="text-align:center"> Seleccione</th>
+                          </tr>
+                        </thead>
+                          @if (empty($giftCreadas))
+                              
+                          @else
+                          <tbody>
+                              @foreach($giftCreadas as $item)
+                                <tr>
+                                  <th >{{$item->TARJ_ID}}</th>
+                                  <th >{{$item->TARJ_CODIGO}}</th>
+                                  <td style="text-align:center">${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</td>
+                                  <td style="text-align:center"><input type="checkbox" name="tarjetas[]" id="" value="{{$item->TARJ_CODIGO}}"> <label for="cbox2">Selecciona para vender</label></td>
+                                </tr>
+                                @endforeach
+                              </tbody>   
+                          @endif
+                          <button class="btn btn-success"> Vender</button>
+                        </form>          
+                      </table>
+        </div>
     </div>
     
      
@@ -180,74 +135,7 @@ th     { background:#eee; }
 @endsection
 
 @section('script')
-
-
-
 <script>
-
-
- 
-
- function comprobar20(obj)
-
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad20').style.display = "";
-document.getElementById('cantidad20').disabled =false;
-   } else{
-      
-document.getElementById('cantidad20').style.display = "none";
-document.getElementById('cantidad20').value = "";
-document.getElementById('cantidad20').disabled =true;
-   }     
-}
-
-function comprobar40(obj)
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad40').style.display = "";
-document.getElementById('cantidad40').disabled =false;
-   } else{
-      
-document.getElementById('cantidad40').style.display = "none";
-document.getElementById('cantidad40').value = "";
-document.getElementById('cantidad40').disabled =true;
-   }     
-}
-
-function comprobar60(obj)
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad60').style.display = "";
-document.getElementById('cantidad60').disabled =false;
-   } else{
-      
-document.getElementById('cantidad60').style.display = "none";
-document.getElementById('cantidad60').value = "";
-document.getElementById('cantidad60').disabled =true;
-   }     
-}
-
-function comprobar100(obj)
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad100').style.display = "";
-document.getElementById('cantidad100').disabled =false;
-   } else{
-      
-document.getElementById('cantidad100').style.display = "none";
-document.getElementById('cantidad100').value = "";
-document.getElementById('cantidad100').disabled =true;
-   }     
-}
-</script>
-
-<script src="{{asset("js/ValidaCheck.js")}}"></script>
-{{-- <script>
   $(document).ready(function() {
     $('#tarjetas').DataTable( {
         dom: 'Bfrtip',
@@ -281,7 +169,7 @@ document.getElementById('cantidad100').disabled =true;
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
   <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
   <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
-  <script src="{{asset("js/ValidaCheck.js")}}"></script> --}}
+  <script src="{{asset("js/ValidaCheck.js")}}"></script>
   {{-- <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
   <script src="{{asset("js/buttons.flash.min.js")}}"></script>
   <script src="{{asset("js/jszip.min.js")}}"></script>
@@ -291,6 +179,6 @@ document.getElementById('cantidad100').disabled =true;
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/validarRUT.js")}}"></script> --}}
 
-
+<script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
 
 @endsection
