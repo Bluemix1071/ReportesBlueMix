@@ -43,24 +43,24 @@ pre{font-size: 1.7em;  }
 
 <body cz-shortcut-listen="true" onload="Imprimir()" >
 <div id="container">
-<h1>SOCIEDAD COMERCIAL BLUE MIX LTDA.</h1>
+<h1>SOCIEDAD COMERCIAL <a style="text-decoration:none" href="{{route('ventaGiftCard')}}">BLUE</a>  MIX LTDA.</h1>
 <pre>C.M.: 5 DE ABRIL 1071 – CHILLAN
 GIRO:LIBRERÍA,JUGIETERIA POR MAYOR Y DETALLE
 RUT Nro: 77.283.950-2
 LOC.: 5 DE ABRIL 1071 – CHILLAN
-Nro. Caja: 001    Nota de cobro Nro. {{$idBoleta[0]->id_bueno}}
-Fecha: 07-12-2019
+Nro. Caja: 001    Nota de cobro Nro. {{$idBD_vou}}
+Fecha: {{$dateVou}}
 </pre>
 <pre>
 <strong> Codigo</strong>           <strong>Monto</strong>    
                                
-@foreach ($giftCreadas as $item)
+@foreach ($TarjetasSeleccionadas as $item)
 {{$item->TARJ_CODIGO}}  |    ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}
     
 @endforeach 
         
 </pre>
-<h1>FORMA DE PAGO: EFECTIVO</h1>
+
 <pre>
 El uso de la Giftcard está sujeto a las
 condiciones impresas en la misma tarjeta

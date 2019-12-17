@@ -72,9 +72,10 @@ Gift Card
                             <input type="date" class="form-control" id="FechaVencimiento" name="FechaVencimiento"  required>
                        </div> --}}
                       </div>
-                <div class="form-group col-md-12 btn-group btn-group-block">
-                <button type="submit" class="btn btn-success" onclick="limpiarFormulario()">Activar</button>
-                </div>
+                      <div class="form-group col-md-12 btn-group btn-group-block">
+                         <button type="submit" class="btn btn-success" >Activar</button>
+                      </div>
+               
               </form>
 
               
@@ -82,8 +83,8 @@ Gift Card
                   <div class="card">
                     <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap">
                     <div class="card-body">
-                      @if (!empty($codigo))
-
+                      @if (empty($cantGift[0]))
+                      <h5 class="card-title">Stock: <strong>0</strong> </h5>
                       @else
                       <h5 class="card-title">Stock: <strong>{{$cantGift[0]->CantidadGift}}</strong> </h5>
                       @endif
@@ -97,8 +98,8 @@ Gift Card
                   <div class="card">
                     <img class="card-img-top" src="{{asset("giftcard/img/40.000.jpg")}}" alt="Card image cap">
                     <div class="card-body">
-                        @if (!empty($codigo))
-
+                        @if (empty($cantGift[1]))
+                        <h5 class="card-title">Stock: <strong>0</strong> </h5>
                         @else
                         <h5 class="card-title">Stock: <strong>{{$cantGift[1]->CantidadGift}}</strong> </h5>
                         @endif
@@ -112,8 +113,8 @@ Gift Card
                   <div class="card">
                     <img class="card-img-top" src="{{asset("giftcard/img/60.000.jpg")}}" alt="Card image cap">
                     <div class="card-body">
-                        @if (!empty($codigo))
-
+                        @if (empty($cantGift[2]))
+                        <h5 class="card-title">Stock: <strong>0</strong> </h5>
                         @else
                         <h5 class="card-title">Stock: <strong>{{$cantGift[2]->CantidadGift}}</strong> </h5>
 
@@ -128,8 +129,8 @@ Gift Card
                   <div class="card">
                     <img class="card-img-top" src="{{asset("giftcard/img/100.000.jpg")}}" alt="Card image cap">
                     <div class="card-body">
-                        @if (!empty($codigo))
-
+                        @if (empty($cantGift[3]))
+                        <h5 class="card-title">Stock: <strong>0</strong> </h5>
                         @else
                         <h5 class="card-title">Stock: <strong>{{$cantGift[3]->CantidadGift}}</strong> </h5>
                         @endif

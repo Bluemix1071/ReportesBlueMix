@@ -64,6 +64,7 @@ Consumo GiftCard
       <div class="col-md-4">
         @if (empty($consulta[0]))
         <div class="form-row">
+
                 <div class="col-md-4 mb-3">
                   <label for="validationTooltip01">Comprador</label>
                   <input type="text" class="form-control" id="validationTooltip01" readonly value="" required>
@@ -77,6 +78,7 @@ Consumo GiftCard
                   <div class="input-group">
                     <input type="text" class="form-control" id="validationTooltipUsername"  readonly aria-describedby="validationTooltipUsernamePrepend">
                   </div>
+
             </div>
         </div>
         <div class="form-row">
@@ -112,6 +114,31 @@ Consumo GiftCard
         </div>
     </div>
 </div>
+
+
+    <table id="tarjetas" class="table table-bordered table-hover dataTable">
+        <thead>
+          <tr>
+            <th scope="col" style="text-align:center">codigo</th>
+            <th scope="col" style="text-align:center">Codigo Barra</th>
+            <th scope="col" style="text-align:center"> Monto Tarjeta</th>
+            <th scope="col" style="text-align:center"> Seleccionar Todos <input type="checkbox" id="selectall"> </th>
+          </tr>
+        </thead>
+          @if (empty($giftCreadas))
+              
+          @else
+          <tbody>
+              @foreach($giftCreadas as $item)
+                <tr>
+                  <th >{{$item->TARJ_CODIGO}}</th>
+                  <td style="text-align:center">{{$item->TARJ_MONTO_INICIAL}}</td>
+                </tr>
+                @endforeach
+              </tbody>   
+          @endif
+                  
+    </table>
 
 
 

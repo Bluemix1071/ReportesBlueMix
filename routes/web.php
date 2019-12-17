@@ -16,6 +16,10 @@ Route::post('/graficos', 'ChartControllers\PulseChartController@cargarC3')->name
 Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/Cambiodeprecios','SalaController@index')->name('cambiodeprecios');
     Route::post('/Cambiodeprecios','SalaController@filtrarcambioprecios')->name('filtrarcambioprecios');
+    Route::get('/GiftCard','SalaController@indexGiftCard')->name('GiftCardVenta');
+    Route::get('/GiftCardVoucher','SalaController@generarVoucher')->name('GiftCardVoucherIndex');
+    Route::post('/GiftCardVoucher','SalaController@generarVoucher')->name('GiftCardVoucher');
+
 });
 
 
@@ -117,6 +121,7 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
     Route::get('/Load/{Monto}','GiftCardController@CargarTablaCodigos')->name('cargarCodigos');
     Route::get('/VentasGiftCards','GiftCardController@IndexVentasGiftCard')->name('indexVentas');
     Route::get('/LoadVenta/{Monto}','GiftCardController@CargarTablaCodigosVenta')->name('cargarCodigosVenta');
+    Route::get('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
 
 
 
@@ -124,6 +129,12 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
 
     Route::post('/Activacion','GiftCardController@generarGiftCard')->name('generarGiftCard');
+
+
+    Route::post('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
+    Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
+    Route::post('/VentasGiftcards','GiftCardController@VenderGiftcard')->name('venderGiftCard');
+    
     Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
     Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambiotarjeta')->name('filtrartarjeta');
 
