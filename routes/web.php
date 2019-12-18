@@ -118,7 +118,6 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
     Route::get('/Activacion','GiftCardController@index')->name('indexGiftCard');
     Route::get('/imprimir/{giftCreadas}','GiftCardController@imprimir')->name('imprimir');
-    Route::get('/BloqueoGiftCards','GiftCardController@BloqueoTarjetasIndex')->name('Bloqueo');
     Route::get('/Load/{Monto}','GiftCardController@CargarTablaCodigos')->name('cargarCodigos');
     Route::get('/VentasGiftCards','GiftCardController@IndexVentasGiftCard')->name('indexVentas');
     Route::get('/LoadVenta/{Monto}','GiftCardController@CargarTablaCodigosVenta')->name('cargarCodigosVenta');
@@ -130,12 +129,23 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
 
     Route::post('/Activacion','GiftCardController@generarGiftCard')->name('generarGiftCard');
+
+
     Route::post('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
     Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
     Route::post('/VentasGiftcards','GiftCardController@VenderGiftcard')->name('venderGiftCard');
     
     Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
-    Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambioprecios')->name('filtrartarjeta');
+    Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambiotarjeta')->name('filtrartarjeta');
+
+    
+    Route::get('/BloqueoGiftCards','GiftCardController@BloqueoTarjetasIndex')->name('Bloqueo');
+    Route::post('/BloqueoGiftCards','GiftCardController@filtrarbloqueo')->name('filtrartarjetabloqueo');
+    Route::post('/BloqueoGif','GiftCardController@bloqueotrajeta')->name('bloqueartarjetacard');
+
+
+
+
     Route::get('/detalle/{fk_cargos}','GiftCardController@detalletarjeta')->name('detalletarjeta');
 
 });
