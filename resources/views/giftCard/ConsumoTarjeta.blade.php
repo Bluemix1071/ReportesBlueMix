@@ -20,9 +20,10 @@ Consumo GiftCard
           @csrf
                 <div class="form-group mb-2">
                   @if (empty($codigo))
-                  <label for="staticEmail2" class="sr-only">Codigo</label>
+                  <h5>Codigo Gift Card</h5>
                   <input type="number" id="codigo" class="form-control" name="codigo" >
                   @else
+                  <h5>Codigo Gift Card</h5>
                 <input type="number" id="codigo" class="form-control" name="codigo" required value="{{$codigo}}">
                   @endif
                 </div>
