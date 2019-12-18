@@ -211,6 +211,19 @@ class GiftCardController extends Controller
         }
         $collection = Collection::make($vacio=[]);
 
+        if($request->cantidad10 != null ){
+            $cant=$request->cantidad10;
+            // dd($cant);
+             $gift10=DB::table('tarjeta_gift_card')
+             ->where('TARJ_MONTO_INICIAL',10000)
+             ->where('TARJ_ESTADO','A')
+             ->take($cant)
+             ->get();
+            // dd($gift10);
+            $collection = $collection->merge(Collection::make($gift10));
+
+        }
+
         if($request->cantidad20 != null){
             $cant=$request->cantidad20;
            // dd($cant);

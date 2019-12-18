@@ -42,126 +42,24 @@ th     { background:#eee; }
             
         <div class="col-md-6">
                 <div class="card-group">
-                        <div class="card">
-                          <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap">
-                          <div class="card-body">
-                            @if (empty($cantGift[0]))
-                            <h5 class="card-title">Stock: <strong>0</strong> </h5>
-                            @else
-                            <h5 class="card-title">Stock: <strong>{{$cantGift[0]->CantidadGift}}</strong> </h5>
-                            @endif
-                            <hr>
-                          </div>
-                          <div class="card-footer">
-                            <small class="text-muted">GiftCard $20.000</small>
-                          </div>
-                        </div>
-                        <div class="card">
-                          <img class="card-img-top" src="{{asset("giftcard/img/40.000.jpg")}}" alt="Card image cap">
-                          <div class="card-body">
-                              @if (empty($cantGift[1]))
-                              <h5 class="card-title">Stock: <strong>0</strong> </h5>
-                              @else
-                              <h5 class="card-title">Stock: <strong>{{$cantGift[1]->CantidadGift}}</strong> </h5>
-                              @endif
-                              <hr>
-                              
-                          </div>
-                          <div class="card-footer">
-                            <small class="text-muted">GiftCard $40.000</small>
-                          </div>
-                        </div>
-                       
-                        
-                        <div class="card">
-                          <img class="card-img-top" src="{{asset("giftcard/img/60.000.jpg")}}" alt="Card image cap">
-                          <div class="card-body">
-                              @if (empty($cantGift[2]))
-                              <h5 class="card-title">Stock: <strong>0</strong> </h5>
-                              @else
-                              <h5 class="card-title">Stock: <strong>{{$cantGift[2]->CantidadGift}}</strong> </h5>
-      
-                              @endif
-                              <hr>
-                          </div>
-                          <div class="card-footer">
-                            <small class="text-muted">GiftCard $60.000</small>
-                          </div>
-                        </div>
-                        <div class="card">
-                          <img class="card-img-top" src="{{asset("giftcard/img/100.000.jpg")}}" height="" width="" alt="Card image cap">
-                          <div class="card-body">
-                              @if (empty($cantGift[]))
-                              <h5 class="card-title">Stock: <strong>0</strong> </h5>
-                              @else
-                              <h5 class="card-title">Stock: <strong>{{$cantGift[3]->CantidadGift}}</strong> </h5>
-                              @endif
-                              <hr>
-                          </div>
-                          <div class="card-footer">
-                            <small class="text-muted">GiftCard $100.000</small>
-                          </div>
-                        </div>
-                      </div>
+                  @foreach ($cantGift as $item)
 
-                      <div class="card-group">
-                        <div class="card">
-                          <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap">
-                          <div class="card-body">
-                            @if (empty($cantGift[0]))
-                            <h5 class="card-title">Stock: <strong>0</strong> </h5>
-                            @else
-                            <h5 class="card-title">Stock: <strong>{{$cantGift[0]->CantidadGift}}</strong> </h5>
-                            @endif
-                            <hr>
-                          </div>
-                          <div class="card-footer">
-                            <small class="text-muted">GiftCard $10.000</small>
-                          </div>
-                        </div>
-                        <div class="card">
-                          {{-- <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap"> --}}
-                          <div class="card-body">
-                            {{-- @if (empty($cantGift[0]))
-                            <h5 class="card-title">Stock: <strong>0</strong> </h5>
-                            @else
-                            <h5 class="card-title">Stock: <strong>{{$cantGift[0]->CantidadGift}}</strong> </h5>
-                            @endif --}}
-                            <hr>
-                          </div>
-                          <div class="card-footer">
-                            <small class="text-muted">proximamente</small>
-                          </div>
-                        </div>
-                        <div class="card">
-                          {{-- <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap"> --}}
-                          <div class="card-body">
-                            {{-- @if (empty($cantGift[0]))
-                            <h5 class="card-title">Stock: <strong>0</strong> </h5>
-                            @else
-                            <h5 class="card-title">Stock: <strong></strong> </h5>
-                            @endif --}}
-                            <hr>
-                          </div>
-                          <div class="card-footer">
-                            <small class="text-muted">Proximamente</small>
-                          </div>
-                        </div>
-                        <div class="card">
-                          {{-- <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap"> --}}
-                          <div class="card-body">
-                            {{-- @if (empty($cantGift[0]))
-                            <h5 class="card-title">Stock: <strong>0</strong> </h5>
-                            @else
-                            <h5 class="card-title">Stock: <strong>{{$cantGift[0]->CantidadGift}}</strong> </h5>
-                            @endif --}}
-                            <hr>
-                          </div>
-                          <div class="card-footer">
-                            <small class="text-muted">Proximamente</small>
-                          </div>
-                        </div>
-                      </div>
+                  <div class="card">
+                    <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title">Stock: <strong>{{$item->CantidadGift}}</strong> </h5>
+                   
+                      <hr>
+                      <p class="card-text">  <a href="{{route('cargarCodigos',$item->TARJ_MONTO_INICIAL)}}" class="btn btn-danger"> <i class="fas fa-file-upload"></i> </a>  </p>
+                    </div>
+                    <div class="card-footer">
+                    <small class="text-muted">GiftCard ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</small>
+                    </div>
+                  </div>
+                  @endforeach   
+                </div>
+
+                      
         </div>
 
 
@@ -169,6 +67,21 @@ th     { background:#eee; }
         <div class="col-md-6">
           <form action="{{route('ventaGiftCard')}}" method="POST">
             @csrf
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Valor</label>
+                <span class="form-control">$10.000</span>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputPassword4">Cantidad</label>
+                <input type="number" class="form-control" name="cantidad10" min="1" required disabled id="cantidad10" style="display:none" >
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputPassword4">Selecciona</label>
+                <input type="checkbox" class="form-control" onChange="comprobar10(this);" >
+              </div>
+            </div>
+
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="inputEmail4">Valor</label>
@@ -301,6 +214,19 @@ document.getElementById('cantidad100').disabled =false;
 document.getElementById('cantidad100').style.display = "none";
 document.getElementById('cantidad100').value = "";
 document.getElementById('cantidad100').disabled =true;
+   }     
+}
+function comprobar10(obj)
+{   
+    if (obj.checked){
+      
+document.getElementById('cantidad10').style.display = "";
+document.getElementById('cantidad10').disabled =false;
+   } else{
+      
+document.getElementById('cantidad10').style.display = "none";
+document.getElementById('cantidad10').value = "";
+document.getElementById('cantidad10').disabled =true;
    }     
 }
 </script>

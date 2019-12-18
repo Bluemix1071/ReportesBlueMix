@@ -185,6 +185,6 @@ Gift Card
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/validarRUT.js")}}"></script>
 
-<script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
+
 
 @endsection
