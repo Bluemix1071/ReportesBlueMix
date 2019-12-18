@@ -55,7 +55,7 @@ class GiftCardController extends Controller
 
             $errors = $validate->errors();
             Session::flash('error','Algo ha salido mal intentalo nuevamente');
-           return view('giftCard.index',compact('errors','cantGift'));
+           return view('giftCard.Index',compact('errors','cantGift'));
 
 
         }else{
@@ -116,7 +116,7 @@ class GiftCardController extends Controller
                  $date = $date->format('Y-m-d');
                  Session::flash('error','Algo ha salido mal intentalo nuevamente');
          
-                 return view('giftCard.index',compact('date','cantGift'));
+                 return view('giftCard.Index',compact('date','cantGift'));
      
             } catch (\Throwable $e) {
                  DB::rollBack();
@@ -128,7 +128,7 @@ class GiftCardController extends Controller
                  ->get();
                  Session::flash('error','Algo ha salido mal intentalo nuevamente');
                 // dd($e,'2catch');
-                 return view('giftCard.index',compact('date','cantGift'));
+                 return view('giftCard.Index',compact('date','cantGift'));
             }
 
         }
@@ -153,7 +153,7 @@ class GiftCardController extends Controller
         $date = $date->format('Y-m-d');
         Session::flash('success','Tarjetas Creadas con Exito!!!');
     
-        return view('giftCard.index',compact('date','params_array','cantGift'));
+        return view('giftCard.Index',compact('date','params_array','cantGift'));
 
     }
 
@@ -169,7 +169,7 @@ class GiftCardController extends Controller
        ->get();
       // dd($giftCreadas);
 
-      return view('giftCard.index',compact('giftCreadas','cantGift'));
+      return view('giftCard.Index',compact('giftCreadas','cantGift'));
     }
 
 
