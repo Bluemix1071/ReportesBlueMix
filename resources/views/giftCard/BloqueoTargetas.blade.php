@@ -20,9 +20,10 @@ Consumo GiftCard
         @csrf
               <div class="form-group mb-2">
                 @if (empty($rut))
-                <label for="staticEmail2" class="sr-only">Codigo</label>
+                <h5>Rut Comprador</h5>
                 <input type="number" id="codigo" class="form-control" name="codigo" >
                 @else
+                <h5>Rut Comprador</h5>
               <input type="number" id="codigo" class="form-control" name="codigo" required value="{{$rut}}">
                 @endif
               </div>
@@ -114,36 +115,6 @@ Consumo GiftCard
         </div>
     </div>
 </div>
-
-
-    <table id="tarjetas" class="table table-bordered table-hover dataTable">
-        <thead>
-          <tr>
-            <th scope="col" style="text-align:center">codigo</th>
-            <th scope="col" style="text-align:center">Codigo Barra</th>
-            <th scope="col" style="text-align:center"> Monto Tarjeta</th>
-            <th scope="col" style="text-align:center"> Seleccionar Todos <input type="checkbox" id="selectall"> </th>
-          </tr>
-        </thead>
-          @if (empty($giftCreadas))
-              
-          @else
-          <tbody>
-              @foreach($giftCreadas as $item)
-                <tr>
-                  <th >{{$item->TARJ_CODIGO}}</th>
-                  <td style="text-align:center">{{$item->TARJ_MONTO_INICIAL}}</td>
-                </tr>
-                @endforeach
-              </tbody>   
-          @endif
-                  
-    </table>
-
-
-
-
-
 
 
 @endsection
