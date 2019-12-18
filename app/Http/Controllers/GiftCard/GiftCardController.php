@@ -30,7 +30,7 @@ class GiftCardController extends Controller
         ->get();
        // dd($cantGift);
       
-        return view('giftCard.index',compact('idBD','date','cantGift'));
+        return view('giftCard.Index',compact('idBD','date','cantGift'));
 
     }
 
