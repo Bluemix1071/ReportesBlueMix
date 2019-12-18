@@ -45,7 +45,7 @@ pre{font-size: 1.7em;  }
 <div id="container">
 <h1>SOCIEDAD COMERCIAL <a style="text-decoration:none" href="{{route('ventaGiftCard')}}">BLUE</a>  MIX LTDA.</h1>
 <pre>C.M.: 5 DE ABRIL 1071 – CHILLAN
-GIRO:LIBRERÍA,JUGIETERIA POR MAYOR Y DETALLE
+GIRO:LIBRERÍA,JUGuETERIA POR MAYOR Y DETALLE
 RUT Nro: 77.283.950-2
 LOC.: 5 DE ABRIL 1071 – CHILLAN
 Nro. Caja: 001    Nota de cobro Nro. {{$idBD_vou}}

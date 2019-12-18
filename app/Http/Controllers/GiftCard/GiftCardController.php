@@ -28,6 +28,7 @@ class GiftCardController extends Controller
         //dd($date);
         $cantGift=DB::table('CantidadGiftCard')
         ->get();
+       // dd($cantGift);
       
         return view('giftCard.index',compact('idBD','date','cantGift'));
 
@@ -309,6 +310,26 @@ class GiftCardController extends Controller
                 
                 try{
                 DB::transaction(function () use ($TarjetasSeleccionadas,$Ncodigos,$date,$params_array,$cantidad,$User) {
+
+                    $idVou=0;
+                    $idBD_vou = DB::table('tabla_voucher')->max('vou_folio');
+                    //dd($idBD);
+                    if(empty($idBD_vou)){
+                        $idVou=1;
+                        //dd($idVou);
+                    }else{
+                        $idVou=$idVou+$idBD_vou;
+                        $idVou=$idVou+1;
+                       // dd($idVou);
+                    }
+                    $dateVou = Carbon::now();
+                    $dateVou = $dateVou->format('Y-m-d');
+                    DB::table('tabla_voucher')->insert([
+                        'vou_folio' => $idVou,
+                        'vou_fecha'=>$dateVou,
+                        'vou_nombre_vendedor'=>$User,
+                        ]);
+
                     $j=0;
                         for ($i = 1; $i <= $cantidad; $i++)  {
                            
@@ -319,31 +340,11 @@ class GiftCardController extends Controller
                                     'TARJ_FECHA_VENCIMIENTO' => $date,
                                     'TARJ_COMPRADOR_NOMBRE' => $params_array['nombreComprador'],
                                     'TARJ_COMPRADOR_RUT'=>$params_array['RutComprador'],
-                                    'TARJ_ESTADO'=>'V'
+                                    'TARJ_ESTADO'=>'V',
+                                    'vou_folio_fk'=>$idVou
                                 ]);
                                 $j=$j+1;
                         }
-
-                        $idVou=0;
-                        $idBD_vou = DB::table('tabla_voucher')->max('vou_folio');
-                        //dd($idBD);
-                        if(empty($idBD_vou)){
-                            $idVou=1;
-                            //dd($idVou);
-                        }else{
-                            $idVou=$idVou+$idBD_vou;
-                            $idVou=$idVou+1;
-                           // dd($idVou);
-                        }
-                        $dateVou = Carbon::now();
-                        $dateVou = $dateVou->format('Y-m-d');
-                        DB::table('tabla_voucher')->insert([
-                            'vou_folio' => $idVou,
-                            'vou_fecha'=>$dateVou,
-                            'vou_nombre_vendedor'=>$User,
-                            ]);
-
-
                             $jj=0;
                            
                         for ($i=0; $i  <$cantidad ; $i++) { 
