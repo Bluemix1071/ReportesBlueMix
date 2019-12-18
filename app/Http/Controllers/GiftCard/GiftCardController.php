@@ -399,7 +399,7 @@ class GiftCardController extends Controller
                 
 
                 Session::flash('success','Tarjetas Vendidas con Exito!!!');
-                return view('giftCard.imprecion',compact('cantGift','TarjetasSeleccionadas','dateVou','idBD_vou'));
+                return view('giftCard.Imprecion',compact('cantGift','TarjetasSeleccionadas','dateVou','idBD_vou'));
         }
 
     }
