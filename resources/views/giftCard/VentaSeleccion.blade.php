@@ -49,8 +49,7 @@ th     { background:#eee; }
                     <div class="card-body">
                       <h5 class="card-title">Stock: <strong>{{$item->CantidadGift}}</strong> </h5>
                    
-                      <hr>
-                      <p class="card-text">  <a href="{{route('cargarCodigos',$item->TARJ_MONTO_INICIAL)}}" class="btn btn-danger"> <i class="fas fa-file-upload"></i> </a>  </p>
+                    
                     </div>
                     <div class="card-footer">
                     <small class="text-muted">GiftCard ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</small>

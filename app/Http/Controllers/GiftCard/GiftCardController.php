@@ -77,6 +77,7 @@ class GiftCardController extends Controller
             //$id= $params_array['hasta'];
            $date = Carbon::now();
            $date = $date->format('Y-m-d');
+          // dd($date);
            $User= session()->get('nombre');
             $rem=1;
            try{
