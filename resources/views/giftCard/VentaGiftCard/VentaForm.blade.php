@@ -106,7 +106,7 @@ Gift Card
         "info":     false,
         
         buttons: [
-          
+          'excel'
             
         ],
           "language":{
@@ -132,13 +132,13 @@ Gift Card
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
   <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
   <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
-  {{-- <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
+  <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
   <script src="{{asset("js/buttons.flash.min.js")}}"></script>
   <script src="{{asset("js/jszip.min.js")}}"></script>
   <script src="{{asset("js/pdfmake.min.js")}}"></script>
   <script src="{{asset("js/vfs_fonts.js")}}"></script>
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
-  <script src="{{asset("js/buttons.print.min.js")}}"></script>--}}
+  <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/validarRUT.js")}}"></script> 
 
 @endsection

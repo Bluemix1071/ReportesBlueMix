@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Venta GiftCards
+Venta GiftCards Empresa
 @endsection
 
 @section('styles')
@@ -24,7 +24,7 @@ th     { background:#eee; }
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
-                <h3 class="display-4 m-2 pb-2" >Venta de GifCards</h3>  
+                <h3 class="display-4 m-2 pb-2" >Venta de GifCards Empresa</h3>  
         </div>
         <div class="col-md-6">
           @if ($errors->any())
@@ -49,12 +49,7 @@ th     { background:#eee; }
                     <div class="card-body">
                       <h5 class="card-title">Stock: <strong>{{$item->CantidadGift}}</strong> </h5>
                    
-<<<<<<< HEAD
-                      <hr>
-                      <p class="card-text">  <a href="{{route('cargarCodigos',$item->TARJ_MONTO_INICIAL)}}" class="btn btn-danger"> <i class="fas fa-file-upload"></i> </a>  </p>
-=======
                     
->>>>>>> 9317d8285a01e10d92cf5b81a101688926f58c16
                     </div>
                     <div class="card-footer">
                     <small class="text-muted">GiftCard ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</small>
@@ -69,7 +64,7 @@ th     { background:#eee; }
 
         
         <div class="col-md-6">
-          <form action="{{route('ventaGiftCard')}}" method="POST">
+          <form action="{{route('PostVentaEmpresa')}}" method="POST">
             @csrf
             <div class="form-row">
               <div class="form-group col-md-4">
@@ -236,49 +231,7 @@ document.getElementById('cantidad10').disabled =true;
 </script>
 
 <script src="{{asset("js/ValidaCheck.js")}}"></script>
-{{-- <script>
-  $(document).ready(function() {
-    $('#tarjetas').DataTable( {
-        dom: 'Bfrtip',
-       
-        "searching": false,
-        
-        buttons: [
-          
-            
-        ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
-        
-      },
-      
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
-    } );
-  } );
-  </script>
-  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
-  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
-  <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
-  <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
-  <script src="{{asset("js/ValidaCheck.js")}}"></script> --}}
-  {{-- <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
-  <script src="{{asset("js/buttons.flash.min.js")}}"></script>
-  <script src="{{asset("js/jszip.min.js")}}"></script>
-  <script src="{{asset("js/pdfmake.min.js")}}"></script>
-  <script src="{{asset("js/vfs_fonts.js")}}"></script>
-  <script src="{{asset("js/buttons.html5.min.js")}}"></script>
-  <script src="{{asset("js/buttons.print.min.js")}}"></script>
-  <script src="{{asset("js/validarRUT.js")}}"></script> --}}
+
 
 
 
