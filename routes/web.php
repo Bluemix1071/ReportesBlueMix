@@ -20,6 +20,15 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/GiftCardVoucher','SalaController@generarVoucher')->name('GiftCardVoucherIndex');
     Route::post('/GiftCardVoucher','SalaController@generarVoucher')->name('GiftCardVoucher');
 
+
+    Route::get('/GiftCardCaja','SalaController@CargaTarjetasCaja')->name('CargaTarjetasCaja');
+    Route::post('/GiftCardCaja','SalaController@CargarTarjetasCodigos')->name('postCargarCaja');
+    Route::post('/VentasGiftcards','SalaController@VenderGiftcardSala')->name('venderGiftCardSala');
+
+
+
+
+
 });
 
 
@@ -122,6 +131,7 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
     Route::get('/VentasGiftCards','GiftCardController@IndexVentasGiftCard')->name('indexVentas');
     Route::get('/LoadVenta/{Monto}','GiftCardController@CargarTablaCodigosVenta')->name('cargarCodigosVenta');
     Route::get('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
+    Route::get('/VentaEmpresa','GiftCardController@VentaEmpresaIndex')->name('VentaEmpresa');
 
 
 
@@ -134,6 +144,7 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
     Route::post('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
     Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
     Route::post('/VentasGiftcards','GiftCardController@VenderGiftcard')->name('venderGiftCard');
+    Route::post('/VentaEmpresa','GiftCardController@VentaEmpresa')->name('PostVentaEmpresa');
     
     Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
     Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambiotarjeta')->name('filtrartarjeta');

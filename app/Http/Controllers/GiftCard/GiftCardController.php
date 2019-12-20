@@ -406,11 +406,132 @@ class GiftCardController extends Controller
     }
 
 
+    public function VentaEmpresaIndex(){
+
+      
+
+        $cantGift=DB::table('CantidadGiftCard')
+        ->get();
+
+
+        return view('giftCard.VentaEmpresa',compact('cantGift'));
+
+    }
+
+    public function VentaEmpresa(Request $request){
+        //dd($this->obtenerIDGiftcard());
+        dd($request->all());
+        $params_array = $request->all();
+        //dd($params_array);
+        unset( $params_array['_token']);
+        if(empty($params_array)){
+            Session::flash('info','ingrese nuevamente los datos');
+            return redirect('Giftcard/VentaEmpresa'); 
+        }
+
+        $collection = Collection::make($vacio=[]);
+
+        try{
+
+            DB::beginTransaction();
+
+            if($request->cantidad10 != null ){
+                $cant=$request->cantidad10;
+                $id=$this->obtenerIDGiftcard();
+
+                for ($i = 1; $i <= $cantidadIteracion; $i++)  {
+                    $Ean13= $this->ean13_check_digit();
+                    //dd($Ean13);
+                   $remplazo= substr($Ean13, -12);
+              
+                    DB::table('tarjeta_gift_card')->insert([
+                        'TARJ_ID' => $id,
+                        'TARJ_CODIGO'=>$remplazo,
+                        'TARJ_MONTO_INICIAL'=>10000,
+                        'TARJ_MONTO_ACTUAL'=>10000,
+                        'TARJ_FECHA_ACTIVACIÓN'=>$date,
+                        //'TARJ_FECHA_VENCIMIENTO' =>$params_array['FechaVencimiento'],
+                        'TARJ_RUT_USUARIO'=>$User,
+                        'TARJ_ESTADO'=>'A'
+                        ]);
+                        $id=$id+1;
+                }
+                // dd($gift10);
+                $collection = $collection->merge(Collection::make($gift10));
+
+            }
+
+            if($request->cantidad20 != null){
+                $cant=$request->cantidad20;
+                //dd($cant);
+         
+                //dd($gift20);
+            $collection = $collection->merge(Collection::make($gift20));
+            }
+            //dd('fuera if');
+
+            if($request->cantidad40 != null ){
+                $cant=$request->cantidad40;
+                // dd($cant);
+            
+                //dd($gift40);
+                $collection = $collection->merge(Collection::make($gift40));
+            }
+            //dd($gift20,$gift40);
+
+            if($request->cantidad60 != null){
+                $cant=$request->cantidad60;
+                // dd($cant);
+            
+                // dd($gift60);
+                $collection = $collection->merge(Collection::make($gift60));
+            }
+            if($request->cantidad100 != null ){
+                $cant=$request->cantidad100;
+            // dd($cant);
+                
+                // dd($gift100);
+                $collection = $collection->merge(Collection::make($gift100));
+
+            }
+
+            DB::commit();
+
+        
+        }catch(Exception $e){
+            DB::rollBack();
+
+        }catch (\Throwable $e) {
+
+            DB::rollBack();
+
+        }
+        
+        
+
+
+        return view('giftCard.VentaEmpresa',compact('cantGift'));
+
+    }
 
 
 
 
 
+
+    public function obtenerIDGiftcard (){
+            $id=0;
+            $idBD = DB::table('tarjeta_gift_card')->max('TARJ_ID');
+            //dd($idBD);
+            if(empty($idBD)){
+                $id=1;
+            }else{
+                $id=$id+$idBD;
+                $id=$id+1;
+            }
+
+            return $id;
+    }
 
 
 

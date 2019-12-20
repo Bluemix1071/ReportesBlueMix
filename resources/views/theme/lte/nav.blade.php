@@ -141,8 +141,15 @@
                   <li class="nav-item">
                       <a href="{{route('indexVentas')}}" class="nav-link">
                           <i class="fas fa-search-dollar"></i>
-                        <p>Ventas GiftCards</p>
+                        <p>Ventas GiftCards Sala</p>
                       </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="{{route('VentaEmpresa')}}" class="nav-link">
+                      <i class="fas fa-book"></i>
+                      <p>Venta GiftCard Empresas</p>
+                    </a>
                   </li>
 
                   <li class="nav-item">
@@ -158,6 +165,14 @@
                         <p>Consumo De GiftCard</p>
                       </a>
                   </li>
+
+                  <li class="nav-item">
+                    <a href="{{route('consumotarj')}}" class="nav-link">
+                      <i class="fas fa-book"></i>
+                      <p>Venta GiftCard Empresas</p>
+                    </a>
+                </li>
+
                 </ul>   
               </li>
               @endif
@@ -316,9 +331,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../charts/inline.html" class="nav-link">
+                <a href="{{route('CargaTarjetasCaja')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Consulta</p>
+                  <p>Venta Giftcard OK</p>
                 </a>
               </li>
             </ul>
