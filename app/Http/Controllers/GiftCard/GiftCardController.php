@@ -631,7 +631,7 @@ class GiftCardController extends Controller
                      $date = $date->format('Y-m-d');
                      Session::flash('error','Algo ha salido mal intentalo nuevamente');
              
-                     return view('giftCard.IngresoGiftCard');//,compact('date','cantGift')
+                     return view('giftCard.IngresoGiftCard',compact('cantGift'));//,compact('date','cantGift')
          
                 } catch (\Throwable $e) {
                      DB::rollBack();
@@ -643,7 +643,7 @@ class GiftCardController extends Controller
                      ->get();
                      Session::flash('error','Algo ha salido mal intentalo nuevamente o la giftcard ya fue Activada');
                     // dd($e,'2catch');
-                     return view('giftCard.IngresoGiftCard');//,compact('date','cantGift')
+                     return view('giftCard.IngresoGiftCard',compact('cantGift'));//,compact('date','cantGift')
                 }
     
             }
