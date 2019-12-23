@@ -15,7 +15,7 @@ Gift Card
 <div class="container-fluid">
     <div class="row">
       <div class="col-md-6">
-          <h3 class="display-4 m-2 pb-2" >Creacion Folios GifCards</h3>  
+          <h3 class="display-4 m-2 pb-2" >Activacion Gif Cards</h3>  
       </div>
       <div class="col-md-6">
         
@@ -35,31 +35,21 @@ Gift Card
             </div>
         @endif
             
-        <form action="{{route('generarGiftCard')}}" name="formulario" method="POST" onsubmit="limpiar()">
+        <form action="{{route('Activacion2Post')}}" name="formulario" method="POST" onsubmit="limpiar()">
           @csrf
 
           <div class="form-row">
               <div class="form-group col-md-12">
-                <label for="inputPassword4">Cantidad de tarjetas</label>
-              <input type="number" class="form-control" id="Cantidad" name="Cantidad"  required >
+                <label for="inputPassword4">Codigo De La Tarjeta</label>
+              <input type="number" class="form-control" id="Codigo" name="Codigo"  required  autofocus>
               </div>
            
             </div>
-                {{-- <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="inputPassword4">Desde</label>
-                  <input type="number" class="form-control" id="Desde" name="Desde"  value="{{$idBD}}" required readonly>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="inputPassword4">hasta</label>
-                    <input type="number" class="form-control" id="hasta" name="hasta"  required>
-                  </div>
-                </div> --}}
                
                 <div class="form-row">
-                        <div class="form-group col-md-6">
+                        {{-- <div class="form-group col-md-6">
                           <label for="inputCity">Monto</label>
-                          <select name="Monto" class="form-control">
+                          <select name="Monto" class="form-control" required>
                             <option value="">Selecione</option>
                             <option value="10000">$10.000</option>
                             <option value="20000">$20.000</option>
@@ -67,11 +57,11 @@ Gift Card
                             <option value="60000">$60.000</option>
                             <option value="100000">$100.000</option>
                           </select>
-                        </div>
-                       {{-- <div class="form-group col-md-6">
+                        </div> --}}
+                       <div class="form-group col-md-12">
                             <label for="inputPassword4">Fecha Vencimiento</label>
                             <input type="date" class="form-control" id="FechaVencimiento" name="FechaVencimiento"  required>
-                       </div> --}}
+                       </div>
                       </div>
                       <div class="form-group col-md-12 btn-group btn-group-block">
                          <button type="submit" class="btn btn-success" >Activar</button>
@@ -79,6 +69,7 @@ Gift Card
                
               </form>
 
+              
               
               <div class="card-group">
                 @foreach ($cantGift as $item)
@@ -89,7 +80,7 @@ Gift Card
                     <h5 class="card-title">Stock: <strong>{{$item->CantidadGift}}</strong> </h5>
                  
                     <hr>
-                    <p class="card-text">  <a href="{{route('cargarCodigos',$item->TARJ_MONTO_INICIAL)}}" class="btn btn-danger"> <i class="fas fa-file-upload"></i> </a>  </p>
+                  
                   </div>
                   <div class="card-footer">
                   <small class="text-muted">GiftCard ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</small>
@@ -98,7 +89,7 @@ Gift Card
                 @endforeach
                   
                 </div>
-                 
+                
                   
            
 
@@ -107,31 +98,7 @@ Gift Card
 
         </div>
         <div class="col-md-6">
-         
-          <table id="tarjetas" class="table table-bordered table-hover dataTable">
-            <thead>
-              <tr>
-                <th scope="col" style="text-align:center">codigo</th>
-                <th scope="col" style="text-align:center"> Monto Tarjeta</th>
-              </tr>
-            </thead>
-              @if (empty($giftCreadas))
-                  
-              @else
-              <tbody>
-                  @foreach($giftCreadas as $item)
-                    <tr>
-                      <th >{{$item->TARJ_CODIGO}}</th>
-                      <td style="text-align:center">{{$item->TARJ_MONTO_INICIAL}}</td>
-                    </tr>
-                    @endforeach
-                  </tbody>   
-              @endif
-                      
-          </table>
-
-          
-            
+       
         </div>
     </div>
 

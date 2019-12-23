@@ -134,23 +134,30 @@
                   <li class="nav-item">
                     <a href="{{route('indexGiftCard')}}" class="nav-link">
                       <i class="fas fa-cog"></i>
-                      <p>Mantencion De GiftCard</p>
+                      <p>Creacion Folios GiftCard</p>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="{{route('Activacion2.0')}}" class="nav-link">
+                      <i class="fas fa-cog"></i>
+                      <p>Activacion Giftcard</p>
                     </a>
                   </li>
                   
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                       <a href="{{route('indexVentas')}}" class="nav-link">
                           <i class="fas fa-search-dollar"></i>
                         <p>Ventas GiftCards Sala</p>
                       </a>
-                  </li>
+                  </li> --}}
 
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{route('VentaEmpresa')}}" class="nav-link">
                       <i class="fas fa-book"></i>
                       <p>Venta GiftCard Empresas</p>
                     </a>
-                  </li>
+                  </li> --}}
 
                   <li class="nav-item">
                     <a href="{{route('Bloqueo')}}" class="nav-link">
@@ -166,12 +173,7 @@
                       </a>
                   </li>
 
-                  <li class="nav-item">
-                    <a href="{{route('consumotarj')}}" class="nav-link">
-                      <i class="fas fa-book"></i>
-                      <p>Venta GiftCard Empresas</p>
-                    </a>
-                </li>
+              
 
                 </ul>   
               </li>

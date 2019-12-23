@@ -125,12 +125,18 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')->group(function(){
 
-    Route::get('/Activacion','GiftCardController@index')->name('indexGiftCard');
+    Route::get('/Folios','GiftCardController@index')->name('indexGiftCard');
     Route::get('/imprimir/{giftCreadas}','GiftCardController@imprimir')->name('imprimir');
     Route::get('/Load/{Monto}','GiftCardController@CargarTablaCodigos')->name('cargarCodigos');
     Route::get('/VentasGiftCards','GiftCardController@IndexVentasGiftCard')->name('indexVentas');
     Route::get('/LoadVenta/{Monto}','GiftCardController@CargarTablaCodigosVenta')->name('cargarCodigosVenta');
     Route::get('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
+    
+    Route::get('/Activacion2.0','GiftCardController@Activacion2')->name('Activacion2.0');
+    
+
+
+
     Route::get('/VentaEmpresa','GiftCardController@VentaEmpresaIndex')->name('VentaEmpresa');
 
 
@@ -138,13 +144,15 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
 
 
-    Route::post('/Activacion','GiftCardController@generarGiftCard')->name('generarGiftCard');
+    Route::post('/Folios','GiftCardController@generarGiftCard')->name('generarGiftCard');
 
 
     Route::post('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
     Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
     Route::post('/VentasGiftcards','GiftCardController@VenderGiftcard')->name('venderGiftCard');
     Route::post('/VentaEmpresa','GiftCardController@VentaEmpresa')->name('PostVentaEmpresa');
+    
+    Route::post('/Activacion2.0','GiftCardController@ActivacionPost')->name('Activacion2Post');
     
     Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
     Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambiotarjeta')->name('filtrartarjeta');
