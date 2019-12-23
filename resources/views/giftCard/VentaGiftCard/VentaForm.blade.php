@@ -72,7 +72,7 @@ Gift Card
 
               <div class="form-group">
                 <label for="exampleInputPassword1">Rut Comprador</label>
-                <input type="text" class="form-control" name="RutComprador" id="rut" maxlength="10" required oninput="checkRut(this)" id="exampleInputPassword1">
+                <input type="text" class="form-control" name="RutComprador" id="rut" maxlength="10" required oninput="checkRut(this)" >
               </div>
 
 

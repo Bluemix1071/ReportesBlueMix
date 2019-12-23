@@ -21,10 +21,10 @@ Consumo GiftCard
               <div class="form-group mb-2">
                 @if (empty($rut))
                 <h5>Rut Comprador</h5>
-                <input type="number" id="codigo" class="form-control" name="codigo" >
+                <input type="text" class="form-control" id="rut" maxlength="10" required oninput="checkRut(this)"  name="codigo" required >
                 @else
                 <h5>Rut Comprador</h5>
-              <input type="number" id="codigo" class="form-control" name="codigo" required value="{{$rut}}">
+              <input type="text"  class="form-control" name="codigo" id="rut" maxlength="10" required oninput="checkRut(this)"  required value="{{$rut}}">
                 @endif
               </div>
               <button type="submit" class="btn btn-primary mb-2">Filtrar</button>            
@@ -96,7 +96,7 @@ Consumo GiftCard
                   </div>
                   <div class="col-md-6 mb-4">
                     <label for="validationTooltip02">Rut Comprador</label>
-                    <input type="text" class="form-control" id="validationTooltip02"  readonly value="{{$consulta[0]->TARJ_COMPRADOR_RUT}}" >
+                    <input type="text" class="form-control"   readonly value="{{$consulta[0]->TARJ_COMPRADOR_RUT}}" >
                   </div>
           </div>
           <div class="form-row">
@@ -154,6 +154,7 @@ Consumo GiftCard
   <script src="{{asset("js/vfs_fonts.js")}}"></script>
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
+  <script src="{{asset("js/validarRUT.js")}}"></script>
 <script>
 
 $("#selectall").on("click", function() {

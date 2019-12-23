@@ -731,7 +731,7 @@ class GiftCardController extends Controller
 
     public function filtrarbloqueo (Request $request){
           
-
+      
 
         $rut=$request->codigo;
 
