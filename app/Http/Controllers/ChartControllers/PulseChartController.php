@@ -45,7 +45,7 @@ class PulseChartController extends Controller
         
         $C3->dataset('2017', 'line', [$a2017[0]->total,$a2017[1]->total,$a2017[2]->total,$a2017[3]->total,$a2017[4]->total,$a2017[5]->total,$a2017[6]->total,$a2017[7]->total,$a2017[8]->total,$a2017[9]->total,$a2017[10]->total,$a2017[11]->total,]);
         $C3->dataset('2018', 'line', [$a2018[0]->total,$a2018[1]->total,$a2018[2]->total,$a2018[3]->total,$a2018[4]->total,$a2018[5]->total,$a2018[6]->total,$a2018[7]->total,$a2018[8]->total,$a2018[9]->total,$a2018[10]->total,$a2018[11]->total,]);
-        $C3->dataset('2019', 'line', [$a2019[0]->total,$a2019[1]->total,$a2019[2]->total,$a2019[3]->total,$a2019[4]->total,$a2019[5]->total,$a2019[6]->total,$a2019[7]->total,$a2019[8]->total,$a2019[9]->total,$a2019[10]->total,]);
+        $C3->dataset('2019', 'line', [$a2019[0]->total,$a2019[1]->total,$a2019[2]->total,$a2019[3]->total,$a2019[4]->total,$a2019[5]->total,$a2019[6]->total,$a2019[7]->total,$a2019[8]->total,$a2019[9]->total,$a2019[10]->total,$a2019[11]->total,]);
       // }
         //$C3->dataset('compras', 'line', [130, 100, 140, 200, 150, 50]);
        // $C3->dataset('proveedores', 'line', [500, 100, 130, 100, 50, 10]);
@@ -137,7 +137,7 @@ class PulseChartController extends Controller
      ->where('anio','=','2019')
      ->get();
      
-      $C3->dataset('2019', 'line', [$a2019[0]->total,$a2019[1]->total,$a2019[2]->total,$a2019[3]->total,$a2019[4]->total,$a2019[5]->total,$a2019[6]->total,$a2019[7]->total,$a2019[8]->total,$a2019[9]->total,$a2019[10]->total]);
+      $C3->dataset('2019', 'line', [$a2019[0]->total,$a2019[1]->total,$a2019[2]->total,$a2019[3]->total,$a2019[4]->total,$a2019[5]->total,$a2019[6]->total,$a2019[7]->total,$a2019[8]->total,$a2019[9]->total,$a2019[10]->total,$a2019[11]->total,]);
       return view('graficos/pruebaChart', compact('C3'));
 
    
