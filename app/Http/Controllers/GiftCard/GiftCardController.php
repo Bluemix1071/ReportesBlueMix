@@ -820,7 +820,7 @@ class GiftCardController extends Controller
 
      public  function ean13_check_digit($digits){
         //first change digits to a string so that we can access individual numbers
-       //dd($digits);
+        //dd($digits);
         $digits =(string)$digits;
         $lengCadena= strlen($digits);
         $iteracion= 12-$lengCadena;

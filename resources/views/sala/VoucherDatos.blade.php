@@ -45,7 +45,8 @@
 					<div class="label-input100">Selecciona El Monto</div>
 					<div>
 						<select class="js-select2" name="monto" required>
-                            <option value="">........</option>
+							<option value="">........</option>
+							<option value="10000">$10.000</option>
 							<option value="20000">$20.000</option>
 							<option value="40000">$40.000</option>
 							<option value="60000">$60.000</option>
