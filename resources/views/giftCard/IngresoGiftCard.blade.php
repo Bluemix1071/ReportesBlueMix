@@ -41,7 +41,7 @@ Gift Card
           <div class="form-row">
               <div class="form-group col-md-12">
                 <label for="inputPassword4">Codigo De La Tarjeta</label>
-              <input type="number" class="form-control" id="Codigo" name="Codigo"  required  autofocus>
+              <input type="number" class="form-control" id="Codigo" name="Codigo" min="1"  required  autofocus>
               </div>
            
             </div>
