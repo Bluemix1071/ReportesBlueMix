@@ -116,7 +116,6 @@ Consumo GiftCard
     </div>
 </div>
 
-
 @endsection
 @section('script')
 <script>
