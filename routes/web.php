@@ -138,7 +138,12 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
 
     Route::get('/VentaEmpresa','GiftCardController@VentaEmpresaIndex')->name('VentaEmpresa');
+    Route::post('/VentaEmpresa','GiftCardController@VentaEmpresaFiltro')->name('FiltroVentaEmpresa');
 
+    Route::get('/ListarVenta','GiftCardController@ListarGet');
+    Route::post('/ListarVenta','GiftCardController@ListarFiltroVentaEmpresa')->name('ListaVentaEmpresa');
+
+    Route::post('/VentasGiftcards','GiftCardController@VenderGiftcard')->name('venderGiftCard');
 
 
 
@@ -149,10 +154,16 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
     Route::post('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
     Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
-    Route::post('/VentasGiftcards','GiftCardController@VenderGiftcard')->name('venderGiftCard');
-    Route::post('/VentaEmpresa','GiftCardController@VentaEmpresa')->name('PostVentaEmpresa');
     
+  
+
+
+
+    Route::get('/Activacion3.0','GiftCardController@Activacion3')->name('Activacion3.0');
+    Route::post('/Activacion3.0','GiftCardController@FiltrarActivacion3')->name('filtroActivacion3');
     Route::post('/Activacion2.0','GiftCardController@ActivacionPost')->name('Activacion2Post');
+    Route::post('/Activar3','GiftCardController@ActivarRango')->name('ActivarRango');
+
     
     Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
     Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambiotarjeta')->name('filtrartarjeta');

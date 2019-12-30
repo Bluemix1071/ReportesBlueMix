@@ -7,14 +7,9 @@ Venta GiftCards Empresa
 
 <style>
 
-.tableFixHead          { overflow-y: auto; height: 260px; }
-.tableFixHead thead th { position: sticky; top: 0; }
 
 /* Just common table stuff. Really. */
 
-table  { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px 16px; }
-th     { background:#eee; }
 </style>
     
 @endsection
@@ -23,10 +18,10 @@ th     { background:#eee; }
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
                 <h3 class="display-4 m-2 pb-2" >Venta de GifCards Empresa</h3>  
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -39,107 +34,98 @@ th     { background:#eee; }
         </div>
     </div>
     <div class="row">
+      <div class="col-md-12">
+        <form action="{{route('FiltroVentaEmpresa')}}" method="POST">
+          @csrf
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="Desde">Desde</label>
+              @if (empty($data[0]))
+              <input type="number" class="form-control" name="Desde" id="Desde" placeholder="Desde" required>
+              @else
+            <input type="number" class="form-control" name="Desde" id="Desde" placeholder="Desde" required  value="{{$data[0]}}">
+              @endif
+              
+            </div>
+            <div class="form-group col-md-4">
+              <label for="Hasta">Hasta</label>
+              @if (empty($data[1]))
+              <input type="number" class="form-control" name="Hasta" id="Hasta" placeholder="Hasta" required>
+              @else
+            <input type="number" class="form-control" name="Hasta" id="Hasta" placeholder="Hasta" required value="{{$data[1]}}">
+              @endif
+              
+            </div>
+            <div class="form-group col-md-4">
+              <label for="Desde">-</label>
+              <button type="submit" class="btn btn-primary form-control " >Buscar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
             
-        <div class="col-md-6">
-                <div class="card-group">
-                  @foreach ($cantGift as $item)
-
-                  <div class="card">
-                    <img class="card-img-top" src="{{asset("giftcard/img/20.000.jpg")}}" alt="Card image cap">
-                    <div class="card-body">
-                      <h5 class="card-title">Stock: <strong>{{$item->CantidadGift}}</strong> </h5>
-                   
-                    
-                    </div>
-                    <div class="card-footer">
-                    <small class="text-muted">GiftCard ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</small>
-                    </div>
-                  </div>
-                  @endforeach   
-                </div>
-
-                      
-        </div>
-
-
-        
-        <div class="col-md-6">
-          <form action="{{route('PostVentaEmpresa')}}" method="POST">
+        <div class="col-md-12">
+          <form action="{{route('ListaVentaEmpresa')}}" method="POST">
             @csrf
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$10.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label>
-                <input type="number" class="form-control" name="cantidad10" min="1" required disabled id="cantidad10" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar10(this);" >
-              </div>
-            </div>
+    <table id="tarjetas" class="table table-bordered table-hover dataTable">
+      <thead>
+        <tr>
+          <th scope="col" style="text-align:center">codigo</th>
+          <th scope="col" style="text-align:center"> Monto Tarjeta</th>
+          <th scope="col" style="text-align:center"> Fecha Vencimiento</th>
+          <th scope="col" style="text-align:center">Vender Todo <input type="checkbox" id="selectall"></th>
+        </tr>
+      </thead>
+        @if (empty($pruebaAct))
+            
+        @else
 
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$20.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label>
-                <input type="number" class="form-control" name="cantidad20" min="1" required disabled id="cantidad20" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar20(this);" >
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$40.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label> 
-                <input type="number" class="form-control" name="cantidad40" min="1" required disabled id="cantidad40" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar40(this);" >
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$60.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label>
-                <input type="number" class="form-control" name="cantidad60"  min="1" required disabled id="cantidad60" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar60(this);" >
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Valor</label>
-                <span class="form-control">$100.000</span>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Cantidad</label>
-                <input type="number" class="form-control" name="cantidad100" min="1" required disabled id="cantidad100" style="display:none" >
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Selecciona</label>
-                <input type="checkbox" class="form-control" onChange="comprobar100(this);" >
-              </div>
-            </div>
-            <button class="btn btn-success"> Vender</button>
-           
-          </form>
+  
+        <tbody>
+            @foreach($pruebaAct as $item)
+              <tr>
+                <th  >{{$item->TARJ_CODIGO}}</th>
+                <td style="text-align:center">{{$item->TARJ_MONTO_INICIAL}}</td>
+                <td style="text-align:center">{{$item->TARJ_FECHA_VENCIMIENTO}}</td>
+
+                @if ($item->TARJ_ESTADO == 'C' )
+                <td class="bg-info" style="text-align:center">Creada</td>
+
+                @elseif ($item->TARJ_ESTADO == 'V' )
+                <td class="bg-success" style="text-align:center">Vendida</td>
+
+                @elseif ($item->TARJ_ESTADO == 'B' )
+                <td class="bg-danger" style="text-align:center">Bloqueda</td>
+
+                @else
+                <td style="text-align:center"><input type="checkbox" class="case" name="case[]" value="{{$item->TARJ_CODIGO}}"></td>
+                @endif
+
+              
+              
+              </tr>
+              @endforeach
+            </tbody> 
+            <tfoot>
+              <tr>
+                <td colspan="4" ><button type="submit" class="btn btn-success">Vender</button></td>
+              </tr>
+            </tfoot>
+            
+        
+             
+        @endif
+
+
+      
+                
+    </table>
+  </form>
+          
+     
+         
         </div>            
         {{--  finf col md 8 --}}
     </div>
@@ -152,85 +138,25 @@ th     { background:#eee; }
 
 @section('script')
 
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
+  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
 
+  <script>
 
-<script>
+    $("#selectall").on("click", function() {
+      $(".case").prop("checked", this.checked);
+    });
+    
+    $(".case").on("click", function() {
+      if ($(".case").length == $(".case:checked").length) {
+        $("#selectall").prop("checked", true);
+      } else {
+        $("#selectall").prop("checked", false);
+      }
+    });
+    </script>
 
-
- 
-
- function comprobar20(obj)
-
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad20').style.display = "";
-document.getElementById('cantidad20').disabled =false;
-   } else{
-      
-document.getElementById('cantidad20').style.display = "none";
-document.getElementById('cantidad20').value = "";
-document.getElementById('cantidad20').disabled =true;
-   }     
-}
-
-function comprobar40(obj)
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad40').style.display = "";
-document.getElementById('cantidad40').disabled =false;
-   } else{
-      
-document.getElementById('cantidad40').style.display = "none";
-document.getElementById('cantidad40').value = "";
-document.getElementById('cantidad40').disabled =true;
-   }     
-}
-
-function comprobar60(obj)
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad60').style.display = "";
-document.getElementById('cantidad60').disabled =false;
-   } else{
-      
-document.getElementById('cantidad60').style.display = "none";
-document.getElementById('cantidad60').value = "";
-document.getElementById('cantidad60').disabled =true;
-   }     
-}
-
-function comprobar100(obj)
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad100').style.display = "";
-document.getElementById('cantidad100').disabled =false;
-   } else{
-      
-document.getElementById('cantidad100').style.display = "none";
-document.getElementById('cantidad100').value = "";
-document.getElementById('cantidad100').disabled =true;
-   }     
-}
-function comprobar10(obj)
-{   
-    if (obj.checked){
-      
-document.getElementById('cantidad10').style.display = "";
-document.getElementById('cantidad10').disabled =false;
-   } else{
-      
-document.getElementById('cantidad10').style.display = "none";
-document.getElementById('cantidad10').value = "";
-document.getElementById('cantidad10').disabled =true;
-   }     
-}
-</script>
-
-<script src="{{asset("js/ValidaCheck.js")}}"></script>
+{{-- <script src="{{asset("js/ValidaCheck.js")}}"></script> --}}
 
 
 

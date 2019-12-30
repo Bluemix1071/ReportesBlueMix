@@ -139,7 +139,7 @@
                   </li>
 
                   <li class="nav-item">
-                    <a href="{{route('Activacion2.0')}}" class="nav-link">
+                    <a href="{{route('Activacion3.0')}}" class="nav-link">
                       <i class="fas fa-cog"></i>
                       <p>Activacion Giftcard</p>
                     </a>
@@ -152,12 +152,12 @@
                       </a>
                   </li> --}}
 
-                  {{-- <li class="nav-item">
+                  <li class="nav-item">
                     <a href="{{route('VentaEmpresa')}}" class="nav-link">
                       <i class="fas fa-book"></i>
                       <p>Venta GiftCard Empresas</p>
                     </a>
-                  </li> --}}
+                  </li>
 
                   <li class="nav-item">
                     <a href="{{route('Bloqueo')}}" class="nav-link">

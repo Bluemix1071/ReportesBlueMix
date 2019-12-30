@@ -45,6 +45,7 @@ Gift Card
         </div>
 
         <div class="col-md-6">
+          <div style="display: none">{{ $total = 0 }} </div> 
             <table id="tarjetas" class="table table-bordered table-hover dataTable">
                 <thead>
                   <tr>
@@ -59,13 +60,21 @@ Gift Card
                   @else
                   <tbody>
                       @foreach($collection as $item)
+                      <div style="display: none">{{$total += $item->TARJ_MONTO_INICIAL}}</div>
                         <tr>
                           <th >{{$item->TARJ_ID}}</th>
                           <th >{{$item->TARJ_CODIGO}}</th>
                           <td style="text-align:center">${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</td>
                         </tr>
                         @endforeach
-                      </tbody>   
+                      </tbody>  
+                      <tfoot>
+                        <tr>
+                          <th style="text-align:center" colspan="2">Total</th>
+                          <td style="text-align:center">${{number_format($total,0,',','.')}} </td>
+                          
+                        </tr>
+                      </tfoot>  
                      
                   @endif
                  

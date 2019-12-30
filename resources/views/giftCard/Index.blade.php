@@ -68,10 +68,10 @@ Gift Card
                             <option value="100000">$100.000</option>
                           </select>
                         </div>
-                       {{-- <div class="form-group col-md-6">
+                       <div class="form-group col-md-6">
                             <label for="inputPassword4">Fecha Vencimiento</label>
                             <input type="date" class="form-control" id="FechaVencimiento" name="FechaVencimiento"  required>
-                       </div> --}}
+                       </div>
                       </div>
                       <div class="form-group col-md-12 btn-group btn-group-block">
                          <button type="submit" class="btn btn-success" >Activar</button>
@@ -80,7 +80,7 @@ Gift Card
               </form>
 
               
-              <div class="card-group">
+              {{-- <div class="card-group">
                 @foreach ($cantGift as $item)
 
                 <div class="card">
@@ -97,7 +97,7 @@ Gift Card
                 </div>
                 @endforeach
                   
-                </div>
+                </div> --}}
                  
                   
            

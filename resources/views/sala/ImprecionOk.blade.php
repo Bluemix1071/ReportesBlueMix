@@ -51,6 +51,10 @@ LOC.: 5 DE ABRIL 1071 – CHILLAN
 Nro. Caja: 001    Nota de cobro Nro. {{$idBD_vou}}
 Fecha: {{$dateVou}}
 </pre>
+<div style="display: none">{{ $total = 0 }} </div>
+@foreach ($TarjetasSeleccionadas as $item)
+<div style="display: none">{{$total += $item->TARJ_MONTO_INICIAL}}</div>
+@endforeach 
 <pre>
 <strong> Codigo</strong>           <strong>Monto</strong>    
                                
@@ -58,6 +62,8 @@ Fecha: {{$dateVou}}
 {{$item->TARJ_CODIGO}}  |    ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}
     
 @endforeach 
+-------------------------------------------
+Total :            ${{number_format($total,0,',','.')}}
         
 </pre>
 

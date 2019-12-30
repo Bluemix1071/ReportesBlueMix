@@ -38,14 +38,23 @@ Gift Card
                                           
                                       @else
                                       <tbody>
+                                       <div style="display: none">{{ $total = 0 }} </div> 
                                           @foreach($collection as $item)
                                             <tr>
                                               <th >{{$item->TARJ_ID}}</th>
                                               <th >{{$item->TARJ_CODIGO}}</th>
                                               <td style="text-align:center">${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</td>
+                                              <div style="display: none">{{$total += $item->TARJ_MONTO_INICIAL}}</div>
                                             </tr>
                                             @endforeach
-                                          </tbody>   
+                                          </tbody>  
+                                          <tfoot>
+                                            <tr>
+                                              <th style="text-align:center" colspan="2">Total</th>
+                                              <td style="text-align:center">${{number_format($total,0,',','.')}} </td>
+                                              
+                                            </tr>
+                                          </tfoot> 
                                          
                                       @endif
                                      
@@ -59,7 +68,7 @@ Gift Card
           @csrf
             <div class="form-group">
               @foreach ($collection as $item)
-
+              <input type="hidden" name="total" value="{{$total}}" >
               <input type="hidden" name="Codigos[]" class="form-control" value="{{$item->TARJ_CODIGO}}" aria-describedby="emailHelp">
 
               @endforeach
@@ -80,7 +89,7 @@ Gift Card
 
         
             
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-success">Vender</button>
           </form>
 
 
