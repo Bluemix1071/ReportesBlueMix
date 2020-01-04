@@ -164,6 +164,8 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
     Route::post('/Activacion2.0','GiftCardController@ActivacionPost')->name('Activacion2Post');
     Route::post('/Activar3','GiftCardController@ActivarRango')->name('ActivarRango');
 
+
+    //asdsdf
     
     Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
     Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambiotarjeta')->name('filtrartarjeta');
