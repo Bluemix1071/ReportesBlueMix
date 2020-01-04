@@ -858,11 +858,29 @@ class GiftCardController extends Controller
 
         $consulta = DB::table('tarjeta_gift_card')
         ->where('TARJ_ESTADO', '=', 'V')
+        ->orwhere('TARJ_ESTADO', '=', 'A')
+        ->orwhere('TARJ_ESTADO', '=', 'C')
         ->where('TARJ_COMPRADOR_RUT' ,'=', $rut)
         ->get();
 
         return view('giftCard.BloqueoTargetas',compact('consulta'));
     }
+
+    public function filtrarbloqueorango (Request $request){
+      
+        $desde=$request->desde;
+        $hasta=$request->hasta;
+        $consulta=DB::table('tarjeta_gift_card')
+        ->whereBetween('TARJ_CODIGO', array($request->desde,$request->hasta))
+        ->where('TARJ_ESTADO', '=', 'V')
+        ->orwhere('TARJ_ESTADO', '=', 'A')
+        ->orwhere('TARJ_ESTADO', '=', 'C')
+        ->get();
+    
+  
+  
+        return view('giftCard.BloqueoTargetas',compact('consulta','desde','hasta'));
+      }
 
 
 
@@ -878,12 +896,16 @@ class GiftCardController extends Controller
          $conteo = $conteo-1;
 
 
+         $date = Carbon::now("Chile/Continental");
+
         for ($i = 0; $i <= $conteo; $i++){
 
         $bloqueoupdate = DB::table('tarjeta_gift_card')
         ->where('TARJ_CODIGO', $wea[$i])
         ->Update(['TARJ_MOTIVO_BLOQUEO' => $request->bloqueo,
-                  'TARJ_ESTADO' => 'B'
+                  'TARJ_ESTADO' => 'B',
+                  'TARJ_FECHA_BLOQUEO' => $date,
+                  'TARJ_USUARIO_BLOQUEO' => session()->get('nombre')
 
 
         ]);
@@ -895,7 +917,7 @@ class GiftCardController extends Controller
         Session::flash('success','Bloqueo Realizado');
 
     
-        return view('giftCard.BloqueoTargetas');
+        
 
       }
 
