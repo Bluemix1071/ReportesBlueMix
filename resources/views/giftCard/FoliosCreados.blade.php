@@ -15,7 +15,7 @@ Gift Card
 <div class="container-fluid">
     <div class="row">
       <div class="col-md-6">
-          <h3 class="display-4 m-2 pb-2" >Creacion Folios GifCards</h3>  
+          <h3 class="display-4 m-2 pb-2" >Listado Folios Creados</h3>  
       </div>
       <div class="col-md-6">
         
@@ -24,10 +24,7 @@ Gift Card
         
     </div>
     <div class="row">
-      <div class="col-md-2">
-
-      </div>
-        <div class="col-md-8" >
+        <div class="col-md-4" >
             @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -37,50 +34,10 @@ Gift Card
                 </ul>
             </div>
         @endif
-            
-        <form action="{{route('generarGiftCard')}}" name="formulario" method="POST" onsubmit="limpiar()">
-          @csrf
 
-          <div class="form-row">
-              <div class="form-group col-md-12">
-                <label for="inputPassword4">Cantidad de tarjetas</label>
-              <input type="number" class="form-control" id="Cantidad" name="Cantidad"  required >
-              </div>
-           
-            </div>
-                {{-- <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="inputPassword4">Desde</label>
-                  <input type="number" class="form-control" id="Desde" name="Desde"  value="{{$idBD}}" required readonly>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="inputPassword4">hasta</label>
-                    <input type="number" class="form-control" id="hasta" name="hasta"  required>
-                  </div>
-                </div> --}}
-               
-                <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="inputCity">Monto</label>
-                          <select name="Monto" class="form-control">
-                            <option value="">Selecione</option>
-                            <option value="10000">$10.000</option>
-                            <option value="20000">$20.000</option>
-                            <option value="40000">$40.000</option>
-                            <option value="60000">$60.000</option>
-                            <option value="100000">$100.000</option>
-                          </select>
-                        </div>
-                       <div class="form-group col-md-6">
-                            <label for="inputPassword4">Fecha Vencimiento</label>
-                            <input type="date" class="form-control" id="FechaVencimiento" name="FechaVencimiento"  required>
-                       </div>
-                      </div>
-                      <div class="form-group col-md-12 btn-group btn-group-block">
-                         <button type="submit" class="btn btn-success" >Activar</button>
-                      </div>
-               
-              </form>
+        <a href="{{route('indexGiftCard')}}" class="btn btn-primary">Generar mas codigos</a>
+            
+     
 
               
               {{-- <div class="card-group">
@@ -102,17 +59,9 @@ Gift Card
                   
                 </div> --}}
                  
-                  
-           
-
-
-
-
+         
         </div>
-        <div class="col-md-2">
-          
-        </div>
-        {{-- <div class="col-md-6">
+        <div class="col-md-8">
          
           <table id="tarjetas" class="table table-bordered table-hover dataTable">
             <thead>
@@ -138,8 +87,7 @@ Gift Card
 
           
             
-        </div> --}}
-        
+        </div>
     </div>
 
 </div>

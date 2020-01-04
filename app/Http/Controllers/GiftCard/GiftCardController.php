@@ -26,17 +26,25 @@ class GiftCardController extends Controller
         $date->addMonth(6);
         $date = $date->format('Y-m-d');
         //dd($date);
-        $cantGift=DB::table('CantidadFolios')
-        ->get();
+        
        // dd($cantGift);
       
-        return view('giftCard.Index',compact('idBD','date','cantGift'));
+        return view('giftCard.Index',compact('idBD','date'));
 
+    }
+
+    public function vistafolios($cant){
+        $giftCreadas=DB::table('tarjeta_gift_card')
+                ->orderBy('TARJ_ID', 'desc')
+                ->take( $cant)
+                ->get();
+
+        return view ('giftCard.FoliosCreados',compact('giftCreadas'));
     }
 
     
     public function generarGiftCard(Request $request){ //metodo que se encarga de la cracion de Folios
-        //dd($request->all());
+      //  dd($request->all());
        $params_array= $request->all();
       // dd($params_array);
       
@@ -58,101 +66,151 @@ class GiftCardController extends Controller
 
 
         }else{
+                    setlocale(LC_ALL, 'es_CL', 'es', 'ES');
+                    $fechaVenc=Carbon::createMidnightDate($params_array['FechaVencimiento'],'Chile/Continental');
+                    //$fechaVenc = $fechaVenc->format('Y-m-d');
+                    $diaActual=Carbon::now();
+                    $diaActual = $diaActual->format('Y-m-d');
+                    $diaActual=Carbon::createMidnightDate($diaActual);
+                ///$diaActual->toDateString();
+           
+                 $diffDias=$diaActual->diffInDays($fechaVenc);
+            if($diffDias<30){
+
+                Session::flash('error','Los Folios no pueden tener una fecha de vencimiento inferior a 30 dias');
+                //return view('giftCard.index',compact('params_array'));
+                return redirect()->route('indexGiftCard');
+                //$diffDias >=30 || $diffDias <60
+             }elseif($diffDias<60){
+                $this->CrearFolio($params_array);
+
+          $giftCreadas=DB::table('tarjeta_gift_card')
+                ->orderBy('TARJ_ID', 'desc')
+                ->take( $params_array['Cantidad'])
+                ->get();
+               
+                Session::flash('warning','Folios Creados, pero su fecha de vencimiento es '.' '.$diffDias.' '.' dias se sugiere q sea superior a 60 dias  ');
+      
+                //return view('giftCard.FoliosCreados',compact('params_array','giftCreadas'));
+                return \Redirect::route('Vfolios',['cant'=>$params_array['Cantidad']]);
+
+             }elseif($diffDias>60){
+
+                $this->CrearFolio($params_array);
+
+                $giftCreadas=DB::table('tarjeta_gift_card')
+                ->orderBy('TARJ_ID', 'desc')
+                ->take( $params_array['Cantidad'])
+                ->get();
+               
+                Session::flash('success','Folios Creados con exito!!!');
+      
+                //return view('giftCard.FoliosCreados',compact('params_array','giftCreadas'));
+                return \Redirect::route('Vfolios',['cant'=>$params_array['Cantidad']]);
+
+             }
+
+        }
+        
+    //    $giftCreadas=DB::table('tarjeta_gift_card')
+    //    ->orderBy('TARJ_ID', 'desc')
+    //    ->take( $params_array['Cantidad'])
+    //    ->get();
+      
+
+    //    $cantGift=DB::table('CantidadFolios')
+    //    ->get();
+       //dd($cantGift);
+
+
+        // $date = Carbon::now();
+       
+        // $date->addMonth(6);
+        // $date = $date->format('Y-m-d');
+        // Session::flash('success','Folios Creados con Exito!!!');
+    
+        // return view('giftCard.Index',compact('date','params_array','cantGift','giftCreadas'));
+       //return redirect()->route('generarGiftCard',$giftCreadas);
+
+    }
+
+
+
+
+    public function CrearFolio($params_array){
             $id=0;
             $idBD = DB::table('tarjeta_gift_card')->max('TARJ_ID');
             //dd($idBD);
             if(empty($idBD)){
-                $id=1;
+            $id=1;
             }else{
-                $id=$id+$idBD;
-                $id=$id+1;
+            $id=$id+$idBD;
+            $id=$id+1;
             }
             //dd($id);
-           $cantidadIteracion= $params_array['Cantidad'];
-           // dd( $cantidadIteracion);
-           
-           //dd($Ean13);
-          // $cantidadIteracion= ;
+            $cantidadIteracion= $params_array['Cantidad'];
+            // dd( $cantidadIteracion);
+
+            //dd($Ean13);
+            // $cantidadIteracion= ;
             //$id= $params_array['hasta'];
-           $date = Carbon::now();
-           $date = $date->format('Y-m-d');
-          // dd($date);
-           $User= session()->get('nombre');
+            $date = Carbon::now();
+            $date = $date->format('Y-m-d');
+            // dd($date);
+            $User= session()->get('nombre');
             $rem=1;
-           try{
+            try{
 
             DB::transaction(function () use ($date ,$User,$cantidadIteracion,$id,$params_array) {
-              
-               
 
-                        for ($i = 1; $i <= $cantidadIteracion; $i++)  {
-                            $Ean13= $this->ean13_check_digit($id);
-                            //dd($Ean13);
-                           $remplazo= substr($Ean13, -12);
-                      
-                            DB::table('tarjeta_gift_card')->insert([
-                                'TARJ_ID' => $id,
-                                'TARJ_CODIGO'=>$remplazo,
-                                'TARJ_MONTO_INICIAL'=>$params_array['Monto'],
-                                'TARJ_MONTO_ACTUAL'=>$params_array['Monto'],
-                                //'TARJ_FECHA_ACTIVACIÓN'=>$date,
-                                 'TARJ_FECHA_VENCIMIENTO' =>$params_array['FechaVencimiento'],
-                                //'TARJ_RUT_USUARIO'=>$User,
-                                'TARJ_ESTADO'=>'C'
-                                ]);
-                                $id=$id+1;
-                        }
-                        
-                         
-                }); // acepta un numero que es la cantidad de veces q intenta hacer el procedimietno 
 
-            }catch(Exception $e){
-                $cantGift=DB::table('CantidadFolios')
-                ->get();
-                // dd($e);
-                 $date = Carbon::now();
-                 //dd($date);
-                 $date->addMonth(6);
-                 $date = $date->format('Y-m-d');
-                 Session::flash('error','Algo ha salido mal intentalo nuevamente');
-         
-                 return view('giftCard.Index',compact('date','cantGift'));
-     
-            } catch (\Throwable $e) {
-                 DB::rollBack();
-                 $date = Carbon::now();
-                 dd($e);
-                 $date->addMonth(6);
-                 $date = $date->format('Y-m-d');
-                 $cantGift=DB::table('CantidadFolios')
-                 ->get();
-                 Session::flash('error','Algo ha salido mal intentalo nuevamente');
-                // dd($e,'2catch');
-                 return view('giftCard.Index',compact('date','cantGift'));
+
+            for ($i = 1; $i <= $cantidadIteracion; $i++)  {
+            $Ean13= $this->ean13_check_digit($id);
+            //dd($Ean13);
+            $remplazo= substr($Ean13, -12);
+
+            DB::table('tarjeta_gift_card')->insert([
+                'TARJ_ID' => $id,
+                'TARJ_CODIGO'=>$remplazo,
+                'TARJ_MONTO_INICIAL'=>$params_array['Monto'],
+                'TARJ_MONTO_ACTUAL'=>$params_array['Monto'],
+                //'TARJ_FECHA_ACTIVACIÓN'=>$date,
+                'TARJ_FECHA_VENCIMIENTO' =>$params_array['FechaVencimiento'],
+                //'TARJ_RUT_USUARIO'=>$User,
+                'TARJ_ESTADO'=>'C'
+                ]);
+                $id=$id+1;
             }
 
-        }
-        
-       $giftCreadas=DB::table('tarjeta_gift_card')
-       ->orderBy('TARJ_ID', 'desc')
-       ->take( $cantidadIteracion)
-       ->get();
-      
 
-       $cantGift=DB::table('CantidadFolios')
-       ->get();
-       //dd($cantGift);
+            }); // acepta un numero que es la cantidad de veces q intenta hacer el procedimietno 
 
-       
+            }catch(Exception $e){
+            $cantGift=DB::table('CantidadFolios')
+            ->get();
+            // dd($e);
+            $date = Carbon::now();
+            //dd($date);
+            $date->addMonth(6);
+            $date = $date->format('Y-m-d');
+            Session::flash('error','Algo ha salido mal intentalo nuevamente');
 
+            return view('giftCard.Index',compact('date','cantGift'));
 
-        $date = Carbon::now();
-       
-        $date->addMonth(6);
-        $date = $date->format('Y-m-d');
-        Session::flash('success','Folios Creados con Exito!!!');
-    
-        return view('giftCard.Index',compact('date','params_array','cantGift','giftCreadas'));
+            } catch (\Throwable $e) {
+            DB::rollBack();
+            $date = Carbon::now();
+            dd($e);
+            $date->addMonth(6);
+            $date = $date->format('Y-m-d');
+            $cantGift=DB::table('CantidadFolios')
+            ->get();
+            Session::flash('error','Algo ha salido mal intentalo nuevamente');
+            // dd($e,'2catch');
+            return view('giftCard.Index',compact('date','cantGift'));
+            }
+
 
     }
 

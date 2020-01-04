@@ -126,6 +126,13 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')->group(function(){
 
     Route::get('/Folios','GiftCardController@index')->name('indexGiftCard');
+    Route::get('/Folios2/{cant}','GiftCardController@vistafolios')->name('Vfolios');
+    
+
+    Route::post('/Folios2','GiftCardController@generarGiftCard')->name('generarGiftCard');
+
+
+
     Route::get('/imprimir/{giftCreadas}','GiftCardController@imprimir')->name('imprimir');
     Route::get('/Load/{Monto}','GiftCardController@CargarTablaCodigos')->name('cargarCodigos');
     Route::get('/VentasGiftCards','GiftCardController@IndexVentasGiftCard')->name('indexVentas');
@@ -149,7 +156,7 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
 
 
-    Route::post('/Folios','GiftCardController@generarGiftCard')->name('generarGiftCard');
+   
 
 
     Route::post('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
