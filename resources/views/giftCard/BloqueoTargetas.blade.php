@@ -30,6 +30,33 @@ Consumo GiftCard
               <button type="submit" class="btn btn-primary mb-2">Filtrar</button>            
             </form>
               <hr>
+              <form action="{{route('filtrartarjetabloqueorango')}}" method="post"  id="desvForm" class="form-inline">
+                @csrf
+                       Desde  
+                      <div class="form-group mb-2">
+                        @if (empty($desde))
+                        <label for="staticEmail2" class="sr-only">Fecha 1</label>
+                        <input type="number" id="desde" class="form-control" name="desde" >
+                        @else
+                      <input type="number" id="desde" class="form-control" name="desde"  value="{{$desde}}">
+                        @endif
+                 
+                      </div>
+                       Hasta  
+                      <div class="form-group mx-sm-3 mb-2">
+                        
+                        @if (empty($hasta))
+                        <label for="inputPassword2" class="sr-only">Fecha 2</label>
+                        <input type="number" id="hasta" name="hasta" class="form-control">
+                        @else
+                      <input type="number" id="hasta" name="hasta" class="form-control" value="{{$hasta}}">
+                        @endif
+                   
+                      </div>
+                      <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                  
+                     
+                    </form>
         </div>    
       </div>
       <div class="row">

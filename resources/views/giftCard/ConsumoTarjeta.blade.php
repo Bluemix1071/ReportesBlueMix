@@ -89,6 +89,7 @@ Consumo GiftCard
                             <input type="text" class="form-control" readonly id="validationTooltip03" >
                           </div>
                     </div>
+                    
                     <div class="form-row">
                             <div class="col-md-4 mb-3">
                               <label for="validationTooltip01">Comprador</label>
@@ -104,6 +105,16 @@ Consumo GiftCard
                                 <input type="text" class="form-control" id="validationTooltipUsername"  readonly aria-describedby="validationTooltipUsernamePrepend">
                               </div>
                         </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col-md-6 mb-3">
+                        <label for="validationTooltip03">Fecha De Bloqueo</label>
+                        <input type="text" class="form-control" readonly id="validationTooltip03">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                            <label for="validationTooltip03">Quien Bloqueo</label>
+                            <input type="text" class="form-control" readonly id="validationTooltip03" >
+                          </div>
                     </div>
                     <div class="form-row">
                             <div class="col-md-4 mb-3">
@@ -138,6 +149,7 @@ Consumo GiftCard
                               <input type="text" class="form-control" readonly id="validationTooltip03" value="{{$consulta2[0]->TARJ_FECHA_VENCIMIENTO}}" >
                             </div>
                       </div>
+                      
                       <div class="form-row">
                               <div class="col-md-4 mb-3">
                                 <label for="validationTooltip01">Comprador</label>
@@ -154,11 +166,23 @@ Consumo GiftCard
                                   <input type="text" class="form-control" id="validationTooltipUsername"  value="Vigente" readonly aria-describedby="validationTooltipUsernamePrepend">
                                   @elseif($consulta2[0]->TARJ_ESTADO == 'A') 
                                   <input type="text" class="form-control" id="validationTooltipUsername"  value="Activa" readonly aria-describedby="validationTooltipUsernamePrepend">
+                                  @elseif($consulta2[0]->TARJ_ESTADO == 'C') 
+                                  <input type="text" class="form-control" id="validationTooltipUsername"  value="Creada" readonly aria-describedby="validationTooltipUsernamePrepend">
                                   @else
                                   <input type="text" class="form-control" id="validationTooltipUsername"  value="Bloqueada" readonly aria-describedby="validationTooltipUsernamePrepend">
                                 @endif
                                 </div>
                           </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                          <label for="validationTooltip03">Fecha De Bloqueo</label>
+                          <input type="text" class="form-control" readonly id="validationTooltip03" value="{{$consulta2[0]->TARJ_FECHA_BLOQUEO}}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                              <label for="validationTooltip03">Quien Bloqueo</label>
+                              <input type="text" class="form-control" readonly id="validationTooltip03" value="{{$consulta2[0]->TARJ_USUARIO_BLOQUEO}}" >
+                            </div>
                       </div>
                       <div class="form-row">
                               <div class="col-md-4 mb-3">
