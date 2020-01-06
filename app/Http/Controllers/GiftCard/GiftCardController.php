@@ -873,7 +873,8 @@ class GiftCardController extends Controller
 
 
         $detalle = DB::table('dcargos')
-        ->where('id_cargos','=',$fk_cargos)
+        ->join('cargos', 'CANMRO', '=', 'dcargos.DENMRO')
+        ->where('CANMRO','=',$fk_cargos)
         ->get();
 
         return view('giftCard.DetallecompraGiftcard',compact('detalle'));

@@ -169,7 +169,7 @@ Consumo GiftCard
                                   @elseif($consulta2[0]->TARJ_ESTADO == 'C') 
                                   <input type="text" class="form-control" id="validationTooltipUsername"  value="Creada" readonly aria-describedby="validationTooltipUsernamePrepend">
                                   @else
-                                  <input type="text" class="form-control" id="validationTooltipUsername"  value="Bloqueada" readonly aria-describedby="validationTooltipUsernamePrepend">
+                                  <input type="text" class="form-control is-invalid" id="validationTooltipUsername"  value="Bloqueada" readonly aria-describedby="validationTooltipUsernamePrepend">
                                 @endif
                                 </div>
                           </div>
