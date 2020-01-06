@@ -84,7 +84,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Proyeccion','AdminController@ProyeccionIndex')->name('proyeccion');
     Route::get('/areaproveedor','AdminController@areaproveedor')->name('areaproveedor');
     Route::get('/areaproveedorfamilia','AdminController@areaproveedorfamilia')->name('areaproveedorfamilia');
-
+    Route::get('/movimientoinventario','AdminController@movimientoinventario')->name('movimientoinventario');
+    Route::post('/movimientoinventario','AdminController@filtrarmovimientoinventario')->name('filtrarmovimientoinventario');
+    Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
 
 
 

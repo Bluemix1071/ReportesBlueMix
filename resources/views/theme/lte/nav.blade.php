@@ -283,12 +283,20 @@
                        </p>
                      </a>
                    </li>
+
+                   <li class="nav-item">
+                    <a href="{{route('movimientoinventario')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Movimiento Mercaderia
+                       </p>
+                     </a>
+                   </li>
                   
                 </ul>
               </li>
                @endif
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Publico
