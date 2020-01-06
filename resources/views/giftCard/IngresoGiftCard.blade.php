@@ -31,9 +31,9 @@ Gift Card
             <div class="form-group col-md-4">
               <label for="Desde">Desde</label>
               @if (empty($data[0]))
-              <input type="number" class="form-control" name="Desde" id="Desde" placeholder="Desde" required>
+              <input type="number" class="form-control" name="Desde" id="Desde"  placeholder="Desde" required>
               @else
-            <input type="number" class="form-control" name="Desde" id="Desde" placeholder="Desde" required  value="{{$data[0]}}">
+            <input type="number" class="form-control" name="Desde" id="Desde"  placeholder="Desde" required  value="{{$data[0]}}">
               @endif
               
             </div>
@@ -131,6 +131,8 @@ Gift Card
 
                 <form action="{{route('ActivarRango')}}" method="POST" id="FormActivacion">
                   @csrf
+                  <input type="hidden" name="Desde" id="DesdeEnviar" value="">
+                  <input type="hidden" name="Hasta" id="HastaEnviar" value="">
           <table id="tarjetas" class="table table-bordered table-hover dataTable">
             <thead>
               <tr>

@@ -341,7 +341,7 @@ class GiftCardController extends Controller
     
 
     public function VenderGiftcard(Request $request){  // captura los datos de la pantalla de asociacion de tarjetas con el cliente 
-        //dd($request->all());                         // luego de eso deja las tarjetas vigentes para su posterior venta 
+       // dd($request->all(),'xd');                         // luego de eso deja las tarjetas vigentes para su posterior venta 
        $params_array= $request->all();
         //dd($request->all());
         $validate = \Validator::make($params_array,[
@@ -444,8 +444,9 @@ class GiftCardController extends Controller
                     // dd($e,'2catch');
                     return view('giftCard.VentaSeleccion');
                 }
-                $cantGift=DB::table('CantidadGiftCard')
-                ->get();
+                
+                // $cantGift=DB::table('CantidadGiftCard')
+                // ->get();
 
                 $idBD_vou = DB::table('tabla_voucher')->max('vou_folio');
                 $dateVou = Carbon::now();
@@ -453,7 +454,7 @@ class GiftCardController extends Controller
                 
 
                 Session::flash('success','Tarjetas Vendidas con Exito!!!');
-                return view('giftCard.Imprecion',compact('cantGift','TarjetasSeleccionadas','dateVou','idBD_vou'));
+                return view('giftCard.Imprecion',compact('TarjetasSeleccionadas','dateVou','idBD_vou'));
         }
 
     }
@@ -570,9 +571,24 @@ class GiftCardController extends Controller
 
     }
 
+    public function Activacion3Redirect($desde,$hasta){
+       // dd($desde,$hasta);
+
+        $data[]=$desde;
+        $data[]=$hasta;
+        //dd($data,$data[0],$data[1]);
+
+        $pruebaAct=DB::table('tarjeta_gift_card')
+        ->whereBetween('TARJ_CODIGO', array($data))
+        ->get();
+        
+        return view ('giftCard.IngresoGiftCard',compact('pruebaAct', 'data'));
+
+    }
+
     public function ActivacionPost(Request $request){
 
-       // dd($request->all());
+     dd($request->all());
       //metodo que se encarga de la activacion de giftcards
             //dd($request->all());
            $params_array= $request->all();
@@ -740,12 +756,16 @@ class GiftCardController extends Controller
     }
 
     public function ActivarRango(Request $request){
+        //dd($request->all());
             $params_array= $request->all();
+
+            $data[]=$request->Desde;
+            $data[]=$request->Hasta;
+
             unset($params_array['_token']);
-            
-            
-
-
+            unset($params_array['Desde']);
+            unset($params_array['Hasta']);
+     
             if(empty($params_array)){
 
                 Session::flash('info','Debe seleccionar alguna tarjeta antes de activar ');
@@ -753,6 +773,10 @@ class GiftCardController extends Controller
             }
             $TarjetasSeleccionadas = DB::table('tarjeta_gift_card')
             ->whereIn('TARJ_CODIGO',$request->case )
+            ->get();
+
+            $pruebaAct=DB::table('tarjeta_gift_card')
+            ->whereBetween('TARJ_CODIGO', array($data))
             ->get();
 
             $cantidad = count($TarjetasSeleccionadas);
@@ -786,20 +810,22 @@ class GiftCardController extends Controller
             DB::rollBack();
             Session::flash('error','Algo ha salido mal intentalo nuevamente');
             dd($e);
-            return view ('giftCard.IngresoGiftCard');//,compact('date','cantGift')
+            return view ('giftCard.IngresoGiftCard',compact('data'));//,compact('date','cantGift')
 
         } catch (\Throwable $e) {
             DB::rollBack();
             dd($e);
             Session::flash('error','Algo ha salido mal intentalo nuevamente o la giftcard ya fue Activada');
         
-            return view ('giftCard.IngresoGiftCard');//,compact('date','cantGift')
+            return view ('giftCard.IngresoGiftCard',compact('data'));//,compact('date','cantGift')
         }
 
         
         
         Session::flash('success','Se Activaron las tarjetas correctamente');
-        return view ('giftCard.IngresoGiftCard');
+    
+        return \Redirect::route('ActivacionRedirect',['desde'=>$data[0],'hasta'=>$data[1]]);
+        //return view ('giftCard.IngresoGiftCard',compact('pruebaAct','data'));
     }
 
 

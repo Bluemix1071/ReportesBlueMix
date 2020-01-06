@@ -67,7 +67,7 @@ Venta GiftCards Empresa
     <div class="row">
             
         <div class="col-md-12">
-          <form action="{{route('ListaVentaEmpresa')}}" method="POST">
+          <form action="{{route('ListaVentaEmpresa')}}" method="POST" id="FormActivacion">
             @csrf
     <table id="tarjetas" class="table table-bordered table-hover dataTable">
       <thead>
@@ -139,7 +139,8 @@ Venta GiftCards Empresa
 @section('script')
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
-  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
+<script src="{{asset("js/ValidaCheck.js")}}"></script>
 
   <script>
 

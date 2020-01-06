@@ -167,6 +167,10 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
 
     Route::get('/Activacion3.0','GiftCardController@Activacion3')->name('Activacion3.0');
+
+    //prueba ruta redirect para las giftcard activadas
+    Route::get('/Activacion3.0/{desde}/{hasta}','GiftCardController@Activacion3Redirect')->name('ActivacionRedirect');
+
     Route::post('/Activacion3.0','GiftCardController@FiltrarActivacion3')->name('filtroActivacion3');
     Route::post('/Activacion2.0','GiftCardController@ActivacionPost')->name('Activacion2Post');
     Route::post('/Activar3','GiftCardController@ActivarRango')->name('ActivarRango');
