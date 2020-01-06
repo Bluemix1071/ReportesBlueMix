@@ -781,6 +781,48 @@ class AdminController extends Controller
     }
 
 
+    public function movimientoinventario(){
+
+
+      return view('admin.ajustedeinventario');
+
+
+    }
+
+    public function filtrarmovimientoinventario(Request $request){
+
+
+        $cod=$request->codigo;
+
+        $date = Carbon::now("Chile/Continental");
+
+        $usuario = session()->get('nombre');
+
+        
+        $consulta = DB::table('bodeprod')
+        ->join('producto', 'ARCODI', '=', 'bodeprod.bpprod')
+        ->where('bpprod',$cod)
+        ->get();
+
+
+
+        return view('admin.ajustedeinventario',compact('consulta','date','usuario'));
+
+
+    }
+
+    public function ajustemovimientoinventario(Request $request){
+
+      // dd($request->all());
+      
+
+
+      return view('admin.ajustedeinventario');
+
+
+  }
+
+
 
 
     
