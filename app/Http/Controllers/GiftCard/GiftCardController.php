@@ -89,7 +89,7 @@ class GiftCardController extends Controller
                 ->take( $params_array['Cantidad'])
                 ->get();
                
-                Session::flash('warning','Folios Creados, pero su fecha de vencimiento es '.' '.$diffDias.' '.' dias se sugiere q sea superior a 60 dias  ');
+                Session::flash('warning','Folios Creados, pero su fecha de vencimiento es '.' '.$diffDias.' '.' dias se sugiere que sea superior a 60 dias  ');
       
                 //return view('giftCard.FoliosCreados',compact('params_array','giftCreadas'));
                 return \Redirect::route('Vfolios',['cant'=>$params_array['Cantidad']]);
@@ -740,9 +740,17 @@ class GiftCardController extends Controller
     }
 
     public function ActivarRango(Request $request){
+            $params_array= $request->all();
+            unset($params_array['_token']);
+            
+            
 
-            //dd($request->all());
 
+            if(empty($params_array)){
+
+                Session::flash('info','Debe seleccionar alguna tarjeta antes de activar ');
+                return \Redirect::route('Activacion3.0');
+            }
             $TarjetasSeleccionadas = DB::table('tarjeta_gift_card')
             ->whereIn('TARJ_CODIGO',$request->case )
             ->get();

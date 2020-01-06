@@ -129,7 +129,7 @@ Gift Card
 
 
 
-                <form action="{{route('ActivarRango')}}" method="POST">
+                <form action="{{route('ActivarRango')}}" method="POST" id="FormActivacion">
                   @csrf
           <table id="tarjetas" class="table table-bordered table-hover dataTable">
             <thead>
@@ -200,6 +200,9 @@ Gift Card
 </script> 
 
 @section('script')
+
+
+
 <script>
   $(document).ready(function() {
     $('#tarjetas').DataTable( {
@@ -243,8 +246,9 @@ Gift Card
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/validarRUT.js")}}"></script>
+  <script src="{{asset("js/ValidaCheck.js")}}"></script>
 
-  <script>
+  {{-- <script>
 
     $("#selectall").on("click", function() {
       $(".case").prop("checked", this.checked);
@@ -257,6 +261,6 @@ Gift Card
         $("#selectall").prop("checked", false);
       }
     });
-    </script>
+    </script> --}}
 
 @endsection
