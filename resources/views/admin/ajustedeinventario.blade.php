@@ -99,7 +99,7 @@ Ajuste De Inventario
                           </div>
                           <div class="col-md-4 mb-3">
                             <label for="validationTooltip02">Cantidad Real</label>
-                            <input type="text" class="form-control" id="cantidadreal" name="cantidadreal"  value="" >
+                            <input type="text" class="form-control" id="cantidadreal" required name="cantidadreal"  value="" >
                           </div>
                           <div class="col-md-4 mb-3">
                               <label for="validationTooltip02">Fecha</label>
@@ -109,7 +109,7 @@ Ajuste De Inventario
                   <div class="form-row">
                           <div class="col-md-4 mb-3">
                             <label for="validationTooltip01">Observación</label>
-                      <textarea name="obser"  id="obser" cols="53" rows="4"></textarea>                        
+                      <textarea name="obser" required  id="obser" cols="53" rows="4"></textarea>                        
                   </div>      
         </div>
         <div class="form-row">

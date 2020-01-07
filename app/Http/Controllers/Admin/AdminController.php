@@ -814,6 +814,13 @@ class AdminController extends Controller
     public function ajustemovimientoinventario(Request $request){
 
       // dd($request->all());
+
+      $update = DB::table('bodeprod')
+            ->update(['bpsrea' => $request->cantidadreal]);
+
+            $insert = DB::table('movimientos_de_mercaderia')->insert(
+              ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidad - $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => $request->obser]                        
+          );
       
 
 
