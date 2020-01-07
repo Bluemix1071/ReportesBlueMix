@@ -146,7 +146,7 @@ class SalaController extends Controller
       }
 
       public function VenderGiftcardSala(Request $request){  // captura los datos de la pantalla de asociacion de tarjetas con el cliente 
-        //dd($request->all());                         // luego de eso deja las tarjetas vigentes para su posterior venta 
+        dd($request->all());                         // luego de eso deja las tarjetas vigentes para su posterior venta 
        $params_array= $request->all();
         //dd($request->all());
         $validate = \Validator::make($params_array,[

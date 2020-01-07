@@ -341,7 +341,7 @@ class GiftCardController extends Controller
     
 
     public function VenderGiftcard(Request $request){  // captura los datos de la pantalla de asociacion de tarjetas con el cliente 
-       // dd($request->all(),'xd');                         // luego de eso deja las tarjetas vigentes para su posterior venta 
+        //dd($request->all(),'xd');                         // luego de eso deja las tarjetas vigentes para su posterior venta 
        $params_array= $request->all();
         //dd($request->all());
         $validate = \Validator::make($params_array,[

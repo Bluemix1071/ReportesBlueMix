@@ -11,7 +11,7 @@ $('#FormActivacion').submit(function(e){
 
   var hasta = document.getElementById('Hasta').value;
   var hastaEnviar= document.getElementById('HastaEnviar').value = hasta;
-  console.log(desdeEnviar,hastaEnviar);
+ // console.log(desdeEnviar,hastaEnviar);
 });
 
 // Use 'prop' instead of 'attr'
