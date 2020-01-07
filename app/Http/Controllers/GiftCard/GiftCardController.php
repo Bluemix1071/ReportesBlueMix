@@ -951,7 +951,7 @@ class GiftCardController extends Controller
         Session::flash('success','Bloqueo Realizado');
 
     
-        
+        return view('giftCard.BloqueoTargetas');
 
       }
 
