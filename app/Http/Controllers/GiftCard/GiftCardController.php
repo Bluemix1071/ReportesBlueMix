@@ -901,14 +901,16 @@ class GiftCardController extends Controller
     }
 
     public function filtrarbloqueorango (Request $request){
-      
+        $estado[]='A';
+        $estado[]='C';
+        $estado[]='V';
         $desde=$request->desde;
         $hasta=$request->hasta;
         $consulta=DB::table('tarjeta_gift_card')
         ->whereBetween('TARJ_CODIGO', array($request->desde,$request->hasta))
-        ->where('TARJ_ESTADO', '=', 'V')
-        ->orwhere('TARJ_ESTADO', '=', 'A')
-        ->orwhere('TARJ_ESTADO', '=', 'C')
+        ->whereIn('TARJ_ESTADO',$estado)
+        // ->orwhere('TARJ_ESTADO', '=', 'A')
+        // ->orwhere('TARJ_ESTADO', '=', 'C')
         ->get();
     
   
