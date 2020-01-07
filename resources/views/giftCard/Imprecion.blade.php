@@ -70,6 +70,48 @@ Total :            ${{number_format($total,0,',','.')}}
 El uso de la Giftcard está sujeto a las
 condiciones impresas en la misma tarjeta
 
+              Copia Cliente
+
+</pre>
+
+<!-- <ul id="tools"><li class="print"></li> -->
+
+</div>
+<pre>
+
+  
+</pre>
+
+<div id="container">
+<h1>SOCIEDAD COMERCIAL <a style="text-decoration:none" href="{{route('VentaEmpresa')}}">BLUE</a>  MIX LTDA.</h1>
+<pre>C.M.: 5 DE ABRIL 1071 – CHILLAN
+GIRO:LIBRERÍA,JUGuETERIA POR MAYOR Y DETALLE
+RUT Nro: 77.283.950-2
+LOC.: 5 DE ABRIL 1071 – CHILLAN
+Nro. Caja: 001    Nota de cobro Nro. {{$idBD_vou}}
+Fecha: {{$dateVou}}
+</pre>
+<div style="display: none">{{ $total = 0 }} </div>
+@foreach ($TarjetasSeleccionadas as $item)
+<div style="display: none">{{$total += $item->TARJ_MONTO_INICIAL}}</div>
+@endforeach 
+<pre>
+<strong> Codigo</strong>           <strong>Monto</strong>    
+
+@foreach ($TarjetasSeleccionadas as $item)
+{{$item->TARJ_CODIGO}}  |    ${{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}
+
+@endforeach 
+-------------------------------------------
+Total :            ${{number_format($total,0,',','.')}}
+</pre>
+
+<pre>
+El uso de la Giftcard está sujeto a las
+condiciones impresas en la misma tarjeta
+
+              Copia Cajero
+
 </pre>
 
 <!-- <ul id="tools"><li class="print"></li> -->

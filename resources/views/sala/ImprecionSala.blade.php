@@ -33,7 +33,7 @@ pre{font-size: 1.7em;  }
         document.body.insertAdjacentHTML('beforeEnd', WebBrowser); WebBrowser1.ExecWB(6, -1); WebBrowser1.outerHTML = "";
         }
         }
-        </SCRIPT>
+</SCRIPT>
 
 
 
@@ -68,6 +68,8 @@ condiciones impresas en la misma tarjeta
 <!-- <ul id="tools"><li class="print"></li> -->
 
 </div>
+
+
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

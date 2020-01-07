@@ -334,16 +334,16 @@
                   <p>Cambio de Precios</p>
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
               <a href="{{route('GiftCardVenta')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Venta GiftCard</p>
                 </a>
-              </li>
+              </li> --}}
               <li class="nav-item">
                 <a href="{{route('CargaTarjetasCaja')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Venta Giftcard OK</p>
+                  <p>Venta GiftCard</p>
                 </a>
               </li>
             </ul>
