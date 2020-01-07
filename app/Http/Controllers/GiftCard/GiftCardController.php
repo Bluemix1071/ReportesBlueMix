@@ -886,16 +886,18 @@ class GiftCardController extends Controller
 
     public function filtrarbloqueo (Request $request){
           
-      
+        $estado[]='A';
+        $estado[]='C';
+        $estado[]='V';
 
         $rut=$request->codigo;
 
         $consulta = DB::table('tarjeta_gift_card')
-        ->where('TARJ_ESTADO', '=', 'V')
-        ->orwhere('TARJ_ESTADO', '=', 'A')
-        ->orwhere('TARJ_ESTADO', '=', 'C')
         ->where('TARJ_COMPRADOR_RUT' ,'=', $rut)
+        ->whereIn('TARJ_ESTADO',$estado)
         ->get();
+
+        //hola
 
         return view('giftCard.BloqueoTargetas',compact('consulta'));
     }
@@ -909,8 +911,7 @@ class GiftCardController extends Controller
         $consulta=DB::table('tarjeta_gift_card')
         ->whereBetween('TARJ_CODIGO', array($request->desde,$request->hasta))
         ->whereIn('TARJ_ESTADO',$estado)
-        // ->orwhere('TARJ_ESTADO', '=', 'A')
-        // ->orwhere('TARJ_ESTADO', '=', 'C')
+
         ->get();
     
   
