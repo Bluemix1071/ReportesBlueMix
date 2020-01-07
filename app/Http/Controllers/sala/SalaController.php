@@ -146,7 +146,7 @@ class SalaController extends Controller
       }
 
       public function VenderGiftcardSala(Request $request){  // captura los datos de la pantalla de asociacion de tarjetas con el cliente 
-        //dd($request->all());                         // luego de eso deja las tarjetas vigentes para su posterior venta 
+       // dd($request->all());                         // luego de eso deja las tarjetas vigentes para su posterior venta 
        $params_array= $request->all();
         //dd($request->all());
         $validate = \Validator::make($params_array,[
@@ -236,8 +236,8 @@ class SalaController extends Controller
 
                 }catch(Exception $e){
                     DB::rollBack();
-                    $cantGift=DB::table('CantidadGiftCard')
-                    ->get();
+                    // $cantGift=DB::table('CantidadGiftCard')
+                    // ->get();
                    
                     Session::flash('error','Algo ha salido mal intentalo nuevamente');
                    // dd($e);
@@ -246,14 +246,14 @@ class SalaController extends Controller
                 } catch (\Throwable $e) {
                     DB::rollBack();
                    // dd($e);
-                    $cantGift=DB::table('CantidadGiftCard')
-                    ->get();
+                    // $cantGift=DB::table('CantidadGiftCard')
+                    // ->get();
                     Session::flash('error','Algo ha salido mal intentalo nuevamente');
                     // dd($e,'2catch');
                     return view('sala.CargarTarjetas');
                 }
-                $cantGift=DB::table('CantidadGiftCard')
-                ->get();
+                // $cantGift=DB::table('CantidadGiftCard')
+                // ->get();
 
                 $idBD_vou = DB::table('tabla_voucher')->max('vou_folio');
                 $dateVou = Carbon::now();

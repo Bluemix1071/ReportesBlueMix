@@ -22,7 +22,7 @@ Gift Card
   </div>
     <div class="row">
         <div class="col-md-6">
-        <form action="{{route('postCargarCaja')}}" method="POST">
+        <form action="{{route('postCargarCaja')}}" method="POST" id="FormSala">
             @csrf
             @if (empty($collection))
             <input type="hidden" name="Acomulacion[]" class="form-control" value="" >
@@ -105,7 +105,7 @@ Gift Card
                     <br>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nombre Comprador</label>
-                      <input type="text" class="form-control" name="nombreComprador" required id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <input type="text" class="form-control" name="nombreComprador" onchange="validar(event)"  required id="exampleInputEmail1" aria-describedby="emailHelp">
                     </div>
       
                     <div class="form-group">
@@ -131,6 +131,24 @@ Gift Card
 @endsection
 
 @section('script')
+
+{{-- <script>
+
+  function validar(ee) {
+  $('#FormSala').submit(function(e){
+
+    if (ee.target.value.trim() == "") {
+
+    alert("debe ingresar un valor en el campo");
+    e.preventDefault();
+    }
+   
+  });
+ 
+  
+}
+
+</script> --}}
 
 
 <script>
