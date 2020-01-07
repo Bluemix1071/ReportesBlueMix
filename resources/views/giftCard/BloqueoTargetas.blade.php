@@ -71,13 +71,13 @@ Consumo GiftCard
             <th>Fecha Activacion</th>
           </tr>
           <tr>
-            <form action="{{route('bloqueartarjetacard')}}" method="post"  id="desvForm" class="form-inline">
+            <form action="{{route('bloqueartarjetacard')}}" method="post"  id="FormActivacion" class="form-inline">
               @csrf
             <tbody> 
               @if (empty($consulta))
               @else
             @foreach($consulta as $item)
-            <td><input type="checkbox" class="case" name="case[]" value="{{$item->TARJ_CODIGO}}"></td>
+            <td><input type="checkbox" class="case" name="case[]"  value="{{$item->TARJ_CODIGO}}"></td>
             <td>{{$item->TARJ_CODIGO}}</td>
             <td>{{number_format($item->TARJ_MONTO_INICIAL,0,',','.')}}</td>
             <td>{{number_format($item->TARJ_MONTO_ACTUAL,0,',','.')}}</td>
@@ -181,6 +181,10 @@ Consumo GiftCard
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/validarRUT.js")}}"></script>
+
+  <script src="{{asset("js/ValidaCheck.js")}}"></script>
+
+
 <script>
 
 $("#selectall").on("click", function() {
@@ -195,5 +199,7 @@ $(".case").on("click", function() {
   }
 });
 </script>
+
+
 
 @endsection

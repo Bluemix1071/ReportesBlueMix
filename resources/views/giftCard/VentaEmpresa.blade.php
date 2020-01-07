@@ -157,7 +157,7 @@ Venta GiftCards Empresa
     });
     </script>
 
-{{-- <script src="{{asset("js/ValidaCheck.js")}}"></script> --}}
+<script src="{{asset("js/ValidaCheck.js")}}"></script>
 
 
 
