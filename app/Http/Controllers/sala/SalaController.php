@@ -212,7 +212,7 @@ class SalaController extends Controller
                                 ->where('TARJ_CODIGO', '=',$Ncodigos[$j])
                                 ->where('TARJ_ESTADO','=','A')
                                 ->update([
-                                    'TARJ_FECHA_VENCIMIENTO' => $date,
+                                  //  'TARJ_FECHA_VENCIMIENTO' => $date,
                                     'TARJ_COMPRADOR_NOMBRE' => $params_array['nombreComprador'],
                                     'TARJ_COMPRADOR_RUT'=>$params_array['RutComprador'],
                                     'TARJ_ESTADO'=>'V',
