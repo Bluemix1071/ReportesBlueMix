@@ -781,53 +781,85 @@ class AdminController extends Controller
     }
 
 
-    public function movimientoinventario(){
+    // public function movimientoinventario(){
 
 
-      return view('admin.ajustedeinventario');
+    //   return view('admin.ajustedeinventario');
 
 
-    }
+    // }
 
-    public function filtrarmovimientoinventario(Request $request){
+    // public function filtrarmovimientoinventario(Request $request){
 
 
-        $cod=$request->codigo;
+    //     $cod=$request->codigo;
 
-        $date = Carbon::now("Chile/Continental");
+    //     $date = Carbon::now("Chile/Continental");
 
-        $usuario = session()->get('nombre');
+    //     $usuario = session()->get('nombre');
 
         
-        $consulta = DB::table('bodeprod')
-        ->join('producto', 'ARCODI', '=', 'bodeprod.bpprod')
-        ->where('bpprod',$cod)
-        ->get();
+    //     $consulta = DB::table('bodeprod')
+    //     ->join('producto', 'ARCODI', '=', 'bodeprod.bpprod')
+    //     ->where('bpprod',$cod)
+    //     ->get();
 
 
 
-        return view('admin.ajustedeinventario',compact('consulta','date','usuario'));
+    //     return view('admin.ajustedeinventario',compact('consulta','date','usuario'));
 
 
-    }
+    // }
 
-    public function ajustemovimientoinventario(Request $request){
+  //   public function ajustemovimientoinventario(Request $request){
 
-      // dd($request->all());
+  //     // dd($request->all());
 
-      $update = DB::table('bodeprod')
-            ->update(['bpsrea' => $request->cantidadreal]);
+  //     $update = DB::table('bodeprod')
 
-            $insert = DB::table('movimientos_de_mercaderia')->insert(
-              ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidad - $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => $request->obser]                        
-          );
+      
+  //           ->update(['bpsrea' => $request->cantidadreal]);
+  //           ///sacar del programa 
+  //           $insert = DB::table('movimientos_de_mercaderia')->insert(
+  //             ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidad - $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => $request->obser]                        
+  //         );
       
 
 
-      return view('admin.ajustedeinventario');
+  //     return view('admin.ajustedeinventario');
 
 
-  }
+  // }
+
+
+  public function consultafacturaboleta(){
+
+    
+    return view('admin.ConsultaFacturasBoletas');
+
+
+}
+
+public function filtrarconsultafacturaboleta(Request $request){
+
+
+
+      $fecha1=$request->fecha1;
+      $fecha2=$request->fecha2;
+      $documento=$request->documento;
+
+      $consulta=DB::table('cargos')
+      ->join('dcargos', 'DENMRO', '=', 'cargos.CANMRO')
+      ->where('CATIPO',$documento)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->get();
+
+      dd($consulta);
+      
+  return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2'));
+
+
+}
 
 
 
