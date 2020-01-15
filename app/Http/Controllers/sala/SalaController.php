@@ -132,7 +132,7 @@ class SalaController extends Controller
             
 
            // dd($collection->contains('TARJ_CODIGO','000000000086')); if($collection->contains('TARJ_CODIGO',$tarjetaEntrante[0]->TARJ_CODIGO)){
-
+            Session::flash('success','tarjeta encontrada');
             return view('sala.CargarTarjetas',compact('collection'));
 
 
@@ -146,7 +146,7 @@ class SalaController extends Controller
       }
 
       public function VenderGiftcardSala(Request $request){  // captura los datos de la pantalla de asociacion de tarjetas con el cliente 
-       // dd($request->all());                         // luego de eso deja las tarjetas vigentes para su posterior venta 
+       //dd($request->all());                         // luego de eso deja las tarjetas vigentes para su posterior venta 
        $params_array= $request->all();
         //dd($request->all());
         $validate = \Validator::make($params_array,[
@@ -154,8 +154,36 @@ class SalaController extends Controller
             // 'hasta' =>'required',
             'nombreComprador' =>'required',
             'RutComprador'=>'required',
-            // 'FechaVencimiento'=>'required',
+            'Pago'=>'required',
         ]);
+
+          $monto=0;
+         
+          
+          if (isset($request->Pago)){
+
+              foreach ($request->Pago as $key ) {
+
+                        $monto+=$key;
+                }
+
+          }
+      
+       // dd($data);
+
+        if($monto ==$request->Total && isset($request->Pago)){
+
+          $pago=$request->Pago;
+          $FormaPago=$request->FormaPago;
+
+        }else{
+          $collection= DB::table('tarjeta_gift_card')
+          ->whereIn('TARJ_CODIGO',$request->Codigos)
+          ->get();
+         
+          Session::flash('warning','el total de la venta no es igual a lo ingresado o el pago no ha sido ingresado');
+          return view('sala.CargarTarjetas',compact('collection'));
+        }
         
 
         if($validate->fails()){
@@ -169,6 +197,26 @@ class SalaController extends Controller
 
 
         }else{
+
+          $textoPago='';
+          for ($i=0; $i <count($FormaPago) ; $i++) { 
+
+            if($FormaPago[$i]==0){
+              
+              $textoPago .=''.'Efectivo';
+
+            }elseif($FormaPago[$i]==1){
+               
+              $textoPago .='/'.'Credito';
+              
+            }elseif($FormaPago[$i]==2){
+              $textoPago .='/'.'Debito';
+           
+
+            }
+           
+          }
+          //dd($textoPago,$FormaPago,count($FormaPago));
             
             $TarjetasSeleccionadas = DB::table('tarjeta_gift_card')
                     ->whereIn('TARJ_CODIGO',$request->Codigos )
@@ -182,9 +230,13 @@ class SalaController extends Controller
                 $date->addMonth(6);
                 $date = $date->format('Y-m-d');
                 $User= session()->get('nombre');
+
+                $FormasDePago= $request->FormaPago;
+                $ValorPAgo=   $request->Pago;
+                
                 
                 try{
-                DB::transaction(function () use ($TarjetasSeleccionadas,$Ncodigos,$date,$params_array,$cantidad,$User) {
+                DB::transaction(function () use ($TarjetasSeleccionadas,$Ncodigos,$date,$params_array,$cantidad,$User, $FormaPago, $pago) {
 
                     $idVou=0;
                     $idBD_vou = DB::table('tabla_voucher')->max('vou_folio');
@@ -230,8 +282,40 @@ class SalaController extends Controller
                                 ]);
                                 $jj=$jj+1;
                         }
+                        
+                        for ($i=0; $i <count($FormaPago) ; $i++) { 
+
+
+                          if($FormaPago[$i]==0){
                             
-                            
+                            DB::table('Voucher_Pago')->insert([
+                              'id_voucher_fk'=> $idVou,
+                              'id_forma_pago_fk'=>1 ,
+                              'monto'=>$pago[$i],
+                              ]);
+
+                          }elseif($FormaPago[$i]==1){
+                              
+                            DB::table('Voucher_Pago')->insert([
+                              'id_voucher_fk'=> $idVou,
+                              'id_forma_pago_fk'=>2 ,
+                              'monto'=>$pago[$i],
+                              ]);
+        
+                          }elseif($FormaPago[$i]==2){
+                              
+                            DB::table('Voucher_Pago')->insert([
+                              'id_voucher_fk'=> $idVou,
+                              'id_forma_pago_fk'=>3 ,
+                              'monto'=>$pago[$i],
+                              ]);
+  
+                          }
+
+
+                        }
+
+                  
                     }); // acepta un numero que es la cantidad de veces q intenta hacer el procedimietno  
 
                 }catch(Exception $e){
@@ -240,12 +324,12 @@ class SalaController extends Controller
                     // ->get();
                    
                     Session::flash('error','Algo ha salido mal intentalo nuevamente');
-                   // dd($e);
+                    dd($e);
                     return view('sala.CargarTarjetas');
 
                 } catch (\Throwable $e) {
                     DB::rollBack();
-                   // dd($e);
+                    dd($e);
                     // $cantGift=DB::table('CantidadGiftCard')
                     // ->get();
                     Session::flash('error','Algo ha salido mal intentalo nuevamente');
@@ -261,7 +345,7 @@ class SalaController extends Controller
                 
 
                 Session::flash('success','Tarjetas Vendidas con Exito!!!');
-                return view('sala.ImprecionOk',compact('TarjetasSeleccionadas','dateVou','idBD_vou'));
+                return view('sala.ImprecionOk',compact('TarjetasSeleccionadas','dateVou','idBD_vou','textoPago'));
         }
 
     }

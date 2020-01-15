@@ -68,6 +68,8 @@ Total :            ${{number_format($total,0,',','.')}}
 </pre>
 
 <pre>
+Forma de pago:{{$textoPago}}
+
 El uso de la Giftcard está sujeto a las
 condiciones impresas en la misma tarjeta
 
@@ -115,6 +117,8 @@ Total :            ${{number_format($total,0,',','.')}}
 </pre>
   
 <pre>
+Forma de pago:{{$textoPago}}
+
 El uso de la Giftcard está sujeto a las
 condiciones impresas en la misma tarjeta
 

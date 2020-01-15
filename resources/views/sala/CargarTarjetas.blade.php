@@ -51,7 +51,7 @@ Gift Card
                   <tr>
                     <th scope="col" style="text-align:center">codigo</th>
                     <th scope="col" style="text-align:center">Codigo Barra</th>
-                    <th scope="col" style="text-align:center"> Monto Tarjeta</th>
+                    <th scope="col" style="text-align:center"> Monto Tarjeta </th>
                   
                   </tr>
                 </thead>
@@ -71,7 +71,7 @@ Gift Card
                       <tfoot>
                         <tr>
                           <th style="text-align:center" colspan="2">Total</th>
-                          <td style="text-align:center">${{number_format($total,0,',','.')}} </td>
+                          <td style="text-align:center">${{number_format($total,0,',','.')}}  </td>
                           
                         </tr>
                       </tfoot>  
@@ -89,8 +89,11 @@ Gift Card
 
     <div class="row">
         <div class="col-md-6">
-            <form action="{{route('venderGiftCardSala')}}" method="POST">
+          <div class="row">
+            <div class="col-md-6">
+              <form action="{{route('venderGiftCardSala')}}" method="POST" id="validaPago">
                 @csrf
+                <input class="form-control" type="hidden" name="Total"  value="{{$total}}">
                   <div class="form-group">
                    @if (empty($collection))
       
@@ -105,7 +108,7 @@ Gift Card
                     <br>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nombre Comprador</label>
-                      <input type="text" class="form-control" name="nombreComprador" onchange="validar(event)"  required id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <input type="text" class="form-control" name="nombreComprador"  required id="exampleInputEmail1" aria-describedby="emailHelp">
                     </div>
       
                     <div class="form-group">
@@ -113,13 +116,50 @@ Gift Card
                       <input type="text" class="form-control" name="RutComprador" id="rut" maxlength="10" required oninput="checkRut(this)" id="exampleInputPassword1">
                     </div>
       
-      
-      
-      
-              
-                  
                   <button type="submit" class="btn btn-success">Vender</button>
-                </form>
+                  </div>
+            </div>
+            <div class="col-md-6">
+              <br>
+              <br>
+              @for ($i = 0; $i <3; $i++)
+                  @if ($i==0)
+
+                  <div class="form-group">
+                  <label for="Efectivo">Efectivo</label>
+                  <input type="checkbox" class="selecttt"  name="FormaPago[]" onChange="comprobar(this);" value="{{$i}}" >
+                  <input type="number" name="Pago[]"  id="{{$i}}" required  disabled style="display:none " required>
+                  </div>
+
+                  @elseif($i==1)
+                  <div class="form-group">
+                    <label for="Credito">Credito</label>
+                    <input type="checkbox" class="selecttt" name="FormaPago[]" id="Credito" onChange="comprobar(this);" value="{{$i}}" >
+                    <input type="number" name="Pago[]" id="{{$i}}" required disabled style="display:none " required>
+                  </div>
+
+                  @elseif($i==2)
+
+                  <div class="form-group">
+                    <label for="Debito"> Debito</label>
+                    <input type="checkbox" class="selecttt" name="FormaPago[]" id="Debito" onChange="comprobar(this);" value="{{$i}}">
+                    <input type="number" name="Pago[]" id="{{$i}}" required disabled style="display:none "  >
+                  </div>
+                  @endif
+              @endfor
+              
+              
+
+              
+              
+                
+            
+
+
+            </form>
+            </div>
+          </div>
+           
         </div>
         <div class="col-md-6">
             
@@ -132,23 +172,72 @@ Gift Card
 
 @section('script')
 
-{{-- <script>
 
-  function validar(ee) {
-  $('#FormSala').submit(function(e){
+<script>
 
-    if (ee.target.value.trim() == "") {
+$('#validaPago').submit(function(e){
+  // si la cantidad de checkboxes "chequeados" es cero,
+  // entonces se evita que se envíe el formulario y se
+  // muestra una alerta al usuario
+  if ($('input[type=checkbox]:checked').length === 0) {
+      e.preventDefault();
+      alert('Debe seleccionar un metodo de pago');
+  }
+  var desde = document.getElementById('Desde').value;
+  var desdeEnviar= document.getElementById('DesdeEnviar').value = desde;
 
-    alert("debe ingresar un valor en el campo");
-    e.preventDefault();
-    }
-   
-  });
- 
+  var hasta = document.getElementById('Hasta').value;
+  var hastaEnviar= document.getElementById('HastaEnviar').value = hasta;
+ // console.log(desdeEnviar,hastaEnviar);
+});
+</script>
+<script>
+  function comprobar(obj)
   
-}
+  { 
+    id= obj.value;
+  if (obj.checked){
+        //console.log(obj.value);
+  id= obj.value;
+   document.getElementById(''+id+'').style.display = "";
+   document.getElementById(''+id+'').disabled =false;
+   document.getElementById(''+id+'').value =1;
+     } else{
+        
+  document.getElementById(''+id+'').style.display = "none";
+  document.getElementById(''+id+'').value = 0;
+  document.getElementById(''+id+'').disabled =true;
+     }     
+  }
+  
+  /*
+  $("#formVenderGift").on('submit', function(evt){
+        evt.preventDefault();  
+     
+      total= document.getElementById('TotalOculto').value;
+      console.log(total,'total');
 
-</script> --}}
+      result=0;
+      $('.selecttt:checked').each(
+        function() {
+
+          id=$(this).val();
+
+            console.log(id,'valor id');
+
+            suma=parseInt($(''+id+'').val());
+
+            result=total + suma;
+            console.log(result);
+        });
+
+     
+
+    
+ });*/
+  
+  </script>
+
 
 
 <script>
@@ -196,5 +285,6 @@ Gift Card
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script> --}}
   <script src="{{asset("js/validarRUT.js")}}"></script> 
+  <script src="{{asset("js/ValidaCheck.js")}}"></script>
 
 @endsection

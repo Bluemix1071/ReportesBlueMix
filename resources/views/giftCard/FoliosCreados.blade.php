@@ -74,10 +74,12 @@ Gift Card
                   
               @else
               <tbody>
+      
                   @foreach($giftCreadas as $item)
                     <tr>
                       <th >{{$item->TARJ_CODIGO}}</th>
                       <td style="text-align:center">{{$item->TARJ_MONTO_INICIAL}}</td>
+                    
                     </tr>
                     @endforeach
                   </tbody>   
@@ -105,8 +107,13 @@ Gift Card
   $(document).ready(function() {
     $('#tarjetas').DataTable( {
         dom: 'Bfrtip',
+        "iDisplayLength": 500,
+        "searching": false,
+        "paging":   false,
+        "ordering": false,
+        "info":     false,
         buttons: [
-          'copy', 'csv', 'excel', 'pdf', 'print'
+          'copy',  'excel', 'pdf', 'print'
             
         ],
           "language":{

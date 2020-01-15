@@ -91,7 +91,7 @@ Venta GiftCards Empresa
                 <td style="text-align:center">{{$item->TARJ_FECHA_VENCIMIENTO}}</td>
 
                 @if ($item->TARJ_ESTADO == 'C' )
-                <td class="bg-info" style="text-align:center">Creada</td>
+                <td class="bg-danger" style="text-align:center">No Activado</td>
 
                 @elseif ($item->TARJ_ESTADO == 'V' )
                 <td class="bg-success" style="text-align:center">Vendida</td>
