@@ -21,8 +21,10 @@ Consulta Facturas Boletas
                                <div class="form-group mx-sm-3 mb-2">
                                    <label for="inputPassword2" class="sr-only"></label>
                                    <select id="documento" list="documento" class="form-control" name="documento" value="" required >
+                                    <option value="1">Ambas</option>
                                     <option value="7">Boleta</option> 
                                     <option value="8">Factura</option>
+
                                  </select>
                                  </div>
                                  <div class="form-group mb-2">
@@ -54,13 +56,14 @@ Consulta Facturas Boletas
                         <th  style="color:#F4F6F9" colspan="2" ></th>    
                     </tr>
                     <tr>
-                      <th scope="col" style="text-align:center">Interno</th>
-                      <th scope="col" style="text-align:center">Barra</th>
-                      <th scope="col" style="text-align:center"> Proveedor</th>
-                      <th scope="col" style="text-align:center"> descripcion</th>
-                      <th scope="col" style="text-align:center">Marca</th>
-                      <th scope="col" style="text-align:center">Total Productos</th>
-                      <th scope="col" style="text-align:center">Ultima Fecha</th>  
+                      <th scope="col" style="text-align:center">Tipo Doc.</th>
+                      <th scope="col" style="text-align:center">RUT</th>
+                      <th scope="col" style="text-align:center">Razon</th>
+                      <th scope="col" style="text-align:center">Fecha</th>
+                      <th scope="col" style="text-align:center">IVA</th>
+                      <th scope="col" style="text-align:center">Neto</th>
+                      <th scope="col" style="text-align:center">Total</th>  
+                      {{-- <th scope="col" style="text-align:center">Acciones</th>   --}}
                     </tr>
                   </thead>
                   <tbody>
@@ -69,13 +72,18 @@ Consulta Facturas Boletas
                         @else
                     @foreach($consulta as $item)
                       <tr>
-                        <th >{{$item->codigo}}</th>
-                        <td style="text-align:center">{{$item->barra}}</td>
-                        <td style="text-align:center">{{$item->proveedor}}</td>
-                        <td style="text-align:center">{{$item->descripcion}}</td>
-                        <td style="text-align:center">{{$item->marca}}</td>
-                        <td style="text-align:center">{{$item->total_productos}}</td>
-                        <td style="text-align:center">{{$item->ultima_fecha}}</td>
+                        @if($item->CATIPO == 7)
+                        <td style="text-align:center">Boleta</td>
+                        @else
+                        <td style="text-align:center">Factura</td>
+                        @endif
+                        <td style="text-align:center">{{$item->CARUTC}}</td>
+                        <td style="text-align:center">{{$item->razon}}</td>
+                        <td style="text-align:center">{{$item->CAFECO}}</td>
+                        <td>{{number_format($item->CAIVA,0,',','.')}}</td>
+                        <td>{{number_format($item->CANETO,0,',','.')}}</td>
+                        <td>{{number_format($item->CAVALO,0,',','.')}}</td>
+                        {{-- <td style="text-align:center">{{$item->ultima_fecha}}</td> --}}
                       </tr>
                       @endforeach
                       @endif

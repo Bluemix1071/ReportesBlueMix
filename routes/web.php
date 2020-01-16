@@ -191,9 +191,6 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
     Route::post('/BloqueoGiftCardsrango','GiftCardController@filtrarbloqueorango')->name('filtrartarjetabloqueorango');
     Route::post('/BloqueoGif','GiftCardController@bloqueotrajeta')->name('bloqueartarjetacard');
 
-
-
-
     Route::get('/detalle/{fk_cargos}','GiftCardController@detalletarjeta')->name('detalletarjeta');
 
 });

@@ -847,14 +847,26 @@ public function filtrarconsultafacturaboleta(Request $request){
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
       $documento=$request->documento;
+      
+      if($documento == 1){
 
-      $consulta=DB::table('cargos')
-      ->join('dcargos', 'DENMRO', '=', 'cargos.CANMRO')
-      ->where('CATIPO',$documento)
+        $consulta=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->get();
 
-      dd($consulta);
+      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2'));
+
+      }else{
+
+        $consulta=DB::table('cargos')
+      ->where('CATIPO',$documento)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->get();
+      
+      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2'));
+
+      }
+
       
   return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2'));
 
