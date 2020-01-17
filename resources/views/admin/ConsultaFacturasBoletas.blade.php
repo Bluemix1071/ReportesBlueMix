@@ -12,7 +12,7 @@ Consulta Facturas Boletas
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Consulta Facturas Boletas</h3>
+        <h6 class="display-3">Consulta Ventas (Facturas Boletas)</h6>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
