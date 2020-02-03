@@ -52,9 +52,39 @@ class AdminController extends Controller
     public function ProductosPorMarca(Request $request)
     {
       
-      $productos=DB::table('Productos_x_Marca')->get();
+      return view('admin.productospormarca');
+    }
+
+    public function ProductosPorMarcafiltrar(Request $request)
+    {
+      
+      $marca=$request->marca;
+
+      $productos=DB::table('Productos_x_Marca')
+      ->where('MARCA_DEL_PRODUCTO',$marca)
+      ->get();
      
-      return view('admin.productospormarca',compact('productos'));
+      return view('admin.productospormarca',compact('productos','marca'));
+    }
+
+    function fetch(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = DB::table('marcas')
+        ->where('ARMARCA', 'LIKE', "%{$query}%")
+        ->get();
+      $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li><a href="#">'.$row->ARMARCA.'</a></li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
     }
 
     public function comprassegunprov(Request $request)
@@ -144,6 +174,9 @@ class AdminController extends Controller
 
 
     public function FiltrarProductos(Request $request){
+
+      $consulta=$request->searchText;
+
       $productos=DB::table('Vista_Productos')
       ->where('interno','LIKE','%'.$request->searchText.'%')
       ->orwhere('descripcion','LIKE','%'.$request->searchText.'%')
@@ -152,7 +185,7 @@ class AdminController extends Controller
     
 
     
-      return view('admin.Productos',compact('productos'));
+      return view('admin.Productos',compact('productos','consulta'));
 
     }
 
@@ -189,7 +222,7 @@ class AdminController extends Controller
       
 
   
-      return view('admin.VentasProductosPorFecha',compact('productos'));
+      return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2'));
 
 
     }
@@ -232,7 +265,7 @@ class AdminController extends Controller
       
 
      
-      return view('admin.CompraProductosPorFecha',compact('productos'));
+      return view('admin.CompraProductosPorFecha',compact('productos','marca','fecha1','fecha2'));
 
 
     }
@@ -854,7 +887,7 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->get();
 
-      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2'));
+      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
 
       }else{
 
@@ -863,12 +896,12 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->get();
       
-      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2'));
+      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
 
       }
 
       
-  return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2'));
+  return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
 
 
 }

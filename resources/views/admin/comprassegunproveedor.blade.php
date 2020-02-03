@@ -17,21 +17,21 @@
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
                     <tr>
-                      <th scope="col">Año</th>
-                      <th scope="col">Cantidad O/C</th>
-                      <th scope="col">Nombre Proveedor</th>
-                      <th scope="col">Rut Proveedor</th>
-                      <th scope="col">Total Bruto</th>
+                      <th scope="col" style="text-align:left">Año</th>
+                      <th scope="col" style="text-align:right">Cantidad O/C</th>
+                      <th scope="col" style="text-align:left">Nombre Proveedor</th>
+                      <th scope="col" style="text-align:left">Rut Proveedor</th>
+                      <th scope="col" style="text-align:right">Total Bruto</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($comprasprove as $item)
                       <tr>
-                        <td>{{$item->anio}}</td>
-                        <th >{{$item->cantidad}}</th>
-                        <td>{{$item->nombreprov}}</td>
-                        <td>{{$item->rutprov}}</td>
-                        <td style="text-align:center">{{number_format($item->Monto,0,',','.')}}</td>
+                        <td style="text-align:left">{{$item->anio}}</td>
+                        <td style="text-align:right">{{number_format($item->cantidad,0,',','.')}}</td>
+                        <td style="text-align:left">{{$item->nombreprov}}</td>
+                        <td style="text-align:left">{{$item->rutprov}}</td>
+                        <td style="text-align:right">{{number_format($item->Monto,0,',','.')}}</td>
                       </tr>
                       @endforeach
                     </tbody>

@@ -218,13 +218,13 @@
                     </a>
                   </li>
 
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{route('porcentaje')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                        <p>Desviacion
                        </p>
                      </a>
-                   </li>
+                   </li> --}}
 
                    <li class="nav-item">
                     <a href="{{route('productos')}}" class="nav-link">
@@ -258,14 +258,14 @@
                      </a>
                    </li>
 
-                   <li class="nav-item">
+                   {{-- <li class="nav-item">
                     <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                        <p>Ventas Por Hora
                        
                        </p>
                      </a>
-                   </li>
+                   </li> --}}
 
                    <li class="nav-item">
                     <a href="{{route('proyeccion')}}" class="nav-link">

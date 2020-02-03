@@ -15,18 +15,19 @@ Venta Productos
         <h3 class="display-3">Venta Productos</h3>
         <div class="row">
           <div class="col-md-12">
-            {{-- BUSCADOR --}}
-            @if (!empty($productos))
-            <a href="{{route('ventaProd')}}" class="btn btn-primary">Volver a Buscar</a>
-            <hr>
-             @else
                  <form action="{{route('ventaProdFiltro')}}" method="post"  id="desvForm" class="form-inline">
                          @csrf
                                
                                <div class="form-group mx-sm-3 mb-2">
+                                @if (empty($marca))
                                    <label for="inputPassword2" class="sr-only"></label>
                                    <input type="text" name="marca" class="form-control" placeholder="Marca...."  >
+                                   @else
+                                   <label for="inputPassword2" class="sr-only"></label>
+                                   <input type="text" name="marca" class="form-control" placeholder="Marca...." value="{{$marca}}" >
+                                   @endif
                                  </div>
+                                 
 
                                  <div class="form-group mb-2">
                                         @if (empty($fecha1))
@@ -48,29 +49,30 @@ Venta Productos
                                         @endif
                                    
                                 </div>
-                               <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                                <div class="form-group mx-sm-3 mb-2">
+                                        
+                                  <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                             
+                          </div>
+                          <div class="col-md-2 col-md offset-2">
+                                        
+                            <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
+                       
+                    </div>
                              
                  </form>
-             @endif
               
-                       {{-- FIN BUSCADOR--}}
+
               <table id="productos" class="table table-bordered table-hover dataTable table-sm">
                   <thead>
                     <tr>
-                        <th scope="col" colspan="3"  style="text-align:center" >Codigo</th>
-                        
-                        <th scope="col" colspan="3" style="text-align:center"></th>
-                        <th  style="color:#F4F6F9" colspan="2" ></th>
-                       
-                    </tr>
-                    <tr>
-                      <th scope="col" style="text-align:center">Interno</th>
-                      <th scope="col" style="text-align:center">Barra</th>
-                      <th scope="col" style="text-align:center"> Proveedor</th>
-                      <th scope="col" style="text-align:center"> descripcion</th>
-                      <th scope="col" style="text-align:center">Marca</th>
-                      <th scope="col" style="text-align:center">Total Productos</th>
-                      <th scope="col" style="text-align:center">Ultima Fecha</th>
+                      <th scope="col" style="text-align:left">cod. Interno</th>
+                      <th scope="col" style="text-align:left">cod. Barra</th>
+                      <th scope="col" style="text-align:left">cod. Proveedor</th>
+                      <th scope="col" style="text-align:left">Descripcion</th>
+                      <th scope="col" style="text-align:left">Marca</th>
+                      <th scope="col" style="text-align:right">Total Productos</th>
+                      <th scope="col" style="text-align:left">Ult. Fecha Vendido</th>
                      
                     </tr>
                   </thead>
@@ -81,13 +83,13 @@ Venta Productos
                         @else
                     @foreach($productos as $item)
                       <tr>
-                        <th >{{$item->codigo}}</th>
-                        <td style="text-align:center">{{$item->barra}}</td>
-                        <td style="text-align:center">{{$item->proveedor}}</td>
-                        <td style="text-align:center">{{$item->descripcion}}</td>
-                        <td style="text-align:center">{{$item->marca}}</td>
-                        <td style="text-align:center">{{$item->total_productos}}</td>
-                        <td style="text-align:center">{{$item->ultima_fecha}}</td>
+                        <th  style="text-align:left">{{$item->codigo}}</th>
+                        <td style="text-align:left">{{$item->barra}}</td>
+                        <td style="text-align:left">{{$item->proveedor}}</td>
+                        <td style="text-align:left">{{$item->descripcion}}</td>
+                        <td style="text-align:left">{{$item->marca}}</td>
+                        <td style="text-align:right">{{number_format($item->total_productos,0,',','.')}}</td>
+                        <td style="text-align:left">{{$item->ultima_fecha}}</td>
                       
                       </tr>
                       @endforeach
@@ -104,10 +106,11 @@ Venta Productos
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Productos Por Marca</h4>
+        <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
       </div>
       <div class="modal-body">
-         <div class="card-body">Información de la Consulta</div>
+         <div class="card-body">Consulta Orientada Para conocer la venta de los productos, filtrando por la marca de estos y en un rango de fecha a definir por el usuario 
+           y así conocer la cantidad de productos vendidos con la ultima fecha en la cual se vendió este.</div>
       </div>
       <div class="modal-footer">
         <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>

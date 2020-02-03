@@ -16,16 +16,18 @@ Compra Productos
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
-            @if (!empty($productos))
-            <a href="{{route('compraProd')}}" class="btn btn-primary">Volver a Buscar</a>
             <hr>
-             @else
+
                  <form action="{{route('compraProdFiltro')}}" method="post"  id="desvForm" class="form-inline">
                          @csrf
                                
                                <div class="form-group mx-sm-3 mb-2">
+                                @if (empty($marca))
                                    <label for="inputPassword2" class="sr-only"></label>
                                    <input type="text" name="marca" class="form-control" placeholder="Marca...." >
+                                   @else
+                                   <input type="text" name="marca" class="form-control" placeholder="Marca...." value="{{$marca}}" >
+                                   @endif
                                  </div>
 
                                  <div class="form-group mb-2">
@@ -48,21 +50,30 @@ Compra Productos
                                         @endif
                                    
                                 </div>
-                               <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                                <div class="col-md-2 ">
+                                        
+                                  <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                             
+                          </div>
+                          <div class="col-md-2 col-md offset-">
+                                        
+                            <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
+                       
+                    </div>
+                          
                              
                  </form>
-             @endif
               
                        {{-- FIN BUSCADOR--}}
               <table id="productos" class="table table-bordered table-hover dataTable table-sm">
                   <thead>
                     <tr>
-                      <th scope="col" style="text-align:center">Marca</th>
-                      <th scope="col" style="text-align:center">Cod. producto</th>
-                      <th scope="col" style="text-align:center">Descripción</th>
-                      <th scope="col" style="text-align:center">Cantidad</th>
-                      <th scope="col" style="text-align:center">Costo Unitario Actual</th>
-                      <th scope="col" style="text-align:center">Costo Total</th>
+                      <th scope="col" style="text-align:left">Marca</th>
+                      <th scope="col" style="text-align:left">Cod. producto</th>
+                      <th scope="col" style="text-align:left">Descripción</th>
+                      <th scope="col" style="text-align:right">Cantidad</th>
+                      <th scope="col" style="text-align:right">Costo Unitario Actual</th>
+                      <th scope="col" style="text-align:right">Costo Total</th>
                      
                     </tr>
                   </thead>
@@ -71,18 +82,21 @@ Compra Productos
                         @if (empty($productos))
                     
                         @else
+                        
                     @foreach($productos as $item)
                       <tr>
-                        <td style="text-align:center">{{$item->marca}}</td>
-                        <td style="text-align:center">{{$item->Cod_Producto}}</td>
-                        <td style="text-align:center">{{$item->Descripción_Producto}}</td>
-                        <td style="text-align:center">{{$item->Cantidad}}</td>
-                        <td style="text-align:center">{{number_format($item->Costo_Unitario_actual,0,',','.')}}</td>
-                        <td style="text-align:center">{{number_format($item->Costo_Total,0,',','.')}}</td>
+                        <td style="text-align:left">{{$item->marca}}</td>
+                        <td style="text-align:left">{{$item->Cod_Producto}}</td>
+                        <td style="text-align:left">{{$item->Descripción_Producto}}</td>
+                        <td style="text-align:right">{{number_format($item->Cantidad,0,',','.')}}</td>
+                        <td style="text-align:right">{{number_format($item->Costo_Unitario_actual,0,',','.')}}</td>
+                        <td style="text-align:right">{{number_format($item->Costo_Total,0,',','.')}}</td>
+                        
                       </tr>
                       @endforeach
                       @endif
-                    </tbody>             
+                    </tbody>  
+          
                 </table>
                 {{-- {{$productos->links()}} --}}
           </div>
@@ -94,10 +108,11 @@ Compra Productos
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Productos Por Marca</h4>
+        <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
       </div>
       <div class="modal-body">
-         <div class="card-body">Información de la Consulta</div>
+         <div class="card-body">Consulta Orientada Para conocer la Compra de los productos, filtrando por la marca de estos y en un rango de fecha a definir por el usuario 
+          y así conocer la cantidad de productos Comprados, con su respectivo costo total.</div>
       </div>
       <div class="modal-footer">
         <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
