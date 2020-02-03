@@ -81,7 +81,7 @@ Porcentaje Desviacion
               <tbody>
                 @foreach($porcentaje as $item)
                   <tr>
-                    <td>{{$item->codigo}}</td>
+                    <th>{{$item->codigo}}</th>
                     <th >{{$item->descripcion}}</th>
                     <td>{{$item->desv}}</td>
                     <td>{{$item->diferencia}}</td>

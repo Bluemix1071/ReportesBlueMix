@@ -15,21 +15,32 @@
         <h3 class="display-3">Productos</h3>
         <div class="row">
             <div class="col-md-12">
-                @if (!empty($productos))
-               <a href="{{route('productos')}}" class="btn btn-primary">Volver a Buscar</a>
                <hr>
-                @else
+               <br>
                     <form action="{{route('filtrarProductos')}}" method="post"  id="desvForm" class="form-inline">
                             @csrf
                                   
                                   <div class="form-group mx-sm-3 mb-2">
+                                    @if (empty($productos))
                                       <label for="inputPassword2" class="sr-only"></label>
-                                      <input type="text" name="searchText" class="form-control"  >
+                                      <input type="text" autocomplete="off" name="searchText" class="form-control"  >
+                                      @else
+                                      <label for="inputPassword2" class="sr-only"></label>
+                                      <input type="text" autocomplete="off" name="searchText" class="form-control" value="{{$consulta}}" >
+                                      @endif
                                     </div>
-                                  <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                                
+                                    <div class="col-md-2 ">
+                                        
+                                      <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                                 
+                              </div>
+                              <div class="col-md-2 col-md offset-">
+                                            
+                                <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
+                           
+                        </div>
                     </form>
-                @endif
+                    <hr>
                     
             </div>
         </div>
@@ -40,21 +51,15 @@
                        {{-- FIN BUSCADOR--}}
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
+
                     <tr>
-                        <th scope="col" colspan="3" style="color:#F4F6F9"></th>
-                        
-                        <th scope="col" colspan="3" style="text-align:center">Stock</th>
-                        <th  style="color:#F4F6F9" colspan="2" ></th>
-                       
-                    </tr>
-                    <tr>
-                      <th scope="col" >Interno</th>
-                      <th scope="col" style="text-align:center">Proveedor</th>
-                      <th scope="col" style="text-align:center">Barra</th>
-                      <th scope="col" style="text-align:center"> Descripcion</th>
-                      <th scope="col" style="text-align:center"> Marca</th>
-                      <th scope="col" style="text-align:center">bodega</th>
-                      <th scope="col" style="text-align:center">sala</th>
+                      <th scope="col">cod. Interno</th>
+                      <th scope="col" style="text-align:right">cod. Proveedor</th>
+                      <th scope="col" style="text-align:center">cod. Barra</th>
+                      <th scope="col" style="text-align:left">Descripcion</th>
+                      <th scope="col" style="text-align:left">Marca</th>
+                      <th scope="col" style="text-align:right">Stock bodega</th>
+                      <th scope="col" style="text-align:right">Stock Sala</th>
                    
                     </tr>
                   </thead>
@@ -66,12 +71,12 @@
                     @foreach($productos as $item)
                       <tr>
                         <th >{{$item->interno}}</th>
-                        <td style="text-align:center">{{$item->externo}}</td>
-                        <td style="text-align:center">{{$item->barra}}</td>
-                        <td style="text-align:center">{{$item->descripcion}}</td>
-                        <td style="text-align:center">{{$item->marca}}</td>
-                        <td style="text-align:center">{{$item->bodega}}</td>
-                        <td style="text-align:center">{{$item->sala}}</td>
+                        <td style="text-align:left">{{$item->externo}}</td>
+                        <td style="text-align:left">{{$item->barra}}</td>
+                        <td style="text-align:left">{{$item->descripcion}}</td>
+                        <td style="text-align:left">{{$item->marca}}</td>
+                        <td style="text-align:right">{{number_format($item->bodega,0,',','.')}}</td>
+                        <td style="text-align:right">{{number_format($item->sala,0,',','.')}}</td>
          
                       </tr>
                       @endforeach
@@ -88,10 +93,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Productos Por Marca</h4>
+        <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
       </div>
       <div class="modal-body">
-         <div class="card-body">Información de la Consulta</div>
+         <div class="card-body">Consulta Orientada Para Conocer Los Productos Filtrando Por Marca, Descripcion o Codigo Interno Del Producto.</div>
       </div>
       <div class="modal-footer">
         <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
