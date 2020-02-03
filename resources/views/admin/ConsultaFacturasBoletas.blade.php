@@ -140,7 +140,7 @@ Consulta Facturas Boletas
         <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
       </div>
       <div class="modal-body">
-         <div class="card-body">Consulta Orientada Para Conocer las Factutas y Boletas realizadas en un rango de Fecha.</div>
+         <div class="card-body">Consulta Orientada Para Conocer las Factutas y Boletas Realizadas En Un Rango De Fecha.</div>
       </div>
       <div class="modal-footer">
         <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
