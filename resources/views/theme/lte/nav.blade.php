@@ -223,13 +223,18 @@
                     </a>
                   </li>
 
+<<<<<<< HEAD
                   <li class="nav-item">
                     <a href="{{route('porcentaje')}}" class="nav-link {{setActive('porcentaje')}} ">
+=======
+                  {{-- <li class="nav-item">
+                    <a href="{{route('porcentaje')}}" class="nav-link">
+>>>>>>> 17cbc2e5ea0cfcf6c65e4d267d6b5480fffde927
                       <i class="far fa-circle nav-icon"></i>
                        <p>Desviacion
                        </p>
                      </a>
-                   </li>
+                   </li> --}}
 
                    <li class="nav-item">
                     <a href="{{route('productos')}}" class="nav-link {{setActive('productos')}}">
@@ -263,14 +268,19 @@
                      </a>
                    </li>
 
+<<<<<<< HEAD
                    <li class="nav-item">
                     <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link {{setActive('ComprasPorHoraIndex')}}">
+=======
+                   {{-- <li class="nav-item">
+                    <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link">
+>>>>>>> 17cbc2e5ea0cfcf6c65e4d267d6b5480fffde927
                       <i class="far fa-circle nav-icon"></i>
                        <p>Ventas Por Hora
                        
                        </p>
                      </a>
-                   </li>
+                   </li> --}}
 
                    <li class="nav-item">
                     <a href="{{route('proyeccion')}}" class="nav-link {{setActive('proyeccion')}}">
@@ -289,10 +299,22 @@
                      </a>
                    </li>
 
+<<<<<<< HEAD
                    <li class="nav-item">
                     <a href="{{route('movimientoinventario')}}" class="nav-link {{setActive('movimientoinventario')}}">
+=======
+                   {{-- <li class="nav-item">
+                    <a href="{{route('movimientoinventario')}}" class="nav-link">
+>>>>>>> 17cbc2e5ea0cfcf6c65e4d267d6b5480fffde927
                       <i class="far fa-circle nav-icon"></i>
                        <p>Movimiento Mercaderia
+                       </p>
+                     </a>
+                   </li> --}}
+                   <li class="nav-item">
+                    <a href="{{route('consultafacturaboleta')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Consulta Factura Boleta
                        </p>
                      </a>
                    </li>

@@ -33,12 +33,12 @@
                   <tbody>
                     @foreach($ordendecompra as $item)
                       <tr>
-                          <td>{{$item->nombre_del_proveedor}}</td>
-                        <th >{{$item->numero_de_orden_de_compra}}</th>
-                        <td>{{$item->fecha }}</td>
-                        <td style="text-align:center">{{number_format($item->NetoOC,0,',','.')}}</td>
-                        <td style="text-align:center">{{number_format($item->IvaOC,0,',','.')}}</td>
-                        <td style="text-align:center">{{number_format($item->total,0,',','.')}}</td>
+                        <td>{{$item->nombre_del_proveedor}}</td>
+                        <th>{{number_format($item->numero_de_orden_de_compra,0,',','.')}}</th>
+                        <td>{{$item->fecha}}</td>
+                        <td style="text-align:right">{{number_format($item->NetoOC,0,',','.')}}</td>
+                        <td style="text-align:right">{{number_format($item->IvaOC,0,',','.')}}</td>
+                        <td style="text-align:right">{{number_format($item->total,0,',','.')}}</td>
                         @if ($item->estado =='Autorizada')
                         <td><font color="Lime">Autorizada</font></td>
                         @elseif ($item->estado =='creada')

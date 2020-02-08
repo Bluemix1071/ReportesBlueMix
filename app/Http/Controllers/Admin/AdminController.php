@@ -52,9 +52,39 @@ class AdminController extends Controller
     public function ProductosPorMarca(Request $request)
     {
       
-      $productos=DB::table('Productos_x_Marca')->get();
+      return view('admin.productospormarca');
+    }
+
+    public function ProductosPorMarcafiltrar(Request $request)
+    {
+      
+      $marca=$request->marca;
+
+      $productos=DB::table('Productos_x_Marca')
+      ->where('MARCA_DEL_PRODUCTO',$marca)
+      ->get();
      
-      return view('admin.productospormarca',compact('productos'));
+      return view('admin.productospormarca',compact('productos','marca'));
+    }
+
+    function fetch(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = DB::table('marcas')
+        ->where('ARMARCA', 'LIKE', "%{$query}%")
+        ->get();
+      $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li><a href="#">'.$row->ARMARCA.'</a></li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
     }
 
     public function comprassegunprov(Request $request)
@@ -144,6 +174,9 @@ class AdminController extends Controller
 
 
     public function FiltrarProductos(Request $request){
+
+      $consulta=$request->searchText;
+
       $productos=DB::table('Vista_Productos')
       ->where('interno','LIKE','%'.$request->searchText.'%')
       ->orwhere('descripcion','LIKE','%'.$request->searchText.'%')
@@ -152,7 +185,7 @@ class AdminController extends Controller
     
 
     
-      return view('admin.Productos',compact('productos'));
+      return view('admin.Productos',compact('productos','consulta'));
 
     }
 
@@ -189,7 +222,7 @@ class AdminController extends Controller
       
 
   
-      return view('admin.VentasProductosPorFecha',compact('productos'));
+      return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2'));
 
 
     }
@@ -232,7 +265,7 @@ class AdminController extends Controller
       
 
      
-      return view('admin.CompraProductosPorFecha',compact('productos'));
+      return view('admin.CompraProductosPorFecha',compact('productos','marca','fecha1','fecha2'));
 
 
     }
@@ -781,53 +814,97 @@ class AdminController extends Controller
     }
 
 
-    public function movimientoinventario(){
+    // public function movimientoinventario(){
 
 
-      return view('admin.ajustedeinventario');
+    //   return view('admin.ajustedeinventario');
 
 
-    }
+    // }
 
-    public function filtrarmovimientoinventario(Request $request){
+    // public function filtrarmovimientoinventario(Request $request){
 
 
-        $cod=$request->codigo;
+    //     $cod=$request->codigo;
 
-        $date = Carbon::now("Chile/Continental");
+    //     $date = Carbon::now("Chile/Continental");
 
-        $usuario = session()->get('nombre');
+    //     $usuario = session()->get('nombre');
 
         
-        $consulta = DB::table('bodeprod')
-        ->join('producto', 'ARCODI', '=', 'bodeprod.bpprod')
-        ->where('bpprod',$cod)
-        ->get();
+    //     $consulta = DB::table('bodeprod')
+    //     ->join('producto', 'ARCODI', '=', 'bodeprod.bpprod')
+    //     ->where('bpprod',$cod)
+    //     ->get();
 
 
 
-        return view('admin.ajustedeinventario',compact('consulta','date','usuario'));
+    //     return view('admin.ajustedeinventario',compact('consulta','date','usuario'));
 
 
-    }
+    // }
 
-    public function ajustemovimientoinventario(Request $request){
+  //   public function ajustemovimientoinventario(Request $request){
 
-      // dd($request->all());
+  //     // dd($request->all());
 
-      $update = DB::table('bodeprod')
-            ->update(['bpsrea' => $request->cantidadreal]);
+  //     $update = DB::table('bodeprod')
 
-            $insert = DB::table('movimientos_de_mercaderia')->insert(
-              ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidad - $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => $request->obser]                        
-          );
+      
+  //           ->update(['bpsrea' => $request->cantidadreal]);
+  //           ///sacar del programa 
+  //           $insert = DB::table('movimientos_de_mercaderia')->insert(
+  //             ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidad - $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => $request->obser]                        
+  //         );
       
 
 
-      return view('admin.ajustedeinventario');
+  //     return view('admin.ajustedeinventario');
 
 
-  }
+  // }
+
+
+  public function consultafacturaboleta(){
+
+    
+    return view('admin.ConsultaFacturasBoletas');
+
+
+}
+
+public function filtrarconsultafacturaboleta(Request $request){
+
+
+
+      $fecha1=$request->fecha1;
+      $fecha2=$request->fecha2;
+      $documento=$request->documento;
+      
+      if($documento == 1){
+
+        $consulta=DB::table('cargos')
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->get();
+
+      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
+
+      }else{
+
+        $consulta=DB::table('cargos')
+      ->where('CATIPO',$documento)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->get();
+      
+      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
+
+      }
+
+      
+  return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
+
+
+}
 
 
 

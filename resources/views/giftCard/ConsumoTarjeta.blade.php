@@ -62,7 +62,7 @@ Consumo GiftCard
         </table>
       </div>
       <div class="col-md-4">
-            @if (empty($consulta2[0]))
+            @if (empty($consulta[0]))
                     <div class="form-row">
                       <div class="col-md-4 mb-3">
                         <label for="validationTooltip01">Monto Inicial</label>
