@@ -128,14 +128,14 @@ Gift Card
                   <div class="form-group">
                   <label for="Efectivo">Efectivo</label>
                   <input type="checkbox" class="selecttt"  name="FormaPago[]" onChange="comprobar(this);" value="{{$i}}" >
-                  <input type="number" name="Pago[]"  id="{{$i}}" required  disabled style="display:none " required>
+                  <input type="number" name="Pago[]"  id="{{$i}}" min="1" required  disabled style="display:none " required>
                   </div>
 
                   @elseif($i==1)
                   <div class="form-group">
                     <label for="Credito">Credito</label>
                     <input type="checkbox" class="selecttt" name="FormaPago[]" id="Credito" onChange="comprobar(this);" value="{{$i}}" >
-                    <input type="number" name="Pago[]" id="{{$i}}" required disabled style="display:none " required>
+                    <input type="number" name="Pago[]" id="{{$i}}" min="1"  required disabled style="display:none " required>
                   </div>
 
                   @elseif($i==2)
@@ -143,7 +143,7 @@ Gift Card
                   <div class="form-group">
                     <label for="Debito"> Debito</label>
                     <input type="checkbox" class="selecttt" name="FormaPago[]" id="Debito" onChange="comprobar(this);" value="{{$i}}">
-                    <input type="number" name="Pago[]" id="{{$i}}" required disabled style="display:none "  >
+                    <input type="number" name="Pago[]" id="{{$i}}" min="1"  required disabled style="display:none "  >
                   </div>
                   @endif
               @endfor

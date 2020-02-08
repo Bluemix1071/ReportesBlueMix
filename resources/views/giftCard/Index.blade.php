@@ -37,6 +37,7 @@ Gift Card
                 </ul>
             </div>
         @endif
+      
             
         <form action="{{route('generarGiftCard')}}" name="formulario" method="POST" onsubmit="limpiar()">
           @csrf
