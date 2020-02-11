@@ -299,7 +299,7 @@
                    <li class="nav-item">
                     <a href="{{route('consultafacturaboleta')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                       <p>Consulta Factura Boleta
+                       <p>Libro De Ventas Diario
                        </p>
                      </a>
                    </li>

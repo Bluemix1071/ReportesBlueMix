@@ -879,29 +879,117 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
-      $documento=$request->documento;
+      // $documento=$request->documento;
       
-      if($documento == 1){
 
-        $consulta=DB::table('cargos')
+
+      $factura=DB::table('cargos')
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->where('catipo',8)
+      ->get();
+
+      
+
+      $facturacount=DB::table('cargos')
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->where('catipo',8)
+      ->count('CANMRO');
+      
+
+
+
+
+      $boleta=DB::table('cargos')
+      ->where('CATIPO',7)
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->get();
 
-      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
-
-      }else{
-
-        $consulta=DB::table('cargos')
-      ->where('CATIPO',$documento)
+      $boletacount=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->where('catipo',7)
+      ->count('CANMRO');
+      
+
+      $notacredito=DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
       ->get();
-      
-      return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
 
-      }
+      $notacreditocount=DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+      ->count('id');
+
+      $boletasuma=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('cavalo');
+
+      $facturasuma=DB::table('cargos')
+      ->where('CATIPO',8)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('cavalo');
+
+      $notacreditosuma=DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+      ->sum('total_nc');
+
+      $total=(($boletasuma+$facturasuma)-$notacreditosuma);
+
+      $boletasumaiva=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CAIVA');
+
+      $facturasumaiva=DB::table('cargos')
+      ->where('CATIPO',8)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CAIVA');
+
+      $notacreditosumaiva=DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+      ->sum('iva');
+
+      $totaliva=(($boletasumaiva+$facturasumaiva)-$notacreditosumaiva);
+
+      $boletasumaneto=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CANETO');
+
+      $facturasumaneto=DB::table('cargos')
+      ->where('CATIPO',8)
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CANETO');
+
+      $notacreditosumaneto=DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+      ->sum('neto');
+
+      $totalneto=(($boletasumaneto+$facturasumaneto)-$notacreditosumaneto);
+
+      $sumadocumentos = ($facturacount + $notacreditocount + $boletacount);
+
+      $porcaja=DB::table('cargos')
+      ->selectRaw('cacoca AS CAJA,
+      SUM(CAVALO) AS TOTAL')
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->where('CATIPO',7)
+      ->groupBy('cacoca')
+      ->get();
+
+      $porimpresora=DB::table('cargos')
+      ->selectRaw('nro_caja_fisc AS CAJA,
+      SUM(CAVALO) AS TOTAL,
+      MIN(NRO_BFISCAL) as Desde,
+      MAX(NRO_BFISCAL) as Hasta,
+      MAX(NRO_BFISCAL)-MIN(NRO_BFISCAL) + 1  as cantidad')
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->where('CATIPO',7)
+      ->groupBy('nro_caja_fisc')
+      ->get();
+
 
       
-  return view('admin.ConsultaFacturasBoletas',compact('consulta','fecha1','fecha2','documento'));
+  return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora'));
 
 
 }
