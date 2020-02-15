@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 use App;
 use App\mensajes;
+use App\ipmac;
 use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -993,6 +994,64 @@ public function filtrarconsultafacturaboleta(Request $request){
 
 
 }
+
+
+public function controlipmac(Request $request){
+
+    $control=DB::table('control_ip_mac')->get();
+
+
+  return view('admin.controlipmac',compact('control'));
+
+
+}
+
+
+public function actualizaripmac(Request $request)
+
+    
+    {
+      // dd($request->all());
+
+        $control=ipmac::findOrfail($request->id);
+        $control->id=$request->get('id');
+        $control->ip=$request->get('ip');
+        $control->mac=$request->get('mac');
+        $control->desc_pc=$request->get('desc_pc');
+        $control->update();
+        return back();
+
+    }
+
+
+
+    public function insertaripmac(Request $request)
+    {
+
+      ipmac::create([
+
+           
+            'ip' => $request->ip,
+            'mac' => $request->mac,
+            'desc_pc' => $request->desc_pc,
+
+
+        ]);
+
+        return redirect()->route('controlipmac');
+
+    }
+
+
+    public function agregaripmac(){
+
+
+      return view('admin.registraripmac');
+    
+    
+    }
+
+
 
 
 

@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Registrar Ususarios Administrador
+    Registrar Usuarios Administrador
 @endsection
 
 @section('contenido')

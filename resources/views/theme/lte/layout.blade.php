@@ -129,6 +129,23 @@
 
 
 
+<script> $('#mimodalejemplo10').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var id = button.data('id')
+  var ip = button.data('ip') 
+  var mac = button.data('mac') 
+  var desc_pc = button.data('desc_pc') 
+  var modal = $(this)
+  modal.find('.modal-body #id').val(id);
+  modal.find('.modal-body #ip').val(ip);
+  modal.find('.modal-body #mac').val(mac);
+  modal.find('.modal-body #desc_pc').val(desc_pc);
+
+
+})</script>
+
+
+
 
 @yield('script')
 

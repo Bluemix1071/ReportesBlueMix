@@ -203,6 +203,12 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="{{route('controlipmac')}}" class="nav-link {{setActive('controlipmac')}}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Control IP Mac</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                   <a href="{{route('ProductosPorMarca')}}" class="nav-link {{setActive('ProductosPorMarca')}}">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Producto Por Marca</p>
