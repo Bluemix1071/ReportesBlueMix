@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Administrador
+    control ip mac
 @endsection
 @section('styles')
 
