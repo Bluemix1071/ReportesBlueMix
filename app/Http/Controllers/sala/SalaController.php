@@ -288,7 +288,7 @@ class SalaController extends Controller
 
                           if($FormaPago[$i]==0){
                             
-                            DB::table('voucher_Pago')->insert([
+                            DB::table('voucher_pago')->insert([
                               'id_voucher_fk'=> $idVou,
                               'id_forma_pago_fk'=>1 ,
                               'monto'=>$pago[$i],
@@ -296,7 +296,7 @@ class SalaController extends Controller
 
                           }elseif($FormaPago[$i]==1){
                               
-                            DB::table('voucher_Pago')->insert([
+                            DB::table('voucher_pago')->insert([
                               'id_voucher_fk'=> $idVou,
                               'id_forma_pago_fk'=>2 ,
                               'monto'=>$pago[$i],
@@ -304,7 +304,7 @@ class SalaController extends Controller
         
                           }elseif($FormaPago[$i]==2){
                               
-                            DB::table('voucher_Pago')->insert([
+                            DB::table('voucher_pago')->insert([
                               'id_voucher_fk'=> $idVou,
                               'id_forma_pago_fk'=>3 ,
                               'monto'=>$pago[$i],
