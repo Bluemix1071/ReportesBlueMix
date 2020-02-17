@@ -91,7 +91,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
     Route::get('/consultafacturaboleta','AdminController@consultafacturaboleta')->name('consultafacturaboleta');
     Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta');
-
+    
+    
+    Route::get('controlipmac','AdminController@controlipmac')->name('controlipmac');
+    Route::post('/actualizaripmac', 'AdminController@actualizaripmac')->name('actualizaripmac');
+    Route::get('agregaripmac','AdminController@agregaripmac')->name('agregaripmac');
+    Route::post('/agregaripmac','AdminController@insertaripmac')->name('agregaripmac');
 
 
 
