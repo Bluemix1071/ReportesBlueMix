@@ -122,6 +122,7 @@
               Agregar items de giftcard -->
               @if (session()->get('tipo_usuario') == 'adminGiftCard' )
                <li class="nav-item has-treeview">
+                 
                 <a href="" class="nav-link">
                   <i class="nav-icon fas fa-credit-card"></i>
                   <p>
@@ -131,12 +132,20 @@
                 </a>
                 <ul class="nav nav-treeview">
                 
+
+                  @can('CrearFolios')
+                
                   <li class="nav-item">
                     <a href="{{route('indexGiftCard')}}" class="nav-link {{setActive('indexGiftCard')}}">
                       <i class="fas fa-cog"></i>
                       <p>Creacion Folios GiftCard</p>
                     </a>
                   </li>
+                 @else
+
+               
+                  @endcan
+
 
                   <li class="nav-item">
                     <a href="{{route('Activacion3.0')}}" class="nav-link {{setActive('Activacion3.0')}}">
@@ -223,13 +232,8 @@
                     </a>
                   </li>
 
-<<<<<<< HEAD
-                  <li class="nav-item">
-                    <a href="{{route('porcentaje')}}" class="nav-link {{setActive('porcentaje')}} ">
-=======
                   {{-- <li class="nav-item">
                     <a href="{{route('porcentaje')}}" class="nav-link">
->>>>>>> 17cbc2e5ea0cfcf6c65e4d267d6b5480fffde927
                       <i class="far fa-circle nav-icon"></i>
                        <p>Desviacion
                        </p>
@@ -268,13 +272,8 @@
                      </a>
                    </li>
 
-<<<<<<< HEAD
-                   <li class="nav-item">
-                    <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link {{setActive('ComprasPorHoraIndex')}}">
-=======
                    {{-- <li class="nav-item">
                     <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link">
->>>>>>> 17cbc2e5ea0cfcf6c65e4d267d6b5480fffde927
                       <i class="far fa-circle nav-icon"></i>
                        <p>Ventas Por Hora
                        
@@ -299,13 +298,8 @@
                      </a>
                    </li>
 
-<<<<<<< HEAD
-                   <li class="nav-item">
-                    <a href="{{route('movimientoinventario')}}" class="nav-link {{setActive('movimientoinventario')}}">
-=======
                    {{-- <li class="nav-item">
                     <a href="{{route('movimientoinventario')}}" class="nav-link">
->>>>>>> 17cbc2e5ea0cfcf6c65e4d267d6b5480fffde927
                       <i class="far fa-circle nav-icon"></i>
                        <p>Movimiento Mercaderia
                        </p>

@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         //MaddHatter\LaravelFullcalendar\ServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 
