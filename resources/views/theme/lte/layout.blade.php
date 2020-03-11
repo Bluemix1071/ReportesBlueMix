@@ -145,6 +145,26 @@
 })</script>
 
 
+<script> $('#mimodalejemplocupon').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var id = button.data('id')
+  var nro_cupon = button.data('nro_cupon') 
+  var colegio = button.data('colegio') 
+  var e_mail = button.data('e_mail') 
+  var fono = button.data('fono')
+  var comuna = button.data('comuna')
+  var modal = $(this)
+  modal.find('.modal-body #id').val(id);
+  modal.find('.modal-body #nro_cupon').val(nro_cupon);
+  modal.find('.modal-body #colegio').val(colegio);
+  modal.find('.modal-body #e_mail').val(e_mail);
+  modal.find('.modal-body #fono').val(fono);
+  modal.find('.modal-body #comuna').val(comuna);
+
+
+})</script>
+
+
 
 
 @yield('script')

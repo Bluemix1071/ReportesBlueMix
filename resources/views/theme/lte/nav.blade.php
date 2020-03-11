@@ -309,6 +309,13 @@
                        </p>
                      </a>
                    </li>
+                    <li class="nav-item">
+                    <a href="{{route('cuponesescolares')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Cupones Escolares
+                       </p>
+                     </a>
+                   </li>
                   
                 </ul>
               </li>

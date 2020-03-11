@@ -12,7 +12,7 @@
       <h1 class="display-4">Control IP Mac
       </h1>
       <hr>
-      <a href="{{route('agregaripmac')}}" type="button" class="btn btn-success">Agregar Usuarios</a>
+      <a href="{{route('agregaripmac')}}" type="button" class="btn btn-success">Agregar Ip-Mac</a>
       <hr>
       <section class="content">
         <div class="card">
