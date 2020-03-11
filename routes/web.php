@@ -124,6 +124,15 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/importdetalle', 'exports\MyController@importdetalle')->name('importdetalle');
     Route::get('/descargadetalle', 'exports\MyController@descargadetalle')->name('descargadetalle');
     Route::get('/descargaencabezado', 'exports\MyController@descargaEncabezado')->name('descargaencabezado');
+
+    //----------------------- Rutas de Roles y permisos ----------------------------//
+
+
+    Route::get('/Roles','LaravelPermission\RolesController@index')->name('Roles');
+
+
+
+
 });
 
 

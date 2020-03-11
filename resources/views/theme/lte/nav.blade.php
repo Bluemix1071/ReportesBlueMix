@@ -120,73 +120,119 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library
               Agregar items de giftcard -->
-              @if (session()->get('tipo_usuario') == 'adminGiftCard' )
-               <li class="nav-item has-treeview">
-                 
-                <a href="" class="nav-link">
-                  <i class="nav-icon fas fa-credit-card"></i>
-                  <p>
-                    Gift Card
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
+
+              @can('RolesYPermisos')
                 
+                  <li class="nav-item has-treeview">
+                  <a href="" class="nav-link">
+                      <i class="fas fa-user-tag"></i>
+                      <p>
+                        Roles Y Permisos
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      
+                      <li class="nav-item">
+                        <a href="{{route('Roles')}}" class="nav-link {{setActive('indexGiftCard')}} ">
+                          <i class="fas fa-cog"></i>
+                          <p>Roles</p>
+                        </a>
+                      </li>
 
-                  @can('CrearFolios')
+                      <li class="nav-item">
+                        <a href="#" class="nav-link ">
+                          <i class="fas fa-cog"></i>
+                          <p>Permisos</p>
+                        </a>
+                      </li>
+
+                    </ul>
+                  </li>
+              @endcan
+
+
+
+
+
+              @can('GiftCard')
+                    
                 
-                  <li class="nav-item">
-                    <a href="{{route('indexGiftCard')}}" class="nav-link {{setActive('indexGiftCard')}}">
-                      <i class="fas fa-cog"></i>
-                      <p>Creacion Folios GiftCard</p>
+                  @if (session()->get('tipo_usuario') == 'adminGiftCard' )
+                  <li class="nav-item has-treeview">
+                    
+                    <a href="" class="nav-link">
+                      <i class="nav-icon fas fa-credit-card"></i>
+                      <p>
+                        Gift Card
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
                     </a>
-                  </li>
-                 @else
+                    <ul class="nav nav-treeview">
+                    
 
-               
-                  @endcan
+                      @can('CrearFolios')
+                    
+                      <li class="nav-item">
+                        <a href="{{route('indexGiftCard')}}" class="nav-link {{setActive('indexGiftCard')}}">
+                          <i class="fas fa-cog"></i>
+                          <p>Creacion Folios GiftCard</p>
+                        </a>
+                      </li>
+                    @else
+
+                      @endcan
 
 
-                  <li class="nav-item">
-                    <a href="{{route('Activacion3.0')}}" class="nav-link {{setActive('Activacion3.0')}}">
-                      <i class="fas fa-cog"></i>
-                      <p>Activacion Giftcard</p>
-                    </a>
-                  </li>
+                      @can('ActivacionGiftcard')
+
+                      <li class="nav-item">
+                        <a href="{{route('Activacion3.0')}}" class="nav-link {{setActive('Activacion3.0')}}">
+                          <i class="fas fa-cog"></i>
+                          <p>Activacion Giftcard</p>
+                        </a>
+                      </li>
+
+                      @endcan
+                      
+                      {{-- <li class="nav-item">
+                          <a href="{{route('indexVentas')}}" class="nav-link">
+                              <i class="fas fa-search-dollar"></i>
+                            <p>Ventas GiftCards Sala</p>
+                          </a>
+                      </li> --}}
+
+                      @can('VentaGiftcardEmpresa')
+                        
+                        <li class="nav-item">
+                          <a href="{{route('VentaEmpresa')}}" class="nav-link {{setActive('VentaEmpresa')}}">
+                            <i class="fas fa-book"></i>
+                            <p>Venta GiftCard Empresas</p>
+                          </a>
+                        </li>
+                      @endcan
+
+
+                      <li class="nav-item">
+                        <a href="{{route('Bloqueo')}}" class="nav-link {{setActive('Bloqueo')}}">
+                          <i class="far fa-times-circle"></i>
+                          <p>Bloqueo Gift Cards</p>
+                        </a>
+                      </li>
+                      
+                      <li class="nav-item">
+                          <a href="{{route('consumotarj')}}" class="nav-link {{setActive('consumotarj')}}">
+                            <i class="fas fa-book"></i>
+                            <p>Consumo De GiftCard</p>
+                          </a>
+                      </li>
+
                   
-                  {{-- <li class="nav-item">
-                      <a href="{{route('indexVentas')}}" class="nav-link">
-                          <i class="fas fa-search-dollar"></i>
-                        <p>Ventas GiftCards Sala</p>
-                      </a>
-                  </li> --}}
 
-                  <li class="nav-item">
-                    <a href="{{route('VentaEmpresa')}}" class="nav-link {{setActive('VentaEmpresa')}}">
-                      <i class="fas fa-book"></i>
-                      <p>Venta GiftCard Empresas</p>
-                    </a>
+                    </ul>   
                   </li>
-
-                  <li class="nav-item">
-                    <a href="{{route('Bloqueo')}}" class="nav-link {{setActive('Bloqueo')}}">
-                      <i class="far fa-times-circle"></i>
-                      <p>Bloqueo Gift Cards</p>
-                    </a>
-                  </li>
-                  
-                  <li class="nav-item">
-                      <a href="{{route('consumotarj')}}" class="nav-link {{setActive('consumotarj')}}">
-                        <i class="fas fa-book"></i>
-                        <p>Consumo De GiftCard</p>
-                      </a>
-                  </li>
-
-              
-
-                </ul>   
-              </li>
-              @endif
+                  @endif
+              @endcan
 
 
 
@@ -204,13 +250,18 @@
                 </a>
 
                 <ul class="nav nav-treeview">
-                
+
+                @can('ListarUsers')
+                  
                   <li class="nav-item">
                     <a href="{{route('ListarUser')}}" class="nav-link {{setActive('ListarUser')}}">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Control De Usuarios </p>
                     </a>
                   </li>
+                @endcan
+
+
                   <li class="nav-item">
                   <a href="{{route('ProductosPorMarca')}}" class="nav-link {{setActive('ProductosPorMarca')}}">
                       <i class="far fa-circle nav-icon"></i>
