@@ -99,6 +99,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/agregaripmac','AdminController@insertaripmac')->name('agregaripmac');
 
 
+    Route::get('cuponesescolares','AdminController@cuponesescolares')->name('cuponesescolares');
+    Route::post('/actualizarcupon', 'AdminController@actualizarcupon')->name('actualizarcupon');
+
+
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
     Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');

@@ -14,6 +14,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use App;
 use App\mensajes;
 use App\ipmac;
+use App\cuponescolar;
 use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -1050,6 +1051,54 @@ public function actualizaripmac(Request $request)
     
     
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    public function cuponesescolares(Request $request){
+
+      $control=DB::table('cupon_escolar')
+      ->where('anno_esc', 2020)
+      ->get();
+  
+  
+    return view('admin.cuponesescolares',compact('control'));
+  
+  
+  }
+  
+  
+  public function actualizarcupon(Request $request)
+  
+      
+      {
+        // dd($request->all());
+  
+          $control=cuponescolar::findOrfail($request->id);
+          $control->id=$request->get('id');
+          $control->nro_cupon=$request->get('nro_cupon');
+          $control->e_mail=$request->get('e_mail');
+          $control->fono=$request->get('fono');
+          $control->colegio=$request->get('colegio');
+          $control->comuna=$request->get('comuna');
+          $control->update();
+          return back();
+  
+      }
 
 
 
