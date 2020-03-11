@@ -36,7 +36,7 @@
               <tbody>
               @foreach($control as $item)
                 <tr>
-                  {{-- <th scope="row">{{$item->id}}</th> --}}
+                  {{-- <th scope="row">{{$item->id}}</th> --}}   
                   <th scope="row">{{$item->nro_cupon}}</th>
                   <td>{{$item->nomb_apo}}</td>
                   <td>{{$item->nomb_alu}}</td>
@@ -59,7 +59,7 @@
         </div>
       </section>
       
-
+<!-- Modal -->
    <!-- Modal -->
    <div class="modal fade" id="mimodalejemplocupon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
      <div class="modal-dialog" role="document">
