@@ -179,7 +179,7 @@
                           <p>Creacion Folios GiftCard</p>
                         </a>
                       </li>
-                    @else
+                    
 
                       @endcan
 
@@ -261,13 +261,17 @@
                   </li>
                 @endcan
 
-
+                @can('ProductoPorMarca')
+                  
                   <li class="nav-item">
                   <a href="{{route('ProductosPorMarca')}}" class="nav-link {{setActive('ProductosPorMarca')}}">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Producto Por Marca</p>
                     </a>
                   </li>
+                @endcan
+
+
                   <li class="nav-item">
                     <a href="{{route('ordenesdecompra')}}" class="nav-link {{setActive('ordenesdecompra')}}">
                       <i class="far fa-circle nav-icon"></i>

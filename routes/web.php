@@ -129,6 +129,17 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 
     Route::get('/Roles','LaravelPermission\RolesController@index')->name('Roles');
+    Route::get('/ShowRoles','LaravelPermission\RolesController@ShowRoles')->name('ShowRoles');
+    Route::post('/AddRol','LaravelPermission\RolesController@AddRol')->name('AddRol');
+    Route::get('/ShowPermisos/{id}','LaravelPermission\RolesController@ShowPermisos')->name('ShowPermisos');
+    Route::post('/AddPermisoRol','LaravelPermission\RolesController@AddPermisoRol')->name('AddPermisoRol');
+
+    Route::get('/ShowUsers','LaravelPermission\RolesController@ShowUsers')->name('ShowUsers');
+
+    
+    Route::get('/ShowRolesUser/{id}','LaravelPermission\RolesController@ShowRolesUser')->name('ShowRolesUser');
+
+    Route::post('/AddRolPermiso','LaravelPermission\RolesController@AddRolUser')->name('');
 
 
 
