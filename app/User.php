@@ -6,11 +6,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Session;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     public $timestamps=false;
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
