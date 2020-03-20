@@ -212,20 +212,25 @@
                         </li>
                       @endcan
 
-
+                      @can('BloqueoGiftCard')
+                        
                       <li class="nav-item">
                         <a href="{{route('Bloqueo')}}" class="nav-link {{setActive('Bloqueo')}}">
                           <i class="far fa-times-circle"></i>
                           <p>Bloqueo Gift Cards</p>
                         </a>
                       </li>
+                      @endcan  
                       
+                      @can('ConsumoGiftCard')
+                        
                       <li class="nav-item">
                           <a href="{{route('consumotarj')}}" class="nav-link {{setActive('consumotarj')}}">
                             <i class="fas fa-book"></i>
                             <p>Consumo De GiftCard</p>
                           </a>
                       </li>
+                      @endcan
 
                   
 
@@ -271,13 +276,18 @@
                   </li>
                 @endcan
 
+                @can('OrdenesDeCompra')
+                  
+                <li class="nav-item">
+                  <a href="{{route('ordenesdecompra')}}" class="nav-link {{setActive('ordenesdecompra')}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Ordenes De Compra</p>
+                  </a>
+                </li>
 
-                  <li class="nav-item">
-                    <a href="{{route('ordenesdecompra')}}" class="nav-link {{setActive('ordenesdecompra')}}">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Ordenes De Compra</p>
-                    </a>
-                  </li>
+                @endcan
+
+
                  
                    <li class="nav-item">
                    <a href="{{route('chart')}}" class="nav-link {{setActive('chart')}} ">
@@ -289,7 +299,7 @@
 
                   {{-- <li class="nav-item">
                     <a href="{{route('porcentaje')}}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
+                      <i class="far fa-circle nav-icon"></i> 
                        <p>Desviacion
                        </p>
                      </a>

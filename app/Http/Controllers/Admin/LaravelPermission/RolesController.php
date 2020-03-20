@@ -112,7 +112,7 @@ class RolesController extends Controller
       ->select('permission_id')
       ->get();
 
-
+      //dd($Eliminar[0]->permission_id,$arrayPermisos);
 
       if (sizeof($arrayPermisos) > sizeof($Eliminar)) {
        //insertando
@@ -126,9 +126,13 @@ class RolesController extends Controller
                     
 
                     if ($consulta->isEmpty()) {
-                        
-                      $RolePermiso = RolesYPermisos::create(['permission_id' => $arrayPermisos[$i],
-                                                              'role_id' => $rol]);
+
+                      $permission = Permission::findById($arrayPermisos[$i]);
+
+                      $role= Role::findById($rol);  
+
+                     // dd($permission->name,$role);
+                      $role->givePermissionTo($permission->name);
 
                       $data= [
                         'code'=>200,
@@ -155,11 +159,43 @@ class RolesController extends Controller
         //elimimando
 
                
-
+                /*
                 $Eliminados=DB::table('role_has_permissions')
                 ->whereNotIn('permission_id', $arrayPermisos )
                 ->where('role_id','=',$rol )
                 ->delete();
+
+    
+
+*/
+                $data=[];
+                for ($i=0; $i < sizeof($arrayPermisos) ; $i++) { 
+                    $data[]=$arrayPermisos[$i];
+                }
+
+
+                $consulta=DB::table('role_has_permissions')
+                ->whereNotIn('permission_id',$data)
+                ->where('role_id','=',$rol )
+                ->get();
+
+
+
+              //dd($data,$consulta[0]->permission_id,$Eliminar);
+
+              for ($i=0; $i < sizeof( $consulta) ; $i++) { 
+
+                $permission = Permission::findById($consulta[$i]->permission_id);
+  
+                $role= Role::findById($rol);  
+  
+  
+                $role->revokePermissionTo($permission->name);
+
+
+              }
+             
+
 
                 $data= [
                   'code'=>201,
@@ -273,12 +309,14 @@ class RolesController extends Controller
                               
           
                               if ($consulta->isEmpty()) {
-                                  
-                                $RolePermiso = ModelHasRoles::create(['role_id' => $arrayRoles[$i],
-                                                                        'model_id' => $userId,
-                                                                        'model_type'=>'App\User'
-                                                                        ]);
-          
+                                
+                                  $role = Role::findById($arrayRoles[$i]);
+
+                                  $user = User::find($userId);
+
+                                  $user->assignRole($role->name);                   
+                                                                        
+
                                 $data= [
                                   'code'=>200,
                                   'status'=>'success',
@@ -302,12 +340,31 @@ class RolesController extends Controller
                 }elseif(sizeof($arrayRoles) < sizeof($Eliminar)){
             //elimimando
 
-                    
+            $data=[];
+            for ($i=0; $i < sizeof($arrayRoles) ; $i++) { 
+                $data[]=$arrayRoles[$i];
+            }
+            
+            $consulta=DB::table('model_has_roles')
+            ->whereNotIn('role_id',$data)
+            ->where('model_id','=',$userId )
+            ->get();
 
-                    $Eliminados=DB::table('model_has_roles')
-                    ->whereNotIn('role_id', $arrayRoles )
-                    ->where('model_id','=',$userId )
-                    ->delete();
+           // dd($consulta , $arrayRoles, $data);
+
+            for ($i=0; $i < sizeof( $consulta) ; $i++) { 
+
+               $role = Role::findById($consulta[$i]->role_id);
+
+              $user= User::find($userId);  
+
+
+              $user->removeRole($role->name);
+
+
+            }
+
+                  
 
                     $data= [
                       'code'=>201,
@@ -362,3 +419,8 @@ class RolesController extends Controller
 
 
   
+          /*
+                                $RolePermiso = ModelHasRoles::create(['role_id' => $arrayRoles[$i],
+                                                                        'model_id' => $userId,
+                                                                        'model_type'=>'App\User'
+                                                                        ]);*/

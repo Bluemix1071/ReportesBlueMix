@@ -35,6 +35,8 @@ var FormAgregarRoles = document.querySelector("#AgregarRoles");
 
     SelectRoles.addEventListener("change",()=>{
        var valor = SelectRoles.value;
+       var LiPermisos = document.querySelector("#RolesUsers");
+       LiPermisos.innerHTML='';
        fetch('ShowPermisos/'+valor)
        //fetch("http://jsonplaceholder.typicode.com/posts")
             .then(data=>data.json())
@@ -84,8 +86,8 @@ var FormAgregarRoles = document.querySelector("#AgregarRoles");
 
     SelectUsers.addEventListener("change",()=>{
         User=SelectUsers.value;
-        //console.log(User);
-
+        var LiPermisos = document.querySelector("#Permisos");
+        LiPermisos.innerHTML='';
         fetch('ShowRolesUser/'+User)
         .then(data =>data.json())
         .then(data=>{
