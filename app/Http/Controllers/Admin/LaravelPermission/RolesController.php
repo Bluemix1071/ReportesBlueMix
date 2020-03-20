@@ -72,10 +72,10 @@ class RolesController extends Controller
     public function ShowPermisos(Request $request,$id){
 
       
-        $permisos = DB::table('Roles')
-        ->join('role_has_permissions', 'Roles.id', '=', 'role_has_permissions.role_id')
+        $permisos = DB::table('roles')
+        ->join('role_has_permissions', 'roles.id', '=', 'role_has_permissions.role_id')
         ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
-        ->where('Roles.id',$id)
+        ->where('roles.id',$id)
         ->select('permissions.name as name','permissions.id as id')
         ->get();
       //dd($permisos);
