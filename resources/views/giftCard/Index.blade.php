@@ -16,6 +16,8 @@ Gift Card
     <div class="row">
       <div class="col-md-6">
           <h3 class="display-4 m-2 pb-2" >Creacion Folios GifCards</h3>  
+{{-- 
+         {{dd(auth()->user())}} --}}
       </div>
       <div class="col-md-6">
         
