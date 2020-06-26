@@ -996,6 +996,7 @@ public function filtrarconsultafacturaboleta(Request $request){
 
 }
 
+//------------------------------ ControL IP mac-----------------------------------------------//
 
 public function controlipmac(Request $request){
 
@@ -1052,12 +1053,37 @@ public function actualizaripmac(Request $request)
     
     }
 
+//------------------------------FIN Control Ip mac-----------------------------------------------//
 
 
 
 
+//------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
 
 
+
+    public function costos() {
+      
+      
+      return view('admin.costos');
+
+    }
+
+    public function costosfiltro(Request $request){
+
+    
+      $anio=$request->anio;
+
+      dd($anio);
+  
+  
+    return view('admin.costos',compact('anio'));
+  
+  
+  }
+
+
+//------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
 
 
 
@@ -1066,7 +1092,7 @@ public function actualizaripmac(Request $request)
 
 
     
-
+//------------------------------Cupon Escolar----------------------------------------------//
 
 
     public function cuponesescolares(Request $request){
@@ -1099,6 +1125,9 @@ public function actualizaripmac(Request $request)
           return back();
   
       }
+
+
+//------------------------------Fin Cupon Escolar-----------------------------------------------//
 
 
 

@@ -90,17 +90,18 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/movimientoinventario','AdminController@filtrarmovimientoinventario')->name('filtrarmovimientoinventario');
     Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
     Route::get('/consultafacturaboleta','AdminController@consultafacturaboleta')->name('consultafacturaboleta');
-    Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta');
-    
-    
+    Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta'); 
     Route::get('controlipmac','AdminController@controlipmac')->name('controlipmac');
     Route::post('/actualizaripmac', 'AdminController@actualizaripmac')->name('actualizaripmac');
     Route::get('agregaripmac','AdminController@agregaripmac')->name('agregaripmac');
     Route::post('/agregaripmac','AdminController@insertaripmac')->name('agregaripmac');
-
-
     Route::get('cuponesescolares','AdminController@cuponesescolares')->name('cuponesescolares');
     Route::post('/actualizarcupon', 'AdminController@actualizarcupon')->name('actualizarcupon');
+
+
+    Route::get('/costos','AdminController@costos')->name('costos');
+    Route::post('/costosfiltro','AdminController@costosfiltro')->name('costosfiltro');
+
 
 
 
