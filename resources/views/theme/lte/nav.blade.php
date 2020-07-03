@@ -407,7 +407,6 @@
                    @can('LibroVentas')
                      
                     <li class="nav-item">
-<<<<<<< HEAD
                     <a href="{{route('cuponesescolares')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                        <p>Cupones Escolares
@@ -421,7 +420,13 @@
                        </p>
                      </a>
                    </li>
-=======
+                   <li class="nav-item">
+                    <a href="{{route('stocktiemporeal')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Stock Tiempo Real
+                       </p>
+                     </a>
+                   </li>
                       <a href="{{route('consultafacturaboleta')}}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Libro De Ventas Diario
@@ -440,7 +445,6 @@
                       </a>
                     </li>
                     @endcan
->>>>>>> 405385a598f7457ac30bbc3f080fa7d4ba6dcc2d
                   
                 </ul>
               </li>

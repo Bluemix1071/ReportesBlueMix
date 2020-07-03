@@ -1130,7 +1130,15 @@ public function actualizaripmac(Request $request)
 //------------------------------Fin Cupon Escolar-----------------------------------------------//
 
 
+public function stocktiemporeal (Request $request){
+      
 
+  $productos=DB::table('conveniomarco')->get();
+
+  // dd($producto);
+
+  return view('admin.stocktiemporeal',compact('productos'));
+}
 
 
 

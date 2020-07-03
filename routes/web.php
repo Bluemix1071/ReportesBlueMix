@@ -97,10 +97,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/agregaripmac','AdminController@insertaripmac')->name('agregaripmac');
     Route::get('cuponesescolares','AdminController@cuponesescolares')->name('cuponesescolares');
     Route::post('/actualizarcupon', 'AdminController@actualizarcupon')->name('actualizarcupon');
-
-
     Route::get('/costos','AdminController@costos')->name('costos');
     Route::post('/costosfiltro','AdminController@costosfiltro')->name('costosfiltro');
+
+    Route::get('/stocktiemporeal','AdminController@stocktiemporeal')->name('stocktiemporeal');
 
 
 
