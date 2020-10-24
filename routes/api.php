@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ProductosEnTransito;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+
+Route::post('/getProductos','ProductosEnTransito\ProductosEnTransitoController@Buscar');
+Route::post('/GenerarProductosEnTrancito','ProductosEnTransito\ProductosEnTransitoController@GenerarProductoEnTrancito');
 
 /*
 Route::get('ProductosNegativos',function(){
