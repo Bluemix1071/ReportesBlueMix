@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class productosEnTrancito extends Model
 {
-    protected $table = 'productos_en_transito';
+    protected $table = 'productos_en_trancito';
    protected $primaryKey = 'id';
  
 

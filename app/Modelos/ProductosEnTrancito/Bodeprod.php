@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modelos;
+namespace App\Modelos\ProductosEnTrancito;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,11 +8,12 @@ class Bodeprod extends Model
 {
     protected $table = 'bodeprod';
 
+    protected $primaryKey = 'bpprod';
+
     protected $fillable = [
         'bpprod','bpsrea'
     ];
 
-    protected $primaryKey = 'bpprod';
     public $timestamps = false;
 
 }

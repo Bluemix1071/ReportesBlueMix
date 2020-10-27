@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modelos;
+namespace App\Modelos\ProductosEnTrancito;
 
 use Illuminate\Database\Eloquent\Model;
 
 class ProductosVista extends Model
 {
-    protected $table = 'productos_en_trancito';
+    protected $table = 'productos_en_trancito_vista';
     //protected $primaryKey = 'codigo';
  
 

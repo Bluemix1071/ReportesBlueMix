@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ProductosEnTransito;
 
 use App\Http\Controllers\Controller;
 use App\Modelos\ProductosEnTrancito\codigos_cajas;
+use App\Modelos\ProductosEnTrancito\Bodeprod;
 use App\Modelos\ProductosEnTrancito\ProductosVista;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -77,20 +78,30 @@ class ProductosEnTransitoController extends Controller
         
         for ($i = 0; $i < sizeof($productos_array); $i++) {
 
-            $caja->ProductosEnTrancito()->sync($productos_array[$i]);
+            $caja->ProductosEnTrancito()->create($productos_array[$i]);
+            $this->descontarStock($productos_array[$i]['codigo_producto']);
 
         }
 
         $productos = codigos_cajas::find($caja['id'])->load('ProductosEnTrancito');
 
-     
+        $sala= $this->descontarStock($productos_array[0]['codigo_producto']);
 
-        return response()->json($productos);
+        return response()->json([$sala,$productos_array]);
 
     }
 
-    public function descontarStock()
+    public function descontarStock($idProducto)
     {
+       
+        $sala= new Bodeprod();
+        
+      $xd=  $sala::find($idProducto)->first();
+        
+
+        return $xd;
+
+
 
     }
 
