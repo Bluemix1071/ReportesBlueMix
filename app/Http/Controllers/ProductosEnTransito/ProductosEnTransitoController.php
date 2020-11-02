@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\ProductosEnTransito;
 
+use App\Helpers\Validaciones;
+use App\Helpers\Responses;
 use App\Http\Controllers\Controller;
-use App\Modelos\ProductosEnTrancito\codigos_cajas;
 use App\Modelos\ProductosEnTrancito\Bodeprod;
+use App\Modelos\ProductosEnTrancito\codigos_cajas;
 use App\Modelos\ProductosEnTrancito\ProductosVista;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -55,75 +57,91 @@ class ProductosEnTransitoController extends Controller
 
     public function GenerarProductoEnTrancito(Request $request)
     {
-        /*
-        for ($i=0; $i < sizeof($productos) ; $i++) {
-
-        $bodega = Bodeprod::find($productos_array[$i]['codigo']);
-        $bodega->bpsrea = $bodega->bpsrea - $productos_array[$i]['cantidad'] ;
-        $bodega->save();
-        }
-
-         */
 
         $input = $request->input('productos', null);
-        $productos_array = json_decode($input, true);
-         $inputCaja = $request->input('caja', null);
-        $caja_array = json_decode($inputCaja, true);
-        //$enTrancito = ProductosEnTrancito::find(1);
-        //$enTrancito->caja->id;
-        
-        //dd($input,$inputCaja,$productos_array,$caja_array );
-        $caja = $this->IngresarCaja($caja_array);
 
-        
-        for ($i = 0; $i < sizeof($productos_array); $i++) {
+        $productos_array = json_decode($input, true);
+
+        if (is_null($productos_array)) {
+
+            $productos_array = [];
+        }
+
+        $inputCaja = $request->input('caja', null);
+        $caja_array = json_decode($inputCaja, true);
+
+        $sizeof = sizeof($productos_array) != 0 ? sizeof($productos_array) : 0;
+        if ($sizeof < 1) {
+            return response()->json([
+                $data = [
+                    "status" => "error",
+                    "code" => 400,
+                    "errors" => "debe ingresar al menos un producto",
+
+                ],
+            ], 400);
+        }
+
+        $validateCaja = Validaciones::ValidarCaja($caja_array);
+
+        if ($validateCaja->fails()) {
+
+            return response()->json([
+                $data = [
+                    "status" => "error",
+                    "code" => 400,
+                    "errors" => $validateCaja->errors(),
+
+                ],
+            ], 400);
+        }
+
+        $caja = codigos_cajas::IngresarCaja($caja_array);
+
+        for ($i = 0; $i < $sizeof; $i++) {
+
+            $validate = Validaciones::ValidarProductos($productos_array[$i]);
+
+            if ($validate->fails()) {
+
+                return response()->json([
+                    $data = [
+                        "status" => "error",
+                        "code" => 400,
+                        "errors" => $validate->errors(),
+
+                    ],
+                ], 400);
+            }
 
             $caja->ProductosEnTrancito()->create($productos_array[$i]);
-            $this->descontarStock($productos_array[$i]['codigo_producto']);
+
+            //$salaSinCambios[] = Bodeprod::where('bpprod', $productos_array[$i]['codigo_producto'])->first();
+
+            $sala[] = Bodeprod::descontarStock($productos_array[$i]['codigo_producto'], $productos_array[$i]['cantidad']);
 
         }
 
         $productos = codigos_cajas::find($caja['id'])->load('ProductosEnTrancito');
-
-        $sala= $this->descontarStock($productos_array[0]['codigo_producto']);
-
-        return response()->json([$sala,$productos_array]);
+        return response()->json([
+            "caja productos" => $productos], 200);
 
     }
 
-    public function descontarStock($idProducto)
-    {
-       
-        $sala= new Bodeprod();
-        
-      $xd=  $sala::find($idProducto)->first();
-        
-
-        return $xd;
-
-
-
-    }
-
-
-
-    public function IngresarCaja($caja)
+    public function GetCaja(Request $request,$id)
     {
 
-        //dd($caja);
-        $codigos_cajas = new codigos_cajas();
+        $validate = Validaciones::ValidarId($id);
+        if ($validate->fails()) {
+            
+            return response()->json(
+                [Responses::Errors($validate->errors(),'errors')
+                ,400
+                ]);
+        }
+        $productos = codigos_cajas::findOrFail($id)->load('ProductosEnTrancito');
 
-        $codigos_cajas->usuario = $caja['usuario'];
-        $codigos_cajas->descripcion = $caja['descripcion'];
-        $codigos_cajas->nro_referencia = $caja['nro_referencia'];
-        $codigos_cajas->ubicacion = $caja['ubicacion'];
-        $codigos_cajas->rack = $caja['rack'];
-        $codigos_cajas->estado = $caja['estado'];
-
-        $codigos_cajas->save();
-
-        return $codigos_cajas;
-
-    }
+        return response()->json($productos);
+    }   
 
 }

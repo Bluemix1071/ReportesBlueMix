@@ -10,10 +10,27 @@ class Bodeprod extends Model
 
     protected $primaryKey = 'bpprod';
 
+    public $incrementing = false;
+
     protected $fillable = [
         'bpprod','bpsrea'
     ];
 
     public $timestamps = false;
+
+
+    public static function descontarStock($idProducto,$cantidad)
+    {
+  
+        $sala= Bodeprod::where('bpprod',$idProducto)->first();
+        
+
+         $sala->bpsrea = $sala->bpsrea - $cantidad;
+
+         $sala->save();
+
+         return $sala;
+
+    }
 
 }
