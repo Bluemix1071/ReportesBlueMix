@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\ProductosEnTransito;
 
 use App\Helpers\Validaciones;
-use App\Helpers\Responses;
 use App\Http\Controllers\Controller;
 use App\Modelos\ProductosEnTrancito\Bodeprod;
 use App\Modelos\ProductosEnTrancito\codigos_cajas;
+use App\Modelos\ProductosEnTrancito\productosEnTrancito;
 use App\Modelos\ProductosEnTrancito\ProductosVista;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ProductosEnTransitoController extends Controller
 {
@@ -100,25 +101,10 @@ class ProductosEnTransitoController extends Controller
 
         for ($i = 0; $i < $sizeof; $i++) {
 
-            $validate = Validaciones::ValidarProductos($productos_array[$i]);
+            // incluir transacciones para cuando un producto falle :/
 
-            if ($validate->fails()) {
-
-                return response()->json([
-                    $data = [
-                        "status" => "error",
-                        "code" => 400,
-                        "errors" => $validate->errors(),
-
-                    ],
-                ], 400);
-            }
-
+            $this->ValidarDescontar($productos_array[$i]);
             $caja->ProductosEnTrancito()->create($productos_array[$i]);
-
-            //$salaSinCambios[] = Bodeprod::where('bpprod', $productos_array[$i]['codigo_producto'])->first();
-
-            $sala[] = Bodeprod::descontarStock($productos_array[$i]['codigo_producto'], $productos_array[$i]['cantidad']);
 
         }
 
@@ -128,20 +114,126 @@ class ProductosEnTransitoController extends Controller
 
     }
 
-    public function GetCaja(Request $request,$id)
+    public function GetCaja(Request $request, $id)
     {
 
-        $validate = Validaciones::ValidarId($id);
-        if ($validate->fails()) {
-            
-            return response()->json(
-                [Responses::Errors($validate->errors(),'errors')
-                ,400
-                ]);
-        }
-        $productos = codigos_cajas::findOrFail($id)->load('ProductosEnTrancito');
+        if (!is_null($id)) {
+            try {
+                $caja = codigos_cajas::findOrFail($id)->load('ProductosEnTrancito');
+            } catch (\Throwable $th) {
+                return response()->json(
+                    [$data = [
+                        "status" => "error",
+                        "code" => 400,
+                        "errors" => "caja no encontrada",
 
-        return response()->json($productos);
-    }   
+                    ],
+                    ], 400);
+            }
+
+            return response()->json($caja);
+        }
+
+    }
+
+    public function UpdateCaja(Request $request, $id)
+    {
+
+        $input = $request->input('productos', null);
+        $productos_array = json_decode($input, true);
+        if (is_null($productos_array)) {
+
+            $productos_array = [];
+        }
+        $sizeof = sizeof($productos_array) != 0 ? sizeof($productos_array) : 0;
+        if ($sizeof < 1) {
+            return response()->json([
+                $data = [
+                    "status" => "error",
+                    "code" => 400,
+                    "errors" => "debe ingresar al menos un producto",
+
+                ],
+            ], 400);
+        }
+
+        try {
+
+            $caja = codigos_cajas::find($id);
+            if ($caja) {
+
+                $ProductosAntiguos = $caja->ProductosEnTrancito->toArray();
+
+                DB::beginTransaction();
+                for ($i = 0; $i < sizeof($ProductosAntiguos); $i++) {
+
+                    $validate = $this->ValidarProducto($ProductosAntiguos[$i]);
+
+                    if ($validate) {
+                        DB::rollBack();
+                        abort(400, $validate);
+
+                    } else {
+
+                        Bodeprod::ReingresarStock($ProductosAntiguos[$i]['codigo_producto'], $ProductosAntiguos[$i]['cantidad']);
+                    }
+                }
+
+                productosEnTrancito::where('codigos_cajas_id', $caja->id)->delete();
+
+        
+                for ($i = 0; $i < sizeof($productos_array); $i++) {
+
+                    $validate = $this->ValidarProducto($productos_array[$i]);
+
+                    if ($validate) {
+
+                        abort(400, $validate);
+
+                    } else {
+                        Bodeprod::descontarStock($productos_array[$i]['codigo_producto'], $productos_array[$i]['cantidad']);
+                        $caja->ProductosEnTrancito()->create($productos_array[$i]);
+
+                    }
+
+                }
+                $productos = codigos_cajas::find($caja->id)->load('ProductosEnTrancito');
+                DB::commit();
+            } else {
+                $validate = "la caja no existe";
+                abort(400, $validate);
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            //dd($th);
+
+            return response()->json(
+                [
+                    "status" => "error",
+                    "code" => 400,
+                    "errors" => $validate,
+                ], 400);
+        }
+
+        return response()->json([
+            "status" => "success",
+            "code" => 200,
+            "caja" => $productos,
+
+        ], 200);
+
+    }
+
+    public function ValidarProducto($producto)
+    {
+        $validate = Validaciones::ValidarProductos($producto);
+
+        if ($validate->fails()) {
+            return $validate->errors();
+        } else {
+
+        }
+
+    }
 
 }

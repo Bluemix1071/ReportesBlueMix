@@ -1,17 +1,20 @@
 <?php
 namespace App\Helpers;
+//use Illuminate\Support\Facades\Validator;
+
 
 class Validaciones
 {
     public static function ValidarProductos($producto)
     {
-
-        $validate = \Validator::make($producto, [
+        
+        $validate= \Validator::make($producto, [
             'codigo_producto' => 'required',
             'cantidad' => 'required',
             'descripcion' => 'required',
         ]);
 
+       
         return $validate;
 
     }
@@ -19,10 +22,9 @@ class Validaciones
     public static function ValidarCaja($caja)
     {
 
-        $validate = \Validator::make($caja, [
+        $validate =\Validator::make($caja, [
             'usuario' => 'required',
             'ubicacion' => 'required',
-            'estado' => 'required',
             'descripcion' => 'required',
         ]);
 
@@ -30,16 +32,6 @@ class Validaciones
 
     }
 
-    public static function ValidarId($id)
-    {
-        $data[]=$id;
-        $validate = \Validator::make($data, [
-            'id' => 'required|integer|size:7',
-         
-        ]);
-
-        return $validate;
-
-    }
+  
 
 }

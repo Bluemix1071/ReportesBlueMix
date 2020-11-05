@@ -1,10 +1,12 @@
 <?php
-namespace App\Responses;
+namespace App\Helpers;
 
 class Responses
 {
 
+
     public static function Success($result,$text){
+        
         $data = [
             "status" => "success",
             "code" => 200,

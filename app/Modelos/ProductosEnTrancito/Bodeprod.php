@@ -33,4 +33,16 @@ class Bodeprod extends Model
 
     }
 
+    public static function ReingresarStock($idProducto,$cantidad){
+      
+        $sala= Bodeprod::where('bpprod',$idProducto)->first();
+        
+       
+        $sala->bpsrea = $sala->bpsrea + $cantidad;
+
+        $sala->save();
+
+        return $sala;
+    }
+
 }
