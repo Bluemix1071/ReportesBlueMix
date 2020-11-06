@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ProductosEnTransito;
 
+use App\Events\DescontarStockEvent;
 use App\Helpers\Validaciones;
 use App\Http\Controllers\Controller;
 use App\Modelos\ProductosEnTrancito\Bodeprod;
@@ -139,6 +140,7 @@ class ProductosEnTransitoController extends Controller
     public function UpdateCaja(Request $request, $id)
     {
 
+        event(new DescontarStockEvent("hola"));
         $input = $request->input('productos', null);
         $productos_array = json_decode($input, true);
         if (is_null($productos_array)) {
@@ -174,7 +176,7 @@ class ProductosEnTransitoController extends Controller
                         abort(400, $validate);
 
                     } else {
-
+                        
                         Bodeprod::ReingresarStock($ProductosAntiguos[$i]['codigo_producto'], $ProductosAntiguos[$i]['cantidad']);
                     }
                 }
@@ -191,7 +193,8 @@ class ProductosEnTransitoController extends Controller
                         abort(400, $validate);
 
                     } else {
-                        Bodeprod::descontarStock($productos_array[$i]['codigo_producto'], $productos_array[$i]['cantidad']);
+                       
+                       // Bodeprod::descontarStock($productos_array[$i]['codigo_producto'], $productos_array[$i]['cantidad']);
                         $caja->ProductosEnTrancito()->create($productos_array[$i]);
 
                     }
