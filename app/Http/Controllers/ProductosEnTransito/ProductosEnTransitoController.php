@@ -176,14 +176,14 @@ class ProductosEnTransitoController extends Controller
                         abort(400, $validate);
 
                     } else {
-                        
+
                         Bodeprod::ReingresarStock($ProductosAntiguos[$i]['codigo_producto'], $ProductosAntiguos[$i]['cantidad']);
                     }
                 }
 
                 productosEnTrancito::where('codigos_cajas_id', $caja->id)->delete();
 
-        
+
                 for ($i = 0; $i < sizeof($productos_array); $i++) {
 
                     $validate = $this->ValidarProducto($productos_array[$i]);
@@ -193,7 +193,7 @@ class ProductosEnTransitoController extends Controller
                         abort(400, $validate);
 
                     } else {
-                       
+
                        // Bodeprod::descontarStock($productos_array[$i]['codigo_producto'], $productos_array[$i]['cantidad']);
                         $caja->ProductosEnTrancito()->create($productos_array[$i]);
 
