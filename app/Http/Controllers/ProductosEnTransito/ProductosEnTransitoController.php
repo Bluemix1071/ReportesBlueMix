@@ -104,7 +104,7 @@ class ProductosEnTransitoController extends Controller
 
             // incluir transacciones para cuando un producto falle :/
 
-            $this->ValidarDescontar($productos_array[$i]);
+            Bodeprod::descontarStock($productos_array[$i]['codigo_producto'], $productos_array[$i]['cantidad']);
             $caja->ProductosEnTrancito()->create($productos_array[$i]);
 
         }
