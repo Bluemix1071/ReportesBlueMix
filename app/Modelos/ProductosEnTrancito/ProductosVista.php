@@ -18,7 +18,7 @@ class ProductosVista extends Model
     public function scopeCodigo($query, $codigo)
     {
 
-        if($codigo && $codigo ){
+        if($codigo ){
             return $query->where('codigo', $codigo);
         }
 
@@ -26,7 +26,7 @@ class ProductosVista extends Model
 
     public function scopeCodigoBarra($query, $codigoBarra)
     {
-        if($codigoBarra && $codigoBarra ){
+        if($codigoBarra ){
             return $query->where('codigoBarra', $codigoBarra);
         }
 
@@ -34,7 +34,7 @@ class ProductosVista extends Model
 
     public function scopeDescripcion($query, $descripcion)
     {
-        if($descripcion  ){
+        if($descripcion){
     // return $query->orWhereLike('descripcion',$descripcion)->take(10);
             return $query->where('descripcion','like', '%'.$descripcion.'%')->take(10);
         }
