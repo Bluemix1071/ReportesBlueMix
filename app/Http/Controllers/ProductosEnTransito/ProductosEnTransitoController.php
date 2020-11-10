@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
+
+//mix en trancito
 class ProductosEnTransitoController extends Controller
 {
 
