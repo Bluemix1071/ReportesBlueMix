@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Auth\Events\DescontarStockEvent;
+use Illuminate\Auth\Events\ReIn;
 use Illuminate\Auth\Listeners\DescontarStockListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
@@ -17,6 +18,12 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         DescontarStockEvent::class => [
             DescontarStockListener::class,
+        ],
+        ReIngresarStockEvent::class => [
+            ReIngresarStockListener::class,
+        ],
+        ImprimirTicketEvent::class => [
+            ImprimirTicketListener::class,
         ],
     ];
 

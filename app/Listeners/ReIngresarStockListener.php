@@ -2,12 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\DescontarStockEvent;
+use App\Events\ReIngresarStockEvent;
 use App\Modelos\ProductosEnTrancito\Bodeprod;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class DescontarStockListener
+class ReIngresarStockListener
 {
     /**
      * Create the event listener.
@@ -22,17 +22,18 @@ class DescontarStockListener
     /**
      * Handle the event.
      *
-     * @param  DescontarStockEvent  $event
+     * @param  object  $event
      * @return void
      */
-    public function handle( DescontarStockEvent $event)
+    public function handle(ReIngresarStockEvent $event)
     {
-        //dd($event->productoEnTrancito);
+        //dd($event->productoEnTrancito['codigo_producto'],$event->productoEnTrancito['cantidad'],"reingresio");
 
         $sala= Bodeprod::where('bpprod',$event->productoEnTrancito['codigo_producto'])->first();
 
+        //dd($sala);
 
-        $sala->bpsrea = $sala->bpsrea - $event->productoEnTrancito['cantidad'];
+        $sala->bpsrea = $sala->bpsrea + $event->productoEnTrancito['cantidad'];
 
         $sala->save();
     }

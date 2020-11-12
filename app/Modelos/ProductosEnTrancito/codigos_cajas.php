@@ -8,11 +8,12 @@ class codigos_cajas extends Model
 {
     protected $table = 'codigos_cajas';
     protected $primaryKey = 'id';
- 
+
 
     protected $fillable = [
         'usuario','descripcion','nro_referencia','ubicacion','rack','estado'
     ];
+
 
 
     public function ProductosEnTrancito()
@@ -31,12 +32,12 @@ class codigos_cajas extends Model
         $codigos_cajas->nro_referencia = $caja['nro_referencia'];
         $codigos_cajas->ubicacion = $caja['ubicacion'];
         $codigos_cajas->rack = $caja['rack'];
-        $codigos_cajas->estado = 'Pendiente';
+        $codigos_cajas->estado = $caja['estado'];
 
         $codigos_cajas->save();
 
         return $codigos_cajas;
 
     }
-  
+
 }

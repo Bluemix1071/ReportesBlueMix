@@ -14,6 +14,9 @@ class ProductosVista extends Model
         'codigo','codigoBarra','descripcion', 'bodega', 'sala'
     ];
 
+    protected $hidden = [
+        //
+            ];
 
     public function scopeCodigo($query, $codigo)
     {
@@ -38,6 +41,14 @@ class ProductosVista extends Model
     // return $query->orWhereLike('descripcion',$descripcion)->take(10);
             return $query->where('descripcion','like', '%'.$descripcion.'%')->take(10);
         }
+
+    }
+
+    public function scopeSelectQuitarPrecio($query)
+    {
+
+            return $query->select('codigo','codigoBarra','descripcion','bodega','sala');
+
 
     }
 }
