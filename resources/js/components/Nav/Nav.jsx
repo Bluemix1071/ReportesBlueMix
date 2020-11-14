@@ -1,9 +1,31 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 
-import AdminLTELogo from '../../../public/assets/lte/dist/img/AdminLTELogo.png';
+import AdminLTELogo from '../../../../public/assets/lte/dist/img/AdminLTELogo.png';
+import { LoginService } from './services/AurhServices';
 
 
 const Nav = () => {
+
+    const [User, setUser] = useState();
+
+
+    useEffect(() => {
+        getUser()
+    }, []);
+
+
+    const getUser = async () => {
+
+        const user = await LoginService();
+        console.log(user.data);
+
+    }
     return (
         <Fragment>
             <nav className="main-header navbar navbar-expand navbar-white navbar-light">
@@ -125,8 +147,8 @@ const Nav = () => {
                     /> */}
 
                     <img src={AdminLTELogo}
-                     alt="AdminLTE Logo"
-                    className="brand-image img-circle elevation-3"
+                        alt="AdminLTE Logo"
+                        className="brand-image img-circle elevation-3"
                     />
 
                     <span className="brand-text font-weight-light">Bluemix</span>
@@ -149,16 +171,16 @@ const Nav = () => {
                             </a>
                             <ul className="nav nav-treeview">
                                 <li className="nav-item">
-                                    <a href="" className="nav-link ">
+                                    <Link to="/IngresarMercaderia" className="nav-link ">
                                         <i className="far fa-circle nav-icon"></i>
-                                        <p>Saldo Gift Card</p>
-                                    </a>
+                                        <p>Mercaderia en trancito</p>
+                                    </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a href="" className="nav-link ">
+                                    <Link to="/Caja/1" className="nav-link ">
                                         <i className="far fa-circle nav-icon"></i>
                                         <p>Productos Negativos</p>
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
