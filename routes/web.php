@@ -2,9 +2,7 @@
 
 //use Illuminate\Routing\Route;
 
-Route::get('/react', function () {
-    return view('welcome');
-});
+
 
 
 Route::get('/','seguridad\LoginController@index')->name('login');
@@ -49,6 +47,7 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::post('/updatemensaje', 'publico\PublicoController@updatemensaje')->name('updatemensaje');
     Route::get('/ConsultaSaldoenvio','publico\PublicoController@ConsultaSaldo')->name('ConsultaSaldo');
     Route::post('/ConsultaSaldoenvio', 'publico\PublicoController@ConsultaSaldoenvio')->name('ConsultaSaldoenvio');
+    Route::get('/api', 'ApiController@LoadReact')->name('apiReact');
 
 
 

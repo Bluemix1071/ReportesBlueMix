@@ -475,6 +475,12 @@
                   <p>Productos Negativos</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('apiReact')}}" class="nav-link {{setActive('apiReact')}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sistema nuevo</p>
+                </a>
+              </li>
             </ul>
           </li>
 

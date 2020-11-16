@@ -14,9 +14,6 @@ class ProductosVista extends Model
         'codigo','codigoBarra','descripcion', 'bodega', 'sala'
     ];
 
-    protected $hidden = [
-        //
-            ];
 
     public function scopeCodigo($query, $codigo)
     {

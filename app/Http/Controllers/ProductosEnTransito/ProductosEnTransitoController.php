@@ -136,10 +136,13 @@ class ProductosEnTransitoController extends Controller
     public function GetCaja(Request $request, $id)
     {
         //event(new ImprimirTicketEvent($id));
+
         if (!is_null($id)) {
             try {
                 $caja = codigos_cajas::findOrFail($id)->load('ProductosEnTrancito');
+
             } catch (\Throwable $th) {
+
                 return response()->json(
                     [
                         "status" => "error",
