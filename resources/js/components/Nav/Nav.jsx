@@ -3,7 +3,9 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    NavLink,
+    useRouteMatch
 } from "react-router-dom";
 
 import AdminLTELogo from '../../../../public/assets/lte/dist/img/AdminLTELogo.png';
@@ -14,9 +16,10 @@ const Nav = () => {
 
     const [User, setUser] = useState();
 
-
+    let { url } = useRouteMatch();
     useEffect(() => {
-        getUser()
+        getUser();
+        console.log(url);
     }, []);
 
 
@@ -165,22 +168,22 @@ const Nav = () => {
                             <a href="#" className="nav-link">
                                 <i className="nav-icon fas fa-users"></i>
                                 <p>
-                                    Publico
+                                    Productos En Trancito
                                     <i className="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul className="nav nav-treeview">
                                 <li className="nav-item">
-                                    <Link to="/IngresarMercaderia" className="nav-link ">
+                                    <NavLink to={`${url}api/IngresarMercaderia`} className="nav-link ">
                                         <i className="far fa-circle nav-icon"></i>
-                                        <p>Mercaderia en trancito</p>
-                                    </Link>
+                                        <p>Ingresar </p>
+                                    </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/Caja/1" className="nav-link ">
+                                    <NavLink to={`${url}api/Caja`} className="nav-link ">
                                         <i className="far fa-circle nav-icon"></i>
-                                        <p>Productos Negativos</p>
-                                    </Link>
+                                        <p>Mostrar</p>
+                                    </NavLink>
                                 </li>
                             </ul>
                         </li>

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useRouteMatch } from 'react-router-dom';
 
 import { getCajaService } from './services/getCajaServices';
 
@@ -7,8 +7,12 @@ const Caja = () => {
     let { id } = useParams();
     const [Caja, setCaja] = useState([]);
     const [Productos, setProductos] = useState([]);
+
+
+
     useEffect(() => {
-        getCaja(id)
+        getCaja(id);
+
 
     }, []);
 

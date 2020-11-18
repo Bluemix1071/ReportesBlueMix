@@ -3,7 +3,9 @@
 //use Illuminate\Routing\Route;
 
 
-
+Route::get('/api/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');;
 
 Route::get('/','seguridad\LoginController@index')->name('login');
 Route::post('/','seguridad\LoginController@login')->name('login_post');
@@ -36,6 +38,13 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
 
 
 //rutas globales autenticadas
+Route::prefix('api')->middleware('auth')->group(function(){
+
+    Route::get('/', 'ApiController@LoadReact')->name('apiReact');
+});
+
+
+
 Route::prefix('publicos')->middleware('auth')->group(function(){
 
     Route::get('/','InicioController@index')->name('Publico');
@@ -47,11 +56,6 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::post('/updatemensaje', 'publico\PublicoController@updatemensaje')->name('updatemensaje');
     Route::get('/ConsultaSaldoenvio','publico\PublicoController@ConsultaSaldo')->name('ConsultaSaldo');
     Route::post('/ConsultaSaldoenvio', 'publico\PublicoController@ConsultaSaldoenvio')->name('ConsultaSaldoenvio');
-    Route::get('/api', 'ApiController@LoadReact')->name('apiReact');
-
-
-
-
 //------------------------EXPORTACIONES------------------------------------//
 
 
