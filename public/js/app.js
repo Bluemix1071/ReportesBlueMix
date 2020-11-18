@@ -52692,9 +52692,14 @@ var Footer = function Footer() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _components_MovimientoDeMercaderia_services_getProductoServices__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/MovimientoDeMercaderia/services/getProductoServices */ "./resources/js/components/MovimientoDeMercaderia/services/getProductoServices.js");
+
+
 
 
 var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
+  react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {});
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container my-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
@@ -52728,6 +52733,30 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (MovimientoDeMercaderia);
+
+/***/ }),
+
+/***/ "./resources/js/components/MovimientoDeMercaderia/services/getProductoServices.js":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/MovimientoDeMercaderia/services/getProductoServices.js ***!
+  \****************************************************************************************/
+/*! exports provided: getProductoService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getProductoService", function() { return getProductoService; });
+function getProductoService() {
+  try {
+    var Producto = axios.get("getProductos/");
+    return Producto;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+
+  return false;
+}
 
 /***/ }),
 
@@ -53015,8 +53044,8 @@ function LoginService() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\proyectos\laravel\ReportesBlueMix\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\proyectos\laravel\ReportesBlueMix\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

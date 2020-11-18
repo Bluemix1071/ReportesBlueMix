@@ -1,11 +1,25 @@
 import React, { Fragment } from 'react';
+import { useParams } from 'react-router-dom';
+import { getProductoService } from '../components/MovimientoDeMercaderia/services/getProductoServices';
+import {Provider} from 'react-redux';
+
+
 
 const MovimientoDeMercaderia = () => {
 
+    React.useEffect(() =>{
+
+    })
+
+
+    const ObtenerProductos = async () =>{
+
+    }
 
 
     return (
 
+        <Provider>
         <div className="container my-4">
             <h1 className="display-6">Movimiento De Mercaderia</h1>
             <hr />
@@ -29,6 +43,7 @@ const MovimientoDeMercaderia = () => {
                 </div>
             </section>
         </div>
+        </Provider>
 
 
     );
