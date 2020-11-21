@@ -23,6 +23,7 @@ class ProductosEnTransitoController extends Controller
     public function Buscar(Request $request)
     {
 
+       // dd($request);
         $codigo = $request->input('codigo', null);
         $barra = $request->input('barra', null);
         $descripcion = $request->input('descripcion', null);

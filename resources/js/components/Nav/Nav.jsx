@@ -180,7 +180,7 @@ const Nav = () => {
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink to={`${url}api/Caja`} className="nav-link ">
+                                    <NavLink to={`${url}api/Caja/`} className="nav-link ">
                                         <i className="far fa-circle nav-icon"></i>
                                         <p>Mostrar</p>
                                     </NavLink>

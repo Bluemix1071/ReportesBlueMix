@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import ReactDOM,{browserHistory} from 'react-dom';
+import ReactDOM, { browserHistory } from 'react-dom';
 import {
     BrowserRouter,
     Switch,
@@ -13,9 +13,11 @@ import {
 import Footer from './components/Footer/Footer';
 import Nav from './components/Nav/Nav';
 import Caja from './components/Caja/Caja';
-import MovimientoDeMercaderia from './components/MovimientoDeMercaderia';
+import MovimientoDeMercaderia from './components/MovimientoDeMercaderia/MovimientoDeMercaderia';
 import Home from './components/Home/Home';
 import { createBrowserHistory } from "history";
+import { Provider } from 'react-redux';
+import store from './components/redux/store';
 
 require('./bootstrap');
 
@@ -24,32 +26,32 @@ if (document.getElementById('example')) {
     const history = createBrowserHistory();
     ReactDOM.render(
 
-
         <Fragment>
-            <BrowserRouter >
-                <div className="wrapper">
-                    <Nav />
-                    <div className="content-wrapper">
-                        <section className="content">
-                            <Switch>
-                            <Route path="/"  component={Home} exact={true} />
-                                <Route path="/api/IngresarMercaderia"  exact={true}> <MovimientoDeMercaderia /> </Route>
-                                <Route path="/api/Caja/:id" exact={true}> <Caja /> </Route>
-                                <Route path="*" />
+            <Provider store={store}>
+                <BrowserRouter >
+                    <div className="wrapper">
+                        <Nav />
+                        <div className="content-wrapper">
+                            <section className="content">
+                                <Switch>
+                                    <Route path="/" component={Home} exact={true} />
+                                    <Route path="/api/IngresarMercaderia" exact={true}> <MovimientoDeMercaderia /> </Route>
+                                    <Route path="/api/Caja/:id" exact={true}> <Caja /> </Route>
+                                    <Route path="*" />
 
-                            </Switch>
+                                </Switch>
 
 
 
-                        </section>
+                            </section>
+                        </div>
+                        <Footer />
+                        <aside className="control-sidebar control-sidebar-dark"></aside>
                     </div>
-                    <Footer />
-                    <aside className="control-sidebar control-sidebar-dark"></aside>
-                </div>
 
-            </BrowserRouter>
+                </BrowserRouter>
+            </Provider>
         </Fragment>
-
 
 
 

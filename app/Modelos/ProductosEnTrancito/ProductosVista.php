@@ -44,7 +44,7 @@ class ProductosVista extends Model
     public function scopeSelectQuitarPrecio($query)
     {
 
-            return $query->select('codigo','codigoBarra','descripcion','bodega','sala');
+            return $query->select('codigo','codigoBarra','descripcion');
 
 
     }
