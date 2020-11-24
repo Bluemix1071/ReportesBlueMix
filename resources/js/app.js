@@ -18,7 +18,7 @@ import Home from './components/Home/Home';
 import { createBrowserHistory } from "history";
 import { Provider } from 'react-redux';
 import store from './components/redux/store';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 require('./bootstrap');
 
 

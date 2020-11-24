@@ -1,6 +1,22 @@
 import React, { Fragment } from 'react';
 
 const TablaMercaderia = (props) => {
+
+    const Editar =(codigo,valor)=>{
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     return (
         <Fragment>
             <table class="table table-sm">
@@ -17,30 +33,39 @@ const TablaMercaderia = (props) => {
 
 
                     {
-                         props.Productos.length > 0 ?
-                        props.Productos.map((item, index) => (
-                            <tr  key={item.codigo}>
-                                <th scope="row">{item.codigo}</th>
-                                <th>{item.codigoBarra}</th>
-                                <th>{item.descripcion}</th>
-                                <th> <input className="form-control" type="number" value={item.cantidad}/> </th>
-                                <th>
-                                    <button
-                                    className="btn btn-danger mr-2"
-                                     onClick={()=>{props.EliminarProducto(item.codigo)}}
+                        props.Productos.length > 0 ?
+                            props.Productos.map((item, index) => (
+                                <tr key={item.codigo}>
+                                    <th scope="row">{item.codigo}</th>
+                                    <th>{item.codigoBarra}</th>
+                                    <th>{item.descripcion}</th>
+                                    <th> <input className="form-control" name="cantidad" type="number" defaultValue={item.cantidad}
+                                            onChange={
+                                                (event)=>{
+                                                    props.updateProduct(item.codigo,event.target.value)
+                                                }
+                                            }
+                                    /> </th>
+                                    <th>
+                                        <button
+                                            className="btn btn-danger mr-2"
+                                            onClick={() => { props.EliminarProducto(item.codigo) }}
 
-                                    ><i class="fas fa-trash-alt"></i>
+                                        ><i class="fas fa-trash-alt"></i>
 
-                                    </button>
-                                    <button className="btn btn-primary ml-2"><i class="fas fa-edit"></i></button>
-                                </th>
-                            </tr>
-                        )):(
+                                        </button>
+                                        <button className="btn btn-primary ml-2"
 
-                            <tr>
-                                <td colSpan={4} >No hay productos</td>
-                            </tr>
-                        )
+
+                                        ><i class="fas fa-edit"></i></button>
+                                    </th>
+                                </tr>
+                            )) : (
+
+                                <tr>
+                                    <td colSpan={4} >No hay productos</td>
+                                </tr>
+                            )
 
 
 

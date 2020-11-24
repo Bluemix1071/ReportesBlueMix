@@ -5,7 +5,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import fetchProduct from '../redux/actions/buscadorProductos';
 // components
-
+import ModalCantidad from './components/modalCantidad';
 import TablaMercaderia from './components/tablaMercaderia';
 
 
@@ -13,8 +13,11 @@ const MovimientoDeMercaderia = () => {
 
     const dispatch = useDispatch();
     const { register, errors, handleSubmit } = useForm();
-
+    const [show, setShow] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     const [buscadorProducto, setBuscadorProducto] = useState("");
+
+
 
     const [Productos, setProductos] = useState([]);
 
@@ -24,34 +27,50 @@ const MovimientoDeMercaderia = () => {
         dispatch(fetchProduct(buscadorProducto));
         setBuscadorProducto('');
 
+
+            mostarModal();
+
     }
 
     const Buscador = useSelector(state => state.Buscador)
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        ingresoProducto();
+    //     mostarModal();
 
-    }, [Buscador])
+    // }, [show])
+
+    const updateProduct = (codi, cant) => {
 
 
-    const ingresoProducto = async () => {
+        setProductos(Productos.map(Product => (Product.codigo === codi ? Product.cantidad = parseInt(cant) : Product)))
+
+    }
+
+
+
+    const ingresoProducto = async (product) => {
 
         if (Buscador.FETCH_PRODUCT_SUCCESS) {
-            const product = Buscador.producto[0].producto[0]
-            Object.assign(product, { cantidad: 1 })
 
             const result = Productos.find(p => p.codigo === product.codigo);
-            // console.log(result);
+
             if (result !== undefined) {
+
                 setProductos(Productos.filter(Productos => Productos.codigo !== result.codigo))
-                const newResult = result.cantidad = result.cantidad + 1;
-                setProductos([...Productos, newResult])
+                 const newResult = result.cantidad = parseInt(result.cantidad) + parseInt(product.cantidad);
+                 console.log( "result :"+ result.cantidad, "cantidad:"+product.cantidad);
+                 setProductos([...Productos, newResult])
                 setProductos(Productos.filter(Productos => Productos.codigo !== undefined))
+
             } else {
 
                 setProductos([...Productos, product]);
+
+
             }
+
+
         }
 
 
@@ -59,11 +78,27 @@ const MovimientoDeMercaderia = () => {
 
 
 
+
+    const mostarModal = () => {
+
+        setShow(true);
+
+    }
+    const ocultarModal = () => {
+
+        setShow(false);
+
+    }
+
+
+
+
+
     const EliminarProducto = (codigo) => {
         // console.log(codigo)
         setProductos(Productos.filter(Productos => Productos.codigo !== codigo))
-
     }
+
 
     return (
         <Fragment>
@@ -79,7 +114,7 @@ const MovimientoDeMercaderia = () => {
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="addon-wrapping">Buscar</span>
                         </div>
-                        <input type="text" className="form-control" name="barra" placeholder="Productos" value={buscadorProducto}
+                        <input type="text" className="form-control" name="barra" autoFocus placeholder="Productos" value={buscadorProducto}
                             onChange={
                                 (event) => {
                                     setBuscadorProducto(event.target.value);
@@ -89,6 +124,26 @@ const MovimientoDeMercaderia = () => {
                         />
                     </div>
                 </form>
+
+
+                {
+
+                show &&
+                    <ModalCantidad
+
+                        show={show}
+                        mostarModal={mostarModal}
+                        ocultarModal={ocultarModal}
+                        ingresoProducto={ingresoProducto}
+
+
+                    />
+                }
+
+
+
+
+
 
                 <hr />
                 <section className="content">
@@ -100,6 +155,8 @@ const MovimientoDeMercaderia = () => {
                             <TablaMercaderia
                                 Productos={Productos}
                                 EliminarProducto={EliminarProducto}
+                                updateProduct={updateProduct}
+
                             />
                         </div>
                         <div class="card-body">
