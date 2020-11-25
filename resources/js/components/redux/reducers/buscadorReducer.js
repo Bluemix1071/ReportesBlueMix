@@ -34,6 +34,7 @@ const Buscador = (state = inicial, action) => {
                 loading: false,
                 producto: [],
                 error: action.payload,
+                FETCH_PRODUCT_SUCCESS:false,
                 FETCH_PRODUCT_FAILURE:true
             }
 

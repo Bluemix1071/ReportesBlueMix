@@ -10,7 +10,7 @@ const ModalCantidad = (props) => {
     const { register, errors, handleSubmit } = useForm();
     const Buscador = useSelector(state => state.Buscador)
     const [Producto, setProducto] = useState([]);
-    const cant = useRef(null);
+
     const onSubmit = (data, e) => {
 
         console.log(data.cantidad);
@@ -22,9 +22,6 @@ const ModalCantidad = (props) => {
         ocultar();
 
     }
-    useEffect(() => {
-        cant.current?.focus();
-      }, [props.show]);
 
 
 
@@ -49,20 +46,27 @@ const ModalCantidad = (props) => {
                 </Modal.Header>
 
                 <Modal.Body>
+
+
+
+
                     {Buscador.FETCH_PRODUCT_SUCCESS &&
 
                     <label> ingrese cantidad de : {Buscador.producto[0].producto[0].descripcion} </label >
 
 
                     }
+
+
                     <form onSubmit={handleSubmit(onSubmit)}>
 
                         <input type="number" className="form-control"   name="cantidad" placeholder="cantidad"
 
                             ref={
-                                cant,
+
                                 register({
                                     required: {
+                                        pattern:"^[0-9]+",
                                         value: true,
                                         message: 'cantidad es requerido'
                                     }

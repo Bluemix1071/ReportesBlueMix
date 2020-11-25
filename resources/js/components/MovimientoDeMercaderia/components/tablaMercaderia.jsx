@@ -39,7 +39,7 @@ const TablaMercaderia = (props) => {
                                     <th scope="row">{item.codigo}</th>
                                     <th>{item.codigoBarra}</th>
                                     <th>{item.descripcion}</th>
-                                    <th> <input className="form-control" name="cantidad" type="number" defaultValue={item.cantidad}
+                                    <th> <input className="form-control" name="cantidad" type="number" defaultValue={item.cantidad} disabled
                                             onChange={
                                                 (event)=>{
                                                     props.updateProduct(item.codigo,event.target.value)

@@ -12,7 +12,7 @@ export const fetchProductRequest = () => {
         type: FETCH_PRODUCT_REQUEST
     }
 }
-
+3
 export const fetchProductSuccess = (producto) => {
     return {
         type: FETCH_PRODUCT_SUCCESS,
@@ -27,11 +27,11 @@ export const fetchProductFailure = (error) => {
     }
 }
 
-const fetchProduct = (barra) => {
+const fetchProduct = (entrada) => {
     return (dispatch)=>{
         dispatch(fetchProductRequest());
 
-        Axios.post('getProductos',{barra:barra})
+        Axios.post('getProductos',entrada)
         .then(resp =>{
 
             if ( resp.data.producto && resp.data.producto.length) {

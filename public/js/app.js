@@ -74076,11 +74076,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _services_getProductoServices__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/getProductoServices */ "./resources/js/components/MovimientoDeMercaderia/services/getProductoServices.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.js");
-/* harmony import */ var _redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../redux/actions/buscadorProductos */ "./resources/js/components/redux/actions/buscadorProductos.js");
-/* harmony import */ var _components_modalCantidad__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/modalCantidad */ "./resources/js/components/MovimientoDeMercaderia/components/modalCantidad.jsx");
-/* harmony import */ var _components_tablaMercaderia__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/tablaMercaderia */ "./resources/js/components/MovimientoDeMercaderia/components/tablaMercaderia.jsx");
+/* harmony import */ var _services_EnvioMercaderiaTrancito__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/EnvioMercaderiaTrancito */ "./resources/js/components/MovimientoDeMercaderia/services/EnvioMercaderiaTrancito.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.js");
+/* harmony import */ var _redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../redux/actions/buscadorProductos */ "./resources/js/components/redux/actions/buscadorProductos.js");
+/* harmony import */ var _components_modalCantidad__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/modalCantidad */ "./resources/js/components/MovimientoDeMercaderia/components/modalCantidad.jsx");
+/* harmony import */ var _components_tablaMercaderia__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/tablaMercaderia */ "./resources/js/components/MovimientoDeMercaderia/components/tablaMercaderia.jsx");
+/* harmony import */ var _components_formularioCaja__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/formularioCaja */ "./resources/js/components/MovimientoDeMercaderia/components/formularioCaja.jsx");
 
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -74112,15 +74114,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
  // components
 
 
 
 
-var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
-  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useDispatch"])();
 
-  var _useForm = Object(react_hook_form__WEBPACK_IMPORTED_MODULE_5__["useForm"])(),
+var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useDispatch"])();
+
+  var _useForm = Object(react_hook_form__WEBPACK_IMPORTED_MODULE_6__["useForm"])(),
       register = _useForm.register,
       errors = _useForm.errors,
       handleSubmit = _useForm.handleSubmit;
@@ -74130,10 +74134,10 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
       show = _useState2[0],
       setShow = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(true),
       _useState4 = _slicedToArray(_useState3, 2),
-      showEdit = _useState4[0],
-      setShowEdit = _useState4[1];
+      showFormCaja = _useState4[0],
+      setShowFormCaja = _useState4[1];
 
   var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(""),
       _useState6 = _slicedToArray(_useState5, 2),
@@ -74145,18 +74149,36 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
       Productos = _useState8[0],
       setProductos = _useState8[1];
 
+  var Buscador = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(function (state) {
+    return state.Buscador;
+  });
+
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState10 = _slicedToArray(_useState9, 2),
+      Caja = _useState10[0],
+      setCaja = _useState10[1];
+
   var onSubmit = function onSubmit(data, e) {
-    //e.preventDefault();
-    dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_6__["default"])(buscadorProducto));
+    if (buscadorProducto.length == 7) {
+      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["default"])({
+        codigo: buscadorProducto
+      }));
+    } else if (buscadorProducto.length == 13) {
+      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["default"])({
+        barra: buscadorProducto
+      }));
+    } else {
+      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["default"])(buscadorProducto));
+    }
+
     setBuscadorProducto('');
-    mostarModal();
   };
 
-  var Buscador = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(function (state) {
-    return state.Buscador;
-  }); // useEffect(() => {
-  //     mostarModal();
-  // }, [show])
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    if (Buscador.FETCH_PRODUCT_SUCCESS) {
+      mostarModal();
+    }
+  }, [Buscador.FETCH_PRODUCT_SUCCESS]);
 
   var updateProduct = function updateProduct(codi, cant) {
     setProductos(Productos.map(function (Product) {
@@ -74180,8 +74202,8 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
                   setProductos(Productos.filter(function (Productos) {
                     return Productos.codigo !== result.codigo;
                   }));
-                  newResult = result.cantidad = parseInt(result.cantidad) + parseInt(product.cantidad);
-                  console.log("result :" + result.cantidad, "cantidad:" + product.cantidad);
+                  newResult = result.cantidad = parseInt(result.cantidad) + parseInt(product.cantidad); // console.log( "result :"+ result.cantidad, "cantidad:"+product.cantidad);
+
                   setProductos([].concat(_toConsumableArray(Productos), [newResult]));
                   setProductos(Productos.filter(function (Productos) {
                     return Productos.codigo !== undefined;
@@ -74212,6 +74234,26 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
     setShow(false);
   };
 
+  var EnviarProductos = function EnviarProductos() {
+    console.log(JSON.stringify({
+      caja: Caja
+    }));
+    console.log(JSON.stringify({
+      productos: Productos
+    }));
+    var productos = {
+      productos: JSON.stringify(Productos)
+    };
+    var caja = {
+      caja: JSON.stringify(Caja)
+    };
+    var result = Object(_services_EnvioMercaderiaTrancito__WEBPACK_IMPORTED_MODULE_4__["EnvioMercaderia"])({
+      productos: productos,
+      caja: caja
+    });
+    console.log(result);
+  };
+
   var EliminarProducto = function EliminarProducto(codigo) {
     // console.log(codigo)
     setProductos(Productos.filter(function (Productos) {
@@ -74219,16 +74261,46 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
     }));
   };
 
+  var mostrarForm = function mostrarForm() {
+    setShowFormCaja(true);
+  };
+
+  var ocultarForm = function ocultarForm() {
+    setShowFormCaja(false);
+  };
+
+  var EnviarCaja = function EnviarCaja(caja) {
+    setCaja(caja);
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "container my-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-md-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
     className: "display-6"
-  }, "Movimiento De Mercaderia"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+  }, "Movimiento De Mercaderia")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col md-6"
+  }, Buscador.FETCH_PRODUCT_FAILURE && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    "class": "alert alert-danger alert-dismissible fade show",
+    role: "alert"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", null, Buscador.error))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row "
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-md-12 mb-2"
+  }, showFormCaja ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_formularioCaja__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    ocultarForm: ocultarForm,
+    EnviarCaja: EnviarCaja,
+    Caja: Caja
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    className: "btn btn-primary",
+    onClick: mostrarForm
+  }, " Editar Campos "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
     onSubmit: handleSubmit(onSubmit)
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    "class": "input-group flex-nowrap"
+    className: "input-group flex-nowrap mt-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    "class": "input-group-prepend"
+    className: "input-group-prepend"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
     "class": "input-group-text",
     id: "addon-wrapping"
@@ -74242,7 +74314,7 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
     onChange: function onChange(event) {
       setBuscadorProducto(event.target.value);
     }
-  }))), show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_modalCantidad__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }))), show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_modalCantidad__WEBPACK_IMPORTED_MODULE_8__["default"], {
     show: show,
     mostarModal: mostarModal,
     ocultarModal: ocultarModal,
@@ -74255,18 +74327,160 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
     className: "card-header"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", {
     className: "card-title mb-4"
-  }, "Articulos"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_tablaMercaderia__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, "Articulos"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_tablaMercaderia__WEBPACK_IMPORTED_MODULE_9__["default"], {
     Productos: Productos,
     EliminarProducto: EliminarProducto,
     updateProduct: updateProduct
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     "class": "card-body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    id: "jsGrid1"
-  }))))));
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-md-9"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-md-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    className: "btn btn-success",
+    disabled: Productos.length < 1 || Caja.length < 1,
+    onClick: EnviarProductos
+  }, "Ingresar Productos"))))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (MovimientoDeMercaderia);
+
+/***/ }),
+
+/***/ "./resources/js/components/MovimientoDeMercaderia/components/formularioCaja.jsx":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/MovimientoDeMercaderia/components/formularioCaja.jsx ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.js");
+
+
+
+var FormularioCaja = function FormularioCaja(props) {
+  var _errors$usuario;
+
+  var _useForm = Object(react_hook_form__WEBPACK_IMPORTED_MODULE_1__["useForm"])({
+    defaultValues: props.Caja ? props.Caja : {}
+  }),
+      register = _useForm.register,
+      errors = _useForm.errors,
+      handleSubmit = _useForm.handleSubmit;
+
+  var onSubmit = function onSubmit(data, e) {
+    // console.log(data);
+    props.ocultarForm();
+    props.EnviarCaja(data);
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    onSubmit: handleSubmit(onSubmit),
+    className: "needs-validation"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "for": "validationCustom01"
+  }, "usuario"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    className: "form-control",
+    name: "usuario",
+    id: "validationCustom01",
+    required: true,
+    ref: register({
+      required: {
+        value: true,
+        message: 'usuario es requerido'
+      }
+    })
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "valid-feedback"
+  }, errors === null || errors === void 0 ? void 0 : (_errors$usuario = errors.usuario) === null || _errors$usuario === void 0 ? void 0 : _errors$usuario.message)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "for": "validationCustom02"
+  }, "descripcion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    className: "form-control",
+    name: "descripcion",
+    required: true,
+    ref: register({
+      required: {
+        value: true,
+        message: 'descripcion es requerido'
+      }
+    })
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "valid-feedback"
+  }, "Looks good!"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    "class": "col-md-6 mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "for": "validationCustom03"
+  }, " Ubicacion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "custom-select",
+    name: "ubicacion",
+    required: true,
+    ref: register({
+      required: {
+        value: true,
+        message: 'ubicacion es requerido'
+      }
+    })
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Sala De Listas"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Facturacion")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "invalid-feedback"
+  }, "Please provide a valid city.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "for": "validationCustom04"
+  }, " Rack"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "custom-select",
+    name: "rack",
+    id: "validationCustom04",
+    required: true,
+    ref: register({
+      required: {
+        value: true,
+        message: 'rack es requerido'
+      }
+    })
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Choose..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "...")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "invalid-feedback"
+  }, "Please select a valid state.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "for": "validationCustom05"
+  }, "Referencia"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    className: "form-control",
+    name: "referencia",
+    id: "validationCustom05",
+    required: true,
+    ref: register({
+      required: {
+        value: true,
+        message: 'referencia es requerido'
+      }
+    })
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "invalid-feedback"
+  }, "Please provide a valid zip."))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-success",
+    type: "submit"
+  }, "enviar")));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (FormularioCaja);
 
 /***/ }),
 
@@ -74316,8 +74530,6 @@ var ModalCantidad = function ModalCantidad(props) {
       Producto = _useState2[0],
       setProducto = _useState2[1];
 
-  var cant = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
-
   var onSubmit = function onSubmit(data, e) {
     console.log(data.cantidad);
     var product = Buscador.producto[0].producto[0];
@@ -74327,12 +74539,6 @@ var ModalCantidad = function ModalCantidad(props) {
     props.ingresoProducto(product);
     ocultar();
   };
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    var _cant$current;
-
-    (_cant$current = cant.current) === null || _cant$current === void 0 ? void 0 : _cant$current.focus();
-  }, [props.show]);
 
   var mostrar = function mostrar() {
     props.mostarModal();
@@ -74354,12 +74560,13 @@ var ModalCantidad = function ModalCantidad(props) {
     className: "form-control",
     name: "cantidad",
     placeholder: "cantidad",
-    ref: (cant, register({
+    ref: register({
       required: {
+        pattern: "^[0-9]+",
         value: true,
         message: 'cantidad es requerido'
       }
-    }))
+    })
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer, null)));
 };
 
@@ -74405,6 +74612,7 @@ var TablaMercaderia = function TablaMercaderia(props) {
       name: "cantidad",
       type: "number",
       defaultValue: item.cantidad,
+      disabled: true,
       onChange: function onChange(event) {
         props.updateProduct(item.codigo, event.target.value);
       }
@@ -74426,6 +74634,30 @@ var TablaMercaderia = function TablaMercaderia(props) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (TablaMercaderia);
+
+/***/ }),
+
+/***/ "./resources/js/components/MovimientoDeMercaderia/services/EnvioMercaderiaTrancito.js":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/MovimientoDeMercaderia/services/EnvioMercaderiaTrancito.js ***!
+  \********************************************************************************************/
+/*! exports provided: EnvioMercaderia */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnvioMercaderia", function() { return EnvioMercaderia; });
+function EnvioMercaderia(Productos, Caja) {
+  try {
+    var caja = axios.post("GenerarProductosEnTrancito", Productos, Caja);
+    return caja;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+
+  return false;
+}
 
 /***/ }),
 
@@ -74750,6 +74982,7 @@ var fetchProductRequest = function fetchProductRequest() {
     type: FETCH_PRODUCT_REQUEST
   };
 };
+3;
 var fetchProductSuccess = function fetchProductSuccess(producto) {
   return {
     type: FETCH_PRODUCT_SUCCESS,
@@ -74763,12 +74996,10 @@ var fetchProductFailure = function fetchProductFailure(error) {
   };
 };
 
-var fetchProduct = function fetchProduct(barra) {
+var fetchProduct = function fetchProduct(entrada) {
   return function (dispatch) {
     dispatch(fetchProductRequest());
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('getProductos', {
-      barra: barra
-    }).then(function (resp) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('getProductos', entrada).then(function (resp) {
       if (resp.data.producto && resp.data.producto.length) {
         dispatch(fetchProductSuccess([resp.data]));
       } else {
@@ -74832,6 +75063,7 @@ var Buscador = function Buscador() {
         loading: false,
         producto: [],
         error: action.payload,
+        FETCH_PRODUCT_SUCCESS: false,
         FETCH_PRODUCT_FAILURE: true
       };
 

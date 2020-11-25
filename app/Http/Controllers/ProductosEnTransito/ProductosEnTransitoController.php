@@ -23,7 +23,7 @@ class ProductosEnTransitoController extends Controller
     public function Buscar(Request $request)
     {
 
-       // dd($request);
+       //dd($request);
         $codigo = $request->input('codigo', null);
         $barra = $request->input('barra', null);
         $descripcion = $request->input('descripcion', null);
@@ -61,6 +61,8 @@ class ProductosEnTransitoController extends Controller
     public function GenerarProductoEnTrancito(Request $request)
     {
 
+
+        //dd($request);
         $input = $request->input('productos', null);
 
         $productos_array = json_decode($input, true);
@@ -73,6 +75,7 @@ class ProductosEnTransitoController extends Controller
         $inputCaja = $request->input('caja', null);
         $caja_array = json_decode($inputCaja, true);
 
+        dd($productos_array,$caja_array);
         $sizeof = sizeof($productos_array) != 0 ? sizeof($productos_array) : 0;
         if ($sizeof < 1) {
             return response()->json([
