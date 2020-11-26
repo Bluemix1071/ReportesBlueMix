@@ -74566,13 +74566,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_modalCantidad__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/modalCantidad */ "./resources/js/components/MovimientoDeMercaderia/components/modalCantidad.jsx");
 /* harmony import */ var _components_tablaMercaderia__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/tablaMercaderia */ "./resources/js/components/MovimientoDeMercaderia/components/tablaMercaderia.jsx");
 /* harmony import */ var _components_formularioCaja__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/formularioCaja */ "./resources/js/components/MovimientoDeMercaderia/components/formularioCaja.jsx");
-/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ "./node_modules/bootstrap/dist/css/bootstrap.min.css");
-/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! bs-stepper/dist/css/bs-stepper.min.css */ "./node_modules/bs-stepper/dist/css/bs-stepper.min.css");
-/* harmony import */ var bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var bs_stepper__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! bs-stepper */ "./node_modules/bs-stepper/dist/js/bs-stepper.js");
-/* harmony import */ var bs_stepper__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(bs_stepper__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _stepper_components_step__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../stepper/components/step */ "./resources/js/components/stepper/components/step.jsx");
+/* harmony import */ var _components_ModalConfirmarCaja__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/ModalConfirmarCaja */ "./resources/js/components/MovimientoDeMercaderia/components/ModalConfirmarCaja.jsx");
+/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ "./node_modules/bootstrap/dist/css/bootstrap.min.css");
+/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! bs-stepper/dist/css/bs-stepper.min.css */ "./node_modules/bs-stepper/dist/css/bs-stepper.min.css");
+/* harmony import */ var bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var bs_stepper__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! bs-stepper */ "./node_modules/bs-stepper/dist/js/bs-stepper.js");
+/* harmony import */ var bs_stepper__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(bs_stepper__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _stepper_components_step__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../stepper/components/step */ "./resources/js/components/stepper/components/step.jsx");
 
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -74609,6 +74610,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
  // steppers
 
 
@@ -74629,38 +74631,43 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
       show = _useState2[0],
       setShow = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(true),
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
       _useState4 = _slicedToArray(_useState3, 2),
-      showFormCaja = _useState4[0],
-      setShowFormCaja = _useState4[1];
+      showModalConfirm = _useState4[0],
+      setShowModalConfirm = _useState4[1];
 
-  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(""),
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(true),
       _useState6 = _slicedToArray(_useState5, 2),
-      buscadorProducto = _useState6[0],
-      setBuscadorProducto = _useState6[1];
+      showFormCaja = _useState6[0],
+      setShowFormCaja = _useState6[1];
 
-  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(""),
       _useState8 = _slicedToArray(_useState7, 2),
-      Productos = _useState8[0],
-      setProductos = _useState8[1];
+      buscadorProducto = _useState8[0],
+      setBuscadorProducto = _useState8[1];
+
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState10 = _slicedToArray(_useState9, 2),
+      Productos = _useState10[0],
+      setProductos = _useState10[1];
 
   var Buscador = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(function (state) {
     return state.Buscador;
   });
 
-  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
-      _useState10 = _slicedToArray(_useState9, 2),
-      Caja = _useState10[0],
-      setCaja = _useState10[1]; //stepper
-
-
-  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(),
+  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
       _useState12 = _slicedToArray(_useState11, 2),
-      stepperr = _useState12[0],
-      setstepperr = _useState12[1];
+      Caja = _useState12[0],
+      setCaja = _useState12[1]; //stepper
+
+
+  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(),
+      _useState14 = _slicedToArray(_useState13, 2),
+      stepperr = _useState14[0],
+      setstepperr = _useState14[1];
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
-    setstepperr(new bs_stepper__WEBPACK_IMPORTED_MODULE_13___default.a(document.querySelector('#stepper1'), {
+    setstepperr(new bs_stepper__WEBPACK_IMPORTED_MODULE_14___default.a(document.querySelector('#stepper1'), {
       linear: false,
       animation: true
     }));
@@ -74699,7 +74706,7 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
 
   var updateProduct = function updateProduct(codi, cant) {
     setProductos(Productos.map(function (Product) {
-      return Product.codigo === codi ? Product.cantidad = parseInt(cant) : Product;
+      return Product.codigo_producto === codi ? Product.cantidad = parseInt(cant) : Product;
     }));
   };
 
@@ -74712,18 +74719,18 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
             case 0:
               if (Buscador.FETCH_PRODUCT_SUCCESS) {
                 result = Productos.find(function (p) {
-                  return p.codigo === product.codigo;
+                  return p.codigo_producto === product.codigo_producto;
                 });
 
                 if (result !== undefined) {
                   setProductos(Productos.filter(function (Productos) {
-                    return Productos.codigo !== result.codigo;
+                    return Productos.codigo_producto !== result.codigo_producto;
                   }));
                   newResult = result.cantidad = parseInt(result.cantidad) + parseInt(product.cantidad); // console.log( "result :"+ result.cantidad, "cantidad:"+product.cantidad);
 
                   setProductos([].concat(_toConsumableArray(Productos), [newResult]));
                   setProductos(Productos.filter(function (Productos) {
-                    return Productos.codigo !== undefined;
+                    return Productos.codigo_producto !== undefined;
                   }));
                 } else {
                   setProductos([].concat(_toConsumableArray(Productos), [product]));
@@ -74751,19 +74758,19 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
     setShow(false);
   };
 
-  var EnviarProductos = function EnviarProductos() {
-    console.log(JSON.stringify({
-      caja: Caja
-    }));
-    console.log(JSON.stringify({
-      productos: Productos
-    }));
-    var productos = {
-      productos: JSON.stringify(Productos)
-    };
-    var caja = {
-      caja: JSON.stringify(Caja)
-    };
+  var mostarModalConfirm = function mostarModalConfirm() {
+    setShowModalConfirm(true);
+  };
+
+  var ocultarModalConfirm = function ocultarModalConfirm() {
+    setShowModalConfirm(false);
+  };
+
+  var EnviarProductos = function EnviarProductos(data) {
+    Object.assign(Caja, data);
+    console.log(Caja);
+    var productos = JSON.stringify(Productos);
+    var caja = JSON.stringify(Caja);
     var result = Object(_services_EnvioMercaderiaTrancito__WEBPACK_IMPORTED_MODULE_4__["EnvioMercaderia"])({
       productos: productos,
       caja: caja
@@ -74810,7 +74817,7 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
     "class": "bs-stepper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     "class": "bs-stepper-header"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_stepper_components_step__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_stepper_components_step__WEBPACK_IMPORTED_MODULE_15__["default"], {
     steps: steps
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     "class": "bs-stepper-content"
@@ -74862,22 +74869,117 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
     mostarModal: mostarModal,
     ocultarModal: ocultarModal,
     ingresoProducto: ingresoProducto
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_ModalConfirmarCaja__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    showModalConfirm: showModalConfirm,
+    mostarModalConfirm: mostarModalConfirm,
+    ocultarModalConfirm: ocultarModalConfirm,
+    EnviarProductos: EnviarProductos
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_tablaMercaderia__WEBPACK_IMPORTED_MODULE_9__["default"], {
     Productos: Productos,
     EliminarProducto: EliminarProducto,
     updateProduct: updateProduct
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    "class": "btn btn-primary",
+    "class": "btn btn-primary mr-4",
     onClick: function onClick() {
       return stepperr.previous();
     }
   }, "previus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    className: "btn btn-success",
-    onClick: EnviarProductos
+    className: "btn btn-success ml-4",
+    disabled: Productos.length < 1 || Caja.length < 1,
+    onClick: function onClick() {
+      return mostarModalConfirm();
+    }
   }, "Ingresar Productos")))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (MovimientoDeMercaderia);
+
+/***/ }),
+
+/***/ "./resources/js/components/MovimientoDeMercaderia/components/ModalConfirmarCaja.jsx":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/MovimientoDeMercaderia/components/ModalConfirmarCaja.jsx ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.js");
+
+
+
+
+var ModalConfirmarCaja = function ModalConfirmarCaja(props) {
+  var _useForm = Object(react_hook_form__WEBPACK_IMPORTED_MODULE_2__["useForm"])(),
+      register = _useForm.register,
+      errors = _useForm.errors,
+      handleSubmit = _useForm.handleSubmit;
+
+  var onSubmit = function onSubmit(data, e) {
+    console.log(data);
+    props.EnviarProductos(data);
+  };
+
+  var mostrar = function mostrar() {
+    props.mostarModalConfirm();
+  };
+
+  var ocultar = function ocultar() {
+    props.ocultarModalConfirm();
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
+    show: props.showModalConfirm,
+    onHide: ocultar
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Header, {
+    closeButton: true
+  }, "\xBFLa Mercaderia esta completa ?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    onSubmit: handleSubmit(onSubmit)
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    "class": "form-check form-check-inline"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    "class": "form-check-input",
+    type: "radio",
+    name: "estado",
+    id: "inlineRadio1",
+    value: "Completado",
+    defaultChecked: true,
+    ref: register({
+      required: {
+        value: true,
+        message: 'marca una opcion es requerido'
+      }
+    })
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "class": "form-check-label",
+    "for": "inlineRadio1"
+  }, "Si")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    "class": "form-check form-check-inline"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    "class": "form-check-input",
+    type: "radio",
+    name: "estado",
+    id: "inlineRadio2",
+    value: "Pendiente",
+    ref: register({
+      required: {
+        value: true,
+        message: 'marca una opcion es requerido'
+      }
+    })
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "class": "form-check-label",
+    "for": "inlineRadio2"
+  }, "No")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-success ml-4"
+  }, " Confirmar "))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer, null)));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (ModalConfirmarCaja);
 
 /***/ }),
 
@@ -74918,7 +75020,7 @@ var FormularioCaja = function FormularioCaja(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 mb-3"
+    className: "col-md-3 mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     "for": "validationCustom01"
   }, "usuario"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -74936,7 +75038,7 @@ var FormularioCaja = function FormularioCaja(props) {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "valid-feedback"
   }, errors === null || errors === void 0 ? void 0 : (_errors$usuario = errors.usuario) === null || _errors$usuario === void 0 ? void 0 : _errors$usuario.message)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 mb-3"
+    className: "col-md-3 mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     "for": "validationCustom02"
   }, "descripcion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -74952,10 +75054,39 @@ var FormularioCaja = function FormularioCaja(props) {
     })
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "valid-feedback"
-  }, "Looks good!"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, "Looks good!")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "for": "validationCustom02"
+  }, "Documento"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "custom-select",
+    name: "documento",
+    required: true,
+    ref: register({
+      required: {
+        value: true,
+        message: 'Documento es requerido'
+      }
+    })
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Factura"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Guia Despacho"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Venta Web"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Cotizacion"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    "for": "validationCustom02"
+  }, "Nro Documento"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "number",
+    className: "form-control",
+    name: "nro_documento",
+    required: true,
+    ref: register({
+      required: {
+        value: true,
+        message: 'nro_documento es requerido'
+      }
+    })
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "col-md-6 mb-3"
+    "class": "col-md-4 mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     "for": "validationCustom03"
   }, " Ubicacion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
@@ -74968,10 +75099,10 @@ var FormularioCaja = function FormularioCaja(props) {
         message: 'ubicacion es requerido'
       }
     })
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Sala De Listas"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Facturacion")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Sala De Listas"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Facturacion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Ventas Web")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "invalid-feedback"
   }, "Please provide a valid city.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-3"
+    className: "col-md-4 mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     "for": "validationCustom04"
   }, " Rack"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
@@ -74988,7 +75119,7 @@ var FormularioCaja = function FormularioCaja(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "Choose..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", null, "...")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "invalid-feedback"
   }, "Please select a valid state.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-3"
+    className: "col-md-4 mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     "for": "validationCustom05"
   }, "Referencia"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -75135,22 +75266,22 @@ var TablaMercaderia = function TablaMercaderia(props) {
     scope: "col"
   }, "Acciones"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.Productos.length > 0 ? props.Productos.map(function (item, index) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
-      key: item.codigo
+      key: item.codigo_producto
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
       scope: "row"
-    }, item.codigo), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, item.codigoBarra), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, item.descripcion), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    }, item.codigo_producto), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, item.codigoBarra), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, item.descripcion), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
       className: "form-control",
       name: "cantidad",
       type: "number",
       defaultValue: item.cantidad,
       disabled: true,
       onChange: function onChange(event) {
-        props.updateProduct(item.codigo, event.target.value);
+        props.updateProduct(item.codigo_producto, event.target.value);
       }
     }), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
       className: "btn btn-danger mr-2",
       onClick: function onClick() {
-        props.EliminarProducto(item.codigo);
+        props.EliminarProducto(item.codigo_producto);
       }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       "class": "fas fa-trash-alt"
@@ -75875,8 +76006,8 @@ var Stepperr = function Stepperr() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix3\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix3\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

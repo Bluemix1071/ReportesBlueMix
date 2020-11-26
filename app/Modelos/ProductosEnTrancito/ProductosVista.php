@@ -11,7 +11,7 @@ class ProductosVista extends Model
 
 
     protected $fillable = [
-        'codigo','codigoBarra','descripcion', 'bodega', 'sala'
+        'codigo_producto','codigoBarra','descripcion', 'bodega', 'sala'
     ];
 
 
@@ -19,7 +19,7 @@ class ProductosVista extends Model
     {
 
         if($codigo ){
-            return $query->where('codigo', $codigo);
+            return $query->where('codigo_producto', $codigo);
         }
 
     }
@@ -44,7 +44,7 @@ class ProductosVista extends Model
     public function scopeSelectQuitarPrecio($query)
     {
 
-            return $query->select('codigo','codigoBarra','descripcion');
+            return $query->select('codigo_producto','codigoBarra','descripcion');
 
 
     }

@@ -10,6 +10,7 @@ import fetchProduct from '../redux/actions/buscadorProductos';
 import ModalCantidad from './components/modalCantidad';
 import TablaMercaderia from './components/tablaMercaderia';
 import FormularioCaja from './components/formularioCaja';
+import ModalConfirmarCaja from './components/ModalConfirmarCaja';
 
 // steppers
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,6 +23,7 @@ const MovimientoDeMercaderia = () => {
     const dispatch = useDispatch();
     const { register, errors, handleSubmit } = useForm();
     const [show, setShow] = useState(false);
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
     const [showFormCaja, setShowFormCaja] = useState(true);
     const [buscadorProducto, setBuscadorProducto] = useState("");
     const [Productos, setProductos] = useState([]);
@@ -77,22 +79,22 @@ const MovimientoDeMercaderia = () => {
     const updateProduct = (codi, cant) => {
 
 
-        setProductos(Productos.map(Product => (Product.codigo === codi ? Product.cantidad = parseInt(cant) : Product)))
+        setProductos(Productos.map(Product => (Product.codigo_producto === codi ? Product.cantidad = parseInt(cant) : Product)))
 
     }
     const ingresoProducto = async (product) => {
 
         if (Buscador.FETCH_PRODUCT_SUCCESS) {
 
-            const result = Productos.find(p => p.codigo === product.codigo);
+            const result = Productos.find(p => p.codigo_producto === product.codigo_producto);
 
             if (result !== undefined) {
 
-                setProductos(Productos.filter(Productos => Productos.codigo !== result.codigo))
+                setProductos(Productos.filter(Productos => Productos.codigo_producto !== result.codigo_producto))
                 const newResult = result.cantidad = parseInt(result.cantidad) + parseInt(product.cantidad);
                 // console.log( "result :"+ result.cantidad, "cantidad:"+product.cantidad);
                 setProductos([...Productos, newResult])
-                setProductos(Productos.filter(Productos => Productos.codigo !== undefined))
+                setProductos(Productos.filter(Productos => Productos.codigo_producto !== undefined))
 
             } else {
 
@@ -112,16 +114,27 @@ const MovimientoDeMercaderia = () => {
 
     }
 
+    const mostarModalConfirm = () => {
 
-    const EnviarProductos = () => {
-        console.log(JSON.stringify({ caja: Caja }))
-        console.log(JSON.stringify({ productos: Productos }));
+        setShowModalConfirm(true);
 
-        const productos = { productos: JSON.stringify(Productos) }
-        const caja = { caja: JSON.stringify(Caja) }
+    }
+    const ocultarModalConfirm = () => {
+
+        setShowModalConfirm(false);
+
+    }
 
 
+    const EnviarProductos = (data) => {
+
+        Object.assign(  Caja, data );
+
+        console.log(Caja);
+        const productos =   JSON.stringify(Productos);
+        const caja =  JSON.stringify(Caja);
         const result = EnvioMercaderia({ productos, caja });
+
 
         console.log(result);
     }
@@ -239,6 +252,16 @@ const MovimientoDeMercaderia = () => {
                                     />
                                 }
 
+                                    <ModalConfirmarCaja
+                                    showModalConfirm={showModalConfirm}
+                                    mostarModalConfirm={mostarModalConfirm}
+                                    ocultarModalConfirm={ocultarModalConfirm}
+                                    EnviarProductos={EnviarProductos}
+                                    />
+
+
+
+
                                 <hr />
                                 {/* tabla con prouductos */}
 
@@ -257,9 +280,9 @@ const MovimientoDeMercaderia = () => {
 
 
 
-                                <button class="btn btn-primary" onClick={() => stepperr.previous()}>previus</button>
-                                <button className="btn btn-success"
-                                                        onClick={EnviarProductos}
+                                <button class="btn btn-primary mr-4" onClick={() => stepperr.previous()}>previus</button>
+                                <button className="btn btn-success ml-4" disabled={Productos.length <1 || Caja.length <1}
+                                                        onClick={()=> mostarModalConfirm()}
                                                     >
                                                         Ingresar Productos
                                                     </button>

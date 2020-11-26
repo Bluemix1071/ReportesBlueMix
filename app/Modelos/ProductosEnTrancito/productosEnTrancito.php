@@ -8,19 +8,19 @@ class productosEnTrancito extends Model
 {
     protected $table = 'productos_en_trancito';
    protected $primaryKey = 'id';
- 
+
 
     protected $fillable = [
-        'codigos_cajas_id','codigo_producto','descripcion', 'codigo_barra', 'cantidad',
+        'codigos_cajas_id','codigo_producto','descripcion', 'codigoBarra', 'cantidad',
     ];
 
 
     public function caja()
     {
         return $this->belongsTo('App\Modelos\ProductosEnTrancito\codigos_cajas','id');
-        
+
     }
 
 
-  
+
 }

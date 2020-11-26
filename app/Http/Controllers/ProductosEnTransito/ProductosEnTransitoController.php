@@ -75,7 +75,7 @@ class ProductosEnTransitoController extends Controller
         $inputCaja = $request->input('caja', null);
         $caja_array = json_decode($inputCaja, true);
 
-        dd($productos_array,$caja_array);
+        //dd($productos_array,$caja_array);
         $sizeof = sizeof($productos_array) != 0 ? sizeof($productos_array) : 0;
         if ($sizeof < 1) {
             return response()->json([
@@ -120,6 +120,7 @@ class ProductosEnTransitoController extends Controller
                 DB::commit();
             }
         } catch (\Throwable $th) {
+           dd($th);
             DB::rollBack();
             return response()->json(
                 [
@@ -132,8 +133,11 @@ class ProductosEnTransitoController extends Controller
         }
 
         $productos = codigos_cajas::find($caja['id'])->load('ProductosEnTrancito');
+        event(new ImprimirTicketEvent($caja));
         return response()->json([
-            "caja productos" => $productos
+            "status" => "success",
+            "code" => 200,
+            "caja" => $productos
         ], 200);
     }
 
@@ -157,7 +161,7 @@ class ProductosEnTransitoController extends Controller
                     400
                 );
             }
-
+            event(new ImprimirTicketEvent($caja));
             return response()->json($caja);
         }
     }
@@ -270,7 +274,8 @@ class ProductosEnTransitoController extends Controller
             );
         }
         event(new ImprimirTicketEvent($caja));
-        return response()->json([
+        return response()->json(
+            [
             "status" => "success",
             "code" => 200,
             "caja" => $productos,

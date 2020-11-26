@@ -35,21 +35,21 @@ const TablaMercaderia = (props) => {
                     {
                         props.Productos.length > 0 ?
                             props.Productos.map((item, index) => (
-                                <tr key={item.codigo}>
-                                    <th scope="row">{item.codigo}</th>
+                                <tr key={item.codigo_producto}>
+                                    <th scope="row">{item.codigo_producto}</th>
                                     <th>{item.codigoBarra}</th>
                                     <th>{item.descripcion}</th>
                                     <th> <input className="form-control" name="cantidad" type="number" defaultValue={item.cantidad} disabled
                                             onChange={
                                                 (event)=>{
-                                                    props.updateProduct(item.codigo,event.target.value)
+                                                    props.updateProduct(item.codigo_producto,event.target.value)
                                                 }
                                             }
                                     /> </th>
                                     <th>
                                         <button
                                             className="btn btn-danger mr-2"
-                                            onClick={() => { props.EliminarProducto(item.codigo) }}
+                                            onClick={() => { props.EliminarProducto(item.codigo_producto) }}
 
                                         ><i class="fas fa-trash-alt"></i>
 

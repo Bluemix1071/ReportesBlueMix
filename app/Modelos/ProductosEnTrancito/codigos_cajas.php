@@ -11,7 +11,7 @@ class codigos_cajas extends Model
 
 
     protected $fillable = [
-        'usuario','descripcion','nro_referencia','ubicacion','rack','estado'
+        'usuario','descripcion','nro_documento','ubicacion','rack','estado','documento','referencia'
     ];
 
 
@@ -29,10 +29,14 @@ class codigos_cajas extends Model
 
         $codigos_cajas->usuario = $caja['usuario'];
         $codigos_cajas->descripcion = $caja['descripcion'];
-        $codigos_cajas->nro_referencia = $caja['nro_referencia'];
+        $codigos_cajas->nro_documento = $caja['nro_documento'];
         $codigos_cajas->ubicacion = $caja['ubicacion'];
         $codigos_cajas->rack = $caja['rack'];
         $codigos_cajas->estado = $caja['estado'];
+        $codigos_cajas->documento = $caja['documento'];
+        $codigos_cajas->referencia = $caja['referencia'];
+
+
 
         $codigos_cajas->save();
 
