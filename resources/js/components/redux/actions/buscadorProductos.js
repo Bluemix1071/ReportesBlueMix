@@ -3,6 +3,8 @@ import Axios from "axios";
 export const FETCH_PRODUCT_REQUEST = 'FETCH_PRODUCT_REQUEST';
 export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS';
 export const FETCH_PRODUCT_FAILURE = 'FETCH_PRODUCT_FAILURE';
+export const FETCH_RESET = 'FETCH_RESET';
+
 
 
 //ACTIONS
@@ -27,7 +29,14 @@ export const fetchProductFailure = (error) => {
     }
 }
 
-const fetchProduct = (entrada) => {
+export const fetchReset = () => {
+    return {
+        type: FETCH_RESET,
+
+    }
+}
+
+export const fetchProduct = (entrada) => {
     return (dispatch)=>{
         dispatch(fetchProductRequest());
 
@@ -48,5 +57,7 @@ const fetchProduct = (entrada) => {
         })
     }
 }
+
+
 
 export default fetchProduct;

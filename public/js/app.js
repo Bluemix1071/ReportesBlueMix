@@ -74606,6 +74606,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
  // components
 
 
@@ -74644,22 +74645,23 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
   var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(""),
       _useState8 = _slicedToArray(_useState7, 2),
       buscadorProducto = _useState8[0],
-      setBuscadorProducto = _useState8[1];
+      setBuscadorProducto = _useState8[1]; // estado de los produtos y caja
+
 
   var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
       _useState10 = _slicedToArray(_useState9, 2),
       Productos = _useState10[0],
       setProductos = _useState10[1];
 
-  var Buscador = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(function (state) {
-    return state.Buscador;
-  });
-
   var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
       _useState12 = _slicedToArray(_useState11, 2),
       Caja = _useState12[0],
-      setCaja = _useState12[1]; //stepper
+      setCaja = _useState12[1]; // fin estado productos y cajs
 
+
+  var Buscador = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(function (state) {
+    return state.Buscador;
+  }); //stepper
 
   var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(),
       _useState14 = _slicedToArray(_useState13, 2),
@@ -74684,15 +74686,15 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
 
   var onSubmit = function onSubmit(data, e) {
     if (buscadorProducto.length == 7) {
-      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["default"])({
+      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["fetchProduct"])({
         codigo: buscadorProducto
       }));
     } else if (buscadorProducto.length == 13) {
-      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["default"])({
+      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["fetchProduct"])({
         barra: buscadorProducto
       }));
     } else {
-      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["default"])(buscadorProducto));
+      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["fetchProduct"])(buscadorProducto));
     }
 
     setBuscadorProducto('');
@@ -74774,6 +74776,13 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
     var result = Object(_services_EnvioMercaderiaTrancito__WEBPACK_IMPORTED_MODULE_4__["EnvioMercaderia"])({
       productos: productos,
       caja: caja
+    }).then(function (resp) {
+      setProductos([]);
+      setCaja([]);
+      setBuscadorProducto('');
+      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["fetchReset"])());
+    })["catch"](function (error) {
+      console.log(error);
     });
     console.log(result);
   };
@@ -75621,7 +75630,7 @@ function LoginService() {
 /*!********************************************************************!*\
   !*** ./resources/js/components/redux/actions/buscadorProductos.js ***!
   \********************************************************************/
-/*! exports provided: FETCH_PRODUCT_REQUEST, FETCH_PRODUCT_SUCCESS, FETCH_PRODUCT_FAILURE, fetchProductRequest, fetchProductSuccess, fetchProductFailure, default */
+/*! exports provided: FETCH_PRODUCT_REQUEST, FETCH_PRODUCT_SUCCESS, FETCH_PRODUCT_FAILURE, FETCH_RESET, fetchProductRequest, fetchProductSuccess, fetchProductFailure, fetchReset, fetchProduct, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75629,15 +75638,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_PRODUCT_REQUEST", function() { return FETCH_PRODUCT_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_PRODUCT_SUCCESS", function() { return FETCH_PRODUCT_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_PRODUCT_FAILURE", function() { return FETCH_PRODUCT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_RESET", function() { return FETCH_RESET; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchProductRequest", function() { return fetchProductRequest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchProductSuccess", function() { return fetchProductSuccess; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchProductFailure", function() { return fetchProductFailure; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchReset", function() { return fetchReset; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchProduct", function() { return fetchProduct; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var FETCH_PRODUCT_REQUEST = 'FETCH_PRODUCT_REQUEST';
 var FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS';
-var FETCH_PRODUCT_FAILURE = 'FETCH_PRODUCT_FAILURE'; //ACTIONS
+var FETCH_PRODUCT_FAILURE = 'FETCH_PRODUCT_FAILURE';
+var FETCH_RESET = 'FETCH_RESET'; //ACTIONS
 
 var fetchProductRequest = function fetchProductRequest() {
   return {
@@ -75657,7 +75670,11 @@ var fetchProductFailure = function fetchProductFailure(error) {
     payload: error
   };
 };
-
+var fetchReset = function fetchReset() {
+  return {
+    type: FETCH_RESET
+  };
+};
 var fetchProduct = function fetchProduct(entrada) {
   return function (dispatch) {
     dispatch(fetchProductRequest());
@@ -75672,7 +75689,6 @@ var fetchProduct = function fetchProduct(entrada) {
     });
   };
 };
-
 /* harmony default export */ __webpack_exports__["default"] = (fetchProduct);
 
 /***/ }),
@@ -75727,6 +75743,12 @@ var Buscador = function Buscador() {
         error: action.payload,
         FETCH_PRODUCT_SUCCESS: false,
         FETCH_PRODUCT_FAILURE: true
+      };
+
+    case _actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_0__["FETCH_RESET"]:
+      return {
+        loading: false,
+        producto: []
       };
 
     default:
@@ -76006,8 +76028,8 @@ var Stepperr = function Stepperr() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix3\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix3\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -1,5 +1,5 @@
 
-import { FETCH_PRODUCT_FAILURE, FETCH_PRODUCT_REQUEST, FETCH_PRODUCT_SUCCESS } from '../actions/buscadorProductos';
+import { FETCH_PRODUCT_FAILURE, FETCH_PRODUCT_REQUEST, FETCH_PRODUCT_SUCCESS, FETCH_RESET } from '../actions/buscadorProductos';
 
 
 const inicial = {
@@ -18,7 +18,7 @@ const Buscador = (state = inicial, action) => {
                 ...state,
                 loading: true,
                 error: '',
-                FETCH_PRODUCT_SUCCESS:false
+                FETCH_PRODUCT_SUCCESS: false
             }
 
         case FETCH_PRODUCT_SUCCESS:
@@ -26,7 +26,7 @@ const Buscador = (state = inicial, action) => {
                 loading: false,
                 producto: action.payload,
                 error: '',
-                FETCH_PRODUCT_SUCCESS:true
+                FETCH_PRODUCT_SUCCESS: true
             }
 
         case FETCH_PRODUCT_FAILURE:
@@ -34,9 +34,19 @@ const Buscador = (state = inicial, action) => {
                 loading: false,
                 producto: [],
                 error: action.payload,
-                FETCH_PRODUCT_SUCCESS:false,
-                FETCH_PRODUCT_FAILURE:true
+                FETCH_PRODUCT_SUCCESS: false,
+                FETCH_PRODUCT_FAILURE: true
             }
+
+        case FETCH_RESET:
+            return {
+                loading: false,
+                producto: [],
+
+            }
+
+
+
 
         default: return state;
     }

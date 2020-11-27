@@ -133,7 +133,7 @@ class ProductosEnTransitoController extends Controller
         }
 
         $productos = codigos_cajas::find($caja['id'])->load('ProductosEnTrancito');
-        event(new ImprimirTicketEvent($caja));
+       // event(new ImprimirTicketEvent($caja));
         return response()->json([
             "status" => "success",
             "code" => 200,

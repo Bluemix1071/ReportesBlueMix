@@ -5,7 +5,16 @@ import { getProductoService } from './services/getProductoServices';
 import { EnvioMercaderia } from './services/EnvioMercaderiaTrancito';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import fetchProduct from '../redux/actions/buscadorProductos';
+
+
+import { fetchReset } from '../redux/actions/buscadorProductos';
+
+
+import { fetchProduct } from '../redux/actions/buscadorProductos';
+
+
+
+
 // components
 import ModalCantidad from './components/modalCantidad';
 import TablaMercaderia from './components/tablaMercaderia';
@@ -26,9 +35,11 @@ const MovimientoDeMercaderia = () => {
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const [showFormCaja, setShowFormCaja] = useState(true);
     const [buscadorProducto, setBuscadorProducto] = useState("");
+    // estado de los produtos y caja
     const [Productos, setProductos] = useState([]);
-    const Buscador = useSelector(state => state.Buscador);
     const [Caja, setCaja] = useState([]);
+    // fin estado productos y cajs
+    const Buscador = useSelector(state => state.Buscador);
 
     //stepper
     const [stepperr, setstepperr] = useState();
@@ -128,12 +139,23 @@ const MovimientoDeMercaderia = () => {
 
     const EnviarProductos = (data) => {
 
-        Object.assign(  Caja, data );
+        Object.assign(Caja, data);
 
         console.log(Caja);
-        const productos =   JSON.stringify(Productos);
-        const caja =  JSON.stringify(Caja);
-        const result = EnvioMercaderia({ productos, caja });
+        const productos = JSON.stringify(Productos);
+        const caja = JSON.stringify(Caja);
+        const result = EnvioMercaderia({ productos, caja })
+            .then(resp => {
+
+                setProductos([]);
+                setCaja([]);
+                setBuscadorProducto('');
+                dispatch(fetchReset());
+
+            })
+            .catch(error => {
+                console.log(error);
+            })
 
 
         console.log(result);
@@ -252,12 +274,12 @@ const MovimientoDeMercaderia = () => {
                                     />
                                 }
 
-                                    <ModalConfirmarCaja
+                                <ModalConfirmarCaja
                                     showModalConfirm={showModalConfirm}
                                     mostarModalConfirm={mostarModalConfirm}
                                     ocultarModalConfirm={ocultarModalConfirm}
                                     EnviarProductos={EnviarProductos}
-                                    />
+                                />
 
 
 
@@ -267,24 +289,24 @@ const MovimientoDeMercaderia = () => {
 
 
 
-                                            {/* <h3 className="card-title mb-4">Articulos</h3> */}
+                                {/* <h3 className="card-title mb-4">Articulos</h3> */}
 
-                                            <TablaMercaderia
-                                                Productos={Productos}
-                                                EliminarProducto={EliminarProducto}
-                                                updateProduct={updateProduct}
+                                <TablaMercaderia
+                                    Productos={Productos}
+                                    EliminarProducto={EliminarProducto}
+                                    updateProduct={updateProduct}
 
-                                            />
+                                />
 
 
 
 
 
                                 <button class="btn btn-primary mr-4" onClick={() => stepperr.previous()}>previus</button>
-                                <button className="btn btn-success ml-4" disabled={Productos.length <1 || Caja.length <1}
-                                                        onClick={()=> mostarModalConfirm()}
-                                                    >
-                                                        Ingresar Productos
+                                <button className="btn btn-success ml-4" disabled={Productos.length < 1 || Caja.length < 1}
+                                    onClick={() => mostarModalConfirm()}
+                                >
+                                    Ingresar Productos
                                                     </button>
                             </div>
 
