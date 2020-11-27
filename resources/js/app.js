@@ -19,7 +19,8 @@ import { createBrowserHistory } from "history";
 import { Provider } from 'react-redux';
 import store from './components/redux/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Stepperr from './components/stepper/steper';
+
+import ReIngresoMercaderia from './components/ReIngresoMercaderia/ReIngresoMercaderia';
 require('./bootstrap');
 
 
@@ -37,7 +38,8 @@ if (document.getElementById('example')) {
                                 <Switch>
                                     <Route path="/" component={Home} exact={true} />
                                     <Route path="/api/IngresarMercaderia" exact={true}> <MovimientoDeMercaderia /> </Route>
-                                    <Route path="/api/Caja/" exact={true}> <Stepperr /> </Route>
+                                    <Route path="/api/Caja/" exact={true}>   </Route>
+                                    <Route path="/api/ReIngresoMercaderia" exact={true}> <ReIngresoMercaderia/> </Route>
                                     <Route path="*" />
 
                                 </Switch>

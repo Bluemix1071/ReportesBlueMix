@@ -185,6 +185,12 @@ const Nav = () => {
                                         <p>Mostrar</p>
                                     </NavLink>
                                 </li>
+                                <li className="nav-item">
+                                    <NavLink to={`${url}api/ReIngresoMercaderia/`} className="nav-link ">
+                                        <i className="far fa-circle nav-icon"></i>
+                                        <p>ReIngresoMercaderia</p>
+                                    </NavLink>
+                                </li>
                             </ul>
                         </li>
                     </ul>

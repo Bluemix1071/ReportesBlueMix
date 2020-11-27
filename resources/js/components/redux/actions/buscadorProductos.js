@@ -14,7 +14,7 @@ export const fetchProductRequest = () => {
         type: FETCH_PRODUCT_REQUEST
     }
 }
-3
+
 export const fetchProductSuccess = (producto) => {
     return {
         type: FETCH_PRODUCT_SUCCESS,

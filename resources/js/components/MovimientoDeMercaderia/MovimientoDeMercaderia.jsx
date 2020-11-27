@@ -85,7 +85,14 @@ const MovimientoDeMercaderia = () => {
         if (Buscador.FETCH_PRODUCT_SUCCESS) {
             mostarModal();
         }
+
     }, [Buscador.FETCH_PRODUCT_SUCCESS]);
+
+    useEffect(() => {
+        return ()=>{
+            dispatch(fetchReset());
+        }
+    },[]);
 
     const updateProduct = (codi, cant) => {
 
@@ -151,7 +158,9 @@ const MovimientoDeMercaderia = () => {
                 setCaja([]);
                 setBuscadorProducto('');
                 dispatch(fetchReset());
-
+                ocultarModalConfirm();
+                setShowFormCaja(true);
+                stepperr.previous();
             })
             .catch(error => {
                 console.log(error);

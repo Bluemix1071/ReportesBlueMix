@@ -74284,7 +74284,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_redux_store__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/redux/store */ "./resources/js/components/redux/store.js");
 /* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ "./node_modules/bootstrap/dist/css/bootstrap.min.css");
 /* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _components_stepper_steper__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/stepper/steper */ "./resources/js/components/stepper/steper.jsx");
+/* harmony import */ var _components_ReIngresoMercaderia_ReIngresoMercaderia__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/ReIngresoMercaderia/ReIngresoMercaderia */ "./resources/js/components/ReIngresoMercaderia/ReIngresoMercaderia.jsx");
 
 
 
@@ -74321,7 +74321,10 @@ if (document.getElementById('example')) {
   }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_MovimientoDeMercaderia_MovimientoDeMercaderia__WEBPACK_IMPORTED_MODULE_6__["default"], null), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "/api/Caja/",
     exact: true
-  }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_stepper_steper__WEBPACK_IMPORTED_MODULE_12__["default"], null), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+  }, "   "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+    path: "/api/ReIngresoMercaderia",
+    exact: true
+  }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ReIngresoMercaderia_ReIngresoMercaderia__WEBPACK_IMPORTED_MODULE_12__["default"], null), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "*"
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Footer_Footer__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
     className: "control-sidebar control-sidebar-dark"
@@ -74705,6 +74708,11 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
       mostarModal();
     }
   }, [Buscador.FETCH_PRODUCT_SUCCESS]);
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    return function () {
+      dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["fetchReset"])());
+    };
+  }, []);
 
   var updateProduct = function updateProduct(codi, cant) {
     setProductos(Productos.map(function (Product) {
@@ -74781,6 +74789,9 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
       setCaja([]);
       setBuscadorProducto('');
       dispatch(Object(_redux_actions_buscadorProductos__WEBPACK_IMPORTED_MODULE_7__["fetchReset"])());
+      ocultarModalConfirm();
+      setShowFormCaja(true);
+      stepperr.previous();
     })["catch"](function (error) {
       console.log(error);
     });
@@ -75595,7 +75606,14 @@ var Nav = function Nav() {
     className: "nav-link "
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
     className: "far fa-circle nav-icon"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Mostrar")))))))));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Mostrar"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
+    className: "nav-item"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["NavLink"], {
+    to: "".concat(url, "api/ReIngresoMercaderia/"),
+    className: "nav-link "
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-circle nav-icon"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "ReIngresoMercaderia")))))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Nav);
@@ -75623,6 +75641,234 @@ function LoginService() {
 
   return false;
 }
+
+/***/ }),
+
+/***/ "./resources/js/components/ReIngresoMercaderia/ReIngresoMercaderia.jsx":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/ReIngresoMercaderia/ReIngresoMercaderia.jsx ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _MovimientoDeMercaderia_components_tablaMercaderia__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../MovimientoDeMercaderia/components/tablaMercaderia */ "./resources/js/components/MovimientoDeMercaderia/components/tablaMercaderia.jsx");
+/* harmony import */ var _components_TablaProductos__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/TablaProductos */ "./resources/js/components/ReIngresoMercaderia/components/TablaProductos.jsx");
+/* harmony import */ var _redux_actions_buscadorMercaderia__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../redux/actions/buscadorMercaderia */ "./resources/js/components/redux/actions/buscadorMercaderia.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+var ReIngresoMercaderia = function ReIngresoMercaderia() {
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
+
+  var _useForm = Object(react_hook_form__WEBPACK_IMPORTED_MODULE_1__["useForm"])(),
+      register = _useForm.register,
+      errors = _useForm.errors,
+      handleSubmit = _useForm.handleSubmit;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      BuscadorMerc = _useState2[0],
+      setBuscadorMerc = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      Productos = _useState4[0],
+      setProductos = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      Caja = _useState6[0],
+      setCaja = _useState6[1];
+
+  var BuscadorMercaderia = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
+    return state.BuscadorMercaderia;
+  });
+
+  var onSubmit = function onSubmit(data, e) {
+    dispatch(Object(_redux_actions_buscadorMercaderia__WEBPACK_IMPORTED_MODULE_5__["fetchMercaderia"])(BuscadorMerc));
+    console.log(BuscadorMercaderia);
+  };
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    if (BuscadorMercaderia.FETCH_MERCADERIA_SUCCESS) {
+      console.log(BuscadorMercaderia.mercaderia);
+    }
+  }, [BuscadorMercaderia.FETCH_MERCADERIA_SUCCESS]); // useEffect(() => {
+  //     return ()=>{
+  //         dispatch(fetchMercaderiaReset());
+  //     }
+  // },[]);
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container my-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col md-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "ReIngreso De Mercaderia")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col md-6"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    onSubmit: handleSubmit(onSubmit)
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "input-group flex-nowrap mt-5"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "input-group-prepend"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    "class": "input-group-text",
+    id: "addon-wrapping"
+  }, "Buscar")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "number",
+    className: "form-control",
+    name: "caja",
+    autoFocus: true,
+    placeholder: "Mercaderia",
+    value: BuscadorMerc,
+    onChange: function onChange(event) {
+      setBuscadorMerc(event.target.value);
+    }
+  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_TablaProductos__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    Productos: Productos
+  })))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (ReIngresoMercaderia);
+
+/***/ }),
+
+/***/ "./resources/js/components/ReIngresoMercaderia/components/TablaProductos.jsx":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/ReIngresoMercaderia/components/TablaProductos.jsx ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var TablaProductosReIngreso = function TablaProductosReIngreso(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+    "class": "table table-sm"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+    scope: "col"
+  }, "Codigo"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+    scope: "col"
+  }, "Codigo barra"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+    scope: "col"
+  }, "Descripcion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+    scope: "col"
+  }, "Cantidad"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+    scope: "col"
+  }, "Acciones"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.Productos.length > 0 ? props.Productos.map(function (item, index) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
+      key: item.codigo_producto
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+      scope: "row"
+    }, item.codigo_producto), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, item.codigoBarra), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, item.descripcion));
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+    colSpan: 4
+  }, "No hay productos")))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (TablaProductosReIngreso);
+
+/***/ }),
+
+/***/ "./resources/js/components/redux/actions/buscadorMercaderia.js":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/redux/actions/buscadorMercaderia.js ***!
+  \*********************************************************************/
+/*! exports provided: FETCH_MERCADERIA_REQUEST, FETCH_MERCADERIA_SUCCESS, FETCH_MERCADERIA_FAILURE, FETCH_MERCADERIA_RESET, fetchMercaderiaRequest, fetchMercaderiaSuccess, fetchMercaderiaFailure, fetchMercaderiaReset, fetchMercaderia */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_MERCADERIA_REQUEST", function() { return FETCH_MERCADERIA_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_MERCADERIA_SUCCESS", function() { return FETCH_MERCADERIA_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_MERCADERIA_FAILURE", function() { return FETCH_MERCADERIA_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_MERCADERIA_RESET", function() { return FETCH_MERCADERIA_RESET; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchMercaderiaRequest", function() { return fetchMercaderiaRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchMercaderiaSuccess", function() { return fetchMercaderiaSuccess; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchMercaderiaFailure", function() { return fetchMercaderiaFailure; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchMercaderiaReset", function() { return fetchMercaderiaReset; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchMercaderia", function() { return fetchMercaderia; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var FETCH_MERCADERIA_REQUEST = 'FETCH_MERCADERIA_REQUEST';
+var FETCH_MERCADERIA_SUCCESS = 'FETCH_MERCADERIA_SUCCESS';
+var FETCH_MERCADERIA_FAILURE = 'FETCH_MERCADERIA_FAILURE';
+var FETCH_MERCADERIA_RESET = 'FETCH_MERCADERIA_RESET';
+var fetchMercaderiaRequest = function fetchMercaderiaRequest() {
+  return {
+    type: FETCH_MERCADERIA_REQUEST
+  };
+};
+var fetchMercaderiaSuccess = function fetchMercaderiaSuccess(mercaderia) {
+  return {
+    type: FETCH_MERCADERIA_SUCCESS,
+    payload: mercaderia
+  };
+};
+var fetchMercaderiaFailure = function fetchMercaderiaFailure(error) {
+  return {
+    type: FETCH_MERCADERIA_FAILURE,
+    payload: error
+  };
+};
+var fetchMercaderiaReset = function fetchMercaderiaReset() {
+  return {
+    type: FETCH_MERCADERIA_RESET
+  };
+};
+var fetchMercaderia = function fetchMercaderia(entrada) {
+  return function (dispatch) {
+    dispatch(fetchMercaderiaRequest());
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('GetCaja/' + entrada).then(function (resp) {
+      console.log(resp);
+
+      if (resp.data && resp.data.caja.productos_en_trancito.length) {
+        dispatch(fetchMercaderiaSuccess([resp.data.caja]));
+      } else {
+        dispatch(fetchMercaderiaFailure('no se encontro la mercaderia'));
+      }
+    })["catch"](function (error) {
+      dispatch(fetchMercaderiaFailure('no se encontro la mercaderia'));
+    });
+  };
+};
 
 /***/ }),
 
@@ -75657,7 +75903,6 @@ var fetchProductRequest = function fetchProductRequest() {
     type: FETCH_PRODUCT_REQUEST
   };
 };
-3;
 var fetchProductSuccess = function fetchProductSuccess(producto) {
   return {
     type: FETCH_PRODUCT_SUCCESS,
@@ -75690,6 +75935,72 @@ var fetchProduct = function fetchProduct(entrada) {
   };
 };
 /* harmony default export */ __webpack_exports__["default"] = (fetchProduct);
+
+/***/ }),
+
+/***/ "./resources/js/components/redux/reducers/BuscadorMercaderiaReducer.js":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/redux/reducers/BuscadorMercaderiaReducer.js ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_buscadorMercaderia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/buscadorMercaderia */ "./resources/js/components/redux/actions/buscadorMercaderia.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var inicial = {
+  loading: false,
+  mercaderia: [],
+  error: ''
+};
+
+var BuscadorMercaderia = function BuscadorMercaderia() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : inicial;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _actions_buscadorMercaderia__WEBPACK_IMPORTED_MODULE_0__["FETCH_MERCADERIA_REQUEST"]:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        loading: true,
+        error: '',
+        FETCH_MERCADERIA_SUCCESS: false
+      });
+
+    case _actions_buscadorMercaderia__WEBPACK_IMPORTED_MODULE_0__["FETCH_MERCADERIA_SUCCESS"]:
+      return {
+        loading: false,
+        mercaderia: action.payload,
+        FETCH_MERCADERIA_SUCCESS: false
+      };
+
+    case _actions_buscadorMercaderia__WEBPACK_IMPORTED_MODULE_0__["FETCH_MERCADERIA_FAILURE"]:
+      return {
+        loading: false,
+        mercaderia: [],
+        error: action.payload,
+        FETCH_MERCADERIA_SUCCESS: false,
+        FETCH_MERCADERIA_FAILURE: true
+      };
+
+    case _actions_buscadorMercaderia__WEBPACK_IMPORTED_MODULE_0__["FETCH_MERCADERIA_RESET"]:
+      return {
+        loading: false,
+        mercaderia: []
+      };
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (BuscadorMercaderia);
 
 /***/ }),
 
@@ -75771,10 +76082,13 @@ var Buscador = function Buscador() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _buscadorReducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./buscadorReducer */ "./resources/js/components/redux/reducers/buscadorReducer.js");
+/* harmony import */ var _BuscadorMercaderiaReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BuscadorMercaderiaReducer */ "./resources/js/components/redux/reducers/BuscadorMercaderiaReducer.js");
+
 
 
 var rootReducers = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
-  Buscador: _buscadorReducer__WEBPACK_IMPORTED_MODULE_1__["default"]
+  Buscador: _buscadorReducer__WEBPACK_IMPORTED_MODULE_1__["default"],
+  BuscadorMercaderia: _BuscadorMercaderiaReducer__WEBPACK_IMPORTED_MODULE_2__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (rootReducers);
 
@@ -75838,178 +76152,6 @@ var Step = function Step(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/stepper/steper.jsx":
-/*!****************************************************!*\
-  !*** ./resources/js/components/stepper/steper.jsx ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ "./node_modules/bootstrap/dist/css/bootstrap.min.css");
-/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bs-stepper/dist/css/bs-stepper.min.css */ "./node_modules/bs-stepper/dist/css/bs-stepper.min.css");
-/* harmony import */ var bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bs_stepper_dist_css_bs_stepper_min_css__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var bs_stepper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bs-stepper */ "./node_modules/bs-stepper/dist/js/bs-stepper.js");
-/* harmony import */ var bs_stepper__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bs_stepper__WEBPACK_IMPORTED_MODULE_3__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-var Stepperr = function Stepperr() {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(),
-      _useState2 = _slicedToArray(_useState, 2),
-      stepperr = _useState2[0],
-      setstepperr = _useState2[1];
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    setstepperr(new bs_stepper__WEBPACK_IMPORTED_MODULE_3___default.a(document.querySelector('#stepper1'), {
-      linear: false,
-      animation: true
-    }));
-  }, []);
-
-  var onSubmit = function onSubmit(e) {
-    e.preventDefault();
-  };
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    id: "stepper1",
-    "class": "bs-stepper"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "bs-stepper-header"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "step",
-    "data-target": "#test-l-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "step-trigger"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    "class": "bs-stepper-circle"
-  }, "1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    "class": "bs-stepper-label"
-  }, "Email"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "line"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "step",
-    "data-target": "#test-l-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "step-trigger"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    "class": "bs-stepper-circle"
-  }, "2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    "class": "bs-stepper-label"
-  }, "Password"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "line"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "step",
-    "data-target": "#test-l-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "step-trigger"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    "class": "bs-stepper-circle"
-  }, "3"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    "class": "bs-stepper-label"
-  }, "Validate"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "line"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "step",
-    "data-target": "#test-l-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "step-trigger"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    "class": "bs-stepper-circle"
-  }, "4"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    "class": "bs-stepper-label"
-  }, "xd")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "bs-stepper-content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-    onSubmit: onSubmit
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    id: "test-l-1",
-    "class": "content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    "for": "exampleInputEmail1"
-  }, "Email address"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "email",
-    "class": "form-control",
-    id: "exampleInputEmail1",
-    placeholder: "Enter email"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "btn btn-primary",
-    onClick: function onClick() {
-      return stepperr.next();
-    }
-  }, "Next")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    id: "test-l-2",
-    "class": "content"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "class": "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    "for": "exampleInputPassword1"
-  }, "Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "password",
-    "class": "form-control",
-    id: "exampleInputPassword1",
-    placeholder: "Password"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "btn btn-primary",
-    onClick: function onClick() {
-      return stepperr.previous();
-    }
-  }, "previus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "btn btn-primary",
-    onClick: function onClick() {
-      return stepperr.next();
-    }
-  }, "Next")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    id: "test-l-3",
-    "class": "content "
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "btn btn-primary",
-    onClick: function onClick() {
-      return stepperr.previous();
-    }
-  }, "previus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "btn btn-primary",
-    onClick: function onClick() {
-      return stepperr.next();
-    }
-  }, "Next")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    id: "test-l-4",
-    "class": "content text-center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    "class": "btn btn-primary",
-    onClick: function onClick() {
-      return stepperr.previous();
-    }
-  }, "previus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    type: "submit",
-    "class": "btn btn-primary "
-  }, "Submit"))))));
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Stepperr);
-
-/***/ }),
-
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -76028,8 +76170,8 @@ var Stepperr = function Stepperr() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix3\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix3\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -23,7 +23,7 @@ class ProductosEnTransitoController extends Controller
     public function Buscar(Request $request)
     {
 
-       //dd($request);
+        //dd($request);
         $codigo = $request->input('codigo', null);
         $barra = $request->input('barra', null);
         $descripcion = $request->input('descripcion', null);
@@ -112,7 +112,7 @@ class ProductosEnTransitoController extends Controller
 
             DB::beginTransaction();
             $caja = codigos_cajas::IngresarCaja($caja_array);
-
+            //dd($caja);
             for ($i = 0; $i < $sizeof; $i++) {
 
                 Bodeprod::descontarStock($productos_array[$i]['codigo_producto'], $productos_array[$i]['cantidad']);
@@ -120,7 +120,7 @@ class ProductosEnTransitoController extends Controller
                 DB::commit();
             }
         } catch (\Throwable $th) {
-           dd($th);
+            dd($th);
             DB::rollBack();
             return response()->json(
                 [
@@ -133,7 +133,7 @@ class ProductosEnTransitoController extends Controller
         }
 
         $productos = codigos_cajas::find($caja['id'])->load('ProductosEnTrancito');
-       // event(new ImprimirTicketEvent($caja));
+        // event(new ImprimirTicketEvent($caja));
         return response()->json([
             "status" => "success",
             "code" => 200,
@@ -148,7 +148,6 @@ class ProductosEnTransitoController extends Controller
         if (!is_null($id)) {
             try {
                 $caja = codigos_cajas::findOrFail($id)->load('ProductosEnTrancito');
-
             } catch (\Throwable $th) {
 
                 return response()->json(
@@ -162,7 +161,14 @@ class ProductosEnTransitoController extends Controller
                 );
             }
             event(new ImprimirTicketEvent($caja));
-            return response()->json($caja);
+            return response()->json(
+                [
+                    "status" => "success",
+                    "code" => 200,
+                    "caja" =>  $caja,
+                ]
+
+            );
         }
     }
 
@@ -276,11 +282,13 @@ class ProductosEnTransitoController extends Controller
         event(new ImprimirTicketEvent($caja));
         return response()->json(
             [
-            "status" => "success",
-            "code" => 200,
-            "caja" => $productos,
+                "status" => "success",
+                "code" => 200,
+                "caja" => $productos,
 
-        ], 200);
+            ],
+            200
+        );
     }
 
 
@@ -301,7 +309,6 @@ class ProductosEnTransitoController extends Controller
 
                         event(new ReIngresarStockEvent($ProductosAntiguos[$i]));
                     }
-
                 } else {
 
                     return response()->json([
