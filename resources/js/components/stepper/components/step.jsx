@@ -12,7 +12,7 @@ const Step = (props) => {
                     <span className="bs-stepper-label">{item.text}</span>
                 </button>
             </div>
-             <div  className="line"></div>
+             <div   className="line"></div>
              </Fragment>
         ))
 

@@ -14,7 +14,8 @@ use App\Modelos\ProductosEnTrancito\ProductosVista;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\Printer;
 
 //mix en trancito
 class ProductosEnTransitoController extends Controller
@@ -112,6 +113,8 @@ class ProductosEnTransitoController extends Controller
 
             DB::beginTransaction();
             $caja = codigos_cajas::IngresarCaja($caja_array);
+
+            //dd($caja);
             //dd($caja);
             for ($i = 0; $i < $sizeof; $i++) {
 
@@ -133,7 +136,10 @@ class ProductosEnTransitoController extends Controller
         }
 
         $productos = codigos_cajas::find($caja['id'])->load('ProductosEnTrancito');
-        // event(new ImprimirTicketEvent($caja));
+        event(new ImprimirTicketEvent($caja));
+
+
+
         return response()->json([
             "status" => "success",
             "code" => 200,
@@ -160,7 +166,7 @@ class ProductosEnTransitoController extends Controller
                     400
                 );
             }
-            event(new ImprimirTicketEvent($caja));
+            //event(new ImprimirTicketEvent($caja));
             return response()->json(
                 [
                     "status" => "success",

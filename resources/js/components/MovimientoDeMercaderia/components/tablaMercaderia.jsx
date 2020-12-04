@@ -7,16 +7,6 @@ const TablaMercaderia = (props) => {
 
     }
 
-
-
-
-
-
-
-
-
-
-
     return (
         <Fragment>
             <table class="table table-sm">

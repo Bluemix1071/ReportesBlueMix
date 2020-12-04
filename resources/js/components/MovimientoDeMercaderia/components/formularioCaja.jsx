@@ -28,7 +28,7 @@ const FormularioCaja = (props) => {
         <Fragment>
             <form onSubmit={handleSubmit(onSubmit)} className="needs-validation" >
                 <div className="form-row">
-                    <div className="col-md-3 mb-3">
+                    <div className="col-md-4 mb-3">
                         <label for="validationCustom01">usuario</label>
                         <input type="text" className="form-control" name="usuario" id="validationCustom01" required
                             ref={
@@ -45,25 +45,8 @@ const FormularioCaja = (props) => {
                             {errors?.usuario?.message}
                         </div>
                     </div>
-                    <div className="col-md-3 mb-3">
-                        <label for="validationCustom02">descripcion</label>
-                        <input type="text" className="form-control" name="descripcion"  required
 
-                            ref={
-                                register({
-                                    required: {
-                                        value: true,
-                                        message: 'descripcion es requerido'
-                                    }
-                                })
-                            }
-
-                        />
-                        <div className="valid-feedback">
-                            Looks good!
-                        </div>
-                    </div>
-                    <div className="col-md-3 mb-3">
+                    <div className="col-md-4 mb-3">
                     <label for="validationCustom02">Documento</label>
                     <select className="custom-select" name="documento"  required
                             ref={
@@ -81,7 +64,7 @@ const FormularioCaja = (props) => {
                             <option>Cotizacion</option>
                         </select>
                     </div>
-                    <div className="col-md-3 mb-3">
+                    <div className="col-md-4 mb-3">
                     <label for="validationCustom02">Nro Documento</label>
                         <input type="number" className="form-control" name="nro_documento"  required
 
@@ -97,7 +80,7 @@ const FormularioCaja = (props) => {
                     </div>
                 </div>
                 <div className="form-row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="validationCustom03"> Ubicacion</label>
                         <select className="custom-select" name="ubicacion"  required
                             ref={
@@ -117,9 +100,9 @@ const FormularioCaja = (props) => {
                             Please provide a valid city.
                         </div>
                     </div>
-                    <div className="col-md-4 mb-3">
+                    <div className="col-md-6 mb-3">
                         <label for="validationCustom04"> Rack</label>
-                        <select className="custom-select" name="rack" id="validationCustom04" required
+                        <input type="text" className="form-control" name="rack"  required
                             ref={
                                 register({
                                     required: {
@@ -127,26 +110,27 @@ const FormularioCaja = (props) => {
                                         message: 'rack es requerido'
                                     }
                                 })
-                            }>
-                            <option >Choose...</option>
-                            <option>...</option>
-                        </select>
+                            }/>
+
                         <div className="invalid-feedback">
                             Please select a valid state.
                         </div>
 
                     </div>
-                    <div className="col-md-4 mb-3">
-                        <label for="validationCustom05">Referencia</label>
-                        <input type="text" className="form-control" name="referencia" id="validationCustom05" required
+                    </div>
+                    <div className="form-row">
+                    {/* text area observaciones cuadro grande XD */}
+                    <div className="col-md-12 mb-3">
+                        <label for="validationCustom05">Observacion</label>
+                        <textarea class="form-control" name="observacion" placeholder="Observaciones" required
                             ref={
                                 register({
                                     required: {
                                         value: true,
-                                        message: 'referencia es requerido'
+                                        message: 'observacion es requerido'
                                     }
                                 })
-                            } />
+                            }> </textarea>
                         <div className="invalid-feedback">
                             Please provide a valid zip.
                         </div>

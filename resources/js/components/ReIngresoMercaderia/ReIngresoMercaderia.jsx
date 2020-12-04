@@ -1,44 +1,92 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import TablaMercaderia from '../MovimientoDeMercaderia/components/tablaMercaderia';
+import { fetchMercaderia } from '../redux/actions/buscadorMercaderia';
+import { getMercaderiaService } from './services/getMercaderiaServices';
+import { ReIngresoMercaderiaService } from './services/ReIngresoMercaderiaService';
+
+
+//componentes
 import TablaProductosReIngreso from './components/TablaProductos';
-import {fetchMercaderia, fetchMercaderiaReset} from '../redux/actions/buscadorMercaderia';
+import ModalReIngreso from './components/ModalReIngreso';
+
+
 const ReIngresoMercaderia = () => {
+
+
     const dispatch = useDispatch();
     const { register, errors, handleSubmit } = useForm();
-    const [BuscadorMerc, setBuscadorMerc] = useState("")
-
+    const [BuscadorMerc, setBuscadorMerc] = useState("");
+    const [ModalReIngresoShow, setModalReIngreso] = useState(false);
+    const [ErrorBuscador, setErrorBuscador] = useState(false);
+    const [ErrorReIngreso, setErrorReIngreso] = useState(false);
+    const [SuccessMeraderia, setSuccessMeraderia] = useState(false);
     const [Productos, setProductos] = useState([]);
     const [Caja, setCaja] = useState([]);
 
-    const BuscadorMercaderia= useSelector(state => state.BuscadorMercaderia);
+    const BuscadorMercaderia = useSelector(state => state.BuscadorMercaderia);
     const onSubmit = (data, e) => {
 
-        dispatch(fetchMercaderia(BuscadorMerc))
-        console.log( BuscadorMercaderia);
+        //dispatch(fetchMercaderia(BuscadorMerc))
+        const caja = getMercaderiaService(BuscadorMerc)
+            .then(function (response) {
+                // handle success
+                setErrorBuscador(false);
+                setSuccessMeraderia(false);
+                setErrorReIngreso(false);
+                console.log(response.data.caja.productos_en_trancito);
+                setProductos(response.data.caja.productos_en_trancito);
+                setCaja(response.data.caja);
+                setBuscadorMerc('');
+            })
+            .catch(function (error) {
+                setSuccessMeraderia(false);
+                setErrorReIngreso(false);
+                setErrorBuscador(true);
+                setProductos([]);
+                // console.log(error);
+            })
+
+        //console.log(caja);
+
     }
 
-    useEffect(() => {
 
-        if (BuscadorMercaderia.FETCH_MERCADERIA_SUCCESS) {
-             console.log( BuscadorMercaderia.mercaderia)
-        }
+    const mostarModal = () => {
 
-    }, [BuscadorMercaderia.FETCH_MERCADERIA_SUCCESS]);
+        setModalReIngreso(true);
 
+    }
+    const ocultarModal = () => {
 
-    // useEffect(() => {
-    //     return ()=>{
-    //         dispatch(fetchMercaderiaReset());
-    //     }
-    // },[]);
+        setModalReIngreso(false);
 
+    }
 
+    const ReIngresarMercaderia=(id)=>{
 
+        const ReIngreso = ReIngresoMercaderiaService(id)
+        .then(function (response) {
+            // handle success
+            setErrorReIngreso(false);
+            console.log(response)
+            ocultarModal();
+            setBuscadorMerc('');
+            setSuccessMeraderia(true);
+            setProductos([]);
+        })
+        .catch(function (error) {
+            setErrorReIngreso(true);
+            console.log(error);
+            ocultarModal();
+            setProductos([]);
+            // console.log(error);
+        })
+    }
 
 
     return (
+
         <Fragment>
             <div className="container my-4">
 
@@ -47,6 +95,40 @@ const ReIngresoMercaderia = () => {
                         <h1>ReIngreso De Mercaderia</h1>
                     </div>
                     <div className="col md-6">
+                        {ErrorBuscador ? (
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>la mercaderia que buscas no se encuentra  :'C </strong>
+                            </div>
+
+                        ) : (
+                                <h1></h1>
+                            )
+
+
+                        }
+                        {ErrorReIngreso ? (
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>La Mercaderia ya fue ReIngresada </strong>
+                                </div>
+
+                            ) : (
+                                    <h1></h1>
+                                )
+
+
+                            }
+
+                            {SuccessMeraderia ? (
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>La Mercaderia Fue ReIngresa Correctamente</strong>
+                                </div>
+
+                            ) : (
+                                    <h1></h1>
+                                )
+
+
+                            }
 
                     </div>
                 </div>
@@ -74,15 +156,38 @@ const ReIngresoMercaderia = () => {
                         </form>
 
                     </div>
+
                 </div>
                 <div className="row">
                     <div className="col-md-12">
                         {/* Tabla De Productos */}
 
+
+
                         <TablaProductosReIngreso
-                        Productos={Productos}/>
+                            Productos={Productos} />
+
                     </div>
+
+
                 </div>
+                <div className="float-right">
+                    <button className="btn btn-success" disabled={Productos.length < 1} onClick={()=>mostarModal()}> ReIngresar</button>
+
+
+                </div>
+
+
+                    <ModalReIngreso
+
+                        ModalReIngreso={ModalReIngresoShow}
+                        mostarModal={mostarModal}
+                        ocultarModal={ocultarModal}
+                        caja={Caja}
+                        ReIngresarMercaderia={ReIngresarMercaderia}
+
+                    />
+
 
             </div>
         </Fragment>

@@ -10,6 +10,7 @@ const inicial = {
 const BuscadorMercaderia = (state = inicial, action) => {
 
     switch (action.type) {
+
         case FETCH_MERCADERIA_REQUEST:
             return {
                 ...state,

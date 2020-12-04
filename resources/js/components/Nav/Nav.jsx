@@ -180,19 +180,40 @@ const Nav = () => {
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink to={`${url}api/Caja/`} className="nav-link ">
+                                    <NavLink to={`${url}api/ModificarMercaderia`} className="nav-link ">
                                         <i className="far fa-circle nav-icon"></i>
-                                        <p>Mostrar</p>
+                                        <p>Modificar</p>
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink to={`${url}api/ReIngresoMercaderia/`} className="nav-link ">
+                                    <NavLink to={`${url}api/ReIngresoMercaderia`} className="nav-link ">
                                         <i className="far fa-circle nav-icon"></i>
                                         <p>ReIngresoMercaderia</p>
                                     </NavLink>
                                 </li>
                             </ul>
                         </li>
+
+
+                        <li className="nav-item has-treeview">
+                            <a href="#" className="nav-link">
+                                <i className="nav-icon fas fa-users"></i>
+                                <p>
+                                    Cupones Escolares
+                                    <i className="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul className="nav nav-treeview">
+                                <li className="nav-item">
+                                    <NavLink to={`${url}api/IngresoCupon`} className="nav-link ">
+                                        <i className="far fa-circle nav-icon"></i>
+                                        <p>Ingresar </p>
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        </li>
+
+
                     </ul>
                 </nav>
             </aside>

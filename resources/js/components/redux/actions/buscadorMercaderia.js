@@ -42,19 +42,17 @@ export const fetchMercaderia = (entrada) => {
         Axios.get('GetCaja/'+entrada)
         .then(resp =>{
 
-            console.log(resp);
+            //console.log(resp.data);
 
-            if ( resp.data && resp.data.caja.productos_en_trancito.length) {
+            if ( resp.data ) {
                 dispatch(fetchMercaderiaSuccess([resp.data.caja]));
             }else{
                 dispatch(fetchMercaderiaFailure('no se encontro la mercaderia'));
             }
-
-
-
         })
         .catch(error=>{
             dispatch(fetchMercaderiaFailure('no se encontro la mercaderia'));
         })
     }
 }
+export default fetchMercaderia;

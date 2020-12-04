@@ -11,7 +11,7 @@ const TablaProductosReIngreso = (props) => {
                         <th scope="col">Codigo barra</th>
                         <th scope="col">Descripcion</th>
                         <th scope="col">Cantidad</th>
-                        <th scope="col">Acciones</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -24,6 +24,7 @@ const TablaProductosReIngreso = (props) => {
                                     <th scope="row">{item.codigo_producto}</th>
                                     <th>{item.codigoBarra}</th>
                                     <th>{item.descripcion}</th>
+                                    <th>{item.cantidad}</th>
 
                                 </tr>
                             )) : (

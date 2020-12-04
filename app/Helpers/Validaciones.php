@@ -28,7 +28,7 @@ class Validaciones
         $validate =\Validator::make($caja, [
             'usuario' => 'required',
             'ubicacion' => 'required',
-            'descripcion' => 'required',
+            'observacion' => 'required',
             'estado' => [
                 'required',
                 'in:Completado,Pendiente,ReIngresado',

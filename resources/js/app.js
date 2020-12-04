@@ -12,7 +12,9 @@ import {
 } from "react-router-dom";
 import Footer from './components/Footer/Footer';
 import Nav from './components/Nav/Nav';
-import Caja from './components/Caja/Caja';
+
+// import Caja from './components/Caja/Caja';
+
 import MovimientoDeMercaderia from './components/MovimientoDeMercaderia/MovimientoDeMercaderia';
 import Home from './components/Home/Home';
 import { createBrowserHistory } from "history";
@@ -21,6 +23,8 @@ import store from './components/redux/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ReIngresoMercaderia from './components/ReIngresoMercaderia/ReIngresoMercaderia';
+import IngresoCupon from './components/CuponesEscolares/IngresarCupon';
+import ModificarMercaderia from './components/ModificarMercaderia/ModificarMercaderia';
 require('./bootstrap');
 
 
@@ -38,8 +42,9 @@ if (document.getElementById('example')) {
                                 <Switch>
                                     <Route path="/" component={Home} exact={true} />
                                     <Route path="/api/IngresarMercaderia" exact={true}> <MovimientoDeMercaderia /> </Route>
-                                    <Route path="/api/Caja/" exact={true}>   </Route>
+                                    <Route path="/api/ModificarMercaderia/" exact={true}> <ModificarMercaderia/> </Route>
                                     <Route path="/api/ReIngresoMercaderia" exact={true}> <ReIngresoMercaderia/> </Route>
+                                    <Route path="/api/IngresoCupon" exact={true}> <IngresoCupon/> </Route>
                                     <Route path="*" />
 
                                 </Switch>

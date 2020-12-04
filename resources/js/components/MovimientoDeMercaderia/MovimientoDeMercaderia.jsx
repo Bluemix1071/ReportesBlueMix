@@ -1,31 +1,24 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductoService } from './services/getProductoServices';
-
 import { EnvioMercaderia } from './services/EnvioMercaderiaTrancito';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-
-
 import { fetchReset } from '../redux/actions/buscadorProductos';
-
-
 import { fetchProduct } from '../redux/actions/buscadorProductos';
-
-
-
 
 // components
 import ModalCantidad from './components/modalCantidad';
 import TablaMercaderia from './components/tablaMercaderia';
 import FormularioCaja from './components/formularioCaja';
 import ModalConfirmarCaja from './components/ModalConfirmarCaja';
-
 // steppers
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bs-stepper/dist/css/bs-stepper.min.css';
 import Stepper from 'bs-stepper'
 import Step from '../stepper/components/step';
+
+//import escpos from 'escpos';
 
 const MovimientoDeMercaderia = () => {
 
@@ -34,6 +27,8 @@ const MovimientoDeMercaderia = () => {
     const [show, setShow] = useState(false);
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const [showFormCaja, setShowFormCaja] = useState(true);
+
+    const [ConfirmacionCaja, setConfirmacionCaja] = useState(false)
     const [buscadorProducto, setBuscadorProducto] = useState("");
     // estado de los produtos y caja
     const [Productos, setProductos] = useState([]);
@@ -55,7 +50,7 @@ const MovimientoDeMercaderia = () => {
 
     const steps = [
         { target: '#item1', number: 1, text: 'Ingresar Caja' },
-        { target: '#item2', number: 2, text: 'Ingreso Poductos' }
+        { target: '#item2', number: 2, text: 'Ingreso Poductos' },
     ]
 
 
@@ -64,7 +59,7 @@ const MovimientoDeMercaderia = () => {
 
 
     const onSubmit = (data, e) => {
-
+        setConfirmacionCaja(false);
         if (buscadorProducto.length == 7) {
 
             dispatch(fetchProduct({ codigo: buscadorProducto }));
@@ -83,7 +78,10 @@ const MovimientoDeMercaderia = () => {
 
     useEffect(() => {
         if (Buscador.FETCH_PRODUCT_SUCCESS) {
+
+            setConfirmacionCaja(false);
             mostarModal();
+
         }
 
     }, [Buscador.FETCH_PRODUCT_SUCCESS]);
@@ -161,6 +159,11 @@ const MovimientoDeMercaderia = () => {
                 ocultarModalConfirm();
                 setShowFormCaja(true);
                 stepperr.previous();
+                setConfirmacionCaja(true);
+
+
+
+
             })
             .catch(error => {
                 console.log(error);
@@ -186,7 +189,7 @@ const MovimientoDeMercaderia = () => {
     }
 
     const EnviarCaja = (caja) => {
-
+        setConfirmacionCaja(false);
         setCaja(caja);
 
     }
@@ -211,6 +214,18 @@ const MovimientoDeMercaderia = () => {
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>{Buscador.error}</strong>
                         </div>
+                    }
+
+                    {ConfirmacionCaja? (
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>la mercaderia se ingreso correctamente </strong>
+                    </div>
+
+                    ):(
+                        <h1></h1>
+                    )
+
+
                     }
                 </div>
                 <hr />
@@ -315,8 +330,7 @@ const MovimientoDeMercaderia = () => {
                                 <button className="btn btn-success ml-4" disabled={Productos.length < 1 || Caja.length < 1}
                                     onClick={() => mostarModalConfirm()}
                                 >
-                                    Ingresar Productos
-                                                    </button>
+                                    Ingresar Productos </button>
                             </div>
 
                         </form>
