@@ -74681,8 +74681,6 @@ var ModificarMercaderia = function ModificarMercaderia() {
       BuscadorMerc = _useState6[0],
       setBuscadorMerc = _useState6[1];
 
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {}, []);
-
   var onSubmit = function onSubmit(data, e) {
     // console.log(BuscadorMerc);
     // console.log(data);
@@ -74698,10 +74696,10 @@ var ModificarMercaderia = function ModificarMercaderia() {
   var EliminarProducto = function EliminarProducto(codigo) {
     console.log(codigo);
     console.log(Productos.filter(function (Producto) {
-      return Producto.codigo !== codigo;
+      return Producto.codigo_producto !== codigo;
     }));
-    setProductos(Productos.filter(function (Productos) {
-      return Productos.codigo !== codigo;
+    setProductos(Productos.filter(function (Producto) {
+      return Producto.codigo_producto !== codigo;
     }));
   };
 
@@ -75037,7 +75035,7 @@ var MovimientoDeMercaderia = function MovimientoDeMercaderia() {
   var EliminarProducto = function EliminarProducto(codigo) {
     // console.log(codigo)
     setProductos(Productos.filter(function (Productos) {
-      return Productos.codigo !== codigo;
+      return Productos.codigo_producto !== codigo;
     }));
   };
 
@@ -76596,8 +76594,8 @@ var Step = function Step(props) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix3\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ReportesBlueMix3\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

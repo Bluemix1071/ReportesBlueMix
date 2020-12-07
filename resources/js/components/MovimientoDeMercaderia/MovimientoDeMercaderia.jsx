@@ -175,7 +175,7 @@ const MovimientoDeMercaderia = () => {
 
     const EliminarProducto = (codigo) => {
         // console.log(codigo)
-        setProductos(Productos.filter(Productos => Productos.codigo !== codigo))
+        setProductos(Productos.filter(Productos => Productos.codigo_producto !== codigo))
     }
 
 

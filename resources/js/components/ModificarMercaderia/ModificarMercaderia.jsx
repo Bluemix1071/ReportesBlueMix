@@ -12,9 +12,7 @@ const ModificarMercaderia = () => {
     const [BuscadorMerc, setBuscadorMerc] = useState("");
 
 
-    useEffect(() => {
 
-    }, [])
 
     const onSubmit = (data, e) => {
        // console.log(BuscadorMerc);
@@ -33,8 +31,8 @@ const ModificarMercaderia = () => {
 
     const EliminarProducto = (codigo) => {
          console.log(codigo)
-         console.log(Productos.filter(Producto => Producto.codigo !== codigo))
-        setProductos(Productos.filter(Productos => Productos.codigo !== codigo))
+         console.log(Productos.filter(Producto => Producto.codigo_producto !== codigo))
+        setProductos(Productos.filter(Producto => Producto.codigo_producto !== codigo))
     }
 
     return (
