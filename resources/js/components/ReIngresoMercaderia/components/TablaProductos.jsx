@@ -4,7 +4,7 @@ import React, { Fragment } from 'react';
 const TablaProductosReIngreso = (props) => {
     return (
         <Fragment>
-            <table class="table table-sm">
+            <table className="table table-sm">
                 <thead>
                     <tr>
                         <th scope="col">Codigo</th>

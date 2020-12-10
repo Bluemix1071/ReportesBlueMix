@@ -96,7 +96,7 @@ const ReIngresoMercaderia = () => {
                     </div>
                     <div className="col md-6">
                         {ErrorBuscador ? (
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <div className="alert alert-warning alert-dismissible fade show" role="alert">
                                 <strong>la mercaderia que buscas no se encuentra  :'C </strong>
                             </div>
 
@@ -107,7 +107,7 @@ const ReIngresoMercaderia = () => {
 
                         }
                         {ErrorReIngreso ? (
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <div className="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>La Mercaderia ya fue ReIngresada </strong>
                                 </div>
 
@@ -119,7 +119,7 @@ const ReIngresoMercaderia = () => {
                             }
 
                             {SuccessMeraderia ? (
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <div className="alert alert-success alert-dismissible fade show" role="alert">
                                     <strong>La Mercaderia Fue ReIngresa Correctamente</strong>
                                 </div>
 
@@ -141,7 +141,7 @@ const ReIngresoMercaderia = () => {
                             <div className="input-group flex-nowrap mt-5">
 
                                 <div className="input-group-prepend">
-                                    <span class="input-group-text" id="addon-wrapping">Buscar</span>
+                                    <span className="input-group-text" id="addon-wrapping">Buscar</span>
                                 </div>
                                 <input type="number" className="form-control" name="caja" autoFocus placeholder="Mercaderia" value={BuscadorMerc}
                                     onChange={

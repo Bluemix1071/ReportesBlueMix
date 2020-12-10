@@ -22,6 +22,8 @@ class codigos_cajas extends Model
 
     }
 
+
+
     public static function IngresarCaja($caja)
     {
 

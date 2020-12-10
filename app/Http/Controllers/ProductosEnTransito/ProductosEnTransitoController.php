@@ -180,6 +180,8 @@ class ProductosEnTransitoController extends Controller
 
     public function UpdateCaja(Request $request, $id)
     {
+
+        //dd($request);
         //datos de la caja
         $inputCaja = $request->input('caja', null);
         $caja_array = json_decode($inputCaja, true);
@@ -285,7 +287,7 @@ class ProductosEnTransitoController extends Controller
                 400
             );
         }
-        event(new ImprimirTicketEvent($caja));
+        //event(new ImprimirTicketEvent($caja));
         return response()->json(
             [
                 "status" => "success",

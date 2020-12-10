@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const FormularioCaja = (props) => {
@@ -13,11 +13,14 @@ const FormularioCaja = (props) => {
 
 
 
+
+
     const onSubmit = (data, e) => {
 
-       // console.log(data);
-        props.ocultarForm();
+        console.log(data);
+        //props.ocultarForm();
         props.EnviarCaja(data);
+        props.stepperr.next();
 
 
 
@@ -26,10 +29,21 @@ const FormularioCaja = (props) => {
 
     return (
         <Fragment>
-            <form onSubmit={handleSubmit(onSubmit)} className="needs-validation" >
+            <form onSubmit={handleSubmit(onSubmit)} ref={props.myForm} className="needs-validation" >
                 <div className="form-row">
                     <div className="col-md-4 mb-3">
-                        <label for="validationCustom01">usuario</label>
+                        <label >usuario</label>
+                        <input type="hidden" className="form-control" name="id" id="idcaja" required
+                            ref={
+                                register({
+                                    required: {
+                                        value: false,
+
+                                    }
+                                })
+                            }
+
+                        />
                         <input type="text" className="form-control" name="usuario" id="validationCustom01" required
                             ref={
                                 register({
@@ -47,7 +61,7 @@ const FormularioCaja = (props) => {
                     </div>
 
                     <div className="col-md-4 mb-3">
-                    <label for="validationCustom02">Documento</label>
+                    <label >Documento</label>
                     <select className="custom-select" name="documento"  required
                             ref={
                                 register({
@@ -65,7 +79,7 @@ const FormularioCaja = (props) => {
                         </select>
                     </div>
                     <div className="col-md-4 mb-3">
-                    <label for="validationCustom02">Nro Documento</label>
+                    <label >Nro Documento</label>
                         <input type="number" className="form-control" name="nro_documento"  required
 
                             ref={
@@ -80,8 +94,8 @@ const FormularioCaja = (props) => {
                     </div>
                 </div>
                 <div className="form-row">
-                    <div class="col-md-6 mb-3">
-                        <label for="validationCustom03"> Ubicacion</label>
+                    <div className="col-md-6 mb-3">
+                        <label > Ubicacion</label>
                         <select className="custom-select" name="ubicacion"  required
                             ref={
                                 register({
@@ -101,7 +115,7 @@ const FormularioCaja = (props) => {
                         </div>
                     </div>
                     <div className="col-md-6 mb-3">
-                        <label for="validationCustom04"> Rack</label>
+                        <label > Rack</label>
                         <input type="text" className="form-control" name="rack"  required
                             ref={
                                 register({
@@ -121,8 +135,8 @@ const FormularioCaja = (props) => {
                     <div className="form-row">
                     {/* text area observaciones cuadro grande XD */}
                     <div className="col-md-12 mb-3">
-                        <label for="validationCustom05">Observacion</label>
-                        <textarea class="form-control" name="observacion" placeholder="Observaciones" required
+                        <label>Observacion</label>
+                        <textarea className="form-control" name="observacion" placeholder="Observaciones" required
                             ref={
                                 register({
                                     required: {
@@ -137,7 +151,7 @@ const FormularioCaja = (props) => {
                     </div>
                 </div>
 
-                <button className="btn btn-success" type="submit">enviar</button>
+                <button className="btn btn-primary" type="submit">Siguiente</button>
             </form>
 
         </Fragment>

@@ -9,7 +9,7 @@ const TablaMercaderia = (props) => {
 
     return (
         <Fragment>
-            <table class="table table-sm">
+            <table className="table table-sm">
                 <thead>
                     <tr>
                         <th scope="col">Codigo</th>
@@ -41,13 +41,13 @@ const TablaMercaderia = (props) => {
                                             className="btn btn-danger mr-2"
                                             onClick={() => { props.EliminarProducto(item.codigo_producto) }}
 
-                                        ><i class="fas fa-trash-alt"></i>
+                                        ><i className="fas fa-trash-alt"></i>
 
                                         </button>
                                         <button className="btn btn-primary ml-2"
 
 
-                                        ><i class="fas fa-edit"></i></button>
+                                        ><i className="fas fa-edit"></i></button>
                                     </th>
                                 </tr>
                             )) : (

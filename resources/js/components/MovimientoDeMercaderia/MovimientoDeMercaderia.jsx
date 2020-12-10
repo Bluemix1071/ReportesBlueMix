@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductoService } from './services/getProductoServices';
 import { EnvioMercaderia } from './services/EnvioMercaderiaTrancito';
@@ -75,6 +75,16 @@ const MovimientoDeMercaderia = () => {
 
         setBuscadorProducto('');
     }
+
+    //reinicio formulario
+    const myForm = useRef(null);
+
+    useEffect(() => {
+        console.log(myForm);
+
+    }, []);
+    // fin reinicio formularios
+
 
     useEffect(() => {
         if (Buscador.FETCH_PRODUCT_SUCCESS) {
@@ -153,14 +163,14 @@ const MovimientoDeMercaderia = () => {
             .then(resp => {
 
                 setProductos([]);
-                setCaja([]);
+                setCaja({});
                 setBuscadorProducto('');
                 dispatch(fetchReset());
                 ocultarModalConfirm();
                 setShowFormCaja(true);
                 stepperr.previous();
                 setConfirmacionCaja(true);
-
+                myForm.current.reset();
 
 
 
@@ -189,13 +199,14 @@ const MovimientoDeMercaderia = () => {
     }
 
     const EnviarCaja = (caja) => {
-        setConfirmacionCaja(false);
+        console.log(caja);
+        //setConfirmacionCaja(false);
         setCaja(caja);
 
     }
 
-    const stepLoad = (e) => {
-        e.preventDefault();
+    const ResetForm = () => {
+
     }
     return (
         <Fragment>
@@ -211,13 +222,13 @@ const MovimientoDeMercaderia = () => {
                 <div className="col md-6">
                     {Buscador.FETCH_PRODUCT_FAILURE &&
 
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div className="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>{Buscador.error}</strong>
                         </div>
                     }
 
                     {ConfirmacionCaja? (
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div className="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>la mercaderia se ingreso correctamente </strong>
                     </div>
 
@@ -232,46 +243,45 @@ const MovimientoDeMercaderia = () => {
 
 
 
-                <div id="stepper1" class="bs-stepper">
-                    <div class="bs-stepper-header">
+                <div id="stepper1" className="bs-stepper">
+                    <div className="bs-stepper-header">
                         <Step steps={steps} />
                     </div>
-                    <div class="bs-stepper-content">
-                        <form onSubmit={stepLoad}>
-                            <div id="item1" class="content">
+                    <div className="bs-stepper-content">
+
+                            <div id="item1" className="content">
 
                                 {/* formulario caja */}
                                 <div className="row ">
                                     <div className="col-md-12 mb-2">
 
-                                        {showFormCaja ? (
+
 
                                             <FormularioCaja
-                                                ocultarForm={ocultarForm}
+                                               // ocultarForm={ocultarForm}
                                                 EnviarCaja={EnviarCaja}
                                                 Caja={Caja}
+                                                stepperr={stepperr}
+                                                myForm={myForm}
                                             />
 
-                                        ) : (
-                                                <button className="btn btn-primary" onClick={mostrarForm}> Editar Campos </button>
-                                            )
-                                        }
+
                                         <hr />
                                     </div>
                                 </div>
 
                                 {/* fin caja */}
-                                <button class="btn btn-primary" onClick={() => stepperr.next()}>Next</button>
+                                {/* <button className="btn btn-primary" onClick={() => stepperr.next()}>Next</button> */}
                             </div>
 
-                            <div id="item2" class="content">
+                            <div id="item2" className="content">
                                 {/* buscador */}
                                 <form onSubmit={handleSubmit(onSubmit)}>
 
                                     <div className="input-group flex-nowrap mt-5">
 
                                         <div className="input-group-prepend">
-                                            <span class="input-group-text" id="addon-wrapping">Buscar</span>
+                                            <span className="input-group-text" id="addon-wrapping">Buscar</span>
                                         </div>
                                         <input type="text" className="form-control" name="barra" autoFocus placeholder="Productos" value={buscadorProducto}
                                             onChange={
@@ -326,14 +336,14 @@ const MovimientoDeMercaderia = () => {
 
 
 
-                                <button class="btn btn-primary mr-4" onClick={() => stepperr.previous()}>previus</button>
+                                <button className="btn btn-primary mr-4" onClick={() => stepperr.previous()}>previus</button>
                                 <button className="btn btn-success ml-4" disabled={Productos.length < 1 || Caja.length < 1}
                                     onClick={() => mostarModalConfirm()}
                                 >
                                     Ingresar Productos </button>
                             </div>
 
-                        </form>
+
                     </div>
                 </div>
 
