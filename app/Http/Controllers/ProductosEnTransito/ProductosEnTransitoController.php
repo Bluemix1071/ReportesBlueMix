@@ -287,7 +287,7 @@ class ProductosEnTransitoController extends Controller
                 400
             );
         }
-        //event(new ImprimirTicketEvent($caja));
+        event(new ImprimirTicketEvent($caja));
         return response()->json(
             [
                 "status" => "success",

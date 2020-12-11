@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormularioCaja from '../MovimientoDeMercaderia/components/formularioCaja';
 import ModalCantidad from '../MovimientoDeMercaderia/components/modalCantidad';
 import TablaMercaderia from '../MovimientoDeMercaderia/components/tablaMercaderia';
-import fetchProduct from '../redux/actions/buscadorProductos';
+import fetchProduct, { fetchReset } from '../redux/actions/buscadorProductos';
 import { getMercaderiaService } from './services/getMercaderiaServices';
 import { EnvioMercaderiaModificada } from './services/EnvioMercaderiaModificada';
 import Step from '../stepper/components/step';
@@ -44,6 +44,12 @@ const ModificarMercaderia = () => {
         }))
 
     }, [])
+
+    useEffect(() => {
+        return ()=>{
+            dispatch(fetchReset());
+        }
+    },[]);
     // fin stepper
     const onSubmitMercaderia = (data, e) => {
         setEstadoCaja(false);

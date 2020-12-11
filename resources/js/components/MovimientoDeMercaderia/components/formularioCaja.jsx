@@ -65,13 +65,10 @@ const FormularioCaja = (props) => {
                     <select className="custom-select" name="documento"  required
                             ref={
                                 register({
-                                    required: {
-                                        value: true,
-                                        message: 'Documento es requerido'
-                                    }
+                                    required: true
                                 })
                             }>
-                            <option >...</option>
+                            <option ></option>
                             <option>Factura</option>
                             <option>Guia Despacho</option>
                             <option>Venta Web</option>
@@ -96,16 +93,13 @@ const FormularioCaja = (props) => {
                 <div className="form-row">
                     <div className="col-md-6 mb-3">
                         <label > Ubicacion</label>
-                        <select className="custom-select" name="ubicacion"  required
+                        <select className="custom-select" name="ubicacion" required
                             ref={
                                 register({
-                                    required: {
-                                        value: true,
-                                        message: 'ubicacion es requerido'
-                                    }
+                                    required: true
                                 })
                             }>
-                            <option  >...</option>
+                            <option ></option>
                             <option>Sala De Listas</option>
                             <option>Facturacion</option>
                             <option>Ventas Web</option>
@@ -139,11 +133,7 @@ const FormularioCaja = (props) => {
                         <textarea className="form-control" name="observacion" placeholder="Observaciones" required
                             ref={
                                 register({
-                                    required: {
-                                        value: true,
-                                        message: 'observacion es requerido'
-                                    }
-                                })
+                                    required: true ,minLength:2})
                             }> </textarea>
                         <div className="invalid-feedback">
                             Please provide a valid zip.
