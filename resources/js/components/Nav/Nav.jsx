@@ -39,7 +39,7 @@ const Nav = () => {
                         </a>
                     </li>
                     <li className="nav-item d-none d-sm-inline-block">
-                        <a href="" className="nav-link">
+                        <a href="/" className="nav-link">
                             Menu Principal
                         </a>
                     </li>
@@ -168,7 +168,7 @@ const Nav = () => {
                             <a href="#" className="nav-link">
                                 <i className="nav-icon fas fa-users"></i>
                                 <p>
-                                    Productos En Trancito
+                                    Productos En Transito
                                     <i className="fas fa-angle-left right"></i>
                                 </p>
                             </a>
