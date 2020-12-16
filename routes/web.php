@@ -1,6 +1,11 @@
 <?php
 
+//use Illuminate\Routing\Route;
 
+
+Route::get('/api/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');;
 
 Route::get('/','seguridad\LoginController@index')->name('login');
 Route::post('/','seguridad\LoginController@login')->name('login_post');
@@ -33,6 +38,13 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
 
 
 //rutas globales autenticadas
+Route::prefix('api')->middleware('auth')->group(function(){
+
+    Route::get('/', 'ApiController@LoadReact')->name('apiReact');
+});
+
+
+
 Route::prefix('publicos')->middleware('auth')->group(function(){
 
     Route::get('/','InicioController@index')->name('Publico');
@@ -44,10 +56,6 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::post('/updatemensaje', 'publico\PublicoController@updatemensaje')->name('updatemensaje');
     Route::get('/ConsultaSaldoenvio','publico\PublicoController@ConsultaSaldo')->name('ConsultaSaldo');
     Route::post('/ConsultaSaldoenvio', 'publico\PublicoController@ConsultaSaldoenvio')->name('ConsultaSaldoenvio');
-
-
-
-
 //------------------------EXPORTACIONES------------------------------------//
 
 
@@ -59,11 +67,11 @@ Route::post('/Excelcambioprecio','Admin\exports\ExportsController@exportexcelcam
 Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'Auth\RegisterController@register');
-    
+
 });
 
 
-//rutas de administrador 
+//rutas de administrador
 Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->group(function(){
 
 
@@ -90,7 +98,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/movimientoinventario','AdminController@filtrarmovimientoinventario')->name('filtrarmovimientoinventario');
     Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
     Route::get('/consultafacturaboleta','AdminController@consultafacturaboleta')->name('consultafacturaboleta');
-    Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta'); 
+    Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta');
     Route::get('controlipmac','AdminController@controlipmac')->name('controlipmac');
     Route::post('/actualizaripmac', 'AdminController@actualizaripmac')->name('actualizaripmac');
     Route::get('agregaripmac','AdminController@agregaripmac')->name('agregaripmac');
@@ -119,7 +127,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 
     //---------------------Exportaciones----------------------------------------------//
-  
+
     Route::get('/pdf/{NroOrden}','exports\ExportsController@exportpdf')->name('pdf.orden');
     Route::get('/ExcelOC/{NroOrden}','exports\ExportsController@exportExelOrdenDeCompra')->name('ordenExcel');
     Route::get('/pdfprov/{NroOrden}','exports\ExportsController@exportpdfprov')->name('pdf.ordenprov');
@@ -146,7 +154,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/ShowUsers','LaravelPermission\RolesController@ShowUsers')->name('ShowUsers');
 
-    
+
     Route::get('/ShowRolesUser/{id}','LaravelPermission\RolesController@ShowRolesUser')->name('ShowRolesUser');
 
     Route::post('/AddRolPermiso','LaravelPermission\RolesController@AddRolUser')->name('');
@@ -163,7 +171,7 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
     Route::get('/Folios','GiftCardController@index')->name('indexGiftCard');
     Route::get('/Folios2/{cant}','GiftCardController@vistafolios')->name('Vfolios');
-    
+
 
     Route::post('/Folios2','GiftCardController@generarGiftCard')->name('generarGiftCard');
 
@@ -174,9 +182,9 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
     Route::get('/VentasGiftCards','GiftCardController@IndexVentasGiftCard')->name('indexVentas');
     Route::get('/LoadVenta/{Monto}','GiftCardController@CargarTablaCodigosVenta')->name('cargarCodigosVenta');
     Route::get('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
-    
+
     Route::get('/Activacion2.0','GiftCardController@Activacion2')->name('Activacion2.0');
-    
+
 
 
 
@@ -192,13 +200,13 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
 
 
-   
+
 
 
     Route::post('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
     Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
-    
-  
+
+
 
 
 
@@ -213,11 +221,11 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
 
     //asdsdf
-    
+
     Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
     Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambiotarjeta')->name('filtrartarjeta');
 
-    
+
     Route::get('/BloqueoGiftCards','GiftCardController@BloqueoTarjetasIndex')->name('Bloqueo');
     Route::post('/BloqueoGiftCards','GiftCardController@filtrarbloqueo')->name('filtrartarjetabloqueo');
     Route::post('/BloqueoGiftCardsrango','GiftCardController@filtrarbloqueorango')->name('filtrartarjetabloqueorango');
@@ -228,4 +236,5 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 });
 
 
-   
+
+

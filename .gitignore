@@ -1,7 +1,6 @@
 /node_modules
 /public/hot
 /public/storageS
-/config/database.php
 /storage/*.key
 /vendor
 .env

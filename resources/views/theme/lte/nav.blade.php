@@ -10,10 +10,10 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{route('informacion')}}" class="nav-link">Información</a>
       </li>
-      
+
     </ul>
 
-   
+
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -31,9 +31,9 @@
             @if (empty($mensaje))
 
             @else
-            <!-- Message Start -->      
+            <!-- Message Start -->
             @foreach ($mensaje as $item)
-          <a href="" class="dropdown-item" data-toggle="modal" data-target="#mimodalejemplo5"  data-id='{{$item->id}}' data-estado='{{$item->estado}}' data-created_at='{{$item->created_at}}' data-name='{{$item->name}}' data-body='{{$item->body}}'>    
+          <a href="" class="dropdown-item" data-toggle="modal" data-target="#mimodalejemplo5"  data-id='{{$item->id}}' data-estado='{{$item->estado}}' data-created_at='{{$item->created_at}}' data-name='{{$item->name}}' data-body='{{$item->body}}'>
             <div class="media">
               <img src="{{asset("assets/$theme/dist/img/images.png")}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
@@ -43,7 +43,7 @@
                 </h3>
                 <p class="text-sm">
                     {{$item->body}}</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>
                   Fecha: {{$item->created_at}}</p>
               </div>
             </div>
@@ -71,7 +71,7 @@
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 
+            <i class="fas fa-users mr-2"></i> 8
             peticiones de amistad
             <span class="float-right text-muted text-sm">12 horas</span>
           </a>
@@ -122,7 +122,7 @@
               Agregar items de giftcard -->
 
               @can('RolesYPermisos')
-                
+
                   <li class="nav-item has-treeview">
                   <a href="" class="nav-link">
                       <i class="fas fa-user-tag"></i>
@@ -132,7 +132,7 @@
                       </p>
                     </a>
                     <ul class="nav nav-treeview">
-                      
+
                       <li class="nav-item">
                         <a href="{{route('Roles')}}" class="nav-link {{setActive('indexGiftCard')}} ">
                           <i class="fas fa-cog"></i>
@@ -156,11 +156,11 @@
 
 
               @can('GiftCard')
-                    
-                
+
+
                   @if (session()->get('tipo_usuario') == 'adminGiftCard' )
                   <li class="nav-item has-treeview">
-                    
+
                     <a href="" class="nav-link">
                       <i class="nav-icon fas fa-credit-card"></i>
                       <p>
@@ -169,17 +169,17 @@
                       </p>
                     </a>
                     <ul class="nav nav-treeview">
-                    
+
 
                       @can('CrearFolios')
-                    
+
                       <li class="nav-item">
                         <a href="{{route('indexGiftCard')}}" class="nav-link {{setActive('indexGiftCard')}}">
                           <i class="fas fa-cog"></i>
                           <p>Creacion Folios GiftCard</p>
                         </a>
                       </li>
-                    
+
 
                       @endcan
 
@@ -194,7 +194,7 @@
                       </li>
 
                       @endcan
-                      
+
                       {{-- <li class="nav-item">
                           <a href="{{route('indexVentas')}}" class="nav-link">
                               <i class="fas fa-search-dollar"></i>
@@ -203,7 +203,7 @@
                       </li> --}}
 
                       @can('VentaGiftcardEmpresa')
-                        
+
                         <li class="nav-item">
                           <a href="{{route('VentaEmpresa')}}" class="nav-link {{setActive('VentaEmpresa')}}">
                             <i class="fas fa-book"></i>
@@ -213,17 +213,17 @@
                       @endcan
 
                       @can('BloqueoGiftCard')
-                        
+
                       <li class="nav-item">
                         <a href="{{route('Bloqueo')}}" class="nav-link {{setActive('Bloqueo')}}">
                           <i class="far fa-times-circle"></i>
                           <p>Bloqueo Gift Cards</p>
                         </a>
                       </li>
-                      @endcan  
-                      
+                      @endcan
+
                       @can('ConsumoGiftCard')
-                        
+
                       <li class="nav-item">
                           <a href="{{route('consumotarj')}}" class="nav-link {{setActive('consumotarj')}}">
                             <i class="fas fa-book"></i>
@@ -232,9 +232,9 @@
                       </li>
                       @endcan
 
-                  
 
-                    </ul>   
+
+                    </ul>
                   </li>
                   @endif
               @endcan
@@ -246,8 +246,8 @@
                @if (session()->get('tipo_usuario')=='admin'|| session()->get('tipo_usuario') == 'adminGiftCard' )
 
                @can('Administrador')
-                 
-             
+
+
                <li class="nav-item has-treeview " >
                 <a href="" class="nav-link ">
                   <i class="nav-icon fas fa-user-lock"></i>
@@ -260,7 +260,7 @@
                 <ul class="nav nav-treeview">
 
                 @can('ListarUsers')
-                  
+
                   <li class="nav-item">
                     <a href="{{route('ListarUser')}}" class="nav-link {{setActive('ListarUser')}}">
                       <i class="far fa-circle nav-icon"></i>
@@ -269,9 +269,9 @@
                   </li>
                 @endcan
 
-               
+
                   @can('ControlIpMac')
-                    
+
                   <li class="nav-item">
                     <a href="{{route('controlipmac')}}" class="nav-link {{setActive('controlipmac')}}">
                       <i class="far fa-circle nav-icon"></i>
@@ -290,7 +290,7 @@
                 @endcan
 
                 @can('OrdenesDeCompra')
-                  
+
                 <li class="nav-item">
                   <a href="{{route('ordenesdecompra')}}" class="nav-link {{setActive('ordenesdecompra')}}">
                     <i class="far fa-circle nav-icon"></i>
@@ -302,7 +302,7 @@
 
 
                  @can('IngresosPorAnio')
-                   
+
                  <li class="nav-item">
                  <a href="{{route('chart')}}" class="nav-link {{setActive('chart')}} ">
                     <i class="nav-icon fas fa-chart-pie"></i>
@@ -315,14 +315,14 @@
                   {{-- <li class="nav-item">
                     <a href="{{route('porcentaje')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <i class="far fa-circle nav-icon"></i> 
+                      <i class="far fa-circle nav-icon"></i>
                        <p>Desviacion
                        </p>
                      </a>
                    </li> --}}
 
                    @can('Productos')
-                     
+
                     <li class="nav-item">
                       <a href="{{route('productos')}}" class="nav-link {{setActive('productos')}}">
                         <i class="far fa-circle nav-icon"></i>
@@ -333,7 +333,7 @@
                    @endcan
 
                    @can('CargaOrdenCompra')
-                     
+
                     <li class="nav-item">
                       <a href="{{route('cargaroc')}}" class="nav-link {{setActive('cargaroc')}}">
                         <i class="far fa-circle nav-icon"></i>
@@ -343,12 +343,12 @@
                    @endcan
 
                    @can('VentaProducto')
-                     
+
                     <li class="nav-item">
                       <a href="{{route('ventaProd')}}" class="nav-link {{setActive('ventaProd')}}">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Venta Productos
-                        
+
                         </p>
                       </a>
                     </li>
@@ -359,24 +359,24 @@
                       <a href="{{route('compraProd')}}" class="nav-link {{setActive('compraProd')}}">
                         <i class="far fa-circle nav-icon"></i>
                           <p>Compra Productos
-                          
+
                           </p>
                         </a>
                       </li>
-                      
+
                     @endcan
 
                    {{-- <li class="nav-item">
                     <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                        <p>Ventas Por Hora
-                       
+
                        </p>
                      </a>
                    </li> --}}
 
                   @can('ProyeccionCompra')
-                    
+
                     <li class="nav-item">
                     <a href="{{route('proyeccion')}}" class="nav-link {{setActive('proyeccion')}}">
                       <i class="far fa-circle nav-icon"></i>
@@ -387,7 +387,7 @@
                   @endcan
 
                     @can('ComprasProveedor')
-                      
+
                       <li class="nav-item">
                       <a href="{{route('comprassegunprov')}}" class="nav-link {{setActive('comprassegunprov')}}">
                         <i class="far fa-circle nav-icon"></i>
@@ -405,7 +405,7 @@
                      </a>
                    </li> --}}
                    @can('LibroVentas')
-                     
+
                     <li class="nav-item">
                     <a href="{{route('cuponesescolares')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
@@ -436,7 +436,7 @@
                    @endcan
 
                     @can('Cupones')
-                      
+
                       <li class="nav-item">
                       <a href="{{route('cuponesescolares')}}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -445,21 +445,21 @@
                       </a>
                     </li>
                     @endcan
-                  
+
                 </ul>
               </li>
               @endcan
             @endif
 
 
-               
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Publico
                 <i class="fas fa-angle-left right"></i>
-                
+
               </p>
             </a>
             <ul class="nav nav-treeview">
@@ -475,6 +475,16 @@
                   <p>Productos Negativos</p>
                 </a>
               </li>
+
+              @can('SistemaNuevo')
+              <li class="nav-item">
+                <a href="{{route('apiReact')}}" class="nav-link {{setActive('apiReact')}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sistema nuevo</p>
+                </a>
+              </li>
+              @endcan
+
             </ul>
           </li>
 
@@ -491,7 +501,7 @@
             <ul class="nav nav-treeview">
 
               @can('CambioPrecios')
-                
+
                 <li class="nav-item">
                   <a href="{{ route('cambiodeprecios') }}" class="nav-link {{setActive('cambiodeprecios')}}">
                     <i class="far fa-circle nav-icon"></i>
@@ -507,7 +517,7 @@
                 </a>
               </li> --}}
               @can('VentaGiftCard')
-                
+
                 <li class="nav-item">
                   <a href="{{route('CargaTarjetasCaja')}}" class="nav-link {{setActive('CargaTarjetasCaja')}}">
                     <i class="far fa-circle nav-icon"></i>
@@ -522,8 +532,8 @@
 
 
           @can('Bodega')
-            
-         
+
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-warehouse"></i>
@@ -613,8 +623,8 @@
                <h6>Fecha</h6>
                 <input type="text" disabled name="created_at" id="created_at">
               </div>
-                  <input type="hidden" name='estado' id='estado'>     
-                    <input type="hidden" name='id' id='id'>     
+                  <input type="hidden" name='estado' id='estado'>
+                    <input type="hidden" name='id' id='id'>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-warning">Eliminar Mensaje</button>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ProductosEnTransito;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+//---------------------------Mercaderia en trancito----------------------------------\\
+Route::post('/getProductos','ProductosEnTransito\ProductosEnTransitoController@Buscar');
+Route::post('/GenerarProductosEnTrancito','ProductosEnTransito\ProductosEnTransitoController@GenerarProductoEnTrancito');
+
+Route::get('/GetCaja/{id}','ProductosEnTransito\ProductosEnTransitoController@GetCaja');
+Route::put('/UpdateCaja/{id}','ProductosEnTransito\ProductosEnTransitoController@UpdateCaja');
+
+Route::get('/ReIngresarMercaderia/{id}','ProductosEnTransito\ProductosEnTransitoController@ReIngresarMercaderia');
+
+
+//-------------------------------Session en React ----------------------------------------\\
+Route::get('/getSession','ApiController@GetSession');
 
 
 /*
