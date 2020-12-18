@@ -5,6 +5,9 @@ import 'bs-stepper/dist/css/bs-stepper.min.css';
 import Stepper from 'bs-stepper'
 import Step from '../stepper/components/step';
 import FormApoderado from './components/FormApoderado';
+import FormAlumno from './components/FormAlumno';
+import { getComunas } from './services/getComunas';
+
 
 
 
@@ -19,12 +22,47 @@ const IngresoCupon = () => {
         }))
 
     }, [])
-    const steps = [
-        { target: '#item1', number: 1, text: 'Datos Apoderado' },
-        { target: '#item2', number: 2, text: 'Datos Alumno' },
-    ]
-    const stepLoad = (e) => {
-        e.preventDefault();
+
+
+    const [Comunas, setcomunas] = useState([]);
+    const [SelectComunas, setSelectComunas] = useState([]);
+
+    useEffect(() => {
+        addComuna()
+    }, []);
+
+    useEffect(() => {
+        const arreglo=[];
+        for (let index = 0; index < Comunas.length; index++) {
+
+            var item = Comunas[index];
+            arreglo.push({
+                "value": item.nombre,
+                "label": item.nombre,
+              })
+            setSelectComunas(arreglo);
+
+        }
+
+
+    }, [Comunas])
+
+
+
+
+    const addComuna = async (comuna) => {
+
+        await getComunas()
+            .then(resp => {
+                setcomunas(resp.data);
+            })
+            .catch(error => {
+
+            })
+
+
+
+
     }
 
 
@@ -42,22 +80,42 @@ const IngresoCupon = () => {
             <div className="row">
 
                 <div className="col-md-12">
-                    <div id="stepper1" class="bs-stepper">
+                    <div id="stepper1" className="bs-stepper">
                         <div className="bs-stepper-header">
-                            <Step steps={steps} />
+
+
+
+                            <div className="step" data-target="#item1">
+                                <button className="step-trigger">
+                                    <span className="bs-stepper-circle">1</span>
+                                    <span className="bs-stepper-label">Datos Apoderado</span>
+                                </button>
+                            </div>
+                            <div className="line"></div>
+                            <div className="step" data-target="#item2">
+                                <button className="step-trigger">
+                                    <span className="bs-stepper-circle">2</span>
+                                    <span className="bs-stepper-label">Datos Alumno</span>
+                                </button>
+                            </div>
+
+
+
+
+
                         </div>
                         <div className="bs-stepper-content">
 
-                                <div id="item1" className="content">
-                                    <FormApoderado />
-                                    <button className="btn btn-primary" onClick={() => stepperr.next()}>Next</button>
-                                </div>
-                                <div id="item2" className="content">
+                            <div id="item1" className="content">
+                                <FormApoderado SelectComunas={SelectComunas} />
+                                <button className="btn btn-primary" onClick={() => stepperr.next()}>Next</button>
+                            </div>
+                            <div id="item2" className="content">
 
-                                        <h1>formulario alumno</h1>
+                                <FormAlumno />
 
-                                        <button className="btn btn-primary" onClick={() => stepperr.previous()}>Next</button>
-                                </div>
+                                <button className="btn btn-primary" onClick={() => stepperr.previous()}>Next</button>
+                            </div>
 
                         </div>
                     </div>
