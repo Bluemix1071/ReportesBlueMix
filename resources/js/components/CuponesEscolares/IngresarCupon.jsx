@@ -41,10 +41,7 @@ const IngresoCupon = () => {
                 "label": item.nombre,
               })
             setSelectComunas(arreglo);
-
         }
-
-
     }, [Comunas])
 
 
@@ -59,12 +56,7 @@ const IngresoCupon = () => {
             .catch(error => {
 
             })
-
-
-
-
     }
-
 
     return (
         <div className="container my-4">
