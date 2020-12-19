@@ -8,12 +8,15 @@ import { Fragment } from 'react';
 const FormApoderado = (props) => {
 
 
+const [address, setaddress] = useState("")
 
+const handleSelect = async value =>{};
     return (
         <Fragment>
+
             {/* <PlacesAutoComplete
                 value={address}
-                onChange={setAddress}
+                onChange={setaddress}
                 onSelect={handleSelect}>
 
 
@@ -25,6 +28,14 @@ const FormApoderado = (props) => {
 
                 <div>
                     {loading ? <div> ... cargando </div>:null}
+
+                    <div>
+                        {suggestions.map((suggestion)=>{
+
+                             <div> {suggestion.description}</div>
+
+                        })}
+                    </div>
                 </div>
             </div>
 
@@ -41,11 +52,11 @@ const FormApoderado = (props) => {
                 <hr />
                 <div className="form-row">
                     <div className="form-group col-md-4">
-                        <label htmlFor="inputEmail4">Nombres</label>
+                        <label >Nombres</label>
                         <input type="text" className="form-control" />
                     </div>
                     <div className="form-group col-md-4">
-                        <label htmlFor="inputPassword4">Apellido Paterno</label>
+                        <label >Apellido Paterno</label>
                         <input type="text" className="form-control" />
                     </div>
                     <div className="form-group col-md-4">

@@ -77,15 +77,15 @@ const IngresoCupon = () => {
 
 
 
-                            <div className="step" data-target="#item1">
-                                <button className="step-trigger">
+                            <div className="step" data-target="#item1" >
+                                <button className="step-trigger" disabled>
                                     <span className="bs-stepper-circle">1</span>
                                     <span className="bs-stepper-label">Datos Apoderado</span>
                                 </button>
                             </div>
                             <div className="line"></div>
-                            <div className="step" data-target="#item2">
-                                <button className="step-trigger">
+                            <div className="step" data-target="#item2" >
+                                <button className="step-trigger" disabled>
                                     <span className="bs-stepper-circle">2</span>
                                     <span className="bs-stepper-label">Datos Alumno</span>
                                 </button>

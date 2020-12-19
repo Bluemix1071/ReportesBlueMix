@@ -26,11 +26,11 @@ const FormAlumno = () => {
             <div className="form-row">
                 <div className="form-group col-md-6">
                     <label htmlFor="inputAddress2">Colegio</label>
-                    <input type="email" className="form-control"   />
+                    <input type="text" className="form-control"   />
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="inputCity">curso</label>
-                    <input type="number" className="form-control"/>
+                    <input type="text" className="form-control"/>
                 </div>
             </div>
 

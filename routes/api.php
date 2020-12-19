@@ -34,6 +34,16 @@ Route::get('/ReIngresarMercaderia/{id}','ProductosEnTransito\ProductosEnTransito
 Route::get('/getSession','ApiController@GetSession');
 
 
+//---------------------------------Colegios -------------------------------- */
+
+Route::get('/GetColegios','colegios\ColegiosController@getColegios');
+
+
+
+
+
+
+
 /*
 Route::get('ProductosNegativos',function(){
 //   return datatables(DB::table('productos_negativos'))->toJson();
