@@ -74,7 +74,7 @@ class Cupones extends Model
         $cupon->anno_esc ='2021';
         $cupon->nro_lista_cole= ' ';
         $cupon->porcent_desc='10.0';
-        $cupon->estado='p';
+        $cupon->estado='P';
         $cupon->preparador=' ';
         $cupon->ubicacion=' ';
         $cupon->nro_boleta_factura=' ';
