@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 
 const ModalConfirmarCaja = (props) => {
 
-
     const { register, errors, handleSubmit } = useForm();
+
 
     const onSubmit = (data, e) => {
 

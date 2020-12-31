@@ -34,9 +34,11 @@ Route::get('/ReIngresarMercaderia/{id}','ProductosEnTransito\ProductosEnTransito
 Route::get('/getSession','ApiController@GetSession');
 
 
-//---------------------------------Colegios -------------------------------- */
+//---------------------------------Colegios y coupones -------------------------------- */
 
 Route::get('/GetColegios','colegios\ColegiosController@getColegios');
+Route::post('/GenerarCupon','Cupones\CuponesController@GenerarCupon');
+
 
 
 
