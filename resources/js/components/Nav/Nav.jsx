@@ -11,6 +11,16 @@ import {
 import AdminLTELogo from '../../../../public/assets/lte/dist/img/AdminLTELogo.png';
 import { LoginService } from './services/AurhServices';
 
+const Rutas = [
+    {
+        ProductosEnTransito: [
+            { ruta: 'api/IngresarMercaderia', permiso: 'IngresoMercaderia', label: 'Ingresar' },
+            { ruta: 'api/ModificarMercaderia', permiso: 'ModificarMercaderia', label: 'Modificar' },
+            { ruta: 'api/ReIngresoMercaderia', permiso: 'ReIngresoMercaderia', label: 'ReIngreso' },
+        ]
+    }
+
+]
 
 const Nav = () => {
 
@@ -20,6 +30,7 @@ const Nav = () => {
     useEffect(() => {
         getUser();
         console.log(url);
+
     }, []);
 
 
@@ -27,6 +38,9 @@ const Nav = () => {
 
         const user = await LoginService();
         console.log(user.data);
+
+
+
 
     }
     return (
@@ -173,7 +187,30 @@ const Nav = () => {
                                 </p>
                             </a>
                             <ul className="nav nav-treeview">
-                                <li className="nav-item">
+
+
+
+                                {Rutas.map((ruta, i) => {
+
+                                    return (
+                                    ruta.ProductosEnTransito.map((ruta, i) => {
+
+                                        return (
+                                            <li className="nav-item" key={i}>
+                                                <NavLink to={`${url}${ruta.ruta}`} className="nav-link ">
+                                                    <i className="far fa-circle nav-icon"></i>
+                                                    <p>{ruta.label} </p>
+                                                </NavLink>
+                                            </li>
+                                        )
+                                    })
+                                )
+                                })
+
+
+
+                                }
+                                {/* <li className="nav-item">
                                     <NavLink to={`${url}api/IngresarMercaderia`} className="nav-link ">
                                         <i className="far fa-circle nav-icon"></i>
                                         <p>Ingresar </p>
@@ -190,7 +227,7 @@ const Nav = () => {
                                         <i className="far fa-circle nav-icon"></i>
                                         <p>ReIngresoMercaderia</p>
                                     </NavLink>
-                                </li>
+                                </li> */}
                             </ul>
                         </li>
 

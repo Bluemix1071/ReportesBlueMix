@@ -41,6 +41,13 @@ Route::post('/GenerarCupon','Cupones\CuponesController@GenerarCupon');
 
 
 
+// Auth users
+Route::post('/Login','Api\AuthController@Login');
+
+Route::get('/Permisos/{id}','Api\AuthController@getPermission');
+
+
+
 
 
 
