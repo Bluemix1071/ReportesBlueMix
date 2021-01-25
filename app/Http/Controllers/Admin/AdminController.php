@@ -18,6 +18,7 @@ use App\cuponescolar;
 use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use App\Modelos\InventarioTemporal;
 
 
 class AdminController extends Controller
@@ -38,11 +39,11 @@ class AdminController extends Controller
 
     public function registrar()
     {
-      
+
     return view('auth.register');
     }
-    
-   
+
+
 
     public function CuadroDeMAndo(){
       $productos=DB::table('productos_negativos')->get();
@@ -53,19 +54,19 @@ class AdminController extends Controller
 
     public function ProductosPorMarca(Request $request)
     {
-      
+
       return view('admin.productospormarca');
     }
 
     public function ProductosPorMarcafiltrar(Request $request)
     {
-      
+
       $marca=$request->marca;
 
       $productos=DB::table('Productos_x_Marca')
       ->where('MARCA_DEL_PRODUCTO',$marca)
       ->get();
-     
+
       return view('admin.productospormarca',compact('productos','marca'));
     }
 
@@ -91,15 +92,15 @@ class AdminController extends Controller
 
     public function comprassegunprov(Request $request)
     {
-      
+
       $comprasprove=DB::table('compras_por_año_segun_proveedor')->get();
-     
+
       return view('admin.comprassegunproveedor',compact('comprasprove'));
     }
 
     public function ordenesdecompra(Request $request)
     {
-      
+
       $ordendecompra =DB::table('ordenesdecompra')->get();
 
       return view('admin.ordenesdecompra',compact('ordendecompra'));
@@ -107,7 +108,7 @@ class AdminController extends Controller
 
     public function areaproveedor()
     {
-      
+
 
       return view('admin.areaproveedor');
     }
@@ -117,7 +118,7 @@ class AdminController extends Controller
     {
 
       $familia =DB::table('stock_productos_area_proveedor_familia')->get();
-      
+
 
       return view('admin.areaproveedorfamilia',compact('familia'));
     }
@@ -125,7 +126,7 @@ class AdminController extends Controller
 
 
     public function porcentajeDesviacion (){
-      
+
 
       $porcentaje=DB::table('porcentaje_desviacion')
       ->orderBy('desv', 'desc')
@@ -138,19 +139,19 @@ class AdminController extends Controller
 
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
- 
+
       $porcentaje=DB::table('porcentaje_desviacion')
       ->whereBetween('ultima_fecha', array($request->fecha1,$request->fecha2))
       ->orderBy('desv', 'desc')
       ->paginate(2000);
-  
+
 
 
       return view('admin.PorcentajeDesviacion',compact('porcentaje','fecha1','fecha2'));
     }
 
     public function filtarProductospormarca (Request $request){
-      
+
       if ($request->searchText==null) {
        $productos=DB::table('Productos_x_Marca')->paginate(10);
        return view('admin.productospormarca',compact('productos'));
@@ -167,7 +168,7 @@ class AdminController extends Controller
        }
        return view('admin.productospormarca',compact('productos','buscador'));
     }
-    
+
 
     public function Productos(){
       //$productos=DB::table('Vista_Productos')->get();
@@ -184,31 +185,31 @@ class AdminController extends Controller
       ->orwhere('descripcion','LIKE','%'.$request->searchText.'%')
       ->orwhere('marca','LIKE','%'.$request->searchText.'%')
       ->get();
-    
 
-    
+
+
       return view('admin.Productos',compact('productos','consulta'));
 
     }
 
     public function IndexVentaProductos(){
-    
+
       return view('admin.VentasProductosPorFecha');
     }
 
-    
+
 
 
     public function VentaProductosPorFechas (Request $request){
-     
+
 
       $marca = $request->marca;
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
 
-  
 
-      $productos=DB::select('select 
+
+      $productos=DB::select('select
       p.ARCODI as "codigo",
       p.ARCBAR as "barra",
       p.ARCOPV as "proveedor",
@@ -217,13 +218,13 @@ class AdminController extends Controller
       sum(dc.DECANT) as "total_productos",
       max(dc.DEFECO)as "ultima_fecha"
       from dcargos as dc ,
-      producto as p 
-      where p.ARCODI=dc.DECODI and  p.ARMARCA= ? and 
-      dc.DEFECO between ? and ? 
+      producto as p
+      where p.ARCODI=dc.DECODI and  p.ARMARCA= ? and
+      dc.DEFECO between ? and ?
       group by p.ARCODI   order by max(dc.defeco) desc', [$marca,$fecha1,$fecha2]);
-      
 
-  
+
+
       return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2'));
 
 
@@ -231,20 +232,20 @@ class AdminController extends Controller
 
     public function IndexCompraProductos(){
 
-    
+
       return view('admin.CompraProductosPorFecha');
     }
 
     public function CompraProductosPorFechas (Request $request){
-     
+
 
       $marca = $request->marca;
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
 
-  
 
-      $productos=DB::select('select 
+
+      $productos=DB::select('select
       p.ARMARCA as "marca",
       d.DMVPROD AS "Cod_Producto",
       p.ARDESC AS "Descripción_Producto",
@@ -260,13 +261,13 @@ class AdminController extends Controller
       d.DMVNGUI = c.CMVNGUI
           AND d.DMVPROD = p.ARCODI
           AND p.ARMARCA LIKE ?
-          AND c.CMVFECG BETWEEN  ?  AND  ? 
+          AND c.CMVFECG BETWEEN  ?  AND  ?
           AND pr.PCCODI = LEFT(p.ARCODI, 5)
   GROUP BY p.ARMARCA , d.DMVPROD , p.ARDESC
   ORDER BY d.DMVPROD', [$marca,$fecha1,$fecha2]);
-      
 
-     
+
+
       return view('admin.CompraProductosPorFecha',compact('productos','marca','fecha1','fecha2'));
 
 
@@ -277,8 +278,8 @@ class AdminController extends Controller
 
   public function DocumentosPorHora(Request $request){
 
- 
-    
+
+
     $fecha1=$request->fecha1;
     $fecha2=$request->fecha2;
     $TotalBoleta;
@@ -291,7 +292,7 @@ class AdminController extends Controller
 
       //Rango de las 9:00:00 a las 9:59:59
       $doc1=DB::select( 'select
-       tipo as "Tipo" , 
+       tipo as "Tipo" ,
        count(cantidad) as "cantidad",
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
@@ -303,86 +304,86 @@ class AdminController extends Controller
       //dd($doc1);
       if(empty($doc1)){
 
-       
+
       }else{
-            //posicion [0] Boletas 
+            //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc1[0] )){
 
-           
+
             $TotalBoleta =   0;
              $TotalCantBoletas =0;
-             
-              
-  
+
+
+
             }else{
-  
+
               $TotalBoleta =  $doc1[0]->bruto;
               $TotalCantBoletas = $doc1[0]->cantidad;
             }
-  
+
             if(! isset($doc1[1] )){
                $TotalFactura = 0;
               $TotalCantFacturas = 0;
 
-           
-                
+
+
             }else{
-  
+
             $TotalFactura = $doc1[1]->bruto;
             $TotalCantFacturas =$doc1[1]->cantidad;
             $collection = Collection::make($doc1);
           }
-          
-             
-         
+
+
+
       }
 
 
       //Rango de las 10:00:00 a las 10:59:59
        $doc2=DB::select( 'select
-       tipo as "Tipo" , 
+       tipo as "Tipo" ,
        count(cantidad) as "cantidad",
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
        fecha_real between ? and ? and
        tiempo Between 100000 And 105959 group by tipo', [$fecha1,$fecha2]);
-    
+
        if(empty($doc2)){
 
        }else{
-      //posicion [0] Boletas 
+      //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc2[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc2[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc2[0]->cantidad;
             }
-  
+
             if(! isset($doc2[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc2[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc2[1]->cantidad;
-            
+
           }
-       
-        //añadir mas rangos a la coleccion 
-       $collection = $collection->merge(Collection::make($doc2)); 
+
+        //añadir mas rangos a la coleccion
+       $collection = $collection->merge(Collection::make($doc2));
        }
 
        //Rango de las 11:00:00 a las 11:59:59
        $doc3=DB::select('select
-       tipo as "Tipo" , 
+       tipo as "Tipo" ,
        count(cantidad) as "cantidad",
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
@@ -393,36 +394,36 @@ class AdminController extends Controller
 
 
        }else{
-       //posicion [0] Boletas 
+       //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc3[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc3[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc3[0]->cantidad;
             }
-  
+
             if(! isset($doc3[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc3[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc3[1]->cantidad;
-            
+
           }
 
-       $collection = $collection->merge(Collection::make($doc3)); 
+       $collection = $collection->merge(Collection::make($doc3));
        }
-      
+
         //Rango de las 12:00:00 a las 12:59:59
        $doc4=DB::select('select
-       tipo as "Tipo" , 
+       tipo as "Tipo" ,
        count(cantidad) as "cantidad",
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
@@ -434,35 +435,35 @@ class AdminController extends Controller
 
 
        }else{
-     //posicion [0] Boletas 
+     //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc4[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc4[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc4[0]->cantidad;
             }
-  
+
             if(! isset($doc4[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc4[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc4[1]->cantidad;
-            
+
           }
 
-       $collection = $collection->merge(Collection::make($doc4)); 
-       }  
+       $collection = $collection->merge(Collection::make($doc4));
+       }
       //ango de las 13:00:00 a las 13:59:59
        $doc5=DB::select('select
-       tipo as "Tipo" , 
+       tipo as "Tipo" ,
        count(cantidad) as "cantidad",
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
@@ -473,35 +474,35 @@ class AdminController extends Controller
        if(empty($doc5)){
 
        }else{
-      //posicion [0] Boletas 
+      //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc5[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc5[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc5[0]->cantidad;
             }
-  
+
             if(! isset($doc5[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc5[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc5[1]->cantidad;
-            
+
           }
 
-       $collection = $collection->merge(Collection::make($doc5)); 
+       $collection = $collection->merge(Collection::make($doc5));
        }
         //Rango de las 14:00:00 a las 14:59:59
         $doc6=DB::select('select
-        tipo as "Tipo" , 
+        tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
@@ -511,156 +512,156 @@ class AdminController extends Controller
         if(empty($doc6)){
 
         }else{
-       //posicion [0] Boletas 
+       //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc6[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc6[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc6[0]->cantidad;
             }
-  
+
             if(! isset($doc6[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc6[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc6[1]->cantidad;
-            
+
           }
-        
-        $collection = $collection->merge(Collection::make($doc6)); 
+
+        $collection = $collection->merge(Collection::make($doc6));
         }
         //Rango de las 15:00:00 a las 15:59:59
         $doc7=DB::select('select
-        tipo as "Tipo", 
+        tipo as "Tipo",
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
         tiempo Between 150000 And 155959 group by tipo', [$fecha1,$fecha2]);
-        
+
         //dd($doc7);
         if(empty($doc7)){
-         
+
         }else{
-       //posicion [0] Boletas 
+       //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc7[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc7[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc7[0]->cantidad;
             }
-  
+
             if(! isset($doc7[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc7[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc7[1]->cantidad;
-            
+
           }
-        
+
         $collection = $collection->merge(Collection::make($doc7));
-        
+
         }
         //Rango de las 16:00:00 a las 16:59:59
         $doc8=DB::select('select
-        tipo as "Tipo" , 
+        tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
         tiempo Between 160000 And 165959 group by tipo', [$fecha1,$fecha2]);
-       
+
         if(empty($doc8)){
 
 
         }else{
-     //posicion [0] Boletas 
+     //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc8[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc8[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc8[0]->cantidad;
             }
-  
+
             if(! isset($doc8[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc8[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc8[1]->cantidad;
-            
+
           }
-        
+
         $collection = $collection->merge(Collection::make($doc8));
        }
         //Rango de las 17:00:00 a las 17:59:59
         $doc9=DB::select('select
-        tipo as "Tipo" , 
+        tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
         tiempo Between 170000 And 175959 group by tipo', [$fecha1,$fecha2]);
-       
+
         if(empty($doc9)){
 
 
         }else{
-        //posicion [0] Boletas 
+        //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc9[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc9[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc9[0]->cantidad;
             }
-  
+
             if(! isset($doc9[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc9[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc9[1]->cantidad;
-            
+
           }
 
-        $collection = $collection->merge(Collection::make($doc9));  
+        $collection = $collection->merge(Collection::make($doc9));
         }
         //Rango de las 18:00:00 a las 18:59:59
         $doc10=DB::select('select
-        tipo as "Tipo" , 
+        tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
@@ -671,35 +672,35 @@ class AdminController extends Controller
         if(empty($doc10)){
 
         }else{
-        //posicion [0] Boletas 
+        //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc10[0] )){
 
-           
+
             $TotalBoleta = $TotalBoleta + 0;
              $TotalCantBoletas = $TotalCantBoletas+0;
-  
+
             }else{
-  
+
               $TotalBoleta = $TotalBoleta + $doc10[0]->bruto;
               $TotalCantBoletas = $TotalCantBoletas+$doc10[0]->cantidad;
             }
-  
+
             if(! isset($doc10[1] )){
                $TotalFactura = $TotalFactura +0;
               $TotalCantFacturas = $TotalCantFacturas+0;
             }else{
-  
+
             $TotalFactura =$TotalFactura + $doc10[1]->bruto;
             $TotalCantFacturas =$TotalCantFacturas+$doc10[1]->cantidad;
-            
+
           }
-        
+
         $collection = $collection->merge(Collection::make($doc10));
         }
         //Rango de las 19:00:00 a las 19:59:59
         $doc11=DB::select('select
-        tipo as "Tipo" , 
+        tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
@@ -711,11 +712,11 @@ class AdminController extends Controller
 
 
         }else{
-          //posicion [0] Boletas 
+          //posicion [0] Boletas
           //posicion [1] Facturas
           if(! isset($doc11[0] )){
 
-           
+
           $TotalBoleta = $TotalBoleta + 0;
            $TotalCantBoletas = $TotalCantBoletas+0;
 
@@ -732,17 +733,17 @@ class AdminController extends Controller
 
           $TotalFactura =$TotalFactura + $doc11[1]->bruto;
           $TotalCantFacturas =$TotalCantFacturas+$doc11[1]->cantidad;
-          
+
         }
-         
-        
+
+
           $collection = $collection->merge(Collection::make($doc11));
 
         }
         /*
          //Rango de las 20:00:00 a las 20:59:59
          $doc12=DB::select('select
-         tipo as "Tipo" , 
+         tipo as "Tipo" ,
          count(cantidad) as "cantidad",
          round(Sum(bruto*1.19)) as "bruto"
          from compras_x_hora
@@ -750,22 +751,22 @@ class AdminController extends Controller
          fecha_real between ? and ? and
          tiempo Between 200000 And 205959 group by tipo', [$fecha1,$fecha2]);
          */
-         
+
          if(!isset($collection[0])){
-         
+
           $collection=null;
           $TotalBoleta = 0;
           $TotalFactura =0;
           $TotalCantBoletas = 0;
           $TotalCantFacturas =0;
-        
+
          }
-       
+
         //
        // dd($collection[0]);
-        
-      
-     
+
+
+
 
        return view('admin.VentasPorHora',compact('collection','TotalFactura','TotalBoleta','TotalCantBoletas','TotalCantFacturas'));
 
@@ -773,13 +774,13 @@ class AdminController extends Controller
 
 
     public function DocumentosPorHoraIndex(){
-     
+
       return view('admin.VentasPorHora');
 
     }
 
 
- 
+
     public function ProyeccionDeCompras(Request $request){
     // dd($request->all());
        $proyeccion_compra=DB::table('Proyeccion_compra_vendedor')
@@ -802,7 +803,7 @@ class AdminController extends Controller
        ->whereBetween('fecha_ingreso', array($request->fecha1,$request->fecha2))
        ->get();
 */
-    
+
        return view('admin.ProyeccionCompras',compact('proyeccion_compra','proyeccion_compra_venta'));
 
     }
@@ -816,60 +817,81 @@ class AdminController extends Controller
     }
 
 
-    // public function movimientoinventario(){
+    public function movimientoinventario(){
 
 
-    //   return view('admin.ajustedeinventario');
+      return view('admin.ajustedeinventario');
 
 
-    // }
+    }
 
-    // public function filtrarmovimientoinventario(Request $request){
-
-
-    //     $cod=$request->codigo;
-
-    //     $date = Carbon::now("Chile/Continental");
-
-    //     $usuario = session()->get('nombre');
-
-        
-    //     $consulta = DB::table('bodeprod')
-    //     ->join('producto', 'ARCODI', '=', 'bodeprod.bpprod')
-    //     ->where('bpprod',$cod)
-    //     ->get();
+    public function filtrarmovimientoinventario(Request $request){
 
 
+        $cod=$request->codigo;
 
-    //     return view('admin.ajustedeinventario',compact('consulta','date','usuario'));
+        $date = Carbon::now("Chile/Continental");
 
-
-    // }
-
-  //   public function ajustemovimientoinventario(Request $request){
-
-  //     // dd($request->all());
-
-  //     $update = DB::table('bodeprod')
-
-      
-  //           ->update(['bpsrea' => $request->cantidadreal]);
-  //           ///sacar del programa 
-  //           $insert = DB::table('movimientos_de_mercaderia')->insert(
-  //             ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidad - $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => $request->obser]                        
-  //         );
-      
+        $usuario = session()->get('nombre');
 
 
-  //     return view('admin.ajustedeinventario');
+        $consulta = DB::table('inventario_temporal')
+        ->join('producto', 'ARCODI', '=', 'inventario_temporal.codigo')
+        ->where('codigo',$cod)
+        ->get();
 
 
-  // }
+
+        // if (empty($consulta)) {
+        //     dd('coleccion vacia ',$consulta);
+        // }
+        //     dd('hy algo ',$consulta);
+
+        // dd($request->all());
+
+
+        return view('admin.ajustedeinventario',compact('consulta','date','usuario'));
+
+
+    }
+
+    public function ajustemovimientoinventario(Request $request){
+
+    //   dd($request->all());
+
+    $inventario = InventarioTemporal::find($request->codigo);
+
+   // dd($inventario);
+    $inventario->cantidad = $inventario->cantidad + $request->cantidadreal;
+
+    $inventario->save();
+
+
+
+    //   $update = DB::table('inventario_temporal')
+    //   ->where('codigo' , $request->codigo)
+    //   ->update(['cantidad' => 'cantidad' + $request->cantidadreal]);
+
+
+            ///sacar del programa
+            $insert = DB::table('movimientos_de_mercaderia')->insert(
+              ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => 'INVENTARIO 2021']
+          );
+
+
+        //   \Session::flash('message', 'store');
+
+
+
+      return view('admin.ajustedeinventario');
+
+
+  }
 
 
   public function consultafacturaboleta(){
 
-    
+
     return view('admin.ConsultaFacturasBoletas');
 
 
@@ -882,7 +904,7 @@ public function filtrarconsultafacturaboleta(Request $request){
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
       // $documento=$request->documento;
-      
+
 
 
       $factura=DB::table('cargos')
@@ -890,13 +912,13 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->where('catipo',8)
       ->get();
 
-      
+
 
       $facturacount=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',8)
       ->count('CANMRO');
-      
+
 
 
 
@@ -910,7 +932,7 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',7)
       ->count('CANMRO');
-      
+
 
       $notacredito=DB::table('nota_credito')
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
@@ -990,7 +1012,7 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->get();
 
 
-      
+
   return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora'));
 
 
@@ -1011,7 +1033,7 @@ public function controlipmac(Request $request){
 
 public function actualizaripmac(Request $request)
 
-    
+
     {
       // dd($request->all());
 
@@ -1032,7 +1054,7 @@ public function actualizaripmac(Request $request)
 
       ipmac::create([
 
-           
+
             'ip' => $request->ip,
             'mac' => $request->mac,
             'desc_pc' => $request->desc_pc,
@@ -1049,8 +1071,8 @@ public function actualizaripmac(Request $request)
 
 
       return view('admin.registraripmac');
-    
-    
+
+
     }
 
 //------------------------------FIN Control Ip mac-----------------------------------------------//
@@ -1063,23 +1085,23 @@ public function actualizaripmac(Request $request)
 
 
     public function costos() {
-      
-      
+
+
       return view('admin.costos');
 
     }
 
     public function costosfiltro(Request $request){
 
-    
+
       $anio=$request->anio;
 
       dd($anio);
-  
-  
+
+
     return view('admin.costos',compact('anio'));
-  
-  
+
+
   }
 
 
@@ -1091,7 +1113,7 @@ public function actualizaripmac(Request $request)
 
 
 
-    
+
 //------------------------------Cupon Escolar----------------------------------------------//
 
 
@@ -1100,20 +1122,20 @@ public function actualizaripmac(Request $request)
       $control=DB::table('cupon_escolar')
       ->where('anno_esc', 2020)
       ->get();
-  
-  
+
+
     return view('admin.cuponesescolares',compact('control'));
-  
-  
+
+
   }
-  
-  
+
+
   public function actualizarcupon(Request $request)
-  
-      
+
+
       {
         // dd($request->all());
-  
+
           $control=cuponescolar::findOrfail($request->id);
           $control->id=$request->get('id');
           $control->nro_cupon=$request->get('nro_cupon');
@@ -1123,7 +1145,7 @@ public function actualizaripmac(Request $request)
           $control->comuna=$request->get('comuna');
           $control->update();
           return back();
-  
+
       }
 
 
@@ -1131,7 +1153,7 @@ public function actualizaripmac(Request $request)
 
 
 public function stocktiemporeal (Request $request){
-      
+
 
   $productos=DB::table('conveniomarco')->get();
 
@@ -1142,7 +1164,7 @@ public function stocktiemporeal (Request $request){
 
 
 
-    
+
 
 
 
