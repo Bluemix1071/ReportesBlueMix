@@ -820,7 +820,17 @@ class AdminController extends Controller
     public function movimientoinventario(){
 
 
-      return view('admin.ajustedeinventario');
+        $usuario = session()->get('nombre');
+
+
+        $ultimos = DB::table('movimientos_de_mercaderia')
+        ->where('USUARIO',$usuario)
+        ->orderBy('id_Movimientos_de_mercaderia','desc')
+        ->take(3)
+        ->get();
+
+
+      return view('admin.ajustedeinventario',compact('ultimos'));
 
 
     }
@@ -840,6 +850,11 @@ class AdminController extends Controller
         ->where('codigo',$cod)
         ->get();
 
+        $ultimos = DB::table('movimientos_de_mercaderia')
+        ->where('USUARIO',$usuario)
+        ->orderBy('id_Movimientos_de_mercaderia','desc')
+        ->take(3)
+        ->get();
 
 
         // if (empty($consulta)) {
@@ -850,7 +865,12 @@ class AdminController extends Controller
         // dd($request->all());
 
 
-        return view('admin.ajustedeinventario',compact('consulta','date','usuario'));
+
+
+        // dd($ultimos);
+
+
+        return view('admin.ajustedeinventario',compact('consulta','date','usuario','ultimos'));
 
 
     }
@@ -879,7 +899,6 @@ class AdminController extends Controller
           );
 
 
-        //   \Session::flash('message', 'store');
 
 
         return redirect('/admin/movimientoinventario');

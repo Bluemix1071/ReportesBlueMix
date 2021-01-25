@@ -21,10 +21,10 @@ Ajuste De Inventario
                 <div class="form-group mb-2">
                   @if (empty($codigo))
                   <h5>Codigo Producto</h5>
-                  <input type="number" id="codigo" class="form-control" name="codigo" >
+                  <input type="text" id="codigo" class="form-control" name="codigo" >
                   @else
                   <h5>Codigo Producto</h5>
-                <input type="number" id="codigo" class="form-control" name="codigo" required value="{{$codigo}}">
+                <input type="text" id="codigo" class="form-control" name="codigo" required value="{{$codigo}}">
                   @endif
                 </div>
                 <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
@@ -99,8 +99,9 @@ Ajuste De Inventario
                           </div>
                           <div class="col-md-4 mb-3">
                             <label for="validationTooltip02">Cantidad Real</label>
-                            <input type="text" class="form-control" id="cantidadreal" required name="cantidadreal"  value="" >
+                            <input type="number" class="form-control" id="cantidadreal" required name="cantidadreal"  value="" >
                           </div>
+
                           <div class="col-md-4 mb-3">
                               {{-- <label for="validationTooltip02">Fecha</label> --}}
                               <input type="hidden" class="form-control" id="fecha" name="fecha"  readonly value="{{$date}}" >
@@ -124,6 +125,34 @@ Ajuste De Inventario
 
 
         @endif
+        <table id="productos" class="table table-bordered table-hover dataTable table-sm">
+            <thead>
+              <tr>
+                <th scope="col" style="text-align:left">codigo</th>
+                <th scope="col" style="text-align:left">Descripción</th>
+                <th scope="col" style="text-align:left">cantidad</th>
+
+
+              </tr>
+            </thead>
+
+            <tbody>
+                  @if (empty($ultimos))
+
+                  @else
+
+              @foreach($ultimos as $item)
+                <tr>
+                  <td style="text-align:left">{{$item->CODIGO_PRODUCTO}}</td>
+                  <td style="text-align:left">{{$item->DESCRIPCION}}</td>
+                  <td style="text-align:left">{{$item->CANTIDAD}}</td>
+
+                </tr>
+                @endforeach
+                @endif
+              </tbody>
+
+          </table>
     </div>
 </div>
 
