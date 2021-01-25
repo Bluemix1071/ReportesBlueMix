@@ -280,6 +280,14 @@
                   </li>
                   @endcan
 
+                  <li class="nav-item">
+                    <a href="{{route('movimientoinventario')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Inventario
+                       </p>
+                     </a>
+                   </li>
+
                 @can('ProductoPorMarca')
                     <li class="nav-item">
                     <a href="{{route('ProductosPorMarca')}}" class="nav-link {{setActive('ProductosPorMarca')}}">
@@ -396,14 +404,14 @@
                       </a>
                     </li>
                     @endcan
-
+{{--
                    <li class="nav-item">
                     <a href="{{route('movimientoinventario')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                       <p>Movimiento Mercaderia
+                       <p>Inventario
                        </p>
                      </a>
-                   </li>
+                   </li> --}}
                    @can('LibroVentas')
 
                     <li class="nav-item">
@@ -509,6 +517,8 @@
                   </a>
                 </li>
               @endcan
+
+
 
               {{-- <li class="nav-item">
               <a href="{{route('GiftCardVenta')}}" class="nav-link">
