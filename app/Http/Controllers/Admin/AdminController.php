@@ -882,8 +882,8 @@ class AdminController extends Controller
         //   \Session::flash('message', 'store');
 
 
-
-      return view('admin.ajustedeinventario');
+        return redirect('/admin/movimientoinventario');
+      //return view('admin.ajustedeinventario');
 
 
   }
