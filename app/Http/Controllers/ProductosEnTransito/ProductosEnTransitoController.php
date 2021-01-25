@@ -11,6 +11,7 @@ use App\Modelos\ProductosEnTrancito\Bodeprod;
 use App\Modelos\ProductosEnTrancito\codigos_cajas;
 use App\Modelos\ProductosEnTrancito\productosEnTrancito;
 use App\Modelos\ProductosEnTrancito\ProductosVista;
+use App\Modelos\ProductosEnTrancito\GetListadoCajas;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -351,22 +352,6 @@ class ProductosEnTransitoController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function ValidarProducto($producto)
     {
         $validate = Validaciones::ValidarProductos($producto);
@@ -377,4 +362,54 @@ class ProductosEnTransitoController extends Controller
         } else {
         }
     }
+
+
+
+
+    public function GetProductoTransito(Request $request)
+    {
+
+
+        $Productos = DB::table('productos_en_trancito')->get();
+
+
+        return response()->json(
+            [
+                "status" => "success",
+                "code" => 200,
+                "mesages" => $Productos,
+
+            ],
+            200
+
+        );
+    }
+
+
+
+
+    public function GetListadoCajas(Request $request)
+    {
+
+        $Cajas = DB::table('codigos_cajas')
+        ->where('estado', '!=', 'ReIngresado')
+        ->get();
+
+
+        return response()->json(
+            [
+                "status" => "success",
+                "code" => 200,
+                "mesages" => $Cajas,
+
+            ],
+            200
+
+        );
+    }
+
+
+
+
+
 }

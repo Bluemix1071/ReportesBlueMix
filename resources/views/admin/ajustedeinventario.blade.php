@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Ajuste De Inventario 
+Ajuste De Inventario
 @endsection
 
 @section('styles')
@@ -12,7 +12,7 @@ Ajuste De Inventario
 @section('contenido')
 
 <div class="container-fluid">
-    <h3 class="display-3">Ajuste De Inventario (Sala)</h3>
+    <h3 class="display-3">Inventario</h3>
     <div class="row">
     <div class="col-md-8">
 
@@ -27,14 +27,14 @@ Ajuste De Inventario
                 <input type="number" id="codigo" class="form-control" name="codigo" required value="{{$codigo}}">
                   @endif
                 </div>
-                <button type="submit" class="btn btn-primary mb-2">Filtrar</button>            
+                <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
               </form>
               <hr>
-        </div>    
+        </div>
       </div>
 
-      
-      
+
+
       <div class="col-md-12">
             @if (empty($consulta[0]))
                     <div class="form-row">
@@ -46,81 +46,82 @@ Ajuste De Inventario
                         <label for="validationTooltip02">Descripcion Producto</label>
                         <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
                       </div>
-                      <div class="col-md-4 mb-3">
+                      {{-- <div class="col-md-4 mb-3">
                         <label for="validationTooltip02">Usuario</label>
                         <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
-                      </div>
+                      </div> --}}
                     </div>
-                    
+
                     <div class="form-row">
-                            <div class="col-md-4 mb-3">
+                            {{-- <div class="col-md-4 mb-3">
                               <label for="validationTooltip01">Cantidad</label>
                               <input type="text" class="form-control" id="validationTooltip01" readonly value="" required>
-                            </div>
+                            </div> --}}
                             <div class="col-md-4 mb-3">
                               <label for="validationTooltip02">Cantidad Real</label>
                               <input type="text" class="form-control" id="validationTooltip02"  readonly value="" >
                             </div>
-                            <div class="col-md-4 mb-3">
+                            {{-- <div class="col-md-4 mb-3">
                                 <label for="validationTooltip02">Fecha</label>
                                 <input type="text" class="form-control" id="validationTooltip02"  readonly value="" >
-                              </div>
+                              </div> --}}
                     </div>
-                    <div class="form-row">
+                    {{-- <div class="form-row">
                             <div class="col-md-4 mb-3">
                               <label for="validationTooltip01">observación</label>
-                        <textarea readonly name=""  id="" cols="53" rows="4"></textarea>                        
+                        <textarea readonly name=""  id="" cols="53" rows="4"></textarea>
                     </div>
-                </div>
+                </div> --}}
                 @else
                 <form action="{{route('ajustemovimientoinventario')}}" method="post"  id="desvForm" >
                     @csrf
                 <div class="form-row">
-                    
+
                     <div class="col-md-4 mb-3">
                       <label for="validationTooltip01">Codigo Producto</label>
-                      
-                      <input type="text" class="form-control" id="codigo" name="codigo" readonly value="{{$consulta[0]->bpprod}}" required>
+
+                      <input type="text" class="form-control" id="codigo" name="codigo" readonly value="{{$consulta[0]->codigo}}" required>
                     </div>
                     <div class="col-md-4 mb-3">
                       <label for="validationTooltip02">Descripcion Producto</label>
                       <input type="text" class="form-control" id="descripcion" name="descripcion" readonly value="{{$consulta[0]->ARDESC}}" required>
                     </div>
                     <div class="col-md-4 mb-3">
-                      <label for="validationTooltip02">Usuario</label>
-                      <input type="text" class="form-control" id="usuario" name="usuario" readonly value="{{$usuario}}" required>
+                      {{-- <label for="validationTooltip02">Usuario</label> --}}
+                      <input type="hidden" class="form-control" id="usuario" name="usuario" readonly value="{{$usuario}}" required>
                     </div>
                   </div>
-                  
+
                   <div class="form-row">
                           <div class="col-md-4 mb-3">
-                            <label for="validationTooltip01">Cantidad</label>
-                            <input type="text" class="form-control" id="cantidad" name="cantidad" readonly value="{{$consulta[0]->bpsrea}}" required>
+                            {{-- <label for="validationTooltip01">Cantidad</label> --}}
+                            <input type="hidden" class="form-control" id="cantidad" name="cantidad" readonly value="{{$consulta[0]->cantidad}}" required>
                           </div>
                           <div class="col-md-4 mb-3">
                             <label for="validationTooltip02">Cantidad Real</label>
                             <input type="text" class="form-control" id="cantidadreal" required name="cantidadreal"  value="" >
                           </div>
                           <div class="col-md-4 mb-3">
-                              <label for="validationTooltip02">Fecha</label>
-                              <input type="text" class="form-control" id="fecha" name="fecha"  readonly value="{{$date}}" >
+                              {{-- <label for="validationTooltip02">Fecha</label> --}}
+                              <input type="hidden" class="form-control" id="fecha" name="fecha"  readonly value="{{$date}}" >
                             </div>
                   </div>
-                  <div class="form-row">
+                  {{-- <div class="form-row">
                           <div class="col-md-4 mb-3">
                             <label for="validationTooltip01">Observación</label>
-                      <textarea name="obser" required  id="obser" cols="53" rows="4"></textarea>                        
-                  </div>      
-        </div>
+                      <textarea name="obser" required  id="obser" cols="53" rows="4"></textarea>
+                  </div>
+        </div> --}}
+
         <div class="form-row">
             <div class="col-md-4 mb-3">
-             <button type="submit" class="btn btn-danger">Modificar</button>   
+             <button type="submit" class="btn btn-danger">Modificar</button>
 
-            </div> 
-            </div>      
+            </div>
+            </div>
         </div>
     </form>
-        
+
 
         @endif
     </div>
@@ -146,7 +147,7 @@ Ajuste De Inventario
         "paginate":{
           "next": "Siguiente",
           "previous": "Anterior",
-        
+
       },
       "loadingRecords": "cargando",
       "processing": "procesando",

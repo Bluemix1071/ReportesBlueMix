@@ -25,6 +25,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ReIngresoMercaderia from './components/ReIngresoMercaderia/ReIngresoMercaderia';
 import IngresoCupon from './components/CuponesEscolares/IngresarCupon';
 import ModificarMercaderia from './components/ModificarMercaderia/ModificarMercaderia';
+import ListadosDeCajas from './components/ListadosDeCajas/ListadosDeCajas';
 require('./bootstrap');
 
 
@@ -44,6 +45,7 @@ if (document.getElementById('example')) {
                                     <Route path="/api/IngresarMercaderia" exact={true}> <MovimientoDeMercaderia /> </Route>
                                     <Route path="/api/ModificarMercaderia/" exact={true}> <ModificarMercaderia/> </Route>
                                     <Route path="/api/ReIngresoMercaderia" exact={true}> <ReIngresoMercaderia/> </Route>
+                                    <Route path="/api/ListadosDeCajas" exact={true}> <ListadosDeCajas/> </Route>
                                     <Route path="/api/IngresoCupon" exact={true}> <IngresoCupon/> </Route>
                                     <Route path="*" />
 

@@ -397,13 +397,13 @@
                     </li>
                     @endcan
 
-                   {{-- <li class="nav-item">
+                   <li class="nav-item">
                     <a href="{{route('movimientoinventario')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                        <p>Movimiento Mercaderia
                        </p>
                      </a>
-                   </li> --}}
+                   </li>
                    @can('LibroVentas')
 
                     <li class="nav-item">

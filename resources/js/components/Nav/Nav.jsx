@@ -17,6 +17,7 @@ const Rutas = [
             { ruta: 'api/IngresarMercaderia', permiso: 'IngresoMercaderia', label: 'Ingresar' },
             { ruta: 'api/ModificarMercaderia', permiso: 'ModificarMercaderia', label: 'Modificar' },
             { ruta: 'api/ReIngresoMercaderia', permiso: 'ReIngresoMercaderia', label: 'ReIngreso' },
+            { ruta: 'api/ListadosDeCajas', permiso: 'ListadosDeCajas', label: 'Listados De Cajas' },
         ]
     }
 
