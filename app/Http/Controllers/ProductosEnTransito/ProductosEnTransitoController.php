@@ -43,15 +43,23 @@ class ProductosEnTransitoController extends Controller
             if ($codigo == "0" || $barra == "0" || $descripcion == "0") {
             } else {
 
-                $productos = ProductosVista::SelectQuitarPrecio()->codigo($codigo)
-                    ->CodigoBarra($barra)
-                    ->Descripcion($descripcion)
+                // $productos = ProductosVista::SelectQuitarPrecio()->codigo($codigo)
+                //     ->CodigoBarra($barra)
+                //     ->Descripcion($descripcion)
+                //     ->get();
+
+                $producto = DB::table('bodeprod')->select('bpprod as codigo_producto', 'producto.ardesc as descripcion','producto.ARCBAR as codigoBarra')
+                    ->join('producto', 'ARCODI', '=', 'bodeprod.bpprod')
+                    ->where('bpprod', $codigo)
+                    ->orwhere('bpprod', $barra)
                     ->get();
+
+                   /// dd($producto,$productos);
 
                 $data = [
                     "status" => "success",
                     "code" => 200,
-                    "producto" => $productos,
+                    "producto" => $producto,
 
                 ];
             }
@@ -392,8 +400,8 @@ class ProductosEnTransitoController extends Controller
     {
 
         $Cajas = DB::table('codigos_cajas')
-        ->where('estado', '!=', 'ReIngresado')
-        ->get();
+            ->where('estado', '!=', 'ReIngresado')
+            ->get();
 
 
         return response()->json(
@@ -407,9 +415,4 @@ class ProductosEnTransitoController extends Controller
 
         );
     }
-
-
-
-
-
 }
