@@ -15,6 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bs-stepper/dist/css/bs-stepper.min.css';
 import Stepper from 'bs-stepper'
 import FormularioCajaModificacion from './components/FormularioCajaModificacion';
+import ModalEditar from '../MovimientoDeMercaderia/components/ModalEditar';
 
 
 const ModificarMercaderia = () => {
@@ -30,6 +31,12 @@ const ModificarMercaderia = () => {
     const [ConfirmacionCaja, setConfirmacionCaja] = useState(false);
     const [EstadoCaja, setEstadoCaja] = useState(false);
     const [EstadoBoton, setEstadoBoton] = useState(true);
+
+    //editar producto
+    const [EditProduct, setEditProduct] = useState(false);
+    const [ProductoEditar, setProductoEditar] = useState({});
+
+
     //stepper
     const steps = [
         { target: '#item1', number: 1, text: 'Modificar Caja' },
@@ -46,10 +53,10 @@ const ModificarMercaderia = () => {
     }, [])
 
     useEffect(() => {
-        return ()=>{
+        return () => {
             dispatch(fetchReset());
         }
-    },[]);
+    }, []);
     // fin stepper
     const onSubmitMercaderia = (data, e) => {
         setEstadoCaja(false);
@@ -173,6 +180,18 @@ const ModificarMercaderia = () => {
         setProductos(Productos.filter(Producto => Producto.codigo_producto !== codigo))
     }
 
+    const EditarProducto = (product) => {
+
+        const result = Productos.find(p => p.codigo_producto === product.codigo_producto);
+
+        if (result !== undefined) {
+            setProductos(Productos.map(Producto => (Producto.codigo_producto === product.codigo_producto ? product : Producto)))
+            setEditProduct(false);
+        } else {
+
+        }
+    }
+
     const CancelarModificacion = () => {
 
         setocultarBusqueda(true);
@@ -225,7 +244,7 @@ const ModificarMercaderia = () => {
 
     }
 
-    const deshabilitarBoton =()=>{
+    const deshabilitarBoton = () => {
         setEstadoBoton(true);
         stepperr.previous();
 
@@ -288,7 +307,7 @@ const ModificarMercaderia = () => {
                             </div>
                             <div className="bs-stepper-content">
 
-                                <div id="item1" className="content"  ref={step1}>
+                                <div id="item1" className="content" ref={step1}>
 
                                     {ocultarBusqueda &&
                                         <form onSubmit={handleSubmit(onSubmitMercaderia)} id="buscadorMercaderia">
@@ -315,7 +334,7 @@ const ModificarMercaderia = () => {
 
                                         <FormularioCajaModificacion
 
-                                           // ocultarForm={ocultarForm}
+                                            // ocultarForm={ocultarForm}
                                             EnviarCaja={EnviarCaja}
                                             Caja={Caja}
                                             stepperr={stepperr}
@@ -353,9 +372,18 @@ const ModificarMercaderia = () => {
                                             </div>
                                         </form>
                                     }
+                                    <ModalEditar
+                                        EditProduct={EditProduct}
+                                        setEditProduct={setEditProduct}
+                                        ProductoEditar={ProductoEditar}
+                                        EditarProducto={EditarProducto}
+                                    />
+
                                     <TablaMercaderia
                                         Productos={Productos}
+                                        setEditProduct={setEditProduct}
                                         EliminarProducto={EliminarProducto}
+                                        setProductoEditar={setProductoEditar}
 
 
                                     />
@@ -370,7 +398,7 @@ const ModificarMercaderia = () => {
 
                                     />
 
-                                    <button className="btn btn-primary mr-4" onClick={() =>deshabilitarBoton()}>previus</button>
+                                    <button className="btn btn-primary mr-4" onClick={() => deshabilitarBoton()}>previus</button>
                                 </div>
 
 
@@ -389,7 +417,7 @@ const ModificarMercaderia = () => {
                                 disabled={ocultarBusqueda}
                             >Cancelar</button>
 
-                            <button className="btn btn-success my-3 mx-3" disabled={  EstadoBoton || Productos.length  < 1 || Caja.length < 1     }
+                            <button className="btn btn-success my-3 mx-3" disabled={EstadoBoton || Productos.length < 1 || Caja.length < 1}
                                 onClick={() => ModificarMercaderia()}
 
                             > Modificar </button>
