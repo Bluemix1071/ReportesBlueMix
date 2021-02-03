@@ -12,6 +12,8 @@ import ModalCantidad from './components/modalCantidad';
 import TablaMercaderia from './components/tablaMercaderia';
 import FormularioCaja from './components/formularioCaja';
 import ModalConfirmarCaja from './components/ModalConfirmarCaja';
+
+import ModalEditar from './components/ModalEditar'
 // steppers
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bs-stepper/dist/css/bs-stepper.min.css';
@@ -27,6 +29,10 @@ const MovimientoDeMercaderia = () => {
     const [show, setShow] = useState(false);
     const [showModalConfirm, setShowModalConfirm] = useState(false);
     const [showFormCaja, setShowFormCaja] = useState(true);
+
+    // state editar producto
+    const [EditProduct, setEditProduct] = useState(false);
+    const [ProductoEditar, setProductoEditar] = useState({});
 
     const [ConfirmacionCaja, setConfirmacionCaja] = useState(false)
     const [buscadorProducto, setBuscadorProducto] = useState("");
@@ -102,12 +108,9 @@ const MovimientoDeMercaderia = () => {
         }
     },[]);
 
-    const updateProduct = (codi, cant) => {
 
 
-        setProductos(Productos.map(Product => (Product.codigo_producto === codi ? Product.cantidad = parseInt(cant) : Product)))
 
-    }
     const ingresoProducto = async (product) => {
 
         if (Buscador.FETCH_PRODUCT_SUCCESS) {
@@ -128,6 +131,20 @@ const MovimientoDeMercaderia = () => {
             }
         }
     }
+
+    const EditarProducto =  (product) => {
+
+        const result = Productos.find(p => p.codigo_producto === product.codigo_producto);
+
+        if (result !== undefined) {
+            setProductos(Productos.map(Producto => (Producto.codigo_producto === product.codigo_producto ? product : Producto)))
+            setEditProduct(false);
+        } else {
+
+        }
+    }
+
+
 
     const mostarModal = () => {
 
@@ -315,7 +332,12 @@ const MovimientoDeMercaderia = () => {
                                     EnviarProductos={EnviarProductos}
                                 />
 
-
+                                <ModalEditar
+                                EditProduct={EditProduct}
+                                setEditProduct={setEditProduct}
+                                ProductoEditar={ProductoEditar}
+                                EditarProducto={EditarProducto}
+                                />
 
 
                                 <hr />
@@ -328,7 +350,8 @@ const MovimientoDeMercaderia = () => {
                                 <TablaMercaderia
                                     Productos={Productos}
                                     EliminarProducto={EliminarProducto}
-                                    updateProduct={updateProduct}
+                                    setEditProduct={setEditProduct}
+                                    setProductoEditar={setProductoEditar}
 
                                 />
 
