@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Api\ApiBuilder;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 
@@ -25,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view::share('theme','lte');
+        //Builder::mixin(new ApiBuilder);
+
     }
 }
