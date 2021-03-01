@@ -20,15 +20,16 @@ class InicioController extends Controller
         $variable1=$compras[0]->id;
 
 
-        $pronegativo=DB::table('pronegativo')->get();
-        $negativo1=$pronegativo[0]->negativo;
+        $negativo1 = DB::table('productos_negativos')->count();
+
+
         // dd($variable1,$compras);
 
 
         $users = User::where('id','!=',auth()->id())->
                         where('estado',1)->get();
 
-      
+
         $mensaje=DB::table('users')
         ->join('mensajes', 'mensajes.sender_id', '=', 'users.id')
         ->where('users.id','!=',auth()->id())
@@ -37,14 +38,14 @@ class InicioController extends Controller
         ->where('mensajes.recipient_id','=', auth()->id())
         ->get();
 
-   
+
         $conteo=DB::table('mensajes')
         ->where('mensajes.estado',1)
         ->where('mensajes.recipient_id','=', auth()->id())
         ->get();
         $conteo1 = $conteo->count();
 
-  
+
     return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1'));
     }
 
