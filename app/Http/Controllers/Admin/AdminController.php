@@ -953,6 +953,13 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->count('CANMRO');
 
 
+      $boletatransbankcount=DB::table('cargos')  /////transbanck
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->where('catipo',7)
+      ->where('CANMRO',1100000001)
+      ->count('CANMRO');
+
+
       $notacredito=DB::table('nota_credito')
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
       ->get();
@@ -975,7 +982,25 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
       ->sum('total_nc');
 
-      $total=(($boletasuma+$facturasuma)-$notacreditosuma);
+      $boletatransbanksumaneto=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO','<',1100000001)  //transbanke
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CANETO');
+
+      $boletatransbanksumaiva=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO','<', 1100000001)  //transbank
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CAIVA');
+
+      $boletatransbanktotal=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO' ,'<', 1100000001)   //transbank
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CAVALO');
+
+      $total=(($boletasuma+$facturasuma+$boletatransbanktotal)-$notacreditosuma);
 
       $boletasumaiva=DB::table('cargos')
       ->where('CATIPO',7)
@@ -986,6 +1011,8 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->where('CATIPO',8)
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAIVA');
+
+
 
       $notacreditosumaiva=DB::table('nota_credito')
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
@@ -1013,26 +1040,28 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $porcaja=DB::table('cargos')
       ->selectRaw('cacoca AS CAJA,
+      count(cacoca) AS cantidad,
       SUM(CAVALO) AS TOTAL')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('CATIPO',7)
       ->groupBy('cacoca')
       ->get();
 
+
+
       $porimpresora=DB::table('cargos')
-      ->selectRaw('nro_caja_fisc AS CAJA,
-      SUM(CAVALO) AS TOTAL,
-      MIN(NRO_BFISCAL) as Desde,
-      MAX(NRO_BFISCAL) as Hasta,
-      MAX(NRO_BFISCAL)-MIN(NRO_BFISCAL) + 1  as cantidad')
+      ->selectRaw('cacoca AS CAJA,
+      count(cacoca) AS cantidad,
+      SUM(CAVALO) AS TOTAL')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-      ->where('CATIPO',7)
-      ->groupBy('nro_caja_fisc')
+      ->where('CATIPO',8)
+      ->groupBy('cacoca')
       ->get();
 
 
 
-  return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora'));
+
+  return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora','boletatransbankcount','boletatransbanksumaiva','boletatransbanksumaneto','boletatransbanktotal'));
 
 
 }
@@ -1176,10 +1205,33 @@ public function stocktiemporeal (Request $request){
 
   $productos=DB::table('conveniomarco')->get();
 
-  // dd($producto);
 
   return view('admin.stocktiemporeal',compact('productos'));
 }
+
+
+
+    public function ListarOrdenesDiseño(Request $request){
+
+        $ordenes=DB::table('ordenesdiseño')->get();
+
+
+        return view('admin.ListarOrdenesDiseño',compact('ordenes'));
+    }
+
+    public function ListarOrdenesDisenoDetalle($idOrdenesDiseño){
+
+        $ordenesdiseño=DB::table('ordenesdiseño')
+        ->where('idOrdenesDiseño', $idOrdenesDiseño)
+        ->get();
+
+        // dd($ordenesdiseño);
+
+
+
+
+        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenes'));
+    }
 
 
 

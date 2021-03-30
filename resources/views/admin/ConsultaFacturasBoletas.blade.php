@@ -15,13 +15,13 @@ Consulta Facturas Boletas
         <h6 class="display-3">Emision Libro De Ventas Diario</h6>
                     {{-- BUSCADOR --}}
                     <form action="{{route('filtrarconsultafacturaboleta')}}" method="post"  id="desvForm" class="form-inline">
-                      @csrf                               
+                      @csrf
                             {{-- <div class="form-group mx-sm-3 mb-2">
                              @if (empty($fecha1))
                                 <label for="inputPassword2" class="sr-only"></label>
                                 <select id="documento" list="documento" class="form-control" name="documento" value="" required >
                                  <option value="1">Ambas</option>
-                                 <option value="7">Boleta</option> 
+                                 <option value="7">Boleta</option>
                                  <option value="8">Factura</option>
                               </select>
                               @else
@@ -29,15 +29,15 @@ Consulta Facturas Boletas
                               <select id="documento" list="documento" class="form-control" name="documento" value="{{$documento}}" required >
                                @if ($documento == 1)
                                <option selected="selected" value="1">Ambas</option>
-                               <option value="7">Boleta</option> 
+                               <option value="7">Boleta</option>
                                <option value="8">Factura</option>
                                @elseif($documento == 7)
                                <option value="1">Ambas</option>
-                               <option selected="selected" value="7">Boleta</option> 
-                               <option value="8">Factura</option> 
+                               <option selected="selected" value="7">Boleta</option>
+                               <option value="8">Factura</option>
                                @else
                                <option value="1">Ambas</option>
-                               <option value="7">Boleta</option> 
+                               <option value="7">Boleta</option>
                                <option selected="selected" value="8">Factura</option>
                                @endif
                             </select>
@@ -50,8 +50,8 @@ Consulta Facturas Boletas
                                      @else
                                    <input type="date" id="fecha1" class="form-control" name="fecha1"  value="{{$fecha1}}">
                                      @endif
-                             </div>                                    
-                              <div class="form-group mx-sm-3 mb-2">     
+                             </div>
+                              <div class="form-group mx-sm-3 mb-2">
                                      @if (empty($fecha2))
                                      <label for="inputPassword2" class="sr-only">Fecha 2</label>Hasta
                                      <input type="date" id="fecha2" name="fecha2" class="form-control">
@@ -60,18 +60,18 @@ Consulta Facturas Boletas
                                      @endif
                              </div>
                              <div class="col-md-2 ">
-                                     
+
                                <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                          
+
                        </div>
                        <div class="col-md-2 col-md offset-">
-                                     
+
                          <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
-                    
-                 </div>   
+
+                 </div>
               </form>
 
-           
+
                     {{-- FIN BUSCADOR--}}
         <div class="row">
           <div class="col-md-12">
@@ -86,19 +86,19 @@ Consulta Facturas Boletas
                       <th scope="col" style="text-align:left">Fecha</th>
                       <th scope="col" style="text-align:right">IVA</th>
                       <th scope="col" style="text-align:right">Neto</th>
-                      <th scope="col" style="text-align:right">Total</th>  
+                      <th scope="col" style="text-align:right">Total</th>
                       {{-- <th scope="col" style="text-align:center">Acciones</th>   --}}
                     </tr>
                   </thead>
                   <tbody>
                         @if (empty($boleta))
-                    
+
                         @else
                         <div style="display: none">
                           {{-- variable suma --}}
-                            {{ $totalboletas = 0 }} 
-                            {{ $totalboletasiva = 0 }} 
-                            {{ $totalboletasneto = 0 }} 
+                            {{ $totalboletas = 0 }}
+                            {{ $totalboletasiva = 0 }}
+                            {{ $totalboletasneto = 0 }}
                           </div>
                     @foreach($boleta as $item)
                       <tr>
@@ -120,7 +120,7 @@ Consulta Facturas Boletas
                       </tr>
                       @endforeach
                       @endif
-                    </tbody> 
+                    </tbody>
                     <tfoot>
                       <tr>
                         <td colspan="7"><strong>Total</strong> </td>
@@ -130,13 +130,13 @@ Consulta Facturas Boletas
                         <td style="text-align:right"><span class="price text-success">${{number_format($totalboletas,0,',','.')}}</span></td>
                         @endif
                       </tr>
-                    </tfoot>             
+                    </tfoot>
                 </table>
           </div>
           <div class="col-md-4">
-            
+
         </div>
-          
+
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -151,19 +151,19 @@ Consulta Facturas Boletas
                       <th scope="col" style="text-align:left">Fecha</th>
                       <th scope="col" style="text-align:right">IVA</th>
                       <th scope="col" style="text-align:right">Neto</th>
-                      <th scope="col" style="text-align:right">Total</th>  
+                      <th scope="col" style="text-align:right">Total</th>
                       {{-- <th scope="col" style="text-align:center">Acciones</th>   --}}
                     </tr>
                   </thead>
                   <tbody>
                         @if (empty($factura))
-                    
+
                         @else
                         <div style="display: none">
                           {{-- variable suma --}}
-                            {{ $totalfactura = 0 }} 
-                            {{ $totalfacturaiva = 0 }} 
-                            {{ $totalfacturaneto = 0 }} 
+                            {{ $totalfactura = 0 }}
+                            {{ $totalfacturaiva = 0 }}
+                            {{ $totalfacturaneto = 0 }}
                           </div>
                     @foreach($factura as $item)
                       <tr>
@@ -185,7 +185,7 @@ Consulta Facturas Boletas
                       </tr>
                       @endforeach
                       @endif
-                    </tbody> 
+                    </tbody>
                     <tfoot>
                       <tr>
                         <td colspan="7"><strong>Total</strong> </td>
@@ -195,7 +195,7 @@ Consulta Facturas Boletas
                         <td style="text-align:right"><span class="price text-success">${{number_format($totalfactura,0,',','.')}}</span></td>
                         @endif
                       </tr>
-                    </tfoot>             
+                    </tfoot>
                 </table>
           </div>
 
@@ -213,19 +213,18 @@ Consulta Facturas Boletas
                       <th scope="col" style="text-align:left">Fecha</th>
                       <th scope="col" style="text-align:right">IVA</th>
                       <th scope="col" style="text-align:right">Neto</th>
-                      <th scope="col" style="text-align:right">Total</th>  
-                      {{-- <th scope="col" style="text-align:center">Acciones</th>   --}}
+                      <th scope="col" style="text-align:right">Total</th>
                     </tr>
                   </thead>
                   <tbody>
                         @if (empty($notacredito))
-                    
+
                         @else
                         <div style="display: none">
                           {{-- variable suma --}}
-                            {{ $totalnotacre = 0 }} 
-                            {{ $totalnotacreneto = 0 }} 
-                            {{ $totalnotacreiva = 0 }} 
+                            {{ $totalnotacre = 0 }}
+                            {{ $totalnotacreneto = 0 }}
+                            {{ $totalnotacreiva = 0 }}
                           </div>
                     @foreach($notacredito as $item)
                       <tr>
@@ -243,7 +242,7 @@ Consulta Facturas Boletas
                       </tr>
                       @endforeach
                       @endif
-                    </tbody> 
+                    </tbody>
                     <tfoot>
                       <tr>
                         <td colspan="7"><strong>Total</strong> </td>
@@ -253,7 +252,7 @@ Consulta Facturas Boletas
                         <td style="text-align:right"><span class="price text-success">${{number_format($totalnotacre,0,',','.')}}</span></td>
                         @endif
                       </tr>
-                    </tfoot>             
+                    </tfoot>
                 </table>
           </div>
 
@@ -264,7 +263,7 @@ Consulta Facturas Boletas
             <div class="col-md-6 mb-4">
               <h2>N° Documentos Emitidos</h2>
             </div>
-          
+
             <div class="col-md-6 mb-4">
               <h2>Monto Acumulado</h2>
           </div>
@@ -272,33 +271,17 @@ Consulta Facturas Boletas
         </div>
         <div class="col-md-12">
                     <div class="form-row">
-                      <div class="col-md-1 mb-3">
+                      <div class="col-md-3 mb-3">
                         <label for="validationTooltip02">Documentos</label>
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02"  readonly value="Boletas" required>
                       </div>
-                      <div class="col-md-1 mb-3">
-                        <label for="validationTooltip02">Validas</label>
+                      <div class="col-md-3 mb-3">
+                        <label for="validationTooltip02">Cantidad</label>
                         @if (empty($boletacount))
                         <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
                         @else
                         <input type="text" class="form-control" id="validationTooltip02" readonly value="{{$boletacount}}" required>
                         @endif
-                      </div>
-                      <div class="col-md-2 mb-3">
-                        <label for="validationTooltipUsername">Nulas</label>
-                        <div class="input-group">
-                          <input type="text" class="form-control" value="0" id="validationTooltipUsername" readonly aria-describedby="validationTooltipUsernamePrepend" required>
-                        </div>
-                      </div>
-                      <div class="col-md-2 mb-3">
-                        <label for="validationTooltipUsername">Total</label>
-                        <div class="input-group">
-                          @if (empty($boletacount))
-                          <input type="text" class="form-control" value="" id="validationTooltipUsername" readonly aria-describedby="validationTooltipUsernamePrepend" required>
-                          @else
-                          <input type="text" class="form-control" value="{{$boletacount}}" id="validationTooltipUsername" readonly aria-describedby="validationTooltipUsernamePrepend" required>
-                          @endif
-                        </div>
                       </div>
                       <div class="col-md-2 mb-3">
                         <label for="validationTooltipUsername">Neto</label>
@@ -332,74 +315,90 @@ Consulta Facturas Boletas
                       </div>
                     </div>
                     <div class="form-row">
-                      <div class="col-md-1 mb-3">
-                        <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly value="Facturas" required>
+                      <div class="col-md-3 mb-3">
+                        <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly value="Boletas Transbank" required>
                       </div>
-                      <div class="col-md-1 mb-3">
-                        @if (empty($facturacount))
-                        <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
-                        @else
-                        <input type="text" class="form-control"  id="validationTooltip02" readonly value="{{$facturacount}}" required>
-                        @endif
-                      </div>
-                      <div class="col-md-2 mb-3">
-                        <div class="input-group">
-                          <input type="text" class="form-control" value="0" id="validationTooltipUsername" readonly aria-describedby="validationTooltipUsernamePrepend" required>
-                        </div>
-                      </div>
-                      <div class="col-md-2 mb-3">
+                      <div class="col-md-3 mb-3">
                         @if (empty($notacreditocount))
                         <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
                         @else
-                        <input type="text" class="form-control"  id="validationTooltip02" readonly value="{{$facturacount}}" required>
+                        <input type="text" class="form-control"  id="validationTooltip02" readonly value="{{$boletatransbankcount}}" required>
                         @endif
                       </div>
                       <div class="col-md-2 mb-3">
                         <div class="input-group">
-                          @if (empty($totalfacturaneto))
+                          @if (empty($boletatransbankneto))
                           <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @else
-                          <input type="text" class="form-control" id="validationTooltipUsername" value="${{number_format($totalfacturaneto,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                          <input type="text" class="form-control" id="validationTooltipUsername" value="${{number_format($boletatransbankneto,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @endif
                         </div>
                       </div>
                       <div class="col-md-2 mb-3">
                         <div class="input-group">
-                          @if (empty($totalfacturaiva))
+                          @if (empty($boletatransbankiva))
                           <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @else
-                          <input type="text" class="form-control" id="validationTooltipUsername" value="${{number_format($totalfacturaiva,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                          <input type="text" class="form-control" id="validationTooltipUsername" value="${{number_format($boletatransbankiva,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @endif
                         </div>
                       </div>
                       <div class="col-md-2 mb-3">
                         <div class="input-group">
-                          @if (empty($totalfactura))
+                          @if (empty($boletatransbanktotal))
                           <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @else
-                          <input type="text" class="form-control"  id="validationTooltipUsername" value="${{number_format($totalfactura,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                          <input type="text" class="form-control"  id="validationTooltipUsername" value="${{number_format($boletatransbanktotal,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @endif
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="form-row">
-                      <div class="col-md-1 mb-3">
-                        <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly value="Nota Cred." required>
-                      </div>
-                      <div class="col-md-1 mb-3">
-                        @if (empty($notacreditocount))
-                        <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
-                        @else
-                        <input type="text" class="form-control" id="validationTooltip02" readonly value="{{$notacreditocount}}" required>
-                        @endif
-                      </div>
-                      <div class="col-md-2 mb-3">
-                        <div class="input-group">
-                          <input type="text" class="form-control" id="validationTooltipUsername" value="0" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                        <div class="col-md-3 mb-3">
+                          <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly value="Facturas" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          @if (empty($facturacount))
+                          <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
+                          @else
+                          <input type="text" class="form-control"  id="validationTooltip02" readonly value="{{$facturacount}}" required>
+                          @endif
+                        </div>
+                        <div class="col-md-2 mb-3">
+                          <div class="input-group">
+                            @if (empty($totalfacturaneto))
+                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                            @else
+                            <input type="text" class="form-control" id="validationTooltipUsername" value="${{number_format($totalfacturaneto,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                            @endif
+                          </div>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                          <div class="input-group">
+                            @if (empty($totalfacturaiva))
+                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                            @else
+                            <input type="text" class="form-control" id="validationTooltipUsername" value="${{number_format($totalfacturaiva,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                            @endif
+                          </div>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                          <div class="input-group">
+                            @if (empty($totalfactura))
+                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                            @else
+                            <input type="text" class="form-control"  id="validationTooltipUsername" value="${{number_format($totalfactura,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
+                            @endif
+                          </div>
                         </div>
                       </div>
-                      <div class="col-md-2 mb-3">
+
+                    <div class="form-row">
+                    <div class="col-md-3 mb-3">
+                        <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly value="Notas De Credito" required>
+                      </div>
+                      <div class="col-md-3 mb-3">
                         @if (empty($notacreditocount))
                         <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
                         @else
@@ -436,29 +435,15 @@ Consulta Facturas Boletas
                     </div>
                     <hr>
                     <div class="form-row">
-                      <div class="col-md-1 mb-3">
+                        <div class="col-md-3 mb-3">
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly value="Total" required>
                       </div>
-                      <div class="col-md-1 mb-3">
+                      <div class="col-md-3 mb-3">
                         @if (empty($totalnotacre))
                         <input type="text" class="form-control" value="" id="validationTooltip02" readonly value="" required>
                         @else
                         <input type="text" class="form-control" style="font-weight: bold;" value="{{number_format($sumadocumentos,0,',','.')}}" id="validationTooltip02" readonly value="" required>
                         @endif
-                      </div>
-                      <div class="col-md-2 mb-3">
-                        <div class="input-group">
-                          <input type="text" class="form-control" style="font-weight: bold;" value="0" id="validationTooltipUsername" readonly aria-describedby="validationTooltipUsernamePrepend" required>
-                        </div>
-                      </div>
-                      <div class="col-md-2 mb-3">
-                        <div class="input-group">
-                          @if (empty($sumadocumentos))
-                          <input type="text" class="form-control" value="" id="validationTooltipUsername" readonly aria-describedby="validationTooltipUsernamePrepend" required>
-                          @else
-                          <input type="text" class="form-control" style="font-weight: bold;" value="{{number_format($sumadocumentos,0,',','.')}}" id="validationTooltipUsername" readonly aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                        </div>
                       </div>
                       <div class="col-md-2 mb-3">
                         <div class="input-group">
@@ -506,7 +491,7 @@ Consulta Facturas Boletas
                             @endif
                           </div>
                     </div>
-              </div>   
+              </div>
 
               <div class="row">
                 <div class="col-md-6">
@@ -515,85 +500,84 @@ Consulta Facturas Boletas
                         <thead>
                           <tr>
                             <th scope="col" style="text-align:left">Caja</th>
-                            <th scope="col" style="text-align:right">Total Vendido</th> 
+                            <th scope="col" style="text-align:center">Cantidad Boletas</th>
+                            <th scope="col" style="text-align:right">Total Vendido</th>
                           </tr>
                         </thead>
                         <tbody>
                               @if (empty($porcaja))
-                          
+
                               @else
                               <div style="display: none">
                                 {{-- variable suma --}}
-                                  {{ $totalvendido = 0 }} 
+                                  {{ $totalvendido = 0 }}
                                 </div>
                           @foreach($porcaja as $item)
                             <tr>
                               <th  style="text-align:left">{{$item->CAJA}}</th>
+                              <td style="text-align:center">{{number_format($item->cantidad,0,',','.')}}</td>
                               <td style="text-align:right">{{number_format($item->TOTAL,0,',','.')}}</td>
                               <div style="display: none">{{$totalvendido += $item->TOTAL}}</div>
                             </tr>
                             @endforeach
                             @endif
-                          </tbody> 
+                          </tbody>
                           <tfoot>
                             <tr>
-                              <td colspan="1"><strong>Total</strong> </td>
+                              <td colspan="2"><strong>Total</strong> </td>
                               @if(empty($totalvendido))
                               <td><span class="price text-success">$</span></td>
                               @else
                               <td style="text-align:right"><span class="price text-success">${{number_format($totalvendido,0,',','.')}}</span></td>
                               @endif
                             </tr>
-                          </tfoot>             
+                          </tfoot>
                       </table>
                 </div>
                 <div class="col-md-6">
-                  <h2>Ventas Impresoras Fiscales</h2>
+                  <h2>Ventas Por Caja (Facturas)</h2>
                     <table id="notacre" class="table table-bordered table-hover dataTable table-sm">
                         <thead>
                           <tr>
-                            <th scope="col" style="text-align:left">Impresora Fiscal</th>
-                            <th scope="col" style="text-align:left">Desde</th>
-                            <th scope="col" style="text-align:left">Hasta</th>
-                            <th scope="col" style="text-align:left">Cantidad Boletas</th>
-                            <th scope="col" style="text-align:left">Total Vendido</th> 
+                            <th scope="col" style="text-align:left">Caja</th>
+                            <th scope="col" style="text-align:center">Cantidad Facturas</th>
+                            <th scope="col" style="text-align:right">Total Vendido</th>
                           </tr>
                         </thead>
                         <tbody>
                               @if (empty($porimpresora))
-                          
+
                               @else
                               <div style="display: none">
                                 {{-- variable suma --}}
-                                  {{ $totalvendido = 0 }} 
+                                  {{ $totalvendido = 0 }}
                                 </div>
                           @foreach($porimpresora as $item)
                             <tr>
                               <th style="text-align:left">{{$item->CAJA}}</th>
-                              <td style="text-align:right">{{number_format($item->Desde,0,',','.')}}</td>
-                              <td style="text-align:right">{{number_format($item->Hasta,0,',','.')}}</td>
-                              <td style="text-align:right">{{number_format($item->cantidad,0,',','.')}}</td>
+                              <td style="text-align:center">{{number_format($item->cantidad,0,',','.')}}</td>
                               <td style="text-align:right">{{number_format($item->TOTAL,0,',','.')}}</td>
                               <div style="display: none">{{$totalvendido += $item->TOTAL}}</div>
                             </tr>
                             @endforeach
                             @endif
-                          </tbody> 
+                          </tbody>
                           <tfoot>
                             <tr>
-                              <td colspan="4"><strong>Total</strong> </td>
+                              <td colspan="2"><strong>Total</strong> </td>
                               @if(empty($totalvendido))
                               <td><span class="price text-success">$</span></td>
                               @else
                               <td style="text-align:right"><span class="price text-success">${{number_format($totalvendido,0,',','.')}}</span></td>
                               @endif
                             </tr>
-                          </tfoot>             
+                          </tfoot>
                       </table>
                 </div>
-      
+
               </div>
-       
+
+
 </div>
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -603,7 +587,7 @@ Consulta Facturas Boletas
         <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
       </div>
       <div class="modal-body">
-         <div class="card-body">Emision Libro De Ventas Diario</div>
+         <div class="card-body">Emision Libro De Ventas Diario, Refleja las ventas de un rango de fecha determinada.</div>
       </div>
       <div class="modal-footer">
         <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
@@ -621,7 +605,7 @@ Consulta Facturas Boletas
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-            
+
         ],
           "language":{
         "info": "_TOTAL_ registros",
@@ -629,7 +613,7 @@ Consulta Facturas Boletas
         "paginate":{
           "next": "Siguiente",
           "previous": "Anterior",
-        
+
       },
       "loadingRecords": "cargando",
       "processing": "procesando",
@@ -647,7 +631,7 @@ Consulta Facturas Boletas
           dom: 'Bfrtip',
           buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
-              
+
           ],
             "language":{
           "info": "_TOTAL_ registros",
@@ -655,7 +639,7 @@ Consulta Facturas Boletas
           "paginate":{
             "next": "Siguiente",
             "previous": "Anterior",
-          
+
         },
         "loadingRecords": "cargando",
         "processing": "procesando",
@@ -673,7 +657,7 @@ Consulta Facturas Boletas
               dom: 'Bfrtip',
               buttons: [
                   'copy', 'csv', 'excel', 'pdf', 'print'
-                  
+
               ],
                 "language":{
               "info": "_TOTAL_ registros",
@@ -681,7 +665,7 @@ Consulta Facturas Boletas
               "paginate":{
                 "next": "Siguiente",
                 "previous": "Anterior",
-              
+
             },
             "loadingRecords": "cargando",
             "processing": "procesando",

@@ -399,6 +399,7 @@ class ProductosEnTransitoController extends Controller
     public function GetListadoCajas(Request $request)
     {
 
+
         $Cajas = DB::table('codigos_cajas')
             ->where('estado', '!=', 'ReIngresado')
             ->get();

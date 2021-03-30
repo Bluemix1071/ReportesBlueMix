@@ -39,6 +39,9 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/GiftCardCaja','SalaController@CargarTarjetasCodigos')->name('postCargarCaja');
     Route::post('/VentasGiftcards','SalaController@VenderGiftcardSala')->name('venderGiftCardSala');
 
+    Route::get('/OrdenesDeDiseño','SalaController@OrdenesDeDiseño')->name('OrdenesDeDiseño');
+    Route::post('/GuardarOrdenesDeDiseño','SalaController@GuardarOrdenesDeDiseño')->name('GuardarOrdenesDeDiseño');
+
 
 
 
@@ -120,6 +123,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/costosfiltro','AdminController@costosfiltro')->name('costosfiltro');
 
     Route::get('/stocktiemporeal','AdminController@stocktiemporeal')->name('stocktiemporeal');
+
+    Route::get('/ListarOrdenesDiseño','AdminController@ListarOrdenesDiseño')->name('ListarOrdenesDiseño');
+    Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','AdminController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalle');
 
 
 

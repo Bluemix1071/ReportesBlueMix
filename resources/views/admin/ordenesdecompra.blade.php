@@ -49,7 +49,7 @@
                         <td><a href="{{route('pdf.orden', $item->numero_de_orden_de_compra)}}" class="btn btn-primary" > Interno</a></td>
                         <td><a href="{{route('pdf.ordenprov', $item->numero_de_orden_de_compra)}}" class="btn btn-primary" > Proveedor</a></td>
                         <td><a href="{{route('ordenExcel', $item->numero_de_orden_de_compra)}}" class="btn btn-success" >Excel</a></td>
-            
+
                       </tr>
                       @endforeach
                     </tbody>
@@ -57,7 +57,7 @@
           </div>
         </div>
      </div>
- 
+
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -86,7 +86,7 @@
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-            
+
         ],
           "language":{
         "info": "_TOTAL_ registros",
@@ -94,7 +94,7 @@
         "paginate":{
           "next": "Siguiente",
           "previous": "Anterior",
-        
+
       },
       "loadingRecords": "cargando",
       "processing": "procesando",
@@ -118,7 +118,7 @@
 <script src="{{asset("js/buttons.html5.min.js")}}"></script>
 <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
-{{-- 
+{{--
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
 

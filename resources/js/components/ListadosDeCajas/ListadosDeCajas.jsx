@@ -1,18 +1,22 @@
 import React, { Fragment, useState } from 'react';
 
-import { Accordion, Button, Card } from 'react-bootstrap';
+// import { Accordion, Button, Card } from 'react-bootstrap';
+
+
+//componentes
+import TablaListadoCajas from './components/TablaListadoCajas';
+
 
 
 
 const ListadosDeCajas = () => {
-    const [open, setOpen] = useState(false);
     return (
 
         <Fragment>
             <div className="container my-4">
                 <div className="row">
                     <div className="col md-6">
-                        <h1>Listado de mercaderia</h1>
+                        <h1>Listado De Cajas</h1>
 
 
                     </div>
@@ -20,26 +24,31 @@ const ListadosDeCajas = () => {
 
                 <div className="row">
                     <div className="col-md-12">
+                     <form>
 
-                        <Accordion >
-                            <Card>
-                                <Accordion.Toggle as={Card.Header} eventKey="0">
-                                    Click me!
-                                </Accordion.Toggle>
-                                <Accordion.Collapse eventKey="0">
-                                    <Card.Body>Hello! I'm the body</Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                            <Card>
-                                <Accordion.Toggle as={Card.Header} eventKey="1">
-                                    Click me!
-                                 </Accordion.Toggle>
-                                <Accordion.Collapse eventKey="1">
-                                    <Card.Body>Hello! I'm another body</Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                        </Accordion>
+                    <div className="input-group flex-nowrap mt-5">
+
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="addon-wrapping">Buscar</span>
+                        </div>
+                        <input type="number" className="form-control" name="caja" autoFocus placeholder="Mercaderia"
+
+                        />
                     </div>
+
+                    </form>
+
+                    </div>
+                </div>
+                <hr/>
+                <div className="row">
+                    <div className="col-md-12">
+                        {/* Tabla De Productos */}
+
+                                <TablaListadoCajas/>
+                    </div>
+
+
                 </div>
             </div>
         </Fragment>
