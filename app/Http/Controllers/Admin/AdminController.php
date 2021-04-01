@@ -1004,7 +1004,7 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAVALO');
 
-      $total=(($boletasuma+$facturasuma+$boletatransbanktotal)-$notacreditosuma);
+      $total=(($boletasuma+$facturasuma)-$notacreditosuma);
 
       $boletasumaiva=DB::table('cargos')
       ->where('CATIPO',7)
@@ -1041,6 +1041,7 @@ public function filtrarconsultafacturaboleta(Request $request){
       $totalneto=(($boletasumaneto+$facturasumaneto)-$notacreditosumaneto);
 
       $sumadocumentos = ($facturacount + $notacreditocount + $boletacount);
+
 
       $porcaja=DB::table('cargos')
       ->selectRaw('cacoca AS CAJA,
