@@ -315,17 +315,17 @@ Consulta Facturas Boletas
                       </div>
                     </div>
                     <div class="form-row">
-                      <div class="col-md-3 mb-3">
+                      {{-- <div class="col-md-3 mb-3">
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly value="Boletas Transbank" required>
-                      </div>
-                      <div class="col-md-3 mb-3">
+                      </div> --}}
+                      {{-- <div class="col-md-3 mb-3">
                         @if (empty($notacreditocount))
                         <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
                         @else
                         <input type="text" class="form-control"  id="validationTooltip02" readonly value="{{$boletatransbankcount}}" required>
                         @endif
-                      </div>
-                      <div class="col-md-2 mb-3">
+                      </div> --}}
+                      {{-- <div class="col-md-2 mb-3">
                         <div class="input-group">
                           @if (empty($boletatransbankneto))
                           <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
@@ -333,8 +333,8 @@ Consulta Facturas Boletas
                           <input type="text" class="form-control" id="validationTooltipUsername" value="${{number_format($boletatransbankneto,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @endif
                         </div>
-                      </div>
-                      <div class="col-md-2 mb-3">
+                      </div> --}}
+                      {{-- <div class="col-md-2 mb-3">
                         <div class="input-group">
                           @if (empty($boletatransbankiva))
                           <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
@@ -342,8 +342,8 @@ Consulta Facturas Boletas
                           <input type="text" class="form-control" id="validationTooltipUsername" value="${{number_format($boletatransbankiva,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @endif
                         </div>
-                      </div>
-                      <div class="col-md-2 mb-3">
+                      </div> --}}
+                      {{-- <div class="col-md-2 mb-3">
                         <div class="input-group">
                           @if (empty($boletatransbanktotal))
                           <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly aria-describedby="validationTooltipUsernamePrepend" required>
@@ -351,7 +351,7 @@ Consulta Facturas Boletas
                           <input type="text" class="form-control"  id="validationTooltipUsername" value="${{number_format($boletatransbanktotal,0,',','.')}}" readonly aria-describedby="validationTooltipUsernamePrepend" required>
                           @endif
                         </div>
-                      </div>
+                      </div> --}}
                     </div>
 
                     <div class="form-row">
