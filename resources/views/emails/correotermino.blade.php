@@ -171,7 +171,7 @@
 											<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, sans-serif"><![endif]-->
 											<div style="color:#8f8f8f;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
 												<div class="txtTinyMce-wrapper" style="font-size: 14px; line-height: 1.5; color: #8f8f8f; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif; mso-line-height-alt: 21px;">
-													<p style="font-size: 24px; line-height: 1.5; word-break: break-word; text-align: center; mso-line-height-alt: 36px; margin: 0;"><span style="font-size: 24px;">Su Orden De Trabajo De {!!$trabajo!!} Ya Fue Ingresada, Le Avisaremos Cuando Esta Este Lista.</span>&nbsp;&nbsp;</p>
+													<p style="font-size: 24px; line-height: 1.5; word-break: break-word; text-align: center; mso-line-height-alt: 36px; margin: 0;"><span style="font-size: 24px;">Su Orden De Trabajo De {!!$trabajo!!} Ya Esta Terminada Y lista Para Retirar. Su Numero De Orden Es: {!!$orden!!}</span>&nbsp;&nbsp;</p>
 												</div>
 											</div>
 											<!--[if mso]></td></tr></table><![endif]-->

@@ -269,7 +269,7 @@
                   </li>
                 @endcan
 
-                @can('ListarUsers')
+                @can('Admindiseno')
 
                   <li class="nav-item">
                     <a href="{{route('ListarOrdenesDiseño')}}" class="nav-link {{setActive('ListarOrdenesDiseño')}}">
@@ -538,7 +538,7 @@
               </li>
             @endcan
 
-              @can('VentaGiftCard')
+              @can('ordenesdiseno')
 
                 <li class="nav-item">
                   <a href="{{route('OrdenesDeDiseño')}}" class="nav-link {{setActive('OrdenesDeDiseño')}}">

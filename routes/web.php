@@ -3,9 +3,12 @@
 //use Illuminate\Routing\Route;
 
 
+
 Route::get('/api/{any}', function () {
     return view('welcome');
 })->where('any', '.*');;
+
+
 
 Route::get('/','seguridad\LoginController@index')->name('login');
 Route::post('/','seguridad\LoginController@login')->name('login_post');
@@ -121,13 +124,13 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/actualizarcupon', 'AdminController@actualizarcupon')->name('actualizarcupon');
     Route::get('/costos','AdminController@costos')->name('costos');
     Route::post('/costosfiltro','AdminController@costosfiltro')->name('costosfiltro');
-
     Route::get('/stocktiemporeal','AdminController@stocktiemporeal')->name('stocktiemporeal');
-
     Route::get('/ListarOrdenesDiseño','AdminController@ListarOrdenesDiseño')->name('ListarOrdenesDiseño');
     Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','AdminController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalle');
 
-
+    Route::post('/ListarOrdenesDisenoDetalleedit', 'AdminController@ListarOrdenesDisenoDetalleedit')->name('ListarOrdenesDisenoDetalleedit');
+    Route::post('/ListarOrdenesDisenoDetalleedittermino', 'AdminController@ListarOrdenesDisenoDetalleedittermino')->name('ListarOrdenesDisenoDetalleedittermino');
+    Route::get('/descargaordendiseno/{id}', 'AdminController@descargaordendiseno')->name('descargaordendiseno');
 
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
@@ -151,7 +154,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
 
-    //---------------------Exportaciones orden de compra----------------------//
+    //---------------------Exportaciones ----------------------//
 
     Route::get('/export', 'exports\MyController@export')->name('export');
     Route::get('/importarordendecompra', 'exports\MyController@importExportView')->name('cargaroc');
@@ -159,6 +162,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/importdetalle', 'exports\MyController@importdetalle')->name('importdetalle');
     Route::get('/descargadetalle', 'exports\MyController@descargadetalle')->name('descargadetalle');
     Route::get('/descargaencabezado', 'exports\MyController@descargaEncabezado')->name('descargaencabezado');
+
 
     //----------------------- Rutas de Roles y permisos ----------------------------//
 
