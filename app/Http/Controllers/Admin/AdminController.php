@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Input;
 use App\Exports\AdminExport;
 use App\Exports\ProductospormarcaExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\MailNotify;
 use Barryvdh\DomPDF\Facade as PDF;
 use App;
+use Mail;
+use App\Modelos\OrdenDiseno;
 use App\mensajes;
 use App\ipmac;
 use App\cuponescolar;
@@ -19,6 +22,7 @@ use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use App\Modelos\InventarioTemporal;
+
 
 
 class AdminController extends Controller
@@ -1213,7 +1217,9 @@ public function stocktiemporeal (Request $request){
 
     public function ListarOrdenesDiseño(Request $request){
 
-        $ordenes=DB::table('ordenesdiseño')->get();
+        $ordenes=DB::table('ordenesdiseño')
+        ->orderBy('idOrdenesDiseño', 'desc')
+        ->get();
 
 
         return view('admin.ListarOrdenesDiseño',compact('ordenes'));
@@ -1225,17 +1231,75 @@ public function stocktiemporeal (Request $request){
         ->where('idOrdenesDiseño', $idOrdenesDiseño)
         ->get();
 
-        // dd($ordenesdiseño);
+        //  dd($ordenesdiseño);
 
 
 
 
-        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenes'));
+        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenesdiseño'));
     }
 
 
+    public function ListarOrdenesDisenoDetalleedit(Request $request){
+
+        // dd($request->all());
+
+            $update = DB::table('ordenesdiseño')
+            ->where('idOrdenesDiseño' , $request->idorden)
+            ->update(['estado' => 'Proceso']);
 
 
+            return redirect()->route('ListarOrdenesDiseño');
+
+    }
+
+    public function ListarOrdenesDisenoDetalleedittermino(Request $request){
+
+        // dd($request->all());
+
+            $update = DB::table('ordenesdiseño')
+            ->where('idOrdenesDiseño' , $request->idorden)
+            ->update(['estado' => 'Terminado']);
+
+            $ordenesdiseño=DB::table('ordenesdiseño')
+            ->where('idOrdenesDiseño', $request->idorden)
+            ->get();
+
+            // dd($ordenesdiseño);
+
+
+            $data = array(
+                'nombre' => $ordenesdiseño[0]->nombre,
+                'telefono' => $ordenesdiseño[0]->telefono,
+                'correo' => $ordenesdiseño[0]->correo,
+                'trabajo' => $ordenesdiseño[0]->trabajo,
+                'comentario' => $ordenesdiseño[0]->comentario,
+                'orden' => $request->idorden,
+            );
+
+            Mail::send('emails.correotermino', $data, function ($message) use($ordenesdiseño) {
+                $message->from('bluemix.informatica@gmail.com', 'Bluemix SPA.');
+                $message->to($ordenesdiseño[0]->correo)->subject('Trabajo ' . $ordenesdiseño[0]->trabajo . ' Libreria Bluemix');
+
+            });
+
+
+            return redirect()->route('ListarOrdenesDiseño');
+
+    }
+
+
+    public function descargaordendiseno($id){
+
+
+
+            $ruta = OrdenDiseno::find($id);
+
+
+        return response()->download(storage_path("app/" .$ruta->archivo));
+
+
+    }
 
 
 

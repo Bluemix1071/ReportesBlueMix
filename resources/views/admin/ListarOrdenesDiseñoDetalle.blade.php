@@ -4,189 +4,126 @@
 @endsection
 @section('styles')
 
-<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
+    <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css") }}">
 
 @endsection
 @section('contenido')
-<section class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <div class="callout callout-info">
-            <h5><i class="fas fa-info"></i> Note:</h5>
-            This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
-          </div>
-
-
-          <!-- Main content -->
-          <div class="invoice p-3 mb-3">
-            <!-- title row -->
+    <section class="content">
+        <div class="container-fluid">
             <div class="row">
-              <div class="col-12">
-                <h4>
-                  <i class="fas fa-globe"></i> AdminLTE, Inc.
-                  <small class="float-right">Date: 2/10/2014</small>
-                </h4>
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- info row -->
-            <div class="row invoice-info">
-              <div class="col-sm-4 invoice-col">
-                From
-                <address>
-                  <strong>Admin, Inc.</strong><br>
-                  795 Folsom Ave, Suite 600<br>
-                  San Francisco, CA 94107<br>
-                  Phone: (804) 123-5432<br>
-                  Email: info@almasaeedstudio.com
-                </address>
-              </div>
-              <!-- /.col -->
-              <div class="col-sm-4 invoice-col">
-                To
-                <address>
-                  <strong>John Doe</strong><br>
-                  795 Folsom Ave, Suite 600<br>
-                  San Francisco, CA 94107<br>
-                  Phone: (555) 539-1037<br>
-                  Email: john.doe@example.com
-                </address>
-              </div>
-              <!-- /.col -->
-              <div class="col-sm-4 invoice-col">
-                <b>Invoice #007612</b><br>
-                <br>
-                <b>Order ID:</b> 4F3S8J<br>
-                <b>Payment Due:</b> 2/22/2014<br>
-                <b>Account:</b> 968-34567
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-
-            <!-- Table row -->
-            <div class="row">
-              <div class="col-12 table-responsive">
-                <table class="table table-striped">
-                  <thead>
-                  <tr>
-                    <th>Qty</th>
-                    <th>Product</th>
-                    <th>Serial #</th>
-                    <th>Description</th>
-                    <th>Subtotal</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Call of Duty</td>
-                    <td>455-981-221</td>
-                    <td>El snort testosterone trophy driving gloves handsome</td>
-                    <td>$64.50</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Need for Speed IV</td>
-                    <td>247-925-726</td>
-                    <td>Wes Anderson umami biodiesel</td>
-                    <td>$50.00</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Monsters DVD</td>
-                    <td>735-845-642</td>
-                    <td>Terry Richardson helvetica tousled street art master</td>
-                    <td>$10.70</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Grown Ups Blue Ray</td>
-                    <td>422-568-642</td>
-                    <td>Tousled lomo letterpress</td>
-                    <td>$25.99</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <!-- accepted payments column -->
-              {{-- <div class="col-6">
-                <p class="lead">Payment Methods:</p>
-                <img src="../../dist/img/credit/visa.png" alt="Visa">
-                <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-                <img src="../../dist/img/credit/american-express.png" alt="American Express">
-                <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
-
-                <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                  Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem
-                  plugg
-                  dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-                </p>
-              </div> --}}
-              <!-- /.col -->
-              <div class="col-6">
-                <p class="lead">Amount Due 2/22/2014</p>
-
-                <div class="table-responsive">
-                  <table class="table">
-                    <tbody><tr>
-                      <th style="width:50%">Subtotal:</th>
-                      <td>$250.30</td>
-                    </tr>
-                    <tr>
-                      <th>Tax (9.3%)</th>
-                      <td>$10.34</td>
-                    </tr>
-                    <tr>
-                      <th>Shipping:</th>
-                      <td>$5.80</td>
-                    </tr>
-                    <tr>
-                      <th>Total:</th>
-                      <td>$265.24</td>
-                    </tr>
-                  </tbody></table>
+                <div class="col-12">
+                    <div class="callout callout-info">
+                        <h5><i class="fas fa-calendar"></i> Numero De Pedido: {{ $ordenesdiseño[0]->idOrdenesDiseño }}</h5>
+                        Detalle De La Orden De Trabajo.
+                    </div>
+                    <div class="callout callout-success">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>
+                                    <i class="fas fa-user"></i> Datos Cliente:
+                                    <small class="float-right">Fecha Solicitada:
+                                        {{ $ordenesdiseño[0]->fecha_solicitud }}</small>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row invoice-info">
+                            <div class="col-sm-4 invoice-col">
+                                <hr>
+                            <strong>Nombre:</strong> {{ $ordenesdiseño[0]->nombre }}
+                                <address>
+                                <strong>Telefono:</strong> {{ $ordenesdiseño[0]->telefono }}<br>
+                                <strong>Email:</strong> {{ $ordenesdiseño[0]->correo }}
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="callout callout-warning ">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>
+                                    <i class="fas fa-folder-open"></i> Datos De Orden:
+                                    <small class="float-right">Fecha De Entrega:
+                                        {{ $ordenesdiseño[0]->fecha_entrega }}</small>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row invoice-info">
+                            <div class="col-sm-4 invoice-col">
+                                <hr>
+                            <strong>Tipo Trabajo:</strong> {{ $ordenesdiseño[0]->trabajo }}
+                                <address>
+                                <strong>Tipo Documento:</strong> {{ $ordenesdiseño[0]->tipo_documento }}<br>
+                            <strong>Documento:</strong> {{ $ordenesdiseño[0]->documento }}
+                                </address>
+                            </div>
+                            <div class="col-sm-4 invoice-col">
+                                <strong>Comentarios:</strong>
+                                <hr>
+                                <div class="col-sm-10">
+                                    <textarea name="comentario" disabled placeholder="{{ $ordenesdiseño[0]->comentario }}" id="" cols="50"
+                                        rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 invoice-col">
+                                <b>Fecha Solicitud:</b> {{ $ordenesdiseño[0]->fecha_solicitud }}<br>
+                                <b>Fecha Entrega:</b> {{ $ordenesdiseño[0]->fecha_entrega }}<br>
+                                <b>Estado:</b> {{ $ordenesdiseño[0]->estado }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <a href="{{route('ListarOrdenesDiseño')}}" class="btn btn-default"><i
+                                        class="fas fa-door-open"></i> Volver</a>
+                                @if ($ordenesdiseño[0]->estado == 'Ingresado')
+                                <form action="{{ route('ListarOrdenesDisenoDetalleedit') }}" method="POST">
+                                    <button type="submit" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
+                                        Tomar Orden
+                                    </button>
+                                    <input type="text" name="idorden" value="{{ $ordenesdiseño[0]->idOrdenesDiseño }}" hidden>
+                                </form>
+                                @elseif ($ordenesdiseño[0]->estado == 'Proceso')
+                                <form action="{{ route('ListarOrdenesDisenoDetalleedittermino') }}" method="POST">
+                                <button type="submit" class="btn btn-warning float-right"><i class="far fa-calendar"></i>
+                                    Terminar Trabajo
+                                </button>
+                                <input type="text" name="idorden" value="{{ $ordenesdiseño[0]->idOrdenesDiseño }}" hidden>
+                            </form>
+                            @else
+                                <button type="submit" disabled class="btn btn-danger float-right"><i class="far fa-file"></i>
+                                    Terminado
+                                </button>
+                            @endif
+                            @if ($ordenesdiseño[0]->archivo == null)
+                            <button type="submit" disabled class="btn btn-primary float-right" style="margin-right: 5px;">
+                                <i class="fas fa-download"></i> No Contiene Archivos
+                            </button>
+                            @else
+                            <a type="button" class="btn btn-primary float-right" style="margin-right: 5px;" href="{{ route('descargaordendiseno', $ordenesdiseño[0]->idOrdenesDiseño ) }}" > <i class="fas fa-download"></i>Descargar Archivos</a>
+                            <input type="text" name="idorden" value="{{ $ordenesdiseño[0]->idOrdenesDiseño }}" hidden>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <!-- /.col -->
             </div>
-            <!-- /.row -->
+        </div>
+    </section>
 
-            <!-- this row will not appear when printing -->
-            <div class="row no-print">
-              <div class="col-12">
-                <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                  Payment
-                </button>
-                <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                  <i class="fas fa-download"></i> Generate PDF
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.invoice -->
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </section>
 @endsection
 @section('script')
 
-<script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
-<script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
+    <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
+    <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
 
-<script>
-  $(document).ready( function () {
-    $('#users').DataTable();
-} );
-</script>
+    <script>
+        $(document).ready(function() {
+            $('#users').DataTable();
+        });
+
+    </script>
 
 
 @endsection
