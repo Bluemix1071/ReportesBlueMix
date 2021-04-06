@@ -975,7 +975,7 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('cavalo');
 
-      $notacreditosuma=DB::table('nota_credito')
+      $notacreditosuma=DB::table('nota_credito') //notacredito
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
       ->sum('total_nc');
 
