@@ -42,7 +42,9 @@
     <div id="example"></div>
     <script src="{{ asset('js/app.js') }}" ></script>
 
-
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7-hT83VfQC2tXFFln6ODMF9_AJPt_DNI&libraries=places">
+</script>
     <script src="{{asset("assets/$theme/plugins/jquery/jquery.min.js")}}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="{{asset("assets/$theme/plugins/jquery-ui/jquery-ui.min.js")}}"></script>

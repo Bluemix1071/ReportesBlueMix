@@ -11,6 +11,7 @@ use App\Modelos\ProductosEnTrancito\Bodeprod;
 use App\Modelos\ProductosEnTrancito\codigos_cajas;
 use App\Modelos\ProductosEnTrancito\productosEnTrancito;
 use App\Modelos\ProductosEnTrancito\ProductosVista;
+use App\Modelos\ProductosEnTrancito\GetListadoCajas;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -42,15 +43,23 @@ class ProductosEnTransitoController extends Controller
             if ($codigo == "0" || $barra == "0" || $descripcion == "0") {
             } else {
 
-                $productos = ProductosVista::SelectQuitarPrecio()->codigo($codigo)
-                    ->CodigoBarra($barra)
-                    ->Descripcion($descripcion)
+                // $productos = ProductosVista::SelectQuitarPrecio()->codigo($codigo)
+                //     ->CodigoBarra($barra)
+                //     ->Descripcion($descripcion)
+                //     ->get();
+
+                $producto = DB::table('bodeprod')->select('bpprod as codigo_producto', 'producto.ardesc as descripcion','producto.ARCBAR as codigoBarra')
+                    ->join('producto', 'ARCODI', '=', 'bodeprod.bpprod')
+                    ->where('bpprod', $codigo)
+                    ->orwhere('bpprod', $barra)
                     ->get();
+
+                   /// dd($producto,$productos);
 
                 $data = [
                     "status" => "success",
                     "code" => 200,
-                    "producto" => $productos,
+                    "producto" => $producto,
 
                 ];
             }
@@ -351,22 +360,6 @@ class ProductosEnTransitoController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function ValidarProducto($producto)
     {
         $validate = Validaciones::ValidarProductos($producto);
@@ -376,5 +369,51 @@ class ProductosEnTransitoController extends Controller
             return $validate->errors();
         } else {
         }
+    }
+
+
+
+
+    public function GetProductoTransito(Request $request)
+    {
+
+
+        $Productos = DB::table('productos_en_trancito')->get();
+
+
+        return response()->json(
+            [
+                "status" => "success",
+                "code" => 200,
+                "mesages" => $Productos,
+
+            ],
+            200
+
+        );
+    }
+
+
+
+
+    public function GetListadoCajas(Request $request)
+    {
+
+
+        $Cajas = DB::table('codigos_cajas')
+            ->where('estado', '!=', 'ReIngresado')
+            ->get();
+
+
+        return response()->json(
+            [
+                "status" => "success",
+                "code" => 200,
+                "mesages" => $Cajas,
+
+            ],
+            200
+
+        );
     }
 }

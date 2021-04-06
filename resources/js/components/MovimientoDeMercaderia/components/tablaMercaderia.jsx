@@ -2,9 +2,11 @@ import React, { Fragment } from 'react';
 
 const TablaMercaderia = (props) => {
 
-    const Editar =(codigo,valor)=>{
+    const Editar = (Product) => {
 
-
+        console.log(Product);
+        props.setEditProduct(true);
+        props.setProductoEditar(Product);
     }
 
     return (
@@ -29,13 +31,7 @@ const TablaMercaderia = (props) => {
                                     <th scope="row">{item.codigo_producto}</th>
                                     <th>{item.codigoBarra}</th>
                                     <th>{item.descripcion}</th>
-                                    <th> <input className="form-control" name="cantidad" type="number" defaultValue={item.cantidad} disabled
-                                            onChange={
-                                                (event)=>{
-                                                    props.updateProduct(item.codigo_producto,event.target.value)
-                                                }
-                                            }
-                                    /> </th>
+                                    <th> {item.cantidad} </th>
                                     <th>
                                         <button
                                             className="btn btn-danger mr-2"
@@ -45,9 +41,10 @@ const TablaMercaderia = (props) => {
 
                                         </button>
                                         <button className="btn btn-primary ml-2"
+                                            onClick={() => { Editar(item) }}
 
-
-                                        ><i className="fas fa-edit"></i></button>
+                                        ><i className="fas fa-edit"></i>
+                                        </button>
                                     </th>
                                 </tr>
                             )) : (

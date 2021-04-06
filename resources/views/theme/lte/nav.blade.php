@@ -269,6 +269,16 @@
                   </li>
                 @endcan
 
+                @can('Admindiseno')
+
+                  <li class="nav-item">
+                    <a href="{{route('ListarOrdenesDiseño')}}" class="nav-link {{setActive('ListarOrdenesDiseño')}}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Admin Ordenes Diseño</p>
+                    </a>
+                  </li>
+                @endcan
+
 
                   @can('ControlIpMac')
 
@@ -279,6 +289,14 @@
                     </a>
                   </li>
                   @endcan
+
+                  <li class="nav-item">
+                    <a href="{{route('movimientoinventario')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                       <p>Inventario
+                       </p>
+                     </a>
+                   </li>
 
                 @can('ProductoPorMarca')
                     <li class="nav-item">
@@ -396,11 +414,11 @@
                       </a>
                     </li>
                     @endcan
-
-                   {{-- <li class="nav-item">
+{{--
+                   <li class="nav-item">
                     <a href="{{route('movimientoinventario')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                       <p>Movimiento Mercaderia
+                       <p>Inventario
                        </p>
                      </a>
                    </li> --}}
@@ -500,28 +518,32 @@
             </a>
             <ul class="nav nav-treeview">
 
-              @can('CambioPrecios')
-
-                <li class="nav-item">
-                  <a href="{{ route('cambiodeprecios') }}" class="nav-link {{setActive('cambiodeprecios')}}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Cambio de Precios</p>
-                  </a>
-                </li>
-              @endcan
-
-              {{-- <li class="nav-item">
-              <a href="{{route('GiftCardVenta')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Venta GiftCard</p>
-                </a>
-              </li> --}}
               @can('VentaGiftCard')
 
                 <li class="nav-item">
                   <a href="{{route('CargaTarjetasCaja')}}" class="nav-link {{setActive('CargaTarjetasCaja')}}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Venta GiftCard</p>
+                  </a>
+                </li>
+              @endcan
+
+              @can('CambioPrecios')
+
+              <li class="nav-item">
+                <a href="{{ route('cambiodeprecios') }}" class="nav-link {{setActive('cambiodeprecios')}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cambio de Precios</p>
+                </a>
+              </li>
+            @endcan
+
+              @can('ordenesdiseno')
+
+                <li class="nav-item">
+                  <a href="{{route('OrdenesDeDiseño')}}" class="nav-link {{setActive('OrdenesDeDiseño')}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Ordenes De Diseño</p>
                   </a>
                 </li>
               @endcan

@@ -3,9 +3,12 @@
 //use Illuminate\Routing\Route;
 
 
+
 Route::get('/api/{any}', function () {
     return view('welcome');
 })->where('any', '.*');;
+
+
 
 Route::get('/','seguridad\LoginController@index')->name('login');
 Route::post('/','seguridad\LoginController@login')->name('login_post');
@@ -13,6 +16,15 @@ Route::get('/logout','seguridad\LoginController@logout')->name('logout');
 //Route::get('/registrar','AdminController@registrar')->name('registrar');
 Route::get('/graficos', 'ChartControllers\PulseChartController@index')->name('chart');
 Route::post('/graficos', 'ChartControllers\PulseChartController@cargarC3')->name('cargarChart');
+
+//reset passwords
+
+// Password Reset Routes...
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+
 
 
 
@@ -29,6 +41,11 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/GiftCardCaja','SalaController@CargaTarjetasCaja')->name('CargaTarjetasCaja');
     Route::post('/GiftCardCaja','SalaController@CargarTarjetasCodigos')->name('postCargarCaja');
     Route::post('/VentasGiftcards','SalaController@VenderGiftcardSala')->name('venderGiftCardSala');
+
+    Route::get('/OrdenesDeDiseño','SalaController@OrdenesDeDiseño')->name('OrdenesDeDiseño');
+    Route::post('/GuardarOrdenesDeDiseño','SalaController@GuardarOrdenesDeDiseño')->name('GuardarOrdenesDeDiseño');
+
+
 
 
 
@@ -94,9 +111,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Proyeccion','AdminController@ProyeccionIndex')->name('proyeccion');
     Route::get('/areaproveedor','AdminController@areaproveedor')->name('areaproveedor');
     Route::get('/areaproveedorfamilia','AdminController@areaproveedorfamilia')->name('areaproveedorfamilia');
-    Route::get('/movimientoinventario','AdminController@movimientoinventario')->name('movimientoinventario');
-    Route::post('/movimientoinventario','AdminController@filtrarmovimientoinventario')->name('filtrarmovimientoinventario');
-    Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
+    // Route::get('/movimientoinventario','AdminController@movimientoinventario')->name('movimientoinventario');
+    // Route::post('/movimientoinventario','AdminController@filtrarmovimientoinventario')->name('filtrarmovimientoinventario');
+    // Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
     Route::get('/consultafacturaboleta','AdminController@consultafacturaboleta')->name('consultafacturaboleta');
     Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta');
     Route::get('controlipmac','AdminController@controlipmac')->name('controlipmac');
@@ -107,10 +124,13 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/actualizarcupon', 'AdminController@actualizarcupon')->name('actualizarcupon');
     Route::get('/costos','AdminController@costos')->name('costos');
     Route::post('/costosfiltro','AdminController@costosfiltro')->name('costosfiltro');
-
     Route::get('/stocktiemporeal','AdminController@stocktiemporeal')->name('stocktiemporeal');
+    Route::get('/ListarOrdenesDiseño','AdminController@ListarOrdenesDiseño')->name('ListarOrdenesDiseño');
+    Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','AdminController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalle');
 
-
+    Route::post('/ListarOrdenesDisenoDetalleedit', 'AdminController@ListarOrdenesDisenoDetalleedit')->name('ListarOrdenesDisenoDetalleedit');
+    Route::post('/ListarOrdenesDisenoDetalleedittermino', 'AdminController@ListarOrdenesDisenoDetalleedittermino')->name('ListarOrdenesDisenoDetalleedittermino');
+    Route::get('/descargaordendiseno/{id}', 'AdminController@descargaordendiseno')->name('descargaordendiseno');
 
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
@@ -134,7 +154,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
 
-    //---------------------Exportaciones orden de compra----------------------//
+    //---------------------Exportaciones ----------------------//
 
     Route::get('/export', 'exports\MyController@export')->name('export');
     Route::get('/importarordendecompra', 'exports\MyController@importExportView')->name('cargaroc');
@@ -142,6 +162,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/importdetalle', 'exports\MyController@importdetalle')->name('importdetalle');
     Route::get('/descargadetalle', 'exports\MyController@descargadetalle')->name('descargadetalle');
     Route::get('/descargaencabezado', 'exports\MyController@descargaEncabezado')->name('descargaencabezado');
+
 
     //----------------------- Rutas de Roles y permisos ----------------------------//
 
@@ -159,7 +180,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::post('/AddRolPermiso','LaravelPermission\RolesController@AddRolUser')->name('');
 
+    // inventario
 
+    Route::get('/movimientoinventario','AdminController@movimientoinventario')->name('movimientoinventario');
+    Route::post('/movimientoinventario','AdminController@filtrarmovimientoinventario')->name('filtrarmovimientoinventario');
+    Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
 
 
 });

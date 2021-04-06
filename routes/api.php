@@ -29,9 +29,31 @@ Route::put('/UpdateCaja/{id}','ProductosEnTransito\ProductosEnTransitoController
 
 Route::get('/ReIngresarMercaderia/{id}','ProductosEnTransito\ProductosEnTransitoController@ReIngresarMercaderia');
 
+Route::get('/GetProductoTransito','ProductosEnTransito\ProductosEnTransitoController@GetProductoTransito');
+Route::get('/GetListadoCajas','ProductosEnTransito\ProductosEnTransitoController@GetListadoCajas');
+
 
 //-------------------------------Session en React ----------------------------------------\\
 Route::get('/getSession','ApiController@GetSession');
+
+
+//---------------------------------Colegios y coupones -------------------------------- */
+
+Route::get('/GetColegios','colegios\ColegiosController@getColegios');
+Route::post('/GenerarCupon','Cupones\CuponesController@GenerarCupon');
+
+
+
+// Auth users
+Route::post('/Login','Api\AuthController@Login');
+
+Route::get('/Permisos/{id}','Api\AuthController@getPermission');
+
+
+
+
+
+
 
 
 /*

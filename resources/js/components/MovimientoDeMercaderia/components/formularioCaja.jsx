@@ -69,7 +69,6 @@ const FormularioCaja = (props) => {
                                 })
                             }>
                             <option ></option>
-                            <option>Factura</option>
                             <option>Guia Despacho</option>
                             <option>Venta Web</option>
                             <option>Cotizacion</option>
