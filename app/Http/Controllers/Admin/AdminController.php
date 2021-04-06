@@ -926,9 +926,6 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
-      // $documento=$request->documento;
-
-
 
       $factura=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
@@ -936,14 +933,10 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->get();
 
 
-
       $facturacount=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',8)
       ->count('CANMRO');
-
-
-
 
 
       $boleta=DB::table('cargos')
@@ -954,13 +947,13 @@ public function filtrarconsultafacturaboleta(Request $request){
       $boletacount=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',7)
+      ->where('CANMRO' ,'<', 1100000001)
       ->count('CANMRO');
 
-
-      $boletatransbankcount=DB::table('cargos')  /////transbanck
+      $boletatransbankcount=DB::table('cargos')  /////transbank
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',7)
-      ->where('CANMRO',1100000001)
+      ->where('CANMRO' ,'>', 1100000001)
       ->count('CANMRO');
 
 
@@ -986,21 +979,39 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
       ->sum('total_nc');
 
-      $boletatransbanksumaneto=DB::table('cargos')
+      $totalboletasumaneto=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO','<',1100000001)  //transbanke
+      ->where('CANMRO','<',1100000001)  //boleta
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CANETO');
 
-      $boletatransbanksumaiva=DB::table('cargos')
+      $boletatransbanksumaneto=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO','<', 1100000001)  //transbank
+      ->where('CANMRO','>',1100000001)  //transbank
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CANETO');
+
+      $totalboletasumaiva=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO','<', 1100000001)  //boleta
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAIVA');
 
+      $boletatransbanksumaiva=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO','>', 1100000001)  //transbank
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CAIVA');
+
+      $totalboletasuma=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO' ,'<', 1100000001)   //boleta
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CAVALO');
+
       $boletatransbanktotal=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO' ,'<', 1100000001)   //transbank
+      ->where('CANMRO' ,'>', 1100000001)   //transbank
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAVALO');
 
@@ -1015,7 +1026,6 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->where('CATIPO',8)
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAIVA');
-
 
 
       $notacreditosumaiva=DB::table('nota_credito')
@@ -1040,7 +1050,7 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $totalneto=(($boletasumaneto+$facturasumaneto)-$notacreditosumaneto);
 
-      $sumadocumentos = ($facturacount + $notacreditocount + $boletacount);
+      $sumadocumentos = ($facturacount + $notacreditocount + $boletacount + $boletatransbankcount);
 
 
       $porcaja=DB::table('cargos')
@@ -1063,10 +1073,19 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->groupBy('cacoca')
       ->get();
 
+      $porguia=DB::table('cargos')
+      ->selectRaw('cacoca AS CAJA,
+      count(cacoca) AS cantidad,
+      SUM(CAVALO) AS TOTAL')
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->where('CATIPO',3)
+      ->groupBy('cacoca')
+      ->get();
 
 
 
-  return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora','boletatransbankcount','boletatransbanksumaiva','boletatransbanksumaneto','boletatransbanktotal'));
+
+  return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora','boletatransbankcount','boletatransbanksumaiva','boletatransbanksumaneto','boletatransbanktotal','totalboletasumaneto','totalboletasumaiva','totalboletasuma','porguia'));
 
 
 }
