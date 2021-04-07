@@ -464,6 +464,14 @@
                     </li>
                     @endcan
 
+                    <li class="nav-item">
+                        <a href="{{route('AnulacionDocs')}}" class="nav-link {{setActive('AnulacionDocs')}}">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Anulacion De Documentos
+                          </p>
+                        </a>
+                      </li>
+
                 </ul>
               </li>
               @endcan

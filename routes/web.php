@@ -187,6 +187,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
 
 
+    //Anulacion de documentos
+
+    Route::get('/Anulacion-De-Documentos','AnulacionDocumentosController@index')->name('AnulacionDocs');
+    Route::post('/AnularDocs','AnulacionDocumentosController@store')->name('AnulacionDocs.store');
+
+
 });
 
 
