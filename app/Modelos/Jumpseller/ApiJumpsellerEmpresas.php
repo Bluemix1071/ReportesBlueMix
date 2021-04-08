@@ -51,4 +51,21 @@ class ApiJumpsellerEmpresas extends Model
         return $result;
 
     }
+
+    public function post($urlConsulta,$parametrosAdicionales,$body){
+        $url = $this->baseUri.$urlConsulta;
+        $parametros = array_merge($this->credentials,$parametrosAdicionales);
+        $consulta = http_build_query($parametros);
+        $ch = curl_init($url.".json?".$consulta);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
+       // dd($ch);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $result = json_decode($result,true);
+
+        return $result;
+
+    }
 }

@@ -247,7 +247,6 @@
 
                @can('Administrador')
 
-
                <li class="nav-item has-treeview " >
                 <a href="" class="nav-link ">
                   <i class="nav-icon fas fa-user-lock"></i>
@@ -296,6 +295,62 @@
                        <p>Inventario
                        </p>
                      </a>
+                   </li>
+
+                   <li class="nav-item">
+                    <a href="" class="nav-link ">
+
+                      <i class="nav-icon fas fa-circle"></i>
+                       <p>Jumpseller
+                        <i class="right fas fa-angle-left"></i>
+                       </p>
+                    </a>
+                     <ul class="nav nav-treeview" >
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Bluemix Empresas</p>
+                            <i class="right fas fa-angle-left"></i>
+                          </a>
+                          <ul class="nav nav-treeview" >
+                            <li class="nav-item">
+                                <a href="{{route('index.jumpsellerEmpresas')}}" class="nav-link {{setActive('jumpsellerEmpresas')}}">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Sincronizar Productos</p>
+                              </a>
+                            </li>
+                            <li class="nav-item">
+                              <a href="{{route('CreacionCarrito.index')}}" class="nav-link">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>
+                                 Generar Carrito
+                                </p>
+                              </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                  <i class="far fa-dot-circle nav-icon"></i>
+                                  <p>
+                                    Actualizar Stock
+                                  </p>
+                                </a>
+
+                              </li>
+
+                          </ul>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>
+                              Bluemix.cl
+                              <i class="right fas fa-angle-left"></i>
+                            </p>
+                          </a>
+
+                        </li>
+
+                      </ul>
                    </li>
 
                 @can('ProductoPorMarca')
@@ -445,6 +500,7 @@
                        </p>
                      </a>
                    </li>
+                   <li class="nav-item">
                       <a href="{{route('consultafacturaboleta')}}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Libro De Ventas Diario
@@ -463,6 +519,10 @@
                       </a>
                     </li>
                     @endcan
+
+
+
+
 
                 </ul>
               </li>
