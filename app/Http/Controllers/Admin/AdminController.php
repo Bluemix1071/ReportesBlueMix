@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Input;
 use App\Exports\AdminExport;
 use App\Exports\ProductospormarcaExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\MailNotify;
 use Barryvdh\DomPDF\Facade as PDF;
 use App;
+use Mail;
+use App\Modelos\OrdenDiseno;
 use App\mensajes;
 use App\ipmac;
 use App\cuponescolar;
@@ -19,6 +22,7 @@ use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use App\Modelos\InventarioTemporal;
+
 
 
 class AdminController extends Controller
@@ -922,9 +926,6 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
-      // $documento=$request->documento;
-
-
 
       $factura=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
@@ -932,14 +933,10 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->get();
 
 
-
       $facturacount=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',8)
       ->count('CANMRO');
-
-
-
 
 
       $boleta=DB::table('cargos')
@@ -950,13 +947,13 @@ public function filtrarconsultafacturaboleta(Request $request){
       $boletacount=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',7)
+      ->where('CANMRO' ,'<', 1100000001)
       ->count('CANMRO');
 
-
-      $boletatransbankcount=DB::table('cargos')  /////transbanck
+      $boletatransbankcount=DB::table('cargos')  /////transbank
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',7)
-      ->where('CANMRO',1100000001)
+      ->where('CANMRO' ,'>', 1100000001)
       ->count('CANMRO');
 
 
@@ -978,29 +975,47 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('cavalo');
 
-      $notacreditosuma=DB::table('nota_credito')
+      $notacreditosuma=DB::table('nota_credito') //notacredito.
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
       ->sum('total_nc');
 
-      $boletatransbanksumaneto=DB::table('cargos')
+      $totalboletasumaneto=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO','<',1100000001)  //transbanke
+      ->where('CANMRO','<',1100000001)  //boleta
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CANETO');
 
-      $boletatransbanksumaiva=DB::table('cargos')
+      $boletatransbanksumaneto=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO','<', 1100000001)  //transbank
+      ->where('CANMRO','>',1100000001)  //transbank
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CANETO');
+
+      $totalboletasumaiva=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO','<', 1100000001)  //boleta
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAIVA');
 
-      $boletatransbanktotal=DB::table('cargos')
+      $boletatransbanksumaiva=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO' ,'<', 1100000001)   //transbank
+      ->where('CANMRO','>', 1100000001)  //transbank
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CAIVA');
+
+      $totalboletasuma=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO' ,'<', 1100000001)   //boleta
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAVALO');
 
-      $total=(($boletasuma+$facturasuma+$boletatransbanktotal)-$notacreditosuma);
+      $boletatransbanktotal=DB::table('cargos')
+      ->where('CATIPO',7)
+      ->where('CANMRO' ,'>', 1100000001)   //transbank
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->sum('CAVALO');
+
+      $total=(($boletasuma+$facturasuma)-$notacreditosuma);
 
       $boletasumaiva=DB::table('cargos')
       ->where('CATIPO',7)
@@ -1011,7 +1026,6 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->where('CATIPO',8)
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAIVA');
-
 
 
       $notacreditosumaiva=DB::table('nota_credito')
@@ -1036,7 +1050,8 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $totalneto=(($boletasumaneto+$facturasumaneto)-$notacreditosumaneto);
 
-      $sumadocumentos = ($facturacount + $notacreditocount + $boletacount);
+      $sumadocumentos = ($facturacount + $notacreditocount + $boletacount + $boletatransbankcount);
+
 
       $porcaja=DB::table('cargos')
       ->selectRaw('cacoca AS CAJA,
@@ -1058,10 +1073,19 @@ public function filtrarconsultafacturaboleta(Request $request){
       ->groupBy('cacoca')
       ->get();
 
+      $porguia=DB::table('cargos')
+      ->selectRaw('cacoca AS CAJA,
+      count(cacoca) AS cantidad,
+      SUM(CAVALO) AS TOTAL')
+      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      ->where('CATIPO',3)
+      ->groupBy('cacoca')
+      ->get();
 
 
 
-  return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora','boletatransbankcount','boletatransbanksumaiva','boletatransbanksumaneto','boletatransbanktotal'));
+
+  return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora','boletatransbankcount','boletatransbanksumaiva','boletatransbanksumaneto','boletatransbanktotal','totalboletasumaneto','totalboletasumaiva','totalboletasuma','porguia'));
 
 
 }
@@ -1213,7 +1237,9 @@ public function stocktiemporeal (Request $request){
 
     public function ListarOrdenesDiseño(Request $request){
 
-        $ordenes=DB::table('ordenesdiseño')->get();
+        $ordenes=DB::table('ordenesdiseño')
+        ->orderBy('idOrdenesDiseño', 'desc')
+        ->get();
 
 
         return view('admin.ListarOrdenesDiseño',compact('ordenes'));
@@ -1225,17 +1251,75 @@ public function stocktiemporeal (Request $request){
         ->where('idOrdenesDiseño', $idOrdenesDiseño)
         ->get();
 
-        // dd($ordenesdiseño);
+        //  dd($ordenesdiseño);
 
 
 
 
-        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenes'));
+        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenesdiseño'));
     }
 
 
+    public function ListarOrdenesDisenoDetalleedit(Request $request){
+
+        // dd($request->all());
+
+            $update = DB::table('ordenesdiseño')
+            ->where('idOrdenesDiseño' , $request->idorden)
+            ->update(['estado' => 'Proceso']);
 
 
+            return redirect()->route('ListarOrdenesDiseño');
+
+    }
+
+    public function ListarOrdenesDisenoDetalleedittermino(Request $request){
+
+        // dd($request->all());
+
+            $update = DB::table('ordenesdiseño')
+            ->where('idOrdenesDiseño' , $request->idorden)
+            ->update(['estado' => 'Terminado']);
+
+            $ordenesdiseño=DB::table('ordenesdiseño')
+            ->where('idOrdenesDiseño', $request->idorden)
+            ->get();
+
+            // dd($ordenesdiseño);
+
+
+            $data = array(
+                'nombre' => $ordenesdiseño[0]->nombre,
+                'telefono' => $ordenesdiseño[0]->telefono,
+                'correo' => $ordenesdiseño[0]->correo,
+                'trabajo' => $ordenesdiseño[0]->trabajo,
+                'comentario' => $ordenesdiseño[0]->comentario,
+                'orden' => $request->idorden,
+            );
+
+            Mail::send('emails.correotermino', $data, function ($message) use($ordenesdiseño) {
+                $message->from('bluemix.informatica@gmail.com', 'Bluemix SPA.');
+                $message->to($ordenesdiseño[0]->correo)->subject('Trabajo ' . $ordenesdiseño[0]->trabajo . ' Libreria Bluemix');
+
+            });
+
+
+            return redirect()->route('ListarOrdenesDiseño');
+
+    }
+
+
+    public function descargaordendiseno($id){
+
+
+
+            $ruta = OrdenDiseno::find($id);
+
+
+        return response()->download(storage_path("app/" .$ruta->archivo));
+
+
+    }
 
 
 
