@@ -25,7 +25,7 @@ Generar carrito
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="id" placeholder="id cotizacion" aria-label="Recipient's username" aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="button">Buscar</button>
+                      <button type="submit" class="btn btn-outline-secondary" type="button">Buscar</button>
                     </div>
                   </div>
               </form>
@@ -67,6 +67,7 @@ Generar carrito
                         <strong>Ciudad:</strong> {{$cotizacion->CZ_CIUDAD}}<br>
                         <strong>Tipo Cotizacion:</strong> {{$cotizacion->CZ_TIPOCOT}}<br>
                         <strong>Monto:</strong> ${{number_format($cotizacion->CZ_MONTO,0,',','.')}}<br>
+                        <strong>N° cotizacion :</strong> {{$cotizacion->CZ_NRO}}<br>
 
                     </div>
                 </div>

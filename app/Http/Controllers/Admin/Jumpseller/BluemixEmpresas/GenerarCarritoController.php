@@ -30,13 +30,17 @@ class GenerarCarritoController extends Controller
     public function BuscarCotizacion()
     {
 
-
-        $cotizacion = $this->cotizaciones->find(Input::get('id'));
+//->find(Input::get('id')
+        $cotizacion = $this->cotizaciones->where('CZ_TIPOCOT','COTIZMAY')->where('CZ_NRO',Input::get('id'))->first();
         if ($cotizacion) {
 
             $detalle_cotizacion = DB::table('dcotiz')
                 ->where('DZ_NUMERO', $cotizacion->CZ_NRO)
+
                 ->paginate(10);
+
+
+
             $detalle_cotizacion->withPath('CarritoDeComprasSearch?id=' . Input::get('id'));
         }
 
@@ -100,7 +104,7 @@ class GenerarCarritoController extends Controller
 
         $order = [
             "order" => [
-                "status" => "Pending Payment",
+                "status" => "Canceled",
                 "shipping_method_id" => 314661,
                 "shipping_method_name" => "DESPACHO A DOMICILIO (Entre 1 a 2 días hábiles)",
                 "shipping_price" => 59,
@@ -133,13 +137,18 @@ class GenerarCarritoController extends Controller
             ]
         ];
 
+
+
         $response = $this->apiJumpseller->post("orders", [], $order);
 
+        //dd($response);
 
-        return response()->json([
-            "response" => $response,
-            "order" => $order
-        ]);
+        return redirect()->route('GenerarCarrito.search','id='.$cotizacion->CZ_NRO)->with("warning", $response['message'] );
+
+        // return response()->json([
+        //     "response" => $response,
+        //     "order" => $order
+        // ]);
     }
 
 
