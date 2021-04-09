@@ -5,7 +5,7 @@ Espacio Publico Bluemix
 
 @section('styles')
 
-    
+
 @endsection
 
 
@@ -78,12 +78,10 @@ Espacio Publico Bluemix
 
     </div>
     <br>
-    
+
     <div class="row justify-content-right">
         <div class="col-md-3">
-            <!-- Widget: user widget style 1 -->
             <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
               <div class="widget-user-header bg-info">
                 <h3 class="widget-user-username">Consulta de Saldo</h3>
                 <h5 class="widget-user-desc">Tarjeta Gift Card  </h5>
@@ -97,14 +95,10 @@ Espacio Publico Bluemix
                     <div class="description-block">
                       <a href="{{route('ConsultaSaldo')}}" type="btn btn-success">CONSULTAR</a>
                     </div>
-                    <!-- /.description-block -->
                   </div>
-                  <!-- /.col -->
                 </div>
-                <!-- /.row -->
               </div>
             </div>
-            <!-- /.widget-user -->
           </div>
         <div class="col-md-3 col-md offset-6">
             <div class="panel-heading">
@@ -117,13 +111,13 @@ Espacio Publico Bluemix
                          <form method="POST" action="{{route('mensaje')}}">
                              @csrf
                              <!-- Tipo de Usuario -->
-                             <div class="form-group row">         
+                             <div class="form-group row">
                                  <div class="col-md-6">
                                      <select class="form-control" name="recipient_id" value="" required >
-                                         <option value="">Usuarios</option> 
+                                         <option value="">Usuarios</option>
                                          @foreach ($users as $user)
                                          <option value="{{$user->id}}">{{$user->name}}</option>
-                                             
+
                                          @endforeach
                                       </select>
                                  </div>
@@ -139,12 +133,9 @@ Espacio Publico Bluemix
                   </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
-
-  </section>
-  
 
 
 

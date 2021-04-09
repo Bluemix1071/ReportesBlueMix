@@ -269,6 +269,16 @@
                   </li>
                 @endcan
 
+                @can('MantencionClientes')
+
+                  <li class="nav-item">
+                    <a href="{{route('MantencionClientes')}}" class="nav-link {{setActive('MantencionClientes')}}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Mantenedor Clientes</p>
+                    </a>
+                  </li>
+                @endcan
+
                 @can('Admindiseno')
 
                   <li class="nav-item">

@@ -1321,6 +1321,43 @@ public function stocktiemporeal (Request $request){
 
     }
 
+    public function MantencionClientes(){
+
+
+            return view('admin.MantencionClientes');
+    }
+
+    public function MantencionClientesFiltro(Request $request){
+
+
+        // dd($request->all());
+
+        $consulta=DB::table('cargos')
+        ->where('CARUTC', $request->rut)
+        ->get();
+
+
+        $cliente=DB::table('cliente')
+        ->where('CLRUTC', $request->rut)
+        ->where('DEPARTAMENTO', $request->depto)
+        ->first();
+
+        $ciudad=DB::table('tablas')
+        ->where('CARUTC', $cliente->CLCIUF)
+        ->get();
+
+        dd($cliente);
+
+
+
+
+
+        return view('admin.MantencionClientes',compact('consulta','cliente'));
+
+}
+
+
+
 
 
 }

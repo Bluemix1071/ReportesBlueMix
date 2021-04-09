@@ -1,0 +1,619 @@
+@extends("theme.$theme.layout")
+@section('titulo')
+    Productos
+@endsection
+@section('styles')
+
+    <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css") }}">
+
+
+@endsection
+
+@section('contenido')
+
+    <div class="container-fluid">
+        <br>
+        <h1>Mantenedor Clientes</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+                <form action="{{ route('MantencionClientesFiltro') }}" method="post" id="desvForm" class="form-inline">
+                    @csrf
+
+                    <div class="form-group mx-sm-3 mb-2">
+                        @if (empty($consulta))
+                            <label for="inputPassword2" class="sr-only"></label>
+                            <input type="number" autocomplete="off" name="rut" class="form-control" placeholder="Rut Cliente">
+                        @else
+                            <label for="inputPassword2" class="sr-only"></label>
+                            <input type="number" autocomplete="off" name="rut" class="form-control" placeholder="Rut Cliente"
+                                value="">
+                        @endif
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        @if (empty($consulta))
+                            <label for="inputPassword2" class="sr-only"></label>
+                            <input type="number" autocomplete="off" name="depto" class="form-control" placeholder="Depto.">
+                        @else
+                            <label for="inputPassword2" class="sr-only"></label>
+                            <input type="number" autocomplete="off" name="depto" class="form-control" placeholder="Depto."
+                                value="">
+                        @endif
+                    </div>
+                    <div class="col-md-2 ">
+                        <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+                    </div>
+                </form>
+                <hr>
+            </div>
+        </div>
+        @if (empty($consulta))
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Datos Cliente</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Datos Cliente</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: none;">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="inputEmail4">Razon Social</label>
+                                    <input type="text" class="form-control" id="inputEmail4" disabled placeholder="{{$cliente->CLRSOC}}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputPassword4">Direccion</label>
+                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$cliente->CLDIRF}}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputPassword4">Ciudad</label>
+                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="Ciudad">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="inputEmail4">Telfono</label>
+                                    <input type="text" class="form-control" id="inputEmail4" disabled placeholder="{{$cliente->CLFONO}}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputPassword4">Giro</label>
+                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="Giro">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputPassword4">Tipo Cliente</label>
+                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="Tipo Cliente">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="inputEmail4">Email Dte</label>
+                                    <input type="text" class="form-control" id="inputEmail4" disabled placeholder="{{$cliente->CLDETA1}}">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputPassword4">Rut</label>
+                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$cliente->CLRUTC}}">
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label for="inputPassword4">Digito</label>
+                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$cliente->CLRUTD}}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputPassword4">Depto</label>
+                                    <input type="text" class="form-control" id="inputPassword4"  disabled placeholder="{{$cliente->DEPARTAMENTO}}">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">algo</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Cotizaciones Realizadas</h5>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fas fa-wrench"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <a href="#" class="dropdown-item">Action</a>
+                                        <a href="#" class="dropdown-item">Another action</a>
+                                        <a href="#" class="dropdown-item">Something else here</a>
+                                        <a class="dropdown-divider"></a>
+                                        <a href="#" class="dropdown-item">Separated link</a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="text-center">
+                                        <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                                    </p>
+
+                                    <div class="chart">
+                                        <div class="chartjs-size-monitor">
+                                            <div class="chartjs-size-monitor-expand">
+                                                <div class=""></div>
+                                            </div>
+                                            <div class="chartjs-size-monitor-shrink">
+                                                <div class=""></div>
+                                            </div>
+                                        </div>
+                                        <canvas id="salesChart" height="225"
+                                            style="height: 180px; display: block; width: 769px;" width="961"
+                                            class="chartjs-render-monitor"></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="text-center">
+                                        <strong>Goal Completion</strong>
+                                    </p>
+                                    <div class="progress-group">
+                                        Add Products to Cart
+                                        <span class="float-right"><b>160</b>/200</span>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-group">
+                                        Complete Purchase
+                                        <span class="float-right"><b>310</b>/400</span>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-danger" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-group">
+                                        <span class="progress-text">Visit Premium Page</span>
+                                        <span class="float-right"><b>480</b>/800</span>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-success" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-group">
+                                        Send Inquiries
+                                        <span class="float-right"><b>250</b>/500</span>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-warning" style="width: 50%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm-3 col-6">
+                                    <div class="description-block border-right">
+                                        <span class="description-percentage text-success"><i class="fas fa-caret-up"></i>
+                                            17%</span>
+                                        <h5 class="description-header">$35,210.43</h5>
+                                        <span class="description-text">TOTAL REVENUE</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-6">
+                                    <div class="description-block border-right">
+                                        <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i>
+                                            0%</span>
+                                        <h5 class="description-header">$10,390.90</h5>
+                                        <span class="description-text">TOTAL COST</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-6">
+                                    <div class="description-block border-right">
+                                        <span class="description-percentage text-success"><i class="fas fa-caret-up"></i>
+                                            20%</span>
+                                        <h5 class="description-header">$24,813.53</h5>
+                                        <span class="description-text">TOTAL PROFIT</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-6">
+                                    <div class="description-block">
+                                        <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i>
+                                            18%</span>
+                                        <h5 class="description-header">1200</h5>
+                                        <span class="description-text">GOAL COMPLETIONS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Historial De Compras</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0" style="display: block;">
+                            <hr>
+                            <table id="users2" class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Factura</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col" style="text-align:right">Valor</th>
+
+                                    </tr>
+                                </thead>
+                                @if (empty($consulta))
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align:left"></td>
+                                            <td style="text-align:left"></td>
+                                            <td style="text-align:right"></td>
+                                        </tr>
+                                    </tbody>
+                                @else
+                                    <tbody>
+                                        @foreach ($consulta as $item)
+                                            <tr>
+                                                <td style="text-align:left">{{ $item->CANMRO }}</td>
+                                                <td style="text-align:left">{{ $item->CAFECO }}</td>
+                                                <td style="text-align:right">
+                                                    {{ number_format($item->CAVALO, 0, ',', '.') }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header border-transparent">
+                            <h3 class="card-title">Cotizaciones</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Item</th>
+                                            <th>Status</th>
+                                            <th>Popularity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                            <td>Call of Duty IV</td>
+                                            <td><span class="badge badge-success">Shipped</span></td>
+                                            <td>
+                                                <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                                    90,80,90,-70,61,-83,63</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                            <td>Samsung Smart TV</td>
+                                            <td><span class="badge badge-warning">Pending</span></td>
+                                            <td>
+                                                <div class="sparkbar" data-color="#f39c12" data-height="20">
+                                                    90,80,-90,70,61,-83,68</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                            <td>iPhone 6 Plus</td>
+                                            <td><span class="badge badge-danger">Delivered</span></td>
+                                            <td>
+                                                <div class="sparkbar" data-color="#f56954" data-height="20">
+                                                    90,-80,90,70,-61,83,63</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                            <td>Samsung Smart TV</td>
+                                            <td><span class="badge badge-info">Processing</span></td>
+                                            <td>
+                                                <div class="sparkbar" data-color="#00c0ef" data-height="20">
+                                                    90,80,-90,70,-61,83,63</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                            <td>Samsung Smart TV</td>
+                                            <td><span class="badge badge-warning">Pending</span></td>
+                                            <td>
+                                                <div class="sparkbar" data-color="#f39c12" data-height="20">
+                                                    90,80,-90,70,61,-83,68</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                            <td>iPhone 6 Plus</td>
+                                            <td><span class="badge badge-danger">Delivered</span></td>
+                                            <td>
+                                                <div class="sparkbar" data-color="#f56954" data-height="20">
+                                                    90,-80,90,70,-61,83,63</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                            <td>Call of Duty IV</td>
+                                            <td><span class="badge badge-success">Shipped</span></td>
+                                            <td>
+                                                <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                                    90,80,90,-70,61,-83,63</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer clearfix">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
+                            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Browser Usage</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="chart-responsive">
+                                        <div class="chartjs-size-monitor">
+                                            <div class="chartjs-size-monitor-expand">
+                                                <div class=""></div>
+                                            </div>
+                                            <div class="chartjs-size-monitor-shrink">
+                                                <div class=""></div>
+                                            </div>
+                                        </div>
+                                        <canvas id="pieChart" height="142" width="286" class="chartjs-render-monitor"
+                                            style="display: block; height: 114px; width: 229px;"></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="chart-legend clearfix">
+                                        <li><i class="far fa-circle text-danger"></i> Chrome</li>
+                                        <li><i class="far fa-circle text-success"></i> IE</li>
+                                        <li><i class="far fa-circle text-warning"></i> FireFox</li>
+                                        <li><i class="far fa-circle text-info"></i> Safari</li>
+                                        <li><i class="far fa-circle text-primary"></i> Opera</li>
+                                        <li><i class="far fa-circle text-secondary"></i> Navigator</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-light p-0">
+                            <ul class="nav nav-pills flex-column">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        United States of America
+                                        <span class="float-right text-danger">
+                                            <i class="fas fa-arrow-down text-sm"></i>
+                                            12%</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        India
+                                        <span class="float-right text-success">
+                                            <i class="fas fa-arrow-up text-sm"></i> 4%
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        China
+                                        <span class="float-right text-warning">
+                                            <i class="fas fa-arrow-left text-sm"></i> 0%
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Mejor Valorados</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP-3V-FqF3DnueyZGN8zYKA-e8CCc51DmbyA&usqp=CAU" alt="Product Image" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Samsung TV
+                                            <span class="badge badge-warning float-right">$1800</span></a>
+                                        <span class="product-description">
+                                            Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Bicycle
+                                            <span class="badge badge-info float-right">$700</span></a>
+                                        <span class="product-description">
+                                            26" Mongoose Dolomite Men's 7-speed, Navy Blue.
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">
+                                            Xbox One <span class="badge badge-danger float-right">
+                                                $350
+                                            </span>
+                                        </a>
+                                        <span class="product-description">
+                                            Xbox One Console Bundle with Halo Master Chief Collection.
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">PlayStation 4
+                                            <span class="badge badge-success float-right">$399</span></a>
+                                        <span class="product-description">
+                                            PlayStation 4 500GB Console (PS4)
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="javascript:void(0)" class="uppercase">View All Products</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('#productos').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+
+                ],
+                "language": {
+                    "info": "_TOTAL_ registros",
+                    "search": "Buscar",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+
+                    },
+                    "loadingRecords": "cargando",
+                    "processing": "procesando",
+                    "emptyTable": "no hay resultados",
+                    "zeroRecords": "no hay coincidencias",
+                    "infoEmpty": "",
+                    "infoFiltered": ""
+                }
+            });
+        });
+
+    </script>
+    <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
+    <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('js/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('js/jszip.min.js') }}"></script>
+    <script src="{{ asset('js/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('js/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('js/buttons.print.min.js') }}"></script>
+
+    <script src="{{ asset('js/ajaxproductospormarca.js') }}"></script>
+    <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
+    <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#users').DataTable();
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#users2').DataTable();
+        });
+
+    </script>
+
+
+
+@endsection
