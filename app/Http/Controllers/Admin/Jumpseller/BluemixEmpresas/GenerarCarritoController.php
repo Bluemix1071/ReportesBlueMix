@@ -141,58 +141,17 @@ class GenerarCarritoController extends Controller
 
         $response = $this->apiJumpseller->post("orders", [], $order);
 
-        //dd($response);
+        if (isset($response['message'])) {
+            return redirect()->route('GenerarCarrito.search','id='.$cotizacion->CZ_NRO)->with("warning", $response['message'] );
 
-        return redirect()->route('GenerarCarrito.search','id='.$cotizacion->CZ_NRO)->with("warning", $response['message'] );
+        }else{
 
-        // return response()->json([
-        //     "response" => $response,
-        //     "order" => $order
-        // ]);
+            return redirect()->route('GenerarCarrito.search','id='.$cotizacion->CZ_NRO)->with("success", "orden creada con exito!!" );
+        }
+
+
+
+
     }
 
-
-
-    /*
-
-    var order = {
-        order: {
-          status: "Pending Payment",
-          shipping_method_id: 314661,
-          shipping_method_name: "DESPACHO A DOMICILIO (Entre 1 a 2 días hábiles)",
-          shipping_price: 59,
-          customer: {
-            id: 4144771,
-            shipping_address: {
-              name: "Valentin",
-              surname: "Bello Ponce",
-              address: "Francia 330",
-              city: "Chillán",
-              postal: "null",
-              municipality: "Chillán",
-              region: "18",
-              country: "CL",
-            },
-            billing_address: {
-              name: "Valentin",
-              surname: "Bello Ponce",
-              taxid: "18.490.082-3",
-              address: "Francia 330",
-              city: "Chillán",
-              postal: "null",
-              municipality: "Chillán",
-              region: "18",
-              country: "CL",
-            },
-          },
-          products: [
-            {
-              id: 9334532,
-              qty: 1,
-              price: 59,
-              discount: 0,
-            },
-          ],
-        },
-      };*/
 }

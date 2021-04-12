@@ -339,7 +339,7 @@
                                                     {{-- Fin Sincronizacion productos --}}
 
                                                     {{-- generar carrito --}}
-                                                    @can(' GenerarCarrito')
+                                                    @can('GenerarCarrito')
                                                     <li class="nav-item">
                                                         <a href="{{ route('CreacionCarrito.index') }}" class="nav-link">
                                                             <i class="far fa-dot-circle nav-icon"></i>
