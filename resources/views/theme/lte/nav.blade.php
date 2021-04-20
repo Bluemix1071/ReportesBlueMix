@@ -637,7 +637,7 @@
                                 </li>
                             @endcan
 
-                            @can('VentaGiftCard')
+                            @can('ordenesdiseno')
 
                                 <li class="nav-item">
                                     <a href="{{ route('OrdenesDeDiseño') }}"
