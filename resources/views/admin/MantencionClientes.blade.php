@@ -50,13 +50,16 @@
         @if (empty($consulta))
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-secondary collapsed-card">
+                <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title">Datos Cliente</h3>
+                        <h3 class="card-title">Datos Del Cliente</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                 <i class="fas fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
@@ -76,6 +79,9 @@
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                 <i class="fas fa-plus"></i>
                             </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="card-body" style="display: none;">
@@ -91,7 +97,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputPassword4">Ciudad</label>
-                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="Ciudad">
+                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$ciudad->taglos}}">
                                 </div>
                             </div>
                             <div class="form-row">
@@ -101,7 +107,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputPassword4">Giro</label>
-                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="Giro">
+                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$giro->taglos}}">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputPassword4">Tipo Cliente</label>
@@ -140,15 +146,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card card-secondary">
                         <div class="card-header">
-                            <h5 class="card-title">Cotizaciones Realizadas</h5>
+                            <h5 class="card-title">Facturas Por Pagar</h5>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <div class="btn-group">
+                                {{-- <div class="btn-group">
                                     <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
                                         <i class="fas fa-wrench"></i>
                                     </button>
@@ -159,7 +165,7 @@
                                         <a class="dropdown-divider"></a>
                                         <a href="#" class="dropdown-item">Separated link</a>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <button type="button" class="btn btn-tool" data-card-widget="remove">
                                     <i class="fas fa-times"></i>
                                 </button>
@@ -167,92 +173,42 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-8">
-                                    <p class="text-center">
-                                        <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
-                                    </p>
+                                <div class="col-md-12">
+                                    <div class="card-body p-0" style="display: block;">
+                                        <hr>
+                                        <table id="users4" class="table table-sm table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Factura</th>
+                                                    <th scope="col">Fecha</th>
+                                                    <th scope="col" style="text-align:right">Valor</th>
+                                                    <th scope="col" style="text-align:right">Accciones</th>
 
-                                    <div class="chart">
-                                        <div class="chartjs-size-monitor">
-                                            <div class="chartjs-size-monitor-expand">
-                                                <div class=""></div>
-                                            </div>
-                                            <div class="chartjs-size-monitor-shrink">
-                                                <div class=""></div>
-                                            </div>
-                                        </div>
-                                        <canvas id="salesChart" height="225"
-                                            style="height: 180px; display: block; width: 769px;" width="961"
-                                            class="chartjs-render-monitor"></canvas>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <p class="text-center">
-                                        <strong>Goal Completion</strong>
-                                    </p>
-                                    <div class="progress-group">
-                                        Add Products to Cart
-                                        <span class="float-right"><b>160</b>/200</span>
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-primary" style="width: 80%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="progress-group">
-                                        Complete Purchase
-                                        <span class="float-right"><b>310</b>/400</span>
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-danger" style="width: 75%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="progress-group">
-                                        <span class="progress-text">Visit Premium Page</span>
-                                        <span class="float-right"><b>480</b>/800</span>
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-success" style="width: 60%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="progress-group">
-                                        Send Inquiries
-                                        <span class="float-right"><b>250</b>/500</span>
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-warning" style="width: 50%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-sm-3 col-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-success"><i class="fas fa-caret-up"></i>
-                                            17%</span>
-                                        <h5 class="description-header">$35,210.43</h5>
-                                        <span class="description-text">TOTAL REVENUE</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-3 col-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i>
-                                            0%</span>
-                                        <h5 class="description-header">$10,390.90</h5>
-                                        <span class="description-text">TOTAL COST</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-3 col-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-success"><i class="fas fa-caret-up"></i>
-                                            20%</span>
-                                        <h5 class="description-header">$24,813.53</h5>
-                                        <span class="description-text">TOTAL PROFIT</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-3 col-6">
-                                    <div class="description-block">
-                                        <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i>
-                                            18%</span>
-                                        <h5 class="description-header">1200</h5>
-                                        <span class="description-text">GOAL COMPLETIONS</span>
+                                                </tr>
+                                            </thead>
+                                            @if (empty($consulta))
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="text-align:left"></td>
+                                                        <td style="text-align:left"></td>
+                                                        <td style="text-align:right"></td>
+                                                    </tr>
+                                                </tbody>
+                                            @else
+                                                <tbody>
+                                                    @foreach ($consulta as $item)
+                                                        <tr>
+                                                            <td style="text-align:left">{{ $item->CANMRO }}</td>
+                                                            <td style="text-align:left">{{ $item->CAFECO }}</td>
+                                                            <td style="text-align:right">
+                                                                {{ number_format($item->CAVALO, 0, ',', '.') }}
+                                                            </td>
+                                                            <td style="text-align:right"><a href="" type="button" class="btn btn-primary" >Ver Mas</a></td>
+                                                        </tr>
+                                                    @endforeach
+                                            @endif
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -262,25 +218,27 @@
             </div>
             <div class="row">
                 <div class="col-md-8">
-
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">Historial De Compras</h3>
-
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="card-body p-0" style="display: block;">
                             <hr>
-                            <table id="users2" class="table table-sm table-hover">
+                            <table id="users3" class="table table-sm table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Factura</th>
                                         <th scope="col">Fecha</th>
                                         <th scope="col" style="text-align:right">Valor</th>
+                                        <th scope="col" style="text-align:right">Accciones</th>
 
                                     </tr>
                                 </thead>
@@ -301,6 +259,7 @@
                                                 <td style="text-align:right">
                                                     {{ number_format($item->CAVALO, 0, ',', '.') }}
                                                 </td>
+                                                <td style="text-align:right"><a href="" type="button" class="btn btn-primary" >Ver Mas</a></td>
                                             </tr>
                                         @endforeach
                                 @endif
@@ -308,9 +267,9 @@
                             </table>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card card-info">
                         <div class="card-header border-transparent">
-                            <h3 class="card-title">Cotizaciones</h3>
+                            <h3 class="card-title">Cotizaciones Realizadas </h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -323,79 +282,39 @@
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table m-0">
+                                <hr>
+                                <table id="users2" class="table table-sm table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Order ID</th>
-                                            <th>Item</th>
-                                            <th>Status</th>
-                                            <th>Popularity</th>
+                                            <th scope="col">ID Cotizacion</th>
+                                            <th scope="col">Giro</th>
+                                            <th scope="col">Fecha</th>
+                                            <th scope="col" style="text-align:center">Vendedor</th>
+                                            <th scope="col" style="text-align:center">Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td><span class="badge badge-success">Shipped</span></td>
-                                            <td>
-                                                <div class="sparkbar" data-color="#00a65a" data-height="20">
-                                                    90,80,90,-70,61,-83,63</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                            <td>Samsung Smart TV</td>
-                                            <td><span class="badge badge-warning">Pending</span></td>
-                                            <td>
-                                                <div class="sparkbar" data-color="#f39c12" data-height="20">
-                                                    90,80,-90,70,61,-83,68</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                            <td>iPhone 6 Plus</td>
-                                            <td><span class="badge badge-danger">Delivered</span></td>
-                                            <td>
-                                                <div class="sparkbar" data-color="#f56954" data-height="20">
-                                                    90,-80,90,70,-61,83,63</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                            <td>Samsung Smart TV</td>
-                                            <td><span class="badge badge-info">Processing</span></td>
-                                            <td>
-                                                <div class="sparkbar" data-color="#00c0ef" data-height="20">
-                                                    90,80,-90,70,-61,83,63</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                            <td>Samsung Smart TV</td>
-                                            <td><span class="badge badge-warning">Pending</span></td>
-                                            <td>
-                                                <div class="sparkbar" data-color="#f39c12" data-height="20">
-                                                    90,80,-90,70,61,-83,68</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                            <td>iPhone 6 Plus</td>
-                                            <td><span class="badge badge-danger">Delivered</span></td>
-                                            <td>
-                                                <div class="sparkbar" data-color="#f56954" data-height="20">
-                                                    90,-80,90,70,-61,83,63</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td><span class="badge badge-success">Shipped</span></td>
-                                            <td>
-                                                <div class="sparkbar" data-color="#00a65a" data-height="20">
-                                                    90,80,90,-70,61,-83,63</div>
-                                            </td>
-                                        </tr>
+                                    @if (empty($cotiz))
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:right"></td>
+                                                <td style="text-align:right"></td>
+                                            </tr>
+                                        </tbody>
+                                    @else
+                                        <tbody>
+                                            @foreach ($cotiz as $item)
+                                                <tr>
+                                                    <td style="text-align:left">{{ $item->CZ_NRO }}</td>
+                                                    <td style="text-align:left">{{ $item->CZ_GIRO }}</td>
+                                                    <td style="text-align:left">{{ $item->CZ_FECHA }}</td>
+                                                    <td style="text-align:center">{{ $item->CZ_VENDEDOR }}</td>
+                                                    <td style="text-align:right"><a href="" type="button" class="btn btn-primary" >Ver Mas</a></td>
+                                                    {{-- <td><a href="{{route('ListarOrdenesDisenoDetalle', $item->idOrdenesDiseño)}}" type="button" class="btn btn-primary">Ver Mas</a></td> --}}
+                                                </tr>
+                                            @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -407,9 +326,9 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card">
+                    <div class="card card-dark">
                         <div class="card-header">
-                            <h3 class="card-title">Browser Usage</h3>
+                            <h3 class="card-title">Mas Comprado</h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -477,7 +396,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card card-dark">
                         <div class="card-header">
                             <h3 class="card-title">Mejor Valorados</h3>
 
@@ -586,6 +505,8 @@
     </script>
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
@@ -602,17 +523,38 @@
 
     <script>
         $(document).ready(function() {
-            $('#users').DataTable();
+            $('#users').DataTable({
+        "order": [[ 0, "desc" ]]
+    });
         });
 
     </script>
 
     <script>
         $(document).ready(function() {
-            $('#users2').DataTable();
+            $('#users2').DataTable({
+        "order": [[ 0, "desc" ]]
+    });
         });
 
     </script>
+
+    <script>
+    $(document).ready(function() {
+        $('#users3').DataTable({
+        "order": [[ 1, "desc" ]]
+    });
+    });
+
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#users4').DataTable({
+        "order": [[ 0, "desc" ]]
+    });
+        });
+
+        </script>
 
 
 

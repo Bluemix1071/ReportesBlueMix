@@ -1242,6 +1242,7 @@ public function stocktiemporeal (Request $request){
         ->get();
 
 
+
         return view('admin.ListarOrdenesDiseño',compact('ordenes'));
     }
 
@@ -1334,8 +1335,10 @@ public function stocktiemporeal (Request $request){
 
         $consulta=DB::table('cargos')
         ->where('CARUTC', $request->rut)
+        ->orderBy('cafeco', 'desc')
         ->get();
 
+        // dd($consulta);
 
         $cliente=DB::table('cliente')
         ->where('CLRUTC', $request->rut)
@@ -1343,16 +1346,34 @@ public function stocktiemporeal (Request $request){
         ->first();
 
         $ciudad=DB::table('tablas')
-        ->where('CARUTC', $cliente->CLCIUF)
+        ->join('cliente', 'CLCIUF', '=', 'tarefe')
+        ->where('CLRUTC', $request->rut)
+        ->where('DEPARTAMENTO', $request->depto)
+        ->where('TACODI', 2)
+        ->first('taglos');
+
+        $giro=DB::table('tablas')
+        ->join('cliente', 'CLGIRO', '=', 'tarefe')
+        ->where('CLRUTC', $request->rut)
+        ->where('DEPARTAMENTO', $request->depto)
+        ->where('TACODI', 8)
+        ->first('taglos');
+
+        $cotiz=DB::table('cotiz')
+        ->where('CZ_RUT', 'LIKE', "%{$request->rut}%")
+        ->where('CZ_GIRO' , $giro->taglos)
         ->get();
 
-        dd($cliente);
+
+        // dd($cotiz);
 
 
 
 
 
-        return view('admin.MantencionClientes',compact('consulta','cliente'));
+
+
+        return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz'));
 
 }
 

@@ -16,11 +16,11 @@ Espacio Publico Bluemix
     <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-lg-3 col-6">
+        <div class="col-lg-3 col-6 ">
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-                <h3>{{$variable1}}</h3>
+                <h3 class="animate__animated animate__bounce">{{$variable1}}</h3>
               <p>Compras en el dia</p>
             </div>
             <div class="icon">
@@ -34,7 +34,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>{{$negativo1}}<sup style="font-size: 20px"><!--%--></sup></h3>
+              <h3 class="animate__animated animate__bounce">{{$negativo1}}<sup style="font-size: 20px"><!--%--></sup></h3>
 
               <p>Productos Negativos</p>
             </div>
@@ -49,7 +49,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>44</h3>
+              <h3 class="animate__animated animate__bounce">44</h3>
 
               <p>Usuarios Activos</p>
             </div>
@@ -64,7 +64,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>65</h3>
+              <h3 class="animate__animated animate__bounce">65</h3>
 
               <p>visitas del dia </p>
             </div>
@@ -143,6 +143,8 @@ Espacio Publico Bluemix
 @endsection
 
 @section('script')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 @endsection
 
