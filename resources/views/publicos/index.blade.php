@@ -5,7 +5,7 @@ Espacio Publico Bluemix
 
 @section('styles')
 
-    
+
 @endsection
 
 
@@ -16,11 +16,11 @@ Espacio Publico Bluemix
     <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-lg-3 col-6">
+        <div class="col-lg-3 col-6 ">
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-                <h3>{{$variable1}}</h3>
+                <h3 class="animate__animated animate__bounce">{{$variable1}}</h3>
               <p>Compras en el dia</p>
             </div>
             <div class="icon">
@@ -34,7 +34,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>{{$negativo1}}<sup style="font-size: 20px"><!--%--></sup></h3>
+              <h3 class="animate__animated animate__bounce">{{$negativo1}}<sup style="font-size: 20px"><!--%--></sup></h3>
 
               <p>Productos Negativos</p>
             </div>
@@ -49,7 +49,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>44</h3>
+              <h3 class="animate__animated animate__bounce">44</h3>
 
               <p>Usuarios Activos</p>
             </div>
@@ -64,7 +64,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>65</h3>
+              <h3 class="animate__animated animate__bounce">65</h3>
 
               <p>visitas del dia </p>
             </div>
@@ -78,12 +78,10 @@ Espacio Publico Bluemix
 
     </div>
     <br>
-    
+
     <div class="row justify-content-right">
         <div class="col-md-3">
-            <!-- Widget: user widget style 1 -->
             <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
               <div class="widget-user-header bg-info">
                 <h3 class="widget-user-username">Consulta de Saldo</h3>
                 <h5 class="widget-user-desc">Tarjeta Gift Card  </h5>
@@ -97,14 +95,10 @@ Espacio Publico Bluemix
                     <div class="description-block">
                       <a href="{{route('ConsultaSaldo')}}" type="btn btn-success">CONSULTAR</a>
                     </div>
-                    <!-- /.description-block -->
                   </div>
-                  <!-- /.col -->
                 </div>
-                <!-- /.row -->
               </div>
             </div>
-            <!-- /.widget-user -->
           </div>
         <div class="col-md-3 col-md offset-6">
             <div class="panel-heading">
@@ -117,13 +111,13 @@ Espacio Publico Bluemix
                          <form method="POST" action="{{route('mensaje')}}">
                              @csrf
                              <!-- Tipo de Usuario -->
-                             <div class="form-group row">         
+                             <div class="form-group row">
                                  <div class="col-md-6">
                                      <select class="form-control" name="recipient_id" value="" required >
-                                         <option value="">Usuarios</option> 
+                                         <option value="">Usuarios</option>
                                          @foreach ($users as $user)
                                          <option value="{{$user->id}}">{{$user->name}}</option>
-                                             
+
                                          @endforeach
                                       </select>
                                  </div>
@@ -139,12 +133,9 @@ Espacio Publico Bluemix
                   </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
-
-  </section>
-  
 
 
 
@@ -152,6 +143,8 @@ Espacio Publico Bluemix
 @endsection
 
 @section('script')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 @endsection
 
