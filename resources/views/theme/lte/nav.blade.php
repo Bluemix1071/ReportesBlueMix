@@ -120,15 +120,13 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library
-              Agregar items de giftcard -->
+                <!--  Agregar items de giftcard -->
 
                 @can('RolesYPermisos')
 
                     <li class="nav-item has-treeview">
                         <a href="" class="nav-link">
-                            <i class="fas fa-user-tag"></i>
+                            <i class="fas fa-user-edit"></i>
                             <p>
                                 Roles Y Permisos
                                 <i class="right fas fa-angle-left"></i>
@@ -148,8 +146,6 @@
                                     <i class="fas fa-cog"></i>
                                     <p>Permisos</p>
                                 </a>
-                            </li>
-
                         </ul>
                     </li>
                 @endcan
@@ -183,8 +179,6 @@
                                             <p>Creacion Folios GiftCard</p>
                                         </a>
                                     </li>
-
-
                                 @endcan
 
 
@@ -231,7 +225,8 @@
                                 @can('ConsumoGiftCard')
 
                                     <li class="nav-item">
-                                        <a href="{{ route('consumotarj') }}" class="nav-link {{ setActive('consumotarj') }}">
+                                        <a href="{{ route('consumotarj') }}"
+                                            class="nav-link {{ setActive('consumotarj') }}">
                                             <i class="fas fa-book"></i>
                                             <p>Consumo De GiftCard</p>
                                         </a>
@@ -267,7 +262,8 @@
                                 @can('ListarUsers')
 
                                     <li class="nav-item">
-                                        <a href="{{ route('ListarUser') }}" class="nav-link {{ setActive('ListarUser') }}">
+                                        <a href="{{ route('ListarUser') }}"
+                                            class="nav-link {{ setActive('ListarUser') }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Control De Usuarios </p>
                                         </a>
@@ -316,70 +312,70 @@
                                         </a>
                                         <ul class="nav nav-treeview">
                                             {{-- inicio bluemix empresas --}}
-                                        @can('BluemixEmpresas')
+                                            @can('BluemixEmpresas')
 
-                                            <li class="nav-item">
-                                                <a href="" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Bluemix Empresas</p>
-                                                    <i class="right fas fa-angle-left"></i>
-                                                </a>
-                                                <ul class="nav nav-treeview">
-                                                    {{-- Sincronizacion productos --}}
-                                                    @can('Sincronizar')
+                                                <li class="nav-item">
+                                                    <a href="" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Bluemix Empresas</p>
+                                                        <i class="right fas fa-angle-left"></i>
+                                                    </a>
+                                                    <ul class="nav nav-treeview">
+                                                        {{-- Sincronizacion productos --}}
+                                                        @can('Sincronizar')
 
-                                                    <li class="nav-item">
-                                                        <a href="{{ route('index.jumpsellerEmpresas') }}"
-                                                            class="nav-link {{ setActive('jumpsellerEmpresas') }}">
-                                                            <i class="far fa-dot-circle nav-icon"></i>
-                                                            <p>Sincronizar Productos</p>
-                                                        </a>
-                                                    </li>
-                                                    @endcan
-                                                    {{-- Fin Sincronizacion productos --}}
+                                                            <li class="nav-item">
+                                                                <a href="{{ route('index.jumpsellerEmpresas') }}"
+                                                                    class="nav-link {{ setActive('jumpsellerEmpresas') }}">
+                                                                    <i class="far fa-dot-circle nav-icon"></i>
+                                                                    <p>Sincronizar Productos</p>
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        {{-- Fin Sincronizacion productos --}}
 
-                                                    {{-- generar carrito --}}
-                                                    @can('GenerarCarrito')
-                                                    <li class="nav-item">
-                                                        <a href="{{ route('CreacionCarrito.index') }}" class="nav-link">
-                                                            <i class="far fa-dot-circle nav-icon"></i>
-                                                            <p>
-                                                                Generar Carrito
-                                                            </p>
-                                                        </a>
-                                                    </li>
-                                                    @endcan
-                                                    {{-- Fin generar carrito --}}
+                                                        {{-- generar carrito --}}
+                                                        @can('GenerarCarrito')
+                                                            <li class="nav-item">
+                                                                <a href="{{ route('CreacionCarrito.index') }}" class="nav-link">
+                                                                    <i class="far fa-dot-circle nav-icon"></i>
+                                                                    <p>
+                                                                        Generar Carrito
+                                                                    </p>
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        {{-- Fin generar carrito --}}
 
-                                                    {{-- Actualizar Stock --}}
-                                                    @can('ActualizarStock')
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">
-                                                            <i class="far fa-dot-circle nav-icon"></i>
-                                                            <p>
-                                                                Actualizar Stock
-                                                            </p>
-                                                        </a>
-                                                    </li>
-                                                    @endcan
-                                                    {{--  Fin Actualizar Stock --}}
-                                                </ul>
-                                            </li>
-                                            {{-- fin bluemix empresas --}}
-                                        @endcan
+                                                        {{-- Actualizar Stock --}}
+                                                        @can('ActualizarStock')
+                                                            <li class="nav-item">
+                                                                <a href="#" class="nav-link">
+                                                                    <i class="far fa-dot-circle nav-icon"></i>
+                                                                    <p>
+                                                                        Actualizar Stock
+                                                                    </p>
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        {{-- Fin Actualizar Stock --}}
+                                                    </ul>
+                                                </li>
+                                                {{-- fin bluemix empresas --}}
+                                            @endcan
 
                                             {{-- Bluemix.cl --}}
                                             @can('Bluemix.cl')
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Bluemix.cl
-                                                        <i class="right fas fa-angle-left"></i>
-                                                    </p>
-                                                </a>
+                                                <li class="nav-item">
+                                                    <a href="#" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>
+                                                            Bluemix.cl
+                                                            <i class="right fas fa-angle-left"></i>
+                                                        </p>
+                                                    </a>
 
-                                            </li>
+                                                </li>
                                             @endcan
                                             {{-- Fin Bluemix.cl --}}
 
@@ -422,13 +418,13 @@
                                 @endcan
 
                                 {{-- <li class="nav-item">
-                    <a href="{{route('porcentaje')}}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <i class="far fa-circle nav-icon"></i>
-                       <p>Desviacion
-                       </p>
-                     </a>
-                   </li> --}}
+                                    <a href="{{route('porcentaje')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Desviacion
+                                    </p>
+                                    </a>
+                                </li> --}}
 
                                 @can('Productos')
 
@@ -465,7 +461,8 @@
 
                                 @can('CompraProductos')
                                     <li class="nav-item">
-                                        <a href="{{ route('compraProd') }}" class="nav-link {{ setActive('compraProd') }}">
+                                        <a href="{{ route('compraProd') }}"
+                                            class="nav-link {{ setActive('compraProd') }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Compra Productos
 
@@ -476,18 +473,19 @@
                                 @endcan
 
                                 {{-- <li class="nav-item">
-                    <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                       <p>Ventas Por Hora
+                                    <a href="{{route('ComprasPorHoraIndex')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ventas Por Hora
 
-                       </p>
-                     </a>
-                   </li> --}}
+                                    </p>
+                                    </a>
+                                </li> --}}
 
                                 @can('ProyeccionCompra')
 
                                     <li class="nav-item">
-                                        <a href="{{ route('proyeccion') }}" class="nav-link {{ setActive('proyeccion') }}">
+                                        <a href="{{ route('proyeccion') }}"
+                                            class="nav-link {{ setActive('proyeccion') }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Proyeccion De Compras
                                             </p>
@@ -506,13 +504,7 @@
                                         </a>
                                     </li>
                                 @endcan
-                                {{-- <li class="nav-item">
-                    <a href="{{route('movimientoinventario')}}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                       <p>Inventario
-                       </p>
-                     </a>
-                   </li> --}}
+
                                 @can('LibroVentas')
 
                                     <li class="nav-item">
@@ -555,11 +547,6 @@
                                         </a>
                                     </li>
                                 @endcan
-
-
-
-
-
                             </ul>
                         </li>
                     @endcan
@@ -578,7 +565,8 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('ConsultaSaldo') }}" class="nav-link {{ setActive('ConsultaSaldo') }} ">
+                            <a href="{{ route('ConsultaSaldo') }}"
+                                class="nav-link {{ setActive('ConsultaSaldo') }} ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Saldo Gift Card</p>
                             </a>

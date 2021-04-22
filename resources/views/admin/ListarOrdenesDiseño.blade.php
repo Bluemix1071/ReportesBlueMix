@@ -66,7 +66,9 @@
 
 <script>
   $(document).ready( function () {
-    $('#users').DataTable();
+    $('#users').DataTable({
+        "order": [[ 0, "desc" ]]
+    } );
 } );
 </script>
 
