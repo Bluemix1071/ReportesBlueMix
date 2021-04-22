@@ -117,15 +117,13 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library
-              Agregar items de giftcard -->
+          <!--  Agregar items de giftcard -->
 
               @can('RolesYPermisos')
 
                   <li class="nav-item has-treeview">
                   <a href="" class="nav-link">
-                      <i class="fas fa-user-tag"></i>
+                    <i class="fas fa-user-edit"></i>
                       <p>
                         Roles Y Permisos
                         <i class="right fas fa-angle-left"></i>
@@ -426,14 +424,7 @@
                       </a>
                     </li>
                     @endcan
-{{--
-                   <li class="nav-item">
-                    <a href="{{route('movimientoinventario')}}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                       <p>Inventario
-                       </p>
-                     </a>
-                   </li> --}}
+
                    @can('LibroVentas')
 
                     <li class="nav-item">
@@ -476,6 +467,7 @@
                     </li>
                     @endcan
 
+                    @can('AnulacionDocs')
                     <li class="nav-item">
                         <a href="{{route('AnulacionDocs')}}" class="nav-link {{setActive('AnulacionDocs')}}">
                           <i class="far fa-circle nav-icon"></i>
@@ -483,6 +475,7 @@
                           </p>
                         </a>
                       </li>
+                    @endcan
 
                 </ul>
               </li>
