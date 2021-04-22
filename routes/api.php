@@ -49,6 +49,9 @@ Route::post('/Login','Api\AuthController@Login');
 
 Route::get('/Permisos/{id}','Api\AuthController@getPermission');
 
+// validar los productos faltantes de una cotizacion jumpseller
+
+Route::get('/ProductosFaltantes/{id}','Admin\Jumpseller\BluemixEmpresas\GenerarCarritoController@VerProductosFaltantes');
 
 
 
