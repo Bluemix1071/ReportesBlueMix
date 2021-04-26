@@ -1369,10 +1369,6 @@ public function stocktiemporeal (Request $request){
 
 
 
-
-
-
-
         return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz'));
 
 }

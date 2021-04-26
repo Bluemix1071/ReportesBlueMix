@@ -270,7 +270,7 @@
                                     </li>
                                 @endcan
 
-                                @can('ListarUsers')
+                                @can('Admindiseno')
 
                                     <li class="nav-item">
                                         <a href="{{ route('ListarOrdenesDiseño') }}"
@@ -366,16 +366,40 @@
 
                                             {{-- Bluemix.cl --}}
                                             @can('Bluemix.cl')
-                                                <li class="nav-item">
-                                                    <a href="#" class="nav-link">
-                                                        <i class="far fa-circle nav-icon"></i>
-                                                        <p>
-                                                            Bluemix.cl
-                                                            <i class="right fas fa-angle-left"></i>
-                                                        </p>
-                                                    </a>
+                                            <li class="nav-item">
+                                                <a href="" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Bluemix.cl</p>
+                                                    <i class="right fas fa-angle-left"></i>
+                                                </a>
+                                                <ul class="nav nav-treeview">
+                                                    {{-- Sincronizacion productos --}}
+                                                    @can('Sincronizarweb')
 
-                                                </li>
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('index.jumpsellerWeb') }}"
+                                                                class="nav-link {{ setActive('Sincronizarweb') }}">
+                                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                                <p>Sincronizar Productos Web</p>
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    {{-- Fin Sincronizacion productos --}}
+
+                                                    {{-- Actualizar Stock --}}
+                                                    @can('ActualizarStockweb')
+                                                        <li class="nav-item">
+                                                            <a href="#" class="nav-link">
+                                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                                <p>
+                                                                    Actualizar Stock web
+                                                                </p>
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    {{-- Fin Actualizar Stock --}}
+                                                </ul>
+                                            </li>
                                             @endcan
                                             {{-- Fin Bluemix.cl --}}
 
