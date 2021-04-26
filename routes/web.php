@@ -27,8 +27,6 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 
 
 
-
-
 //Rutas autenticadas de sala
 Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/Cambiodeprecios','SalaController@index')->name('cambiodeprecios');
@@ -37,16 +35,12 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/GiftCardVoucher','SalaController@generarVoucher')->name('GiftCardVoucherIndex');
     Route::post('/GiftCardVoucher','SalaController@generarVoucher')->name('GiftCardVoucher');
 
-
     Route::get('/GiftCardCaja','SalaController@CargaTarjetasCaja')->name('CargaTarjetasCaja');
     Route::post('/GiftCardCaja','SalaController@CargarTarjetasCodigos')->name('postCargarCaja');
     Route::post('/VentasGiftcards','SalaController@VenderGiftcardSala')->name('venderGiftCardSala');
 
     Route::get('/OrdenesDeDiseño','SalaController@OrdenesDeDiseño')->name('OrdenesDeDiseño');
     Route::post('/GuardarOrdenesDeDiseño','SalaController@GuardarOrdenesDeDiseño')->name('GuardarOrdenesDeDiseño');
-
-
-
 
 
 
@@ -176,12 +170,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/AddRol','LaravelPermission\RolesController@AddRol')->name('AddRol');
     Route::get('/ShowPermisos/{id}','LaravelPermission\RolesController@ShowPermisos')->name('ShowPermisos');
     Route::post('/AddPermisoRol','LaravelPermission\RolesController@AddPermisoRol')->name('AddPermisoRol');
-
     Route::get('/ShowUsers','LaravelPermission\RolesController@ShowUsers')->name('ShowUsers');
-
-
     Route::get('/ShowRolesUser/{id}','LaravelPermission\RolesController@ShowRolesUser')->name('ShowRolesUser');
-
     Route::post('/AddRolPermiso','LaravelPermission\RolesController@AddRolUser')->name('');
 
     // inventario
@@ -195,12 +185,15 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/jumpsellerEmpresas','Jumpseller\BluemixEmpresas\SincronizacionProductosController@index')->name('index.jumpsellerEmpresas');
     Route::get('/SincronizarProductos','Jumpseller\BluemixEmpresas\SincronizacionProductosController@sincronizarProductos')->name('sincronizar');
-
     Route::get('/CarritoDeCompras','Jumpseller\BluemixEmpresas\GenerarCarritoController@index')->name('CreacionCarrito.index');
     Route::get('/CarritoDeComprasSearch','Jumpseller\BluemixEmpresas\GenerarCarritoController@BuscarCotizacion')->name('GenerarCarrito.search');
     Route::post('/CrearCarrito','Jumpseller\BluemixEmpresas\GenerarCarritoController@CrearCarrito')->name('GenerarCarrito.store');
-    //Anulacion de documentos
 
+    Route::get('/jumpsellerWeb','Jumpseller\BluemixWeb\SincronizacionProductosWebController@index')->name('index.jumpsellerWeb');
+    Route::get('/SincronizarProductosWeb','Jumpseller\BluemixWeb\SincronizacionProductosWebController@sincronizarProductos')->name('sincronizarWeb');
+
+
+    //Anulacion de documentos
     Route::get('/Anulacion-De-Documentos','AnulacionDocumentosController@index')->name('AnulacionDocs');
     Route::post('/AnularDocs','AnulacionDocumentosController@store')->name('AnulacionDocs.store');
 
@@ -214,11 +207,7 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
     Route::get('/Folios','GiftCardController@index')->name('indexGiftCard');
     Route::get('/Folios2/{cant}','GiftCardController@vistafolios')->name('Vfolios');
-
-
     Route::post('/Folios2','GiftCardController@generarGiftCard')->name('generarGiftCard');
-
-
 
     Route::get('/imprimir/{giftCreadas}','GiftCardController@imprimir')->name('imprimir');
     Route::get('/Load/{Monto}','GiftCardController@CargarTablaCodigos')->name('cargarCodigos');
@@ -233,24 +222,13 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
 
     Route::get('/VentaEmpresa','GiftCardController@VentaEmpresaIndex')->name('VentaEmpresa');
     Route::post('/VentaEmpresa','GiftCardController@VentaEmpresaFiltro')->name('FiltroVentaEmpresa');
-
     Route::get('/ListarVenta','GiftCardController@ListarGet');
     Route::post('/ListarVenta','GiftCardController@ListarFiltroVentaEmpresa')->name('ListaVentaEmpresa');
-
     Route::post('/VentasGiftcards','GiftCardController@VenderGiftcard')->name('venderGiftCard');
-
-
-
-
-
-
 
 
     Route::post('/Venta','GiftCardController@CargarVenta')->name('ventaGiftCard');
     Route::post('/BloqueoGiftCards','GiftCardController@BloqueoTarjetas')->name('BloqueoConfirmacion');
-
-
-
 
 
     Route::get('/Activacion3.0','GiftCardController@Activacion3')->name('Activacion3.0');
@@ -263,17 +241,14 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware('auth','GiftCard')-
     Route::post('/Activar3','GiftCardController@ActivarRango')->name('ActivarRango');
 
 
-    //asdsdf
+    //gifcard
 
     Route::get('/ConsumoTarjeta','GiftCardController@vistaconsumotarjeta')->name('consumotarj');
     Route::post('/ConsumoTarjeta','GiftCardController@filtrarcambiotarjeta')->name('filtrartarjeta');
-
-
     Route::get('/BloqueoGiftCards','GiftCardController@BloqueoTarjetasIndex')->name('Bloqueo');
     Route::post('/BloqueoGiftCards','GiftCardController@filtrarbloqueo')->name('filtrartarjetabloqueo');
     Route::post('/BloqueoGiftCardsrango','GiftCardController@filtrarbloqueorango')->name('filtrartarjetabloqueorango');
     Route::post('/BloqueoGif','GiftCardController@bloqueotrajeta')->name('bloqueartarjetacard');
-
     Route::get('/detalle/{fk_cargos}','GiftCardController@detalletarjeta')->name('detalletarjeta');
 
 });
