@@ -561,7 +561,18 @@
                                     </li>
                                 @endcan
 
-                                @can('Cupones')
+                                @can('AnulacionDocs')
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('AnulacionDocs') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Anulacion Docs
+                                            </p>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                {{-- @can('Cupones')
 
                                     <li class="nav-item">
                                         <a href="{{ route('cuponesescolares') }}" class="nav-link">
@@ -570,13 +581,11 @@
                                             </p>
                                         </a>
                                     </li>
-                                @endcan
+                                @endcan --}}
                             </ul>
                         </li>
                     @endcan
                 @endif
-
-
 
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
@@ -614,7 +623,6 @@
 
                     </ul>
                 </li>
-
 
                 @can('Sala')
                     <li class="nav-item has-treeview">
