@@ -460,7 +460,7 @@
                         value="Total" required>
                 </div>
                 <div class="col-md-3 mb-3">
-                    @if (empty($totalnotacre))
+                    @if (empty($sumadocumentos))
                         <input type="text" class="form-control" value="" id="validationTooltip02" readonly value=""
                             required>
                     @else
