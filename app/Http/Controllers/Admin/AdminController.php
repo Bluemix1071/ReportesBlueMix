@@ -1052,6 +1052,8 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $sumadocumentos = ($facturacount + $notacreditocount + $boletacount + $boletatransbankcount);
 
+    //   dd($sumadocumentos);
+
 
       $porcaja=DB::table('cargos')
       ->selectRaw('cacoca AS CAJA,
