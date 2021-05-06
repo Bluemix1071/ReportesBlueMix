@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Sincronización de productos
+Actualizar Productos Web
 @endsection
 
 @section('styles')
@@ -13,7 +13,7 @@ Sincronización de productos
 
 <div class="container">
 
-    <h5 class="display-4">Sincronización de productos Web </h5>
+    <h5 class="display-4">Actualizar Productos Web</h5>
 
     <div class="progress">
         <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
@@ -28,8 +28,6 @@ Sincronización de productos
                 </div>
                 <div class="card-body">
 
-                  <p class="card-text">La actualización se realiza en segundo plano, puede seguir realizando otras actividades </p>
-                  <hr>
                   <p class="card-text">Se recomienda esperar a que la barra llegue al 100% antes de volver a actualizar </p>
 
                   <form action="{{route('sincronizarWeb')}}" method="get">
