@@ -18,6 +18,7 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title"></h3>
+            <div class="table-responsive-xl">
             <table id="users" class="table table-sm table-hover">
               <thead>
                 <tr>
@@ -41,6 +42,7 @@
                 @endforeach
               </tbody>
             </table>
+             </div>
           </div>
           <div class="card-body">
             <div id="jsGrid1"></div>
@@ -48,7 +50,7 @@
           </div>
         </div>
       </section>
-      
+
 
    <!-- Modal -->
    <div class="modal fade" id="mimodalejemplo10" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -128,5 +130,5 @@
 } );
 </script>
 
-    
+
 @endsection
