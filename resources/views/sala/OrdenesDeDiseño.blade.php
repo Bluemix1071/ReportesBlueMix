@@ -93,7 +93,7 @@
                         </div>
                         <div class="form-group row" id="boletadiv">
 
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">N° Dcumento</label>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">N° Documento</label>
                             <div class="col-sm-3">
                                 <input type="number" class="form-control" name="numerodocumento">
                             </div>

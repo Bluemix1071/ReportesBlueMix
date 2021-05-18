@@ -304,6 +304,8 @@
                                 </li>
                             @endcan
 
+                            @can('movimientoinventario')
+
                                 <li class="nav-item">
                                     <a href="{{ route('movimientoinventario') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -312,111 +314,7 @@
                                     </a>
                                 </li>
 
-                                @can('Jumpseller')
-                                    <li class="nav-item">
-                                        <a href="" class="nav-link ">
-
-                                            <i class="nav-icon fas fa-circle"></i>
-                                            <p>Jumpseller
-                                                <i class="right fas fa-angle-left"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview">
-                                            {{-- inicio bluemix empresas --}}
-                                            @can('BluemixEmpresas')
-
-                                                <li class="nav-item">
-                                                    <a href="" class="nav-link">
-                                                        <i class="far fa-circle nav-icon"></i>
-                                                        <p>Bluemix Empresas</p>
-                                                        <i class="right fas fa-angle-left"></i>
-                                                    </a>
-                                                    <ul class="nav nav-treeview">
-                                                        {{-- Sincronizacion productos --}}
-                                                        @can('Sincronizar')
-
-                                                            <li class="nav-item">
-                                                                <a href="{{ route('index.jumpsellerEmpresas') }}"
-                                                                    class="nav-link {{ setActive('jumpsellerEmpresas') }}">
-                                                                    <i class="far fa-dot-circle nav-icon"></i>
-                                                                    <p>Sincronizar Productos</p>
-                                                                </a>
-                                                            </li>
-                                                        @endcan
-                                                        {{-- Fin Sincronizacion productos --}}
-
-                                                        {{-- generar carrito --}}
-                                                        @can('GenerarCarrito')
-                                                            <li class="nav-item">
-                                                                <a href="{{ route('CreacionCarrito.index') }}" class="nav-link">
-                                                                    <i class="far fa-dot-circle nav-icon"></i>
-                                                                    <p>
-                                                                        Generar Carrito
-                                                                    </p>
-                                                                </a>
-                                                            </li>
-                                                        @endcan
-                                                        {{-- Fin generar carrito --}}
-
-                                                        {{-- Actualizar Stock --}}
-                                                        @can('ActualizarStock')
-                                                            <li class="nav-item">
-                                                                <a href="#" class="nav-link">
-                                                                    <i class="far fa-dot-circle nav-icon"></i>
-                                                                    <p>
-                                                                        Actualizar Stock
-                                                                    </p>
-                                                                </a>
-                                                            </li>
-                                                        @endcan
-                                                        {{-- Fin Actualizar Stock --}}
-                                                    </ul>
-                                                </li>
-                                                {{-- fin bluemix empresas --}}
-                                            @endcan
-
-                                            {{-- Bluemix.cl --}}
-                                            @can('Bluemix.cl')
-                                            <li class="nav-item">
-                                                <a href="" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Bluemix.cl</p>
-                                                    <i class="right fas fa-angle-left"></i>
-                                                </a>
-                                                <ul class="nav nav-treeview">
-                                                    {{-- Sincronizacion productos --}}
-                                                    @can('Sincronizarweb')
-
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('index.jumpsellerWeb') }}"
-                                                                class="nav-link {{ setActive('Sincronizarweb') }}">
-                                                                <i class="far fa-dot-circle nav-icon"></i>
-                                                                <p>Sincronizar Productos Web</p>
-                                                            </a>
-                                                        </li>
-                                                    @endcan
-                                                    {{-- Fin Sincronizacion productos --}}
-
-                                                    {{-- Actualizar Stock --}}
-                                                    @can('ActualizarStockweb')
-                                                        <li class="nav-item">
-                                                            <a href="#" class="nav-link">
-                                                                <i class="far fa-dot-circle nav-icon"></i>
-                                                                <p>
-                                                                    Actualizar Stock web
-                                                                </p>
-                                                            </a>
-                                                        </li>
-                                                    @endcan
-                                                    {{-- Fin Actualizar Stock --}}
-                                                </ul>
-                                            </li>
-                                            @endcan
-                                            {{-- Fin Bluemix.cl --}}
-
-                                        </ul>
-                                    </li>
-                                @endcan
+                            @endcan
 
                                 @can('ProductoPorMarca')
                                     <li class="nav-item">
@@ -445,7 +343,7 @@
 
                                     <li class="nav-item">
                                         <a href="{{ route('chart') }}" class="nav-link {{ setActive('chart') }} ">
-                                            <i class="nav-icon fas fa-chart-pie"></i>
+                                            <i class="far fa-circle nav-icon"></i>
                                             <p>Ingresos Por Año
                                             </p>
                                         </a>
@@ -572,16 +470,6 @@
                                     </li>
                                 @endcan
 
-                                @can('AnulacionDocs')
-
-                                    <li class="nav-item">
-                                        <a href="{{ route('AnulacionDocs') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Anulacion Docs
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endcan
 
                                 {{-- @can('Cupones')
 
@@ -593,6 +481,112 @@
                                         </a>
                                     </li>
                                 @endcan --}}
+
+                                @can('Jumpseller')
+                                <li class="nav-item">
+                                    <a href="" class="nav-link ">
+
+                                        <i class="nav-icon fas fa-circle"></i>
+                                        <p>Jumpseller
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        {{-- inicio bluemix empresas --}}
+                                        @can('BluemixEmpresas')
+
+                                            <li class="nav-item">
+                                                <a href="" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Bluemix Empresas</p>
+                                                    <i class="right fas fa-angle-left"></i>
+                                                </a>
+                                                <ul class="nav nav-treeview">
+                                                    {{-- Sincronizacion productos --}}
+                                                    @can('Sincronizar')
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('index.jumpsellerEmpresas') }}"
+                                                                class="nav-link {{ setActive('jumpsellerEmpresas') }}">
+                                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                                <p>Sincronizar Productos</p>
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    {{-- Fin Sincronizacion productos --}}
+
+                                                    {{-- generar carrito --}}
+                                                    @can('GenerarCarrito')
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('CreacionCarrito.index') }}" class="nav-link">
+                                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                                <p>
+                                                                    Generar Carrito
+                                                                </p>
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    {{-- Fin generar carrito --}}
+
+                                                    {{-- Actualizar Stock --}}
+                                                    @can('ActualizarStock')
+                                                        <li class="nav-item">
+                                                            <a href="#" class="nav-link">
+                                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                                <p>
+                                                                    Actualizar Stock
+                                                                </p>
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    {{-- Fin Actualizar Stock --}}
+                                                </ul>
+                                            </li>
+                                            {{-- fin bluemix empresas --}}
+                                        @endcan
+
+                                        {{-- Bluemix.cl --}}
+                                        @can('Bluemix.cl')
+                                        <li class="nav-item">
+                                            <a href="" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Bluemix.cl</p>
+                                                <i class="right fas fa-angle-left"></i>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                {{-- Sincronizacion productos --}}
+                                                @can('Sincronizarweb')
+
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('index.jumpsellerWeb') }}"
+                                                            class="nav-link {{ setActive('Sincronizarweb') }}">
+                                                            <i class="far fa-dot-circle nav-icon"></i>
+                                                            <p>Sincronizar Productos Web</p>
+                                                        </a>
+                                                    </li>
+                                                @endcan
+                                                {{-- Fin Sincronizacion productos --}}
+
+                                                {{-- Actualizar Stock --}}
+                                                @can('ActualizarStockweb')
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">
+                                                            <i class="far fa-dot-circle nav-icon"></i>
+                                                            <p>
+                                                                Actualizar Stock web
+                                                            </p>
+                                                        </a>
+                                                    </li>
+                                                @endcan
+                                                {{-- Fin Actualizar Stock --}}
+                                            </ul>
+                                        </li>
+                                        @endcan
+                                        {{-- Fin Bluemix.cl --}}
+
+                                    </ul>
+                                </li>
+                            @endcan
                             </ul>
                         </li>
                     @endcan
