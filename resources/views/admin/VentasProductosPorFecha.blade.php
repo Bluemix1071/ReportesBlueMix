@@ -17,7 +17,7 @@ Venta Productos
           <div class="col-md-12">
                  <form action="{{route('ventaProdFiltro')}}" method="post"  id="desvForm" class="form-inline">
                          @csrf
-                               
+
                                <div class="form-group mx-sm-3 mb-2">
                                 @if (empty($marca))
                                    <label for="inputPassword2" class="sr-only"></label>
@@ -27,7 +27,7 @@ Venta Productos
                                    <input type="text" name="marca" class="form-control" placeholder="Marca...." value="{{$marca}}" >
                                    @endif
                                  </div>
-                                 
+
 
                                  <div class="form-group mb-2">
                                         @if (empty($fecha1))
@@ -38,31 +38,31 @@ Venta Productos
                                         @endif
 
                                 </div>
-                                       
+
                                  <div class="form-group mx-sm-3 mb-2">
-                                        
+
                                         @if (empty($fecha2))
                                         <label for="inputPassword2" class="sr-only">Fecha 2</label>
                                         <input type="date" id="fecha2" name="fecha2" class="form-control">
                                         @else
                                       <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{$fecha2}}">
                                         @endif
-                                   
+
                                 </div>
                                 <div class="form-group mx-sm-3 mb-2">
-                                        
+
                                   <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                             
+
                           </div>
                           <div class="col-md-2 col-md offset-2">
-                                        
-                            <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
-                       
-                    </div>
-                             
-                 </form>
-              
 
+                            <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
+
+                    </div>
+
+                 </form>
+
+            <div class="table-responsive-xl">
               <table id="productos" class="table table-bordered table-hover dataTable table-sm">
                   <thead>
                     <tr>
@@ -73,13 +73,13 @@ Venta Productos
                       <th scope="col" style="text-align:left">Marca</th>
                       <th scope="col" style="text-align:right">Total Productos</th>
                       <th scope="col" style="text-align:left">Ult. Fecha Vendido</th>
-                     
+
                     </tr>
                   </thead>
-              
+
                   <tbody>
                         @if (empty($productos))
-                    
+
                         @else
                     @foreach($productos as $item)
                       <tr>
@@ -90,16 +90,17 @@ Venta Productos
                         <td style="text-align:left">{{$item->marca}}</td>
                         <td style="text-align:right">{{number_format($item->total_productos,0,',','.')}}</td>
                         <td style="text-align:left">{{$item->ultima_fecha}}</td>
-                      
+
                       </tr>
                       @endforeach
                       @endif
-                    </tbody>             
+                    </tbody>
                 </table>
+            </div>
                 {{-- {{$productos->links()}} --}}
           </div>
         </div>
-       
+
 </div>
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -109,7 +110,7 @@ Venta Productos
         <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
       </div>
       <div class="modal-body">
-         <div class="card-body">Consulta Orientada Para conocer la venta de los productos, filtrando por la marca de estos y en un rango de fecha a definir por el usuario 
+         <div class="card-body">Consulta Orientada Para conocer la venta de los productos, filtrando por la marca de estos y en un rango de fecha a definir por el usuario
            y así conocer la cantidad de productos vendidos con la ultima fecha en la cual se vendió este.</div>
       </div>
       <div class="modal-footer">
@@ -128,7 +129,7 @@ Venta Productos
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-            
+
         ],
           "language":{
         "info": "_TOTAL_ registros",
@@ -136,7 +137,7 @@ Venta Productos
         "paginate":{
           "next": "Siguiente",
           "previous": "Anterior",
-        
+
       },
       "loadingRecords": "cargando",
       "processing": "procesando",
@@ -170,7 +171,7 @@ Venta Productos
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script> --}}
-{{-- 
+{{--
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script> --}}
 
@@ -184,16 +185,16 @@ Venta Productos
             "next": "Siguiente",
             "previous": "Anterior",
           },
-        
+
         "lengthMenu": 'Mostrar <select>'+
                       '<option value="10"> 10 </option>'+
                       '<option value="50"> 50 </option>'+
                       '<option value="100"> 100 </option>'+
                       '<option value="-1"> Todos </option>'+
                       '</select> registros',
-                      
 
-          
+
+
       "loadingRecords": "cargando",
       "processing": "procesando",
       "emptyTable": "no hay resultados",

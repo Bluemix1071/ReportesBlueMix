@@ -62,16 +62,17 @@
                                     <option value="GrabadoPlaca">Grabado Placa</option>
                                     <option value="Termolaminacion">Termolaminacion</option>
                                     <option value="ServicioPersonalizado">Servicio Personalizado</option>
-
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Comentarios</label>
+                            <div class="table-responsive-xl">
                             <div class="col-sm-10">
                                 <textarea name="comentario" placeholder="Agregar Comentarios..." id="" cols="95"
                                     rows="7"></textarea>
                             </div>
+                        </div>
                         </div>
                         <div class="form-group row">
 
@@ -98,13 +99,7 @@
                                 <input type="number" class="form-control" name="numerodocumento">
                             </div>
                         </div>
-                        {{-- <div class="form-group row" id="facturadiv" style="display:none;">
 
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Factura</label>
-                            <div class="col-sm-3">
-                                <input type="number" class="form-control" name="numerodocumento">
-                            </div>
-                        </div> --}}
                         <div class="form-group row">
                                 <input type="file" name="archivo" class="form-control">
                         </div>
@@ -160,21 +155,6 @@
     <script src="{{ asset('js/ajaxproductospormarca.js') }}"></script>
 
 
-    {{-- <script>
-        $(document).ready(function() {
-          $("#factura").click(function() {
-            $("#boletadiv").hide();
-            $("#facturadiv").show();
-
-          });
-
-          $("#boleta").click(function() {
-            $("#boletadiv").show();
-            $("#facturadiv").hide();
-
-          });
-        });
-      </script> --}}
       <script>  function ValidarFecha(e) {
 
         var fecha_item = document.getElementById('fecha_id')
