@@ -128,6 +128,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/MantencionClientes','AdminController@MantencionClientes')->name('MantencionClientes');
     Route::post('/MantencionClientesFiltro','AdminController@MantencionClientesFiltro')->name('MantencionClientesFiltro');
 
+    Route::get('/ventasdiseno','AdminController@ventasdiseno')->name('ventasdiseno');
+    Route::post('/ventasdisenoFiltro','AdminController@ventasdisenoFiltro')->name('ventasdisenoFiltro');
+
 
 
 
