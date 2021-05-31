@@ -1376,6 +1376,34 @@ public function stocktiemporeal (Request $request){
 }
 
 
+    public function ventasdiseno(){
+
+
+        return view('admin.ventasdiseno');
+
+    }
+
+
+    public function ventasdisenoFiltro(Request $request){
+
+        // dd($request->all());
+
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
+
+        $diseno=DB::table('dcargos')
+        ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
+        ->where('DECODI', 'LIKE', "la%")
+        ->where('DETIPO', '!=' , '3')
+        ->get();
+
+        // dd($diseno);
+
+        return view('admin.ventasdiseno',compact('diseno'));
+
+    }
+
+
 
 
 

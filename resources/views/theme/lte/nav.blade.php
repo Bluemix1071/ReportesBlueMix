@@ -281,6 +281,17 @@
                                     </li>
                                 @endcan
 
+                                @can('ventasdiseno')
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('ventasdiseno') }}"
+                                            class="nav-link {{ setActive('ventasdiseno') }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Ventas Diseño</p>
+                                        </a>
+                                    </li>
+                                @endcan
+
 
                                 @can('ControlIpMac')
 
