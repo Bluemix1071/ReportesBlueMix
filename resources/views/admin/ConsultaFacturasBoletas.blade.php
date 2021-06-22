@@ -73,10 +73,10 @@
                             @foreach ($boleta as $item)
                                 <tr>
                                     <th style="text-align:left">{{ $item->CANMRO }}</th>
-                                    @if ($item->CATIPO == 7)
+                                    @if ($item->CANMRO < 1100000001)
                                         <td style="text-align:left">Boleta</td>
                                     @else
-                                        <td style="text-align:left">Factura</td>
+                                        <td style="text-align:left">Boletas Transbank</td>
                                     @endif
                                     <td style="text-align:left">{{ $item->CARUTC }}</td>
                                     <td style="text-align:left">-</td>

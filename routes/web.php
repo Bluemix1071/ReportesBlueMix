@@ -105,9 +105,6 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Proyeccion','AdminController@ProyeccionIndex')->name('proyeccion');
     Route::get('/areaproveedor','AdminController@areaproveedor')->name('areaproveedor');
     Route::get('/areaproveedorfamilia','AdminController@areaproveedorfamilia')->name('areaproveedorfamilia');
-    // Route::get('/movimientoinventario','AdminController@movimientoinventario')->name('movimientoinventario');
-    // Route::post('/movimientoinventario','AdminController@filtrarmovimientoinventario')->name('filtrarmovimientoinventario');
-    // Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
     Route::get('/consultafacturaboleta','AdminController@consultafacturaboleta')->name('consultafacturaboleta');
     Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta');
     Route::get('controlipmac','AdminController@controlipmac')->name('controlipmac');
@@ -118,6 +115,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/actualizarcupon', 'AdminController@actualizarcupon')->name('actualizarcupon');
     Route::get('/costos','AdminController@costos')->name('costos');
     Route::post('/costosfiltro','AdminController@costosfiltro')->name('costosfiltro');
+    Route::get('/costosdetalle','AdminController@costosdetalle')->name('costosdetalle');
+    Route::post('/costosdetallefiltro','AdminController@costosdetallefiltro')->name('costosdetallefiltro');
     Route::get('/stocktiemporeal','AdminController@stocktiemporeal')->name('stocktiemporeal');
     Route::get('/ListarOrdenesDiseño','AdminController@ListarOrdenesDiseño')->name('ListarOrdenesDiseño');
     Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','AdminController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalle');
