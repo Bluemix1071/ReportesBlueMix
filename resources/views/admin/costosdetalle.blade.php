@@ -12,13 +12,13 @@ Compra Productos
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Costos</h3>
+        <h3 class="display-3">Costos Detalle</h3>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
             <hr>
 
-            <form action="{{ route('costosfiltro') }}" method="post" id="desvForm" class="form-inline">
+            <form action="{{ route('costosdetallefiltro') }}" method="post" id="desvForm" class="form-inline">
                 @csrf
                 <div class="form-group mb-2">
                     @if (empty($fecha1))
@@ -48,9 +48,14 @@ Compra Productos
                         <tr>
                             <th scope="col" style="text-align:left">Tipo Documento</th>
                             <th scope="col" style="text-align:left">N° Documento</th>
-                            <th scope="col" style="text-align:right">Precio Costo</th>
-                            <th scope="col" style="text-align:right">Precio venta</th>
-                            <th scope="col" style="text-align:right">Fecha Venta</th>
+                            <th scope="col" style="text-align:left">Codigo</th>
+                            <th scope="col" style="text-align:left">Cantidad</th>
+                            <th scope="col" style="text-align:left">Detalle</th>
+                            <th scope="col" style="text-align:left">Precio Costo</th>
+                            <th scope="col" style="text-align:left">Total Costo</th>
+                            <th scope="col" style="text-align:left">Precio Venta</th>
+                            <th scope="col" style="text-align:left">Total Venta</th>
+                            <th scope="col" style="text-align:left">Fecha Venta</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,9 +70,14 @@ Compra Productos
                                     <td style="text-align:left">Factura</td>
                                 @endif
                                     <td style="text-align:left">{{ $item->DENMRO}}</td>
+                                    <td style="text-align:left">{{ $item->DECODI}}</td>
+                                    <td style="text-align:left">{{ $item->DECANT}}</td>
+                                    <td style="text-align:left">{{ $item->Detalle}}</td>
+                                    <td style="text-align:right">{{ number_format($item->PrecioCosto, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->costototal, 0, ',', '.') }}</td>
-                                    <td style="text-align:right">{{ number_format($item->ventatotal, 0, ',', '.') }}</td>
-                                    <td style="text-align:right">{{ $item->DEFECO}}</td>
+                                    <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ number_format($item->totalventa, 0, ',', '.') }}</td>
+                                    <td style="text-align:left">{{ $item->DEFECO}}</td>
                                 </tr>
                             @endforeach
                         @endif

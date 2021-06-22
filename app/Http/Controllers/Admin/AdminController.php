@@ -1153,9 +1153,7 @@ public function actualizaripmac(Request $request)
 
 
 
-
-//------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
-
+//------------------------------ COSTOS -----------------------------------------------//
 
 
     public function costos() {
@@ -1168,18 +1166,53 @@ public function actualizaripmac(Request $request)
     public function costosfiltro(Request $request){
 
 
-      $anio=$request->anio;
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
 
-      dd($anio);
+        $costos=DB::table('dcargos')
+        ->selectRaw('DETIPO, DENMRO, sum(DECANT*PrecioCosto) as costototal, sum(DECANT*precio_ref) as ventatotal, DEFECO')
+        ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
+        ->where('DETIPO', '!=' , '3')
+        ->groupBy('DENMRO')
+        ->get();
+
+    //   dd($costos);
 
 
-    return view('admin.costos',compact('anio'));
+    return view('admin.costos',compact('costos'));
 
 
   }
 
 
-//------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
+
+  public function costosdetalle() {
+
+
+    return view('admin.costosdetalle');
+  }
+
+  public function costosdetallefiltro(Request $request){
+
+
+      $fecha1=$request->fecha1;
+      $fecha2=$request->fecha2;
+
+      $costos=DB::table('dcargos')
+      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle, PrecioCosto/1.19 as PrecioCosto,  DECANT*(PrecioCosto/1.19) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO')
+      ->where('DETIPO', '!=' , '3')
+      ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
+      ->get();
+
+    // dd($costos);
+
+
+  return view('admin.costosdetalle',compact('costos'));
+
+
+}
+
+  //------------------------------ COSTOS - FIN -----------------------------------------------//
 
 
 

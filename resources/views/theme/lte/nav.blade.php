@@ -466,6 +466,13 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a href="{{ route('costosdetalle') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Detalle Costos
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="{{ route('stocktiemporeal') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Stock Tiempo Real

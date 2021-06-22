@@ -58,7 +58,11 @@
                             @else
                                 @foreach ($diseno as $item)
                                     <tr>
-                                        <th style="text-align:left">{{ $item->DETIPO}}</th>
+                                        @if ($item->DETIPO == 7)
+                                        <td style="text-align:left">Boleta</td>
+                                    @else
+                                        <td style="text-align:left">Factura</td>
+                                    @endif
                                         <td style="text-align:left">{{ $item->DENMRO}}</td>
                                         <td style="text-align:left">{{ $item->DECODI}}</td>
                                         <td style="text-align:left">{{ $item->DECANT}}</td>
