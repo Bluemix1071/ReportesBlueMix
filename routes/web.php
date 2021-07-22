@@ -130,6 +130,18 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ventasdiseno','AdminController@ventasdiseno')->name('ventasdiseno');
     Route::post('/ventasdisenoFiltro','AdminController@ventasdisenoFiltro')->name('ventasdisenoFiltro');
 
+    Route::get('/ListadoProductosContrato','AdminController@ListadoProductosContrato')->name('ListadoProductosContrato');
+    Route::post('/ListadoProductosContratoFiltro','AdminController@ListadoProductosContratoFiltro')->name('ListadoProductosContratoFiltro');
+
+    Route::get('/MantenedorContrato','AdminController@MantenedorContrato')->name('MantenedorContrato');
+    Route::post('/MantenedorContratoFiltro','AdminController@MantenedorContratoFiltro')->name('MantenedorContratoFiltro');
+    Route::post('/updateproductocontrato','AdminController@updateproductocontrato')->name('updateproductocontrato');
+    Route::post('/deleteproductocontrato','AdminController@deleteproductocontrato')->name('deleteproductocontrato');
+    Route::post('/MantenedorContratoAgregarProducto','AdminController@MantenedorContratoAgregarProducto')->name('MantenedorContratoAgregarProducto');
+    Route::get('/MantenedorContratoAgregar','AdminController@MantenedorContratoAgregar')->name('MantenedorContratoAgregar');
+    Route::post('/MantenedorContratoAgregarContrato','AdminController@MantenedorContratoAgregarContrato')->name('MantenedorContratoAgregarContrato');
+    Route::get('/ListadoContratos','AdminController@ListadoContratos')->name('ListadoContratos');
+    Route::post('/UpdateContrato','AdminController@UpdateContrato')->name('UpdateContrato');
 
 
 

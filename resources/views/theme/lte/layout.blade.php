@@ -174,6 +174,59 @@
 
 
 
+<script> $('#modaleditarcantidad').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var codigo = button.data('codigo')
+    var cantidad_contrato = button.data('cantidad_contrato')
+    var descripcion = button.data('descripcion')
+    var contrato = button.data('contrato')
+
+    var modal = $(this)
+    modal.find('.modal-body #codigo').val(codigo);
+    modal.find('.modal-body #cantidad_contrato').val(cantidad_contrato);
+    modal.find('.modal-body #descripcion').val(descripcion);
+    modal.find('.modal-body #contrato').val(contrato);
+
+  })</script>
+
+
+<script> $('#eliminarproductocontrato').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var codigo = button.data('codigo')
+    var contrato = button.data('contrato')
+
+    var modal = $(this)
+    modal.find('.modal-body #codigo').val(codigo);
+    modal.find('.modal-body #contrato').val(contrato);
+  })</script>
+
+
+<script> $('#modaleditarcontrato').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var id_contratos_licitacion = button.data('id_contratos_licitacion')
+    var nombre_contrato = button.data('nombre_contrato')
+    var plazo_entrega = button.data('plazo_entrega')
+    var contado_desde = button.data('contado_desde')
+    var plazo_aceptar_oc = button.data('plazo_aceptar_oc')
+    var multa = button.data('multa')
+    var id_contratos = button.data('id_contratos')
+
+    var modal = $(this)
+    modal.find('.modal-body #id_contratos_licitacion').val(id_contratos_licitacion);
+    modal.find('.modal-body #nombre_contrato').val(nombre_contrato);
+    modal.find('.modal-body #plazo_entrega').val(plazo_entrega);
+    modal.find('.modal-body #contado_desde').val(contado_desde);
+    modal.find('.modal-body #plazo_aceptar_oc').val(plazo_aceptar_oc);
+    modal.find('.modal-body #multa').val(multa);
+    modal.find('.modal-body #id_contratos').val(id_contratos);
+
+  })</script>
+
+
+
+
+
+
 @yield('script')
 
 
