@@ -1601,7 +1601,7 @@ public function stocktiemporeal (Request $request){
 
         if($request->codigo == null){
 
-        $contrato=DB::table('vista_productos')
+        $contrato=DB::table('Vista_Productos')
         ->join('contrato_detalle','codigo_producto', '=', 'interno')
         ->join('contratos','id_contratos', '=', 'fk_contrato')
         ->where('nombre_contrato', $request->contrato)
@@ -1624,7 +1624,7 @@ public function stocktiemporeal (Request $request){
 
         else{
 
-        $contrato=DB::table('vista_productos')
+        $contrato=DB::table('Vista_Productos')
         ->join('contrato_detalle','codigo_producto', '=', 'interno')
         ->join('contratos','id_contratos', '=', 'fk_contrato')
         ->where('interno', $request->codigo)
