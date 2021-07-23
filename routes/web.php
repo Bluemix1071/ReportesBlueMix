@@ -90,6 +90,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/','AdminController@index')->name('inicioAdmin');
     Route::get('/ListaUsuarios','EditarUserController@index')->name('ListarUser');
     Route::post('/update', 'EditarUserController@update')->name('update');
+    /*  Controlador CRUD Usuarios de COMBO */
+    Route::get('/ListaUsuariosCOMBO','EditarUserCOMBOController@index')->name('ListarUserCombo');
+    Route::post('/ListaUsuariosCOMBO','EditarUserCOMBOController@create')->name('AgregarUserCombo');
+    Route::put('/ListaUsuariosCOMBO','EditarUserCOMBOController@update')->name('EditarUserCombo');
+    // fin
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
     Route::post('/ProductosPorMarca/fetch','AdminController@fetch')->name('ProductosPorMarca.fetch');
@@ -110,6 +115,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     // Route::post('/ajustemovimientoinventario','AdminController@ajustemovimientoinventario')->name('ajustemovimientoinventario');
     Route::get('/consultafacturaboleta','AdminController@consultafacturaboleta')->name('consultafacturaboleta');
     Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta');
+
+    Route::get('/CostoHistoricoPorProducto','CostoHistoricoPorProductoController@index')->name('CostoHistoricoPorProducto');
+
     Route::get('controlipmac','AdminController@controlipmac')->name('controlipmac');
     Route::post('/actualizaripmac', 'AdminController@actualizaripmac')->name('actualizaripmac');
     Route::get('agregaripmac','AdminController@agregaripmac')->name('agregaripmac');
@@ -136,6 +144,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/Productospormarca','AdminController@filtarProductospormarca')->name('filtrarpormarca');
     Route::post('/Productos','AdminController@FiltrarProductos')->name('filtrarProductos');
     Route::post('VentasProdutos','AdminController@VentaProductosPorFechas')->name('ventaProdFiltro');
+
+    Route::post('/CostoHistoricoProducto','CostoHistoricoPorProductoController@filtro')->name('CostoHistoricoProductoFiltro');
+
     Route::post('/VentasPorHora','AdminController@DocumentosPorHora')->name('ComprasPorHora');
     Route::post('ComprasProdutos','AdminController@CompraProductosPorFechas')->name('compraProdFiltro');
     Route::post('/ComprasPorHora','AdminController@DocumentosPorHora')->name('ComprasPorHora');
