@@ -292,6 +292,17 @@
                                     </li>
                                 @endcan
 
+                                @can('ventasdiseno')
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('ventasdiseno') }}"
+                                            class="nav-link {{ setActive('ventasdiseno') }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Ventas Diseño</p>
+                                        </a>
+                                    </li>
+                                @endcan
+
 
                                 @can('ControlIpMac')
 
@@ -466,6 +477,13 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a href="{{ route('costosdetalle') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Detalle Costos
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="{{ route('stocktiemporeal') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Stock Tiempo Real
@@ -487,6 +505,39 @@
                                         </a>
                                     </li>
                                 @endcan
+
+                                @can('Contratos')
+                                <li class="nav-item">
+                                    <a href="" class="nav-link ">
+                                        <i class="nav-icon fas fa-circle"></i>
+                                        <p>Contratos
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('MantenedorContrato') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Mantenedor De Contratos
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('ListadoContratos') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Listado Contratos
+                                                </p>
+                                            </a>
+                                        <li class="nav-item">
+                                            <a href="{{ route('ListadoProductosContrato') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Listado Productos
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
 
 
                                 {{-- @can('Cupones')

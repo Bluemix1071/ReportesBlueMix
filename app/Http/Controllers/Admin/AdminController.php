@@ -97,7 +97,7 @@ class AdminController extends Controller
     public function comprassegunprov(Request $request)
     {
 
-      $comprasprove=DB::table('compras_por_año_segun_proveedor')->get();
+      $comprasprove=DB::table('compras_por_ano_segun_proveedor')->get();
 
       return view('admin.comprassegunproveedor',compact('comprasprove'));
     }
@@ -1153,9 +1153,7 @@ public function actualizaripmac(Request $request)
 
 
 
-
-//------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
-
+//------------------------------ COSTOS -----------------------------------------------//
 
 
     public function costos() {
@@ -1168,18 +1166,53 @@ public function actualizaripmac(Request $request)
     public function costosfiltro(Request $request){
 
 
-      $anio=$request->anio;
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
 
-      dd($anio);
+        $costos=DB::table('dcargos')
+        ->selectRaw('DETIPO, DENMRO, sum(DECANT*PrecioCosto) as costototal, sum(DECANT*precio_ref) as ventatotal, DEFECO')
+        ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
+        ->where('DETIPO', '!=' , '3')
+        ->groupBy('DENMRO')
+        ->get();
+
+    //   dd($costos);
 
 
-    return view('admin.costos',compact('anio'));
+    return view('admin.costos',compact('costos'));
 
 
   }
 
 
-//------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
+
+  public function costosdetalle() {
+
+
+    return view('admin.costosdetalle');
+  }
+
+  public function costosdetallefiltro(Request $request){
+
+
+      $fecha1=$request->fecha1;
+      $fecha2=$request->fecha2;
+
+      $costos=DB::table('dcargos')
+      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle, PrecioCosto/1.19 as PrecioCosto,  DECANT*(PrecioCosto/1.19) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO')
+      ->where('DETIPO', '!=' , '3')
+      ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
+      ->get();
+
+    // dd($costos);
+
+
+  return view('admin.costosdetalle',compact('costos'));
+
+
+}
+
+  //------------------------------ COSTOS - FIN -----------------------------------------------//
 
 
 
@@ -1374,6 +1407,320 @@ public function stocktiemporeal (Request $request){
         return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz'));
 
 }
+
+
+    public function ventasdiseno(){
+
+
+        return view('admin.ventasdiseno');
+
+    }
+
+
+    public function ventasdisenoFiltro(Request $request){
+
+        // dd($request->all());
+
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
+
+        $diseno=DB::table('dcargos')
+        ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
+        ->where('DECODI', 'LIKE', "la%")
+        ->where('DETIPO', '!=' , '3')
+        ->get();
+
+        // dd($diseno);
+
+        return view('admin.ventasdiseno',compact('diseno'));
+
+    }
+
+
+    public function MantenedorContrato(Request $request){
+
+        $contratos=DB::table('contratos')
+        ->get();
+
+        $contratosagregar=DB::table('contratos')
+        ->get();
+
+
+        return view('admin.MantenedorContrato',compact('contratos','contratosagregar'));
+
+    }
+
+    public function updateproductocontrato(Request $request){
+
+        // dd($request->all());
+
+        $update = DB::table('contrato_detalle')
+            ->join('contratos','id_contratos', '=', 'fk_contrato')
+            ->where('codigo_producto' , $request->codigo)
+            ->where('nombre_contrato' , $request->contrato)
+            ->update(['cantidad_contrato' => $request->cantidad_contrato]);
+
+
+            // return redirect()->route('MantenedorContrato');
+            return redirect()->route('MantenedorContrato')->with('success','Producto Editado');
+
+    }
+
+
+    public function deleteproductocontrato(Request $request){
+
+        // dd($request->all());
+
+        $update = DB::table('contrato_detalle')
+            ->join('contratos','id_contratos', '=', 'fk_contrato')
+            ->where('codigo_producto' , $request->codigo)
+            ->where('nombre_contrato' , $request->contrato)
+            ->delete();
+
+
+            // return redirect()->route('MantenedorContrato');
+            return redirect()->route('MantenedorContrato')->with('success','Producto Eliminado');
+
+
+
+    }
+
+
+
+
+    public function MantenedorContratoFiltro(Request $request){
+
+
+        if($request->codigo == null){
+
+            $contrato=DB::table('producto')
+            ->join('contrato_detalle','codigo_producto', '=', 'ARCODI')
+            ->join('contratos','id_contratos', '=', 'fk_contrato')
+            ->where('nombre_contrato', $request->contrato)
+            ->get();
+
+            $contratos=DB::table('contratos')
+            ->get();
+
+            $contratosagregar=DB::table('contratos')
+            ->get();
+
+            // dd($contrato);
+
+            return view('admin.MantenedorContrato',compact('contrato', 'contratos','contratosagregar'));
+
+            }
+
+            else{
+
+            $contrato=DB::table('producto')
+            ->join('contrato_detalle','codigo_producto', '=', 'ARCODI')
+            ->join('contratos','id_contratos', '=', 'fk_contrato')
+            ->where('ARCODI', $request->codigo)
+            ->get();
+
+            $contratos=DB::table('contratos')
+            ->get();
+
+            $contratosagregar=DB::table('contratos')
+            ->get();
+
+            // dd($contrato);
+
+            return view('admin.MantenedorContrato',compact('contrato', 'contratos','contratosagregar'));
+
+            }
+
+    }
+
+    public function MantenedorContratoAgregarProducto(Request $request){
+
+        // dd($request->all());
+
+        $validacion=DB::table('producto')
+        ->where('ARCODI', $request->codigo)
+        ->get();
+
+        $validacion2=DB::table('contrato_detalle')
+        ->where('codigo_producto', $request->codigo)
+        ->where('fk_contrato', $request->contrato)
+        ->get();
+
+
+        if($validacion->isEmpty()){
+
+          return redirect()->route('MantenedorContrato')->with('warning','Producto No Existe');
+
+        }
+
+        else{
+
+            if(!$validacion2->isEmpty()){
+
+                return redirect()->route('MantenedorContrato')->with('warning','El Producto Ya Pertenece a este contrato');
+
+              }
+
+              else{
+
+            DB::table('contrato_detalle')->insert([
+            [
+                "codigo_producto" => $request->codigo,
+                "cantidad_contrato" => $request->cantidad,
+                "fk_contrato" => $request->contrato,
+                ]
+            ]);
+
+            return redirect()->route('MantenedorContrato')->with('success','Producto Agregado');
+          }
+        }
+
+    }
+
+
+
+    public function ListadoProductosContrato(Request $request){
+
+        $contratos=DB::table('contratos')
+        ->get();
+
+
+        $datos = null;
+
+
+
+        return view('admin.ListadoProductosContrato',compact('contratos','datos'));
+
+    }
+
+
+
+    public function ListadoProductosContratoFiltro(Request $request){
+
+        // dd($request->all());
+
+        if($request->codigo == null){
+
+        $contrato=DB::table('Vista_Productos')
+        ->join('contrato_detalle','codigo_producto', '=', 'interno')
+        ->join('contratos','id_contratos', '=', 'fk_contrato')
+        ->where('nombre_contrato', $request->contrato)
+        ->get();
+
+        $contratos=DB::table('contratos')
+        ->get();
+
+        $datoscontrato=DB::table('contratos')
+        ->where('nombre_contrato',$request->contrato)
+        ->first();
+
+        $datos = 1;
+
+        // dd($request->contrato);
+
+        return view('admin.ListadoProductosContrato',compact('contrato','contratos','datos','datoscontrato'));
+
+        }
+
+        else{
+
+        $contrato=DB::table('Vista_Productos')
+        ->join('contrato_detalle','codigo_producto', '=', 'interno')
+        ->join('contratos','id_contratos', '=', 'fk_contrato')
+        ->where('interno', $request->codigo)
+        ->get();
+
+        $contratos=DB::table('contratos')
+        ->get();
+
+        // dd($request->codigo);
+
+        $datos = null;
+
+
+        return view('admin.ListadoProductosContrato',compact('contrato', 'contratos', 'datos'));
+
+        }
+
+
+    }
+
+
+    public function MantenedorContratoAgregar(){
+
+
+        return view('admin.MantenedorContratoAgregar');
+
+    }
+
+    public function MantenedorContratoAgregarContrato(Request $request){
+
+        $validacion=DB::table('contratos')
+        ->where('nombre_contrato', $request->nombrecontrato)
+        ->get('nombre_contrato');
+
+        if($validacion->isEmpty()){
+
+            DB::table('contratos')->insert([
+                [
+                    "id_contratos_licitacion" => $request->idcontrato,
+                    "nombre_contrato" => $request->nombrecontrato,
+                    "plazo_entrega" => $request->plazoentrega,
+                    "contado_desde" => $request->contadodesde,
+                    "plazo_aceptar_oc" => $request->plazo,
+                    "multa" => $request->multa,
+                    ]
+                ]);
+
+            return redirect()->route('ListadoContratos')->with('success','Contrato Agregado');
+
+
+        }else{
+
+            return redirect()->route('MantenedorContratoAgregar')->with('warning','Ya Existe Un Contrato Con El Mismo Nombre');
+
+
+    }
+
+    }
+
+    public function ListadoContratos(Request $request){
+
+        $contratos=DB::table('contratos')
+        ->get();
+
+        // dd($contratos);
+
+
+        return view('admin.ListadoContratos',compact('contratos'));
+
+
+    }
+
+    public function UpdateContrato(Request $request){
+
+        // dd($request->all());
+
+        $update = DB::table('contratos')
+        ->where('id_contratos' , $request->id_contratos)
+        ->update(['id_contratos_licitacion' => $request->id_contratos_licitacion,
+                'plazo_entrega' => $request->plazo_entrega,
+                'contado_desde' => $request->contado_desde,
+                'plazo_aceptar_oc' => $request->plazo_aceptar_oc,
+                'multa' => $request->multa]);
+
+
+        return redirect()->route('ListadoContratos')->with('success','Datos Actualizados');
+
+
+
+    }
+
+
+
+
+
+
 
 
 
