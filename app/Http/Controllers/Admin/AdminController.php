@@ -1427,6 +1427,8 @@ public function stocktiemporeal (Request $request){
         $diseno=DB::table('dcargos')
         ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
         ->where('DECODI', 'LIKE', "la%")
+        ->orwhere('DECODI', 'LIKE', "%1199300%")
+        ->orwhere('DECODI', 'LIKE', "%gra0700%")
         ->where('DETIPO', '!=' , '3')
         ->get();
 
