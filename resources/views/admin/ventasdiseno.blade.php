@@ -69,7 +69,7 @@
                                         <td style="text-align:left">{{ $item->Detalle}}</td>
                                         <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}
                                         </td>
-                                        <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}
+                                        <td style="text-align:right">{{ number_format($item->precio_ref*$item->DECANT, 0, ',', '.') }}
                                         </td>
                                         <td style="text-align:left">{{ $item->DEFECO}}</td>
                                     </tr>
