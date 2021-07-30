@@ -1424,15 +1424,21 @@ public function stocktiemporeal (Request $request){
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
 
+        // $diseno=DB::table('dcargos')
+        // ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
+        // ->where('DECODI', 'LIKE', "la%" ,'or','DECODI', 'LIKE', "%1199300%",'or','DECODI', 'LIKE', "%gra0700%")
+        // ->where('DETIPO', '!=' , '3')
+        // ->get();
+
         $diseno=DB::table('dcargos')
         ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
-        ->where('DECODI', 'LIKE', "la%")
-        ->orwhere('DECODI', 'LIKE', "%1199300%")
-        ->orwhere('DECODI', 'LIKE', "%gra0700%")
         ->where('DETIPO', '!=' , '3')
-        ->get();
+        ->where(function ($query) {
+        $query->where('DECODI', 'LIKE', 'la%')
+        ->orWhere('DECODI', 'LIKE', '%1199300%')
+        ->orWhere('DECODI', 'LIKE', '%gra0700%');
+        })->get();
 
-        // dd($diseno);
 
         return view('admin.ventasdiseno',compact('diseno'));
 
