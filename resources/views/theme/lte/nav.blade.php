@@ -265,7 +265,15 @@
                                         <a href="{{ route('ListarUser') }}"
                                             class="nav-link {{ setActive('ListarUser') }}">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Control De Usuarios </p>
+                                            <p>Control De Usuarios</p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('ListarUserCombo') }}"
+                                            class="nav-link {{ setActive('ListarUserCOMBO') }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Control Usuarios COMBO</p>
                                         </a>
                                     </li>
                                 @endcan
@@ -483,6 +491,13 @@
                                         <a href="{{ route('consultafacturaboleta') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Libro De Ventas Diario
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('CostoHistoricoPorProducto') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Costos Historicos
                                             </p>
                                         </a>
                                     </li>
