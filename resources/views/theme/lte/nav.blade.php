@@ -268,9 +268,6 @@
                                             <p>Control De Usuarios</p>
                                         </a>
                                     </li>
-                                @endcan
-
-                                
 
                                     <li class="nav-item">
                                         <a href="{{ route('ListarUserCombo') }}"
@@ -279,7 +276,7 @@
                                             <p>Control Usuarios COMBO</p>
                                         </a>
                                     </li>
-                                
+                                @endcan
 
                                 @can('Admindiseno')
 
