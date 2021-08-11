@@ -151,6 +151,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ListadoContratos','AdminController@ListadoContratos')->name('ListadoContratos');
     Route::post('/UpdateContrato','AdminController@UpdateContrato')->name('UpdateContrato');
 
+    Route::get('/ProductosFaltantes','AdminController@ProductosFaltantes')->name('ProductosFaltantes');
+
 
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//

@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Consulta Facturas Boletas
+    Libro De Ventas Diario
 @endsection
 @section('styles')
 
@@ -12,7 +12,7 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h6 class="display-3">Emision Libro De Ventas Diario</h6>
+        <h6 class="display-3">Emisión Libro De Ventas Diario</h6>
         {{-- BUSCADOR --}}
         <form action="{{ route('filtrarconsultafacturaboleta') }}" method="post" id="desvForm" class="form-inline">
             @csrf

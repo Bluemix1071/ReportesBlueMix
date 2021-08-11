@@ -43,10 +43,13 @@ class InicioController extends Controller
         ->where('mensajes.estado',1)
         ->where('mensajes.recipient_id','=', auth()->id())
         ->get();
+
         $conteo1 = $conteo->count();
 
+        $sinsubir = DB::table('productos_faltantes')->count();
 
-    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1'));
+
+    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1','sinsubir'));
     }
 
     public function store(Request $request)

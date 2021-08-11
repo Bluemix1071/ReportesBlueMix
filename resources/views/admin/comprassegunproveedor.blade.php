@@ -4,14 +4,14 @@
 @endsection
 @section('styles')
 
- <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}"> 
+ <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 
 @endsection
 
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Compras Por Año Según Proveedor</h3>
+        <h3 class="display-3">Ordenes Por Año Según Proveedor</h3>
         <div class="row">
           <div class="col-md-12">
               <table id="productos" class="table table-bordered table-hover dataTable">
@@ -37,7 +37,7 @@
                     </tbody>
                 </table>
           </div>
-        </div>  
+        </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -66,7 +66,7 @@
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-            
+
         ],
           "language":{
         "info": "_TOTAL_ registros",
@@ -74,7 +74,7 @@
         "paginate":{
           "next": "Siguiente",
           "previous": "Anterior",
-        
+
       },
       "loadingRecords": "cargando",
       "processing": "procesando",

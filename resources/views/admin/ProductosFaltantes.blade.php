@@ -12,14 +12,25 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <h3 class="display-3">Stock Tiempo Real</h3>
+                <h3 class="display-3">Productos Sin Subir</h3>
             </div>
             <div class="col md-6">
                 {{-- algo al lado del titulo --}}
-
             </div>
-
         </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="display-8">Información De La Consulta</h3>
+            </div>
+            <div class="col md-2">
+                {{-- algo al lado del titulo --}}
+                <div class="col-md-2 col-md offset-">
+                    <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Ver.</a>
+                </div>
+            </div>
+        </div>
+        <hr>
         <div class="row">
             <div class="col-md-12">
                 <div class="productosNegativos">
@@ -29,24 +40,18 @@
                                 <th scope="col">Codigo</th>
                                 <th scope="col">Descripcion</th>
                                 <th scope="col">Marca</th>
-                                <th scope="col">Stock Sala</th>
                                 <th scope="col">Stock Bodega</th>
-                                <th scope="col">Precio Detalle</th>
-                                <th scope="col">Precio Mayor</th>
-                                <th scope="col">Neto</th>
+                                <th scope="col">Stock Sala</th>
                             </tr>
                         </thead>
                         <tbody id="res">
-                            @foreach ($productos as $item)
+                            @foreach ($consulta as $item)
                                 <tr>
-                                    <th>{{ $item->codigo }}</th>
+                                    <th>{{ $item->interno }}</th>
                                     <td>{{ $item->descripcion }}</td>
                                     <td>{{ $item->marca }}</td>
-                                    <td>{{ $item->stock_sala }}</td>
-                                    <td>{{ $item->stock_bodega }}</td>
-                                    <td>{{ $item->precio_detalle }}</td>
-                                    <td>{{ $item->precio_mayor }}</td>
-                                    <td>{{ $item->neto }}</td>
+                                    <td style="text-align:right">{{ number_format($item->bodega, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ number_format($item->sala, 0, ',', '.') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -55,6 +60,24 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">Consulta Orientada Para conocer los productos que no están ingresado a la página web, se Recomienda sincronizar
+                        antes los productos para saber realmente los que aún no se suben pinchando en <a href="{{ route('index.jumpsellerEmpresas') }}">Sincronizar Productos.</a></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN Modal -->
 @endsection
 @section('script')
     <script>
@@ -92,9 +115,6 @@
     <script src="{{ asset('js/vfs_fonts.js') }}"></script>
     <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-
-
-
     <script src="{{ asset('js/ajaxProductosNegativos.js') }}"></script>
 
 

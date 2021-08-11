@@ -62,7 +62,7 @@
                                 <th scope="col" style="text-align:center">Marca</th>
                                 <th scope="col" style="text-align:center">Stock Bodega</th>
                                 <th scope="col" style="text-align:center">Stock Sala</th>
-                                <th scope="col" style="text-align:center">Stock Total</th>
+                                {{-- <th scope="col" style="text-align:center">Stock Total</th> --}}
                                 <th scope="col" style="text-align:center">Precio Costo Neto</th>
                                 <th scope="col" style="text-align:center">Total Costo</th>
                             </tr>
@@ -81,7 +81,7 @@
                                             {{ number_format($item->cantidad_en_bodega, 0, ',', '.') }}</td>
                                         <td style="text-align:right">{{ number_format($item->cantidad_en_sala, 0, ',', '.') }}
                                         </td>
-                                        <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
+                                        {{-- <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td> --}}
                                         <td style="text-align:right">{{ number_format($item->precio_costo_neto, 0, ',', '.') }}
                                         </td>
                                         <td style="text-align:right">{{ number_format($item->total_costo, 0, ',', '.') }}</td>
@@ -104,17 +104,14 @@
                     <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="card-body">Consulta Orientada Para conocer la Compra de los productos de sala y bodega con
-                        su actual precio costo neto, filtrando por la marca de estos. </div>
+                    <div class="card-body">Consulta Orientada Para conocer los productos de sala y bodega con
+                        su actual precio costo y neto, filtrando por la marca de estos. </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    {{ csrf_field() }}
     </div>
     <!-- FIN Modal -->
 @endsection

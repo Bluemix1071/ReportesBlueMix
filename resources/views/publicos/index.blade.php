@@ -49,14 +49,15 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3 class="animate__animated animate__bounce">44</h3>
+              <h3 class="animate__animated animate__bounce">{{$sinsubir}}</h3>
 
-              <p>Usuarios Activos</p>
+              <p>Productos Sin Subir</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              {{-- <i class="ion ion-person-add"></i> --}}
+              <i class="ion ion-calendar"></i>
             </div>
-            <a href="#" class="small-box-footer">{{$date}}<i class=""></i></a>
+            <a href="{{route('ProductosFaltantes')}}" class="small-box-footer">Ver Mas.<i class=""></i></a>
           </div>
         </div>
         <!-- ./col -->
