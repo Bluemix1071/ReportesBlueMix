@@ -44,18 +44,22 @@
                             <tr>
                                 <th scope="col" style="text-align:left">Tipo Documento</th>
                                 <th scope="col" style="text-align:left">N° Documento</th>
+                                <th scope="col" style="text-align:left">Fecha Venta</th>
                                 <th scope="col" style="text-align:left">Codigo</th>
                                 <th scope="col" style="text-align:left">Cantidad</th>
-                                <th scope="col" style="text-align:left">Detalle</th>
+                                <th scope="col" style="text-align:left">Descripción</th>
                                 <th scope="col" style="text-align:left">Precio Venta</th>
                                 <th scope="col" style="text-align:left">Total</th>
-                                <th scope="col" style="text-align:left">Fecha Venta</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if (empty($diseno))
 
                             @else
+                            <div style="display: none">
+                                {{-- variable suma --}}
+                                {{ $totalvendido = 0 }}
+                            </div>
                                 @foreach ($diseno as $item)
                                     <tr>
                                         @if ($item->DETIPO == 7)
@@ -64,6 +68,7 @@
                                         <td style="text-align:left">Factura</td>
                                     @endif
                                         <td style="text-align:left">{{ $item->DENMRO}}</td>
+                                        <td style="text-align:left">{{ $item->DEFECO}}</td>
                                         <td style="text-align:left">{{ $item->DECODI}}</td>
                                         <td style="text-align:left">{{ $item->DECANT}}</td>
                                         <td style="text-align:left">{{ $item->Detalle}}</td>
@@ -71,11 +76,23 @@
                                         </td>
                                         <td style="text-align:right">{{ number_format($item->precio_ref*$item->DECANT, 0, ',', '.') }}
                                         </td>
-                                        <td style="text-align:left">{{ $item->DEFECO}}</td>
+                                        <div style="display: none">{{ $totalvendido += $item->precio_ref*$item->DECANT }}</div>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7"><strong>Total</strong> </td>
+                                @if (empty($totalvendido))
+                                    <td><span class="price text-success">$</span></td>
+                                @else
+                                    <td style="text-align:right"><span
+                                            class="price text-success">${{ number_format($totalvendido, 0, ',', '.') }}</span>
+                                    </td>
+                                @endif
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

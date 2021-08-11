@@ -12,14 +12,14 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Productos</h3>
+        <h3 class="display-3">Listado De Productos</h3>
         <div class="row">
             <div class="col-md-12">
                <hr>
                <br>
                     <form action="{{route('filtrarProductos')}}" method="post"  id="desvForm" class="form-inline">
                             @csrf
-                                  
+
                                   <div class="form-group mx-sm-3 mb-2">
                                     @if (empty($productos))
                                       <label for="inputPassword2" class="sr-only"></label>
@@ -30,24 +30,24 @@
                                       @endif
                                     </div>
                                     <div class="col-md-2 ">
-                                        
+
                                       <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                                 
+
                               </div>
                               <div class="col-md-2 col-md offset-">
-                                            
+
                                 <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
-                           
+
                         </div>
                     </form>
                     <hr>
-                    
+
             </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
-              
+
                        {{-- FIN BUSCADOR--}}
               <table id="productos" class="table table-bordered table-hover dataTable">
                   <thead>
@@ -60,13 +60,13 @@
                       <th scope="col" style="text-align:left">Marca</th>
                       <th scope="col" style="text-align:right">Stock bodega</th>
                       <th scope="col" style="text-align:right">Stock Sala</th>
-                   
+
                     </tr>
                   </thead>
-              
+
                   <tbody>
                         @if (empty($productos))
-                    
+
                         @else
                     @foreach($productos as $item)
                       <tr>
@@ -77,16 +77,16 @@
                         <td style="text-align:left">{{$item->marca}}</td>
                         <td style="text-align:right">{{number_format($item->bodega,0,',','.')}}</td>
                         <td style="text-align:right">{{number_format($item->sala,0,',','.')}}</td>
-         
+
                       </tr>
                       @endforeach
                       @endif
-                    </tbody>             
+                    </tbody>
                 </table>
                 {{-- {{$productos->links()}} --}}
           </div>
         </div>
-       
+
 </div>
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -114,7 +114,7 @@
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-            
+
         ],
           "language":{
         "info": "_TOTAL_ registros",
@@ -122,7 +122,7 @@
         "paginate":{
           "next": "Siguiente",
           "previous": "Anterior",
-        
+
       },
       "loadingRecords": "cargando",
       "processing": "procesando",
@@ -156,7 +156,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script> --}}
-{{-- 
+{{--
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script> --}}
 
@@ -170,16 +170,16 @@
             "next": "Siguiente",
             "previous": "Anterior",
           },
-        
+
         "lengthMenu": 'Mostrar <select>'+
                       '<option value="10"> 10 </option>'+
                       '<option value="50"> 50 </option>'+
                       '<option value="100"> 100 </option>'+
                       '<option value="-1"> Todos </option>'+
                       '</select> registros',
-                      
 
-          
+
+
       "loadingRecords": "cargando",
       "processing": "procesando",
       "emptyTable": "no hay resultados",
