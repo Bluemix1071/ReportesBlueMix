@@ -637,13 +637,13 @@
                                             @endcan
                                             {{-- Fin Bluemix.cl --}}
 
-                                            <li class="nav-item">
+                                            {{-- <li class="nav-item">
                                                 <a href="{{ route('ProductosFaltantes') }}"
                                                     class="nav-link {{ setActive('ProductosFaltantes') }}">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Productos Sin Subir</p>
                                                 </a>
-                                            </li>
+                                            </li> --}}
 
                                         </ul>
                                     </li>

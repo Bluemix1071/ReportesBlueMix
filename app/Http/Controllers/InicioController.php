@@ -46,10 +46,10 @@ class InicioController extends Controller
 
         $conteo1 = $conteo->count();
 
-        $sinsubir = DB::table('productos_faltantes')->count();
+        // $sinsubir = DB::table('productos_faltantes')->count();
 
 
-    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1','sinsubir'));
+    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1'));
     }
 
     public function store(Request $request)
