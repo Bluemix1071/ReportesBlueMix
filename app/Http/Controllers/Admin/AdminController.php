@@ -1724,16 +1724,16 @@ public function stocktiemporeal (Request $request){
 
     }
 
-    public function ProductosFaltantes(Request $request){
+    // public function ProductosFaltantes(Request $request){
 
-        // dd($request->all());
+    //     // dd($request->all());
 
-        $consulta=DB::table('productos_faltantes')->get();
+    //     $consulta=DB::table('productos_faltantes')->get();
 
 
-        return view('admin.ProductosFaltantes',compact('consulta'));
+    //     return view('admin.ProductosFaltantes',compact('consulta'));
 
-    }
+    // }
 
 
 
