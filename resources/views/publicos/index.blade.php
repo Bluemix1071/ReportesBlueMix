@@ -101,7 +101,27 @@ Espacio Publico Bluemix
               </div>
             </div>
           </div>
-        <div class="col-md-3 col-md offset-6">
+          <div class="col-md-3">
+            <div class="card card-widget widget-user">
+              <div class="widget-user-header bg-success">
+                <h3 class="widget-user-username">Consulta Precio</h3>
+                <h5 class="widget-user-desc">Productos</h5>
+              </div>
+              <div class="widget-user-image">
+                <img class="img-circle elevation-2" src="{{asset("assets/$theme/dist/img/precio.png")}}"  alt="User Avatar">
+              </div>
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-12 border-right">
+                    <div class="description-block">
+                      <a href="{{route('ConsultaPrecio')}}" type="btn btn-success">CONSULTAR</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="col-md-3 col-md offset-3">
             <div class="panel-heading">
               <div class="modal-content">
                   <div class="modal-header">

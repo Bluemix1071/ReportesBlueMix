@@ -21,6 +21,7 @@ class SincronizacionProductosWebController extends Controller
 
     public function index(){
 
+        // dd($this->productosJumps::all()[3]);
         return view('admin.Jumpseller.BluemixWeb.SincronizacionProductosWeb.index');
     }
 
@@ -44,17 +45,19 @@ class SincronizacionProductosWebController extends Controller
 
                     $products = $this->apiJumpseller->get("products", $params);
 
-
                     foreach ($products as $key => $product) {
-                        //ingreso de productos padre
+                        // ingreso de productos padre
                         $insert = $this->productosJumps::create([
                             'id' => $product['product']['id'],
                             'name' => $product['product']['name'],
                             'sku' => $product['product']['sku'],
                             'stock' => $product['product']['stock'],
                             'price' => $product['product']['price'],
+                            'url' => $product['product']['images'][0]['url'],
                         ]);
+
                            // logger($insert);
+
 
                         //validar si tiene variantes
                         if (!empty($product['product']['variants'])) {
@@ -68,6 +71,7 @@ class SincronizacionProductosWebController extends Controller
                                     'stock' => $variant['stock'],
                                     'price' => $variant['price'],
                                     'parent_id' => $insert->id_ai,
+                                    'url' => $variant['image']['url'],
 
                                 ]);
                             }

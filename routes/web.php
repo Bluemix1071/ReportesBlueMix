@@ -25,7 +25,9 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 
-
+// consulta precios sin ruta
+Route::get('/ConsultaPrecio','publico\PublicoController@ConsultaPrecio')->name('ConsultaPrecio');
+Route::post('/ConsultaPrecioFiltro', 'publico\PublicoController@ConsultaPrecioFiltro')->name('ConsultaPrecioFiltro');
 
 //Rutas autenticadas de sala
 Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
@@ -67,6 +69,9 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::post('/updatemensaje', 'publico\PublicoController@updatemensaje')->name('updatemensaje');
     Route::get('/ConsultaSaldoenvio','publico\PublicoController@ConsultaSaldo')->name('ConsultaSaldo');
     Route::post('/ConsultaSaldoenvio', 'publico\PublicoController@ConsultaSaldoenvio')->name('ConsultaSaldoenvio');
+
+    // Route::get('/ConsultaPrecio','publico\PublicoController@ConsultaPrecio')->name('ConsultaPrecio');
+    // Route::post('/ConsultaPrecioFiltro', 'publico\PublicoController@ConsultaPrecioFiltro')->name('ConsultaPrecioFiltro');
 //------------------------EXPORTACIONES------------------------------------//
 
 
@@ -150,6 +155,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/MantenedorContratoAgregarContrato','AdminController@MantenedorContratoAgregarContrato')->name('MantenedorContratoAgregarContrato');
     Route::get('/ListadoContratos','AdminController@ListadoContratos')->name('ListadoContratos');
     Route::post('/UpdateContrato','AdminController@UpdateContrato')->name('UpdateContrato');
+
+    Route::get('/MantenedorProducto','AdminController@MantenedorProducto')->name('MantenedorProducto');
+    Route::post('/MantenedorProductoFiltro','AdminController@MantenedorProductoFiltro')->name('MantenedorProductoFiltro');
 
     Route::get('/ProductosFaltantes','AdminController@ProductosFaltantes')->name('ProductosFaltantes');
 
