@@ -10,6 +10,12 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('informacion') }}" class="nav-link">Información</a>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="https://www.libreriabluemix.cl" class="nav-link">BlueMix.cl</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="https://www.bluemixempresas.cl" class="nav-link">BlueMix Empresas</a>
+        </li>
 
     </ul>
 
@@ -439,6 +445,17 @@
                                     </a>
                                 </li>
                                 @endcan --}}
+                                @can('MantenedorProductos')
+
+                                <li class="nav-item">
+                                    <a href="{{ route('MantenedorProducto') }}" class="nav-link {{ setActive('MantenedorProducto') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Mantenedor Productos
+                                        </p>
+                                    </a>
+                                </li>
+
+                                @endcan
 
                                 @can('Productos')
 
@@ -668,6 +685,13 @@
                                 class="nav-link {{ setActive('ConsultaSaldo') }} ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Saldo Gift Card</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('ConsultaPrecio') }}"
+                                class="nav-link {{ setActive('ConsultaPrecio') }} ">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Consulta Precio</p>
                             </a>
                         </li>
                         <li class="nav-item">

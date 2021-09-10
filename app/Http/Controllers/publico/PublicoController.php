@@ -33,10 +33,10 @@ class PublicoController extends Controller
      // dd($saldo);
 
     return view('publicos.consultadesaldogiftcard',compact('saldo'));
-        
+
   }
 
-  
+
 
   public function  index(Request $request){
     $productos=DB::table('productos_negativos')->paginate(10);
@@ -44,18 +44,18 @@ class PublicoController extends Controller
     return response()->json(view('partials.productosNegativos',compact('productos'))->render());
     }
 
-   
+
     return view('publicos.productosNegativos',compact('productos'));
   }
 
 
     public function filtarProductosNegativos(Request  $request)
     {
-      
+
        $productos=DB::table('productos_negativos')->get();
        return view('publicos.productosNegativos',compact('productos'));
-      
-      
+
+
     }
 
 
@@ -72,7 +72,7 @@ class PublicoController extends Controller
         ->orwhere('bodega_stock','LIKE','%'.$request->searchText.'%')
         ->orwhere('sala_stock','LIKE','%'.$request->searchText.'%')
         ->paginate(4);
-       
+
         return response()->json(view('partials.productosNegativos',compact('productos'))->render());
 
       }
@@ -81,16 +81,42 @@ class PublicoController extends Controller
 
     public function updatemensaje(Request $request)
     {
- 
+
       $mensajes = mensajes::findOrFail($request->id);
 
       $mensajes->estado= 0;
       $mensajes->update();
-      
 
-        
+
+
       return back();
     }
+
+
+
+    public function ConsultaPrecio(){
+
+        return view('publicos.ConsultaPrecio');
+      }
+
+      public function ConsultaPrecioFiltro(Request $request){
+
+        // dd($request->all());
+        $codigo=DB::table('consulta_preciofiltro')
+        ->where('barra' , $request->codigo)
+        ->get();
+
+        // dd($codigo);
+
+        if($codigo->isEmpty()){
+
+            return redirect()->route('ConsultaPrecio')->with('error','Producto No Encontrado');
+        }
+        else
+
+        return view('publicos.ConsultaPrecio',compact('codigo'));
+
+      }
 
 
 
