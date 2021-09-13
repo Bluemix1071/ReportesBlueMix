@@ -1354,6 +1354,7 @@ public function stocktiemporeal (Request $request){
 
         $consulta=DB::table('cargos')
         ->where('CARUTC', $request->rut)
+        // ->where('DETIPO', '!=' , '3')
         ->orderBy('cafeco', 'desc')
         ->get();
 

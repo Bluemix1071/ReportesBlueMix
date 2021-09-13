@@ -23,20 +23,20 @@
                     <div class="form-group mx-sm-3 mb-2">
                         @if (empty($consulta))
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="number" autocomplete="off" name="rut" class="form-control" placeholder="Rut Cliente">
+                            <input type="number" autocomplete="off" name="rut" class="form-control" required placeholder="Rut Cliente">
                         @else
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="number" autocomplete="off" name="rut" class="form-control" placeholder="Rut Cliente"
+                            <input type="number" autocomplete="off" name="rut" class="form-control" required placeholder="Rut Cliente"
                                 value="">
                         @endif
                     </div>
                     <div class="form-group mx-sm-3 mb-2">
                         @if (empty($consulta))
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="number" autocomplete="off" name="depto" class="form-control" placeholder="Depto.">
+                            <input type="number" autocomplete="off" name="depto" class="form-control" required placeholder="Depto.">
                         @else
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="number" autocomplete="off" name="depto" class="form-control" placeholder="Depto."
+                            <input type="number" autocomplete="off" name="depto" class="form-control" required placeholder="Depto."
                                 value="">
                         @endif
                     </div>
@@ -132,8 +132,8 @@
                                     <input type="text" class="form-control" id="inputPassword4"  disabled placeholder="{{$cliente->DEPARTAMENTO}}">
                                 </div>
                             </div>
-
-                            <button type="submit" class="btn btn-primary">algo</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="submit" class="btn btn-warning">Editar</button>
                         </form>
                     </div>
                 </div>
@@ -148,24 +148,13 @@
                 <div class="col-md-12">
                     <div class="card card-secondary">
                         <div class="card-header">
-                            <h5 class="card-title">Facturas Por Pagar</h5>
+                            <h5 class="card-title">Ocupar</h5>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                {{-- <div class="btn-group">
-                                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fas fa-wrench"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                        <a href="#" class="dropdown-item">Action</a>
-                                        <a href="#" class="dropdown-item">Another action</a>
-                                        <a href="#" class="dropdown-item">Something else here</a>
-                                        <a class="dropdown-divider"></a>
-                                        <a href="#" class="dropdown-item">Separated link</a>
-                                    </div>
-                                </div> --}}
+
                                 <button type="button" class="btn btn-tool" data-card-widget="remove">
                                     <i class="fas fa-times"></i>
                                 </button>
@@ -217,7 +206,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">Historial De Compras</h3>
@@ -235,7 +224,8 @@
                             <table id="users3" class="table table-sm table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Factura</th>
+                                        <th scope="col">Documento</th>
+                                        <th scope="col">N° Documento</th>
                                         <th scope="col">Fecha</th>
                                         <th scope="col" style="text-align:right">Valor</th>
                                         <th scope="col" style="text-align:right">Accciones</th>
@@ -254,6 +244,11 @@
                                     <tbody>
                                         @foreach ($consulta as $item)
                                             <tr>
+                                                    @if ($item->CATIPO == 7)
+                                                    <td style="text-align:left">Boleta</td>
+                                                @else
+                                                    <td style="text-align:left">Factura</td>
+                                                @endif
                                                 <td style="text-align:left">{{ $item->CANMRO }}</td>
                                                 <td style="text-align:left">{{ $item->CAFECO }}</td>
                                                 <td style="text-align:right">
@@ -325,7 +320,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     <div class="card card-dark">
                         <div class="card-header">
                             <h3 class="card-title">Mas Comprado</h3>
@@ -468,7 +463,7 @@
                             <a href="javascript:void(0)" class="uppercase">View All Products</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

@@ -318,6 +318,14 @@
 
                             <ul class="nav nav-treeview">
 
+                                <li class="nav-item">
+                                    <a href="{{ route('MantencionClientes') }}"
+                                        class="nav-link {{ setActive('MantencionClientes') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Mantencion Clientes</p>
+                                    </a>
+                                </li>
+
                                 @can('Admindiseno')
 
                                     <li class="nav-item">
