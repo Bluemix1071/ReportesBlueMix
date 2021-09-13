@@ -20,7 +20,6 @@ class SincronizacionProductosWebController extends Controller
 
 
     public function index(){
-
         return view('admin.Jumpseller.BluemixWeb.SincronizacionProductosWeb.index');
     }
 
