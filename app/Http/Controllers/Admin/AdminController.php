@@ -1738,8 +1738,8 @@ public function stocktiemporeal (Request $request){
 
         // dd($request->all());
 
-        $codigo=DB::table('vista_productos')
-        ->leftJoin('productosjumpsellerweb', 'vista_productos.interno', '=', 'productosjumpsellerweb.sku')
+        $codigo=DB::table('Vista_Productos')
+        ->leftJoin('productosjumpsellerweb', 'Vista_Productos.interno', '=', 'productosjumpsellerweb.sku')
         ->where('interno' , $request->codigo)
         ->get();
 

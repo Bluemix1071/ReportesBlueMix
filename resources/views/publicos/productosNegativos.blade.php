@@ -17,7 +17,7 @@
         </div>
         <div class="col md-6">
         {{-- algo al lado del titulo --}}
-            
+
         </div>
 
       </div>
@@ -27,8 +27,9 @@
                               <table id="productos" class="table table-bordered table-hover dataTable">
                                   <thead>
                                     <tr>
-                                      <th scope="col">Nombre</th>
-                                      <th scope="col">Ubicacion</th>
+                                      <th scope="col">Descripción</th>
+                                      <th scope="col">Marca</th>
+                                      <th scope="col">Ubicación</th>
                                       <th scope="col">Codigo</th>
                                       <th scope="col">Stock Bodega</th>
                                       <th scope="col">Stock Sala</th>
@@ -38,6 +39,7 @@
                                   @foreach($productos as $item)
                                     <tr>
                                       <th >{{$item->nombre}}</th>
+                                      <td >{{$item->Marca}}</td>
                                       <td>{{$item->ubicacion}}</td>
                                       <td>{{$item->codigo}}</td>
                                       <td>{{$item->bodega_stock}}</td>
@@ -47,8 +49,8 @@
                                   </tbody>
                                 </table>
                       </div>
-          </div> 
-        </div>  
+          </div>
+        </div>
 </div>
 @endsection
 @section('script')
@@ -64,7 +66,7 @@
       "paginate":{
         "next": "Siguiente",
         "previous": "Anterior",
-      
+
     },
     "loadingRecords": "cargando",
     "processing": "procesando",
@@ -91,13 +93,13 @@
 {{-- <script>
   $(document).ready( function () {
      $('#productos').DataTable({
- 
+
        "language":{
          "info": "_TOTAL_ registros",
          "paginate":{
            "next": "Siguiente",
            "previous": "Anterior",
-         
+
        },
        "loadingRecords": "cargando",
        "processing": "procesando",
@@ -106,7 +108,7 @@
        "infoEmpty": "",
        "infoFiltered": ""
        }
- 
+
      });
  });
  </script> --}}
@@ -119,5 +121,5 @@
 
 <script src="{{asset("js/ajaxProductosNegativos.js")}}"></script>
 
-    
+
 @endsection

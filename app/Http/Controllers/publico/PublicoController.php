@@ -49,10 +49,10 @@ class PublicoController extends Controller
   }
 
 
-    public function filtarProductosNegativos(Request  $request)
-    {
+    public function filtarProductosNegativos(Request  $request){
 
        $productos=DB::table('productos_negativos')->get();
+
        return view('publicos.productosNegativos',compact('productos'));
 
 
