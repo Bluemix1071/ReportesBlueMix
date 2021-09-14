@@ -87,6 +87,10 @@ Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
 });
 
 
+
+Route::prefix('admin')->namespace('Admin')->group(function(){
+    
+});
 //rutas de administrador
 Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->group(function(){
 
@@ -99,6 +103,16 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ListaUsuariosCOMBO','EditarUserCOMBOController@index')->name('ListarUserCombo');
     Route::post('/ListaUsuariosCOMBO','EditarUserCOMBOController@create')->name('AgregarUserCombo');
     Route::put('/ListaUsuariosCOMBO','EditarUserCOMBOController@update')->name('EditarUserCombo');
+    // fin
+    /*  Controlador CRUD Compra Agil */
+    Route::get('/CompraAgil','CompraAgilController@index')->name('CompraAgil');
+    Route::post('/CompraAgil','CompraAgilController@create')->name('AgregarCompraAgil');
+    Route::delete('/CompraAgil/{id}','CompraAgilController@destroy')->name('BorrarCompraAgil');
+    Route::put('/CompraAgil','CompraAgilController@update')->name('EditarCompraAgil');
+    Route::post('/FiltroCompraAgil/','CompraAgilController@fechaFiltro')->name('FiltarCompraAgil');
+    // fin
+    /*  Controlador CRUD Cotizaciones */
+    Route::get('/Cotizaciones/{id}','CotizacionesController@index')->name('Cotizaciones');
     // fin
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');

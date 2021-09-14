@@ -10,6 +10,10 @@ function checkRut(rut) {
     
     // Formatear RUN
     rut.value = cuerpo + '-'+ dv
+
+    if(rut.value === "-"){
+        rut.value = "";
+    }
     
     // Si no cumple con el mínimo ej. (n.nnn.nnn)
     if(cuerpo.length < 7) { rut.setCustomValidity("RUT Incompleto"); return false;}

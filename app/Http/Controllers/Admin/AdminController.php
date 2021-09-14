@@ -1384,7 +1384,12 @@ public function stocktiemporeal (Request $request){
         ->where('CZ_GIRO' , $giro->taglos)
         ->get();
 
+        $compras_agiles=DB::table('compra_agil')
+        ->where('rut', 'LIKE', "%{$request->rut}%")
+        ->where('depto', "{$request->depto}")
+        ->get();
 
+        dd($compras_agiles);
         // dd($cotiz);
 
 

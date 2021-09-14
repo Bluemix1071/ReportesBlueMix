@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script type="text/javascript">
         window.CSRF_TOKEN = '{{ csrf_token() }}';
     </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <title> @yield('titulo','Reportes Bluemix')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/fontawesome-free/css/all.min.css") }}">
@@ -32,13 +33,11 @@
                 <div class="col-md-12">
                     <h1 class="display-4" style="text-align:center">Consulta De Precio</h1>
                     <hr>
-                    <form action="{{ route('ConsultaPrecioFiltro') }}" method="post" id="desvForm"
-                        class="form-inline">
-                        @csrf
+
                         <div class="container">
                             <div class="row justify-content-md-center">
                                 {{-- @if (empty($codigo)) --}}
-                                <input type="text" id="codigo"  class="form-control" maxlength="14"
+                                <input type="text" id="codigo" class="form-control" maxlength="14"
                                     placeholder="codigo..." autofocus name="codigo" autocomplete="off">
                                 {{-- @else
                                     <input type="text" id="fecha1" autofocus class="form-control" minlength="7"
@@ -47,15 +46,14 @@
                                 @endif --}}
                             </div>
                         </div>
-                    </form>
-                    <hr>
-                    @if (empty($codigo))
+                    
+                    <hr style="width:100%">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <div class="col-12">
-                                        <img src="{{ asset("assets/$theme/dist/img/spinner.gif") }}"
-                                            class="product-image" alt="Product Image">
+                                        <img id="imagen" src="{{ asset("assets/$theme/dist/img/spinner.gif") }}"
+                                        class="rounded mx-auto d-block" alt="Product Image" width="100%" height="100%">
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
@@ -63,17 +61,17 @@
                                     <br>
                                     <br>
                                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                        <h1 class="display-1">
+                                        <h1 class="display-1" id="precio">
                                             $0 C/U
                                         </h1>
                                     </div>
 
                                     <div class="bg-light py-2 px-3 mt-4">
-                                        <h2 class="mb-0">
+                                        <h2 class="mb-0" id="descripcion">
                                             Descripción Del Producto
                                         </h2>
-                                        <h4 class="mt-0">
-                                            <small>Precio X Mayor: $ </small>
+                                        <h4 class="mt-0" >
+                                            <small id="preciomayor">Precio X Mayor: $ </small>
                                         </h4>
                                     </div>
 
@@ -103,101 +101,63 @@
                                 </div>
                             </div>
                         </div>
-                    @else
-                        {{-- <section class="content"> --}}
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-sm-6">
-                                    @if (empty($codigo[0]->url))
-                                        <div class="col-12">
-                                            <img src="{{ asset("assets/$theme/dist/img/spinner.gif") }}" width="600"
-                                                height="400" class="rounded mx-auto d-block">
-                                        </div>
-                                    @else
-                                        <div class="col-12">
-                                            <img src="{{ $codigo[0]->url }}" width="400" height="400"
-                                                class="rounded mx-auto d-block">
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                        <h1 class="display-1">
-                                            ${{ number_format($codigo[0]->precio, 0, ',', '.') }}
-                                            {{ $codigo[0]->ARDVTA }}
-                                        </h1>
-                                    </div>
-
-                                    <div class="bg-light py-2 px-3 mt-4">
-                                        <h2 class="mb-0">
-                                            {{ $codigo[0]->descripcion }}
-                                        </h2>
-                                        <h4 class="mt-0">
-                                            <small>Precio X Mayor:
-                                                ${{ number_format($codigo[0]->preciomayor, 0, ',', '.') }}</small>
-                                        </h4>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <div class="row">
-                                <div class="col-12 product-image-thumbs">
-                                    <div class="col"><img
-                                            src="{{ asset("assets/$theme/dist/img/logobmcl.png") }}" width="210"
-                                            height="100"></div>
-                                    <div class="col"><img
-                                            src="{{ asset("assets/$theme/dist/img/logobmempresa.png") }}" width="210"
-                                            height="100"></div>
-                                    <div class="col"><img
-                                            src="{{ asset("assets/$theme/dist/img/acmix.png") }}" width="200"
-                                            height="100"></div>
-                                    <div class="col"><img
-                                            src="{{ asset("assets/$theme/dist/img/LogoMargot.png") }}" width="120"
-                                            height="120"></div>
-                                    <div class="col"><img
-                                            src="{{ asset("assets/$theme/dist/img/logoantiguo.png") }}" width="200"
-                                            height="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- </section> --}}
-                    @endif
-            </section>
         </div>
         <!-- /.inicio footer -->
         @include("theme/$theme/footer")
         <!-- /.termino footer -->
     </div>
+    </body>
     @yield('script')
     @include('theme.mensajes')
 
     <script type="text/javascript">
-        setTimeout(function() {
+        /* setTimeout(function() {
             // console.log(window.location.pathname)
             if (window.location.pathname == '/ConsultaPrecioFiltro') {
                 window.location = '../ConsultaPrecio'
             }
-        }, 3000);
+        }, 3000); */
 
-        setTimeout(function() {
-            // console.log("llega 2")
-            if (window.location.pathname == '/ConsultaPrecio') {
-                location.reload();
+        $("#codigo").keyup(function(event) {
+            if (event.keyCode === 13) {
+                var codigo = $('#codigo').val();
+                //console.log(codigo);
+
+                $.ajax({
+                    url: '../ConsultaPrecioFiltro/',
+                    type: 'POST',
+                    data: { codigo: codigo},
+                    success: function( data, textStatus, jQxhr ){
+                            console.log(data);
+                            document.getElementById("precio").innerHTML = "$"+data[0].precio+" "+data[0].ARDVTA;
+                            document.getElementById("descripcion").innerHTML = data[0].descripcion;
+                            document.getElementById("preciomayor").innerHTML = "Precio X Mayor: $ "+data[0].preciomayor;
+                            if(data[0].url != null){
+                                document.getElementById("imagen").src = data[0].url;
+                            }else{
+                                document.getElementById("imagen").src = "../assets/lte/dist/img/spinner.gif";
+                            }
+
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                            console.log( errorThrown );
+                    }
+                });
+
+                setTimeout(function() {
+                    document.getElementById("precio").innerHTML = "$0 C/U";
+                    document.getElementById("descripcion").innerHTML = "Descripción Del Producto";
+                    document.getElementById("preciomayor").innerHTML = "Precio X Mayor: $";
+                    document.getElementById("imagen").src = "../assets/lte/dist/img/spinner.gif";
+                    $('#codigo').val("");
+                }, 3000);
+
             }
-        }, 300000);
+        });
+
     </script>
 
-</body>
-</head>
 
-<body>
-</body>
+
 
 </html>

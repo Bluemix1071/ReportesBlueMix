@@ -525,6 +525,14 @@
                                             </li>
                                         </ul>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('CompraAgil') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Compras Ágiles
+                                            </p>
+                                        </a>
+                                    </li>
                                 @endcan
 
                                 @can('Contratos')
