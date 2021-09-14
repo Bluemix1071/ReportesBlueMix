@@ -101,7 +101,7 @@ Espacio Publico Bluemix
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          {{-- <div class="col-md-3">
             <div class="card card-widget widget-user">
               <div class="widget-user-header bg-success">
                 <h3 class="widget-user-username">Consulta Precio</h3>
@@ -120,8 +120,8 @@ Espacio Publico Bluemix
                 </div>
               </div>
             </div>
-          </div>
-        <div class="col-md-3 col-md offset-3">
+          </div> --}}
+        <div class="col-md-3 col-md offset-6">
             <div class="panel-heading">
               <div class="modal-content">
                   <div class="modal-header">
