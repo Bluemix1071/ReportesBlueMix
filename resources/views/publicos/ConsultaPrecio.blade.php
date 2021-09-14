@@ -53,7 +53,7 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="col-12">
                                         <img id="imagen" src="{{ asset("assets/$theme/dist/img/spinner.gif") }}"
-                                        class="rounded mx-auto d-block" alt="Product Image" width="100%" height="100%">
+                                        class="rounded mx-auto d-block" alt="Product Image" width="80%" height="100%">
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
