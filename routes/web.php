@@ -27,7 +27,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 
 // consulta precios sin ruta
 Route::get('/ConsultaPrecio','publico\PublicoController@ConsultaPrecio')->name('ConsultaPrecio');
-Route::post('/ConsultaPrecioFiltro', 'publico\PublicoController@ConsultaPrecioFiltro')->name('ConsultaPrecioFiltro');
+Route::match(['get', 'post'],'/ConsultaPrecioFiltro', 'publico\PublicoController@ConsultaPrecioFiltro')->name('ConsultaPrecioFiltro');
 
 //Rutas autenticadas de sala
 Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
@@ -45,6 +45,7 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/GuardarOrdenesDeDiseño','SalaController@GuardarOrdenesDeDiseño')->name('GuardarOrdenesDeDiseño');
 
 
+    //cambio
 
 
 });
