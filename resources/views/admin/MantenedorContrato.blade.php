@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Mantenedor Contratos
+    Mantenedor zzzzzzz
 @endsection
 @section('styles')
 

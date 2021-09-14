@@ -809,7 +809,6 @@ function alerta(id){
 	} else {
 	   
 	}
-	console.log(mensaje);
 }
 
 

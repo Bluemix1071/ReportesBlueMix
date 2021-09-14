@@ -41,12 +41,10 @@ class AdminController extends Controller
 
     }
 
-    public function registrar()
-    {
+    public function registrar(){
 
     return view('auth.register');
     }
-
 
 
     public function CuadroDeMAndo(){
@@ -56,43 +54,29 @@ class AdminController extends Controller
     return view('admin.CuadroDeMando',compact('productos'));
     }
 
-    public function ProductosPorMarca(Request $request)
-    {
+    public function ProductosPorMarca(Request $request){
 
-      return view('admin.productospormarca');
+        $marcas=DB::table('marcas')->get();
+
+        // dd($marcas);
+
+        return view('admin.productospormarca',compact('marcas'));
+
     }
 
-    public function ProductosPorMarcafiltrar(Request $request)
-    {
+    public function ProductosPorMarcafiltrar(Request $request){
 
-      $marca=$request->marca;
 
       $productos=DB::table('Productos_x_Marca')
-      ->where('MARCA_DEL_PRODUCTO',$marca)
+      ->where('MARCA_DEL_PRODUCTO',$request->marcas)
       ->get();
 
-      return view('admin.productospormarca',compact('productos','marca'));
+
+    $marcas=DB::table('marcas')->get();
+
+      return view('admin.productospormarca',compact('productos','marcas'));
     }
 
-    function fetch(Request $request)
-    {
-     if($request->get('query'))
-     {
-      $query = $request->get('query');
-      $data = DB::table('marcas')
-        ->where('ARMARCA', 'LIKE', "%{$query}%")
-        ->get();
-      $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
-      foreach($data as $row)
-      {
-       $output .= '
-       <li><a href="#">'.$row->ARMARCA.'</a></li>
-       ';
-      }
-      $output .= '</ul>';
-      echo $output;
-     }
-    }
 
     public function comprassegunprov(Request $request)
     {
@@ -1370,6 +1354,7 @@ public function stocktiemporeal (Request $request){
 
         $consulta=DB::table('cargos')
         ->where('CARUTC', $request->rut)
+        // ->where('DETIPO', '!=' , '3')
         ->orderBy('cafeco', 'desc')
         ->get();
 
@@ -1399,7 +1384,12 @@ public function stocktiemporeal (Request $request){
         ->where('CZ_GIRO' , $giro->taglos)
         ->get();
 
+        $compras_agiles=DB::table('compra_agil')
+        ->where('rut', 'LIKE', "%{$request->rut}%")
+        ->where('depto', "{$request->depto}")
+        ->get();
 
+        dd($compras_agiles);
         // dd($cotiz);
 
 
@@ -1724,7 +1714,47 @@ public function stocktiemporeal (Request $request){
 
     }
 
+    // public function ProductosFaltantes(Request $request){
 
+    //     // dd($request->all());
+
+    //     $consulta=DB::table('productos_faltantes')->get();
+
+
+    //     return view('admin.ProductosFaltantes',compact('consulta'));
+
+    // }
+
+    public function MantenedorProducto(Request $request){
+
+
+        return view('admin.MantenedorProducto');
+
+
+    }
+
+
+    public function MantenedorProductoFiltro(Request $request){
+
+        // dd($request->all());
+
+        $codigo=DB::table('vista_productos')
+        ->leftJoin('productosjumpsellerweb', 'vista_productos.interno', '=', 'productosjumpsellerweb.sku')
+        ->where('interno' , $request->codigo)
+        ->get();
+
+        // dd($codigo);
+
+        if($codigo->isEmpty()){
+
+            return redirect()->route('MantenedorProducto')->with('error','Producto No Encontrado');
+        }
+        else
+
+        return view('admin.MantenedorProducto',compact('codigo'));
+
+
+    }
 
 
 
