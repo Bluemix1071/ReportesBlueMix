@@ -28,7 +28,7 @@
                         <input class="form-control" list="marca" autocomplete="off" name="marcas" id="xd" type="text" placeholder="Marca...">
                         <datalist id="marca">
                             @foreach ($marcas as $item)
-                            <option value={{ $item->ARMARCA }}>
+                            <option value="{{ $item->ARMARCA }}">
                             @endforeach
                         </datalist>
                     </div>
