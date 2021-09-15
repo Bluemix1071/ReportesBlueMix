@@ -66,11 +66,14 @@ class AdminController extends Controller
 
     public function ProductosPorMarcafiltrar(Request $request){
 
+        // dd($request->all());
 
       $productos=DB::table('Productos_x_Marca')
       ->where('MARCA_DEL_PRODUCTO',$request->marcas)
       ->get();
 
+
+        // dd($productos);
 
     $marcas=DB::table('marcas')->get();
 
@@ -78,8 +81,7 @@ class AdminController extends Controller
     }
 
 
-    public function comprassegunprov(Request $request)
-    {
+    public function comprassegunprov(Request $request){
 
       $comprasprove=DB::table('compras_por_ano_segun_proveedor')->get();
 
