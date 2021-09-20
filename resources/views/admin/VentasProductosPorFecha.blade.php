@@ -18,7 +18,7 @@ Venta Productos
                  <form action="{{route('ventaProdFiltro')}}" method="post"  id="desvForm" class="form-inline">
                          @csrf
 
-                               <div class="form-group mx-sm-3 mb-2">
+                               {{-- <div class="form-group mx-sm-3 mb-2">
                                 @if (empty($marca))
                                    <label for="inputPassword2" class="sr-only"></label>
                                    <input type="text" name="marca" class="form-control" placeholder="Marca...."  >
@@ -26,7 +26,16 @@ Venta Productos
                                    <label for="inputPassword2" class="sr-only"></label>
                                    <input type="text" name="marca" class="form-control" placeholder="Marca...." value="{{$marca}}" >
                                    @endif
-                                 </div>
+                                 </div> --}}
+
+                                 <div class="form-group mx-sm-3 mb-2">
+                                    <input class="form-control" name="marca" list="marca" autocomplete="off" name="marcas" id="xd" type="text" placeholder="Marca...">
+                                    <datalist id="marca">
+                                        @foreach ($marcas as $item)
+                                        <option value="{{ $item->ARMARCA }}">
+                                        @endforeach
+                                    </datalist>
+                                </div>
 
 
                                  <div class="form-group mb-2">
