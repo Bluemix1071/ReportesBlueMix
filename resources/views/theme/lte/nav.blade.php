@@ -453,7 +453,7 @@
                                     </a>
                                 </li>
                                 @endcan --}}
-                                @can('MantenedorProductos')
+                                {{-- @can('MantenedorProductos')
 
                                 <li class="nav-item">
                                     <a href="{{ route('MantenedorProducto') }}" class="nav-link {{ setActive('MantenedorProducto') }}">
@@ -463,7 +463,7 @@
                                     </a>
                                 </li>
 
-                                @endcan
+                                @endcan --}}
 
                                 @can('Productos')
 
@@ -492,6 +492,14 @@
                                         </a>
                                     </li>
                                 @endcan
+
+                                <li class="nav-item">
+                                    <a href="{{ route('CompraAgil') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Compras Ágiles
+                                        </p>
+                                    </a>
+                                </li>
 
                                 @can('Costos')
                                     <li class="nav-item">
@@ -524,14 +532,6 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="{{ route('CompraAgil') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Compras Ágiles
-                                            </p>
-                                        </a>
                                     </li>
                                 @endcan
 

@@ -20,14 +20,22 @@ Compra Productos
 
                  <form action="{{route('compraProdFiltro')}}" method="post"  id="desvForm" class="form-inline">
                          @csrf
-                               
+
                                <div class="form-group mx-sm-3 mb-2">
                                 @if (empty($marca))
-                                   <label for="inputPassword2" class="sr-only"></label>
-                                   <input type="text" name="marca" class="form-control" placeholder="Marca...." >
+                                    <input class="form-control" name="marca" list="marca" autocomplete="off" name="marcas" id="xd" type="text" placeholder="Marca...">
+                                    <datalist id="marca">
+                                        @foreach ($marcas as $item)
+                                        <option value="{{ $item->ARMARCA }}">
+                                        @endforeach
+                                    </datalist>
                                    @else
-                                   <input type="text" name="marca" class="form-control" placeholder="Marca...." value="{{$marca}}" >
-                                   @endif
+                                   <input class="form-control" name="marca" list="marca" autocomplete="off" name="marcas" id="xd" type="text" placeholder="Marca...">
+                                   <datalist id="marca">
+                                       @foreach ($marcas as $item)
+                                       <option value="{{ $item->ARMARCA }}">
+                                       @endforeach
+                                   </datalist>                                   @endif
                                  </div>
 
                                  <div class="form-group mb-2">
@@ -39,31 +47,31 @@ Compra Productos
                                         @endif
 
                                 </div>
-                                       
+
                                  <div class="form-group mx-sm-3 mb-2">
-                                        
+
                                         @if (empty($fecha2))
                                         <label for="inputPassword2" class="sr-only">Fecha 2</label>
                                         <input type="date" id="fecha2" name="fecha2" class="form-control">
                                         @else
                                       <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{$fecha2}}">
                                         @endif
-                                   
+
                                 </div>
                                 <div class="col-md-2 ">
-                                        
+
                                   <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                             
+
                           </div>
                           <div class="col-md-2 col-md offset-">
-                                        
+
                             <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
-                       
+
                     </div>
-                          
-                             
+
+
                  </form>
-              
+
                        {{-- FIN BUSCADOR--}}
               <table id="productos" class="table table-bordered table-hover dataTable table-sm">
                   <thead>
@@ -74,15 +82,15 @@ Compra Productos
                       <th scope="col" style="text-align:right">Cantidad</th>
                       <th scope="col" style="text-align:right">Costo Unitario Actual</th>
                       <th scope="col" style="text-align:right">Costo Total</th>
-                     
+
                     </tr>
                   </thead>
-              
+
                   <tbody>
                         @if (empty($productos))
-                    
+
                         @else
-                        
+
                     @foreach($productos as $item)
                       <tr>
                         <td style="text-align:left">{{$item->marca}}</td>
@@ -91,17 +99,17 @@ Compra Productos
                         <td style="text-align:right">{{number_format($item->Cantidad,0,',','.')}}</td>
                         <td style="text-align:right">{{number_format($item->Costo_Unitario_actual,0,',','.')}}</td>
                         <td style="text-align:right">{{number_format($item->Costo_Total,0,',','.')}}</td>
-                        
+
                       </tr>
                       @endforeach
                       @endif
-                    </tbody>  
-          
+                    </tbody>
+
                 </table>
                 {{-- {{$productos->links()}} --}}
           </div>
         </div>
-       
+
 </div>
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -111,7 +119,7 @@ Compra Productos
         <h4 class="modal-title" id="myModalLabel">Información de la Consulta</h4>
       </div>
       <div class="modal-body">
-         <div class="card-body">Consulta Orientada Para conocer la Compra de los productos, filtrando por la marca de estos y en un rango de fecha a definir por el usuario 
+         <div class="card-body">Consulta Orientada Para conocer la Compra de los productos, filtrando por la marca de estos y en un rango de fecha a definir por el usuario
           y así conocer la cantidad de productos Comprados, con su respectivo costo total.</div>
       </div>
       <div class="modal-footer">
@@ -130,7 +138,7 @@ Compra Productos
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-            
+
         ],
           "language":{
         "info": "_TOTAL_ registros",
@@ -138,7 +146,7 @@ Compra Productos
         "paginate":{
           "next": "Siguiente",
           "previous": "Anterior",
-        
+
       },
       "loadingRecords": "cargando",
       "processing": "procesando",

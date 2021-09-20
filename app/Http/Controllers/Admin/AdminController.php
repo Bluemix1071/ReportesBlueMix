@@ -73,9 +73,7 @@ class AdminController extends Controller
       ->get();
 
 
-        // dd($productos);
-
-    $marcas=DB::table('marcas')->get();
+        $marcas=DB::table('marcas')->get();
 
       return view('admin.productospormarca',compact('productos','marcas'));
     }
@@ -184,7 +182,10 @@ class AdminController extends Controller
 
     public function IndexVentaProductos(){
 
-      return view('admin.VentasProductosPorFecha');
+        $marcas=DB::table('marcas')->get();
+
+
+      return view('admin.VentasProductosPorFecha',compact('marcas'));
     }
 
 
@@ -197,7 +198,7 @@ class AdminController extends Controller
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
 
-
+      $marcas=DB::table('marcas')->get();
 
       $productos=DB::select('select
       p.ARCODI as "codigo",
@@ -215,15 +216,18 @@ class AdminController extends Controller
 
 
 
-      return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2'));
+      return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2','marcas'));
 
 
     }
 
-    public function IndexCompraProductos(){
+    public function IndexCompraProductos(Request $request){
+
+        $marcas=DB::table('marcas')->get();
 
 
-      return view('admin.CompraProductosPorFecha');
+
+      return view('admin.CompraProductosPorFecha',compact('marcas'));
     }
 
     public function CompraProductosPorFechas (Request $request){
@@ -232,6 +236,8 @@ class AdminController extends Controller
       $marca = $request->marca;
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
+
+      $marcas=DB::table('marcas')->get();
 
 
 
@@ -258,7 +264,7 @@ class AdminController extends Controller
 
 
 
-      return view('admin.CompraProductosPorFecha',compact('productos','marca','fecha1','fecha2'));
+      return view('admin.CompraProductosPorFecha',compact('productos','marca','fecha1','fecha2','marcas'));
 
 
     }
