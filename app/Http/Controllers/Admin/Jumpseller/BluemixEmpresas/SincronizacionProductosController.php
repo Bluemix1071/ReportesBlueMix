@@ -53,7 +53,6 @@ class SincronizacionProductosController extends Controller
                             'stock' => $product['product']['stock'],
                             'price' => $product['product']['price'],
                         ]);
-                           // logger($insert);
 
                         //validar si tiene variantes
                         if (!empty($product['product']['variants'])) {
@@ -67,7 +66,7 @@ class SincronizacionProductosController extends Controller
                                     'stock' => $variant['stock'],
                                     'price' => $variant['price'],
                                     'parent_id' => $insert->id_ai,
-
+                                    'parent_id_jp' => $product['product']['id'],
                                 ]);
                             }
                         }
@@ -100,6 +99,58 @@ class SincronizacionProductosController extends Controller
 
         // return response()->json($products);
 
+    }
+
+    //funcion actualiza precio y stock de productos a jumpseller
+    public function actualizarProducto(){
+        
+        $productos=DB::table('subida_productos_empresa')->where('sku','!=',null)->get();
+
+        $count = count($productos);
+        /* $cantidadDePaginas = ceil($count / 100);
+        dd($cantidadDePaginas); */
+
+            $i=0;
+            //crea un json body de productos en productos sin variantes
+            foreach ($productos as $item) {
+                $i++;
+                $body = [
+                    "product" =>
+                    [
+                        "name" => $item->name,
+                        "price" => $item->precio_mayor,
+                        "stock" => $item->stock_total
+                    ]
+                ];
+                //crea un json body de productos en productos con variantes
+                if($item->parent_id != null){
+                    $bodyvariant = [
+                        "variant" =>
+                        [
+                            "price" => $item->precio_mayor,
+                            "stock" => $item->stock_total
+                        ]
+                    ];
+                    //error_log(print_r($bodyvariant, true));
+                    //envia a putVariante funcion que crea url para actualizar variantes
+                    $productVariant = $this->apiJumpseller->putVariant($item->parent_id_jp,$item->id,$bodyvariant);
+                    //error_log(print_r($bodyvariant, true));
+                }else{
+                     //envia a put funcion que crea url para actualizar solo productos
+                    $product = $this->apiJumpseller->put($item->id,$body);
+                    //error_log(print_r($body, true));
+                }
+                //error_log(print_r(number_format($porcentaje,0).'%', true));
+                  $porcentaje = (($i*100)/$count);
+                  error_log(print_r(number_format($porcentaje,0).'%', true));
+            }
+
+        error_log(print_r("termino...", true));
+
+        return redirect()->route('index.jumpsellerEmpresas');
+
+        //$product = $this->apiJumpseller->put(10967214,$body);
+        /* $body = '{ "product" : {"name": "ACCESORIO ARGOLLA  Nº11", "price": 7,  "stock": 1} }';  */
     }
 
 }

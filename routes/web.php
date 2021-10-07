@@ -154,6 +154,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/MantencionClientes','AdminController@MantencionClientes')->name('MantencionClientes');
     Route::post('/MantencionClientesFiltro','AdminController@MantencionClientesFiltro')->name('MantencionClientesFiltro');
+    Route::put('/MantencionClientesUpdate','AdminController@MantencionClientesUpdate')->name('MantencionClientesUpdate');
 
     Route::get('/ventasdiseno','AdminController@ventasdiseno')->name('ventasdiseno');
     Route::post('/ventasdisenoFiltro','AdminController@ventasdisenoFiltro')->name('ventasdisenoFiltro');
@@ -240,12 +241,14 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/jumpsellerEmpresas','Jumpseller\BluemixEmpresas\SincronizacionProductosController@index')->name('index.jumpsellerEmpresas');
     Route::get('/SincronizarProductos','Jumpseller\BluemixEmpresas\SincronizacionProductosController@sincronizarProductos')->name('sincronizar');
+    Route::get('/ActualizarProducto','Jumpseller\BluemixEmpresas\SincronizacionProductosController@actualizarProducto')->name('updateProducto');
     Route::get('/CarritoDeCompras','Jumpseller\BluemixEmpresas\GenerarCarritoController@index')->name('CreacionCarrito.index');
     Route::get('/CarritoDeComprasSearch','Jumpseller\BluemixEmpresas\GenerarCarritoController@BuscarCotizacion')->name('GenerarCarrito.search');
     Route::post('/CrearCarrito','Jumpseller\BluemixEmpresas\GenerarCarritoController@CrearCarrito')->name('GenerarCarrito.store');
 
     Route::get('/jumpsellerWeb','Jumpseller\BluemixWeb\SincronizacionProductosWebController@index')->name('index.jumpsellerWeb');
     Route::get('/SincronizarProductosWeb','Jumpseller\BluemixWeb\SincronizacionProductosWebController@sincronizarProductos')->name('sincronizarWeb');
+    Route::get('/ActualizarProductoWeb','Jumpseller\BluemixWeb\SincronizacionProductosWebController@actualizarProductoWeb')->name('updateProductoWeb');
 
     Route::get('/actualizacionProductosWeb','Jumpseller\BluemixWeb\ActualizacionProductosWebController@index')->name('index.ActualizacionProductos');
 

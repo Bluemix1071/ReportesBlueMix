@@ -1359,55 +1359,117 @@ public function stocktiemporeal (Request $request){
 
     public function MantencionClientesFiltro(Request $request){
 
+        //dd($request->all());
+        $n_rut = substr($request->rut, 0, -2);
 
-        // dd($request->all());
+        $cliente=DB::table('cliente')
+        ->where('CLRUTC', $n_rut)
+        ->where('DEPARTAMENTO', $request->depto)
+        ->first();
 
-        $consulta=DB::table('cargos')
-        ->where('CARUTC', $request->rut)
+        /* $cliente = DB::select("SELECT *, (select nombre from regiones where id = (select region from cliente where CLRUTC = $n_rut and DEPARTAMENTO = $request->depto)) as n_region
+        FROM db_bluemix.cliente
+        where CLRUTC = $n_rut and DEPARTAMENTO = $request->depto LIMIT 1")[0]; */
+
+        //dd($cliente);
+
+        if($cliente != null){
+          $consulta=DB::table('cargos')
+        ->where('CARUTC', $n_rut)
         // ->where('DETIPO', '!=' , '3')
         ->orderBy('cafeco', 'desc')
         ->get();
 
-        // dd($consulta);
-
-        $cliente=DB::table('cliente')
-        ->where('CLRUTC', $request->rut)
-        ->where('DEPARTAMENTO', $request->depto)
-        ->first();
-
         $ciudad=DB::table('tablas')
         ->join('cliente', 'CLCIUF', '=', 'tarefe')
-        ->where('CLRUTC', $request->rut)
+        ->where('CLRUTC', $n_rut)
         ->where('DEPARTAMENTO', $request->depto)
         ->where('TACODI', 2)
         ->first('taglos');
 
         $giro=DB::table('tablas')
         ->join('cliente', 'CLGIRO', '=', 'tarefe')
-        ->where('CLRUTC', $request->rut)
+        ->where('CLRUTC', $n_rut)
         ->where('DEPARTAMENTO', $request->depto)
         ->where('TACODI', 8)
         ->first('taglos');
 
         $cotiz=DB::table('cotiz')
-        ->where('CZ_RUT', 'LIKE', "%{$request->rut}%")
+        ->where('CZ_RUT', 'LIKE', "%{$n_rut}%")
         ->where('CZ_GIRO' , $giro->taglos)
         ->get();
 
         $compras_agiles=DB::table('compra_agil')
-        ->where('rut', 'LIKE', "%{$request->rut}%")
+        ->where('rut', 'LIKE', "%{$n_rut}%")
         ->where('depto', "{$request->depto}")
         ->get();
 
-        dd($compras_agiles);
-        // dd($cotiz);
+        $regiones=DB::table('regiones')->get();
 
+        $p_r_a = [];
 
+        try{
+          $p_r_a=DB::select("SELECT observacion, COUNT(observacion) as moda
+              FROM compra_agil
+              where rut = '$request->rut'
+              and depto = '$request->depto'
+              and observacion != ''
+              GROUP BY observacion
+              HAVING COUNT(observacion)
+              order by moda desc
+              limit 1")[0];
+        }catch(\Throwable $th){
+          $p_r_a = [ "observacion" => ""];
+        }
 
-        return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz'));
+        $p_p_e = [];
+
+        try{
+          $p_p_e=DB::select("SELECT adjudicatorio, COUNT(adjudicatorio) as moda
+              FROM compra_agil
+              where rut = '$request->rut'
+              and depto = '$request->depto'
+              and adjudicatorio != ''
+              GROUP BY adjudicatorio
+              HAVING COUNT(adjudicatorio)
+              order by moda desc
+              limit 1")[0];
+        }catch(\Throwable $th){
+          $p_p_e = [ "adjudicatorio" => ""];
+        }
+
+        $t_c_a_a = 0;
+        $t_c_a_m = 0;
+        foreach ($compras_agiles as &$item) {
+          if($item->adjudicada === 1){
+            $t_c_a_a++;
+            $t_c_a_m += $item->total;
+          }
+        }
+
+        }else{
+          return redirect()->route('MantencionClientes')->with('warning','Cliente no Existe');
+        }
+
+        return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz','compras_agiles','regiones','t_c_a_a','t_c_a_m','p_r_a','p_p_e'));
 
 }
 
+    public function MantencionClientesUpdate(Request $request){
+
+      //dd($request);
+
+      DB::table('cliente')->where('CLRUTC', $request->get('rut'))
+      ->where('CLRUTD', $request->get('dv'))
+      ->where('DEPARTAMENTO', $request->get('depto'))
+      ->update([
+        'region' => $request->get('region'),
+        'CLCONT' => $request->get('contacto'),
+        'email_dte_2' => $request->get('email_dte2')
+      ]);
+
+      return redirect()->route('MantencionClientes');
+    }
 
     public function ventasdiseno(){
 

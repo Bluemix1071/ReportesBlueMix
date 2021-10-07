@@ -31,7 +31,7 @@ Actualizar Productos Web
                   <p class="card-text">Se recomienda esperar a que la barra llegue al 100% antes de volver a actualizar </p>
 
                   <form action="{{route('sincronizarWeb')}}" method="get">
-                      <button id="btn_sync" class="btn btn-primary" type="submit" ><i class="fas fa-sync"></i> </button>
+                      <button id="btn_sync" class="btn btn-primary" type="submit" ><i class="fas fa-arrow-down"></i> </button>
                   </form>
                 </div>
                 <div class="card-footer text-muted">
@@ -42,7 +42,33 @@ Actualizar Productos Web
       </div>
 
 
+      <div class="row">
+          <div class="col-md-12">
 
+            <div class="card text-center">
+                <div class="card-header">
+                    Actualizar Productos Jumpseller Web
+                </div>
+                <div class="card-body">
+
+                  <p class="card-text">La actualización de subida se realiza en segundo plano, puede seguir realizando otras actividades </p>
+                  <hr>
+                  <p class="card-text">Se recomienda esperar a que el spinner se detenga antes de volver a actualizar </p>
+
+                  <form action="{{route('updateProductoWeb')}}" method="get">
+                      <button id="btn_sync2" class="btn btn-primary" type="submit" >
+                        <i class="fas fa-arrow-up" id="sube"></i>
+                        <div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div>
+                    </button>
+                  </form>
+                  
+                </div>
+                <div class="card-footer text-muted">
+                  {{-- pendiente cuando fue la ultima actualizacion --}}
+                </div>
+              </div>
+          </div>
+      </div>
 
 
 
@@ -57,6 +83,11 @@ Actualizar Productos Web
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
 
+$('#btn_sync2').click(function(){
+  $('#sube').prop('hidden', true);
+  $('#spinner').prop('hidden', false);
+  $('#btn_sync').prop('disabled', true);
+});
 
 // function desactivar(){
 //   var btn_sync = document.getElementById('btn_sync');
@@ -76,6 +107,7 @@ Actualizar Productos Web
   channel.bind('my-event', function(data) {
     var progres = document.getElementById('progress');
     var btn_sync = document.getElementById('btn_sync');
+    $('#btn_sync2').prop('disabled', true);
     btn_sync.disabled=true;
     progres.style="width:"+Math.round(data.message)+"%"
     //progres.style="width:22%"
@@ -83,6 +115,7 @@ Actualizar Productos Web
 
     if (Math.round(data.message) == 100) {
         btn_sync.disabled=false;
+        location.reload();
     }
    // console.log(data.message)
   });
