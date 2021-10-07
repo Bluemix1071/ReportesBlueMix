@@ -1,16 +1,18 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Productos
+    Mantenedor Clientes
 @endsection
 @section('styles')
 
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css") }}">
+    <script src="{{ asset('js/validarRUT.js') }}"></script>
 
 
 @endsection
 
 @section('contenido')
 
+<div style="pointer-events: none; opacity: 0.4;" id="maindiv">
     <div class="container-fluid">
         <br>
         <h1>Mantenedor Clientes</h1>
@@ -23,10 +25,10 @@
                     <div class="form-group mx-sm-3 mb-2">
                         @if (empty($consulta))
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="number" autocomplete="off" name="rut" class="form-control" required placeholder="Rut Cliente">
+                            <input type="text" oninput="checkRut(this)" autocomplete="off" name="rut" class="form-control" required placeholder="Rut Cliente">
                         @else
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="number" autocomplete="off" name="rut" class="form-control" required placeholder="Rut Cliente"
+                            <input type="text" oninput="checkRut(this)" autocomplete="off" name="rut" class="form-control" required placeholder="Rut Cliente"
                                 value="">
                         @endif
                     </div>
@@ -84,56 +86,85 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-body" style="display: none;">
-                        <form>
+                    <div class="card-body" style="display: block;">
+                        <form action="{{ route('MantencionClientesUpdate') }}" method="post" id="desvForm">
+                            {{ method_field('put') }}
+                            {{ csrf_field() }}
+                            @csrf
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="inputEmail4">Razon Social</label>
-                                    <input type="text" class="form-control" id="inputEmail4" disabled placeholder="{{$cliente->CLRSOC}}">
+                                    <input type="text" class="form-control" id="razon_social" disabled value="{{$cliente->CLRSOC}}">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputPassword4">Direccion</label>
-                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$cliente->CLDIRF}}">
+                                    <input type="text" class="form-control" id="direccion" disabled value="{{$cliente->CLDIRF}}">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputPassword4">Ciudad</label>
-                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$ciudad->taglos}}">
+                                    <input type="text" class="form-control" id="ciudad" disabled value="{{$ciudad->taglos}}">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="inputEmail4">Telfono</label>
-                                    <input type="text" class="form-control" id="inputEmail4" disabled placeholder="{{$cliente->CLFONO}}">
+                                    <input type="text" class="form-control" id="telefono" disabled value="{{$cliente->CLFONO}}">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputPassword4">Giro</label>
-                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$giro->taglos}}">
+                                    <input type="text" class="form-control" id="giro" disabled value="{{$giro->taglos}}">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputPassword4">Tipo Cliente</label>
-                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="Tipo Cliente">
+                                    <input type="text" class="form-control" id="tipo_cliente" disabled value="Tipo Cliente">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="inputEmail4">Email Dte</label>
-                                    <input type="text" class="form-control" id="inputEmail4" disabled placeholder="{{$cliente->CLDETA1}}">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="inputPassword4">Rut</label>
-                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$cliente->CLRUTC}}">
-                                </div>
-                                <div class="form-group col-md-1">
-                                    <label for="inputPassword4">Digito</label>
-                                    <input type="text" class="form-control" id="inputPassword4" disabled placeholder="{{$cliente->CLRUTD}}">
+                                    <input type="email" class="form-control" id="email_dte1" disabled value="{{$cliente->CLDETA1}}">
                                 </div>
                                 <div class="form-group col-md-4">
+                                    <label for="inputPassword4">Rut</label>
+                                    <input type="text" class="form-control" id="rut" disabled value="{{$cliente->CLRUTC}}-{{$cliente->CLRUTD}}">
+                                    <input type="text" class="form-control" name="rut" hidden value="{{$cliente->CLRUTC}}">
+                                    <input type="text" class="form-control" name="dv" hidden value="{{$cliente->CLRUTD}}">
+                                </div>
+                                <!-- <div class="form-group col-md-1">
+                                    <label for="inputPassword4">Digito</label>
+                                    <input type="text" class="form-control" id="digito" disabled value="{{$cliente->CLRUTD}}">
+                                </div> -->
+                                <div class="form-group col-md-4">
                                     <label for="inputPassword4">Depto</label>
-                                    <input type="text" class="form-control" id="inputPassword4"  disabled placeholder="{{$cliente->DEPARTAMENTO}}">
+                                    <input type="number" class="form-control" id="depto"  disabled value="{{$cliente->DEPARTAMENTO}}">
+                                    <input type="number" class="form-control" name="depto" hidden value="{{$cliente->DEPARTAMENTO}}">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <button type="submit" class="btn btn-warning">Editar</button>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="region">Región</label>
+                                    <select class="form-control" aria-label="Default select example" disabled name="region" id="region" list="{{ $cliente->region }}">
+                                        <option value='0' >SELECCIONE...</option>
+                                        @foreach ($regiones as $item)
+                                            @if($item->id == $cliente->region)
+                                                <option value='{{ $item->id }}' selected>{{ $item->id }}-{{ $item->nombre }}</option>
+                                            @else
+                                                <option value='{{ $item->id }}'>{{ $item->id }}-{{ $item->nombre }}</option>
+                                            @endif
+                                        @endforeach
+                                      </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="contacto">Contacto</label>
+                                    <input type="text" class="form-control" id="contacto" disabled name="contacto" value="{{ $cliente->CLCONT }}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="email_dte2">2° Email Dte</label>
+                                    <input type="email" class="form-control" id="email_dte2" disabled name="email_dte2" value="{{ $cliente->email_dte_2 }}">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="submit" disabled >Guardar</button>
+                            <button type="button" class="btn btn-warning" onClick="editar()">Editar</button>
                         </form>
                     </div>
                 </div>
@@ -147,8 +178,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-secondary">
-                        <div class="card-header">
-                            <h5 class="card-title">Ocupar</h5>
+                        <div class="card-header bg-info">
+                            <h5 class="card-title">Compras Ágiles</h5>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -166,39 +197,118 @@
                                     <div class="card-body p-0" style="display: block;">
                                         <hr>
                                         <table id="users4" class="table table-sm table-hover">
-                                            <thead>
+                                            <thead style="text-align:center">
                                                 <tr>
-                                                    <th scope="col">Factura</th>
-                                                    <th scope="col">Fecha</th>
-                                                    <th scope="col" style="text-align:right">Valor</th>
-                                                    <th scope="col" style="text-align:right">Accciones</th>
-
+                                                    <th scope="col">ID COMPRA</th>
+                                                    <th scope="col">OFERTA</th>
+                                                    <th scope="col">FECHA/HORA</th>
+                                                    <th scope="col">ID COT</th>
+                                                    <th scope="col">MARGEN</th>
+                                                    <th scope="col">DIAS</th>
+                                                    <th scope="col">ADJUDICADA</th>
+                                                    <th scope="col">OC</th>
+                                                    <th scope="col">ADJUDICATORIO</th>
+                                                    <th scope="col">FACTURA</th>
+                                                    <th scope="col">TOTAL</th>
+                                                    <th scope="col">% BARA</th>
+                                                    <th scope="col">OBSERVACIÓN</th>
+                                                    <th scope="col">ESTADO</th>
                                                 </tr>
                                             </thead>
-                                            @if (empty($consulta))
-                                                <tbody>
+                                            @if (empty($compras_agiles))
+                                                <tbody style="text-align:center">
                                                     <tr>
                                                         <td style="text-align:left"></td>
                                                         <td style="text-align:left"></td>
                                                         <td style="text-align:right"></td>
+                                                        <td style="text-align:right"></td>
                                                     </tr>
                                                 </tbody>
                                             @else
-                                                <tbody>
-                                                    @foreach ($consulta as $item)
-                                                        <tr>
-                                                            <td style="text-align:left">{{ $item->CANMRO }}</td>
-                                                            <td style="text-align:left">{{ $item->CAFECO }}</td>
-                                                            <td style="text-align:right">
-                                                                {{ number_format($item->CAVALO, 0, ',', '.') }}
+                                            
+                                                <tbody style="text-align:center">
+                                                    @foreach ($compras_agiles as $item)
+                                                    @if($item->adjudicada === 0)
+                                                        <tr style="text-align:center" class="bg-danger">
+                                                    @elseif($item->adjudicada === 1 && $item->estado === "3")
+                                                        <tr style="text-align:center" class="bg-success">
+                                                    @else
+                                                        <tr style="text-align:center" class="bg-white">
+                                                    @endif
+
+                                                            <td>{{ $item->id_compra }}</td>
+                                                            <td>{{ number_format(($item->neto), 0, ',', '.') }}</td>
+                                                            <td>{{ date('d-m-Y H:i', strtotime($item->fecha)) }}</td>
+                                                            <td>
+                                                                @if($item->id_cot != null)
+                                                                    <form method="GET" action="{{ route('Cotizaciones', $item->id_cot) }}" target="_blank">
+                                                                    <button type="submit" style="background: none!important;
+                                                                                    border: none;
+                                                                                    padding: 0!important;
+                                                                                    /*optional*/
+                                                                                    font-family: arial, sans-serif;
+                                                                                    color: #00000;
+                                                                                    text-decoration: underline;
+                                                                                    cursor: pointer;">{{ $item->id_cot }}
+                                                                    </button>
+                                                                    </form>
+                                                                @endif
                                                             </td>
-                                                            <td style="text-align:right"><a href="" type="button" class="btn btn-primary" >Ver Mas</a></td>
+                                                            <td>
+                                                            @if($item->margen === null)
+                                                            @else
+                                                                @if($item->margen === "NETO")
+                                                                {{ $item->margen }}
+                                                                @else
+                                                                {{ $item->margen }}%
+                                                                @endif
+                                                            @endif
+                                                            </td>
+                                                            <td>{{ $item->dias }}</td>
+                                                            @if($item->adjudicada === 0)
+                                                                <td>NO</td>
+                                                            @elseif($item->adjudicada === 1)
+                                                                <td>SI</td>
+                                                            @else
+                                                                <td></td>
+                                                            @endif
+                                                            <td>{{ $item->oc }}</td>
+                                                            <td>{{ $item->adjudicatorio }}</td>
+                                                            <td>{{ $item->factura }}</td>
+                                                            <td>{{ number_format(($item->total), 0, ',', '.') }}</td>
+                                                            <td>
+                                                            @if($item->neto != null)
+                                                            {{ number_format(($item->total/($item->neto*1.19)-1)*100, 0) }}%
+                                                            @endif
+                                                            </td>
+                                                            <td>{{ $item->observacion}}</td>
+                                                            @if($item->estado === "1")
+                                                                <td>FACTURADO</td>
+                                                            @elseif($item->estado === "2")
+                                                                <td>ENVIO PDF</td>
+                                                            @elseif($item->estado === "3")
+                                                                <td>DESPACHADO</td>
+                                                            @else
+                                                                <td></td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                             @endif
                                             </tbody>
                                         </table>
                                     </div>
+                                    @if(!empty($t_c_a_a) && !empty($t_c_a_m))
+                                    <div class="row">
+                                    <div class="col">
+                                        <strong class="row">Total Adjudicadas: {{ $t_c_a_a }}</strong>
+                                        <strong class="row">Monto Total Adjudicadas: ${{ number_format(($t_c_a_m), 0, ',', '.') }}</strong>
+                                    </div>
+                                    <div class="col">
+                                        <strong class="row">Principal Razon Adjudicación: {{ $p_r_a->observacion }}</strong>
+                                        <strong class="row">Principal Adjudicador: {{ $p_p_e->adjudicatorio }}</strong>
+                                    </div>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -208,7 +318,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-info">
-                        <div class="card-header">
+                        <div class="card-header bg-primary">
                             <h3 class="card-title">Historial De Compras</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -263,7 +373,7 @@
                         </div>
                     </div>
                     <div class="card card-info">
-                        <div class="card-header border-transparent">
+                        <div class="card-header border-transparent bg-success">
                             <h3 class="card-title">Cotizaciones Realizadas </h3>
 
                             <div class="card-tools">
@@ -301,12 +411,20 @@
                                         <tbody>
                                             @foreach ($cotiz as $item)
                                                 <tr>
-                                                    <td style="text-align:left">{{ $item->CZ_NRO }}</td>
+                                                    <td style="text-align:left">
+                                                        @if($item->CZ_NRO != null)
+                                                        {{ $item->CZ_NRO }}
+                                                        @endif       
+                                                    </td>
                                                     <td style="text-align:left">{{ $item->CZ_GIRO }}</td>
                                                     <td style="text-align:left">{{ $item->CZ_FECHA }}</td>
                                                     <td style="text-align:center">{{ $item->CZ_VENDEDOR }}</td>
-                                                    <td style="text-align:right"><a href="" type="button" class="btn btn-primary" >Ver Mas</a></td>
-                                                    {{-- <td><a href="{{route('ListarOrdenesDisenoDetalle', $item->idOrdenesDiseño)}}" type="button" class="btn btn-primary">Ver Mas</a></td> --}}
+                                                    <td style="text-align:right">
+                                                    <form method="GET" action="{{ route('Cotizaciones', $item->CZ_NRO) }}" target="_blank">
+                                                            <button type="submit" class="btn btn-primary">Ver Más
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                     @endif
@@ -314,10 +432,10 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="card-footer clearfix">
+                       <!--  <div class="card-footer clearfix">
                             <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
                             <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 {{-- <div class="col-md-4">
@@ -466,12 +584,51 @@
                 </div> --}}
             </div>
         </div>
+                </div>
     </section>
 
 @endsection
 
 @section('script')
     <script>
+        function editar(){
+            if($('#contacto').prop('disabled') == false ){
+                /* $('#razon_social').prop('disabled', true);
+                $('#direccion').prop('disabled', true);
+                $('#ciudad').prop('disabled',true);
+                $('#telefono').prop('disabled', true);
+                $('#giro').prop('disabled', true);
+                $('#tipo_cliente').prop('disabled', true);
+                $('#email_dte1').prop('disabled', true);
+                $('#rut').prop('disabled', true);
+                $('#depto').prop('disabled', true); */
+                $('#contacto').prop('disabled', true);
+                $('#region').prop('disabled', true);
+                $('#email_dte2').prop('disabled', true);
+                $('#submit').prop('disabled', true);
+                /* $('#digito').prop('disabled', true); */
+            }else{
+                /* $('#razon_social').prop('disabled', false);
+                $('#direccion').prop('disabled', false);
+                $('#ciudad').prop('disabled', false);
+                $('#telefono').prop('disabled', false);
+                $('#giro').prop('disabled', false);
+                $('#tipo_cliente').prop('disabled', false);
+                $('#email_dte1').prop('disabled', false);
+                $('#rut').prop('disabled', false);
+                $('#depto').prop('disabled', false); */
+                $('#contacto').prop('disabled', false);
+                $('#region').prop('disabled', false);
+                $('#email_dte2').prop('disabled', false);
+                $('#submit').prop('disabled', false);
+                /* $('#digito').prop('disabled', false); */
+            }
+        }
+
+        $(window).on('load', function () {
+            $("#maindiv").css({"pointer-events": "all", "opacity": "1"});
+        }) 
+
         $(document).ready(function() {
             $('#productos').DataTable({
                 dom: 'Bfrtip',
@@ -528,7 +685,7 @@
     <script>
         $(document).ready(function() {
             $('#users2').DataTable({
-        "order": [[ 0, "desc" ]]
+        "order": [[ 2, "desc" ]]
     });
         });
 
@@ -545,7 +702,7 @@
     <script>
         $(document).ready(function() {
             $('#users4').DataTable({
-        "order": [[ 0, "desc" ]]
+        "order": [[ 2, "desc" ]]
     });
         });
 

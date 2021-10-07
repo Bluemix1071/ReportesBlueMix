@@ -13,7 +13,7 @@
 
     <div class="container-fluid" style="background-color: #f4f6f9; width: 150%">
       <div class="row">
-          <h3 class="display-3">Compras Ágiles</h3>
+          <h5 class="display-4">Compras Ágiles</h5>
           <form action="{{ route('FiltarCompraAgil') }}" method="post" id="desvForm" class="form-inline" style="margin-left: 10%">
                     @csrf
                     <div class="form-group mb-2">
@@ -42,7 +42,7 @@
         <div class="row">
           <div class="col-md-12">
               <table id="compras" class="table table-bordered table-hover" style="font-size: 15px">
-              <thead style="text-align:center">
+              <thead style="text-align:center" id="head1">
                     <tr>
                       <!-- <th>ID</th> -->
                       <th scope="col">ID COMPRA</th>
@@ -67,18 +67,17 @@
                       <th scope="col">ACCIONES</th>
                     </tr>
                   </thead>
-                  
-              <thead style="text-align:center">
+              <thead style="text-align:center" class="bg-info">
                     <tr>
                     <form method="POST" action="{{ route('AgregarCompraAgil') }}">
                        
                         <th><input type="text" class="form-control border-0 box-shadow-none form-control-sm" placeholder="ID COMPRA" name="id_compra"></th>
-                        <th><textarea class="form-control border-0 box-shadow-none form-control-sm" placeholder="RAZON SOCIAL" rows="1" name="razon_social" form-control-sm></textarea></th>
-                        <th><input type="text" class="form-control border-0 box-shadow-none form-control-sm" placeholder="RUT" name="rut" required oninput="checkRut(this)" maxlength="10"></th>
-                        <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="DEPTO" name="depto"></th>
-                        <th><input type="text" class="form-control border-0 box-shadow-none form-control-sm" placeholder="CIUDAD" name="ciudad"></th>
-                        <th><input type="text" class="form-control border-0 box-shadow-none form-control-sm" placeholder="REGION" name="region"></th>
-                        <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="NETO" name="neto"></th>
+                        <th><textarea id="razon_social_auto" readonly class="form-control border-0 box-shadow-none form-control-sm" placeholder="RAZON SOCIAL" rows="1" name="razon_social" form-control-sm></textarea></th>
+                        <th><input type="text" id="rut_auto" data-toggle="modal" data-target="#mimodalselectcliente" class="form-control border-0 box-shadow-none form-control-sm" placeholder="RUT" name="rut" required oninput="checkRut(this)" maxlength="10"></th>
+                        <th><input type="number" id="depto_auto" readonly class="form-control border-0 box-shadow-none form-control-sm" placeholder="DEPTO" name="depto"></th>
+                        <th><input type="text" id="ciudad_auto" readonly class="form-control border-0 box-shadow-none form-control-sm" placeholder="CIUDAD" name="ciudad"></th>
+                        <th><input type="text" id="region_auto" readonly class="form-control border-0 box-shadow-none form-control-sm" placeholder="REGION" name="region"></th>
+                        <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="OFERTA" name="neto"></th>
                         <th><input type="text" data-toggle="modal" data-target="#mimodaldatatime" class="form-control border-0 box-shadow-none form-control-sm" placeholder="FECHA/HORA" name="fechahora" id="fechahora"></th>
                         <th style="text-align:right"><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="ID COT" name="id_cot"></th>
                        
@@ -95,23 +94,32 @@
                         <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="DIAS" name="dias"></th>
                         <th> 
                           <select class="form-control border-0 box-shadow-none form-control-sm" aria-label="Default select example" name="adjudicada">
+                            <option value="{{ null }}" selected>Seleccione...</option>  
                             <option value="1">SI</option>
-                            <option value="0" selected>NO</option>
+                            <option value="0">NO</option>
                           </select>
                         </th>
                         <th><input type="text" class="form-control border-0 box-shadow-none form-control-sm" placeholder="OC" name="oc"></th>
-                        <th><input type="text" class="form-control border-0 box-shadow-none form-control-sm" placeholder="ADJUDICATORIO" name="adjudicatorio"></th>
+                        <th>
+                          <input type="text" class="form-control border-0 box-shadow-none form-control-sm" placeholder="ADJUDICATORIO" autocomplete="off" list="proveedor" name="adjudicatorio">
+                          <datalist id="proveedor">
+                            @foreach ($adjudicatorios as $item)
+                              <option value="{{ $item->adjudicatorio }}">
+                            @endforeach
+                          </datalist>
+                        </th>
                         <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="FACTURA" name="factura"></th>
                         <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="TOTAL" name="total"></th>
                         <th>-</th>
                         <th><select class="form-control border-0 box-shadow-none form-control-sm" aria-label="Default select example" name="observacion">
+                            <option value="{{ null }}" selected>Seleccione...</option>  
                             <option value="PRECIO MAS BAJO">PRECIO MÁS BAJO</option>
                             <option value="PLAZO MAS BAJO">PLAZO MÁS BAJO</option>
                             <option value="CANCELADA">CANCELADA</option>
                             <option value="CALIDAD DEL PRODUCTO">CALIDAD DEL PRODUCTO</option>
                             <option value="COTIZA LO REQUERIDO">COTIZA LO REQUERIDO</option>
                             <option value="COTIZACION DIRECTA">COTIZACIÓN DIRECTA</option>
-                            <option value="UNICOS PARTICIPANTES" selected>ÚNICOS PARTICIPANTES</option>
+                            <option value="UNICOS PARTICIPANTES">ÚNICOS PARTICIPANTES</option>
                           </select></th>
                         <th class="row">
                           <div class="form-check form-check-inline">
@@ -169,7 +177,26 @@
                         <!-- <td>{{ $item->id }}</td> -->
                         <td>{{ strtoupper($item->id_compra) }}</td>
                         <td>{{ strtoupper($item->razon_social) }}</td>
+                        @if(!empty($item->rut) && $item->depto > -1)
+                        <td>
+                        <form method="POST" action="{{ route('MantencionClientesFiltro') }}" target="_blank">
+                        @csrf
+                              <input type="hidden" class="form-control" name="rut" value="{{ strtoupper($item->rut) }}">
+                              <input type="hidden" class="form-control" name="depto" value="{{ $item->depto }}">
+                              <button type="submit" style="background: none!important;
+                                            border: none;
+                                            padding: 0!important;
+                                            /*optional*/
+                                            font-family: arial, sans-serif;
+                                            color: #00000;
+                                            text-decoration: underline;
+                                            cursor: pointer;">{{ strtoupper($item->rut) }}
+                              </button>
+                            </form>
+                        </td>
+                        @else
                         <td>{{ strtoupper($item->rut) }}</td>
+                        @endif
                         <td>{{ $item->depto }}</td>
                         <td>{{ strtoupper($item->ciudad) }}</td>
                         <td>{{ strtoupper($item->region) }}</td>
@@ -209,7 +236,7 @@
                             <td>NO</td>
                           @elseif($item->adjudicada === 1)
                             <td>SI</td>
-                          @else
+                          @elseif($item->adjudicada === null)
                             <td></td>
                           @endif
                           <td>{{ strtoupper($item->oc) }}</td>
@@ -531,9 +558,14 @@
                                         class="col-md-4 col-form-label text-md-right">ADJUDICATORIO</label>
 
                                     <div class="col-md-6">
-                                        <input id="adjudicatorio" type="text"
+                                        <input id="adjudicatorio" type="text" list="proveedor"
                                             class="form-control @error('pass') is-invalid @enderror" name="adjudicatorio"
                                             value="{{ old('adjudicatorio') }}" autocomplete="adjudicatorio">
+                                            <datalist id="proveedor">
+                                              @foreach ($adjudicatorios as $item)
+                                                <option value="{{ $item->adjudicatorio }}">
+                                              @endforeach
+                                            </datalist>
 
                                         @error('adjudicatorio')
                                             <span class="invalid-feedback" role="alert">
@@ -681,6 +713,52 @@
   </div>
 </div>
  <!-- FIN Modal -->
+ <!-- Modal SELECCION CLIENTE-->
+ <div class="modal fade" id="mimodalselectcliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 200%; margin-left: -40%">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">SELECCIÓN CLIENTE</h4>
+      </div>
+      <div class="modal-body">
+      <table id="selectclientes" class="table">
+      <thead style="text-align:center">
+        <tr>
+          <th scope="col">RUT</th>
+          <th scope="col">DEPTO</th>
+          <th scope="col">RAZÓN SOCIAL</th>
+          <th scope="col">CIUDAD</th>
+          <th scope="col">REGIÓN</th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody style="text-align:center">
+        @foreach ($clientes as $item)
+          <tr>
+          <td>{{ $item->CLRUTC }}-{{ $item->CLRUTD }}</td>
+          <td>{{ $item->DEPARTAMENTO }}</td>
+          <td>{{ $item->CLRSOC }}</td>
+          <td>{{ $item->CIUDAD }}</td>
+          <td>{{ $item->REGION }}</td>
+          <td>
+            @if(!empty($item->REGION))
+              <button type="button" onclick="selectcliente({{$item->CLRUTC}},'{{ $item->CLRUTD }}','{{$item->CLRSOC}}',{{$item->DEPARTAMENTO}},'{{$item->CIUDAD}}','{{$item->REGION}}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button>
+            @else
+              <button type="button" disabled class="btn btn-success">Seleccionar</button>
+            @endif
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+      </div>
+      <!-- <div class="modal-footer">
+        <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Guardar</a>
+     </div> -->
+    </div>
+  </div>
+</div>
+ <!-- FIN Modal -->
 
 @endsection
 
@@ -787,7 +865,6 @@
             modal.find('.modal-content #updateestadodespachado').prop('checked', true);
         } */
         
-
   })
 
   
@@ -809,6 +886,14 @@ function alerta(id){
 	} else {
 	   
 	}
+}
+
+function selectcliente(rut,dv,rzoc,depto,ciudad,region){
+  $('#razon_social_auto').val(rzoc);
+  $('#rut_auto').val((rut+"-"+dv));
+  $('#depto_auto').val(depto);
+  $('#ciudad_auto').val(ciudad);
+  $('#region_auto').val(region);
 }
 
 
@@ -833,11 +918,11 @@ $('#savedatetimeupdate').click(function(){
             });
 
   $(document).ready(function() {
-
-    /* $('#compras thead tr').clone(true).appendTo( '#compras thead' );
-    $('#compras thead tr:eq(1) th').each( function (i) {
+    
+    $('#head1 tr').clone(true).appendTo( '#head1' );
+    $('#head1 tr:eq(1) th').each( function (i) {
         var title = $(this).text();
-        $(this).html( '<input type="text"/>' );
+        $(this).html( '<input type="text" class="form-control" style="font-size: 10px; height: 20px"/>' );
  
         $( 'input', this ).on( 'keyup change', function () {
             if ( table.column(i).search() !== this.value ) {
@@ -847,7 +932,7 @@ $('#savedatetimeupdate').click(function(){
                     .draw();
             }
         } );
-    } ); */
+    } );
     
     $("#estadodespachado").on("click", function() {
       var checked = $(this).is(":checked");
@@ -920,13 +1005,32 @@ $('#savedatetimeupdate').click(function(){
 
     var table = $('#compras').DataTable( {
         orderCellsTop: true,
-        
         dom: 'Bfrtip',
         order: [[ 7, "desc" ]],
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
 
         ],
+          "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
+      }
+    } );
+
+      $('#selectclientes').DataTable( {
+        orderCellsTop: true,
+        order: [[ 0, "desc" ]],
           "language":{
         "info": "_TOTAL_ registros",
         "search":  "Buscar",

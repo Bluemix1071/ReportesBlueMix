@@ -15,9 +15,20 @@ class CompraAgilController extends Controller
     {  
         $compras_agiles=DB::table('compra_agil')->orderBy('fecha','desc')->get();
 
-        //dd($compras_agiles);
+        $adjudicatorios=DB::table('compra_agil')->where('adjudicatorio', '!=', '')->groupBy('adjudicatorio')->get('adjudicatorio');
 
-        return view('admin.CompraAgil' ,compact('compras_agiles'));
+        $clientes=DB::table('cliente')
+        ->leftjoin('tablas', 'CLCIUF', '=', 'tarefe')
+        ->where('TACODI', 2)
+        /* ->where('CLRUTC', 69140900)
+        ->where('CLRUTD', 7)
+        ->where('DEPARTAMENTO', 1) */
+        ->leftjoin('regiones', 'cliente.region', '=', 'regiones.id')
+        ->get(['CLRUTC','CLRUTD','DEPARTAMENTO','CLRSOC','TAGLOS AS CIUDAD','regiones.nombre AS REGION']);
+
+        //dd($clientes);
+
+        return view('admin.CompraAgil' ,compact('compras_agiles', 'adjudicatorios', 'clientes'));
     }
 
     public function create(Request $request)
@@ -154,7 +165,16 @@ class CompraAgilController extends Controller
 
     public function fechaFiltro(Request $request){
 
-        //dd($request->all());
+        $adjudicatorios=DB::table('compra_agil')->where('adjudicatorio', '!=', '')->groupBy('adjudicatorio')->get('adjudicatorio');
+
+        $clientes=DB::table('cliente')
+        ->leftjoin('tablas', 'CLCIUF', '=', 'tarefe')
+        ->where('TACODI', 2)
+        /* ->where('CLRUTC', 69140900)
+        ->where('CLRUTD', 7)
+        ->where('DEPARTAMENTO', 1) */
+        ->leftjoin('regiones', 'cliente.region', '=', 'regiones.id')
+        ->get(['CLRUTC','CLRUTD','DEPARTAMENTO','CLRSOC','TAGLOS AS CIUDAD','regiones.nombre AS REGION']);
 
         $fecha1=$request->fecha1;
 
@@ -167,7 +187,7 @@ class CompraAgilController extends Controller
             $compras_agiles = DB::table('compra_agil')->where('fecha', 'LIKE', "%$fecha%")->get();
     
             //return view('admin.CompraAgil',compact('diseno'));
-            return view('admin.CompraAgil',compact('compras_agiles'));
+            return view('admin.CompraAgil',compact('compras_agiles', 'adjudicatorios', 'clientes'));
         }
 
 

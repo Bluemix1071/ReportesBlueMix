@@ -13,7 +13,7 @@ class ProductosJumpseller extends Model
     public $incrementing = true;
 
     protected $fillable = [
-    'id','sku','name','stock','price','parent_id'
+    'id','sku','name','stock','price','parent_id','parent_id_jp'
     ];
     public $timestamps = false;
 }

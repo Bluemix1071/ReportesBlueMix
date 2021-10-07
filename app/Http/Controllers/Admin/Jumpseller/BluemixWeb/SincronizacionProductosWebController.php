@@ -70,7 +70,7 @@ class SincronizacionProductosWebController extends Controller
                                     'price' => $variant['price'],
                                     'parent_id' => $insert->id_ai,
                                     'url' => $variant['image']['url'],
-
+                                    'parent_id_jp' => $product['product']['id'],
                                 ]);
                             }
                         }
@@ -103,6 +103,55 @@ class SincronizacionProductosWebController extends Controller
 
         // return response()->json($products);
 
+    }
+
+    public function actualizarProductoWeb(){
+        
+        $productos=DB::table('subida_productos_web')->where('sku','!=',null)->get()->take(100);
+
+        $count = count($productos);
+        /* $cantidadDePaginas = ceil($count / 100);
+        dd($cantidadDePaginas); */
+
+            $i=0;
+            //crea un json body de productos en productos sin variantes
+            foreach ($productos as $item) {
+                $i++;
+                $body = [
+                    "product" =>
+                    [
+                        "name" => $item->name,
+                        "price" => $item->precio_detalle,
+                        "stock" => $item->stock_total
+                    ]
+                ];
+                //crea un json body de productos en productos con variantes
+                if($item->parent_id != null){
+                    $bodyvariant = [
+                        "variant" =>
+                        [
+                            "price" => $item->precio_detalle,
+                            "stock" => $item->stock_total
+                        ]
+                    ];
+                    //envia a putVariante funcion que crea url para actualizar variantes
+                    //$productVariant = $this->apiJumpseller->putVariant($item->parent_id_jp,$item->id,$bodyvariant);
+                    error_log(print_r($bodyvariant, true));
+                }else{
+                     //envia a put funcion que crea url para actualizar solo productos
+                    //$product = $this->apiJumpseller->put($item->id,$body);
+                    error_log(print_r($body, true));
+                }
+                  $porcentaje = (($i*100)/$count);
+                  error_log(print_r(number_format($porcentaje,0).'%', true));
+            }
+
+        error_log(print_r("termino...", true));
+
+        return redirect()->route('index.jumpsellerWeb');
+
+        //$product = $this->apiJumpseller->put(10967214,$body);
+        /* $body = '{ "product" : {"name": "ACCESORIO ARGOLLA  Nº11", "price": 7,  "stock": 1} }';  */
     }
 
 }
