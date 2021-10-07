@@ -56,7 +56,8 @@ class AdminController extends Controller
 
     public function ProductosPorMarca(Request $request){
 
-        $marcas=DB::table('marcas')->get();
+        $marcas=DB::table('marcas')
+        ->get();
 
         // dd($marcas);
 
@@ -73,7 +74,8 @@ class AdminController extends Controller
       ->get();
 
 
-        $marcas=DB::table('marcas')->get();
+        $marcas=DB::table('marcas')
+        ->get();
 
       return view('admin.productospormarca',compact('productos','marcas'));
     }
@@ -1763,6 +1765,139 @@ public function stocktiemporeal (Request $request){
 
 
     }
+
+
+    public function ResumenDeVenta(Request $request){
+
+
+        return view('admin.resumendeventa');
+
+
+    }
+
+
+    public function ResumenDeVentaFiltro(Request $request){
+
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
+
+
+        $tarjetas=DB::select('select *
+        from tarjeta_credito,
+        cargos where CANMRO = nro_doc
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+
+
+        $debito=DB::select('select sum(monto) as totaldebito
+        from tarjeta_credito,
+        cargos where tipo = "DB" and CANMRO = nro_doc
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+
+        $credito=DB::select('select sum(monto) as totalcredito
+        from tarjeta_credito,
+        cargos where tipo != "DB" and CANMRO = nro_doc
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+
+        $totaltarjeta=$debito[0]->totaldebito+$credito[0]->totalcredito;
+
+        // dd($totaltarjeta);
+
+
+        return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta'));
+
+
+    }
+
+
+    public function VentasPorVendedor(Request $request){
+
+        $vendedor=DB::table('tablas')
+        ->where('TACODI' , '24')
+        ->where('estado' , 'A')
+        ->orderByRaw('tarefe asc')
+        ->get();
+
+        return view('admin.VentasPorVendedor',compact('vendedor'));
+
+
+
+    }
+
+
+    public function VentasPorVendedorFiltro(Request $request){
+
+
+        $comision=floatval($request->comision);
+
+        $ventas=DB::table('CARGOS')
+        ->selectRaw("CANMRO,CATIPO,CARUTC,razon,CAFECO,CAIVA,CANETO,CAVALO,(CANETO * $comision) as comision")
+        ->where('CACOVE' , $request->vendedor)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->get();
+
+        // $comisionfactura=DB::table('CARGOS')
+        // ->selectRaw("(CANETO * $comision) as comision")
+        // ->where('CACOVE' , $request->vendedor)
+        // ->where('CATIPO' , 7)
+        // ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        // ->sum('comision');
+
+        // $comisionboleta=DB::table('CARGOS')
+        // ->selectRaw("(CANETO * $comision) as comision")
+        // ->where('CACOVE' , $request->vendedor)
+        // ->where('CATIPO' , 8)
+        // ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        // ->sum('comision');
+
+        $boletaconteo=DB::table('CARGOS')
+        ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , 7)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->count('CANMRO');
+
+        $facturaconteo=DB::table('CARGOS')
+        ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , 8)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->count('CANMRO');
+        $boletasuma=DB::table('CARGOS')
+        ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , 7)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->sum('CAVALO');
+
+        $facturasuma=DB::table('CARGOS')
+        ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , 8)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->sum('CAVALO');
+
+        $boletanetototal=DB::table('CARGOS')
+        ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , 7)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->sum('CANETO');
+
+        $facturanetototal=DB::table('CARGOS')
+        ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , 8)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->sum('CANETO');
+
+        $vendedor=DB::table('tablas')
+        ->where('TACODI' , '24')
+        ->where('estado' , 'A')
+        ->orderByRaw('tarefe asc')
+        ->get();
+
+        $totalconteo=$facturaconteo+$boletaconteo;
+        $totalsuma=$boletasuma+$facturasuma;
+
+        return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','comisionfactura','comisionboleta'));
+
+
+    }
+
 
 
 

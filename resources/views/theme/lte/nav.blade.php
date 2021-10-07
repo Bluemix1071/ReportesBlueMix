@@ -371,6 +371,14 @@
                                 @endcan
 
                                 <li class="nav-item">
+                                    <a href="{{ route('VentasPorVendedor') }}"
+                                        class="nav-link {{ setActive('VentasPorVendedor') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Ventas Por Vendedor</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
                                     <a href="{{ route('ComprasPorHoraIndex') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Ventas Por Hora</p>
@@ -476,22 +484,6 @@
                                     </li>
                                 @endcan
 
-                                @can('LibroVentas')
-                                    <li class="nav-item">
-                                        <a href="{{ route('stocktiemporeal') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Stock Tiempo Real
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('consultafacturaboleta') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Libro De Ventas Diario
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endcan
 
                                 <li class="nav-item">
                                     <a href="{{ route('CompraAgil') }}" class="nav-link">
@@ -500,6 +492,32 @@
                                         </p>
                                     </a>
                                 </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('stocktiemporeal') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Stock Tiempo Real
+                                        </p>
+                                    </a>
+                                </li>
+
+                                {{-- <li class="nav-item">
+                                    <a href="{{ route('ResumenDeVenta') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Resumen De Venta
+                                        </p>
+                                    </a>
+                                </li> --}}
+
+                                @can('LibroVentas')
+                                    <li class="nav-item">
+                                        <a href="{{ route('consultafacturaboleta') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Libro De Ventas Diario
+                                            </p>
+                                        </a>
+                                    </li>
+                                @endcan
 
                                 @can('Costos')
                                     <li class="nav-item">

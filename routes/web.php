@@ -90,7 +90,7 @@ Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
 
 
 Route::prefix('admin')->namespace('Admin')->group(function(){
-    
+
 });
 //rutas de administrador
 Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->group(function(){
@@ -176,6 +176,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/ProductosFaltantes','AdminController@ProductosFaltantes')->name('ProductosFaltantes');
 
+    Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');
+    Route::post('/ResumenDeVentaFiltro','AdminController@ResumenDeVentaFiltro')->name('ResumenDeVentaFiltro');
+
+    Route::get('/VentasPorVendedor','AdminController@VentasPorVendedor')->name('VentasPorVendedor');
+    Route::post('/VentasPorVendedorFiltro','AdminController@VentasPorVendedorFiltro')->name('VentasPorVendedorFiltro');
 
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
