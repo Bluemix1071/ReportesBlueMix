@@ -20,12 +20,16 @@ class ComprasProveedoresController extends Controller
         $json = json_decode(json_encode($xml));
 
         $encabezado = $json->SetDTE->DTE->Documento->Encabezado;
+        //error_log(print_r($json, true));
         $detalle = $json->SetDTE->DTE->Documento->Detalle;
         if(!empty($json->SetDTE->DTE->Documento->Referencia)){
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
         }
         if(empty($encabezado->IdDoc->FchVenc)){
             $encabezado->IdDoc->FchVenc = null;
+        }
+        if(empty($encabezado->Emisor->CiudadOrigen) || !property_exists($encabezado->Emisor->CiudadOrigen, 'stdClass')){
+            $encabezado->Emisor->CiudadOrigen = null;
         }
         $i = 0;
 
