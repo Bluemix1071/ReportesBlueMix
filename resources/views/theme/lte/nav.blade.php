@@ -796,6 +796,54 @@
                     </li>
                 @endcan
 
+                @can('ordenesdiseno')
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon far fa-money-bill-alt"></i>
+                            <p>
+                                Compras
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            @can('VentaGiftCard')
+
+                                <li class="nav-item">
+                                    <a href="{{ route('ComprasProveedores') }}"
+                                        class="nav-link {{ setActive('ComprasProveedores') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Compras Proveedores</p>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('CambioPrecios')
+
+                                <li class="nav-item">
+                                    <a href="{{ route('cambiodeprecios') }}"
+                                        class="nav-link {{ setActive('cambiodeprecios') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Cambio de Precios</p>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('ordenesdiseno')
+
+                                <li class="nav-item">
+                                    <a href="{{ route('OrdenesDeDiseño') }}"
+                                        class="nav-link {{ setActive('OrdenesDeDiseño') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Ordenes De Diseño</p>
+                                    </a>
+                                </li>
+                            @endcan
+
+                        </ul>
+                    </li>
+                @endcan
+
 
                 @can('Bodega')
 
