@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<DTE version="1.0" xmlns="http://www.sii.cl/SiiDte">
+<Documento ID="R88215200F72138T33">
+<Encabezado>
+<IdDoc>
+<TipoDTE>33</TipoDTE>
+<Folio>72138</Folio>
+<FchEmis>2017-07-11</FchEmis>
+<FmaPago>2</FmaPago>
+<FchVenc>2017-07-11</FchVenc>
+</IdDoc>
+<Emisor>
+<RUTEmisor>88215200-6</RUTEmisor>
+<RznSoc>SOCIEDAD DISTRIBUIDORA Y COMERCIAL LAUTARO LIMITADA</RznSoc>
+<GiroEmis>ESTACION DE SERVICIO</GiroEmis>
+<Acteco>505000</Acteco>
+<DirOrigen>CASA MATRIZ: CARRERA 348, SUCURSAL: O HIGGINS 1703</DirOrigen>
+<CmnaOrigen>LAUTARO</CmnaOrigen>
+<CiudadOrigen>LAUTARO</CiudadOrigen>
+</Emisor>
+<Receptor>
+<RUTRecep>9192432-3</RUTRecep>
+<RznSocRecep>GARCIA MILLAR MARIA</RznSocRecep>
+<GiroRecep>TRANSPORTE</GiroRecep> 
+<DirRecep>LISANDRO VERGARA 087</DirRecep>
+<CmnaRecep>LAUTARO</CmnaRecep>
+<CiudadRecep>LAUTARO</CiudadRecep>
+</Receptor>
+<Totales>
+<MntNeto>218161</MntNeto>
+<TasaIVA>19</TasaIVA>
+<IVA>41451</IVA>
+<ImptoReten>
+<TipoImp>28</TipoImp>
+<TasaImp>1</TasaImp>
+<MontoImp>50971</MontoImp>
+</ImptoReten>
+<ImptoReten>
+<TipoImp>35</TipoImp>
+<TasaImp>1</TasaImp>
+<MontoImp>10178</MontoImp>
+</ImptoReten>
+<MntTotal>320761</MntTotal>
+</Totales>
+</Encabezado>
+<Detalle>
+<NroLinDet>1</NroLinDet>
+<NmbItem>Mercadería y Servicios s/Guías</NmbItem>
+<QtyItem>1.00</QtyItem>
+<PrcItem>9378.00000</PrcItem>
+<MontoItem>9378</MontoItem>
+</Detalle>
+<Detalle>
+<NroLinDet>2</NroLinDet>
+<NmbItem>Petroleo Diesel</NmbItem>
+<DscItem>Imp.Esp.Fijo $21033   Imp.Esp.Variable $5495</DscItem>
+<QtyItem>300.00</QtyItem>
+<PrcItem>337.46000</PrcItem>
+<MontoItem>101237</MontoItem>
+</Detalle>
+<Detalle>
+<NroLinDet>3</NroLinDet>
+<NmbItem>Petroleo Diesel</NmbItem>
+<DscItem>Imp.Esp.Fijo $19725   Imp.Esp.Variable $4718</DscItem>
+<QtyItem>281.35</QtyItem>
+<PrcItem>336.19000</PrcItem>
+<MontoItem>94586</MontoItem>
+</Detalle>
+<Detalle>
+<NroLinDet>4</NroLinDet>
+<NmbItem>Gasolina 95 Octanos Sin Plomo</NmbItem>
+<DscItem>Imp.Esp.Fijo $9361   Imp.Esp.Variable $817</DscItem>
+<QtyItem>33.38</QtyItem>
+<PrcItem>388.26000</PrcItem>
+<MontoItem>12960</MontoItem>
+</Detalle>
+<Detalle>
+<NroLinDet>5</NroLinDet>
+<IndExe>4</IndExe>
+<NmbItem>guia(s) de despacho numero(s)</NmbItem>
+<DscItem>26459 26460 26476 26486 24116 26490 26502 26510 26522 26523 26526</DscItem>
+<MontoItem>0</MontoItem>
+</Detalle>
+<SubTotInfo>
+<NroSTI>1</NroSTI>
+<GlosaSTI>IEF|35|Total DTE|FCorte:12/07/2017</GlosaSTI>
+<SubTotNetoSTI>9361</SubTotNetoSTI>
+</SubTotInfo>
+<SubTotInfo>
+<NroSTI>2</NroSTI>
+<GlosaSTI>IEV|35|Total DTE|FCorte:12/07/2017</GlosaSTI>
+<SubTotNetoSTI>817</SubTotNetoSTI>
+</SubTotInfo>
+<SubTotInfo>
+<NroSTI>3</NroSTI>
+<GlosaSTI>IEF|28|Total DTE|FCorte:12/07/2017</GlosaSTI>
+<SubTotNetoSTI>40758</SubTotNetoSTI>
+</SubTotInfo>
+<SubTotInfo>
+<NroSTI>4</NroSTI>
+<GlosaSTI>IEV|28|Total DTE|FCorte:12/07/2017</GlosaSTI>
+<SubTotNetoSTI>10213</SubTotNetoSTI>
+</SubTotInfo>
+<TED version="1.0"><DD><RE>88215200-6</RE><TD>33</TD><F>72138</F><FE>2017-07-11</FE><RR>9192432-3</RR><RSR>GARCIA MILLAR MARIA</RSR><MNT>320761</MNT><IT1>Mercadería y Servicios s/Guías</IT1><CAF version="1.0">
+<DA>
+<RE>88215200-6</RE>
+<RS>SOCIEDAD DISTRIBUIDORA Y COMERCIAL LAUTA</RS>
+<TD>33</TD>
+<RNG><D>70896</D><H>80895</H></RNG>
+<FA>2017-05-31</FA>
+<RSAPK><M>6m0qpPy65QeJB2q0V+nKTVWAvEZanXObvLn5lh0HcdNARFCjJ8KMU+/SephPPbDGWPfXbjBMWrr9m83MWSn+4Q==</M><E>Aw==</E></RSAPK>
+<IDK>300</IDK>
+</DA>
+<FRMA algoritmo="SHA1withRSA">VWEqqBDKQudZGbGZFThX72ldT7r60dCLl/QPuiLyLD4Cta5HDODaYpGRZ4onDHpH0hgdrELRYzpUcec23o5HLw==</FRMA>
+</CAF><TSTED>2017-07-11T10:38:06</TSTED></DD><FRMT algoritmo="SHA1withRSA">fh2qxgM5GNaaPljhWG4SfOWJ5/jOw4sfi9w6ErlVqRn5zLEerv5bvt1pC3W7tJ65HYvIB2QvanrlL1+EzFEVPQ==</FRMT></TED><TmstFirma>2017-07-11T10:38:06</TmstFirma>
+</Documento>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI="#R88215200F72138T33"><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>SihGm8f+1A9SvkeOVLPpiTIqauI=</DigestValue></Reference></SignedInfo><SignatureValue>
+cQYp8O/dkfYRIqXz/faBMxJQv6or9uZo+95PsybIYRhdsQVg27edODdCLz1fzT6jcgWpXui6vtcm
+7VgzNQsyBQ1wvEUuOv1jALvnSLKlsJGKvavPcu9hXxTsHjardlhtBJsQpMSCgU3PZIyj5qczDu2y
+T5Z7eYK38KKy8dMMBNs=
+</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>sgj8ImKNX2qvaS1hwz1ok3pSkQwhNQ04BXczKEDAzoQjZXkcCRK5kTbvH3D7/PwqFmW62mzF0c+Lob9UQA48CfvBQf3PvL+rTESIt4Zn2rHkPERUDqbSSOBHg8XPAt2jRBSvDAC1in1qjAt11aQusC0RBGn4QpcE8Gb584MYGRc=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>
+MIIGRzCCBS+gAwIBAgIKclp9iAAAAAGrujANBgkqhkiG9w0BAQUFADCB0jELMAkGA1UEBhMCQ0wx
+HTAbBgNVBAgTFFJlZ2lvbiBNZXRyb3BvbGl0YW5hMREwDwYDVQQHEwhTYW50aWFnbzEUMBIGA1UE
+ChMLRS1DRVJUQ0hJTEUxIDAeBgNVBAsTF0F1dG9yaWRhZCBDZXJ0aWZpY2Fkb3JhMTAwLgYDVQQD
+EydFLUNFUlRDSElMRSBDQSBGSVJNQSBFTEVDVFJPTklDQSBTSU1QTEUxJzAlBgkqhkiG9w0BCQEW
+GHNjbGllbnRlc0BlLWNlcnRjaGlsZS5jbDAeFw0xNDA5MjIxNDA0MjFaFw0xNzA5MjExNDA0MjFa
+MIHJMQswCQYDVQQGEwJDTDEaMBgGA1UECAwRREUgTEEgQVJBVUNBTsONQSAxDzANBgNVBAcTBkNh
+dXRpbjEYMBYGA1UEChMPSUNvbnN0cnV5ZSBTLkEuMR0wGwYDVQQLExRDb21lcmNpbyBFbGVjdHJv
+bmljbzElMCMGA1UEAxMcRG9taW5nbyBBcnR1cm8gVG9ycmVzIEJ1c3RvczEtMCsGCSqGSIb3DQEJ
+ARYebS5waW5jaGVpcmFoZXJuYW5kZXpAZ21haWwuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCB
+iQKBgQCyCPwiYo1faq9pLWHDPWiTelKRDCE1DTgFdzMoQMDOhCNleRwJErmRNu8fcPv8/CoWZbra
+bMXRz4uhv1RADjwJ+8FB/c+8v6tMRIi3hmfaseQ8RFQOptJI4EeDxc8C3aNEFK8MALWKfWqMC3XV
+pC6wLREEafhClwTwZvnzgxgZFwIDAQABo4ICqDCCAqQwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGC
+NxUIgtyDL4WTjGaF1Z0XguLcJ4Hv7DxhgZrnFYav4BUCAWQCAQQwHQYDVR0OBBYEFK/FgMccCtiU
+8LibZyNaJQVDZSvgMAsGA1UdDwQEAwIE8DAfBgNVHSMEGDAWgBR44T6f0hKzejyNzTAOU7NDKQez
+VTA+BgNVHR8ENzA1MDOgMaAvhi1odHRwOi8vY3JsLmUtY2VydGNoaWxlLmNsL2VjZXJ0Y2hpbGVj
+YUZFUy5jcmwwOwYIKwYBBQUHAQEELzAtMCsGCCsGAQUFBzABhh9odHRwOi8vb2NzcC5pbnRlcmNh
+cGl0LmNvbS9vY3NwMCMGA1UdEQQcMBqgGAYIKwYBBAHBAQGgDBYKMDQ1OTkzNTQtSzAjBgNVHRIE
+HDAaoBgGCCsGAQQBwQECoAwWCjk2OTI4MTgwLTUwggFNBgNVHSAEggFEMIIBQDCCATwGCCsGAQQB
+w1IFMIIBLjAtBggrBgEFBQcCARYhaHR0cDovL3d3dy5lLWNlcnRjaGlsZS5jbC9DUFMuaHRtMIH8
+BggrBgEFBQcCAjCB7x6B7ABDAGUAcgB0AGkAZgBpAGMAYQBkAG8AIABGAGkAcgBtAGEAIABTAGkA
+bQBwAGwAZQAuACAASABhACAAcwBpAGQAbwAgAHYAYQBsAGkAZABhAGQAbwAgAGUAbgAgAGYAbwBy
+AG0AYQAgAHAAcgBlAHMAZQBuAGMAaQBhAGwALAAgAHEAdQBlAGQAYQBuAGQAbwAgAGgAYQBiAGkA
+bABpAHQAYQBkAG8AIABlAGwAIABDAGUAcgB0AGkAZgBpAGMAYQBkAG8AIABwAGEAcgBhACAAdQBz
+AG8AIAB0AHIAaQBiAHUAdABhAHIAaQBvMA0GCSqGSIb3DQEBBQUAA4IBAQCF4guWXyMGwGwvBxjS
+7rjdzy7NaHf7wsghAyEw4Pd3oYSfihRSIvu+cb2jmvvKNo9q+rIFj8mbzO0Blobup/WgFwOtAguw
+1H33vqE4v4Tonoazw0W35BU21yTlfC0fuiw2meFDz7dEBQ5Nr1ZN5WuEzGSAnMGBv8PNIiTnPxLS
+aDWTJe8TBOaqL9rwGYQXJ8fn59K+NiI+qv5pQOwNQWqEgqdg9/rmgqKn27DdwZYm7VyTbSFyjQ5+
+X5Pf88l7e8zxYbMQRJgYTODkTL5qzrlnOHNLGeyNf3VfckiPY7TjMZ0DdmHtuYADknrCWF4ML4Kj
+fGxqHCfFqv4i0uPLXBEr
+</X509Certificate></X509Data></KeyInfo></Signature></DTE>

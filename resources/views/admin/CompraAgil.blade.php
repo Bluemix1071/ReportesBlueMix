@@ -772,7 +772,7 @@
 
         modal.find('.modal-content #id_coti').val(id_coti);
   }) */
-  
+
 
   
   $('#mimodaledicion').on('show.bs.modal', function (event) {
