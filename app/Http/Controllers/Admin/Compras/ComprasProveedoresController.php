@@ -24,8 +24,10 @@ class ComprasProveedoresController extends Controller
         if(!empty($json->SetDTE->DTE->Documento->Referencia)){
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
         }
-
-
+        if(empty($encabezado->IdDoc->FchVenc)){
+            $encabezado->IdDoc->FchVenc = null;
+        }
+        $i = 0;
 
         $compra = ['folio' => $encabezado->IdDoc->Folio,
                     'fecha_emision' => $encabezado->IdDoc->FchEmis,
@@ -42,27 +44,28 @@ class ComprasProveedoresController extends Controller
                     'total' => $encabezado->Totales->MntTotal
             ];
 
-        $ultima_compra = DB::table('compras')
-        ->where('rut', $encabezado->Emisor->RUTEmisor)
-        ->where('tipo_dte', $encabezado->IdDoc->TipoDTE)
-        ->where('folio', $encabezado->IdDoc->Folio)->first();
-
-        //dd($ultima_compra);
-
-        if($ultima_compra == null){
-            //DB::table('compras')->insert($compra);
+        $existe = $this->buscaDte($encabezado->Emisor->RUTEmisor, $encabezado->IdDoc->TipoDTE, $encabezado->IdDoc->Folio);
+        
+        if($existe == null){
+            DB::table('compras')->insert($compra);
+            $ultima_compra = $this->buscaDte($encabezado->Emisor->RUTEmisor, $encabezado->IdDoc->TipoDTE, $encabezado->IdDoc->Folio);
             if(!empty($referencia)){
                 foreach($referencia as $item){
-                    error_log(print_r($item, true));
+                    $i++;
+                    $referencias = ['n_linea' => $i,
+                                    'tpo_doc_ref' => $item->TpoDocRef,
+                                    'folio' => $item->FolioRef,
+                                    'fecha_ref' => $item->FchRef,
+                                    'id_compra' => $ultima_compra->id
+                    ];
+                    //error_log(print_r($referencias, true));
+                    DB::table('referencias')->insert($referencias);
                 }
             }
-            dd("no existe");
+            return redirect()->route('ComprasProveedores')->with('success','Se ha Agregado el Documento correctamente');
         }else{
-            dd("ya existe");
+            return redirect()->route('ComprasProveedores')->with('warning','Documento ya existe para este Proveedor');
         }
-
-        return view('admin.Compras.ComprasProveedores');
-
         //printf("</br>".$json);
         /* printf("</br>".$xml->Documento->Encabezado->Emisor->RznSoc);
 
@@ -70,5 +73,15 @@ class ComprasProveedoresController extends Controller
             printf("</br>".$item->NmbItem);
             printf("</br>".$item->MontoItem);
          } */
+    }
+
+    public function buscaDte($rut, $tipo, $folio){
+        
+        $ultima_compra = DB::table('compras')
+        ->where('rut', $rut)
+        ->where('tipo_dte', $tipo)
+        ->where('folio', $folio)->first();
+
+        return $ultima_compra;
     }
 }
