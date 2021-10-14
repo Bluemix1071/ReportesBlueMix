@@ -821,10 +821,10 @@
                             @can('CambioPrecios')
 
                                 <li class="nav-item">
-                                    <a href="{{ route('cambiodeprecios') }}"
-                                        class="nav-link {{ setActive('cambiodeprecios') }}">
+                                    <a href="{{ route('ConsultaDocumentos') }}"
+                                        class="nav-link {{ setActive('ConsultaDocumentos') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Cambio de Precios</p>
+                                        <p>Consulta Documentos</p>
                                     </a>
                                 </li>
                             @endcan

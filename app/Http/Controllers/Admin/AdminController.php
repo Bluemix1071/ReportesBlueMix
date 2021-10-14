@@ -1891,56 +1891,58 @@ public function stocktiemporeal (Request $request){
 
         $comision=floatval($request->comision);
 
-        $ventas=DB::table('CARGOS')
+        $ventas=DB::table('cargos')
         ->selectRaw("CANMRO,CATIPO,CARUTC,razon,CAFECO,CAIVA,CANETO,CAVALO,(CANETO * $comision) as comision")
         ->where('CACOVE' , $request->vendedor)
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->get();
 
-        // $comisionfactura=DB::table('CARGOS')
+        // $comisionfactura=DB::table('cargos')
         // ->selectRaw("(CANETO * $comision) as comision")
         // ->where('CACOVE' , $request->vendedor)
         // ->where('CATIPO' , 7)
         // ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         // ->sum('comision');
 
-        // $comisionboleta=DB::table('CARGOS')
-        // ->selectRaw("(CANETO * $comision) as comision")
-        // ->where('CACOVE' , $request->vendedor)
-        // ->where('CATIPO' , 8)
-        // ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-        // ->sum('comision');
+        $comisionboleta=DB::table('cargos')
+        ->selectRaw("sum(CANETO * $comision) as boletaneto")
+        ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , 8)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->get();
 
-        $boletaconteo=DB::table('CARGOS')
+        // dd($comisionboleta);
+
+        $boletaconteo=DB::table('cargos')
         ->where('CACOVE' , $request->vendedor)
         ->where('CATIPO' , 7)
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->count('CANMRO');
 
-        $facturaconteo=DB::table('CARGOS')
+        $facturaconteo=DB::table('cargos')
         ->where('CACOVE' , $request->vendedor)
         ->where('CATIPO' , 8)
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->count('CANMRO');
-        $boletasuma=DB::table('CARGOS')
+        $boletasuma=DB::table('cargos')
         ->where('CACOVE' , $request->vendedor)
         ->where('CATIPO' , 7)
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->sum('CAVALO');
 
-        $facturasuma=DB::table('CARGOS')
+        $facturasuma=DB::table('cargos')
         ->where('CACOVE' , $request->vendedor)
         ->where('CATIPO' , 8)
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->sum('CAVALO');
 
-        $boletanetototal=DB::table('CARGOS')
+        $boletanetototal=DB::table('cargos')
         ->where('CACOVE' , $request->vendedor)
         ->where('CATIPO' , 7)
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->sum('CANETO');
 
-        $facturanetototal=DB::table('CARGOS')
+        $facturanetototal=DB::table('cargos')
         ->where('CACOVE' , $request->vendedor)
         ->where('CATIPO' , 8)
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))

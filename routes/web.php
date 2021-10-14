@@ -110,15 +110,18 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/CompraAgil','CompraAgilController@create')->name('AgregarCompraAgil');
     Route::delete('/CompraAgil/{id}','CompraAgilController@destroy')->name('BorrarCompraAgil');
     Route::put('/CompraAgil','CompraAgilController@update')->name('EditarCompraAgil');
-    Route::post('/FiltroCompraAgil/','CompraAgilController@fechaFiltro')->name('FiltarCompraAgil');
-    Route::post('/XmlTest/','CompraAgilController@xmlTest')->name('XmlTest');
+    Route::post('/FiltroCompraAgil','CompraAgilController@fechaFiltro')->name('FiltarCompraAgil');
+    Route::post('/XmlTest','CompraAgilController@xmlTest')->name('XmlTest');
     // fin
     /*  Mantenedor CRUD Cotizaciones */
     Route::get('/Cotizaciones/{id}','CotizacionesController@index')->name('Cotizaciones');
     // fin
     /*  Mantenedor CRUD Compras a proveedores */
-    Route::get('/ComprasProveedores/','Compras\ComprasProveedoresController@index')->name('ComprasProveedores');
-    Route::post('/XmlUp/','Compras\ComprasProveedoresController@xmlUp')->name('XmlUp');
+    Route::get('/ComprasProveedores','Compras\ComprasProveedoresController@index')->name('ComprasProveedores');
+    Route::post('/XmlUp','Compras\ComprasProveedoresController@xmlUp')->name('XmlUp');
+
+    Route::get('/ConsultaDocumentos','Compras\ConsultaDocumentosController@index')->name('ConsultaDocumentos');
+    Route::post('/ConsultaDocumentosFiltro','Compras\ConsultaDocumentosController@ConsultaDocumentosFiltro')->name('ConsultaDocumentosFiltro');
     // fin
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
