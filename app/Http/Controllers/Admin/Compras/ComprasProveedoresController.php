@@ -18,9 +18,12 @@ class ComprasProveedoresController extends Controller
         
         $xml = simplexml_load_file($url);
         $json = json_decode(json_encode($xml));
-
+        if(is_array($json->SetDTE->DTE)){
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. !No soportado');
+        }
+        
         $encabezado = $json->SetDTE->DTE->Documento->Encabezado;
-        //error_log(print_r($json, true));
+        
         $detalle = $json->SetDTE->DTE->Documento->Detalle;
         if(!empty($json->SetDTE->DTE->Documento->Referencia)){
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
@@ -28,15 +31,20 @@ class ComprasProveedoresController extends Controller
         if(empty($encabezado->IdDoc->FchVenc)){
             $encabezado->IdDoc->FchVenc = null;
         }
-        if(empty($encabezado->Emisor->CiudadOrigen) || !property_exists($encabezado->Emisor->CiudadOrigen, 'stdClass')){
+        if(empty($encabezado->Emisor->CiudadOrigen) || is_object($encabezado->Emisor->CiudadOrigen)){
             $encabezado->Emisor->CiudadOrigen = null;
         }
+        if(empty($encabezado->IdDoc->FmaPago)){
+            $encabezado->IdDoc->FmaPago = 2;
+        }
+        
         $i = 0;
 
         $compra = ['folio' => $encabezado->IdDoc->Folio,
                     'fecha_emision' => $encabezado->IdDoc->FchEmis,
                     'fecha_venc' => $encabezado->IdDoc->FchVenc,
                     'tipo_dte' => $encabezado->IdDoc->TipoDTE,
+                    'tpo_pago' =>  $encabezado->IdDoc->FmaPago,
                     'rut' => $encabezado->Emisor->RUTEmisor,
                     'razon_social' => $encabezado->Emisor->RznSoc,
                     'giro' => $encabezado->Emisor->GiroEmis,
@@ -77,6 +85,37 @@ class ComprasProveedoresController extends Controller
             printf("</br>".$item->NmbItem);
             printf("</br>".$item->MontoItem);
          } */
+    }
+
+    public function insert(Request $request){
+        $body = $request->request;
+        $i = 0;
+        $o = 0;
+        foreach($body as $item){
+            $referencia = [];
+            $i++;
+            if($i > 12){
+                $o++;
+                if($o <= 3){
+                    /* if($u <= 1){
+                        $referencia = ['tpo_doc_ref' => $item,
+                                    'folio' => $item,
+                                    'fecha_ref' => $item
+                        ];
+                    } */
+                    $referencia += ['tpo_doc_ref' => $item];
+                    $referencia += ['folio' => $item];
+                    $referencia += ['fecha_ref' => $item];
+                    error_log(print_r($referencia, true));
+                    $o = 0;
+                }
+            }
+        }
+        if(!empty($request->get('tpo_doc_ref_1'))){
+            dd("tiene referencias");
+        }else{
+            dd("no tiene");
+        }
     }
 
     public function buscaDte($rut, $tipo, $folio){
