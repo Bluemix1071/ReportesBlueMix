@@ -9,7 +9,7 @@
 @endsection
 @section('contenido')
     <div class="container my-4">
-        <h1 class="display-4">Mantenedor De Compras
+        <h1 class="display-4">Ingresos De Compras
         </h1>
         <hr>
         <form action="{{ route('XmlUp') }}" method="POST"  class="form-inline" enctype="multipart/form-data">
@@ -27,76 +27,111 @@
                             <h3 class="card-title"> Agregar Encabezado Factura</h3>
                         </div>
                         <div class="card-body">
+
+                            <div class="form-group" style="text-align:center">
+                                <label for="inputAddress">Forma Pago Documento</label>
+                                <br>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tipo_documento"
+                                        id="tipo_documento_contado" value="1">
+                                    <label class="form-check-label" for="tipo_documento_id_boleta">Contado</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tipo_documento"
+                                        id="tipo_documento_credito" value="2" checked>
+                                    <label class="form-check-label" for="tipo_documento_id_factura">Credito</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tipo_documento"
+                                        id="tipo_documento_gratis" value="3">
+                                    <label class="form-check-label" for="tipo_documento_id_guia">Sin Costo</label>
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">N° Folio</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="folio" required placeholder="N° Folio">
+                                    <input type="number" class="form-control" name="folio" required placeholder="N° Folio" min="1">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha Emisión</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="fecha_emision" required placeholder="Fecha Emisión">
+                                    <input type="date" class="form-control" name="fecha_emision" id="fecha_emision" required placeholder="Fecha Emisión">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha Vencimiento</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="fecha_vencimiento" placeholder="Fecha Vencimiento">
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" required name="fecha_vencimiento" id="fecha_vencimiento" placeholder="Fecha Vencimiento">
+                                </div>
+                                <div class="col-sm-1">
+                                <select class="form-control border-0 box-shadow-none form-control-sm" aria-label="Default select example" id="fecha_a_vencer">
+                                    <option value="NULL">Seleccione...</option>
+                                    <option value="30">30 Días</option>
+                                    <option value="45">45 Días</option>
+                                    <option value="60">60 Días</option>
+                                    <option value="90">90 Días</option>
+                                    <option value="120">120 Días</option>
+                                </select>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Rut Proveedor</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="rut" placeholder="Rut Proveedor">
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" required name="rut" id="rut" oninput="checkRut(this)" placeholder="Rut Proveedor">
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalbuscar">Buscar</i></button>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Razón Social</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="razon_social" placeholder="Razón Social">
+                                    <input type="text" class="form-control" required name="razon_social" id="razon_social" placeholder="Razón Social">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Giro</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="giro" placeholder="Giro">
+                                    <input type="text" class="form-control" required name="giro" id="giro" placeholder="Giro">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Dirección</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="direccion" placeholder="Dirección">
+                                    <input type="text" class="form-control" required name="direccion" id="direccion" placeholder="Dirección">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Comuna</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="comuna" placeholder="Comuna">
+                                    <input type="text" class="form-control" required name="comuna" id="comuna" placeholder="Comuna">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Ciudad</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="ciudad" placeholder="Ciudad">
+                                    <input type="text" class="form-control" required name="ciudad" id="ciudad" placeholder="Ciudad">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Neto</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="neto" placeholder="Neto">
+                                    <input type="number" id="neto" class="form-control" required name="neto" min="0" placeholder="Neto">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">IVA(19%)</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="iva" placeholder="IVA">
+                                    <input type="number" id="iva" class="form-control" required readonly name="iva" placeholder="IVA">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Total</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="total" placeholder="Total">
+                                    <input type="number" id="total" class="form-control" required readonly name="total" placeholder="Total">
                                 </div>
                             </div>
                             </div>
@@ -122,19 +157,48 @@
     </div>
         </section>
 
-        <!-- Modal -->
-        <div class="modal fade" id="modaleditarcantidad" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Editar Usuarios</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card-body">
-                        </div>
-                    </div>
-                </div>
+        <!-- Modal buscar proveedor -->
+        <div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width: 200%; margin-left: -40%">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Buscar Proveedor</h4>
             </div>
+            <div class="modal-body">
+            <table id="selectproveedor" class="table">
+            <thead style="text-align:center">
+                <tr>
+                <th scope="col">RUT</th>
+                <th scope="col">RAZÓN SOCIAL</th>
+                <th scope="col">DIRECCIÓN</th>
+                <th scope="col">GIRO</th>
+                <th scope="col">CIUDAD</th>
+                <th scope="col">COMUNA</th>
+                <th scope="col">ACCIÓN</th>
+                </tr>
+            </thead>
+            <tbody style="text-align:center">
+                @foreach ($proveedores as $item)
+                    <tr>
+                    <td>{{ $item->rut }}</td>
+                    <td>{{ $item->razon_social }}</td>
+                    <td>{{ $item->direccion }}</td>
+                    <td>{{ $item->giro }}</td>
+                    <td>{{ $item->ciudad }}</td>
+                    <td>{{ $item->comuna }}</td>
+                    <td>
+                        <button type="button" onclick="selectproveedor({{ $item->rut  }}, '{{ $item->razon_social }}', '{{ $item->direccion }}', '{{ $item->giro }}', '{{ $item->ciudad }}', '{{ $item->comuna }}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button>
+                    </td>
+                    </tr>
+                @endforeach
+            </tbody>
+            </table>
+            </div>
+            <!-- <div class="modal-footer">
+                <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Guardar</a>
+            </div> -->
+            </div>
+        </div>
         </div>
         <!-- FIN Modall -->
 
@@ -163,6 +227,15 @@
 
         <script>
             $(document).ready(function() {
+
+                $("#neto").keyup(function(e){
+                    var neto =  $('#neto').val();
+                    var iva = Math.round(neto*0.19);
+                    var total = Math.round(neto*1.19)
+                    $('#iva').val(iva);
+                    $('#total').val(total);
+                });
+
                 var max_fields      = 999; //maximum input boxes allowed
                 var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
                 var add_button      = $("#add_field_button"); //Add button ID
@@ -174,9 +247,28 @@
                         x++; //text box increment
                         $(wrapper).append(
                             '<div class="row" style="margin-bottom: 1%">'+
-                            '<input type="text" placeholder="Tipo Documento" name="tpo_doc_ref_'+x+'" class="form-control col" />'+
-                            '&nbsp;<input type="text" placeholder="Folio" name="folio_ref_'+x+'" class="form-control col" />'+
-                            '&nbsp;<input type="text" placeholder="Fecha" name="fecha_ref_'+x+'" class="form-control col" />'+
+                            '<input type="text" list="referencias" placeholder="Tipo Documento" name="referencia_'+x+'[]" class="form-control col" />'+
+                            '&nbsp;<input type="number" placeholder="Folio" name="referencia_'+x+'[]" class="form-control col" />'+
+                            '&nbsp;<input type="date" placeholder="Fecha" name="referencia_'+x+'[]" class="form-control col" />'+
+                            '<datalist id="referencias">'+
+                                '<option value="801">Orden de Compra</option>'+
+                                '<option value="802">Nota de Pedido</option>'+
+                                '<option value="803">Contrato</option>'+
+                                '<option value="804">Resolución</option>'+
+                                '<option value="805">Proceso ChileCompra</option>'+
+                                '<option value="806">Ficha ChileCompra</option>'+
+                                '<option value="807">DUS</option>'+
+                                '<option value="808">B/L</option>'+
+                                '<option value="809">AWS</option>'+
+                                '<option value="810">MIC/DTA</option>'+
+                                '<option value="811">Carta de Porte</option>'+
+                                '<option value="812">Res. SNA</option>'+
+                                '<option value="813">Pasaporte</option>'+
+                                '<option value="809">Cert. deposito bolsa prod. Chile</option>'+
+                                '<option value="809">Vale prenda bolsa prod. Chile</option>'+
+                                '<option value="NV">Nota de Vale</option>'+
+                                '<option value="HES">Hoja estado Servicio</option>'+
+                            '</datalist>'+
                             '&nbsp;<a id="remove_field"><i class="fas fa-trash-alt fa-2x"></i></a>'+
                             '</div>'); //add input box
                     }
@@ -185,8 +277,68 @@
                 $(wrapper).on("click","#remove_field", function(e){ //user click on remove text
                     e.preventDefault(); $(this).parent('div').remove(); x--;
                 })
+
+                $('#selectproveedor').DataTable( {
+                    orderCellsTop: true,
+                    order: [[ 0, "desc" ]],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
+
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
+                } );
+
+                const selectElement = document.querySelector('#fecha_a_vencer');
+
+                selectElement.addEventListener('change', (event) => {
+                    var seleccion = parseInt(event.target.value);
+
+                    var fecha_emision = $('#fecha_emision').val();
+                   
+                    if(!fecha_emision){
+                        alert("No ha ingresado una fecha de Emisión!");
+                        event.target.value = 'NULL';
+                    }else{
+                        var fecha_vencimiento = new Date(fecha_emision);
+                        fecha_vencimiento.setDate(fecha_vencimiento.getDate() + seleccion);
+                        event.target.value = 'NULL';
+                        //alert(fecha_vencimiento.toLocaleDateString("en-US"));
+                        $('#fecha_vencimiento').val(fecha_vencimiento.toISOString().slice(0,10));
+                    }
+                });
             });
+
+            function selectproveedor(run, razon_social, direccion, giro, ciudad, comuna){
+                
+                var rut = run.toString();
+                rut.substring(0, 8);
+
+                var M=0,S=1;
+                for(;rut;rut=Math.floor(rut/10))
+                S=(S+rut%10*(9-M++%6))%11;
+                var dv = S?S-1:'k';
+                
+                $('#rut').val((run+"-"+dv));
+                $('#razon_social').val(razon_social);
+                $('#direccion').val(direccion);
+                $('#giro').val(giro);
+                $('#ciudad').val(ciudad);
+                $('#comuna').val(comuna);
+            }
+            
         </script>
 
 
     @endsection
+
+    <script src="{{ asset('js/validarRUT.js') }}"></script>
