@@ -30,15 +30,15 @@
                 @endif
             </div>
             <div class="form-group mx-sm-3 mb-2">
-                <input class="form-control" list="vendedor"  autocomplete="off" name="vendedor" id="xd" type="text"
-                    placeholder="Rut...">
+                <input type="text"  class="form-control" placeholder="Rut..." name="rut" id="rut" maxlength="15" autocomplete="off" oninput="checkRut(this)" value="">
+
             </div>
-            <div class="form-group mx-sm-3 mb-2">
+            {{-- <div class="form-group mx-sm-3 mb-2">
                 <select class="form-control" name="comision">
                     <option value="33">Factura</option>
                     <option value="39">Boleta</option>
                 </select>
-            </div>
+            </div> --}}
             <div class="col-md-2 ">
 
                 <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
@@ -75,9 +75,13 @@
                                 <tr>
                                     <th style="text-align:left">{{ $item->folio }}</th>
                                     @if ($item->tipo_dte == 33)
-                                        <td style="text-align:left">Factura</td>
+                                        <td style="text-align:left">Factura Electrónica</td>
+                                    @elseif ($item->tipo_dte == 34)
+                                        <td style="text-align:left">Factura No Afecta</td>
+                                    @elseif ($item->tipo_dte == 61)
+                                        <td style="text-align:left">Nota Credito</td>
                                     @else
-                                        <td style="text-align:left">Boleta</td>
+                                        <td style="text-align:left">Declaración De Ingreso</td>
                                     @endif
                                     <td style="text-align:left">{{ $item->rut }}</td>
                                     <td style="text-align:left">{{ $item->razon_social }}</td>
@@ -149,6 +153,8 @@
     <script src="{{ asset('js/vfs_fonts.js') }}"></script>
     <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('js/buttons.print.min.js') }}"></script>
+    <script src="{{asset("js/validarRUT.js")}}"></script>
+
 
 
 @endsection

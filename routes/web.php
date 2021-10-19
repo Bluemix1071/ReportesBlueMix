@@ -122,6 +122,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/ConsultaDocumentos','Compras\ConsultaDocumentosController@index')->name('ConsultaDocumentos');
     Route::post('/ConsultaDocumentosFiltro','Compras\ConsultaDocumentosController@ConsultaDocumentosFiltro')->name('ConsultaDocumentosFiltro');
+
+    Route::get('/LibroDeComprasDiario','Compras\ConsultaDocumentosController@LibroDeComprasDiarioindex')->name('LibroDeComprasDiario');
+    Route::post('/LibroDeComprasDiarioFiltro','Compras\ConsultaDocumentosController@LibroDeComprasDiarioFiltro')->name('LibroDeComprasDiarioFiltro');
+
+    Route::post('/ComprasProveedores','Compras\ComprasProveedoresController@insert')->name('AgregarCompras');
     // fin
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
