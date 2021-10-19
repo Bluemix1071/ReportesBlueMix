@@ -9,7 +9,15 @@ use DB;
 class ComprasProveedoresController extends Controller
 {
     public function index(){
-        return view('admin.Compras.ComprasProveedores');
+
+        $proveedores=DB::table('proveed')
+        ->leftjoin('ciudades', 'proveed.PVCIUD', '=', 'ciudades.id')
+        ->leftjoin('comunas', 'proveed.PVCOMU', '=', 'comunas.id')
+        ->get(['PVRUTP as rut','PVNOMB as razon_social','PVDIRE as direccion','giro','ciudades.nombre as ciudad','comunas.nombre as comuna']);
+
+        //dd($proveedores);
+
+        return view('admin.Compras.ComprasProveedores', compact('proveedores'));
     }
 
     public function xmlUp(Request $request){
@@ -18,6 +26,9 @@ class ComprasProveedoresController extends Controller
         
         $xml = simplexml_load_file($url);
         $json = json_decode(json_encode($xml));
+        if(empty($json->SetDTE)){
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. !No soportado');
+        }
         if(is_array($json->SetDTE->DTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. !No soportado');
         }
@@ -45,12 +56,12 @@ class ComprasProveedoresController extends Controller
                     'fecha_venc' => $encabezado->IdDoc->FchVenc,
                     'tipo_dte' => $encabezado->IdDoc->TipoDTE,
                     'tpo_pago' =>  $encabezado->IdDoc->FmaPago,
-                    'rut' => $encabezado->Emisor->RUTEmisor,
-                    'razon_social' => $encabezado->Emisor->RznSoc,
-                    'giro' => $encabezado->Emisor->GiroEmis,
-                    'direccion' => $encabezado->Emisor->DirOrigen,
-                    'comuna' => $encabezado->Emisor->CmnaOrigen,
-                    'ciudad' => $encabezado->Emisor->CiudadOrigen,
+                    'rut' => strtoupper($encabezado->Emisor->RUTEmisor),
+                    'razon_social' => strtoupper($encabezado->Emisor->RznSoc),
+                    'giro' => strtoupper($encabezado->Emisor->GiroEmis),
+                    'direccion' => strtoupper($encabezado->Emisor->DirOrigen),
+                    'comuna' => strtoupper($encabezado->Emisor->CmnaOrigen),
+                    'ciudad' => strtoupper($encabezado->Emisor->CiudadOrigen),
                     'neto' => $encabezado->Totales->MntNeto,
                     'iva' => $encabezado->Totales->IVA,
                     'total' => $encabezado->Totales->MntTotal
@@ -91,31 +102,49 @@ class ComprasProveedoresController extends Controller
         $body = $request->request;
         $i = 0;
         $o = 0;
-        foreach($body as $item){
-            $referencia = [];
-            $i++;
-            if($i > 12){
-                $o++;
-                if($o <= 3){
-                    /* if($u <= 1){
-                        $referencia = ['tpo_doc_ref' => $item,
-                                    'folio' => $item,
-                                    'fecha_ref' => $item
-                        ];
-                    } */
-                    $referencia += ['tpo_doc_ref' => $item];
-                    $referencia += ['folio' => $item];
-                    $referencia += ['fecha_ref' => $item];
-                    error_log(print_r($referencia, true));
-                    $o = 0;
+        $referencias = [];
+
+        $compra = ['folio' => $body->get('folio'),
+                    'fecha_emision' => $body->get('fecha_emision'),
+                    'fecha_venc' => $body->get('fecha_vencimiento'),
+                    'tipo_dte' => 33,
+                    'tpo_pago' =>  $body->get('tipo_documento'),
+                    'rut' => strtoupper($body->get('rut')),
+                    'razon_social' => strtoupper($body->get('razon_social')),
+                    'giro' => strtoupper($body->get('giro')),
+                    'direccion' => strtoupper($body->get('direccion')),
+                    'comuna' => strtoupper($body->get('comuna')),
+                    'ciudad' => strtoupper($body->get('ciudad')),
+                    'neto' => $body->get('neto'),
+                    'iva' => $body->get('iva'),
+                    'total' => $body->get('total')
+            ];
+
+            $existe = $this->buscaDte($body->get('rut'), 33, $body->get('folio'));
+    
+            if($existe == null){
+                DB::table('compras')->insert($compra);
+                $ultima_compra = $this->buscaDte($body->get('rut'), 33, $body->get('folio'));
+                if(!empty($request->get('referencia_1'))){
+                    foreach($body as $item){
+                        $i++;
+                        if($i > 12){
+                            $o++;
+                            $referencias = ['n_linea' => $o,
+                                        'tpo_doc_ref' => $item[0],
+                                        'folio' => $item[1],
+                                        'fecha_ref' => $item[2],
+                                        'id_compra' => $ultima_compra->id
+                            ];
+                            //error_log(print_r($referencia, true));
+                            DB::table('referencias')->insert($referencias);
+                        }
+                    }
                 }
+                return redirect()->route('ComprasProveedores')->with('success','Se ha Agregado el Documento correctamente');
+            }else{
+                return redirect()->route('ComprasProveedores')->with('warning','Documento ya existe para este Proveedor');
             }
-        }
-        if(!empty($request->get('tpo_doc_ref_1'))){
-            dd("tiene referencias");
-        }else{
-            dd("no tiene");
-        }
     }
 
     public function buscaDte($rut, $tipo, $folio){
