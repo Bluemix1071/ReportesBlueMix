@@ -818,28 +818,29 @@
                                 </li>
                             @endcan
 
-                            @can('CambioPrecios')
-
                                 <li class="nav-item">
-                                    <a href="{{ route('cambiodeprecios') }}"
-                                        class="nav-link {{ setActive('cambiodeprecios') }}">
+                                    <a href="{{ route('ConsultaDocumentos') }}"
+                                        class="nav-link {{ setActive('ConsultaDocumentos') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Cambio de Precios</p>
+                                        <p>Consulta Documentos</p>
                                     </a>
                                 </li>
-                            @endcan
-
-                            @can('ordenesdiseno')
 
                                 <li class="nav-item">
-                                    <a href="{{ route('OrdenesDeDiseño') }}"
-                                        class="nav-link {{ setActive('OrdenesDeDiseño') }}">
+                                    <a href="{{ route('EstadoFacturas') }}"
+                                        class="nav-link {{ setActive('EstadoFacturas') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Ordenes De Diseño</p>
+                                        <p>Estado Facturas</p>
                                     </a>
                                 </li>
-                            @endcan
 
+                                <li class="nav-item">
+                                    <a href="{{ route('LibroDeComprasDiario') }}"
+                                        class="nav-link {{ setActive('LibroDeComprasDiario') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Libro De Compras Diario</p>
+                                    </a>
+                                </li>
                         </ul>
                     </li>
                 @endcan
