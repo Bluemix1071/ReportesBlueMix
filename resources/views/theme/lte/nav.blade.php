@@ -827,8 +827,8 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ route('LibroDeComprasDiario') }}"
-                                        class="nav-link {{ setActive('LibroDeComprasDiario') }}">
+                                    <a href="{{ route('EstadoFacturas') }}"
+                                        class="nav-link {{ setActive('EstadoFacturas') }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Estado Facturas</p>
                                     </a>

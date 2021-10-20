@@ -18,11 +18,11 @@ class ConsultaDocumentosController extends Controller
 
     public function ConsultaDocumentosFiltro(Request $request){
 
-        dd($request->all());
-
-
     $fecha1=$request->fecha1;
     $fecha2=$request->fecha2;
+
+
+    if($request->rut==null){
 
     $compras=DB::table('compras')
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
@@ -30,8 +30,20 @@ class ConsultaDocumentosController extends Controller
 
 
       return view('Admin.Compras.ConsultaDocumentos',compact('compras'));
+
+    }else{
+
+
+    $compras=DB::table('compras')
+    ->where('rut', $request->rut)
+    ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
+    ->get();
+
+
+      return view('Admin.Compras.ConsultaDocumentos',compact('compras'));
     }
 
+}
 
 
 
@@ -164,4 +176,52 @@ class ConsultaDocumentosController extends Controller
      //fin suma total
       return view('Admin.Compras.LibroDeComprasDiario',compact('compras','countfacturas','countexenta','countnotacredito','countdin','exentofacturas','exentoexenta','exentonotacredito','exentodin','netofacturas','netoexenta','netonotatacredito','netodin','totalfacturas','totalexenta','totalnotatacredito','totaldin','recuperablefacturas','recuperablenotacredito'));
     }
+
+
+
+
+    public function EstadoFacturas(){
+
+        return view('Admin.Compras.EstadoFacturas');
+    }
+
+
+    public function EstadoFacturasFiltro(Request $request){
+
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
+        $rut=$request->rut;
+
+
+        if($request->rut==null){
+
+        $facturas=DB::table('compras')
+        ->where('tipo_dte', 33)
+        ->where('tpo_pago', 2)
+        ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
+        ->get();
+
+
+          return view('Admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2'));
+
+        }else{
+
+
+        $facturas=DB::table('compras')
+        ->where('tipo_dte', 33)
+        ->where('rut', $request->rut)
+        ->where('tpo_pago', 2)
+        ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
+        ->get();
+
+
+          return view('Admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2','rut'));
+        }
+    }
+
+
 }
+
+
+
+

@@ -56,6 +56,7 @@
                             <th scope="col" style="text-align:left">Tipo Doc.</th>
                             <th scope="col" style="text-align:left">Rut</th>
                             <th scope="col" style="text-align:left">Razon</th>
+                            <th scope="col" style="text-align:left">Pago</th>
                             <th scope="col" style="text-align:left">Fecha Emision</th>
                             <th scope="col" style="text-align:left">Fecha Vencimiento</th>
                             <th scope="col" style="text-align:left">IVA</th>
@@ -85,17 +86,22 @@
                                     @endif
                                     <td style="text-align:left">{{ $item->rut }}</td>
                                     <td style="text-align:left">{{ $item->razon_social }}</td>
+                                    @if ($item->tpo_pago == 2)
+                                    <td style="text-align:left">Credito</td>
+                                    @else
+                                    <td style="text-align:left">Contado</td>
+                                    @endif
                                     <td style="text-align:left">{{ $item->fecha_emision }}</td>
                                     <td style="text-align:left">{{ $item->fecha_venc }}</td>
                                     <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalcompra += $item->total }}</div>
+                                    {{-- <div style="display: none">{{ $totalcompra += $item->total }}</div> --}}
                                 </tr>
                             @endforeach
                         @endif
                     </tbody>
-                    <tfoot>
+                    {{-- <tfoot>
                         <tr>
                             <td colspan="8"><strong>Total</strong> </td>
                             @if (empty($totalcommpra))
@@ -106,7 +112,7 @@
                                 </td>
                             @endif
                         </tr>
-                    </tfoot>
+                    </tfoot> --}}
                 </table>
             </div>
         </div>
