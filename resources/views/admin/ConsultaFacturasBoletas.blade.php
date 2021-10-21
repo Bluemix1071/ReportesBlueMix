@@ -162,7 +162,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="7"><strong>Total</strong> </td>
+                            <td colspan="8"><strong>Total</strong> </td>
                             @if (empty($totalfactura))
                                 <td><span class="price text-success">$</span></td>
                             @else
