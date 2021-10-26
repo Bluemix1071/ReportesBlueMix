@@ -818,6 +818,22 @@
                                 </li>
                             @endcan
 
+                                <li class="nav-item">
+                                    <a href="{{ route('NotasCreditoProveedores') }}"
+                                        class="nav-link {{ setActive('NotasCreditoProveedores') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Notas de Crédito</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('ListarCompras') }}"
+                                        class="nav-link {{ setActive('ListarCompras') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Editar Compras</p>
+                                    </a>
+                                </li>
+
                             @can('CambioPrecios')
 
                                 <li class="nav-item">
