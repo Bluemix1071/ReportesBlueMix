@@ -16,21 +16,29 @@ class ComprasProveedoresController extends Controller
         ->get(['PVRUTP as rut','PVNOMB as razon_social','PVDIRE as direccion','giro','ciudades.nombre as ciudad','comunas.nombre as comuna']);
 
         //dd($proveedores);
+        $comunas = DB::table('comunas')->groupBy('nombre')->get();
 
-        return view('admin.Compras.ComprasProveedores', compact('proveedores'));
+        $ciudades = DB::table('ciudades')->groupBy('nombre')->get();
+
+        return view('admin.Compras.ComprasProveedores', compact('proveedores', 'ciudades', 'comunas'));
     }
 
     public function xmlUp(Request $request){
         
         $url = $_FILES["myfile"]["tmp_name"];
         
-        $xml = simplexml_load_file($url);
+        try{
+            $xml = simplexml_load_file($url);
+        }catch(\Throwable $th){
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde a un archivo XML!');
+        }
+        
         $json = json_decode(json_encode($xml));
         if(empty($json->SetDTE)){
-            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. !No soportado');
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
         }
         if(is_array($json->SetDTE->DTE)){
-            return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. !No soportado');
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. No soportado!');
         }
         
         $encabezado = $json->SetDTE->DTE->Documento->Encabezado;
@@ -73,15 +81,26 @@ class ComprasProveedoresController extends Controller
             DB::table('compras')->insert($compra);
             $ultima_compra = $this->buscaDte($encabezado->Emisor->RUTEmisor, $encabezado->IdDoc->TipoDTE, $encabezado->IdDoc->Folio);
             if(!empty($referencia)){
-                foreach($referencia as $item){
-                    $i++;
-                    $referencias = ['n_linea' => $i,
-                                    'tpo_doc_ref' => $item->TpoDocRef,
-                                    'folio' => $item->FolioRef,
-                                    'fecha_ref' => $item->FchRef,
+                if(is_array($referencia)){
+                    foreach($referencia as $item){
+                        $i++;
+                        $referencias = ['n_linea' => $i,
+                                        'tpo_doc_ref' => $item->TpoDocRef,
+                                        'folio' => $item->FolioRef,
+                                        'fecha_ref' => $item->FchRef,
+                                        'id_compra' => $ultima_compra->id
+                        ];
+                        //error_log(print_r($referencias, true));
+                        DB::table('referencias')->insert($referencias);
+                    }
+                }else{
+                    $referencias = ['n_linea' => 1,
+                                    'tpo_doc_ref' => $referencia->TpoDocRef,
+                                    'folio' => $referencia->FolioRef,
+                                    'fecha_ref' => $referencia->FchRef,
                                     'id_compra' => $ultima_compra->id
                     ];
-                    //error_log(print_r($referencias, true));
+                        
                     DB::table('referencias')->insert($referencias);
                 }
             }
@@ -128,7 +147,7 @@ class ComprasProveedoresController extends Controller
                 if(!empty($request->get('referencia_1'))){
                     foreach($body as $item){
                         $i++;
-                        if($i > 12){
+                        if($i > 13){
                             $o++;
                             $referencias = ['n_linea' => $o,
                                         'tpo_doc_ref' => $item[0],
@@ -156,4 +175,72 @@ class ComprasProveedoresController extends Controller
 
         return $ultima_compra;
     }
+
+    public function list(){
+
+        $compras =DB::table('compras')->where('estado_verificacion', 1)->get();
+
+        return view('admin.Compras.ListarComprasProveedores', compact('compras'));
+    }
+
+    public function editar(Request $request){
+
+        $compra = DB::table('compras')->where('id', $request->get('id'))->get()->first();
+
+        $referencias = DB::table('referencias')->where('id_compra', $request->get('id'))->get();
+
+        $proveedores=DB::table('proveed')
+        ->leftjoin('ciudades', 'proveed.PVCIUD', '=', 'ciudades.id')
+        ->leftjoin('comunas', 'proveed.PVCOMU', '=', 'comunas.id')
+        ->get(['PVRUTP as rut','PVNOMB as razon_social','PVDIRE as direccion','giro','ciudades.nombre as ciudad','comunas.nombre as comuna']);
+
+        return view('admin.Compras.EditarCompraProveedores', compact('proveedores', 'compra', 'referencias'));
+    }
+
+    public function update(Request $request){
+        $body = $request->request;
+        $i = 0;
+        $o = 0;
+        //$referencias = [];
+
+        $compra = ['folio' => $body->get('folio'),
+                    'fecha_emision' => $body->get('fecha_emision'),
+                    'fecha_venc' => $body->get('fecha_vencimiento'),
+                    'tipo_dte' => 33,
+                    'tpo_pago' =>  $body->get('tipo_documento'),
+                    'rut' => strtoupper($body->get('rut')),
+                    'razon_social' => strtoupper($body->get('razon_social')),
+                    'giro' => strtoupper($body->get('giro')),
+                    'direccion' => strtoupper($body->get('direccion')),
+                    'comuna' => strtoupper($body->get('comuna')),
+                    'ciudad' => strtoupper($body->get('ciudad')),
+                    'neto' => $body->get('neto'),
+                    'iva' => $body->get('iva'),
+                    'total' => $body->get('total')
+            ];
+
+        DB::table('compras')->where('id', $request->get('id'))->update($compra);
+        $ultima_compra = $this->buscaDte($body->get('rut'), 33, $body->get('folio'));
+        DB::table('referencias')->where('id_compra', $ultima_compra->id)->delete();
+        if(count($body) > 16){
+            foreach($body as $item){
+                $i++;
+                if($i > 16){
+                    $o++;
+                    //error_log(print_r($item, true));
+                    $referencias = ['n_linea' => $o,
+                                    'tpo_doc_ref' => $item[0],
+                                    'folio' => $item[1],
+                                    'fecha_ref' => $item[2],
+                                    'id_compra' => $ultima_compra->id
+                    ];
+                    //error_log(print_r($referencias, true));
+                    DB::table('referencias')->insert($referencias);
+                }
+            }
+        }
+        return redirect()->route('ListarCompras')->with('success','Se ha Editado el Documento correctamente');
+    }
+
+    
 }

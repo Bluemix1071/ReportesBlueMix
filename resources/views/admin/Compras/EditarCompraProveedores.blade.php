@@ -9,25 +9,31 @@
 @endsection
 @section('contenido')
     <div class="container my-4">
-        <h1 class="display-4">Ingresos De Compras</h1>
-        <hr>
-            <div class="row">
-                <form action="{{ route('XmlUp') }}" method="POST"  class="form-inline" enctype="multipart/form-data">
-                    <input type="file" id="myfile" name="myfile" accept="text/xml" required>  
-                    &nbsp;<button type="submit" class="btn btn-success">Agregar Factura DTE</button>
-                </form>
-            </div>
+        <h1 class="display-4">Editar Compra</h1>
         <section class="content">
         <div class="container-fluid">
         <hr>
         <div class="container">
             <div class="col-md-12">
-                <form action="{{ route('AgregarCompras') }}" enctype="multipart/form-data" method="post" id="desvForm" >
+                <form action="{{ route('UpdateCompra') }}" method="post" id="desvForm" >
+                    {{ method_field('put') }}
+                    {{ csrf_field() }}
+                    @csrf
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title"> Agregar Encabezado Factura</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                   <!--  <i class="fas fa-times"></i> -->
+                                </button>
+                            </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body collapse hide">
+
+                            <input type="number" hidden class="form-control" name="id" required value="{{ $compra->id }}">
 
                             <div class="form-group" style="text-align:center">
                                 <label for="inputAddress">Forma Pago Documento</label>
@@ -35,17 +41,20 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="tipo_documento"
-                                        id="tipo_documento_contado" value="1">
+                                        id="tipo_documento_contado" value="1"
+                                        {{ "$compra->tpo_pago" == "1" ? 'checked' : 'true' }}>
                                     <label class="form-check-label" for="tipo_documento_id_boleta">Contado</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="tipo_documento"
-                                        id="tipo_documento_credito" value="2" checked>
+                                        id="tipo_documento_credito" value="2"
+                                        {{ "$compra->tpo_pago" == "2" ? 'checked' : 'true' }}>
                                     <label class="form-check-label" for="tipo_documento_id_factura">Crédito</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="tipo_documento"
-                                        id="tipo_documento_gratis" value="3">
+                                        id="tipo_documento_gratis" value="3"
+                                        {{ "$compra->tpo_pago" == "3" ? 'checked' : 'true' }}>
                                     <label class="form-check-label" for="tipo_documento_id_guia">Sin Costo</label>
                                 </div>
                             </div>
@@ -53,19 +62,19 @@
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">N° Folio</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="folio" required placeholder="N° Folio" min="1">
+                                    <input type="number" class="form-control" name="folio" required placeholder="N° Folio" min="1" value="{{ $compra->folio }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha Emisión</label>
                                 <div class="col-sm-10">
-                                    <input type="date" class="form-control" name="fecha_emision" id="fecha_emision" required placeholder="Fecha Emisión">
+                                    <input type="date" class="form-control" name="fecha_emision" id="fecha_emision" required placeholder="Fecha Emisión" value="{{ $compra->fecha_emision }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha Vencimiento</label>
                                 <div class="col-sm-9">
-                                    <input type="date" class="form-control" required name="fecha_vencimiento" id="fecha_vencimiento" placeholder="Fecha Vencimiento">
+                                    <input type="date" class="form-control" required name="fecha_vencimiento" id="fecha_vencimiento" placeholder="Fecha Vencimiento" value="{{ $compra->fecha_venc }}">
                                 </div>
                                 <div class="col-sm-1">
                                 <select class="form-control border-0 box-shadow-none form-control-sm" aria-label="Default select example" id="fecha_a_vencer">
@@ -81,7 +90,7 @@
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Rut Proveedor</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" required name="rut" id="rut" oninput="checkRut(this)" placeholder="Rut Proveedor">
+                                    <input type="text" class="form-control" required name="rut" id="rut" oninput="checkRut(this)" placeholder="Rut Proveedor" value="{{ $compra->rut }}">
                                 </div>
                                 <div class="col-sm-1">
                                     <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalbuscar">Buscar</i></button>
@@ -90,78 +99,95 @@
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Razón Social</label>
                                 <div class="col-sm-10">
-                                    <textarea placeholder="Razón Social" class="form-control" id="razon_social" name="razon_social" rows="1"></textarea>
+                                    <textarea placeholder="Razón Social" class="form-control" id="razon_social" name="razon_social" rows="1">{{ $compra->razon_social }}</textarea>
                                     <!-- <input type="text" class="form-control" required name="razon_social" id="razon_social" placeholder="Razón Social"> -->
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Giro</label>
                                 <div class="col-sm-10">
-                                    <textarea placeholder="Giro" class="form-control" id="giro" name="giro" rows="1"></textarea>
+                                    <textarea placeholder="Giro" class="form-control" id="giro" name="giro" rows="1">{{ $compra->giro }}</textarea>
                                     <!-- <input type="text" class="form-control" required name="giro" id="giro" placeholder="Giro"> -->
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Dirección</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="direccion" id="direccion" placeholder="Dirección">
+                                    <input type="text" class="form-control" required name="direccion" id="direccion" placeholder="Dirección" value="{{ $compra->direccion }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Comuna</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required autocomplete="off" list="comunas" name="comuna" id="comuna" placeholder="Comuna">
-                                    <datalist id="comunas">
-                                        @foreach ($comunas as $item)
-                                            <option value="{{ $item->nombre }}">
-                                        @endforeach
-                                    </datalist>
+                                    <input type="text" class="form-control" required name="comuna" id="comuna" placeholder="Comuna" value="{{ $compra->comuna }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Ciudad</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required autocomplete="off" list="ciudades" name="ciudad" id="ciudad" placeholder="Ciudad">
-                                    <datalist id="ciudades">
-                                        @foreach ($ciudades as $item)
-                                            <option value="{{ $item->nombre }}">
-                                        @endforeach
-                                    </datalist>
+                                    <input type="text" class="form-control" required name="ciudad" id="ciudad" placeholder="Ciudad" value="{{ $compra->ciudad }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Neto</label>
                                 <div class="col-sm-10">
-                                    <input type="number" id="neto" class="form-control" required name="neto" min="0" placeholder="Neto">
+                                    <input type="number" id="neto" class="form-control" required name="neto" min="0" placeholder="Neto" value="{{ $compra->neto }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">IVA</label>
                                 <div class="col-sm-10">
-                                    <input type="number" id="iva" class="form-control" required name="iva" placeholder="IVA">
+                                    <input type="number" id="iva" class="form-control" required name="iva" placeholder="IVA" value="{{ $compra->iva }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Total</label>
                                 <div class="col-sm-10">
-                                    <input type="number" id="total" class="form-control" required readonly name="total" placeholder="Total">
+                                    <input type="number" id="total" class="form-control" required readonly name="total" placeholder="Total" value="{{ $compra->total }}">
                                 </div>
                             </div>
                             </div>
                         </div>
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h2 class="card-title">Agregar Referencias</h2>
-                                <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button">Agregar <i class="fas fa-plus"></i></button>
+                                <h2 class="card-title">Referencias</h2>
+                                <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" value="{{ count($referencias) }}">Agregar <i class="fas fa-plus"></i></button>
                             </div>
                             <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col" id="input_fields_wrap">
+                                        @foreach($referencias as $item)
+                                            <div class="row" style="margin-bottom: 1%">
+                                            <input type="text" list="referencias" placeholder="Tipo Documento" required name="referencia_{{ $item->n_linea }}[]" class="form-control col" value="{{ $item->tpo_doc_ref }}" />
+                                            &nbsp;<input type="number" placeholder="Folio" required name="referencia_{{ $item->n_linea }}[]" class="form-control col" value="{{ $item->folio }}"/>
+                                            &nbsp;<input type="date" placeholder="Fecha"  required name="referencia_{{ $item->n_linea }}[]" class="form-control col" value="{{ $item->fecha_ref }}"/>
+                                            <datalist id="referencias">
+                                                <option value="801">Orden de Compra</option>
+                                                <option value="802">Nota de Pedido</option>
+                                                <option value="803">Contrato</option>
+                                                <option value="804">Resolución</option>
+                                                <option value="805">Proceso ChileCompra</option>
+                                                <option value="806">Ficha ChileCompra</option>
+                                                <option value="807">DUS</option>
+                                                <option value="808">B/L</option>
+                                                <option value="809">AWS</option>
+                                                <option value="810">MIC/DTA</option>
+                                                <option value="811">Carta de Porte</option>
+                                                <option value="812">Res. SNA</option>
+                                                <option value="813">Pasaporte</option>
+                                                <option value="809">Cert. deposito bolsa prod. Chile</option>
+                                                <option value="809">Vale prenda bolsa prod. Chile</option>
+                                                <option value="NV">Nota de Vale</option>
+                                                <option value="HES">Hoja estado Servicio</option>
+                                            </datalist>
+                                            &nbsp;<a id="remove_field"><i class="fas fa-trash-alt fa-2x"></i></a>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success">Agregar Factura</button>
+                        <button type="submit" class="btn btn-success">Editar Factura</button>
                     </div>
             </div>
             </form>
@@ -298,7 +324,7 @@
                 $("#neto").keyup(function(e){
                     var neto =  $('#neto').val();
                     var iva = Math.round(neto*0.19);
-                    var total = Math.round(parseInt(neto)+iva);
+                    var total = Math.round(parseInt(neto)+iva)
                     $('#iva').val(iva);
                     $('#total').val(total);
                 });
@@ -314,16 +340,21 @@
                 var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
                 var add_button      = $("#add_field_button"); //Add button ID
                 
-                var x = 0; //initlal text box count
+                if(parseInt(add_button.val()) == 0){
+                    x = 0;
+                }else{
+                    var x = parseInt(add_button.val()); //initlal text box count
+                }
                 $(add_button).click(function(e){ //on add input button click
+                    console.log(x);
                     e.preventDefault();
                     if(x < max_fields){ //max input box allowed
                         x++; //text box increment
                         $(wrapper).append(
                             '<div class="row" style="margin-bottom: 1%">'+
-                            '<input type="text" list="referencias" placeholder="Tipo Documento" name="referencia_'+x+'[]" class="form-control col" />'+
-                            '&nbsp;<input type="number" placeholder="Folio" name="referencia_'+x+'[]" class="form-control col" />'+
-                            '&nbsp;<input type="date" placeholder="Fecha" name="referencia_'+x+'[]" class="form-control col" />'+
+                            '<input type="text" list="referencias" required placeholder="Tipo Documento" name="referencia_'+x+'[]" class="form-control col" />'+
+                            '&nbsp;<input type="number" placeholder="Folio" required name="referencia_'+x+'[]" class="form-control col" />'+
+                            '&nbsp;<input type="date" placeholder="Fecha" required name="referencia_'+x+'[]" class="form-control col" />'+
                             '<datalist id="referencias">'+
                                 '<option value="801">Orden de Compra</option>'+
                                 '<option value="802">Nota de Pedido</option>'+
@@ -350,8 +381,28 @@
                 
                 $(wrapper).on("click","#remove_field", function(e){ //user click on remove text
                     e.preventDefault(); $(this).parent('div').remove(); x--;
+                    console.log(x-1);
                 })
 
+                $('#selectproveedor').DataTable( {
+                    orderCellsTop: true,
+                    order: [[ 0, "desc" ]],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
+
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
+                } );
 
                 const selectElement = document.querySelector('#fecha_a_vencer');
 
@@ -372,30 +423,6 @@
                     }
                 });
             });
-
-            var table = $('#selectproveedor').DataTable( {
-                    orderCellsTop: true,
-                    order: [[ 0, "desc" ]],
-                    "language":{
-                    "info": "_TOTAL_ registros",
-                    "search":  "Buscar",
-                    "paginate":{
-                    "next": "Siguiente",
-                    "previous": "Anterior",
-
-                },
-                "loadingRecords": "cargando",
-                "processing": "procesando",
-                "emptyTable": "no hay resultados",
-                "zeroRecords": "no hay coincidencias",
-                "infoEmpty": "",
-                "infoFiltered": ""
-                }
-                } );
-
-            function cargartabla(string){
-                this.table.columns(4).search( string ).draw(); 
-            }
 
             function selectproveedor(run, razon_social, direccion, giro, ciudad, comuna){
                 
