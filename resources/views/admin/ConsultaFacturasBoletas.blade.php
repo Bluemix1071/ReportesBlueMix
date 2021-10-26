@@ -121,6 +121,7 @@
                             <th scope="col" style="text-align:left">RUT</th>
                             <th scope="col" style="text-align:left">Razon</th>
                             <th scope="col" style="text-align:left">Fecha</th>
+                            <th scope="col" style="text-align:left">N° Orden</th>
                             <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
                             <th scope="col" style="text-align:right">Total</th>
@@ -148,6 +149,7 @@
                                     <td style="text-align:left">{{ $item->CARUTC }}</td>
                                     <td style="text-align:left">{{ $item->razon }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
+                                    <td style="text-align:left">{{ $item->nro_oc }}</td>
                                     <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalfacturaiva += $item->CAIVA }}</div>
                                     <td style="text-align:right">{{ number_format($item->CANETO, 0, ',', '.') }}</td>
@@ -160,7 +162,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="7"><strong>Total</strong> </td>
+                            <td colspan="8"><strong>Total</strong> </td>
                             @if (empty($totalfactura))
                                 <td><span class="price text-success">$</span></td>
                             @else
