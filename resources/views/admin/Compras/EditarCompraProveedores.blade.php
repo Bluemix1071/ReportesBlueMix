@@ -180,7 +180,12 @@
                                                 <option value="NV">Nota de Vale</option>
                                                 <option value="HES">Hoja estado Servicio</option>
                                             </datalist>
-                                            &nbsp;<a id="remove_field"><i class="fas fa-trash-alt fa-2x"></i></a>
+                                            &nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
+                                            @if($item->tpo_doc_ref == 801)
+                                                &nbsp;<a href="{{route('pdf.orden', $item->folio)}}" target="_blank" class="btn btn-primary"><i class="fas fa-search fa-1x"></i></a>
+                                            @else
+                                                &nbsp;<a href="#" disabled class="btn btn-secondary"><i class="fas fa-search fa-1x"></i></a>
+                                            @endif
                                             </div>
                                         @endforeach
                                     </div>
@@ -352,7 +357,7 @@
                         x++; //text box increment
                         $(wrapper).append(
                             '<div class="row" style="margin-bottom: 1%">'+
-                            '<input type="text" list="referencias" required placeholder="Tipo Documento" name="referencia_'+x+'[]" class="form-control col" />'+
+                            '<input type="text" list="referencias" required placeholder="Tipo Documento" name="referencia_'+x+'[]" class="form-control col " />'+
                             '&nbsp;<input type="number" placeholder="Folio" required name="referencia_'+x+'[]" class="form-control col" />'+
                             '&nbsp;<input type="date" placeholder="Fecha" required name="referencia_'+x+'[]" class="form-control col" />'+
                             '<datalist id="referencias">'+
@@ -374,7 +379,8 @@
                                 '<option value="NV">Nota de Vale</option>'+
                                 '<option value="HES">Hoja estado Servicio</option>'+
                             '</datalist>'+
-                            '&nbsp;<a id="remove_field"><i class="fas fa-trash-alt fa-2x"></i></a>'+
+                            '&nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
+                            '&nbsp;<a href="#" disabled class="btn btn-secondary"><i class="fas fa-search fa-1x"></i></a>'+
                             '</div>'); //add input box
                     }
                 });
