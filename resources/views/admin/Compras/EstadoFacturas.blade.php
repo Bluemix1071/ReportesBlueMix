@@ -171,7 +171,7 @@
                 </div>
             </div>
         </div>
-        <!-- FIN Modall -->
+        <!-- FIN Modal -->
 
         <!-- Modal -->
         <div class="modal fade" id="verpagos" tabindex="-1" role="dialog"
