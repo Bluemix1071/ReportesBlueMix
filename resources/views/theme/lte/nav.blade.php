@@ -813,11 +813,27 @@
                                     <a href="{{ route('ComprasProveedores') }}"
                                         class="nav-link {{ setActive('ComprasProveedores') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Compras Proveedores</p>
+                                        <p>Ingreso Documentos</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('ListarCompras') }}"
+                                        class="nav-link {{ setActive('ListarCompras') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Editar Documentos</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('NotasCreditoProveedores') }}"
+                                        class="nav-link {{ setActive('NotasCreditoProveedores') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>NC. Proveedores</p>
                                     </a>
                                 </li>
                             @endcan
-                            
+
                                 <li class="nav-item">
                                     <a href="{{ route('EstadoFacturas') }}"
                                         class="nav-link {{ setActive('EstadoFacturas') }}">
