@@ -343,7 +343,7 @@
                                 '<option value="NV">Nota de Vale</option>'+
                                 '<option value="HES">Hoja estado Servicio</option>'+
                             '</datalist>'+
-                            '&nbsp;<a id="remove_field"><i class="fas fa-trash-alt fa-2x"></i></a>'+
+                            '&nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
                             '</div>'); //add input box
                     }
                 });

@@ -27,7 +27,7 @@
                                     <th scope="col">Fecha Creación</th>
                                     <th scope="col">Fecha Emisión</th>
                                     <th scope="col">Neto</th>
-                                    <th scope="col">IVA (19%)</th>
+                                    <th scope="col">IVA</th>
                                     <th scope="col">Total</th>
                                     <th scope="col">Acciones</th>
                                 </tr>
@@ -229,7 +229,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">IVA(19%)</label>
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">IVA</label>
                                         <div class="col-sm-10">
                                             <input type="number" id="iva_nc" class="form-control" required readonly name="iva_nc" placeholder="IVA">
                                         </div>
