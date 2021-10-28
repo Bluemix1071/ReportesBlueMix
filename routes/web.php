@@ -128,6 +128,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/EstadoFacturas','Compras\ConsultaDocumentosController@EstadoFacturas')->name('EstadoFacturas');
     Route::post('/EstadoFacturasFiltro','Compras\ConsultaDocumentosController@EstadoFacturasFiltro')->name('EstadoFacturasFiltro');
+    Route::post('/EstadoFacturasAbono','Compras\ConsultaDocumentosController@EstadoFacturasAbono')->name('EstadoFacturasAbono');
+
+    Route::get('/VerificacionDocumentos','Compras\ConsultaDocumentosController@VerificacionDocumentos')->name('VerificacionDocumentos');
+    Route::post('/VerificacionDocumentosAutorizar','Compras\ConsultaDocumentosController@VerificacionDocumentosAutorizar')->name('VerificacionDocumentosAutorizar');
 
     Route::post('/ComprasProveedores','Compras\ComprasProveedoresController@insert')->name('AgregarCompras');
     
