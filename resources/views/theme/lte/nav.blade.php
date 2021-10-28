@@ -817,45 +817,30 @@
                                     </a>
                                 </li>
                             @endcan
-
+                            
                                 <li class="nav-item">
-                                    <a href="{{ route('NotasCreditoProveedores') }}"
-                                        class="nav-link {{ setActive('NotasCreditoProveedores') }}">
+                                    <a href="{{ route('ConsultaDocumentos') }}"
+                                        class="nav-link {{ setActive('ConsultaDocumentos') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Notas de Crédito</p>
+                                        <p>Consulta Documentos</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ route('ListarCompras') }}"
-                                        class="nav-link {{ setActive('ListarCompras') }}">
+                                    <a href="{{ route('EstadoFacturas') }}"
+                                        class="nav-link {{ setActive('EstadoFacturas') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Editar Compras</p>
+                                        <p>Estado Facturas</p>
                                     </a>
                                 </li>
-
-                            @can('CambioPrecios')
 
                                 <li class="nav-item">
-                                    <a href="{{ route('cambiodeprecios') }}"
-                                        class="nav-link {{ setActive('cambiodeprecios') }}">
+                                    <a href="{{ route('LibroDeComprasDiario') }}"
+                                        class="nav-link {{ setActive('LibroDeComprasDiario') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Cambio de Precios</p>
+                                        <p>Libro De Compras Diario</p>
                                     </a>
                                 </li>
-                            @endcan
-
-                            @can('ordenesdiseno')
-
-                                <li class="nav-item">
-                                    <a href="{{ route('OrdenesDeDiseño') }}"
-                                        class="nav-link {{ setActive('OrdenesDeDiseño') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Ordenes De Diseño</p>
-                                    </a>
-                                </li>
-                            @endcan
-
                         </ul>
                     </li>
                 @endcan
