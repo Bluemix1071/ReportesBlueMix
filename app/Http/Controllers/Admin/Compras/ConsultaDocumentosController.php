@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Compras;
+namespace App\Http\Controllers\admin\Compras;
 
 use DB;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ class ConsultaDocumentosController extends Controller
 
     public function index(){
 
-        return view('Admin.Compras.ConsultaDocumentos');
+        return view('admin.Compras.ConsultaDocumentos');
     }
 
 
@@ -30,7 +30,7 @@ class ConsultaDocumentosController extends Controller
     ->get();
 
 
-      return view('Admin.Compras.ConsultaDocumentos',compact('compras'));
+      return view('admin.Compras.ConsultaDocumentos',compact('compras'));
 
     }else{
 
@@ -42,7 +42,7 @@ class ConsultaDocumentosController extends Controller
     ->get();
 
 
-      return view('Admin.Compras.ConsultaDocumentos',compact('compras'));
+      return view('admin.Compras.ConsultaDocumentos',compact('compras'));
     }
 
 }
@@ -51,7 +51,7 @@ class ConsultaDocumentosController extends Controller
 
     public function LibroDeComprasDiarioindex(){
 
-        return view('Admin.Compras.LibroDeComprasDiario');
+        return view('admin.Compras.LibroDeComprasDiario');
     }
 
 
@@ -195,7 +195,7 @@ class ConsultaDocumentosController extends Controller
      ->sum('total');
 
      //fin suma total
-      return view('Admin.Compras.LibroDeComprasDiario',compact('compras','countfacturas','countexenta','countnotacredito','countdin','exentofacturas','exentoexenta','exentonotacredito','exentodin','netofacturas','netoexenta','netonotatacredito','netodin','totalfacturas','totalexenta','totalnotatacredito','totaldin','recuperablefacturas','recuperablenotacredito'));
+      return view('admin.Compras.LibroDeComprasDiario',compact('compras','countfacturas','countexenta','countnotacredito','countdin','exentofacturas','exentoexenta','exentonotacredito','exentodin','netofacturas','netoexenta','netonotatacredito','netodin','totalfacturas','totalexenta','totalnotatacredito','totaldin','recuperablefacturas','recuperablenotacredito'));
     }
 
 
@@ -203,7 +203,7 @@ class ConsultaDocumentosController extends Controller
 
     public function EstadoFacturas(){
 
-        return view('Admin.Compras.EstadoFacturas');
+        return view('admin.Compras.EstadoFacturas');
     }
 
 
@@ -229,7 +229,7 @@ class ConsultaDocumentosController extends Controller
         // dd($facturas);
 
 
-          return view('Admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2'));
+          return view('admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2'));
 
         }else{
 
@@ -243,7 +243,7 @@ class ConsultaDocumentosController extends Controller
         ->get();
 
 
-          return view('Admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2','rut'));
+          return view('admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2','rut'));
         }
     }
 
@@ -278,7 +278,7 @@ class ConsultaDocumentosController extends Controller
         ->get();
 
 
-          return view('Admin.Compras.VerificacionDocumentos',compact('verificar'));
+          return view('admin.Compras.VerificacionDocumentos',compact('verificar'));
     }
 
 
