@@ -178,7 +178,7 @@ class ComprasProveedoresController extends Controller
 
     public function list(){
 
-        $compras =DB::table('compras')->where('estado_verificacion', 1)->get();
+        $compras =DB::table('compras')->where('estado_verificacion', 2)->get();
 
         return view('admin.Compras.ListarComprasProveedores', compact('compras'));
     }
