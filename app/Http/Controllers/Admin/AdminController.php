@@ -1957,7 +1957,7 @@ public function stocktiemporeal (Request $request){
         $totalconteo=$facturaconteo+$boletaconteo;
         $totalsuma=$boletasuma+$facturasuma;
 
-        return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','comisionfactura','comisionboleta'));
+        return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','comisionboleta'));
 
 
     }
