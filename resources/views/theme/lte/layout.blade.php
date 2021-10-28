@@ -224,9 +224,6 @@
 
 
 
-
-
-
 @yield('script')
 
 

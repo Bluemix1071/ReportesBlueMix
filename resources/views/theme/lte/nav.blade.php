@@ -819,14 +819,6 @@
                             @endcan
 
                                 <li class="nav-item">
-                                    <a href="{{ route('ConsultaDocumentos') }}"
-                                        class="nav-link {{ setActive('ConsultaDocumentos') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Consulta Documentos</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
                                     <a href="{{ route('EstadoFacturas') }}"
                                         class="nav-link {{ setActive('EstadoFacturas') }}">
                                         <i class="far fa-circle nav-icon"></i>
@@ -835,10 +827,26 @@
                                 </li>
 
                                 <li class="nav-item">
+                                    <a href="{{ route('ConsultaDocumentos') }}"
+                                        class="nav-link {{ setActive('ConsultaDocumentos') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Consulta Documentos</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
                                     <a href="{{ route('LibroDeComprasDiario') }}"
                                         class="nav-link {{ setActive('LibroDeComprasDiario') }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Libro De Compras Diario</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('VerificacionDocumentos') }}"
+                                        class="nav-link {{ setActive('VerificacionDocumentos') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Verificacion De Documentos</p>
                                     </a>
                                 </li>
                         </ul>

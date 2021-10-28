@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Mantenedor Contratos
+    Estado Facturas
 @endsection
 @section('styles')
 
@@ -57,6 +57,7 @@
                                     <th scope="col" style="text-align:right">Total Por Pagar</th>
                                     <th scope="col" style="text-align:right">Estado</th>
                                     <th scope="col" style="text-align:right">Pagos</th>
+                                    <th scope="col" style="text-align:right">Abonar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,9 +72,18 @@
                                         <td style="text-align:left">{{ $item->fecha_emision }}</td>
                                         <td style="text-align:left">{{ $item->fecha_venc }}</td>
                                         <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
+                                        @if ($item->porpagar == null)
                                         <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
-                                        <td><h5><span class="badge badge-success">Ingresada</span></h5></td>
+                                        @else
+                                        <td style="text-align:right">{{ number_format($item->porpagar, 0, ',', '.') }}</td>
+                                        @endif
+                                        @if ($item->porpagar == 0 && $item->porpagar !== null)
+                                        <td><h5><span class="badge badge-success">Pagado</span></h5></td>
+                                        @else
+                                        <td><h5><span class="badge badge-warning">pendiente</span></h5></td>
+                                        @endif
                                         <td><a href="" data-toggle="modal" data-target="#verpagos" class="btn btn-primary btm-sm">Ver</a></td>
+                                        <td><a href="" data-toggle="modal" data-target="#modalabonar" class="btn btn-secondary btm-sm" data-id='{{ $item->id }}' data-folio='{{ $item->folio }}'>Abonar</a></td>
                                     </tr>
                                     @endforeach
                                 @endif
@@ -85,89 +95,74 @@
         </section>
 
         <!-- Modal -->
-        <div class="modal fade" id="modaleditarcantidad" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="modalabonar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Editar Usuarios</h4>
+                        <h4 class="modal-title" id="myModalLabel">Realizar Abonos</h4>
                     </div>
                     <div class="modal-body">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('updateproductocontrato') }}">
+                            <form method="POST" action="{{ route('EstadoFacturasAbono') }}">
                                 {{ method_field('post') }}
                                 {{ csrf_field() }}
                                 @csrf
-                                <input type="hidden" name="codigo" id="codigo" value="codigo">
-                                <input type="hidden" name="contrato" id="contrato" value="contrato">
+                                <input type="hidden" name="id" id="id" value="">
                                 <div class="form-group row">
                                     <label for="codigo"
-                                        class="col-md-4 col-form-label text-md-right">{{ __('Codigo') }}</label>
+                                        class="col-md-4 col-form-label text-md-right">{{ __('N° Documento') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="codigo" type="text" disabled
-                                            class="form-control @error('codigo') is-invalid @enderror" name="codigo"
-                                            value="{{ old('codigo') }}" required autocomplete="codigo" autofocus>
-
-                                        @error('codigo')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <input id="folio" type="text" disabled class="form-control" name="folio" value="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="descripcion"
-                                        class="col-md-4 col-form-label text-md-right">{{ __('Descripción') }}</label>
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Fecha Abono') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="descripcion" type="text" disabled
-                                            class="form-control @error('descripcion') is-invalid @enderror"
-                                            name="descripcion" value="{{ old('descripcion') }}" required
-                                            autocomplete="descripcion" autofocus>
-
-                                        @error('descripcion')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <input id="fecha_abono" type="date" class="form-control" name="fecha_abono" value="" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="contrato"
-                                        class="col-md-4 col-form-label text-md-right">{{ __('Contrato') }}</label>
-
+                                    <label for="tipo_pago"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Tipo Pago') }}</label>
                                     <div class="col-md-6">
-                                        <input id="contrato" type="text" disabled
-                                            class="form-control @error('contrato') is-invalid @enderror" name="contrato"
-                                            value="{{ old('contrato') }}" required autocomplete="contrato" autofocus>
-
-                                        @error('contrato')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <select class="form-control" required name="tipo_pago">
+                                            <option value="Transferencia">Transferencia</option>
+                                            <option value="Cheque">Cheque</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="cantidad_contrato"
-                                        class="col-md-4 col-form-label text-md-right">{{ __('Cantidad Contrato') }}</label>
+                                    <label for="banco"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Banco') }}</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" required name="banco">
+                                            <option value="Banco Itau">Banco Itau</option>
+                                            <option value="Banco Estado">Banco Estado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="numero_pago"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('N° Pago') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="cantidad_contrato" type="number" min="0"
-                                            class="form-control @error('cantidad_contrato') is-invalid @enderror"
-                                            name="cantidad_contrato" value="{{ old('cantidad_contrato') }}" required
-                                            autocomplete="cantidad_contrato" autofocus>
+                                        <input id="numero_pago" type="number" min="1" class="form-control" name="numero_pago" value="" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="monto"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Monto') }}</label>
 
-                                        @error('cantidad_contrato')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                    <div class="col-md-6">
+                                        <input id="monto_abono" type="number" min="1" class="form-control" name="monto_abono" value="" required>
                                     </div>
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                    <button type="submit" class="btn btn-primary">Abonar</button>
                                     <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
                                 </div>
                             </form>
@@ -218,30 +213,6 @@
                             </table>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div id="jsGrid1"></div>
-                            <div class="form-group mx-sm-2 mb-2">
-                                    <label for="staticEmail2" class="sr-only">Codigo</label>
-                                    <input type="text" id="codigo" minlength="7" maxlength="7" class="form-control" name="codigo" placeholder="codigo...">
-                            </div>
-                            <div class="form-group mx-sm-2 mb-2">
-                                    <label for="staticEmail2" class="sr-only">Cantidad Contrato</label>
-                                    <input type="number" min="0" id="cantidad" class="form-control" name="cantidad" placeholder="Cantidad Contrato...">
-                            </div>
-                            <div class="form-group mx-sm-2 mb-2">
-                                <div class="col-sm-8">
-                                    {{-- <select class="form-control" name="contrato" required>
-                                        <option value="">Seleccione Un Contrato</option>
-                                        @foreach ($contratosagregar as $item)
-                                            <option value="{{ $item->id_contratos }}">{{ $item->nombre_contrato }}</option>
-                                        @endforeach
-                                    </select> --}}
-                                </div>
-                            </div>
-                            <div class="form-group mx-sm-2 mb-2">
-                                <button type="submit" class="btn btn-success mb-2">Agregar</button>
-                            </div>
-                    </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" >Aceptar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -268,6 +239,18 @@
                 });
             });
         </script>
+
+
+<script> $('#modalabonar').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var folio = button.data('folio')
+
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #folio').val(folio);
+
+  })</script>
 
 
     @endsection

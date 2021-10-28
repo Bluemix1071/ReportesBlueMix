@@ -25,6 +25,7 @@ class ConsultaDocumentosController extends Controller
     if($request->rut==null){
 
     $compras=DB::table('compras')
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
     ->get();
 
@@ -36,6 +37,7 @@ class ConsultaDocumentosController extends Controller
 
     $compras=DB::table('compras')
     ->where('rut', $request->rut)
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
     ->get();
 
@@ -63,27 +65,32 @@ class ConsultaDocumentosController extends Controller
     $fecha2=$request->fecha2;
 
     $compras=DB::table('compras')
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->get();
 
      //count
     $countfacturas=DB::table('compras')
     ->where('tipo_dte', 33 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->count();
 
     $countexenta=DB::table('compras')
     ->where('tipo_dte', 34 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->count();
 
     $countnotacredito=DB::table('compras')
     ->where('tipo_dte', 61 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->count();
 
     $countdin=DB::table('compras')
     ->where('tipo_dte', 914 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->count();
 
@@ -92,21 +99,25 @@ class ConsultaDocumentosController extends Controller
     //suma exenta
     $exentofacturas=DB::table('compras')
     ->where('tipo_dte', 33 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->sum('mnto_exento');
 
     $exentoexenta=DB::table('compras')
     ->where('tipo_dte', 34 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->sum('mnto_exento');
 
     $exentonotacredito=DB::table('compras')
     ->where('tipo_dte', 61 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->sum('mnto_exento');
 
     $exentodin=DB::table('compras')
     ->where('tipo_dte', 914 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->sum('mnto_exento');
 
@@ -115,21 +126,25 @@ class ConsultaDocumentosController extends Controller
     //suma neto
     $netofacturas=DB::table('compras')
     ->where('tipo_dte', 33 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->sum('neto');
 
     $netoexenta=DB::table('compras')
     ->where('tipo_dte', 34 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->sum('neto');
 
     $netonotatacredito=DB::table('compras')
     ->where('tipo_dte', 61 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->sum('neto');
 
     $netodin=DB::table('compras')
     ->where('tipo_dte', 914 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->sum('neto');
 
@@ -139,12 +154,14 @@ class ConsultaDocumentosController extends Controller
     $recuperablefacturas=DB::table('compras')
     ->selectRaw('(sum(neto)*0.19) as recuperablefacturas')
     ->where('tipo_dte', 33 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->first();
 
     $recuperablenotacredito=DB::table('compras')
     ->selectRaw('(sum(neto)*0.19) as recuperablenotacredito')
     ->where('tipo_dte', 61 )
+    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
     ->first();
 
@@ -155,21 +172,25 @@ class ConsultaDocumentosController extends Controller
      //suma total
      $totalfacturas=DB::table('compras')
      ->where('tipo_dte', 33 )
+     ->where('estado_verificacion', 2)
      ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
      ->sum('total');
 
      $totalexenta=DB::table('compras')
      ->where('tipo_dte', 34 )
+     ->where('estado_verificacion', 2)
      ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
      ->sum('total');
 
      $totalnotatacredito=DB::table('compras')
      ->where('tipo_dte', 61 )
+     ->where('estado_verificacion', 2)
      ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
      ->sum('total');
 
      $totaldin=DB::table('compras')
      ->where('tipo_dte', 914 )
+     ->where('estado_verificacion', 2)
      ->whereBetween('fecha_creacion', array($request->fecha1,$request->fecha2))
      ->sum('total');
 
@@ -196,10 +217,16 @@ class ConsultaDocumentosController extends Controller
         if($request->rut==null){
 
         $facturas=DB::table('compras')
+        ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar')
+        ->leftJoin('compras_pagos', 'compras_pagos.fk_compras', '=', 'compras.id')
         ->where('tipo_dte', 33)
         ->where('tpo_pago', 2)
+        ->where('estado_verificacion', 2)
         ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
+        ->groupBy('id')
         ->get();
+
+        // dd($facturas);
 
 
           return view('Admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2'));
@@ -211,6 +238,7 @@ class ConsultaDocumentosController extends Controller
         ->where('tipo_dte', 33)
         ->where('rut', $request->rut)
         ->where('tpo_pago', 2)
+        ->where('estado_verificacion', 2)
         ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
         ->get();
 
@@ -218,6 +246,54 @@ class ConsultaDocumentosController extends Controller
           return view('Admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2','rut'));
         }
     }
+
+
+
+    public function EstadoFacturasAbono(Request $request){
+
+        // dd($request->all());
+
+        DB::table('compras_pagos')->insert([
+            [
+                "fk_compras" => $request->id,
+                "fecha_abono" => $request->fecha_abono,
+                "tipo_pago" => $request->tipo_pago,
+                "banco" => $request->banco,
+                "numero_pago" => $request->numero_pago,
+                "monto" => $request->monto_abono,
+                ]
+            ]);
+
+
+        return redirect()->route('EstadoFacturas')->with('success','Abono Realizado');
+    }
+
+
+    public function VerificacionDocumentos(Request $request){
+
+
+        $verificar=DB::table('compras')
+        ->where('tipo_dte','!=', '914')
+        ->where('estado_verificacion', 1)
+        ->get();
+
+
+          return view('Admin.Compras.VerificacionDocumentos',compact('verificar'));
+    }
+
+
+
+    public function VerificacionDocumentosAutorizar(Request $request){
+
+        DB::table('compras')
+            ->where('id', $request->id)
+            ->where('folio', $request->folio)
+            ->update(['estado_verificacion' => 2]);
+
+
+        return redirect()->route('VerificacionDocumentos')->with('success','Producto Autorizado');
+    }
+
 
 
 }
