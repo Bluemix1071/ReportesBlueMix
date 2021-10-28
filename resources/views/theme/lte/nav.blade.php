@@ -817,7 +817,7 @@
                                     </a>
                                 </li>
                             @endcan
-
+                            
                                 <li class="nav-item">
                                     <a href="{{ route('EstadoFacturas') }}"
                                         class="nav-link {{ setActive('EstadoFacturas') }}">

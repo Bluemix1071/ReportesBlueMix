@@ -134,6 +134,15 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/VerificacionDocumentosAutorizar','Compras\ConsultaDocumentosController@VerificacionDocumentosAutorizar')->name('VerificacionDocumentosAutorizar');
 
     Route::post('/ComprasProveedores','Compras\ComprasProveedoresController@insert')->name('AgregarCompras');
+    
+    Route::get('/ListarComprasProveedores','Compras\ComprasProveedoresController@list')->name('ListarCompras');
+    Route::post('/EditarCompraProveedores','Compras\ComprasProveedoresController@editar')->name('EditarCompra');
+    Route::put('/EditarCompraProveedores','Compras\ComprasProveedoresController@update')->name('UpdateCompra');
+    // fin
+    /*  Mantenedor CRUD Notas Credito Proveedores */
+    Route::get('/NotasCreditoProveedores','Compras\NotasCreditoProveedoresController@index')->name('NotasCreditoProveedores');
+    Route::post('/NotasCreditoProveedores','Compras\NotasCreditoProveedoresController@insert')->name('AgregarNC');
+    Route::delete('/NotasCreditoProveedores/{id}','Compras\NotasCreditoProveedoresController@destroy')->name('BorrarNC');
     // fin
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');
     Route::get('/ProductosPorMarca','AdminController@ProductosPorMarca')->name('ProductosPorMarca');
