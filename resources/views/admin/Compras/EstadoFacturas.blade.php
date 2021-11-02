@@ -48,6 +48,7 @@
                         <table id="users" class="table table-sm table-hover">
                             <thead>
                                 <tr>
+                                    <th scope="col" style="text-align:left">ID</th>
                                     <th scope="col" style="text-align:left">Nro. Doc.</th>
                                     <th scope="col" style="text-align:left">Rut</th>
                                     <th scope="col" style="text-align:left">Razon</th>
@@ -66,6 +67,7 @@
                                 @else
                                     @foreach ($facturas as $item)
                                     <tr>
+                                        <th style="text-align:left">{{ $item->id }}</th>
                                         <th style="text-align:left">{{ $item->folio }}</th>
                                         <td style="text-align:left">{{ $item->rut }}</td>
                                         <td style="text-align:left">{{ $item->razon_social }}</td>
@@ -82,8 +84,12 @@
                                         @else
                                         <td><h5><span class="badge badge-warning">pendiente</span></h5></td>
                                         @endif
-                                        <td><a href="" data-toggle="modal" data-target="#verpagos" class="btn btn-primary btm-sm">Ver</a></td>
-                                        <td><a href="" data-toggle="modal" data-target="#modalabonar" class="btn btn-secondary btm-sm" data-id='{{ $item->id }}' data-folio='{{ $item->folio }}'>Abonar</a></td>
+                                        <td><a href="" data-toggle="modal" data-target="#verpagos" data-id='{{ $item->id }}' onclick="verabono({{ $item->id }})" class="btn btn-primary btm-sm">Ver</a></td>
+                                        @if($item->porpagar == 0 && $item->porpagar !== null)
+                                        <td style="text-align:left"><button type="button" disabled class="btn btn-secondary">abonar</button></td>
+                                        @else
+                                        <td><a href="" data-toggle="modal" data-target="#modalabonar" class="btn btn-secondary btm-sm" data-id='{{ $item->id }}' data-folio='{{ $item->folio }}' data-monto_abono='{{$item->porpagar}}'  data-total='{{ $item->total }}'>Abonar</a></td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 @endif
@@ -153,7 +159,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="monto"
+                                    <label for="monto_abono"
                                         class="col-md-4 col-form-label text-md-right">{{ __('Monto') }}</label>
 
                                     <div class="col-md-6">
@@ -187,28 +193,32 @@
                     <form method="POST" action="{{ route('deleteproductocontrato') }}">
                     <div class="modal-body">
                         <div class="table-responsive-xl">
-                            <table id="users" class="table table-sm table-hover">
+                            <table id="abonos" class="table table-sm table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col" style="text-align:left">ID</th>
+                                        <th scope="col" style="text-align:left">Fecha Abono</th>
                                         <th scope="col" style="text-align:left">Tipo Pago</th>
-                                        <th scope="col" style="text-align:left">Forma Pago</th>
+                                        <th scope="col" style="text-align:left">Banco</th>
+                                        <th scope="col" style="text-align:left">N° Pago</th>
                                         <th scope="col" style="text-align:left">Monto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @if (empty($facturas))
+                                    @if (empty($abonos))
 
                                     @else
-                                        @foreach ($facturas as $item) --}}
+                                        @foreach ($abonos as $item)
                                         <tr>
-                                            <th style="text-align:left">15121</th>
-                                            <td style="text-align:left">194155522</td>
-                                            <td style="text-align:left">ergrrvtbtbt</td>
-                                            <td style="text-align:left">ergrrvtbtbt</td>
+                                            <th style="text-align:left">{{ $item->fk_compras }}</th>
+                                            <td style="text-align:left">{{ $item->fecha_abono }}</td>
+                                            <td style="text-align:left">{{ $item->tipo_pago }}</td>
+                                            <td style="text-align:left">{{ $item->banco }}</td>
+                                            <td style="text-align:left">{{ $item->numero_pago }}</td>
+                                            <td style="text-align:right">{{ number_format($item->monto, 0, ',', '.') }}</td>
                                         </tr>
-                                        {{-- @endforeach
-                                    @endif --}}
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -241,14 +251,52 @@
         </script>
 
 
+    <script>
+
+           var table = $('#abonos').DataTable({
+                paging: false,
+                // searching: disabled,
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+            function verabono(id){
+                // alert(id)
+                this.table.columns(0).search(id).draw();
+            }
+
+    </script>
+
+
 <script> $('#modalabonar').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var id = button.data('id')
     var folio = button.data('folio')
+    var monto_abono = button.data('monto_abono')
+    var total = button.data('total')
+    if(monto_abono === ""){
+        monto_abono = total;
+	}
 
     var modal = $(this)
     modal.find('.modal-body #id').val(id);
     modal.find('.modal-body #folio').val(folio);
+    modal.find('.modal-body #monto_abono').val(monto_abono);
+    modal.find('.modal-body #monto_abono').attr({
+       "max" : monto_abono
+    });
+
+
+  })</script>
+
+
+
+<script> $('#verpagos').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
 
   })</script>
 
