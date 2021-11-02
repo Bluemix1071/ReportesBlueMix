@@ -93,8 +93,8 @@
                                     @endif
                                     <td style="text-align:left">{{ $item->fecha_emision }}</td>
                                     <td style="text-align:left">{{ $item->fecha_venc }}</td>
-                                    <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
                                     {{-- <div style="display: none">{{ $totalcompra += $item->total }}</div> --}}
                                 </tr>

@@ -1497,9 +1497,15 @@ public function stocktiemporeal (Request $request){
         ->where('DETIPO', '!=' , '3')
         ->where(function ($query) {
         $query->where('DECODI', 'LIKE', 'la%')
+        // ->orwhereBetween('DECODI', ['9124800', '9124900'])
+        // ->orwhereBetween('DECODI', ['9100100', '9106600'])
         ->orWhere('DECODI', 'LIKE', '%1199300%')
         ->orWhere('DECODI', 'LIKE', '%gra0700%');
         })->get();
+
+        // dd($diseno);
+
+
 
 
         return view('admin.ventasdiseno',compact('diseno'));

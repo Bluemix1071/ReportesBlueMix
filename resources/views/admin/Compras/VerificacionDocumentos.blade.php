@@ -55,8 +55,8 @@
                                     <td style="text-align:left">Contado</td>
                                     @endif
                                     <td style="text-align:left">{{ $item->fecha_emision }}</td>
-                                    <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
                                     <td style="text-align:right"><a href="" data-toggle="modal" data-target="#autorizarmodal" class="btn btn-primary btm-sm" data-id='{{ $item->id }}' data-folio='{{ $item->folio }}'>Autorizar</a></td>
                         </tr>
