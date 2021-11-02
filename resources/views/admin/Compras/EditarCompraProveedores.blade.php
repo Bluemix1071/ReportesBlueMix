@@ -62,13 +62,13 @@
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">N° Folio</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="folio" required placeholder="N° Folio" min="1" value="{{ $compra->folio }}">
+                                    <input readonly type="number" class="form-control" name="folio" required placeholder="N° Folio" min="1" value="{{ $compra->folio }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha Emisión</label>
                                 <div class="col-sm-10">
-                                    <input type="date" class="form-control" name="fecha_emision" id="fecha_emision" required placeholder="Fecha Emisión" value="{{ $compra->fecha_emision }}">
+                                    <input type="date" readonly class="form-control" name="fecha_emision" id="fecha_emision" required placeholder="Fecha Emisión" value="{{ $compra->fecha_emision }}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -90,54 +90,54 @@
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Rut Proveedor</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" required name="rut" id="rut" oninput="checkRut(this)" placeholder="Rut Proveedor" value="{{ $compra->rut }}">
+                                    <input readonly type="text" class="form-control" required name="rut" id="rut" oninput="checkRut(this)" placeholder="Rut Proveedor" value="{{ $compra->rut }}">
                                 </div>
                                 <div class="col-sm-1">
-                                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalbuscar">Buscar</i></button>
+                                    <button disabled type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalbuscar">Buscar</i></button>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Razón Social</label>
                                 <div class="col-sm-10">
-                                    <textarea placeholder="Razón Social" class="form-control" id="razon_social" name="razon_social" rows="1">{{ $compra->razon_social }}</textarea>
+                                    <textarea readonly placeholder="Razón Social" class="form-control" id="razon_social" name="razon_social" rows="1">{{ $compra->razon_social }}</textarea>
                                     <!-- <input type="text" class="form-control" required name="razon_social" id="razon_social" placeholder="Razón Social"> -->
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Giro</label>
                                 <div class="col-sm-10">
-                                    <textarea placeholder="Giro" class="form-control" id="giro" name="giro" rows="1">{{ $compra->giro }}</textarea>
+                                    <textarea readonly placeholder="Giro" class="form-control" id="giro" name="giro" rows="1">{{ $compra->giro }}</textarea>
                                     <!-- <input type="text" class="form-control" required name="giro" id="giro" placeholder="Giro"> -->
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Dirección</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="direccion" id="direccion" placeholder="Dirección" value="{{ $compra->direccion }}">
+                                    <input type="text" readonly class="form-control" required name="direccion" id="direccion" placeholder="Dirección" value="{{ $compra->direccion }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Comuna</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="comuna" id="comuna" placeholder="Comuna" value="{{ $compra->comuna }}">
+                                    <input type="text" readonly class="form-control" required name="comuna" id="comuna" placeholder="Comuna" value="{{ $compra->comuna }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Ciudad</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="ciudad" id="ciudad" placeholder="Ciudad" value="{{ $compra->ciudad }}">
+                                    <input type="text" readonly class="form-control" required name="ciudad" id="ciudad" placeholder="Ciudad" value="{{ $compra->ciudad }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Neto</label>
                                 <div class="col-sm-10">
-                                    <input type="number" id="neto" class="form-control" required name="neto" min="0" placeholder="Neto" value="{{ $compra->neto }}">
+                                    <input type="number" readonly id="neto" class="form-control" required name="neto" min="0" placeholder="Neto" value="{{ $compra->neto }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">IVA</label>
                                 <div class="col-sm-10">
-                                    <input type="number" id="iva" class="form-control" required name="iva" placeholder="IVA" value="{{ $compra->iva }}">
+                                    <input type="number" readonly id="iva" class="form-control" required name="iva" placeholder="IVA" value="{{ $compra->iva }}">
                                 </div>
                             </div>
                             <div class="form-group row">
