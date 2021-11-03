@@ -261,7 +261,6 @@
                 ]
             });
             function verabono(id){
-                // alert(id)
                 this.table.columns(0).search(id).draw();
             }
 
