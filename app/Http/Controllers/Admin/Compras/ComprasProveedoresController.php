@@ -37,10 +37,10 @@ class ComprasProveedoresController extends Controller
         //dd($json);
 
         if(empty($json->SetDTE)){
-            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
             if($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33"){
                 return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura tipo 33. No soportado!');
             }
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
         }
         if(is_array($json->SetDTE->DTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. No soportado!');
@@ -49,14 +49,18 @@ class ComprasProveedoresController extends Controller
         $encabezado = $json->SetDTE->DTE->Documento->Encabezado;
         
         $detalle = $json->SetDTE->DTE->Documento->Detalle;
+
         if(!empty($json->SetDTE->DTE->Documento->Referencia)){
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
         }
         if(empty($encabezado->IdDoc->FchVenc)){
             $encabezado->IdDoc->FchVenc = null;
         }
-        if(empty($encabezado->IdDoc->FchVenc) && $encabezado->IdDoc->FmaPago == 1){
-            $encabezado->IdDoc->FchVenc =$encabezado->IdDoc->FchEmis;
+        if(empty($encabezado->IdDoc->FmaPago)){
+            $encabezado->IdDoc->FmaPago = 1;
+        }
+        if(empty($encabezado->IdDoc->FchVenc) && $encabezado->IdDoc->FmaPago == "1"){
+            $encabezado->IdDoc->FchVenc = $encabezado->IdDoc->FchEmis;
         }
         if(empty($encabezado->Emisor->CiudadOrigen) || is_object($encabezado->Emisor->CiudadOrigen)){
             $encabezado->Emisor->CiudadOrigen = null;
