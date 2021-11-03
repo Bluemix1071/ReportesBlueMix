@@ -1492,16 +1492,25 @@ public function stocktiemporeal (Request $request){
         // ->where('DETIPO', '!=' , '3')
         // ->get();
 
+        // $diseno=DB::table('dcargos')
+        // ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
+        // ->where('DETIPO', '!=' , '3')
+        // ->where(function ($query) {
+        // $query->where('DECODI', 'LIKE', 'la%')
+        // // ->orwhereBetween('DECODI', ['9124800', '9124900'])
+        // // ->orwhereBetween('DECODI', ['9100100', '9106600'])
+        // ->orWhere('DECODI', 'LIKE', '%1199300%')
+        // ->orWhere('DECODI', 'LIKE', '%2052000%')
+        // ->orWhere('DECODI', 'LIKE', '%9117700%')
+        // ->orWhere('DECODI', 'LIKE', '%gra0700%');
+        // })->get();
+
         $diseno=DB::table('dcargos')
+        ->join('producto','ARCODI', '=', 'decodi')
         ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
         ->where('DETIPO', '!=' , '3')
-        ->where(function ($query) {
-        $query->where('DECODI', 'LIKE', 'la%')
-        // ->orwhereBetween('DECODI', ['9124800', '9124900'])
-        // ->orwhereBetween('DECODI', ['9100100', '9106600'])
-        ->orWhere('DECODI', 'LIKE', '%1199300%')
-        ->orWhere('DECODI', 'LIKE', '%gra0700%');
-        })->get();
+        ->where('ARGRPO2', '12')
+        ->get();
 
         // dd($diseno);
 

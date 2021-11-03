@@ -363,8 +363,13 @@ class SalaController extends Controller
       public function GuardarOrdenesDeDiseño(Request $request){
 
         // dd($request->all());
-        $date = Carbon::now();
-        $date = $date->format('Y-m-d');
+        $date = Carbon::now("Chile/Continental");
+        // $date = $date->format('Y-m-d');
+
+        // $date = Carbon::now("Chile/Continental");
+
+            // dd($date);
+
 
 
         if ($request->file('archivo') == null) {
