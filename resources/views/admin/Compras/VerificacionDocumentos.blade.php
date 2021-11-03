@@ -58,7 +58,11 @@
                                     <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
-                                    <td style="text-align:right"><a href="" data-toggle="modal" data-target="#autorizarmodal" class="btn btn-primary btm-sm" data-id='{{ $item->id }}' data-folio='{{ $item->folio }}'>Autorizar</a></td>
+                                    @if($item->tipo_dte !== 33)
+                                      <td style="text-align:right"><a href="#" class="btn btn-secondary btm-sm">Autorizar</a></td>
+                                    @else
+                                      <td style="text-align:right"><a href="" data-toggle="modal" data-target="#autorizarmodal" class="btn btn-primary btm-sm" data-id='{{ $item->id }}' data-folio='{{ $item->folio }}'>Autorizar</a></td>
+                                    @endif
                         </tr>
                 @endforeach
             </tbody>
