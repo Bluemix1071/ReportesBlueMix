@@ -296,8 +296,31 @@ class ConsultaDocumentosController extends Controller
             ->update(['estado_verificacion' => 2]);
 
 
-        return redirect()->route('VerificacionDocumentos')->with('success','Producto Autorizado');
+        return redirect()->route('VerificacionDocumentos')->with('success','Documento Autorizado');
     }
+
+
+    public function VerificacionDocumentosAutorizarTodo (Request $request){
+
+        $id=$request->case;
+
+        $conteo=count($request->case);
+        $conteo = $conteo-1;
+
+       for ($i = 0; $i <= $conteo; $i++){
+
+       $bloqueoupdate = DB::table('compras')
+       ->where('id', $id[$i])
+       ->Update(['estado_verificacion' => 2,
+
+       ]);
+
+       }
+
+
+       return redirect()->route('VerificacionDocumentos')->with('success','Documentos Autorizados');
+
+     }
 
 
 
