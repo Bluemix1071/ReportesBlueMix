@@ -37,10 +37,9 @@ class ComprasProveedoresController extends Controller
         //dd($json);
 
         if(empty($json->SetDTE)){
-            if($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33"){
-                return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura tipo 33. No soportado!');
-            }
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
+        }elseif($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33"){
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura tipo 33. No soportado!');
         }
         if(is_array($json->SetDTE->DTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. No soportado!');
