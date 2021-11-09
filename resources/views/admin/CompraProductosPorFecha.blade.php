@@ -30,12 +30,13 @@ Compra Productos
                                         @endforeach
                                     </datalist>
                                    @else
-                                   <input class="form-control" name="marca" list="marca" autocomplete="off" name="marcas" id="xd" type="text" placeholder="Marca...">
+                                   <input class="form-control" name="marca" list="marca" autocomplete="off" name="marcas" id="xd" type="text" placeholder="Marca..." value="{{ $marca }}">
                                    <datalist id="marca">
                                        @foreach ($marcas as $item)
                                        <option value="{{ $item->ARMARCA }}">
                                        @endforeach
-                                   </datalist>                                   @endif
+                                   </datalist>                                   
+                                   @endif
                                  </div>
 
                                  <div class="form-group mb-2">
