@@ -322,6 +322,46 @@ class ConsultaDocumentosController extends Controller
 
      }
 
+     public function AbonoMasivo(Request $request){
+        $id=$request->case;
+
+        foreach($id as $item){
+
+            $compra=DB::table('compras')
+            ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar')
+            ->leftJoin('compras_pagos', 'compras_pagos.fk_compras', '=', 'compras.id')
+            ->where('id', $item)
+            ->get();
+
+            if($compra[0]->porpagar == null){
+                //error_log(print_r("no tiene abonos", true));
+                DB::table('compras_pagos')->insert([
+                    [
+                        "fk_compras" => $item,
+                        "fecha_abono" => $request->fecha_abono_multiple,
+                        "tipo_pago" => $request->tipo_pago_multiple,
+                        "banco" => $request->banco_multiple,
+                        "numero_pago" => $request->n_pago_multiple,
+                        "monto" => $compra[0]->total,
+                        ]
+                    ]);
+            }else{
+                //error_log(print_r("tiene abonos", true));
+                DB::table('compras_pagos')->insert([
+                    [
+                        "fk_compras" => $item,
+                        "fecha_abono" => $request->fecha_abono_multiple,
+                        "tipo_pago" => $request->tipo_pago_multiple,
+                        "banco" => $request->banco_multiple,
+                        "numero_pago" => $request->n_pago_multiple,
+                        "monto" => $compra[0]->porpagar,
+                        ]
+                    ]);
+            }
+        }
+        return redirect()->route('EstadoFacturas')->with('success','Abono Masivo Realizado');
+     }
+
 
 
 }
