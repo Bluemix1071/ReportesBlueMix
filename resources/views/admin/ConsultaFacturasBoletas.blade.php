@@ -53,7 +53,8 @@
                             <th scope="col" style="text-align:left">Numero Doc.</th>
                             <th scope="col" style="text-align:left">Tipo Doc.</th>
                             <th scope="col" style="text-align:left">RUT</th>
-                            <th scope="col" style="text-align:left">Razon</th>
+                            <th scope="col" style="text-align:left">F.Pago</th>
+                            <th scope="col" style="text-align:left">Caja</th>
                             <th scope="col" style="text-align:left">Fecha</th>
                             <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
@@ -79,7 +80,8 @@
                                         <td style="text-align:left">Boletas Transbank</td>
                                     @endif
                                     <td style="text-align:left">{{ $item->CARUTC }}</td>
-                                    <td style="text-align:left">-</td>
+                                    <td style="text-align:left">{{ $item->FPAGO }}</td>
+                                    <td style="text-align:left">{{ $item->CACOCA }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
                                     <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalboletasiva += $item->CAIVA }}</div>
@@ -93,7 +95,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="7"><strong>Total</strong> </td>
+                            <td colspan="8"><strong>Total</strong> </td>
                             @if (empty($totalboletas))
                                 <td><span class="price text-success">$</span></td>
                             @else
@@ -121,6 +123,8 @@
                             <th scope="col" style="text-align:left">RUT</th>
                             <th scope="col" style="text-align:left">Razon</th>
                             <th scope="col" style="text-align:left">Fecha</th>
+                            <th scope="col" style="text-align:left">F.Pago</th>
+                            <th scope="col" style="text-align:left">Caja</th>
                             <th scope="col" style="text-align:left">N° Orden</th>
                             <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
@@ -149,6 +153,8 @@
                                     <td style="text-align:left">{{ $item->CARUTC }}</td>
                                     <td style="text-align:left">{{ $item->razon }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
+                                    <td style="text-align:left">{{ $item->FPAGO }}</td>
+                                    <td style="text-align:left">{{ $item->CACOCA }}</td>
                                     <td style="text-align:left">{{ $item->nro_oc }}</td>
                                     <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalfacturaiva += $item->CAIVA }}</div>
@@ -162,7 +168,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="8"><strong>Total</strong> </td>
+                            <td colspan="10"><strong>Total</strong> </td>
                             @if (empty($totalfactura))
                                 <td><span class="price text-success">$</span></td>
                             @else

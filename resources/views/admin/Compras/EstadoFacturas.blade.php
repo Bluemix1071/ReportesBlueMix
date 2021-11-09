@@ -190,7 +190,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="{{ route('deleteproductocontrato') }}">
+                    {{-- <form method="POST" action="{{ route('deleteproductocontrato') }}"> --}}
                     <div class="modal-body">
                         <div class="table-responsive-xl">
                             <table id="abonos" class="table table-sm table-hover">
@@ -224,10 +224,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" >Aceptar</button>
+                        {{-- <button type="submit" class="btn btn-primary" >Aceptar</button> --}}
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
-                </form>
+                {{-- </form> --}}
                 </div>
             </div>
         </div>
