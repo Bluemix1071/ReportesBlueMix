@@ -85,6 +85,7 @@
                     <div class="form-group mx-sm-3 mb-2">
                         <button type="submit" class="btn btn-success mb-2">Autorizar Seleccionados</button>
                     </div>
+                </form>
                 </div>
             </div>
         </section>
@@ -95,7 +96,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Detalle De Pagos</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Autorizar Pago</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
