@@ -43,7 +43,6 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <form action="{{ route('AbonoMasivo') }}" method="post" id="desvForm" class="form-inline">
                     <h3 class="card-title">Estado Factura</h3>
                     <div class="table-responsive-xl">
                         <table id="users" class="table table-sm table-hover">
@@ -106,6 +105,7 @@
                         </table>
                     </div>
                 </div>
+                <form action="{{ route('AbonoMasivo') }}" method="post" id="desvForm">
                 <div class="card card-primary">
                     <div class="card-header">
                             <h3 class="card-title">Abono Multiple</h3>
@@ -119,14 +119,14 @@
                             </div>
                         </div>
                     <div class="card-body collapse hide">
+                        <div id="selects" style="margin-bottom: 1%">
+                        </div>
                         <input type="date" placeholder="Fecha" required name="fecha_abono_multiple" class="form-control col" style="margin-bottom: 1%" />
                         <select class="form-control" required name="tipo_pago_multiple" style="margin-bottom: 1%">
-                            <option value="">Seleccione Tipo Pago...</option>
                             <option value="Transferencia">Transferencia</option>
                             <option value="Cheque">Cheque</option>
                         </select>
                         <select class="form-control" required name="banco_multiple" style="margin-bottom: 1%">
-                            <option value="">Seleccione Banco...</option>
                             <option value="Banco Itau">Banco Itau</option>
                             <option value="Banco Estado">Banco Estado</option>
                         </select>
@@ -332,6 +332,11 @@
 <script>
 
     function contador(monto, id){
+        var max_fields = 999;
+        var wrapper = $("#selects");
+        var x = 0;
+        var input = document.getElementById('input_'+id+'');
+
         var acumulado = $("#monto_total_multiple").val();
 
         //alert(typeof monto);
@@ -340,8 +345,16 @@
 
         if ($('#id_'+id).is(":checked")) {
             $("#monto_total_multiple").val(Number(Number(acumulado)+Number(monto)));
+            if(x < max_fields){
+                x++;
+                $(wrapper).append(
+                    '<input type="text" class="badge badge-secondary" id="input_'+id+'" name="case[]" value='+id+'>'
+            ); 
+        }
         } else {
             $("#monto_total_multiple").val(Number(Number(acumulado)-Number(monto)));
+            input.remove();
+            x--;
         }
 
         /* var input = $( "input[class=case]" ).on("click");
