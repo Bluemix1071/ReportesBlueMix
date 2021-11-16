@@ -365,7 +365,7 @@
                                         <a href="{{ route('ventasdiseno') }}"
                                             class="nav-link {{ setActive('ventasdiseno') }}">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Ventas Diseño</p>
+                                            <p>Ventas Categoría</p>
                                         </a>
                                     </li>
                                 @endcan

@@ -12,7 +12,7 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Ventas Diseño</h3>
+        <h3 class="display-3">Ventas Por Categoría</h3>
         <div class="row">
             <div class="col-md-12">
                 <form action="{{ route('ventasdisenoFiltro') }}" method="post" id="desvForm" class="form-inline">
@@ -33,6 +33,15 @@
                         @else
                             <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{ $fecha2 }}">
                         @endif
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input class="form-control" list="categoria" required autocomplete="off" name="categoria" id="xd" type="text"
+                            placeholder="Categoria...">
+                        <datalist id="categoria">
+                            @foreach ($categorias as $item)
+                                <option value="{{ $item->TAREFE }}">{{ $item->TAGLOS }}</option>
+                            @endforeach
+                        </datalist>
                     </div>
                     <div class="form-group mx-sm-3 mb-2">
                         <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
