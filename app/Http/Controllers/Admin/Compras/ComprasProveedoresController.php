@@ -36,6 +36,9 @@ class ComprasProveedoresController extends Controller
         $json = json_decode(json_encode($xml));
         //dd($json);
 
+        if(is_array($json->SetDTE->DTE)){
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. No soportado!');
+        }
         if(empty($json->SetDTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
         }elseif($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33"){
