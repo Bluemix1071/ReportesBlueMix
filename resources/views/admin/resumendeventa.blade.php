@@ -213,7 +213,6 @@
                             <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
                             <th scope="col" style="text-align:right">Total</th>
-                            {{-- <th scope="col" style="text-align:center">Acciones</th> --}}
                         </tr>
                     </thead>
                     <tbody>

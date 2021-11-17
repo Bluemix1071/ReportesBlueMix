@@ -1845,6 +1845,10 @@ public function stocktiemporeal (Request $request){
 
     public function ResumenDeVentaFiltro(Request $request){
 
+
+        // if (condition) {
+        //     # code...
+        // }
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
 
@@ -1884,11 +1888,10 @@ public function stocktiemporeal (Request $request){
         cargos where forma_pago = "X" and CANMRO = CCPDOCUMEN
         and CAFECO between ? and ? group by CCPDOCUMEN', [$fecha1,$fecha2]);
 
+
         $guias=DB::select('select *
         from cargos where catipo = 3
         and CAFECO between ? and ? ', [$fecha1,$fecha2]);
-
-        // dd($porcobrar);
 
 
         return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta','creditocount','debitocount','totaldocumentostarjeta','porcobrar','guias'));
