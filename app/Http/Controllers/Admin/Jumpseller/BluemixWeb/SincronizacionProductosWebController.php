@@ -107,7 +107,7 @@ class SincronizacionProductosWebController extends Controller
 
     public function actualizarProductoWeb(){
         
-        $productos=DB::table('subida_productos_web')->where('sku','!=',null)->get()->take(100);
+        $productos=DB::table('subida_productos_web')->where('sku','!=',null)->get();
 
         $count = count($productos);
         /* $cantidadDePaginas = ceil($count / 100);
@@ -143,7 +143,7 @@ class SincronizacionProductosWebController extends Controller
                     error_log(print_r($body, true));
                 }
                   $porcentaje = (($i*100)/$count);
-                  error_log(print_r(number_format($porcentaje,0).'%', true));
+                  error_log(print_r(number_format($porcentaje,0).'%', true));3
             }
 
         error_log(print_r("termino...", true));

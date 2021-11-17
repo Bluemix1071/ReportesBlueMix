@@ -120,6 +120,7 @@ $('#btn_sync2').click(function(){
 
     if (Math.round(data.message) == 100) {
         btn_sync.disabled=false;
+        location.reload();
     }
    // console.log(data.message)
   });
