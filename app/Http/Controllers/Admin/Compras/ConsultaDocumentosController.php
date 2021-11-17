@@ -217,10 +217,9 @@ class ConsultaDocumentosController extends Controller
         if($request->rut==null){
 
         $facturas=DB::table('compras')
-        ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar')
+        ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar, tpo_pago')
         ->leftJoin('compras_pagos', 'compras_pagos.fk_compras', '=', 'compras.id')
         ->where('tipo_dte', 33)
-        ->where('tpo_pago', 2)
         ->where('estado_verificacion', 2)
         ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
         ->groupBy('id')
@@ -235,11 +234,10 @@ class ConsultaDocumentosController extends Controller
 
 
         $facturas=DB::table('compras')
-        ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar')
+        ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar, tpo_pago')
         ->leftJoin('compras_pagos', 'compras_pagos.fk_compras', '=', 'compras.id')
         ->where('tipo_dte', 33)
         ->where('rut', $request->rut)
-        ->where('tpo_pago', 2)
         ->where('estado_verificacion', 2)
         ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
         ->groupBy('id')
