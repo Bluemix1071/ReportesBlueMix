@@ -1854,23 +1854,44 @@ public function stocktiemporeal (Request $request){
         cargos where CANMRO = nro_doc
         and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
 
-
-        $debito=DB::select('select sum(monto) as totaldebito
+        $debito=DB::select('select sum(CAVALO) as totaldebito
         from tarjeta_credito,
         cargos where tipo = "DB" and CANMRO = nro_doc
         and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
 
-        $credito=DB::select('select sum(monto) as totalcredito
+        $credito=DB::select('select sum(CAVALO) as totalcredito
         from tarjeta_credito,
         cargos where tipo != "DB" and CANMRO = nro_doc
         and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
 
+        $debitocount=DB::select('select count(CAVALO) as totaldebito
+        from tarjeta_credito,
+        cargos where tipo = "DB" and CANMRO = nro_doc
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+
+        $creditocount=DB::select('select count(CAVALO) as totalcredito
+        from tarjeta_credito,
+        cargos where tipo != "DB" and CANMRO = nro_doc
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+
+        $totaldocumentostarjeta = $creditocount[0]->totalcredito + $debitocount[0]->totaldebito;
+
         $totaltarjeta=$debito[0]->totaldebito+$credito[0]->totalcredito;
 
-        // dd($totaltarjeta);
+
+        $porcobrar=DB::select('select *
+        from ccorclie_ccpclien,
+        cargos where forma_pago = "X" and CANMRO = CCPDOCUMEN
+        and CAFECO between ? and ? group by CCPDOCUMEN', [$fecha1,$fecha2]);
+
+        $guias=DB::select('select *
+        from cargos where catipo = 3
+        and CAFECO between ? and ? ', [$fecha1,$fecha2]);
+
+        // dd($porcobrar);
 
 
-        return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta'));
+        return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta','creditocount','debitocount','totaldocumentostarjeta','porcobrar','guias'));
 
 
     }

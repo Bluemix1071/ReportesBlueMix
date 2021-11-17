@@ -12,11 +12,10 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Listado De Productos</h3>
+        <h1 class="display-4">Listado De Productos</h1>
         <div class="row">
             <div class="col-md-12">
                <hr>
-               <br>
                     <form action="{{route('filtrarProductos')}}" method="post"  id="desvForm" class="form-inline">
                             @csrf
 
