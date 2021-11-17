@@ -365,7 +365,7 @@
                                         <a href="{{ route('ventasdiseno') }}"
                                             class="nav-link {{ setActive('ventasdiseno') }}">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Ventas Diseño</p>
+                                            <p>Ventas Categoría</p>
                                         </a>
                                     </li>
                                 @endcan
@@ -501,13 +501,13 @@
                                     </a>
                                 </li>
 
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a href="{{ route('ResumenDeVenta') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Resumen De Venta
                                         </p>
                                     </a>
-                                </li> --}}
+                                </li>
 
                                 @can('LibroVentas')
                                     <li class="nav-item">

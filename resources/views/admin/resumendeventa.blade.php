@@ -60,7 +60,7 @@
                             <th scope="col" style="text-align:left">Fecha</th>
                             <th scope="col" style="text-align:left">Hora</th>
                             <th scope="col" style="text-align:left">Tipo</th>
-                            <th scope="col" style="text-align:right">Toltal</th>
+                            <th scope="col" style="text-align:right">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,8 +83,8 @@
                                     <td style="text-align:left">{{ $item->fecha }}</td>
                                     <td style="text-align:left">{{ $item->hora_real }}</td>
                                     <td style="text-align:left">{{ $item->tipo }}</td>
-                                    <td style="text-align:right">{{ number_format($item->monto, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totaltarjeta += $item->monto }}</div>
+                                    <td style="text-align:right">{{ number_format($item->CAVALO, 0, ',', '.') }}</td>
+                                    <div style="display: none">{{ $totaltarjeta += $item->CAVALO }}</div>
                                 </tr>
                             @endforeach
                         @endif
@@ -119,11 +119,11 @@
                     </div>
                     <div class="col-md-4 mb-4">
                         <label for="validationTooltip02">Cantidad</label>
-                        @if (empty($boletacount))
+                        @if (empty($debitocount[0]->totaldebito))
                             <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
                         @else
                             <input type="text" class="form-control" id="validationTooltip02" readonly
-                                value="{{ $boletacount }}" required>
+                                value="{{ $debitocount[0]->totaldebito}}" required>
                         @endif
                     </div>
                     <div class="col-md-4 mb-4">
@@ -146,11 +146,11 @@
                             value="Credito" required>
                     </div>
                     <div class="col-md-4 mb-4">
-                        @if (empty($boletatransbankcount))
+                        @if (empty($creditocount[0]->totalcredito))
                             <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
                         @else
                             <input type="text" class="form-control" id="validationTooltip02" readonly
-                                value="{{ $boletatransbankcount }}" required>
+                                value="{{ $creditocount[0]->totalcredito }}" required>
                         @endif
                     </div>
                     <div class="col-md-4 mb-4">
@@ -173,12 +173,12 @@
                             value="Total" required>
                     </div>
                     <div class="col-md-4 mb-4">
-                        @if (empty($totaltarjeta))
+                        @if (empty($totaldocumentostarjeta ))
                             <input type="text" class="form-control" value="" id="validationTooltip02" readonly value=""
                                 required>
                         @else
                             <input type="text" class="form-control" style="font-weight: bold;"
-                                value="{{ number_format($totaltarjeta, 0, ',', '.') }}" id="validationTooltip02" readonly
+                                value="{{ number_format($totaldocumentostarjeta, 0, ',', '.') }}" id="validationTooltip02" readonly
                                 value="" required>
                         @endif
                     </div>
@@ -203,56 +203,51 @@
                 <table id="productoss" class="table table-bordered table-hover dataTable table-sm">
                     <thead>
                         <tr>
-                            <th scope="col" style="text-align:left">Numero Doc.</th>
-                            <th scope="col" style="text-align:left">Tipo Doc.</th>
                             <th scope="col" style="text-align:left">RUT</th>
+                            <th scope="col" style="text-align:left">Numero Doc.</th>
                             <th scope="col" style="text-align:left">Razon</th>
                             <th scope="col" style="text-align:left">Fecha</th>
+                            <th scope="col" style="text-align:left">Fecha Ven.</th>
+                            <th scope="col" style="text-align:left">Caja</th>
+                            <th scope="col" style="text-align:left">N° orden</th>
                             <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
                             <th scope="col" style="text-align:right">Total</th>
-                            {{-- <th scope="col" style="text-align:center">Acciones</th> --}}
                         </tr>
                     </thead>
                     <tbody>
-                        @if (empty($factura))
+                        @if (empty($porcobrar))
 
                         @else
                             <div style="display: none">
                                 {{-- variable suma --}}
-                                {{ $totalfactura = 0 }}
-                                {{ $totalfacturaiva = 0 }}
-                                {{ $totalfacturaneto = 0 }}
+                                {{ $totalporcobrar = 0 }}
                             </div>
-                            @foreach ($factura as $item)
+                            @foreach ($porcobrar as $item)
                                 <tr>
-                                    <th style="text-align:left">{{ $item->CANMRO }}</th>
-                                    @if ($item->CATIPO == 7)
-                                        <td style="text-align:left">Boleta</td>
-                                    @else
-                                        <td style="text-align:left">Factura</td>
-                                    @endif
                                     <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                    <th style="text-align:left">{{ $item->CANMRO }}</th>
                                     <td style="text-align:left">{{ $item->razon }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
+                                    <td style="text-align:left">{{ $item->CCPFECHAP1 }}</td>
+                                    <td style="text-align:left">{{ $item->CACOCA }}</td>
+                                    <td style="text-align:left">{{ $item->nro_oc }}</td>
                                     <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalfacturaiva += $item->CAIVA }}</div>
                                     <td style="text-align:right">{{ number_format($item->CANETO, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalfacturaneto += $item->CANETO }}</div>
                                     <td style="text-align:right">{{ number_format($item->CAVALO, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalfactura += $item->CAVALO }}</div>
+                                    <div style="display: none">{{ $totalporcobrar += $item->CAVALO }}</div>
                                 </tr>
                             @endforeach
                         @endif
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="7"><strong>Total</strong> </td>
-                            @if (empty($totalfactura))
+                            <td colspan="9"><strong>Total</strong> </td>
+                            @if (empty($totalporcobrar))
                                 <td><span class="price text-success">$</span></td>
                             @else
                                 <td style="text-align:right"><span
-                                        class="price text-success">${{ number_format($totalfactura, 0, ',', '.') }}</span>
+                                        class="price text-success">${{ number_format($totalporcobrar, 0, ',', '.') }}</span>
                                 </td>
                             @endif
                         </tr>
@@ -267,51 +262,49 @@
                 <table id="notacre" class="table table-bordered table-hover dataTable table-sm">
                     <thead>
                         <tr>
-                            <th scope="col" style="text-align:left">Folio</th>
-                            <th scope="col" style="text-align:left">Tipo Doc.</th>
                             <th scope="col" style="text-align:left">RUT</th>
-                            <th scope="col" style="text-align:left">Nombre</th>
+                            <th scope="col" style="text-align:left">Numero Doc.</th>
+                            <th scope="col" style="text-align:left">Razon</th>
                             <th scope="col" style="text-align:left">Fecha</th>
+                            <th scope="col" style="text-align:left">Caja</th>
+                            <th scope="col" style="text-align:left">N° orden</th>
                             <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
                             <th scope="col" style="text-align:right">Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (empty($notacredito))
+                        @if (empty($guias))
 
                         @else
                             <div style="display: none">
                                 {{-- variable suma --}}
-                                {{ $totalnotacre = 0 }}
-                                {{ $totalnotacreneto = 0 }}
-                                {{ $totalnotacreiva = 0 }}
+                                {{ $guiastotal = 0 }}
                             </div>
-                            @foreach ($notacredito as $item)
-                                <tr>
-                                    <th style="text-align:left">{{ $item->folio }}</th>
-                                    <td style="text-align:left">Nota Credito</td>
-                                    <td style="text-align:left">{{ $item->rut }}</td>
-                                    <td style="text-align:left">{{ $item->nombre }}</td>
-                                    <td style="text-align:left">{{ $item->fecha_actual }}</td>
-                                    <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalnotacreiva += $item->iva }}</div>
-                                    <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalnotacreneto += $item->neto }}</div>
-                                    <td style="text-align:right">{{ number_format($item->total_nc, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalnotacre += $item->total_nc }}</div>
-                                </tr>
+                            @foreach ($guias as $item)
+                            <tr>
+                                <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                <th style="text-align:left">{{ $item->CANMRO }}</th>
+                                <td style="text-align:left">{{ $item->razon }}</td>
+                                <td style="text-align:left">{{ $item->CAFECO }}</td>
+                                <td style="text-align:left">{{ $item->CACOCA }}</td>
+                                <td style="text-align:left">{{ $item->nro_oc }}</td>
+                                <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
+                                <td style="text-align:right">{{ number_format($item->CANETO, 0, ',', '.') }}</td>
+                                <td style="text-align:right">{{ number_format($item->CAVALO, 0, ',', '.') }}</td>
+                                <div style="display: none">{{ $guiastotal += $item->CAVALO }}</div>
+                            </tr>
                             @endforeach
                         @endif
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="7"><strong>Total</strong> </td>
-                            @if (empty($totalnotacre))
+                            <td colspan="8"><strong>Total</strong> </td>
+                            @if (empty($guiastotal))
                                 <td><span class="price text-success">$</span></td>
                             @else
                                 <td style="text-align:right"><span
-                                        class="price text-success">${{ number_format($totalnotacre, 0, ',', '.') }}</span>
+                                        class="price text-success">${{ number_format($guiastotal, 0, ',', '.') }}</span>
                                 </td>
                             @endif
                         </tr>

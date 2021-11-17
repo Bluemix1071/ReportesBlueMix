@@ -169,12 +169,12 @@
                     <div class="col-md-2 mb-2">
                         <label for="validationTooltipUsername">Comisión Neto</label>
                         <div class="input-group">
-                            @if (empty($boletanetototal))
+                            @if (empty($boletatotal))
                                 <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @else
                                 <input type="text" class="form-control" id="validationTooltipUsername"
-                                    value="${{ number_format($boletanetototal, 0, ',', '.') }}" readonly
+                                    value="${{ number_format($boletatotal, 0, ',', '.') }}" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @endif
                         </div>
@@ -219,12 +219,12 @@
                     </div>
                     <div class="col-md-2 mb-2">
                         <div class="input-group">
-                            @if (empty($boletanetototal))
+                            @if (empty($facturatotal))
                                 <input type="text" class="form-control"  value="" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @else
                                 <input type="text" class="form-control"
-                                    value="${{ number_format($boletanetototal, 0, ',', '.') }}" readonly
+                                    value="${{ number_format($facturatotal, 0, ',', '.') }}" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @endif
                         </div>
@@ -273,12 +273,12 @@
                     </div>
                     <div class="col-md-2 mb-2">
                         <div class="input-group">
-                            @if (empty($comisionboleta))
+                            @if (empty($totalcomision))
                                 <input type="text" class="form-control" value="" id="validationTooltipUsername" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @else
                                 <input type="text" class="form-control" style="font-weight: bold;"
-                                    value="${{ number_format($comisionboleta[0]->boletaneto, 0, ',', '.') }}"
+                                    value="${{ number_format($totalcomision, 0, ',', '.') }}"
                                     id="validationTooltipUsername" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @endif

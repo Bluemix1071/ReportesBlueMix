@@ -1471,10 +1471,16 @@ public function stocktiemporeal (Request $request){
       return redirect()->route('MantencionClientes');
     }
 
-    public function ventasdiseno(){
+    public function ventasdiseno(Request $request){
 
 
-        return view('admin.ventasdiseno');
+        $categorias=DB::table('tablas')
+        ->where('tacodi', '22')
+        ->get();
+
+
+
+        return view('admin.ventasdiseno',compact('categorias'));
 
     }
 
@@ -1486,38 +1492,22 @@ public function stocktiemporeal (Request $request){
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
 
-        // $diseno=DB::table('dcargos')
-        // ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
-        // ->where('DECODI', 'LIKE', "la%" ,'or','DECODI', 'LIKE', "%1199300%",'or','DECODI', 'LIKE', "%gra0700%")
-        // ->where('DETIPO', '!=' , '3')
-        // ->get();
-
-        // $diseno=DB::table('dcargos')
-        // ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
-        // ->where('DETIPO', '!=' , '3')
-        // ->where(function ($query) {
-        // $query->where('DECODI', 'LIKE', 'la%')
-        // // ->orwhereBetween('DECODI', ['9124800', '9124900'])
-        // // ->orwhereBetween('DECODI', ['9100100', '9106600'])
-        // ->orWhere('DECODI', 'LIKE', '%1199300%')
-        // ->orWhere('DECODI', 'LIKE', '%2052000%')
-        // ->orWhere('DECODI', 'LIKE', '%9117700%')
-        // ->orWhere('DECODI', 'LIKE', '%gra0700%');
-        // })->get();
-
         $diseno=DB::table('dcargos')
         ->join('producto','ARCODI', '=', 'decodi')
         ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
         ->where('DETIPO', '!=' , '3')
-        ->where('ARGRPO2', '12')
+        ->where('ARGRPO2', $request->categoria)
         ->get();
+
+        $categorias=DB::table('tablas')
+        ->where('tacodi', '22')
+        ->get();
+
 
         // dd($diseno);
 
 
-
-
-        return view('admin.ventasdiseno',compact('diseno'));
+        return view('admin.ventasdiseno',compact('diseno','categorias'));
 
     }
 
@@ -1855,6 +1845,10 @@ public function stocktiemporeal (Request $request){
 
     public function ResumenDeVentaFiltro(Request $request){
 
+
+        // if (condition) {
+        //     # code...
+        // }
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
 
@@ -1864,23 +1858,43 @@ public function stocktiemporeal (Request $request){
         cargos where CANMRO = nro_doc
         and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
 
-
-        $debito=DB::select('select sum(monto) as totaldebito
+        $debito=DB::select('select sum(CAVALO) as totaldebito
         from tarjeta_credito,
         cargos where tipo = "DB" and CANMRO = nro_doc
         and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
 
-        $credito=DB::select('select sum(monto) as totalcredito
+        $credito=DB::select('select sum(CAVALO) as totalcredito
         from tarjeta_credito,
         cargos where tipo != "DB" and CANMRO = nro_doc
         and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
 
+        $debitocount=DB::select('select count(CAVALO) as totaldebito
+        from tarjeta_credito,
+        cargos where tipo = "DB" and CANMRO = nro_doc
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+
+        $creditocount=DB::select('select count(CAVALO) as totalcredito
+        from tarjeta_credito,
+        cargos where tipo != "DB" and CANMRO = nro_doc
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+
+        $totaldocumentostarjeta = $creditocount[0]->totalcredito + $debitocount[0]->totaldebito;
+
         $totaltarjeta=$debito[0]->totaldebito+$credito[0]->totalcredito;
 
-        // dd($totaltarjeta);
+
+        $porcobrar=DB::select('select *
+        from ccorclie_ccpclien,
+        cargos where forma_pago = "X" and CANMRO = CCPDOCUMEN
+        and CAFECO between ? and ? group by CCPDOCUMEN', [$fecha1,$fecha2]);
 
 
-        return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta'));
+        $guias=DB::select('select *
+        from cargos where catipo = 3
+        and CAFECO between ? and ? ', [$fecha1,$fecha2]);
+
+
+        return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta','creditocount','debitocount','totaldocumentostarjeta','porcobrar','guias'));
 
 
     }
@@ -1912,21 +1926,23 @@ public function stocktiemporeal (Request $request){
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->get();
 
-        // $comisionfactura=DB::table('cargos')
-        // ->selectRaw("(CANETO * $comision) as comision")
-        // ->where('CACOVE' , $request->vendedor)
-        // ->where('CATIPO' , 7)
-        // ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-        // ->sum('comision');
-
-        $comisionboleta=DB::table('cargos')
+        $comisionfactura=DB::table('cargos')
         ->selectRaw("sum(CANETO * $comision) as boletaneto")
         ->where('CACOVE' , $request->vendedor)
         ->where('CATIPO' , 8)
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->get();
 
-        // dd($comisionboleta);
+        $comisionboleta=DB::table('cargos')
+        ->selectRaw("sum(CANETO * $comision) as boletaneto")
+        ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , 7)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->get();
+
+        $facturatotal = $comisionfactura[0]->boletaneto;
+        $boletatotal = $comisionboleta[0]->boletaneto;
+
 
         $boletaconteo=DB::table('cargos')
         ->where('CACOVE' , $request->vendedor)
@@ -1972,7 +1988,7 @@ public function stocktiemporeal (Request $request){
         $totalconteo=$facturaconteo+$boletaconteo;
         $totalsuma=$boletasuma+$facturasuma;
 
-        return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','comisionboleta'));
+        return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','boletatotal','facturatotal'));
 
 
     }
