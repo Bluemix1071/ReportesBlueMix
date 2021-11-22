@@ -93,17 +93,12 @@ class ApiJumpsellerweb extends Model
         $parametros = $this->credentials;
         $consulta = http_build_query($parametros);
 
-        /* $url = 'https://api.jumpseller.com/v1/products/10967214.json?login=743d75823609c856217bba7d385f48a4&authtoken=eb7dee85cfe1d9e86b4a68c1f2bee668';
-        $body = '{ "product" : {"name": "ACCESORIO ARGOLLA  Nº11", "price": 7,  "stock": 1} }'; */
-
         $ch = curl_init($url.".json?".$consulta);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
-
-        //dd($ch);
 
         $result = curl_exec($ch);
         curl_close($ch);
@@ -116,9 +111,6 @@ class ApiJumpsellerweb extends Model
         $parametros = $this->credentials;
         $consulta = http_build_query($parametros);
 
-        /* $url = 'https://api.jumpseller.com/v1/products/10967214.json?login=743d75823609c856217bba7d385f48a4&authtoken=eb7dee85cfe1d9e86b4a68c1f2bee668';
-        $body = '{ "product" : {"name": "ACCESORIO ARGOLLA  Nº11", "price": 7,  "stock": 1} }'; */
-
         $ch = curl_init($url.".json?".$consulta);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
@@ -126,10 +118,16 @@ class ApiJumpsellerweb extends Model
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
 
-        //dd($body);
-
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;
     }
 }
+
+
+        /* $url = 'https://api.jumpseller.com/v1/products/10967214.json?login=743d75823609c856217bba7d385f48a4&authtoken=eb7dee85cfe1d9e86b4a68c1f2bee668';
+        $body = '{ "product" : {"name": "ACCESORIO ARGOLLA  Nº11", "price": 7,  "stock": 1} }'; */
+
+          /* $url = 'https://api.jumpseller.com/v1/products/10967214.json?login=743d75823609c856217bba7d385f48a4&authtoken=eb7dee85cfe1d9e86b4a68c1f2bee668';
+        $body = '{ "product" : {"name": "ACCESORIO ARGOLLA  Nº11", "price": 7,  "stock": 1} }'; */
+

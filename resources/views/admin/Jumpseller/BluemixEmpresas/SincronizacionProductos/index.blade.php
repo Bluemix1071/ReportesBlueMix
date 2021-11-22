@@ -56,8 +56,6 @@ Sincronización de productos
                 </div>
                 <div class="card-body">
 
-                  <p class="card-text">La actualización de subida se realiza en segundo plano, puede seguir realizando otras actividades </p>
-                  <hr>
                   <p class="card-text">Se recomienda esperar a que el spinner se detenga antes de volver a actualizar </p>
 
                   <form action="{{route('updateProducto')}}" method="get">
