@@ -353,7 +353,7 @@
             if(x < max_fields){
                 x++;
                 $(wrapper).append(
-                    '&nbsp;<input type="text" readonly style="width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+id+'" name="case[]" value='+id+'>'
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+id+'" name="case[]" value='+id+'>'
             );
         }
         } else {
