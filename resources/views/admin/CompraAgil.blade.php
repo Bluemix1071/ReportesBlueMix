@@ -77,7 +77,7 @@
                         <th><input type="number" id="depto_auto" readonly class="form-control border-0 box-shadow-none form-control-sm" placeholder="DEPTO" name="depto"></th>
                         <th><input type="text" id="ciudad_auto" readonly class="form-control border-0 box-shadow-none form-control-sm" placeholder="CIUDAD" name="ciudad"></th>
                         <th><input type="text" id="region_auto" readonly class="form-control border-0 box-shadow-none form-control-sm" placeholder="REGION" name="region"></th>
-                        <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="OFERTA" name="neto"></th>
+                        <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="OFERTA" name="neto" id="neto"></th>
                         <th><input type="text" data-toggle="modal" data-target="#mimodaldatatime" class="form-control border-0 box-shadow-none form-control-sm" placeholder="FECHA/HORA" name="fechahora" id="fechahora"></th>
                         <th style="text-align:right"><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="ID COT" name="id_cot"></th>
                        
@@ -109,8 +109,8 @@
                           </datalist>
                         </th>
                         <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="FACTURA" name="factura"></th>
-                        <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="TOTAL" name="total"></th>
-                        <th>-</th>
+                        <th><input type="number" class="form-control border-0 box-shadow-none form-control-sm" placeholder="TOTAL" name="total" id="total"></th>
+                        <th><label id="label_bara" for="floatingInput">0%</label></th>
                         <th><select class="form-control border-0 box-shadow-none form-control-sm" aria-label="Default select example" name="observacion">
                             <option value="{{ null }}" selected>Seleccione...</option>  
                             <option value="PRECIO MAS BAJO">PRECIO MÁS BAJO</option>
@@ -773,8 +773,6 @@
         modal.find('.modal-content #id_coti').val(id_coti);
   }) */
 
-
-  
   $('#mimodaledicion').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
@@ -917,6 +915,16 @@ $('#savedatetimeupdate').click(function(){
             $('#fechahoraupdate').val(datetime);
 
             });
+
+          $( "#total" ).keyup(function() {
+            var neto = $( "#neto" ).val();
+            var total = $( "#total" ).val();
+            if(total != ""){
+              document.getElementById('label_bara').innerHTML = (Math.round((total/(neto*1.19)-1)*100)+'%');
+            }else{
+              document.getElementById('label_bara').innerHTML = ('0%');
+            }
+          });
 
   $(document).ready(function() {
     
