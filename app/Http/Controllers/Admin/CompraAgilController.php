@@ -26,9 +26,11 @@ class CompraAgilController extends Controller
         ->leftjoin('regiones', 'cliente.region', '=', 'regiones.id')
         ->get(['CLRUTC','CLRUTD','DEPARTAMENTO','CLRSOC','TAGLOS AS CIUDAD','regiones.nombre AS REGION']);
 
+        $regiones=DB::table('regiones')->get();
+
         //dd($clientes);
 
-        return view('admin.CompraAgil' ,compact('compras_agiles', 'adjudicatorios', 'clientes'));
+        return view('admin.CompraAgil' ,compact('compras_agiles', 'adjudicatorios', 'clientes', 'regiones'));
     }
 
     public function create(Request $request)
