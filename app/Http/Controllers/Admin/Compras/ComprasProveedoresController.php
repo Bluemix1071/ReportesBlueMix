@@ -34,7 +34,7 @@ class ComprasProveedoresController extends Controller
         }
 
         $json = json_decode(json_encode($xml));
-        dd($json);
+        //dd($json);
 
         if(empty($json->SetDTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
