@@ -50,6 +50,11 @@ class ComprasProveedoresController extends Controller
         
         $detalle = $json->SetDTE->DTE->Documento->Detalle;
 
+        if(empty($encabezado->IdDoc->FchVenc) && $encabezado->IdDoc->FmaPago == "2"){
+            $fecha = strtotime('+1 month', strtotime($encabezado->IdDoc->FchEmis));
+            $encabezado->IdDoc->FchVenc = date('Y-m-d', $fecha);
+        }
+
         if(!empty($json->SetDTE->DTE->Documento->Referencia)){
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
         }
