@@ -49,20 +49,19 @@ class ComprasProveedoresController extends Controller
         $encabezado = $json->SetDTE->DTE->Documento->Encabezado;
         
         $detalle = $json->SetDTE->DTE->Documento->Detalle;
-
+        
+        if(empty($encabezado->IdDoc->FmaPago)){
+            $encabezado->IdDoc->FmaPago = 1;
+        }
         if(empty($encabezado->IdDoc->FchVenc) && $encabezado->IdDoc->FmaPago == "2"){
             $fecha = strtotime('+1 month', strtotime($encabezado->IdDoc->FchEmis));
             $encabezado->IdDoc->FchVenc = date('Y-m-d', $fecha);
         }
-
         if(!empty($json->SetDTE->DTE->Documento->Referencia)){
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
         }
         if(empty($encabezado->IdDoc->FchVenc)){
             $encabezado->IdDoc->FchVenc = null;
-        }
-        if(empty($encabezado->IdDoc->FmaPago)){
-            $encabezado->IdDoc->FmaPago = 1;
         }
         if(empty($encabezado->IdDoc->FchVenc) && $encabezado->IdDoc->FmaPago == "1"){
             $encabezado->IdDoc->FchVenc = $encabezado->IdDoc->FchEmis;
@@ -70,9 +69,9 @@ class ComprasProveedoresController extends Controller
         if(empty($encabezado->Emisor->CiudadOrigen) || is_object($encabezado->Emisor->CiudadOrigen)){
             $encabezado->Emisor->CiudadOrigen = null;
         }
-        if(empty($encabezado->IdDoc->FmaPago)){
+        /* if(empty($encabezado->IdDoc->FmaPago)){
             $encabezado->IdDoc->FmaPago = 2;
-        }
+        } */
         
         $i = 0;
 
