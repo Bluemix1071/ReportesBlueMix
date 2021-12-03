@@ -195,30 +195,55 @@ class AdminController extends Controller
 
     public function VentaProductosPorFechas (Request $request){
 
-
       $marca = $request->marca;
+      $rut = $request->rut;
       $fecha1=$request->fecha1;
       $fecha2=$request->fecha2;
 
+      if ($request->rut==null) {
+
       $marcas=DB::table('marcas')->get();
 
-      $productos=DB::select('select
-      p.ARCODI as "codigo",
-      p.ARCBAR as "barra",
-      p.ARCOPV as "proveedor",
-      p.ardesc as "descripcion",
-      p.armarca as "marca",
-      sum(dc.DECANT) as "total_productos",
-      max(dc.DEFECO)as "ultima_fecha"
-      from dcargos as dc ,
-      producto as p
-      where p.ARCODI=dc.DECODI and  p.ARMARCA= ? and
-      dc.DEFECO between ? and ?
-      group by p.ARCODI   order by max(dc.defeco) desc', [$marca,$fecha1,$fecha2]);
+      $productos=DB::select('select *
+      from
+          dcargos as dc,
+          producto as p,
+          cargos as c
+      where
+          p.ARCODI = dc.DECODI
+              and dc.DENMRO = c.CANMRO
+              and c.CATIPO != 3
+              and c.CATIPO = dc.DETIPO
+              and p.ARMARCA = ?
+              and dc.DEFECO between ? and ?', [$marca,$fecha1,$fecha2]);
 
 
 
-      return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2','marcas'));
+
+
+      return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2','marcas','rut'));
+
+      }else{
+
+        $marcas=DB::table('marcas')->get();
+        $productos=DB::select('select *
+        from
+            dcargos as dc,
+            producto as p,
+            cargos as c
+        where
+            p.ARCODI = dc.DECODI
+                and dc.DENMRO = c.CANMRO
+                and c.CATIPO != 3
+                and c.CATIPO = dc.DETIPO
+                and p.ARRUTPROV2 = ?
+                and dc.DEFECO between ? and ?', [$rut,$fecha1,$fecha2]);
+
+
+
+        return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2','marcas','rut'));
+
+      }
 
 
     }
@@ -1504,10 +1529,50 @@ public function stocktiemporeal (Request $request){
         ->get();
 
 
-        // dd($diseno);
+      $todo=DB::select('select
+      taglos,
+      ARGRPO2,
+      sum(precio_ref*DECANT) as valor
+      from
+      tablas as  t,
+      dcargos AS dc,
+      producto AS p,
+      cargos AS c
+      where
+          p.ARCODI = dc.DECODI
+              and t.tacodi = 22
+              and t.TAREFE = p.ARGRPO2
+              and dc.DENMRO = c.CANMRO
+              and c.CATIPO != 3
+              and c.CATIPO = dc.DETIPO
+              and dc.DEFECO between ? and ? group by ARGRPO2 ', [$fecha1,$fecha2]);
+
+              $todo2=DB::select('select
+              taglos,
+              ARGRPO2,
+              sum(precio_ref*DECANT) as valor
+              from
+              tablas as  t,
+              dcargos AS dc,
+              producto AS p,
+              cargos AS c
+              where
+                  p.ARCODI = dc.DECODI
+                      and t.tacodi = 22
+                      and t.TAREFE = p.ARGRPO2
+                      and dc.DENMRO = c.CANMRO
+                      and c.CATIPO != 3
+                      and c.CATIPO = dc.DETIPO
+                      and dc.DEFECO between ? and ? group by ARGRPO2 WITH ROLLUP', [$fecha1,$fecha2]);
+
+              $cosa=end($todo2);
+
+             $suma=$cosa->valor;
 
 
-        return view('admin.ventasdiseno',compact('diseno','categorias'));
+
+
+        return view('admin.ventasdiseno',compact('diseno','categorias','todo','suma','fecha1','fecha2'));
 
     }
 
@@ -1845,14 +1910,59 @@ public function stocktiemporeal (Request $request){
 
     public function ResumenDeVentaFiltro(Request $request){
 
-
-        // if (condition) {
-        //     # code...
-        // }
+        // dd($request->all());
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
+        $caja=$request->caja;
+
+        if ($request->caja !== null) {
+
+            $tarjetas=DB::select('select *
+            from tarjeta_credito,
+            cargos where CANMRO = nro_doc
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+
+            $debito=DB::select('select sum(CAVALO) as totaldebito
+            from tarjeta_credito,
+            cargos where tipo = "DB" and CANMRO = nro_doc
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+
+            $credito=DB::select('select sum(CAVALO) as totalcredito
+            from tarjeta_credito,
+            cargos where tipo != "DB" and CANMRO = nro_doc
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+
+            $debitocount=DB::select('select count(CAVALO) as totaldebito
+            from tarjeta_credito,
+            cargos where tipo = "DB" and CANMRO = nro_doc
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+
+            $creditocount=DB::select('select count(CAVALO) as totalcredito
+            from tarjeta_credito,
+            cargos where tipo != "DB" and CANMRO = nro_doc
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+
+            $totaldocumentostarjeta = $creditocount[0]->totalcredito + $debitocount[0]->totaldebito;
+
+            $totaltarjeta=$debito[0]->totaldebito+$credito[0]->totalcredito;
 
 
+            $porcobrar=DB::select('select *
+            from ccorclie_ccpclien,
+            cargos where forma_pago = "X" and CANMRO = CCPDOCUMEN
+            and CACOCA = ? and CAFECO between ? and ? group by CCPDOCUMEN', [$caja,$fecha1,$fecha2]);
+
+
+            $guias=DB::select('select *
+            from cargos where catipo = 3
+            and CACOCA = ? and CAFECO between ? and ? ', [$caja,$fecha1,$fecha2]);
+
+
+            return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta','creditocount','debitocount','totaldocumentostarjeta','porcobrar','guias','caja'));
+
+
+        }
+        else
         $tarjetas=DB::select('select *
         from tarjeta_credito,
         cargos where CANMRO = nro_doc
@@ -1894,7 +2004,7 @@ public function stocktiemporeal (Request $request){
         and CAFECO between ? and ? ', [$fecha1,$fecha2]);
 
 
-        return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta','creditocount','debitocount','totaldocumentostarjeta','porcobrar','guias'));
+        return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta','creditocount','debitocount','totaldocumentostarjeta','porcobrar','guias','caja'));
 
 
     }
@@ -1917,7 +2027,8 @@ public function stocktiemporeal (Request $request){
 
     public function VentasPorVendedorFiltro(Request $request){
 
-
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
         $comision=floatval($request->comision);
 
         $ventas=DB::table('cargos')
@@ -1988,7 +2099,7 @@ public function stocktiemporeal (Request $request){
         $totalconteo=$facturaconteo+$boletaconteo;
         $totalsuma=$boletasuma+$facturasuma;
 
-        return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','boletatotal','facturatotal'));
+        return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','boletatotal','facturatotal','fecha1','fecha2'));
 
 
     }
