@@ -35,8 +35,8 @@
                         @endif
                     </div>
                     <div class="form-group mx-sm-3 mb-2">
-                        <input class="form-control" list="categoria" required autocomplete="off" name="categoria" id="xd" type="text"
-                            placeholder="Categoria...">
+                        <input class="form-control" list="categoria" required autocomplete="off" name="categoria" id="xd"
+                            type="text" placeholder="Categoria...">
                         <datalist id="categoria">
                             @foreach ($categorias as $item)
                                 <option value="{{ $item->TAREFE }}">{{ $item->TAGLOS }}</option>
@@ -65,27 +65,26 @@
                             @if (empty($diseno))
 
                             @else
-                            <div style="display: none">
-                                {{-- variable suma --}}
-                                {{ $totalvendido = 0 }}
-                            </div>
+                                <div style="display: none">
+                                    {{-- variable suma --}}
+                                    {{ $totalvendido = 0 }}
+                                </div>
                                 @foreach ($diseno as $item)
                                     <tr>
                                         @if ($item->DETIPO == 7)
-                                        <td style="text-align:left">Boleta</td>
-                                    @else
-                                        <td style="text-align:left">Factura</td>
-                                    @endif
-                                        <td style="text-align:left">{{ $item->DENMRO}}</td>
-                                        <td style="text-align:left">{{ $item->DEFECO}}</td>
-                                        <td style="text-align:left">{{ $item->DECODI}}</td>
-                                        <td style="text-align:left">{{ $item->Detalle}}</td>
-                                        <td style="text-align:left">{{ $item->DECANT}}</td>
-                                        <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}
-                                        </td>
-                                        <td style="text-align:right">{{ number_format($item->precio_ref*$item->DECANT, 0, ',', '.') }}
-                                        </td>
-                                        <div style="display: none">{{ $totalvendido += $item->precio_ref*$item->DECANT }}</div>
+                                            <td style="text-align:left">Boleta</td>
+                                        @else
+                                            <td style="text-align:left">Factura</td>
+                                        @endif
+                                        <td style="text-align:left">{{ $item->DENMRO }}</td>
+                                        <td style="text-align:left">{{ $item->DEFECO }}</td>
+                                        <td style="text-align:left">{{ $item->DECODI }}</td>
+                                        <td style="text-align:left">{{ $item->Detalle }}</td>
+                                        <td style="text-align:left">{{ $item->DECANT }}</td>
+                                        <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}</td>
+                                        <td style="text-align:right">{{ number_format($item->precio_ref * $item->DECANT, 0, ',', '.') }}</td>
+                                        <div style="display: none">{{ $totalvendido += $item->precio_ref * $item->DECANT }}
+                                        </div>
                                     </tr>
                                 @endforeach
                             @endif
@@ -98,6 +97,57 @@
                                 @else
                                     <td style="text-align:right"><span
                                             class="price text-success">${{ number_format($totalvendido, 0, ',', '.') }}</span>
+                                    </td>
+                                @endif
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <br>
+                <hr>
+                <div class="table-responsive-xl">
+                    <table id="categorias" class="table table-bordered table-hover dataTable table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="text-align:left">ID Categoria</th>
+                                <th scope="col" style="text-align:left">Categoria</th>
+                                <th scope="col" style="text-align:right">Valor</th>
+                                <th scope="col" style="text-align:right">Porcentaje Participacion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (empty($todo))
+
+                            @else
+                                <div style="display: none">
+                                    {{-- variable suma --}}
+                                    {{ $totalparticipacion = 0 }}
+                                    {{ $totalcategorias = 0 }}
+                                </div>
+                                @foreach ($todo as $item)
+                                    <tr>
+                                            <th scope="row">{{ $item->ARGRPO2 }}</th>
+                                            <td style="text-align:left">{{ $item->taglos }}</td>
+                                            <td style="text-align:right">{{ number_format($item->valor, 0, ',', '.') }}</td>
+                                            <td style="text-align:right">%{{ number_format(1000 * (($item->valor / $suma) * 100), 0, ',', '.') }}</td>
+                                            <div style="display: none">{{ $totalparticipacion += 1000 * (($item->valor / $suma) * 100) }}</div>
+                                            <div style="display: none">{{ $totalcategorias += $item->valor }}</div>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2"><strong>Total</strong> </td>
+                                @if (empty($totalparticipacion))
+                                    <td><span class="price text-success"></span></td>
+                                    <td><span class="price text-success"></span></td>
+                                @else
+                                <td style="text-align:right"><span
+                                    class="price text-success">{{ number_format($totalcategorias, 0, ',', '.') }}</span>
+                                </td>
+                                    <td style="text-align:right"><span
+                                            class="price text-success">%{{ number_format($totalparticipacion, 0, ',', '.') }}</span>
                                     </td>
                                 @endif
                             </tr>
@@ -136,8 +186,61 @@
                 }
             });
         });
-
     </script>
+
+{{--
+<script>
+    $(document).ready( function () {
+      $('#categorias').DataTable({
+
+          "order": [[ 0, "asc" ]],
+
+          "language": {
+                    "info": "_TOTAL_ registros",
+                    "search": "Buscar",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+
+                    },
+                    "loadingRecords": "cargando",
+                    "processing": "procesando",
+                    "emptyTable": "no hay resultados",
+                    "zeroRecords": "no hay coincidencias",
+                    "infoEmpty": "",
+                    "infoFiltered": ""
+                }
+      } );
+  } );
+  </script> --}}
+
+  <script>
+    $(document).ready(function() {
+        $('#categorias').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+
+            ],
+            "language": {
+                "info": "_TOTAL_ registros",
+                "search": "Buscar",
+                "paginate": {
+                    "next": "Siguiente",
+                    "previous": "Anterior",
+
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+            }
+        });
+    });
+</script>
+
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
