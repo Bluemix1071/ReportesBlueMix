@@ -8,7 +8,6 @@
 
 @endsection
 @section('contenido')
-    <div class="container my-4">
         <h1 class="display-4">Estado Facturas</h1>
         <hr>
         <form action="{{ route('EstadoFacturasFiltro') }}" method="post" id="desvForm" class="form-inline">
@@ -55,6 +54,7 @@
                                     <th scope="col" style="text-align:left">Razon</th>
                                     <th scope="col" style="text-align:left">Fecha Emision</th>
                                     <th scope="col" style="text-align:left">Fecha Vencimiento</th>
+                                    <th scope="col" style="text-align:left">Tipo Documento</th>
                                     <th scope="col" style="text-align:right">Total Doc.</th>
                                     <th scope="col" style="text-align:right">Total Por Pagar</th>
                                     <th scope="col" style="text-align:right">Estado</th>
@@ -81,6 +81,11 @@
                                         <td style="text-align:left">{{ $item->razon_social }}</td>
                                         <td style="text-align:left">{{ $item->fecha_emision }}</td>
                                         <td style="text-align:left">{{ $item->fecha_venc }}</td>
+                                        @if ($item->tpo_pago == 1)
+                                        <td style="text-align:left">Contado</td>
+                                        @elseif ($item->tpo_pago == 2)
+                                        <td style="text-align:left">Credito</td>
+                                        @endif
                                         <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
                                         @if ($item->porpagar == null)
                                         <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
@@ -90,11 +95,11 @@
                                         @if ($item->porpagar == 0 && $item->porpagar !== null)
                                         <td><h5><span class="badge badge-success">Pagado</span></h5></td>
                                         @else
-                                        <td><h5><span class="badge badge-warning">pendiente</span></h5></td>
+                                        <td><h5><span class="badge badge-warning">Pendiente</span></h5></td>
                                         @endif
                                         <td><a href="" data-toggle="modal" data-target="#verpagos" data-id='{{ $item->id }}' onclick="verabono({{ $item->id }})" class="btn btn-primary btm-sm">Ver</a></td>
                                         @if($item->porpagar == 0 && $item->porpagar !== null)
-                                        <td style="text-align:left"><button type="button" disabled class="btn btn-secondary">abonar</button></td>
+                                        <td style="text-align:left"><button type="button" disabled class="btn btn-secondary">Abonar</button></td>
                                         @else
                                         <td><a href="" data-toggle="modal" data-target="#modalabonar" class="btn btn-secondary btm-sm" data-id='{{ $item->id }}' data-folio='{{ $item->folio }}' data-monto_abono='{{$item->porpagar}}'  data-total='{{ $item->total }}'>Abonar</a></td>
                                         @endif
@@ -348,8 +353,8 @@
             if(x < max_fields){
                 x++;
                 $(wrapper).append(
-                    '<input type="text" class="badge badge-secondary" id="input_'+id+'" name="case[]" value='+id+'>'
-            ); 
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+id+'" name="case[]" value='+id+'>'
+            );
         }
         } else {
             $("#monto_total_multiple").val(Number(Number(acumulado)-Number(monto)));

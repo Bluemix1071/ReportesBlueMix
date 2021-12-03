@@ -293,6 +293,17 @@
 
         <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
         <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
+        <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
+        <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
+        <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
+        <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
+        <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
+        <script src="{{asset("js/buttons.flash.min.js")}}"></script>
+        <script src="{{asset("js/jszip.min.js")}}"></script>
+        <script src="{{asset("js/pdfmake.min.js")}}"></script>
+        <script src="{{asset("js/vfs_fonts.js")}}"></script>
+        <script src="{{asset("js/buttons.html5.min.js")}}"></script>
+        <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
         <script>
             function borrar(id){
@@ -312,7 +323,29 @@
             }
 
             $(document).ready(function() {
-                var table = $('#users').DataTable();
+                var table = $('#users').DataTable({
+                    orderCellsTop: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+
+        ],
+          "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
+      }
+                });
 
                 //table.columns(2).search( '2021-10-25' ).draw();
             });

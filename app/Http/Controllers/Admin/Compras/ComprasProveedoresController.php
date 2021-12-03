@@ -38,16 +38,22 @@ class ComprasProveedoresController extends Controller
 
         if(empty($json->SetDTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
-        }elseif($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33"){
-            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura tipo 33. No soportado!');
         }
         if(is_array($json->SetDTE->DTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. No soportado!');
+        }
+        if($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33"){
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura tipo 33. No soportado!');
         }
         
         $encabezado = $json->SetDTE->DTE->Documento->Encabezado;
         
         $detalle = $json->SetDTE->DTE->Documento->Detalle;
+
+        if(empty($encabezado->IdDoc->FchVenc) && $encabezado->IdDoc->FmaPago == "2"){
+            $fecha = strtotime('+1 month', strtotime($encabezado->IdDoc->FchEmis));
+            $encabezado->IdDoc->FchVenc = date('Y-m-d', $fecha);
+        }
 
         if(!empty($json->SetDTE->DTE->Documento->Referencia)){
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
