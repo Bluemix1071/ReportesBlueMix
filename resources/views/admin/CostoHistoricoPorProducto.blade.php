@@ -87,7 +87,7 @@ Costos Históricos
                         <td style="text-align:left">{{$detalle_prod}}</td>
                         <td style="text-align:left">{{number_format($item->costo,0,',','.')}}</td>
                         <td style="text-align:left">{{$item->fecha_modificacion}}</td>
-                        
+
                       </tr>
                       @endforeach
                       @endif
@@ -187,7 +187,7 @@ Costos Históricos
           };
 
           dates.sort(); */
-          
+
 
   $(document).ready(function() {
     $('#producto').DataTable( {

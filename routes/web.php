@@ -188,8 +188,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/MantencionClientesFiltro','AdminController@MantencionClientesFiltro')->name('MantencionClientesFiltro');
     Route::put('/MantencionClientesUpdate','AdminController@MantencionClientesUpdate')->name('MantencionClientesUpdate');
 
-    Route::get('/ventasdiseno','AdminController@ventasdiseno')->name('ventasdiseno');
-    Route::post('/ventasdisenoFiltro','AdminController@ventasdisenoFiltro')->name('ventasdisenoFiltro');
+    Route::get('/ventasCategoria','AdminController@ventasCategoria')->name('ventasCategoria');
+    Route::post('/ventasCategoriaFiltro','AdminController@ventasCategoriaFiltro')->name('ventasCategoriaFiltro');
 
     Route::get('/ListadoProductosContrato','AdminController@ListadoProductosContrato')->name('ListadoProductosContrato');
     Route::post('/ListadoProductosContratoFiltro','AdminController@ListadoProductosContratoFiltro')->name('ListadoProductosContratoFiltro');

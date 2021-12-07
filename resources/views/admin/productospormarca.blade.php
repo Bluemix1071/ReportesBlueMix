@@ -25,10 +25,11 @@
                     @csrf
 
                     <div class="form-group mx-sm-3 mb-2">
-                        <input class="form-control" list="marca" autocomplete="off" name="marcas" id="xd" type="text" placeholder="Marca...">
+                        <input class="form-control" list="marca" autocomplete="off" name="marcas" id="xd" type="text"
+                            placeholder="Marca...">
                         <datalist id="marca">
                             @foreach ($marcas as $item)
-                            <option value="{{ $item->ARMARCA }}">
+                                <option value="{{ $item->ARMARCA }}">
                             @endforeach
                         </datalist>
                     </div>
@@ -67,24 +68,16 @@
                                         <td style="text-align:left">{{ $item->codigo_producto }}</td>
                                         <td style="text-align:left">{{ $item->codigo_proveedor }}</td>
                                         <td style="text-align:left">{{ $item->MARCA_DEL_PRODUCTO }}</td>
-                                        <td style="text-align:right">
-                                            {{ number_format($item->cantidad_en_bodega, 0, ',', '.') }}</td>
-                                        <td style="text-align:right">
-                                            {{ number_format($item->cantidad_en_sala, 0, ',', '.') }}
-                                        </td>
-                                        {{-- <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td> --}}
-                                        <td style="text-align:right">
-                                            {{ number_format($item->precio_costo_neto, 0, ',', '.') }}
-                                        </td>
-                                        <td style="text-align:right">{{ number_format($item->total_costo, 0, ',', '.') }}
-                                        </td>
+                                        <td style="text-align:right">{{ number_format($item->cantidad_en_bodega, 0, ',', '.') }}</td>
+                                        <td style="text-align:right">{{ number_format($item->cantidad_en_sala, 0, ',', '.') }}</td>
+                                        <td style="text-align:right">{{ number_format($item->precio_costo_neto, 0, ',', '.') }}</td>
+                                        <td style="text-align:right">{{ number_format($item->total_costo, 0, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
                     </table>
                 </div>
-                {{-- {{$productos->links()}} --}}
             </div>
         </div>
 

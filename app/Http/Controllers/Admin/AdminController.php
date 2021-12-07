@@ -77,6 +77,8 @@ class AdminController extends Controller
         $marcas=DB::table('marcas')
         ->get();
 
+        dd($productos);
+
       return view('admin.productospormarca',compact('productos','marcas'));
     }
 
@@ -1496,7 +1498,7 @@ public function stocktiemporeal (Request $request){
       return redirect()->route('MantencionClientes');
     }
 
-    public function ventasdiseno(Request $request){
+    public function ventasCategoria(Request $request){
 
 
         $categorias=DB::table('tablas')
@@ -1505,12 +1507,12 @@ public function stocktiemporeal (Request $request){
 
 
 
-        return view('admin.ventasdiseno',compact('categorias'));
+        return view('admin.ventasCategoria',compact('categorias'));
 
     }
 
 
-    public function ventasdisenoFiltro(Request $request){
+    public function ventasCategoriaFiltro(Request $request){
 
         // dd($request->all());
 
@@ -1572,7 +1574,7 @@ public function stocktiemporeal (Request $request){
 
 
 
-        return view('admin.ventasdiseno',compact('diseno','categorias','todo','suma','fecha1','fecha2'));
+        return view('admin.ventasCategoria',compact('diseno','categorias','todo','suma','fecha1','fecha2'));
 
     }
 

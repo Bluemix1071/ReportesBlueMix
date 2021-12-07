@@ -10,7 +10,7 @@ class CostoHistoricoPorProductoController extends Controller
 {
     //
     public function index()
-    {  
+    {
         return view('admin.CostoHistoricoPorProducto');
     }
 
@@ -31,17 +31,17 @@ class CostoHistoricoPorProductoController extends Controller
         if($detalle != []){
             $desc = $detalle[0]->ardesc;
             $unit = $detalle[0]->ardvta;
-    
+
             $detalle_prod = $desc." ".$unit;
         } else {
             $detalle_prod = "UNDEFINED PRODUCT";
             //return redirect()->route('CostoHistoricoPorProducto')->with('warning','El código de producto NO EXISTE EN LA TABLA PRODUCTO')->withInput();
         }
 
-  
+
         //return view('admin.CostoHistoricoPorProducto',compact('productos','marca','fecha1','fecha2'));
         return view('admin.CostoHistoricoPorProducto', compact('producto', 'cod_prod', 'fecha1', 'fecha2', 'detalle_prod'));
-  
-  
+
+
       }
 }
