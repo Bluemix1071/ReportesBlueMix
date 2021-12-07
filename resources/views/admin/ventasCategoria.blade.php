@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Venta Productos
+ventas Categoria
 @endsection
 @section('styles')
 
@@ -15,7 +15,7 @@
         <h3 class="display-3">Ventas Por Categoría</h3>
         <div class="row">
             <div class="col-md-12">
-                <form action="{{ route('ventasdisenoFiltro') }}" method="post" id="desvForm" class="form-inline">
+                <form action="{{ route('ventasCategoriaFiltro') }}" method="post" id="desvForm" class="form-inline">
                     @csrf
                     <div class="form-group mb-2">
                         @if (empty($fecha1))
@@ -105,6 +105,13 @@
                 </div>
                 <br>
                 <hr>
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <div class="col-md-6 mb-4">
+                            <h2>Ventas Por Categoría</h2>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive-xl">
                     <table id="categorias" class="table table-bordered table-hover dataTable table-sm">
                         <thead>
@@ -125,12 +132,12 @@
                                     {{ $totalcategorias = 0 }}
                                 </div>
                                 @foreach ($todo as $item)
-                                    <tr>
+                                    <tr id="tabla">
                                             <th scope="row">{{ $item->ARGRPO2 }}</th>
                                             <td style="text-align:left">{{ $item->taglos }}</td>
                                             <td style="text-align:right">{{ number_format($item->valor, 0, ',', '.') }}</td>
-                                            <td style="text-align:right">%{{ number_format(1000 * (($item->valor / $suma) * 100), 0, ',', '.') }}</td>
-                                            <div style="display: none">{{ $totalparticipacion += 1000 * (($item->valor / $suma) * 100) }}</div>
+                                            <td style="text-align:right">%{{round((($item->valor / $suma) * 100),2)}}</td>
+                                            <div style="display: none">{{ $totalparticipacion += round((($item->valor / $suma) * 100),2) }}</div>
                                             <div style="display: none">{{ $totalcategorias += $item->valor }}</div>
                                     </tr>
                                 @endforeach
@@ -154,6 +161,15 @@
                         </tfoot>
                     </table>
                 </div>
+                <br>
+                <div class="card">
+                    <h5 class="card-header">Gráfico De Ventas Por Categoría Respecto a La Fecha Seleccionada</h5>
+                    <div class="card-body" width="200" height="100">
+                        <div width="200" height="100" class="container-fluid">
+                            <canvas id="myChart" width="200" height="100"></canvas>
+                        </div>
+                    </div>
+                  </div>
             </div>
         </div>
 
@@ -161,6 +177,9 @@
 @endsection
 
 @section('script')
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#productos').DataTable({
@@ -187,36 +206,10 @@
             });
         });
     </script>
-
-{{--
-<script>
-    $(document).ready( function () {
-      $('#categorias').DataTable({
-
-          "order": [[ 0, "asc" ]],
-
-          "language": {
-                    "info": "_TOTAL_ registros",
-                    "search": "Buscar",
-                    "paginate": {
-                        "next": "Siguiente",
-                        "previous": "Anterior",
-
-                    },
-                    "loadingRecords": "cargando",
-                    "processing": "procesando",
-                    "emptyTable": "no hay resultados",
-                    "zeroRecords": "no hay coincidencias",
-                    "infoEmpty": "",
-                    "infoFiltered": ""
-                }
-      } );
-  } );
-  </script> --}}
-
   <script>
     $(document).ready(function() {
         $('#categorias').DataTable({
+            "pageLength": 13,
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
@@ -240,6 +233,57 @@
         });
     });
 </script>
+
+<script>
+
+    var categorias = [];
+    var valor = [];
+
+    if (typeof tabla != 'undefined'){
+            for(let item of tabla){
+
+                categorias.push(item.cells[1].innerText);
+                valor.push(item.cells[2].innerText.replace(/\./g, ''));
+            }
+    // console.log(valor);
+    // valor = (valor.toLocaleString('de-DE'));
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: categorias,
+            datasets: [{
+                label: 'Grafico Ventas Por Categoria',
+                data: valor,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+    </script>
 
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">

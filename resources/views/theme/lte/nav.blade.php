@@ -359,11 +359,11 @@
                                     </li>
                                 @endcan
 
-                                @can('ventasdiseno')
+                                @can('ventasCategoria')
 
                                     <li class="nav-item">
-                                        <a href="{{ route('ventasdiseno') }}"
-                                            class="nav-link {{ setActive('ventasdiseno') }}">
+                                        <a href="{{ route('ventasCategoria') }}"
+                                            class="nav-link {{ setActive('ventasCategoria') }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Ventas Categoría</p>
                                         </a>
