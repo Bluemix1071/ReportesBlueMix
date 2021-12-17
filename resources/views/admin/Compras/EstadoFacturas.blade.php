@@ -315,7 +315,7 @@
                 ]
             });
             function verabono(id){
-                this.table.columns(0).search(id).draw();
+                this.table.columns(0).search("(^"+id+"$)",true,false).draw();
             }
 
     </script>
