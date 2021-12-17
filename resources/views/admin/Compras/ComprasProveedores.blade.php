@@ -151,6 +151,18 @@
                         </div>
                         <div class="card card-primary">
                             <div class="card-header">
+                                <h2 class="card-title">Agregar Detalles</h2>
+                                <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button_detalle">Agregar <i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col" id="input_fields_wrap_detalle">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-primary">
+                            <div class="card-header">
                                 <h2 class="card-title">Agregar Referencias</h2>
                                 <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button">Agregar <i class="fas fa-plus"></i></button>
                             </div>
@@ -313,17 +325,20 @@
                 var max_fields      = 999; //maximum input boxes allowed
                 var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
                 var add_button      = $("#add_field_button"); //Add button ID
+                var wrapper_detalle   		= $("#input_fields_wrap_detalle"); //Fields wrapper
+                var add_button_detalle      = $("#add_field_button_detalle"); //Add button ID
                 
                 var x = 0; //initlal text box count
+                var o = 0; //initlal text box count
                 $(add_button).click(function(e){ //on add input button click
                     e.preventDefault();
                     if(x < max_fields){ //max input box allowed
                         x++; //text box increment
                         $(wrapper).append(
                             '<div class="row" style="margin-bottom: 1%">'+
-                            '<input type="text" list="referencias" placeholder="Tipo Documento" name="referencia_'+x+'[]" class="form-control col" />'+
-                            '&nbsp;<input type="number" placeholder="Folio" name="referencia_'+x+'[]" class="form-control col" />'+
-                            '&nbsp;<input type="date" placeholder="Fecha" name="referencia_'+x+'[]" class="form-control col" />'+
+                            '<input type="text" list="referencias" placeholder="Tipo Documento" name="referencias[referencia_'+x+'][]" class="form-control col" />'+
+                            '&nbsp;<input type="number" placeholder="Folio" name="referencias[referencia_'+x+'][]" class="form-control col" />'+
+                            '&nbsp;<input type="date" placeholder="Fecha" name="referencias[referencia_'+x+'][]" class="form-control col" />'+
                             '<datalist id="referencias">'+
                                 '<option value="801">Orden de Compra</option>'+
                                 '<option value="802">Nota de Pedido</option>'+
@@ -350,6 +365,33 @@
                 
                 $(wrapper).on("click","#remove_field", function(e){ //user click on remove text
                     e.preventDefault(); $(this).parent('div').remove(); x--;
+                })
+
+                $(add_button_detalle).click(function(e){ //on add input button click
+                    e.preventDefault();
+                    if(o < max_fields){ //max input box allowed
+                        o++; //text box increment
+                        $(wrapper_detalle).append(
+                            '<div class="row" style="margin-bottom: 1%">'+
+                            '<input type="text" placeholder="Codigo" name="detalles[detalle_'+o+'][]" class="form-control col-2" />'+
+                            '&nbsp;<input type="text" placeholder="Nombre" name="detalles[detalle_'+o+'][]" class="form-control col-6" />'+
+                            '&nbsp;<input type="number" placeholder="Cant." name="detalles[detalle_'+o+'][]" class="form-control col" />'+
+                            '&nbsp;<input type="text" list="unidades" placeholder="Unid." name="detalles[detalle_'+o+'][]" class="form-control col" />'+
+                            '&nbsp;<input type="number" placeholder="Precio" name="detalles[detalle_'+o+'][]" class="form-control col" />'+
+                            '&nbsp;<input type="number" placeholder="Total" name="detalles[detalle_'+o+'][]" class="form-control col" />'+
+                            '<datalist id="unidades">'+
+                                '<option value="C/U"></option>'+
+                                '<option value="UNI"></option>'+
+                                '<option value="C/LT"></option>'+
+                                '<option value="C/CAJA"></option>'+
+                            '</datalist>'+
+                            '&nbsp;<a id="remove_field_detalle" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
+                            '</div>'); //add input box
+                    }
+                });
+                
+                $(wrapper_detalle).on("click","#remove_field_detalle", function(e){ //user click on remove text
+                    e.preventDefault(); $(this).parent('div').remove(); o--;
                 })
 
 

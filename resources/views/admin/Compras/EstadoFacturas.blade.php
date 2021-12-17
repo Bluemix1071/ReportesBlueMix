@@ -44,7 +44,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Estado Factura</h3>
                     <div class="table-responsive-xl">
-                        <table id="users" class="table table-sm table-hover">
+                        <table id="users" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left"></th>
@@ -281,12 +281,22 @@
     @endsection
     @section('script')
 
-        <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
-        <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
+        <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
+        <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
+        <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
+        <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset('js/buttons.flash.min.js') }}"></script>
+        <script src="{{ asset('js/jszip.min.js') }}"></script>
+        <script src="{{ asset('js/pdfmake.min.js') }}"></script>
+        <script src="{{ asset('js/vfs_fonts.js') }}"></script>
+        <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
+        <script src="{{ asset('js/buttons.print.min.js') }}"></script>
 
         <script>
             $(document).ready(function() {
                 $('#users').DataTable({
+                    dom: 'Bfrtip',
                     "order": [
                         [1, "desc"]
                     ]

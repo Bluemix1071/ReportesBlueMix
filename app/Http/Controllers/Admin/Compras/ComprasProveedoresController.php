@@ -24,7 +24,7 @@ class ComprasProveedoresController extends Controller
     }
 
     public function xmlUp(Request $request){
-        
+
         $url = $_FILES["myfile"]["tmp_name"];
         
         try{
@@ -74,6 +74,7 @@ class ComprasProveedoresController extends Controller
         } */
         
         $i = 0;
+        $o = 0;
 
         $compra = ['folio' => $encabezado->IdDoc->Folio,
                     'fecha_emision' => $encabezado->IdDoc->FchEmis,
@@ -91,11 +92,73 @@ class ComprasProveedoresController extends Controller
                     'total' => $encabezado->Totales->MntTotal
             ];
 
+            /* if($request->hasFile('myfile')){
+                $file = $request->file('myfile')->store('dte');
+                $name = time().$file->getClientOriginalName();
+                $file->move(public_path().'/dte/',$name);
+                $compra += [ 'xml' => $request->file('myfile')->store('dte'); ];
+            } */
+
         $existe = $this->buscaDte($encabezado->Emisor->RUTEmisor, $encabezado->IdDoc->TipoDTE, $encabezado->IdDoc->Folio);
         
         if($existe == null){
+            $compra += [ 'xml' => $request->file('myfile')->store('dte') ];
             DB::table('compras')->insert($compra);
             $ultima_compra = $this->buscaDte($encabezado->Emisor->RUTEmisor, $encabezado->IdDoc->TipoDTE, $encabezado->IdDoc->Folio);
+
+            if(!empty($detalle)){
+                if(is_array($detalle)){
+                    foreach($detalle as $item){
+                        $codigo = "";
+                        if(!empty($item->CdgItem)){
+                            if(is_array($item->CdgItem)){
+                                $codigo = $item->CdgItem[0]->VlrCodigo;
+                            }else{
+                                $codigo = $item->CdgItem->VlrCodigo;
+                            }
+                        }
+                        if(empty($item->UnmdItem)){
+                            $item->UnmdItem = 'C/U';
+                        }
+                            
+                        $detalles = ['codigo' => $codigo,
+                                        'nombre' => $item->NmbItem,
+                                        'descripcion' => $item->NmbItem,
+                                        'cantidad' => $item->QtyItem,
+                                        'tpo_uni' => $item->UnmdItem,
+                                        'precio' => $item->PrcItem,
+                                        'total_neto' => $item->MontoItem,
+                                        'id_compras' => $ultima_compra->id
+                        ];
+                        //error_log(print_r($referencias, true));
+                        DB::table('compras_detalles')->insert($detalles);
+                    }
+                }else{
+                    $codigo = "";
+                    if(!empty($item->CdgItem)){
+                        if(is_array($detalle->CdgItem)){
+                            $codigo = $detalle->CdgItem[0]->VlrCodigo;
+                        }else{
+                            $codigo = $detalle->CdgItem->VlrCodigo;
+                        }
+                    }
+                    if(empty($detalle->UnmdItem)) {
+                        $detalle->UnmdItem = 'C/U';
+                    }
+                    $detalles = ['codigo' => $codigo,
+                                    'nombre' => $detalle->NmbItem,
+                                    'descripcion' => $detalle->NmbItem,
+                                    'cantidad' => $detalle->QtyItem,
+                                    'tpo_uni' => $detalle->UnmdItem,
+                                    'precio' => $detalle->PrcItem,
+                                    'total_neto' => $detalle->MontoItem,
+                                    'id_compras' => $ultima_compra->id
+                    ];
+                        
+                    DB::table('compras_detalles')->insert($detalles);
+                }
+            }
+
             if(!empty($referencia)){
                 if(is_array($referencia)){
                     foreach($referencia as $item){
@@ -135,9 +198,9 @@ class ComprasProveedoresController extends Controller
 
     public function insert(Request $request){
         $body = $request->request;
-        $i = 0;
         $o = 0;
-        $referencias = [];
+        $referencia = [];
+        $detalle = [];
 
         $compra = ['folio' => $body->get('folio'),
                     'fecha_emision' => $body->get('fecha_emision'),
@@ -160,20 +223,34 @@ class ComprasProveedoresController extends Controller
             if($existe == null){
                 DB::table('compras')->insert($compra);
                 $ultima_compra = $this->buscaDte($body->get('rut'), 33, $body->get('folio'));
-                if(!empty($request->get('referencia_1'))){
-                    foreach($body as $item){
-                        $i++;
-                        if($i > 13){
+                if(!empty($body->get('referencias'))){
+                    $referencias = $body->get('referencias');
+                    foreach($referencias as $item){
                             $o++;
-                            $referencias = ['n_linea' => $o,
+                            $referencia = ['n_linea' => $o,
                                         'tpo_doc_ref' => $item[0],
                                         'folio' => $item[1],
                                         'fecha_ref' => $item[2],
                                         'id_compra' => $ultima_compra->id
                             ];
                             //error_log(print_r($referencia, true));
-                            DB::table('referencias')->insert($referencias);
-                        }
+                            DB::table('referencias')->insert($referencia);
+                    }
+                }
+                if(!empty($body->get('detalles'))){
+                    $detalles = $body->get('detalles');
+                    foreach($detalles as $item){
+                            $detalle = ['codigo' => $item[0],
+                                    'nombre' => $item[1],
+                                    'descripcion' => $item[1],
+                                    'cantidad' => $item[2],
+                                    'tpo_uni' => $item[3],
+                                    'precio' => $item[4],
+                                    'total_neto' => $item[5],
+                                    'id_compras' => $ultima_compra->id
+                            ];
+                            //error_log(print_r($referencia, true));
+                            DB::table('compras_detalles')->insert($detalle);
                     }
                 }
                 return redirect()->route('ComprasProveedores')->with('success','Se ha Agregado el Documento correctamente');
@@ -203,6 +280,8 @@ class ComprasProveedoresController extends Controller
 
         $compra = DB::table('compras')->where('id', $request->get('id'))->get()->first();
 
+        $detalles = DB::table('compras_detalles')->where('id_compras', $request->get('id'))->get();
+
         $referencias = DB::table('referencias')->where('id_compra', $request->get('id'))->get();
 
         $proveedores=DB::table('proveed')
@@ -210,7 +289,7 @@ class ComprasProveedoresController extends Controller
         ->leftjoin('comunas', 'proveed.PVCOMU', '=', 'comunas.id')
         ->get(['PVRUTP as rut','PVNOMB as razon_social','PVDIRE as direccion','giro','ciudades.nombre as ciudad','comunas.nombre as comuna']);
 
-        return view('admin.Compras.EditarCompraProveedores', compact('proveedores', 'compra', 'referencias'));
+        return view('admin.Compras.EditarCompraProveedores', compact('proveedores', 'compra', 'referencias', 'detalles'));
     }
 
     public function update(Request $request){
@@ -256,6 +335,11 @@ class ComprasProveedoresController extends Controller
             }
         }
         return redirect()->route('ListarCompras')->with('success','Se ha Editado el Documento correctamente');
+    }
+
+    public function descargaXml(Request $request){
+        //dd($request->get('ruta'));
+        return response()->download(storage_path("app/" .$request->get('ruta')), ($request->get('folio').'_'.$request->get('rut').'.xml'));
     }
 
     

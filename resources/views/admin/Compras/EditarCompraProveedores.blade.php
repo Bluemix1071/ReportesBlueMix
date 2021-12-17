@@ -21,7 +21,7 @@
                     @csrf
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"> Agregar Encabezado Factura</h3>
+                            <h3 class="card-title"> Editar Encabezado Factura</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-plus"></i>
@@ -148,6 +148,50 @@
                             </div>
                             </div>
                         </div>
+                        @if(!$detalles->isEmpty())
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h2 class="card-title">Detalles</h2>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                    <!--  <i class="fas fa-times"></i> -->
+                                    </button>
+                                </div>
+                                <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" >Agregar <i class="fas fa-plus"></i></button> -->
+                            </div>
+                            <div class="card-body collapse hide">
+                                <div class="form-group col">
+                                    <div class="row">
+                                        <div class="row" style="text-align-last: center;">
+                                            <input type="text" placeholder="Codigo" disabled class="form-control col-2" value="Codigo" style="border: none; background: rgba(0, 0, 0, 0);"/>
+                                            &nbsp;<input type="text" placeholder="Nombre" disabled class="form-control col-6" value="Nombre"style="border: none; background: rgba(0, 0, 0, 0);" />
+                                            &nbsp;<input type="text" placeholder="Cantidad" disabled class="form-control col" value="Cant." style="border: none; background: rgba(0, 0, 0, 0);"/>
+                                            &nbsp;<input type="text" placeholder="Unidad" disabled class="form-control col" value="Unid." style="border: none; background: rgba(0, 0, 0, 0);"/>
+                                            &nbsp;<input type="text" placeholder="Precio" disabled class="form-control col" value="Precio" style="border: none; background: rgba(0, 0, 0, 0);"/>
+                                            &nbsp;<input type="text" placeholder="Total" disabled class="form-control col" value="Total" style="border: none; background: rgba(0, 0, 0, 0);"/>
+                                            &nbsp;<a href="#" style="visibility: hidden" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        @foreach($detalles as $item)
+                                        <div class="row" style="margin-bottom: 1%">
+                                            <input type="text" placeholder="Codigo" required disabled name="detalle_[]" class="form-control col-2" value="{{ $item->codigo }}" />
+                                            &nbsp;<input type="text" placeholder="Nombre" disabled required name="detalle_[]" class="form-control col-6" value="{{ $item->nombre }}"/>
+                                            &nbsp;<input type="text" placeholder="Cantidad" disabled required name="detalle_[]" class="form-control col" value="{{ $item->cantidad }}"/>
+                                            &nbsp;<input type="text" placeholder="Unidad" disabled required name="detalle_[]" class="form-control col" value="{{ $item->tpo_uni }}"/>
+                                            &nbsp;<input type="text" placeholder="Precio" disabled required name="detalle_[]" class="form-control col" value="{{ $item->precio }}"/>
+                                            &nbsp;<input type="text" placeholder="Total" disabled required name="detalle_[]" class="form-control col" value="{{ $item->total_neto }}"/>
+                                            &nbsp;<a href="#" style="visibility: hidden" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                         <div class="card card-primary">
                             <div class="card-header">
                                 <h2 class="card-title">Referencias</h2>
