@@ -119,7 +119,6 @@
                                     <i class="fas fa-plus"></i>
                                 </button>
                                 <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
-                                <!--  <i class="fas fa-times"></i> -->
                                 </button>
                             </div>
                         </div>
@@ -268,10 +267,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        {{-- <button type="submit" class="btn btn-primary" >Aceptar</button> --}}
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
-                {{-- </form> --}}
                 </div>
             </div>
         </div>
@@ -280,7 +277,6 @@
 
     @endsection
     @section('script')
-
 
 <script> $('#modalabonar').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
