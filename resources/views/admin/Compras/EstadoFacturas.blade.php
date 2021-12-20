@@ -281,6 +281,28 @@
     @endsection
     @section('script')
 
+
+<script> $('#modalabonar').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var folio = button.data('folio')
+    var monto_abono = button.data('monto_abono')
+    var total = button.data('total')
+    if(monto_abono === ""){
+        monto_abono = total;
+	}
+
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #folio').val(folio);
+    modal.find('.modal-body #monto_abono').val(monto_abono);
+    modal.find('.modal-body #monto_abono').attr({
+       "max" : monto_abono
+    });
+
+
+  })</script>
+
         <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
         <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
         <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
@@ -321,26 +343,6 @@
     </script>
 
 
-<script> $('#modalabonar').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget)
-    var id = button.data('id')
-    var folio = button.data('folio')
-    var monto_abono = button.data('monto_abono')
-    var total = button.data('total')
-    if(monto_abono === ""){
-        monto_abono = total;
-	}
-
-    var modal = $(this)
-    modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #folio').val(folio);
-    modal.find('.modal-body #monto_abono').val(monto_abono);
-    modal.find('.modal-body #monto_abono').attr({
-       "max" : monto_abono
-    });
-
-
-  })</script>
 
 
 
