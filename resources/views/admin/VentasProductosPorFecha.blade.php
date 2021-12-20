@@ -109,7 +109,7 @@
                                 {{ $totalvendido = 0 }}
                             </div>
                                 @foreach ($productos as $item)
-                                    <tr>
+                                    <tr id="tabla">
                                         @if ($item->DETIPO == 7)
                                         <td style="text-align:left">Boleta</td>
                                     @else
@@ -145,6 +145,15 @@
                         </tfoot>
                     </table>
                 </div>
+                <br>
+                {{-- <div class="card">
+                    <h5 class="card-header">Top 10 Productos</h5>
+                    <div class="card-body" width="200" height="100">
+                        <div width="200" height="100" class="container-fluid">
+                            <canvas id="myChart" width="200" height="100"></canvas>
+                        </div>
+                    </div>
+                  </div> --}}
             </div>
         </div>
 
@@ -152,9 +161,63 @@
 @endsection
 
 @section('script')
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+
+<script>
+
+    var producto = [];
+    var valor = [];
+
+    if (typeof tabla != 'undefined'){
+            for(let item of tabla){
+
+                producto.push(item.cells[6].innerText);
+                valor.push(item.cells[9].innerText.replace(/\./g, ''));
+            }
+    // console.log(valor);
+    // valor = (valor.toLocaleString('de-DE'));
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: producto,
+            datasets: [{
+                label: 'Grafico Ventas Por Categoria',
+                data: valor,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+    </script>
     <script>
         $(document).ready(function() {
             $('#productos').DataTable({
+                "order": [[ 9, "desc" ]],
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
@@ -178,6 +241,8 @@
             });
         });
     </script>
+
+
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>

@@ -77,7 +77,6 @@ class AdminController extends Controller
         $marcas=DB::table('marcas')
         ->get();
 
-        dd($productos);
 
       return view('admin.productospormarca',compact('productos','marcas'));
     }
@@ -2102,6 +2101,36 @@ public function stocktiemporeal (Request $request){
         $totalsuma=$boletasuma+$facturasuma;
 
         return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','boletatotal','facturatotal','fecha1','fecha2'));
+
+
+    }
+
+
+    public function InformeExistencia(){
+
+
+
+        return view('admin.InformeExistencia');
+
+
+
+    }
+
+
+    public function InformeExistenciaFiltro(Request $request){
+
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
+
+        $bodegacosto=DB::select('select sum(incant * PCCOSTO) as bodegacosto from precios, inventa where incant > 0 and PCCODI = LEFT(inarti, 5)');
+
+        $salacosto=DB::select('select sum(bpsrea * PCCOSTO) as salacosto from precios, bodeprod where bpsrea > 0 and PCCODI = LEFT(bpprod, 5)');
+
+        $adquisiciones=DB::select('select sum(Cantidad * round(costo)) as adquisiciones from ingreso_productos_costos, cmovim where Numero_Ingreso = CMVNGUI and CMVFEDO between ? and ?' , [$fecha1,$fecha2]);
+
+        $saldototal = $adquisiciones[0]->adquisiciones + $bodegacosto[0]->bodegacosto;
+
+        return view('admin.InformeExistencia',compact('fecha1','fecha2','bodegacosto','salacosto','adquisiciones','saldototal'));
 
 
     }
