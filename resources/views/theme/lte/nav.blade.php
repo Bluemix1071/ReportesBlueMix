@@ -502,6 +502,14 @@
                                 </li>
 
                                 <li class="nav-item">
+                                    <a href="{{ route('InformeExistencia') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Informe Existencia
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
                                     <a href="{{ route('ResumenDeVenta') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Resumen De Venta

@@ -215,6 +215,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/VentasPorVendedor','AdminController@VentasPorVendedor')->name('VentasPorVendedor');
     Route::post('/VentasPorVendedorFiltro','AdminController@VentasPorVendedorFiltro')->name('VentasPorVendedorFiltro');
 
+    Route::get('/InformeExistencia','AdminController@InformeExistencia')->name('InformeExistencia');
+    Route::post('/InformeExistenciaFiltro','AdminController@InformeExistenciaFiltro')->name('InformeExistenciaFiltro');
+
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
     Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');
