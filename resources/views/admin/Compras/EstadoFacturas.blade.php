@@ -119,7 +119,6 @@
                                     <i class="fas fa-plus"></i>
                                 </button>
                                 <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
-                                <!--  <i class="fas fa-times"></i> -->
                                 </button>
                             </div>
                         </div>
@@ -268,10 +267,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        {{-- <button type="submit" class="btn btn-primary" >Aceptar</button> --}}
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
-                {{-- </form> --}}
                 </div>
             </div>
         </div>
@@ -280,6 +277,27 @@
 
     @endsection
     @section('script')
+
+<script> $('#modalabonar').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var folio = button.data('folio')
+    var monto_abono = button.data('monto_abono')
+    var total = button.data('total')
+    if(monto_abono === ""){
+        monto_abono = total;
+	}
+
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #folio').val(folio);
+    modal.find('.modal-body #monto_abono').val(monto_abono);
+    modal.find('.modal-body #monto_abono').attr({
+       "max" : monto_abono
+    });
+
+
+  })</script>
 
         <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
         <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
@@ -321,26 +339,6 @@
     </script>
 
 
-<script> $('#modalabonar').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget)
-    var id = button.data('id')
-    var folio = button.data('folio')
-    var monto_abono = button.data('monto_abono')
-    var total = button.data('total')
-    if(monto_abono === ""){
-        monto_abono = total;
-	}
-
-    var modal = $(this)
-    modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #folio').val(folio);
-    modal.find('.modal-body #monto_abono').val(monto_abono);
-    modal.find('.modal-body #monto_abono').attr({
-       "max" : monto_abono
-    });
-
-
-  })</script>
 
 
 
