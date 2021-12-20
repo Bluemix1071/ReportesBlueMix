@@ -119,6 +119,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     /*  Mantenedor CRUD Compras a proveedores */
     Route::get('/ComprasProveedores','Compras\ComprasProveedoresController@index')->name('ComprasProveedores');
     Route::post('/XmlUp','Compras\ComprasProveedoresController@xmlUp')->name('XmlUp');
+    Route::post('/DescargaXml', 'Compras\ComprasProveedoresController@descargaXml')->name('DescargaXml');
 
     Route::get('/ConsultaDocumentos','Compras\ConsultaDocumentosController@index')->name('ConsultaDocumentos');
     Route::post('/ConsultaDocumentosFiltro','Compras\ConsultaDocumentosController@ConsultaDocumentosFiltro')->name('ConsultaDocumentosFiltro');
