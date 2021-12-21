@@ -1353,14 +1353,14 @@ public function stocktiemporeal (Request $request){
                 'orden' => $request->idorden,
             );
 
-            Mail::send('emails.correotermino', $data, function ($message) use($ordenesdiseño) {
+            /* Mail::send('emails.correotermino', $data, function ($message) use($ordenesdiseño) {
                 $message->from('bluemix.informatica@gmail.com', 'Bluemix SPA.');
                 $message->to($ordenesdiseño[0]->correo)->subject('Trabajo ' . $ordenesdiseño[0]->trabajo . ' Libreria Bluemix');
 
-            });
+            }); */
 
 
-            return redirect()->route('ListarOrdenesDiseño');
+            return redirect()->route('ListarOrdenesDiseño')->with('success','Se ha Terminado la Orden');
 
     }
 

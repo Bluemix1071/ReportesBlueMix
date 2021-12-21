@@ -26,6 +26,7 @@
                   <th scope="col">Nombre</th>
                   <th scope="col">Email</th>
                   <th scope="col">Trabajo</th>
+                  <th scope="col">Fecha Solicitud</th>
                   <th scope="col">Fecha Entrega</th>
                   <th scope="col">Estado</th>
                   <th scope="col">Acciones</th>
@@ -35,9 +36,10 @@
                 @foreach ($ordenes as $item)
                     <tr>
                         <th scope="row">{{ $item->idOrdenesDiseño}}</th>
-                        <td>{{ $item->nombre }}</td>
+                        <td>{{ strtoupper($item->nombre) }}</td>
                         <td>{{ $item->correo }}</td>
                         <td>{{ $item->trabajo }}</td>
+                        <td>{{ $item->fecha_solicitud }}</td>
                         <td>{{ $item->fecha_entrega }}</td>
                         @if ($item->estado =='Ingresado')
                         <td><h5><span class="badge badge-success">Ingresada</span></h5></td>
@@ -46,7 +48,18 @@
                         @else
                         <td><h5><span class="badge badge-danger">Terminado</span></h5></td>
                         @endif
-                        <td><a href="{{route('ListarOrdenesDisenoDetalle', $item->idOrdenesDiseño)}}" type="button" class="btn btn-primary">Ver Mas</a></td>
+                        <td class="row"><a href="{{route('ListarOrdenesDisenoDetalle', $item->idOrdenesDiseño)}}" type="button" class="btn btn-primary" target="_blank" title="Ver Más"><i class="fas fa-eye"></i></a>
+                        &nbsp;
+                        @if ($item->estado !='Terminado')
+                        <!-- <form action="{{ route('ListarOrdenesDisenoDetalleedittermino', [ 'idorden' => $item->idOrdenesDiseño ]) }}" method="POST">
+                          <input type="text" name="idorden" value="{{ $item->idOrdenesDiseño }}" hidden>
+                          <button type="submit" class="btn btn-danger" target="_blank" title="Terminar Trabajo"><i class="fas fa-clipboard-check"></i></button>
+                        </form> -->
+                          <a href="#" type="button" class="btn btn-danger" target="_blank" title="Terminar Trabajo" data-toggle="modal" data-target="#confirmacion" onclick="cargarid({{$item->idOrdenesDiseño}})"><i class="fas fa-clipboard-check"></i></a>
+                        @else
+                          <button type="button" class="btn btn-secondary" target="_blank" title="Terminar Trabajo"><i class="fas fa-clipboard-check"></i></button>
+                        @endif
+                      </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -60,6 +73,29 @@
         </div>
       </section>
 
+      <!-- Modal Editar -->
+      <div class="modal fade" id="confirmacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">¿Terminar Directamente la Solicitud?</h4>
+                    </div>
+                    <!-- <div class="modal-body"> -->
+                        <!-- <div class="card-body"> -->
+                            <form method="POST" action="{{ route('ListarOrdenesDisenoDetalleedittermino') }}">
+                                <input type="text" name="idorden" id="cargaid" value="" hidden>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Terminar</button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                                </div>
+                            </form>
+                       <!--  </div> -->
+                   <!--  </div> -->
+                </div>
+            </div>
+        </div>
+
 @endsection
 @section('script')
 
@@ -72,6 +108,11 @@
         "order": [[ 0, "desc" ]]
     } );
 } );
+
+function cargarid(id){
+  //alert(id);
+  $('#cargaid').val(id);
+}
 </script>
 
 
