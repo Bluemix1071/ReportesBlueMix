@@ -120,6 +120,12 @@ class ComprasProveedoresController extends Controller
                         if(empty($item->UnmdItem)){
                             $item->UnmdItem = 'C/U';
                         }
+                        if(empty($item->QtyItem)){
+                            $item->QtyItem = 1;
+                        }
+                        if(empty($item->PrcItem)){
+                            $item->PrcItem = $item->MontoItem;
+                        }
                             
                         $detalles = ['codigo' => $codigo,
                                         'nombre' => $item->NmbItem,
@@ -145,6 +151,13 @@ class ComprasProveedoresController extends Controller
                     if(empty($detalle->UnmdItem)) {
                         $detalle->UnmdItem = 'C/U';
                     }
+                    if(empty($detalle->QtyItem)){
+                        $detalle->QtyItem = 1;
+                    }
+                    if(empty($detalle->PrcItem)){
+                        $detalle->PrcItem = $detalle->MontoItem;
+                    }
+
                     $detalles = ['codigo' => $codigo,
                                     'nombre' => $detalle->NmbItem,
                                     'descripcion' => $detalle->NmbItem,
