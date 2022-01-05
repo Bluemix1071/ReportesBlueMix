@@ -17,7 +17,7 @@
         <br>
         <h1>Mantenedor Clientes</h1>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col">
                 <hr>
                 <form action="{{ route('MantencionClientesFiltro') }}" method="post" id="desvForm" class="form-inline">
                     @csrf
@@ -25,26 +25,31 @@
                     <div class="form-group mx-sm-3 mb-2">
                         @if (empty($consulta))
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="text" oninput="checkRut(this)" autocomplete="off" name="rut" class="form-control" required placeholder="Rut Cliente">
+                            <input type="text" oninput="checkRut(this)" autocomplete="off" name="rut" id="rut" class="form-control" required placeholder="Rut Cliente">
                         @else
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="text" oninput="checkRut(this)" autocomplete="off" name="rut" class="form-control" required placeholder="Rut Cliente"
+                            <input type="text" oninput="checkRut(this)" autocomplete="off" name="rut" id="rut" class="form-control" required placeholder="Rut Cliente"
                                 value="">
                         @endif
                     </div>
                     <div class="form-group mx-sm-3 mb-2">
                         @if (empty($consulta))
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="number" autocomplete="off" name="depto" class="form-control" required placeholder="Depto.">
+                            <input type="number" autocomplete="off" name="depto" id="depto" class="form-control" required placeholder="Depto.">
                         @else
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input type="number" autocomplete="off" name="depto" class="form-control" required placeholder="Depto."
+                            <input type="number" autocomplete="off" name="depto" id="depto" class="form-control" required placeholder="Depto."
                                 value="">
                         @endif
                     </div>
                     <div class="col-md-2 ">
                         <button type="submit" class="btn btn-primary mb-2">Buscar</button>
                     </div>
+                    @if (empty($consulta))
+                            <div class="col">
+                                <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#mimodalclientecredito">Buscar Cliente</button>
+                            </div>
+                    @endif
                 </form>
                 <hr>
             </div>
@@ -587,10 +592,94 @@
                 </div>
     </section>
 
+     <!-- Modal lista clientes credito-->
+ <div class="modal fade" id="mimodalclientecredito" tabindex="-1" role="dialog" aria-labelledby="myModalLabelupdate" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabelupdate">Buscador Clientes</h4>
+      </div>
+      <div class="modal-body table-responsive-xl">
+        <table id="selectclientes" class="table table-sm table-hover">
+        <thead>
+            <tr>
+                <th scope="col">RUT</th>
+                <th scope="col">DEPTO</th>
+                <th scope="col">RAZÓN SOCIAL</th>
+                <th scope="col">GIRO</th>
+                <th scope="col">TPO. CLIENTE</th>
+                <th scope="col">ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($clientescredito as $item)
+                <tr>
+                <td>{{$item->CLRUTC}}-{{$item->CLRUTD}}</td>
+                <td>{{$item->DEPARTAMENTO}}</td>
+                <td>{{$item->CLRSOC}}</td>
+                <td>{{$item->GIRO}}</td>
+                <td>
+                    @switch($item->CLTCLI)
+                    @case(0)
+                        <span>NO ESPECIFICADO</span>
+                        @break
+
+                    @case(1)
+                        <span>CLIENTE EMPRESA</span>
+                        @break
+
+                    @case(2)
+                        <span>CLIENTE COMERCIANTE</span>
+                        @break
+
+                    @case(3)
+                        <span>CLIENTE PARTICULAR</span>
+                        @break
+
+                    @case(4)
+                        <span>CLIENTE FRECUENTE</span>
+                        @break
+                        
+                    @case(5)
+                        <span>CLIENTE IMPRENTA</span>
+                        @break
+
+                    @case(6)
+                        <span>CLIENTE DEUDOR</span>
+                        @break
+
+                    @case(7)
+                        <span>CLIENTE CREDITO</span>
+                        @break
+
+                    @default
+                        <span>NO ESPECIFICADO</span>
+                @endswitch
+                </td>
+                <td>
+                        <button type="submit" class="btn btn-success mb-2" onclick="cargar({{$item->CLRUTC}}, {{$item->CLRUTD}}, {{$item->DEPARTAMENTO}})" data-dismiss="modal">CARGAR</button>
+                </td>
+                </tr>
+            @endforeach
+        </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+     </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('script')
     <script>
+        function cargar(rut, dv, depto){
+            //alert(rut+'-'+dv+" "+depto);
+            $("#rut").val(rut+'-'+dv);
+            $("#depto").val(depto);
+        }
+
         function editar(){
             if($('#contacto').prop('disabled') == false ){
                 /* $('#razon_social').prop('disabled', true);
@@ -652,6 +741,65 @@
                     "infoFiltered": ""
                 }
             });
+        });
+
+        $(document).ready(function() {
+            var table = $('#selectclientes').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true,
+                ordering: false,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+
+                ],
+                "language": {
+                    "info": "_TOTAL_ registros",
+                    "search": "Buscar",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+
+                    },
+                    "loadingRecords": "cargando",
+                    "processing": "procesando",
+                    "emptyTable": "no hay resultados",
+                    "zeroRecords": "no hay coincidencias",
+                    "infoEmpty": "",
+                    "infoFiltered": ""
+                }
+            });
+
+            $('#selectclientes thead tr').clone(true).appendTo( '#selectclientes thead' );
+            $('#selectclientes thead tr:eq(1) th').each( function (i) {
+                console.log(i);
+                var title = $(this).text();
+                if(i == 4){
+                    $(this).html('<input type="text" list="tipos" class="form-control" style="font-size: 15px; height: 20px"/>'+
+                    '<datalist id="tipos">'+
+                    '<option value="NO ESPECIFICADO">'+
+                    '<option value="CLIENTE EMPRESA">'+
+                    '<option value="CLIENTE COMERCIANTE">'+
+                    '<option value="CLIENTE PARTICULAR">'+
+                    '<option value="CLIENTE FRECUENTE">'+
+                    '<option value="CLIENTE IMPRENTA">'+
+                    '<option value="CLIENTE DEUDOR">'+
+                    '<option value="CLIENTE CREDITO">'+
+                    '</datalist>'
+                    );
+                }else{
+                    $(this).html('<input type="text" class="form-control" style="font-size: 15px; height: 20px"/>');
+                }
+        
+                $( 'input', this ).on( 'keyup change', function () {
+                    if ( table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
         });
 
     </script>

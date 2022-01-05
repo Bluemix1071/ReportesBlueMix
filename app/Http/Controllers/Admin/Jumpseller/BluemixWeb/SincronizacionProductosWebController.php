@@ -107,7 +107,7 @@ class SincronizacionProductosWebController extends Controller
 
     public function actualizarProductoWeb(){
         
-        $productos=DB::table('subida_productos_web')->where('sku','!=',null)->get();
+        $productos=DB::table('subida_productos_web')->where('sku','!=',null)->where('stock_total', '>=', 0)->get();
 
         /* $sql =  DB::select("select productosjumpsellerweb.*
                 FROM productosjumpsellerweb
