@@ -121,6 +121,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/XmlUp','Compras\ComprasProveedoresController@xmlUp')->name('XmlUp');
     Route::post('/DescargaXml', 'Compras\ComprasProveedoresController@descargaXml')->name('DescargaXml');
 
+    /*  Mantenedor CRUD Ingreso */
+    Route::get('/Ingresos', 'Bodega\IngresosController@index')->name('ListarIngresos');
+
+    /*  Mantenedor Clientes Credito */
+    Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
+
     Route::get('/ConsultaDocumentos','Compras\ConsultaDocumentosController@index')->name('ConsultaDocumentos');
     Route::post('/ConsultaDocumentosFiltro','Compras\ConsultaDocumentosController@ConsultaDocumentosFiltro')->name('ConsultaDocumentosFiltro');
 

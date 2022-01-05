@@ -359,6 +359,11 @@
             </div>
         </div>
 
+        <!-- <div style='text-align: center;'>
+        <img alt='Barcode Generator TEC-IT' width="650" height="300"
+            src="https://barcode.tec-it.com/barcode.ashx?data={{ urlencode() }}&code=PDF417&dpi=350"/>
+        </div> -->
+
         <!-- FIN Modall -->
 
     @endsection
