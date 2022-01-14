@@ -78,7 +78,7 @@
 
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Vendedor</label>
                             <div class="col-sm-3">
-                                <input type="text" list="vendedores" required="required" class="form-control" id="vendedor "name="vendedor" value="">
+                                <input type="text" list="vendedores" required="required" autocomplete="off" class="form-control" id="vendedor "name="vendedor" value="">
                                 <datalist id="vendedores">
                                     @foreach($vendedores as $item)
                                         <option>{{ strtoupper($item->vendedor) }}</option>

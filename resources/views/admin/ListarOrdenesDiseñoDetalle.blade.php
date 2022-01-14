@@ -53,7 +53,8 @@
                             <strong>Tipo Trabajo:</strong> {{ $ordenesdiseño[0]->trabajo }}
                                 <address>
                                 <strong>Tipo Documento:</strong> {{ $ordenesdiseño[0]->tipo_documento }}<br>
-                            <strong>Documento:</strong> {{ $ordenesdiseño[0]->documento }}
+                            <strong>Documento:</strong> {{ $ordenesdiseño[0]->documento }}<br>
+                            <strong>Vendedor:</strong> {{ strtoupper($ordenesdiseño[0]->vendedor) }}
                                 </address>
                             </div>
                             <div class="col-sm-4 invoice-col">
