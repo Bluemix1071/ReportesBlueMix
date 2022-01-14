@@ -356,7 +356,9 @@ class SalaController extends Controller
 
     public function OrdenesDeDiseño(){
 
-        return view('sala.OrdenesDeDiseño');
+        $vendedores = DB::select("SELECT vendedor FROM db_bluemix.ordenesdiseño where vendedor is not null group by vendedor");
+
+        return view('sala.OrdenesDeDiseño', compact('vendedores'));
 
       }
 
@@ -380,6 +382,7 @@ class SalaController extends Controller
                     "correo" => $request->correo,
                     "trabajo" => $request->trabajo,
                     "comentario" => $request->comentario,
+                    "vendedor" => $request->vendedor,
                     "tipo_documento" => $request->opciones,
                     "documento" => $request->numerodocumento,
                     "fecha_solicitud" => $date,

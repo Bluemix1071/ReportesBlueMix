@@ -34,7 +34,10 @@
                                     <td>{{ $item->CLRSOC }}</td>
                                     <td>{{ $item->GIRO }}</td>
                                     <td>
-                                        <form action="#" method="get">
+                                        <form action="{{ route('MantencionClientesCreditoDetalle', ['rut' => $item->CLRUTC, 'dv' => $item->CLRUTD, 'depto' => $item->DEPARTAMENTO]) }}" method="post">
+                                        {{ method_field('post') }}
+                                        {{ csrf_field() }}
+                                        @csrf
                                             <button type="submit" class="btn btn-success mb-2">VER MÁS</button>
                                         </form>
                                     </td>
