@@ -900,13 +900,13 @@
                         <ul class="nav nav-treeview">
 
 
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <a href="{{ route('ListarIngresos') }}" class="nav-link {{ setActive('ListarIngresos') }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Rectificación Ingreso</p>
                                 </a>
                             </li>
- -->
+
                             <li class="nav-item">
                                 <a href="../UI/icons.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
