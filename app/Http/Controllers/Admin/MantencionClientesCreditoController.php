@@ -66,7 +66,7 @@ class MantencionClientesCreditoController extends Controller
       `cliente`.`CLRSOC` as 'RAZOR_SOCIAL',
       `cliente`.`DEPARTAMENTO` as 'DEPTO'
       FROM `log_bmix`, `ccorclie_ccpclien`, `cliente`
-      WHERE `log_bmix`.`fecha` BETWEEN '2021-11-01' AND '2021-12-31' and CONCAT(`ccorclie_ccpclien`.`CCPRUTCLIE`, '-', `cliente`.`CLRUTD`) = '69140900-7'
+      WHERE /* `log_bmix`.`fecha` BETWEEN '2021-11-01' AND '2021-12-31' and  */CONCAT(`ccorclie_ccpclien`.`CCPRUTCLIE`, '-', `cliente`.`CLRUTD`) = '69140900-7'
       AND `log_bmix`.`nro_oper_doc` = `ccorclie_ccpclien`.`CCPDOCUMEN` 
       AND `cliente`.`CLRUTC` = `ccorclie_ccpclien`.`CCPRUTCLIE` 
       AND `cliente`.`DEPARTAMENTO` = 1 
@@ -101,6 +101,10 @@ class MantencionClientesCreditoController extends Controller
       AND `ccorclie_ccpclien`.`CCPESTADOD`<>'N'
       ORDER BY 'CCPFECHAHO' ASC");
 
-      return view('admin.MantencionClientesCreditoDetalle', compact('cliente', 'ciudad', 'giro', 'abonos', 'regiones', 'deuda'));
+      $fecha_hoy = date('Y-m-d');
+
+      $fecha_moron = date("Y-m-d",strtotime($fecha_hoy."+ 7 days"));
+
+      return view('admin.MantencionClientesCreditoDetalle', compact('cliente', 'ciudad', 'giro', 'abonos', 'regiones', 'deuda', 'fecha_hoy', "fecha_moron"));
     }
 }

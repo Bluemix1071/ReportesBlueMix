@@ -12,7 +12,7 @@ class IngresosController extends Controller
     public function index(){
 
         $ingresos = DB::table('cmovim')->orderBy('CMVNGUI', 'desc')->get();
-        dd($ingresos->take(100));
+        //dd($ingresos->take(100));
 
         return view('admin.Bodega.ListarIngresos');
     }
