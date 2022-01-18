@@ -120,7 +120,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Hasta:</td>
-                                                <td><input type="date" id="max" name="max" value="2022-12-31"></td>
+                                                <td><input type="date" id="max" name="max" value="{{ $fecha_hoy }}"></td>
                                             </tr>
                                         </tbody>
 
@@ -160,7 +160,11 @@
                                                         <td style="text-align:center">{{ number_format(($item->monto), 0, ',', '.') }}</td>
                                                         <td style="text-align:center">{{ $item->nomb_ususario }}</td>
                                                         <td style="text-align:center">{{ $item->CCPDOCUMEN }}</td>
-                                                        <td style="text-align:center">{{ $item->CCPTIPODOC }}</td>
+                                                        @if( $item->CCPTIPODOC === "8")
+                                                            <td style="text-align:center">Factura</td>
+                                                        @else
+                                                            <td style="text-align:center">{{ $item->CCPTIPODOC }}</td>
+                                                        @endif
                                                         <td style="text-align:center">{{ $item->CCPFECHAHO }}</td>
                                                         <td style="text-align:center">{{ number_format(($item->CCPVALORFA), 0, ',', '.') }}</td>
                                                         <td style="text-align:center">{{ number_format(($item->saldo), 0, ',', '.') }}</td>
@@ -189,7 +193,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Hasta:</td>
-                                                <td><input type="date" id="max_deuda" name="max_deuda" value="2022-12-31"></td>
+                                                <td><input type="date" id="max_deuda" name="max_deuda" value="{{ $fecha_hoy }}"></td>
                                             </tr>
                                         </tbody>
 
@@ -222,7 +226,13 @@
                                             </thead>
                                                 <tbody style="text-align:center">
                                                 @foreach($deuda as $item)
+                                                    @if(date("Y-m-d",strtotime($item->CCPFECHAP1."+ 7 days")) < $fecha_hoy)
+                                                    <tr class="p-3 mb-2 bg-danger text-white">
+                                                    @elseif($item->CCPFECHAP1 <= $fecha_hoy)
+                                                    <tr class="p-3 mb-2 bg-warning text-white">
+                                                    @else
                                                     <tr>
+                                                    @endif
                                                         <td style="text-align:center">{{ $item->CCPDOCUMEN }}</td>
                                                         <td style="text-align:center">{{ $item->CCPFECHAHO }}</td>
                                                         <td style="text-align:center">{{ $item->CCPFECHAP1 }}</td>
