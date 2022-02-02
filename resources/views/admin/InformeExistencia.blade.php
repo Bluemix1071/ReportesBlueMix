@@ -146,40 +146,19 @@
                 <div class="form-row">
                     <div class="col-md-4 mb-4">
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02"
-                            readonly value="Ventas Facturas" required>
+                            readonly value="Ventas Totales" required>
                     </div>
                     <div class="col-md-4 mb-4">
                             <input type="text" class="form-control" id="validationTooltip02" readonly value="-" required>
                     </div>
                     <div class="col-md-4 mb-4">
                         <div class="input-group">
-                            @if (empty($boletasuma))
+                            @if (empty($total))
                                 <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @else
                                 <input type="text" class="form-control" id="validationTooltipUsername"
-                                    value="${{ number_format($boletasuma, 0, ',', '.') }}" readonly
-                                    aria-describedby="validationTooltipUsernamePrepend" required>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-4 mb-4">
-                        <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02"
-                            readonly value="Ventas Boletas" required>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                            <input type="text" class="form-control" id="validationTooltip02" readonly value="-" required>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="input-group">
-                            @if (empty($boletasuma))
-                                <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                    aria-describedby="validationTooltipUsernamePrepend" required>
-                            @else
-                                <input type="text" class="form-control" id="validationTooltipUsername"
-                                    value="${{ number_format($boletasuma, 0, ',', '.') }}" readonly
+                                    value="${{ number_format($total, 0, ',', '.') }}" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @endif
                         </div>

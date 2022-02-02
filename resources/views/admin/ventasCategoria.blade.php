@@ -136,7 +136,7 @@ ventas Categoria
                                             <th scope="row">{{ $item->ARGRPO2 }}</th>
                                             <td style="text-align:left">{{ $item->taglos }}</td>
                                             <td style="text-align:right">{{ number_format($item->valor, 0, ',', '.') }}</td>
-                                            <td style="text-align:right">%{{round((($item->valor / $suma) * 100),2)}}</td>
+                                            <td style="text-align:right">{{round((($item->valor / $suma) * 100),2)}}%</td>
                                             <div style="display: none">{{ $totalparticipacion += round((($item->valor / $suma) * 100),2) }}</div>
                                             <div style="display: none">{{ $totalcategorias += $item->valor }}</div>
                                     </tr>
@@ -154,7 +154,7 @@ ventas Categoria
                                     class="price text-success">{{ number_format($totalcategorias, 0, ',', '.') }}</span>
                                 </td>
                                     <td style="text-align:right"><span
-                                            class="price text-success">%{{ number_format($totalparticipacion, 0, ',', '.') }}</span>
+                                            class="price text-success">{{ number_format($totalparticipacion, 0, ',', '.') }}%</span>
                                     </td>
                                 @endif
                             </tr>
