@@ -76,6 +76,18 @@
                         </div>
                         <div class="form-group row">
 
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Vendedor</label>
+                            <div class="col-sm-3">
+                                <input type="text" list="vendedores" required="required" autocomplete="off" class="form-control" id="vendedor "name="vendedor" value="">
+                                <datalist id="vendedores">
+                                    @foreach($vendedores as $item)
+                                        <option>{{ strtoupper($item->vendedor) }}</option>
+                                    @endforeach
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha De Entrega</label>
                             <div class="col-sm-3">
                                 <input type="date" class="form-control" id="fecha_id" name="fechaentrega" onchange="ValidarFecha(this)">

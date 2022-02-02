@@ -1361,7 +1361,7 @@ public function stocktiemporeal (Request $request){
             });
 
 
-            return redirect()->route('ListarOrdenesDiseño');
+            return redirect()->route('ListarOrdenesDiseño')->with('success','Se ha Terminado la Orden');
 
     }
 
@@ -1380,14 +1380,26 @@ public function stocktiemporeal (Request $request){
 
     public function MantencionClientes(){
 
+            /* $clientescredito = DB::table('cliente')
+            ->leftjoin('tablas', 'cliente.CLCIUF' , '=', 'tablas.TAREFE')
+            ->where('CLTCLI', 7)
+            ->get('CLRUTC', 'CLRUTD', 'DEPARTAMENTO', 'CLRSOC', 'tablas.TAGLOS AS GIRO'); */
+            $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI 
+              FROM cliente 
+              LEFT JOIN tablas ON cliente.CLCIUF = tablas.TAREFE 
+              AND tablas.TACODI = 8");
 
-            return view('admin.MantencionClientes');
+            //dd($clientescredito);
+
+            return view('admin.MantencionClientes', compact('clientescredito'));
     }
 
     public function MantencionClientesFiltro(Request $request){
 
         //dd($request->all());
         $n_rut = substr($request->rut, 0, -2);
+
+        $clientescredito = [];
 
         $cliente=DB::table('cliente')
         ->where('CLRUTC', $n_rut)
@@ -1478,7 +1490,7 @@ public function stocktiemporeal (Request $request){
           return redirect()->route('MantencionClientes')->with('warning','Cliente no Existe');
         }
 
-        return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz','compras_agiles','regiones','t_c_a_a','t_c_a_m','p_r_a','p_p_e'));
+        return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz','compras_agiles','regiones','t_c_a_a','t_c_a_m','p_r_a','p_p_e','clientescredito'));
 
 }
 
