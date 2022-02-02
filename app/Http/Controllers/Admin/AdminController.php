@@ -1037,6 +1037,7 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $total=(($boletasuma+$facturasuma)-$notacreditosuma);
 
+
       $boletasumaiva=DB::table('cargos')
       ->where('CATIPO',7)
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
@@ -2130,7 +2131,13 @@ public function stocktiemporeal (Request $request){
 
         $saldototal = $adquisiciones[0]->adquisiciones + $bodegacosto[0]->bodegacosto;
 
-        return view('admin.InformeExistencia',compact('fecha1','fecha2','bodegacosto','salacosto','adquisiciones','saldototal'));
+        $ventas=DB::select('select sum(cavalo) as totalventas from cargos where catipo != 3 and cafeco between ? and ? ' , [$fecha1,$fecha2]);
+
+        $notascredito=DB::select('select sum(total_nc) as totalnc from nota_credito where fecha between ? and ? ' , [$fecha1,$fecha2]);
+
+        $total=(($ventas[0]->totalventas)-$notascredito[0]->totalnc);
+
+        return view('admin.InformeExistencia',compact('fecha1','fecha2','bodegacosto','salacosto','adquisiciones','saldototal','total'));
 
 
     }
