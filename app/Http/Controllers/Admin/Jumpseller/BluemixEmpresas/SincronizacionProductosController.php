@@ -104,7 +104,7 @@ class SincronizacionProductosController extends Controller
     //funcion actualiza precio y stock de productos a jumpseller
     public function actualizarProducto(){
         
-        $productos=DB::table('subida_productos_empresa')->where('sku','!=',null)->where('stock_total', '>=', 0)->get();
+        $productos=DB::table('subida_productos_empresa')->where('sku','!=',null)->get();
 
         $count = count($productos);
         /* $cantidadDePaginas = ceil($count / 100);
@@ -113,6 +113,9 @@ class SincronizacionProductosController extends Controller
             $i=0;
             //crea un json body de productos en productos sin variantes
             foreach ($productos as $item) {
+                if($item->stock_total < 0){
+                    $item->stock_total = 0;
+                }
                 $i++;
                 $body = [
                     "product" =>
@@ -138,7 +141,9 @@ class SincronizacionProductosController extends Controller
                 }else{
                      //envia a put funcion que crea url para actualizar solo productos
                     $product = $this->apiJumpseller->put($item->id,$body);
-                    //error_log(print_r($body, true));
+                    /* if($body['product']['stock'] == 0){
+                        error_log(print_r($body, true));
+                    } */
                 }
                 //error_log(print_r(number_format($porcentaje,0).'%', true));
                   $porcentaje = (($i*100)/$count);

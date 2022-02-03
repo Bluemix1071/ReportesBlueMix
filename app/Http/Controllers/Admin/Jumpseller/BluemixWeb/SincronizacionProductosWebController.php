@@ -107,7 +107,7 @@ class SincronizacionProductosWebController extends Controller
 
     public function actualizarProductoWeb(){
         
-        $productos=DB::table('subida_productos_web')->where('sku','!=',null)->where('stock_total', '>=', 0)->get();
+        $productos=DB::table('subida_productos_web')->where('sku','!=',null)->get();
 
         /* $sql =  DB::select("select productosjumpsellerweb.*
                 FROM productosjumpsellerweb
@@ -124,6 +124,9 @@ class SincronizacionProductosWebController extends Controller
             $i=0;
             //crea un json body de productos en productos sin variantes
             foreach ($productos as $item) {
+                if($item->stock_total < 0){
+                    $item->stock_total = 0;
+                }
                 $i++;
                 $body = [
                     "product" =>
