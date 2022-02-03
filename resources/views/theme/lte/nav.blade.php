@@ -326,13 +326,13 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="{{ route('MantencionClientesCredito') }}"
                                         class="nav-link {{ setActive('MantencionClientesCredito') }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Mantencion Clientes Credito</p>
                                     </a>
-                                </li>
+                                </li> -->
 
                                 @can('Admindiseno')
 
