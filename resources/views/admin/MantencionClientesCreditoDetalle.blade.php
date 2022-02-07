@@ -39,7 +39,7 @@
                                     <input type="text" class="form-control" id="razon_social" disabled value="{{ $cliente->CLRSOC }}">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="inputPassword4">Direccion</label>
+                                    <label for="inputPassword4">Dirección</label>
                                     <input type="text" class="form-control" id="direccion" disabled value="{{$cliente->CLDIRF}}">
                                 </div>
                                 <div class="form-group col-md-4">
@@ -49,7 +49,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
-                                    <label for="inputEmail4">Telfono</label>
+                                    <label for="inputEmail4">Telefono</label>
                                     <input type="text" class="form-control" id="telefono" disabled value="{{$cliente->CLFONO}}">
                                 </div>
                                 <div class="form-group col-md-4">
@@ -57,8 +57,8 @@
                                     <input type="text" class="form-control" id="giro" disabled value="{{$giro->taglos}}">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="inputPassword4">Tipo Cliente</label>
-                                    <input type="text" class="form-control" id="tipo_cliente" disabled value="Tipo Cliente">
+                                    <label for="inputPassword4">Depto</label>
+                                    <input type="number" class="form-control" id="depto"  disabled value="{{ $cliente->DEPARTAMENTO }}">
                                 </div>
                             </div>
                             <div class="form-row">
@@ -75,8 +75,8 @@
                                     <input type="text" class="form-control" id="digito" disabled value="{{$cliente->CLRUTD}}">
                                 </div> -->
                                 <div class="form-group col-md-4">
-                                    <label for="inputPassword4">Depto</label>
-                                    <input type="number" class="form-control" id="depto"  disabled value="{{ $cliente->DEPARTAMENTO }}">
+                                    <label for="inputPassword4">Crédito Asignado</label>
+                                    <input type="number" class="form-control" id="credito_asignado" value="{{ $cliente->CLCRLI }}">
                                 </div>
                             </div>
                             <div class="form-row">
@@ -98,8 +98,8 @@
                                     <input type="text" class="form-control" id="contacto" disabled name="contacto" value="{{ $cliente->CLCONT }}">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="email_dte2">2° Email Dte</label>
-                                    <input type="email" class="form-control" id="email_dte2" disabled name="email_dte2" value="{{ $cliente->email_dte_2 }}">
+                                    <label for="email_dte2">Crédito Vigente</label>
+                                    <input type="number" class="form-control" id="credito_vigente" value="{{ $cliente->CLCRVI }}">
                                 </div>
                             </div>
                         </form>
@@ -112,7 +112,7 @@
                 <div class="col-md-12">
                     <div class="card card-secondary"> 
                         <div class="card-header bg-info" style="text-align:center">
-                            <h5 class="card-title">Anonos Realizados</h5>
+                            <h5 class="card-title">Abonos Realizados</h5>
 
                                         <tbody><tr>
                                                 <td>Desde:</td>
@@ -123,6 +123,10 @@
                                                 <td><input type="date" id="max" name="max" value="{{ $fecha_hoy }}"></td>
                                             </tr>
                                         </tbody>
+                                        &nbsp &nbsp &nbsp
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#mimodalinfo1">
+                                            ?
+                                        </button>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -153,6 +157,9 @@
                                                 </tr>
                                             </thead>
                                                 <tbody style="text-align:center">
+                                                    @php($total_abonos = 0)
+                                                    @php($tota_val_doc = 0)
+                                                    @php($tota_saldos = 0)
                                                     @foreach($abonos as $item)
                                                     <tr>
                                                         <td style="text-align:center">{{ $item->fecha }}</td>
@@ -169,9 +176,37 @@
                                                         <td style="text-align:center">{{ number_format(($item->CCPVALORFA), 0, ',', '.') }}</td>
                                                         <td style="text-align:center">{{ number_format(($item->saldo), 0, ',', '.') }}</td>
                                                     </tr>
+                                                    @php($total_abonos += $item->monto)
+                                                    @php($tota_val_doc += $item->CCPVALORFA)
+                                                    @php($tota_saldos += $item->saldo)
                                                     @endforeach
                                                 </tbody>
-                                            </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="2"><strong>Total</strong> </td>
+                                                            <td  style="text-align:center"><span
+                                                                    class="price text-success">${{ number_format($total_abonos, 0, ',', '.') }}</span>
+                                                            </td>
+                                                            <td  style="text-align:center"><span
+                                                                    class="price text-success"></span>
+                                                            </td>
+                                                            <td  style="text-align:center"><span
+                                                                    class="price text-success"></span>
+                                                            </td>
+                                                            <td  style="text-align:center"><span
+                                                                    class="price text-success"></span>
+                                                            </td>
+                                                            <td  style="text-align:center"><span
+                                                                    class="price text-success"></span>
+                                                            </td>
+                                                            <td  style="text-align:center"><span
+                                                                    class="price text-success">${{ number_format($tota_val_doc, 0, ',', '.') }}</span>
+                                                            </td>
+                                                            <td  style="text-align:center"><span
+                                                                    class="price text-success">${{ number_format($tota_saldos, 0, ',', '.') }}</span>
+                                                            </td>
+                                                    </tr>
+                                                </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -197,6 +232,11 @@
                                             </tr>
                                         </tbody>
 
+                                        &nbsp &nbsp &nbsp
+                                        <button type="button" class="btn btn-secondary" data-placement="top" data-toggle="modal" data-target="#mimodalinfo2">
+                                            ?
+                                        </button>
+
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
@@ -217,6 +257,7 @@
                                                     <th scope="col">N° DOC</th>
                                                     <th scope="col">F. COMPRA</th>
                                                     <th scope="col">F. VENCI</th>
+                                                    <th scope="col">VALOR DOC.</th>
                                                     <th scope="col">1° ABONO</th>
                                                     <th scope="col">2° ABONO</th>
                                                     <th scope="col">3° ABONO</th>
@@ -225,6 +266,7 @@
                                                 </tr>
                                             </thead>
                                                 <tbody style="text-align:center">
+                                                @php($total_valordoc_x_pagar = 0)
                                                 @foreach($deuda as $item)
                                                     @if(date("Y-m-d",strtotime($item->CCPFECHAP1."+ 7 days")) < $fecha_hoy)
                                                     <tr class="p-3 mb-2 bg-danger text-white">
@@ -236,14 +278,24 @@
                                                         <td style="text-align:center">{{ $item->CCPDOCUMEN }}</td>
                                                         <td style="text-align:center">{{ $item->CCPFECHAHO }}</td>
                                                         <td style="text-align:center">{{ $item->CCPFECHAP1 }}</td>
+                                                        <td style="text-align:center">{{ number_format(($item->CAVALO), 0, ',', '.') }}</td>
                                                         <td style="text-align:center">{{ $item->ABONO1 }}</td>
                                                         <td style="text-align:center">{{ $item->ABONO2 }}</td>
                                                         <td style="text-align:center">{{ $item->ABONO3 }}</td>
                                                         <td style="text-align:center">{{ $item->ABONO4 }}</td>
                                                         <td style="text-align:center">{{ number_format(($item->saldo), 0, ',', '.') }}</td>
                                                     </td>
+                                                    @php($total_valordoc_x_pagar += $item->CAVALO)
                                                 @endforeach
                                                 </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="3"><strong>Total</strong> </td>
+                                                            <td  style="text-align:center"><span
+                                                                    class="price text-success">${{ number_format($total_valordoc_x_pagar, 0, ',', '.') }}</span>
+                                                            </td>
+                                                    </tr>
+                                                </tfoot>
                                             </tbody>
                                         </table>
                                     </div>
@@ -255,6 +307,46 @@
             </div>
         </div>
         </section>
+
+        <!-- Modal AYUDA TABLAS POR PAGAR-->
+        <div class="modal fade bd-example-modal-lg" id="mimodalinfo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content col-md-6" style="margin-left: 25%">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Ayuda</h4>
+            </div>
+            <div class="modal-body">
+                <p>La fecha de filtrado es correspondiente a la columna número uno <b>'FECHA'</b>.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Salir</a>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- FIN Modal -->
+
+        <!-- Modal AYUDA TABLAS DEUDAS-->
+        <div class="modal fade bd-example-modal-lg" id="mimodalinfo2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content col-md-6" style="margin-left: 25%">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Ayuda</h4>
+            </div>
+            <div class="modal-body">
+                <p>La fecha de filtrado es correspondiente a la columna número dos <b>'F. COMPRA'</b>.</p>
+                <P>Los colores de las filas representan el estado de morosidad del documento:</P>
+                <p><b>BLANCO</b>: Documento al día.</p>
+                <p><b>NARANJA</b>: Documento vencido con no más de 7 días.</p>
+                <p><b>ROJO</b>: Documento vencido con más de 7 días.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Salir</a>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- FIN Modal -->
 
 
     @endsection
