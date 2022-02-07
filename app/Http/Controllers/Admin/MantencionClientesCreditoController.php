@@ -69,8 +69,8 @@ class MantencionClientesCreditoController extends Controller
       WHERE /* `log_bmix`.`fecha` BETWEEN '2021-11-01' AND '2021-12-31' and  */CONCAT(`ccorclie_ccpclien`.`CCPRUTCLIE`, '-', `cliente`.`CLRUTD`) = '$rut'
       AND `log_bmix`.`nro_oper_doc` = `ccorclie_ccpclien`.`CCPDOCUMEN` 
       AND `cliente`.`CLRUTC` = `ccorclie_ccpclien`.`CCPRUTCLIE` 
-      AND `cliente`.`DEPARTAMENTO` = 1 
-      AND `ccorclie_ccpclien`.`ABONO1` >= $depto 
+      AND `cliente`.`DEPARTAMENTO` = $depto
+      AND `ccorclie_ccpclien`.`ABONO1` >= 0 
       AND `log_bmix`.`tipo_operacion` = 'ABONOCLI' 
       AND `ccorclie_ccpclien`.`CCPFECHAHO` > '2015/01/01'");
 
@@ -93,12 +93,15 @@ class MantencionClientesCreditoController extends Controller
       `ccorclie_ccpclien`.`SALDODOCUM`,`ccorclie_ccpclien`.`CCPCAJEROS`,`ccorclie_ccpclien`.`CCPVENDEDO`,
       `ccorclie_ccpclien`.`CCPUSUARIO`,`ccorclie_ccpclien`.`CCPCATIMES`,`ccorclie_ccpclien`.`CCPFOLRECV`,
       `ccorclie_ccpclien`.`estado_morosidad`,
-      (`ccorclie_ccpclien`.`ABONO1` + `ccorclie_ccpclien`.`ABONO2` + `ccorclie_ccpclien`.`ABONO3` + `ccorclie_ccpclien`.`ABONO4`) as `saldo`
+      (`ccorclie_ccpclien`.`ABONO1` + `ccorclie_ccpclien`.`ABONO2` + `ccorclie_ccpclien`.`ABONO3` + `ccorclie_ccpclien`.`ABONO4`) as `saldo`,
+      `cargos`.`CAVALO`
       FROM `ccorclie_ccpclien`
+      LEFT JOIN `cargos` on `ccorclie_ccpclien`.`CCPDOCUMEN` = `cargos`.`CANMRO`
       WHERE `ccorclie_ccpclien`.`CCPRUTCLIE` = ".$request->get('rut')."
       AND (`ccorclie_ccpclien`.`CCPVALORFA` - (`ccorclie_ccpclien`.`ABONO1` + `ccorclie_ccpclien`.`ABONO2` + `ccorclie_ccpclien`.`ABONO3` + `ccorclie_ccpclien`.`CCPNOTACRE`)) > 0 
       AND `ccorclie_ccpclien`.`CCPFECHAHO` LIKE '%%'
       AND `ccorclie_ccpclien`.`CCPESTADOD`<>'N'
+      AND `cargos`.`depto` = $depto
       ORDER BY 'CCPFECHAHO' ASC");
 
       $fecha_hoy = date('Y-m-d');
