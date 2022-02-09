@@ -1308,12 +1308,16 @@ public function stocktiemporeal (Request $request){
         ->where('idOrdenesDiseño', $idOrdenesDiseño)
         ->get();
 
+        $path = storage_path('app/'.$ordenesdiseño[0]->archivo);
+        $data = file_get_contents($path);
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $base64 = base64_encode($data);
+
+        $img = 'data:image/' . $type . ';base64,' . $base64;
+
         //  dd($ordenesdiseño);
 
-
-
-
-        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenesdiseño'));
+        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenesdiseño', 'img'));
     }
 
 

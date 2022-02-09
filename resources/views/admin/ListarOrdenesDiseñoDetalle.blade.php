@@ -104,7 +104,30 @@
                             @else
                             <a type="button" class="btn btn-primary float-right" style="margin-right: 5px;" href="{{ route('descargaordendiseno', $ordenesdiseño[0]->idOrdenesDiseño ) }}" > <i class="fas fa-download"></i>Descargar Archivos</a>
                             <input type="text" name="idorden" value="{{ $ordenesdiseño[0]->idOrdenesDiseño }}" hidden>
-                                @endif
+                            <br><br>
+                            <div class="col-md-12">
+                                <div class="card card-secondary collapsed-card ">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Imagen Adjunta</h3>
+
+                                        <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                    </div>
+                                    <div class="card-body collapse hide" style="text-align: center;">
+                                    <div>
+                                        <img src="{{ $img }}" alt="" class="image" width="30%" height="30%">
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                             </div>
                         </div>
                     </div>
