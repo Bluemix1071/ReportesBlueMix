@@ -123,6 +123,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     /*  Mantenedor CRUD Ingreso */
     Route::get('/Ingresos', 'Bodega\IngresosController@index')->name('ListarIngresos');
+    Route::post('/IngresoDetalle', 'Bodega\IngresosController@detalle')->name('IngresoDetalle');
 
     /*  Mantenedor Clientes Credito */
     Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
@@ -191,6 +192,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/ListarOrdenesDisenoDetalleedit', 'AdminController@ListarOrdenesDisenoDetalleedit')->name('ListarOrdenesDisenoDetalleedit');
     Route::post('/ListarOrdenesDisenoDetalleedittermino', 'AdminController@ListarOrdenesDisenoDetalleedittermino')->name('ListarOrdenesDisenoDetalleedittermino');
     Route::get('/descargaordendiseno/{id}', 'AdminController@descargaordendiseno')->name('descargaordendiseno');
+    Route::post('/desactivarordendiseno', 'AdminController@desactivarordendiseno')->name('desactivarordendiseno');
 
     Route::get('/MantencionClientes','AdminController@MantencionClientes')->name('MantencionClientes');
     Route::post('/MantencionClientesFiltro','AdminController@MantencionClientesFiltro')->name('MantencionClientesFiltro');
