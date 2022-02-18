@@ -11,9 +11,15 @@ class IngresosController extends Controller
     //
     public function index(){
 
-        $ingresos = DB::table('cmovim')->orderBy('CMVNGUI', 'desc')->get();
-        //dd($ingresos->take(100));
+        $ingresos = DB::table('cmovim')->join('proveed', 'cmovim.CMVCPRV', '=' , 'proveed.PVRUTP')->where('CMVNGUI', '>=', '26676')->orderBy('CMVNGUI', 'desc')->get();
+        //dd($ingresos);
 
-        return view('admin.Bodega.ListarIngresos');
+        return view('admin.Bodega.ListarIngresos', compact('ingresos'));
+    }
+
+    public function detalle(){
+
+        return view('admin.Bodega.IngresoDetalle');
+
     }
 }

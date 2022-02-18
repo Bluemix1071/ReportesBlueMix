@@ -1382,6 +1382,18 @@ public function stocktiemporeal (Request $request){
 
     }
 
+    public function desactivarordendiseno(Request $request){
+
+      //dd($request->idorden);
+
+      $update = DB::table('ordenesdiseño')
+            ->where('idOrdenesDiseño' , $request->idorden)
+            ->update(['estado' => 'Desactivado']);
+
+            return redirect()->route('ListarOrdenesDiseño')->with('success','Se ha Desactivado la Orden');
+
+    }
+
     public function MantencionClientes(){
 
             /* $clientescredito = DB::table('cliente')
