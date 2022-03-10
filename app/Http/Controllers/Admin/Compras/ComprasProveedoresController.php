@@ -291,18 +291,27 @@ class ComprasProveedoresController extends Controller
 
     public function editar(Request $request){
 
-        $compra = DB::table('compras')->where('id', $request->get('id'))->get()->first();
+        if($request->get('id') == null){
+            $compra = DB::table('compras')->where('rut', 'like', $request->get('rut').'%')->where('folio', $request->get('folio'))->get()->first();
+        }else{
+            $compra = DB::table('compras')->where('id', $request->get('id'))->get()->first();
+        }
 
-        $detalles = DB::table('compras_detalles')->where('id_compras', $request->get('id'))->get();
-
-        $referencias = DB::table('referencias')->where('id_compra', $request->get('id'))->get();
-
-        $proveedores=DB::table('proveed')
-        ->leftjoin('ciudades', 'proveed.PVCIUD', '=', 'ciudades.id')
-        ->leftjoin('comunas', 'proveed.PVCOMU', '=', 'comunas.id')
-        ->get(['PVRUTP as rut','PVNOMB as razon_social','PVDIRE as direccion','giro','ciudades.nombre as ciudad','comunas.nombre as comuna']);
-
-        return view('admin.Compras.EditarCompraProveedores', compact('proveedores', 'compra', 'referencias', 'detalles'));
+        if($compra != null){
+            //dd($compra->id);
+            $detalles = DB::table('compras_detalles')->where('id_compras', $compra->id)->get();
+    
+            $referencias = DB::table('referencias')->where('id_compra', $compra->id)->get();
+    
+            $proveedores=DB::table('proveed')
+            ->leftjoin('ciudades', 'proveed.PVCIUD', '=', 'ciudades.id')
+            ->leftjoin('comunas', 'proveed.PVCOMU', '=', 'comunas.id')
+            ->get(['PVRUTP as rut','PVNOMB as razon_social','PVDIRE as direccion','giro','ciudades.nombre as ciudad','comunas.nombre as comuna']);
+    
+            return view('admin.Compras.EditarCompraProveedores', compact('proveedores', 'compra', 'referencias', 'detalles'));
+        }else{
+            return redirect()->route('ListarIngresos')->with('warning','Documento no existe para este Proveedor');
+        }
     }
 
     public function update(Request $request){

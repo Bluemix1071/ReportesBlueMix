@@ -124,6 +124,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     /*  Mantenedor CRUD Ingreso */
     Route::get('/Ingresos', 'Bodega\IngresosController@index')->name('ListarIngresos');
     Route::post('/IngresoDetalle', 'Bodega\IngresosController@detalle')->name('IngresoDetalle');
+    Route::post('/EditarDetalle', 'Bodega\IngresosController@editardetalle')->name('EditarDetalle');
 
     /*  Mantenedor Clientes Credito */
     Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
