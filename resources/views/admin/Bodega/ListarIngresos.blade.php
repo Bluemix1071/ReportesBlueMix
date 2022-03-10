@@ -34,11 +34,32 @@
                                     <td>{{ $item->CMVNGUI }}</td>
                                     <td>{{ $item->CMVCPRV }}</td>
                                     <td>{{ $item->PVNOMB }}</td>
-                                    <td>{{ $item->CMVNDOC }}</td>
+                                    <td>
+                                        @if($item->CMVCPRV == "77283950")
+                                            <p>{{ $item->CMVNDOC }}</p>
+                                        @else
+                                            <form action="{{ route('EditarCompra', ['rut' => $item->CMVCPRV, 'folio' => $item->CMVNDOC]) }}" method="post" enctype="multipart/form-data" target="_blank">
+                                            @csrf
+                                                <button type="submit" style="background: none!important;
+                                                border: none;
+                                                padding: 0!important;
+                                                /*optional*/
+                                                font-family: arial, sans-serif;
+                                                /*input has OS specific font-family*/
+                                                color: #007bff;
+                                                cursor: pointer;">{{ $item->CMVNDOC }}</i></button>
+                                            </form>
+                                        @endif
+                                    </td>
                                     <td>{{ $item->CMVFEDO }}</td>
                                     <td>{{ $item->CMVFECG }}</td>
-                                    <td>{{ $item->nro_oc }}</td>
-                                    <td><a href="{{ route('IngresoDetalle') }}">Detalle</a></td>
+                                    <td><a href="{{route('pdf.orden', $item->nro_oc)}}" target="_blank">{{ $item->nro_oc }}</a></td>
+                                    <td>
+                                        <form action="{{ route('IngresoDetalle', ['id' => $item->CMVNGUI]) }}" method="post" enctype="multipart/form-data" target="_blank">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary px-2"><i class="fas fa-edit"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -54,27 +75,6 @@
 
     @endsection
     @section('script')
-
-    <script> 
-    $('#mimodalejemploCOMBO').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var name = button.data('nombre')
-        var username = button.data('username')
-        var tipo = button.data('tipo')
-        var estado = button.data('estado')
-        var fecha_nacimiento = button.data('fecha_nacimiento')
-        var pass = button.data('pass')
-        var modal = $(this)
-        modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #name').val(name);
-        modal.find('.modal-body #username').val(username);
-        modal.find('.modal-body #tipo').val(tipo);
-        modal.find('.modal-body #estado').val(estado);
-        modal.find('.modal-body #fecha_nacimiento').val(fecha_nacimiento);
-        modal.find('.modal-body #pass').val(pass);
-  })
-  </script>
 
         <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
         <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
