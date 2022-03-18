@@ -39,7 +39,7 @@
                             <tbody>
                                 @foreach ($verificar as $item)
                                     <tr>
-                                        @if ($item->tipo_dte !== 33)
+                                        @if ($item->tipo_dte !== 33 && $item->tipo_dte !== 34)
                                         <td><input type="checkbox" name="case[]" disabled value=""></td>
                                         @else
                                         <td><input type="checkbox" class="case" name="case[]" value="{{ $item->id }}"></td>
@@ -65,7 +65,7 @@
                                         <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
                                         <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                         <td style="text-align:right">{{ number_format($item->total, 0, ',', '.') }}</td>
-                                        @if ($item->tipo_dte !== 33)
+                                        @if ($item->tipo_dte !== 33 && $item->tipo_dte !== 34)
                                             <td style="text-align:right"><a href="#"
                                                     class="btn btn-secondary btm-sm">Autorizar</a></td>
                                         @else
