@@ -82,24 +82,10 @@ Venta Productos Por Dia
                                         <td style="text-align:left">{{ $item->armarca}}</td>
                                         <td style="text-align:left">{{ number_format($item->decant, 0, ',', '.') }}</td>
                                         <td style="text-align:left">{{ $item->defeco}}</td>
-                                        {{-- <td style="text-align:left">{{ number_format($item->precio_ref*$item->DECANT, 0, ',', '.') }}</td>
-                                        <div style="display: none">{{ $totalvendido += $item->precio_ref*$item->DECANT }}</div> --}}
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
-                        {{-- <tfoot>
-                            <tr>
-                                <td colspan="4"><strong>Total</strong> </td>
-                                @if (empty($totalvendido))
-                                    <td><span class="price text-success">$</span></td>
-                                @else
-                                    <td style="text-align:right"><span
-                                            class="price text-success">${{ number_format($totalvendido, 0, ',', '.') }}</span>
-                                    </td>
-                                @endif
-                            </tr>
-                        </tfoot> --}}
                     </table>
                 </div>
                 <br>
