@@ -40,6 +40,7 @@ class ComprasProveedoresController extends Controller
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
         }
         if(is_array($json->SetDTE->DTE)){
+            $agregados = 0;
             foreach($json->SetDTE->DTE as $array_json){
                 if($array_json->Documento->Encabezado->IdDoc->TipoDTE !== "33" && $array_json->Documento->Encabezado->IdDoc->TipoDTE !== "34"){
                     return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura. No soportado!');
@@ -203,6 +204,7 @@ class ComprasProveedoresController extends Controller
                         }
                     }
                     error_log(print_r("Se ha Agregado el Documento correctamente", true));
+                    $agregados++;
                     //return redirect()->route('ComprasProveedores')->with('success','Se ha Agregado el Documento correctamente');
                 }else{
                     error_log(print_r("Documento ya existe para este Proveedor", true));
@@ -210,7 +212,7 @@ class ComprasProveedoresController extends Controller
                 }
             }
             //--------------------------------------------------------------------------------------------------------------------------------
-            return redirect()->route('ComprasProveedores')->with('success','El Documento es un agrupado de DTEs. Agregados');
+            return redirect()->route('ComprasProveedores')->with('success','El Documento es un agrupado de DTEs. Agregados '.$agregados.' de '.count($json->SetDTE->DTE).'.');
         }else{
 
         if($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33" && $json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "34"){
