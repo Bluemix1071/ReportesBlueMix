@@ -40,8 +40,179 @@ class ComprasProveedoresController extends Controller
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
         }
         if(is_array($json->SetDTE->DTE)){
-            return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. No soportado!');
-        }
+            foreach($json->SetDTE->DTE as $array_json){
+                if($array_json->Documento->Encabezado->IdDoc->TipoDTE !== "33" && $array_json->Documento->Encabezado->IdDoc->TipoDTE !== "34"){
+                    return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura. No soportado!');
+                }
+                
+                $encabezado = $array_json->Documento->Encabezado;
+                
+                $detalle = $array_json->Documento->Detalle;
+                
+                if(empty($encabezado->IdDoc->FmaPago)){
+                    $encabezado->IdDoc->FmaPago = 1;
+                }
+                if(empty($encabezado->IdDoc->FchVenc) && $encabezado->IdDoc->FmaPago == "2"){
+                    $fecha = strtotime('+1 month', strtotime($encabezado->IdDoc->FchEmis));
+                    $encabezado->IdDoc->FchVenc = date('Y-m-d', $fecha);
+                }
+                if(!empty($array_json->Documento->Referencia)){
+                    $referencia = $array_json->Documento->Referencia;
+                }
+                if(empty($encabezado->IdDoc->FchVenc)){
+                    $encabezado->IdDoc->FchVenc = null;
+                }
+                if(empty($encabezado->IdDoc->FchVenc) && $encabezado->IdDoc->FmaPago == "1"){
+                    $encabezado->IdDoc->FchVenc = $encabezado->IdDoc->FchEmis;
+                }
+                if(empty($encabezado->Emisor->CiudadOrigen) || is_object($encabezado->Emisor->CiudadOrigen)){
+                    $encabezado->Emisor->CiudadOrigen = null;
+                }
+                /* if(empty($encabezado->IdDoc->FmaPago)){
+                    $encabezado->IdDoc->FmaPago = 2;
+                } */
+                if(!empty($encabezado->Totales->MntExe)){
+                    $encabezado->Totales->MntNeto = $encabezado->Totales->MntTotal;
+                    $encabezado->Totales->IVA = 0;
+                }else{
+                    $encabezado->Totales->MntExe = null;
+                }
+                
+                $i = 0;
+                $o = 0;
+        
+                $compra = ['folio' => $encabezado->IdDoc->Folio,
+                            'fecha_emision' => $encabezado->IdDoc->FchEmis,
+                            'fecha_venc' => $encabezado->IdDoc->FchVenc,
+                            'tipo_dte' => $encabezado->IdDoc->TipoDTE,
+                            'tpo_pago' =>  $encabezado->IdDoc->FmaPago,
+                            'rut' => strtoupper($encabezado->Emisor->RUTEmisor),
+                            'razon_social' => strtoupper($encabezado->Emisor->RznSoc),
+                            'giro' => strtoupper($encabezado->Emisor->GiroEmis),
+                            'direccion' => strtoupper($encabezado->Emisor->DirOrigen),
+                            'comuna' => strtoupper($encabezado->Emisor->CmnaOrigen),
+                            'ciudad' => strtoupper($encabezado->Emisor->CiudadOrigen),
+                            'neto' => $encabezado->Totales->MntNeto,
+                            'mnto_exento' => $encabezado->Totales->MntExe,
+                            'iva' => $encabezado->Totales->IVA,
+                            'total' => $encabezado->Totales->MntTotal
+                    ];
+        
+                    /* if($request->hasFile('myfile')){
+                        $file = $request->file('myfile')->store('dte');
+                        $name = time().$file->getClientOriginalName();
+                        $file->move(public_path().'/dte/',$name);
+                        $compra += [ 'xml' => $request->file('myfile')->store('dte'); ];
+                    } */
+        
+                $existe = $this->buscaDte($encabezado->Emisor->RUTEmisor, $encabezado->IdDoc->TipoDTE, $encabezado->IdDoc->Folio);
+                
+                if($existe == null){
+                    $compra += [ 'xml' => $request->file('myfile')->store('dte') ];
+                    DB::table('compras')->insert($compra);
+                    $ultima_compra = $this->buscaDte($encabezado->Emisor->RUTEmisor, $encabezado->IdDoc->TipoDTE, $encabezado->IdDoc->Folio);
+        
+                    if(!empty($detalle)){
+                        if(is_array($detalle)){
+                            foreach($detalle as $item){
+                                $codigo = "";
+                                if(!empty($item->CdgItem)){
+                                    if(is_array($item->CdgItem)){
+                                        $codigo = $item->CdgItem[0]->VlrCodigo;
+                                    }else{
+                                        $codigo = $item->CdgItem->VlrCodigo;
+                                    }
+                                }
+                                if(empty($item->UnmdItem)){
+                                    $item->UnmdItem = 'C/U';
+                                }
+                                if(empty($item->QtyItem)){
+                                    $item->QtyItem = 1;
+                                }
+                                if(empty($item->PrcItem)){
+                                    $item->PrcItem = $item->MontoItem;
+                                }
+                                    
+                                $detalles = ['codigo' => $codigo,
+                                                'nombre' => $item->NmbItem,
+                                                'descripcion' => $item->NmbItem,
+                                                'cantidad' => $item->QtyItem,
+                                                'tpo_uni' => $item->UnmdItem,
+                                                'precio' => $item->PrcItem,
+                                                'total_neto' => $item->MontoItem,
+                                                'id_compras' => $ultima_compra->id
+                                ];
+                                //error_log(print_r($referencias, true));
+                                DB::table('compras_detalles')->insert($detalles);
+                            }
+                        }else{
+                            $codigo = "";
+                            if(!empty($item->CdgItem)){
+                                if(is_array($detalle->CdgItem)){
+                                    $codigo = $detalle->CdgItem[0]->VlrCodigo;
+                                }else{
+                                    $codigo = $detalle->CdgItem->VlrCodigo;
+                                }
+                            }
+                            if(empty($detalle->UnmdItem)) {
+                                $detalle->UnmdItem = 'C/U';
+                            }
+                            if(empty($detalle->QtyItem)){
+                                $detalle->QtyItem = 1;
+                            }
+                            if(empty($detalle->PrcItem)){
+                                $detalle->PrcItem = $detalle->MontoItem;
+                            }
+        
+                            $detalles = ['codigo' => $codigo,
+                                            'nombre' => $detalle->NmbItem,
+                                            'descripcion' => $detalle->NmbItem,
+                                            'cantidad' => $detalle->QtyItem,
+                                            'tpo_uni' => $detalle->UnmdItem,
+                                            'precio' => $detalle->PrcItem,
+                                            'total_neto' => $detalle->MontoItem,
+                                            'id_compras' => $ultima_compra->id
+                            ];
+                                
+                            DB::table('compras_detalles')->insert($detalles);
+                        }
+                    }
+        
+                    if(!empty($referencia)){
+                        if(is_array($referencia)){
+                            foreach($referencia as $item){
+                                $i++;
+                                $referencias = ['n_linea' => $i,
+                                                'tpo_doc_ref' => $item->TpoDocRef,
+                                                'folio' => $item->FolioRef,
+                                                'fecha_ref' => $item->FchRef,
+                                                'id_compra' => $ultima_compra->id
+                                ];
+                                //error_log(print_r($referencias, true));
+                                DB::table('referencias')->insert($referencias);
+                            }
+                        }else{
+                            $referencias = ['n_linea' => 1,
+                                            'tpo_doc_ref' => $referencia->TpoDocRef,
+                                            'folio' => $referencia->FolioRef,
+                                            'fecha_ref' => $referencia->FchRef,
+                                            'id_compra' => $ultima_compra->id
+                            ];
+                                
+                            DB::table('referencias')->insert($referencias);
+                        }
+                    }
+                    error_log(print_r("Se ha Agregado el Documento correctamente", true));
+                    //return redirect()->route('ComprasProveedores')->with('success','Se ha Agregado el Documento correctamente');
+                }else{
+                    error_log(print_r("Documento ya existe para este Proveedor", true));
+                    //return redirect()->route('ComprasProveedores')->with('warning','Documento ya existe para este Proveedor');
+                }
+            }
+            //--------------------------------------------------------------------------------------------------------------------------------
+            return redirect()->route('ComprasProveedores')->with('success','El Documento es un agrupado de DTEs. Agregados');
+        }else{
+
         if($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33" && $json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "34"){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura. No soportado!');
         }
@@ -207,6 +378,7 @@ class ComprasProveedoresController extends Controller
         }else{
             return redirect()->route('ComprasProveedores')->with('warning','Documento ya existe para este Proveedor');
         }
+    }
         //printf("</br>".$json);
         /* printf("</br>".$xml->Documento->Encabezado->Emisor->RznSoc);
 
