@@ -417,6 +417,7 @@ class SalaController extends Controller
                     "trabajo" => $request->trabajo,
                     "comentario" => $request->comentario,
                     "archivo" => $request->file('archivo')->store('archivos'),
+                    "vendedor" => $request->vendedor,
                     "tipo_documento" => $request->opciones,
                     "documento" => $request->numerodocumento,
                     "fecha_solicitud" => $date,

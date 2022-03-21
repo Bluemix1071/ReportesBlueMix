@@ -113,7 +113,7 @@
                         </div>
 
                         <div class="form-group row">
-                                <input type="file" name="archivo" class="form-control">
+                                <input type="file" name="archivo" class="form-control" accept="image/*">
                         </div>
                     </div>
                 </div>

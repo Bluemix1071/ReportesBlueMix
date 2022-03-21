@@ -42,8 +42,8 @@ class ComprasProveedoresController extends Controller
         if(is_array($json->SetDTE->DTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento es un agrupado de DTEs. No soportado!');
         }
-        if($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33"){
-            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura tipo 33. No soportado!');
+        if($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "33" && $json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "34"){
+            return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Factura. No soportado!');
         }
         
         $encabezado = $json->SetDTE->DTE->Documento->Encabezado;
@@ -72,6 +72,12 @@ class ComprasProveedoresController extends Controller
         /* if(empty($encabezado->IdDoc->FmaPago)){
             $encabezado->IdDoc->FmaPago = 2;
         } */
+        if(!empty($encabezado->Totales->MntExe)){
+            $encabezado->Totales->MntNeto = $encabezado->Totales->MntTotal;
+            $encabezado->Totales->IVA = 0;
+        }else{
+            $encabezado->Totales->MntExe = null;
+        }
         
         $i = 0;
         $o = 0;
@@ -88,6 +94,7 @@ class ComprasProveedoresController extends Controller
                     'comuna' => strtoupper($encabezado->Emisor->CmnaOrigen),
                     'ciudad' => strtoupper($encabezado->Emisor->CiudadOrigen),
                     'neto' => $encabezado->Totales->MntNeto,
+                    'mnto_exento' => $encabezado->Totales->MntExe,
                     'iva' => $encabezado->Totales->IVA,
                     'total' => $encabezado->Totales->MntTotal
             ];
@@ -291,18 +298,27 @@ class ComprasProveedoresController extends Controller
 
     public function editar(Request $request){
 
-        $compra = DB::table('compras')->where('id', $request->get('id'))->get()->first();
+        if($request->get('id') == null){
+            $compra = DB::table('compras')->where('rut', 'like', $request->get('rut').'%')->where('folio', $request->get('folio'))->get()->first();
+        }else{
+            $compra = DB::table('compras')->where('id', $request->get('id'))->get()->first();
+        }
 
-        $detalles = DB::table('compras_detalles')->where('id_compras', $request->get('id'))->get();
-
-        $referencias = DB::table('referencias')->where('id_compra', $request->get('id'))->get();
-
-        $proveedores=DB::table('proveed')
-        ->leftjoin('ciudades', 'proveed.PVCIUD', '=', 'ciudades.id')
-        ->leftjoin('comunas', 'proveed.PVCOMU', '=', 'comunas.id')
-        ->get(['PVRUTP as rut','PVNOMB as razon_social','PVDIRE as direccion','giro','ciudades.nombre as ciudad','comunas.nombre as comuna']);
-
-        return view('admin.Compras.EditarCompraProveedores', compact('proveedores', 'compra', 'referencias', 'detalles'));
+        if($compra != null){
+            //dd($compra->id);
+            $detalles = DB::table('compras_detalles')->where('id_compras', $compra->id)->get();
+    
+            $referencias = DB::table('referencias')->where('id_compra', $compra->id)->get();
+    
+            $proveedores=DB::table('proveed')
+            ->leftjoin('ciudades', 'proveed.PVCIUD', '=', 'ciudades.id')
+            ->leftjoin('comunas', 'proveed.PVCOMU', '=', 'comunas.id')
+            ->get(['PVRUTP as rut','PVNOMB as razon_social','PVDIRE as direccion','giro','ciudades.nombre as ciudad','comunas.nombre as comuna']);
+    
+            return view('admin.Compras.EditarCompraProveedores', compact('proveedores', 'compra', 'referencias', 'detalles'));
+        }else{
+            return redirect()->route('ListarIngresos')->with('warning','Documento no existe para este Proveedor');
+        }
     }
 
     public function update(Request $request){

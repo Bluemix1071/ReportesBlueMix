@@ -41,6 +41,8 @@
                                 <td>{{ $item->fecha_venc }}</td>
                                 @if($item->tipo_dte == 33)
                                     <td>Factura</td>
+                                @elseif($item->tipo_dte == 34)
+                                    <td>Factura Exenta</td>
                                 @elseif($item->tipo_dte == 39)
                                     <td>Boleta</td>
                                 @endif

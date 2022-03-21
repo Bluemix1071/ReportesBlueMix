@@ -18,33 +18,50 @@
                         <table id="users" class="table table-sm table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col">Folio</th>
+                                    <th scope="col">N° Ingreso</th>
                                     <th scope="col">Rut Proveedor</th>
-                                    <th scope="col">Fecha Creación</th>
+                                    <th scope="col">Razon Social</th>
+                                    <th scope="col">N° Factura</th>
                                     <th scope="col">Fecha Emisión</th>
-                                    <th scope="col">Fecha Vencimiento</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Tipo Pago</th>
-                                    <th scope="col">Neto</th>
-                                    <th scope="col">IVA</th>
-                                    <th scope="col">Total</th>
+                                    <th scope="col">Fecha Ingreso</th>
+                                    <th scope="col">N° OC</th>
                                     <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($ingresos as $item)
                                 <tr>
-                                    <td>1</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                    <td>4</td>
-                                    <td>5</td>
-                                    <td>6</td>
-                                    <td>7</td>
-                                    <td>8</td>
-                                    <td>9</td>
-                                    <td>10</td>
-                                    <td>11</td>
+                                    <td>{{ $item->CMVNGUI }}</td>
+                                    <td>{{ $item->CMVCPRV }}</td>
+                                    <td>{{ $item->PVNOMB }}</td>
+                                    <td>
+                                        @if($item->CMVCPRV == "77283950")
+                                            <p>{{ $item->CMVNDOC }}</p>
+                                        @else
+                                            <form action="{{ route('EditarCompra', ['rut' => $item->CMVCPRV, 'folio' => $item->CMVNDOC]) }}" method="post" enctype="multipart/form-data" target="_blank">
+                                            @csrf
+                                                <button type="submit" style="background: none!important;
+                                                border: none;
+                                                padding: 0!important;
+                                                /*optional*/
+                                                font-family: arial, sans-serif;
+                                                /*input has OS specific font-family*/
+                                                color: #007bff;
+                                                cursor: pointer;">{{ $item->CMVNDOC }}</i></button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->CMVFEDO }}</td>
+                                    <td>{{ $item->CMVFECG }}</td>
+                                    <td><a href="{{route('pdf.orden', $item->nro_oc)}}" target="_blank">{{ $item->nro_oc }}</a></td>
+                                    <td>
+                                        <form action="{{ route('IngresoDetalle', ['id' => $item->CMVNGUI]) }}" method="post" enctype="multipart/form-data" target="_blank">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary px-2"><i class="fas fa-edit"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -56,99 +73,8 @@
             </div>
         </section>
 
-        <!-- Modall ingreso nc-->
-        <div class="modal fade" id="modalingresarnotacredito" tabindex="-1" role="dialog"
-            aria-labelledby="eliminarproductocontrato" aria-hidden="true">
-            <div class="modal-dialog" role="document" >
-                <div class="modal-content"  style="width: 200%; margin-left: -40%">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Ingresar Nota Credito</h5>
-                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button> -->
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('AgregarNC') }}" method="post" id="desvForm" >
-                            <div class="card card-primary">
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Rut</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="total" class="form-control" required name="rut_proveedor" placeholder="Rut Proveedor" oninput="checkRut(this)">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Folio</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" id="total" class="form-control" required name="folio_nc" placeholder="Folio">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Factura Referencia</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" id="total" class="form-control" required name="folio_factura" placeholder="Folio Factura Referencia">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha Emisión</label>
-                                        <div class="col-sm-10">
-                                            <input type="date" class="form-control" name="fecha_emision_nc" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Neto</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" id="neto_nc" class="form-control" required name="neto_nc" min="0" placeholder="Neto">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">IVA</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" id="iva_nc" class="form-control" required readonly name="iva_nc" placeholder="IVA">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Total</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" id="total_nc" class="form-control" required readonly name="total_nc" placeholder="Total">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-success">Agregar Nota Credito</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- FIN Modall -->
-        </div>
-
-
     @endsection
     @section('script')
-
-    <script> 
-    $('#mimodalejemploCOMBO').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var name = button.data('nombre')
-        var username = button.data('username')
-        var tipo = button.data('tipo')
-        var estado = button.data('estado')
-        var fecha_nacimiento = button.data('fecha_nacimiento')
-        var pass = button.data('pass')
-        var modal = $(this)
-        modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #name').val(name);
-        modal.find('.modal-body #username').val(username);
-        modal.find('.modal-body #tipo').val(tipo);
-        modal.find('.modal-body #estado').val(estado);
-        modal.find('.modal-body #fecha_nacimiento').val(fecha_nacimiento);
-        modal.find('.modal-body #pass').val(pass);
-  })
-  </script>
 
         <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
         <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
@@ -167,11 +93,11 @@
         <script>
             $(document).ready(function() {
                 var table = $('#users').DataTable({
+                    order: [[ 0, "desc" ]],
                     orderCellsTop: true,
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-
         ],
           "language":{
         "info": "_TOTAL_ registros",

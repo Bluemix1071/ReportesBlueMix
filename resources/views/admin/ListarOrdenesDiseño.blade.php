@@ -34,6 +34,7 @@
               </thead>
               <tbody>
                 @foreach ($ordenes as $item)
+                @if($item->estado !='Desactivado')
                     <tr>
                         <th scope="row">{{ $item->idOrdenesDiseño}}</th>
                         <td>{{ strtoupper($item->nombre) }}</td>
@@ -48,7 +49,7 @@
                         @else
                         <td><h5><span class="badge badge-danger">Terminado</span></h5></td>
                         @endif
-                        <td class="row"><a href="{{route('ListarOrdenesDisenoDetalle', $item->idOrdenesDiseño)}}" type="button" class="btn btn-primary" target="_blank" title="Ver Más"><i class="fas fa-eye"></i></a>
+                        <td class="col-2"><a href="{{route('ListarOrdenesDisenoDetalle', $item->idOrdenesDiseño)}}" type="button" class="btn btn-primary" target="_blank" title="Ver Más"><i class="fas fa-eye"></i></a>
                         &nbsp;
                         @if ($item->estado !='Terminado')
                         <!-- <form action="{{ route('ListarOrdenesDisenoDetalleedittermino', [ 'idorden' => $item->idOrdenesDiseño ]) }}" method="POST">
@@ -59,8 +60,11 @@
                         @else
                           <button type="button" class="btn btn-secondary" target="_blank" title="Terminar Trabajo"><i class="fas fa-clipboard-check"></i></button>
                         @endif
+                        &nbsp;
+                        <button type="button" class="btn btn-dark" target="_blank" title="Desactivar Trabajo" data-toggle="modal" data-target="#desactivar" onclick="cargariddesactivar({{$item->idOrdenesDiseño}})"><i class="fa fa-trash" aria-hidden="true"></i></button>
                       </td>
                     </tr>
+                    @endif
                 @endforeach
             </tbody>
             </table>
@@ -73,7 +77,7 @@
         </div>
       </section>
 
-      <!-- Modal Editar -->
+      <!-- Modal cambiar estado -->
       <div class="modal fade" id="confirmacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -87,6 +91,29 @@
 
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Terminar</button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                                </div>
+                            </form>
+                       <!--  </div> -->
+                   <!--  </div> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal desactivar -->
+      <div class="modal fade" id="desactivar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">¿Desactivar la Solicitud?</h4>
+                    </div>
+                    <!-- <div class="modal-body"> -->
+                        <!-- <div class="card-body"> -->
+                            <form method="POST" action="{{ route('desactivarordendiseno') }}">
+                                <input type="text" name="idorden" id="cargaiddesactivar" value="" hidden>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Desactivar</button>
                                     <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
                                 </div>
                             </form>
@@ -112,6 +139,11 @@
 function cargarid(id){
   //alert(id);
   $('#cargaid').val(id);
+}
+
+function cargariddesactivar(id){
+  //alert(id);
+  $('#cargaiddesactivar').val(id);
 }
 </script>
 
