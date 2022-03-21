@@ -12,32 +12,66 @@
         <hr>
         <form action="{{ route('EstadoFacturasFiltro') }}" method="post" id="desvForm" class="form-inline">
             @csrf
-            <div class="form-group mb-2">
-                @if (empty($fecha1))
-                    Desde
-                    <input type="date" id="fecha1" class="form-control" required name="fecha1">
-                @else
-                    <input type="date" id="fecha1" class="form-control" required name="fecha1" value="{{ $fecha1 }}">
-                @endif
+            <div class="col-md-1 mb-3">
+                <div class="form-row">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="checkrut">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          Rut
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="checkmarca">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                              Folio
+                            </label>
+                          </div>
+                        </div>
             </div>
-            <div class="form-group mx-sm-3 mb-2">
-                @if (empty($fecha2))
-                    Hasta
-                    <input type="date" id="fecha2" name="fecha2" required class="form-control">
-                @else
-                    <input type="date" id="fecha2" name="fecha2" required class="form-control" value="{{ $fecha2 }}">
-                @endif
+            <div class="col-md-2 mb-3" id="divfolio">
+                <input class="form-control" name="Folio" list="marca" autocomplete="off" id="folio" type="text"
+                    placeholder="Folio...">
             </div>
-            <div class="form-group mx-sm-3 mb-2">
+
+            <div class="col-md-2 mb-3" id="divrut"  style="display:none">
                 @if (empty($rut))
-                <input type="text"  class="form-control" placeholder="Rut..." name="rut" id="rut" maxlength="15" autocomplete="off" oninput="checkRut(this)" value="">
+                    <label for="staticEmail2" class="sr-only">Fecha 1</label>
+                    <input type="text" id="rut" class="form-control" name="rut" placeholder="Rut...">
                 @else
-                <input type="text"  class="form-control" placeholder="Rut..." name="rut" id="rut" maxlength="15" autocomplete="off" oninput="checkRut(this)" value="{{ $rut }}">
+                    <input type="text" id="rut" class="form-control" name="rut" placeholder="Rut..." value="">
                 @endif
+
             </div>
-            <div class="form-group mx-sm-3 mb-2">
-                <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+
+
+            <div class="col-md-2 mb-3">
+                @if (empty($fecha1))
+                    <label for="staticEmail2" class="sr-only">Fecha 1</label>
+                    <input type="date" id="fecha1" class="form-control" name="fecha1">
+                @else
+                    <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}">
+                @endif
+
             </div>
+
+            <div class="col-md-2 mb-3">
+
+                @if (empty($fecha2))
+                    <label for="inputPassword2" class="sr-only">Fecha 2</label>
+                    <input type="date" id="fecha2" name="fecha2" class="form-control">
+                @else
+                    <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{ $fecha2 }}">
+                @endif
+
+            </div>
+            <div class="col-md-2 mb-3">
+
+                <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+
+            </div>
+
         </form>
         <section class="content">
             <div class="card">
@@ -283,6 +317,23 @@
 
     @endsection
     @section('script')
+
+
+    <script>
+        $(document).ready(function() {
+            $("#checkrut").click(function() {
+                $("#divfolio").hide();
+                $("#divrut").show();
+
+            });
+
+            $("#checkmarca").click(function() {
+                $("#divfolio").show();
+                $("#divrut").hide();
+
+            });
+        });
+    </script>
 
 <script> $('#modalabonar').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)

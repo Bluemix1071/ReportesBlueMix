@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script type="text/javascript">
         window.CSRF_TOKEN = '{{ csrf_token() }}';
@@ -46,7 +46,7 @@
                                 @endif --}}
                             </div>
                         </div>
-                    
+
                     <hr style="width:100%">
                         <div class="card-body">
                             <div class="row">
@@ -121,7 +121,7 @@
         $("#codigo").keyup(function(event) {
             if (event.keyCode === 13) {
                 var codigo = $('#codigo').val();
-                //console.log(codigo);
+                console.log(codigo);
 
                 $.ajax({
                     url: '../ConsultaPrecioFiltro/',
@@ -140,7 +140,7 @@
 
                     },
                     error: function( jqXhr, textStatus, errorThrown ){
-                            console.log( errorThrown );
+                            // console.log( errorThrown );
                     }
                 });
 

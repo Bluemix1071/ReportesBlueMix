@@ -346,6 +346,29 @@
                                 @endcan
 
 
+                                @can('Admindiseno')
+
+                                <li class="nav-item">
+                                    <a href="{{ route('GastosInternosDiseño') }}"
+                                        class="nav-link {{ setActive('GastosInternosDiseño') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Gastos Internos Diseño</p>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('Admindiseno')
+
+                            <li class="nav-item">
+                                <a href="{{ route('ReporteGastosInternosDiseño') }}"
+                                    class="nav-link {{ setActive('ReporteGastosInternosDiseño') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Reportes Gastos Diseño</p>
+                                </a>
+                            </li>
+                        @endcan
+
+
                                 @can('ComprasProveedor')
                                     <li class="nav-item">
                                         <a href="{{ route('comprassegunprov') }}"
@@ -373,7 +396,7 @@
                                         <a href="{{ route('ventasCategoria') }}"
                                             class="nav-link {{ setActive('ventasCategoria') }}">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Ventas Categoría</p>
+                                            <p>Ventas Por Categoría</p>
                                         </a>
                                     </li>
                                 @endcan
@@ -403,6 +426,15 @@
                                         </a>
                                     </li>
                                 @endcan
+
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('VentaProductosPorDia') }}" class="nav-link {{ setActive('VentaProductosPorDia') }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Venta Productos Por Dia
+                                            </p>
+                                        </a>
+                                    </li>
 
                                 @can('CompraProductos')
                                     <li class="nav-item">

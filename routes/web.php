@@ -27,7 +27,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 
 // consulta precios sin ruta
 Route::get('/ConsultaPrecio','publico\PublicoController@ConsultaPrecio')->name('ConsultaPrecio');
-Route::match(['get', 'post'],'/ConsultaPrecioFiltro', 'publico\PublicoController@ConsultaPrecioFiltro')->name('ConsultaPrecioFiltro');
+Route::post('/ConsultaPrecioFiltro', 'publico\PublicoController@ConsultaPrecioFiltro')->name('ConsultaPrecioFiltro');
 
 //Rutas autenticadas de sala
 Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
@@ -226,6 +226,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/InformeExistencia','AdminController@InformeExistencia')->name('InformeExistencia');
     Route::post('/InformeExistenciaFiltro','AdminController@InformeExistenciaFiltro')->name('InformeExistenciaFiltro');
 
+    Route::get('/VentaProductosPorDia','AdminController@VentaProductosPorDia')->name('VentaProductosPorDia');
+    Route::post('/VentaProductosPorDiaFiltro','AdminController@VentaProductosPorDiaFiltro')->name('VentaProductosPorDiaFiltro');
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
     Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');
@@ -298,6 +300,15 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     //Anulacion de documentos
     Route::get('/Anulacion-De-Documentos','AnulacionDocumentosController@index')->name('AnulacionDocs');
     Route::post('/AnularDocs','AnulacionDocumentosController@store')->name('AnulacionDocs.store');
+
+    //Gastos Diseño
+    Route::get('/GastosInternosDiseño','GastosDiseno@GastosInternosDiseño')->name('GastosInternosDiseño');
+    Route::post('/GastosInternosDiseñoFiltro','GastosDiseno@GastosInternosDiseñoFiltro')->name('GastosInternosDiseñoFiltro');
+
+    Route::get('/ReporteGastosInternosDiseño','GastosDiseno@ReporteGastosInternosDiseño')->name('ReporteGastosInternosDiseño');
+    Route::post('/ReporteGastosInternosDiseñoFiltro','GastosDiseno@ReporteGastosInternosDiseñoFiltro')->name('ReporteGastosInternosDiseñoFiltro');
+
+
 
 
 });

@@ -18,11 +18,13 @@ class ConsultaDocumentosController extends Controller
 
     public function ConsultaDocumentosFiltro(Request $request){
 
+        // dd($request->all());
+
     $fecha1=$request->fecha1;
     $fecha2=$request->fecha2;
 
 
-    if($request->rut==null){
+    if($request->rut==null && $request->Folio==null){
 
     $compras=DB::table('compras')
     ->where('estado_verificacion', 2)
@@ -32,7 +34,7 @@ class ConsultaDocumentosController extends Controller
 
       return view('admin.Compras.ConsultaDocumentos',compact('compras'));
 
-    }else{
+    }elseif($request->rut!==null && $request->fecha1!==null && $request->fecha1!==null){
 
 
     $compras=DB::table('compras')
@@ -43,6 +45,28 @@ class ConsultaDocumentosController extends Controller
 
 
       return view('admin.Compras.ConsultaDocumentos',compact('compras'));
+
+    }elseif($request->rut==null && $request->Folio!==null){
+
+
+    $compras=DB::table('compras')
+    ->where('folio', $request->Folio)
+    ->where('estado_verificacion', 2)
+    ->get();
+
+
+      return view('admin.Compras.ConsultaDocumentos',compact('compras'));
+    }else{
+
+        $compras=DB::table('compras')
+        ->where('rut', $request->rut)
+        ->where('estado_verificacion', 2)
+        ->get();
+
+
+          return view('admin.Compras.ConsultaDocumentos',compact('compras'));
+
+
     }
 
 }
@@ -209,12 +233,14 @@ class ConsultaDocumentosController extends Controller
 
     public function EstadoFacturasFiltro(Request $request){
 
+        // dd($request->all());
+
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
         $rut=$request->rut;
 
 
-        if($request->rut==null){
+        if($request->rut==null && $request->Folio==null){
 
         $facturas=DB::table('compras')
         ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar, tpo_pago')
@@ -228,9 +254,9 @@ class ConsultaDocumentosController extends Controller
         $abonos=DB::table('compras_pagos')->get();
 
 
-          return view('admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2','abonos'));
+          return view('admin.Compras.EstadoFacturas',compact('facturas','abonos'));
 
-        }else{
+        }elseif($request->rut!==null && $request->fecha1!==null && $request->fecha1!==null){
 
 
         $facturas=DB::table('compras')
@@ -246,7 +272,39 @@ class ConsultaDocumentosController extends Controller
         $abonos=DB::table('compras_pagos')->get();
 
 
-          return view('admin.Compras.EstadoFacturas',compact('facturas','fecha1','fecha2','rut','abonos'));
+          return view('admin.Compras.EstadoFacturas',compact('facturas','rut','abonos'));
+
+
+        }elseif($request->rut==null && $request->Folio!==null){
+
+            $facturas=DB::table('compras')
+            ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar, tpo_pago')
+            ->leftJoin('compras_pagos', 'compras_pagos.fk_compras', '=', 'compras.id')
+            ->where('tipo_dte', 33)
+            ->where('folio', $request->Folio)
+            ->where('estado_verificacion', 2)
+            ->groupBy('id')
+            ->get();
+
+            $abonos=DB::table('compras_pagos')->get();
+
+
+              return view('admin.Compras.EstadoFacturas',compact('facturas','rut','abonos'));
+        }else{
+
+            $facturas=DB::table('compras')
+            ->selectRaw('id,folio,rut,razon_social,fecha_emision,fecha_venc,total,sum(monto)as pagado, (total-sum(monto)) as porpagar, tpo_pago')
+            ->leftJoin('compras_pagos', 'compras_pagos.fk_compras', '=', 'compras.id')
+            ->where('tipo_dte', 33)
+            ->where('rut', $request->rut)
+            ->where('estado_verificacion', 2)
+            ->groupBy('id')
+            ->get();
+
+            $abonos=DB::table('compras_pagos')->get();
+
+
+              return view('admin.Compras.EstadoFacturas',compact('facturas','rut','abonos'));
         }
     }
 
