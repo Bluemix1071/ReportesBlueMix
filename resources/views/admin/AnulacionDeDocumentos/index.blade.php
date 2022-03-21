@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 mb-5">
-                <h1 class="display-3">Anulacion de Documentos</h1>
+                <h1 class="display-3">Anulación de Documentos</h1>
             </div>
 
         </div>

@@ -388,7 +388,7 @@
                 var max_fields      = 999; //maximum input boxes allowed
                 var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
                 var add_button      = $("#add_field_button"); //Add button ID
-                
+
                 if(parseInt(add_button.val()) == 0){
                     x = 0;
                 }else{
@@ -428,7 +428,7 @@
                             '</div>'); //add input box
                     }
                 });
-                
+
                 $(wrapper).on("click","#remove_field", function(e){ //user click on remove text
                     e.preventDefault(); $(this).parent('div').remove(); x--;
                     console.log(x-1);
@@ -460,7 +460,7 @@
                     var seleccion = parseInt(event.target.value);
 
                     var fecha_emision = $('#fecha_emision').val();
-                   
+
                     if(!fecha_emision){
                         alert("No ha ingresado una fecha de Emisión!");
                         event.target.value = 'NULL';
@@ -475,7 +475,7 @@
             });
 
             function selectproveedor(run, razon_social, direccion, giro, ciudad, comuna){
-                
+
                 var rut = run.toString();
                 rut.substring(0, 8);
 
@@ -483,7 +483,7 @@
                 for(;rut;rut=Math.floor(rut/10))
                 S=(S+rut%10*(9-M++%6))%11;
                 var dv = S?S-1:'k';
-                
+
                 $('#rut').val((run+"-"+dv));
                 $('#razon_social').val(razon_social);
                 $('#direccion').val(direccion);
@@ -491,7 +491,7 @@
                 $('#ciudad').val(ciudad);
                 $('#comuna').val(comuna);
             }
-            
+
         </script>
 
 

@@ -1400,9 +1400,9 @@ public function stocktiemporeal (Request $request){
             ->leftjoin('tablas', 'cliente.CLCIUF' , '=', 'tablas.TAREFE')
             ->where('CLTCLI', 7)
             ->get('CLRUTC', 'CLRUTD', 'DEPARTAMENTO', 'CLRSOC', 'tablas.TAGLOS AS GIRO'); */
-            $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI 
-              FROM cliente 
-              LEFT JOIN tablas ON cliente.CLCIUF = tablas.TAREFE 
+            $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI
+              FROM cliente
+              LEFT JOIN tablas ON cliente.CLCIUF = tablas.TAREFE
               AND tablas.TACODI = 8");
 
             //dd($clientescredito);
@@ -1598,6 +1598,8 @@ public function stocktiemporeal (Request $request){
               $cosa=end($todo2);
 
              $suma=$cosa->valor;
+
+             //blsldkfmls
 
 
 
@@ -2171,6 +2173,33 @@ public function stocktiemporeal (Request $request){
     }
 
 
+
+
+    public function VentaProductosPorDia(Request $request){
+
+        $marcas=DB::table('marcas')->get();
+
+        return view('admin.VentaProductosPorDia',compact('marcas'));
+
+    }
+
+    public function VentaProductosPorDiaFiltro(Request $request){
+
+        // dd($request->all());
+
+        $marca = $request->marca;
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
+
+        $marcas=DB::table('marcas')->get();
+
+        $productos=DB::select('select decodi,decant, ardesc, armarca, defeco from dcargos, producto where decodi = ARCODI and armarca = ? and defeco between ? and ? group by defeco, decodi' , [$marca,$fecha1,$fecha2]);
+
+        // dd($productos);
+
+        return view('admin.VentaProductosPorDia',compact('fecha1','fecha2','marcas','productos'));
+
+    }
 
 
 

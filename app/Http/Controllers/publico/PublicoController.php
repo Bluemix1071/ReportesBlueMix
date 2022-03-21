@@ -101,12 +101,14 @@ class PublicoController extends Controller
 
       public function ConsultaPrecioFiltro(Request $request){
 
-        //dd($request->all());
+        // dd($request->all());
         $codigo=DB::table('consulta_preciofiltro')
         ->where('barra' , $request->codigo)
+        ->take(1)
         ->get();
 
         // dd($codigo);
+        // error_log($codigo);
 
         if($codigo->isEmpty()){
 
@@ -114,13 +116,14 @@ class PublicoController extends Controller
               'codigo' => null
             ]);
         }
-        else
+        else{
 
         //return view('publicos.ConsultaPrecio',compact('codigo'));
 
         return response()->json($codigo);
 
       }
+     }
 
 
 
