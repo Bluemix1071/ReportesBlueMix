@@ -109,6 +109,8 @@ class SincronizacionProductosWebController extends Controller
         
         $productos=DB::table('subida_productos_web')->where('sku','!=',null)->get();
 
+        $exepciones = DB::table('suma_bodega_jumpseller')->where('id_rack', 371)->orWhere('id_rack', 372)->get();
+
         /* $sql =  DB::select("select productosjumpsellerweb.*
                 FROM productosjumpsellerweb
                 left join productosjumpseller
@@ -127,6 +129,13 @@ class SincronizacionProductosWebController extends Controller
                 if($item->stock_total < 0){
                     $item->stock_total = 0;
                 }
+
+                foreach($exepciones as $exep){
+                    if($item->sku == $exep->inarti){
+                        $item->stock_total = 0;
+                    }
+                }
+                
                 $i++;
                 $body = [
                     "product" =>
