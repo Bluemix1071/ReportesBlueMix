@@ -106,6 +106,8 @@ class SincronizacionProductosController extends Controller
         
         $productos=DB::table('subida_productos_empresa')->where('sku','!=',null)->get();
 
+        $exepciones = DB::table('suma_bodega_jumpseller')->where('id_rack', 371)->orWhere('id_rack', 372)->get();
+
         $count = count($productos);
         /* $cantidadDePaginas = ceil($count / 100);
         dd($cantidadDePaginas); */
@@ -116,6 +118,13 @@ class SincronizacionProductosController extends Controller
                 if($item->stock_total < 0){
                     $item->stock_total = 0;
                 }
+
+                foreach($exepciones as $exep){
+                    if($item->sku == $exep->inarti){
+                        $item->stock_total = 0;
+                    }
+                }
+
                 $i++;
                 $body = [
                     "product" =>

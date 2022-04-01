@@ -21,7 +21,7 @@ class IngresosController extends Controller
 
         //$ingreso = DB::table('dmovim')->join('producto', 'dmovim.DMVPROD', '=', 'producto.ARCODI')->where('DMVNGUI', '=', $request->id)->selectRaw("dmovim.*, producto.*, SUM(DMVCANT) as stock")->groupBy('DMVPROD')->get();
 
-        $ingreso = DB::table('dmovim')->join('producto', 'dmovim.DMVPROD', '=', 'producto.ARCODI')->where('DMVNGUI', '=', $request->id)->orderBy('dmovim.DMVPROD', 'asc')->get();
+        $ingreso = DB::table('dmovim')->join('producto', 'dmovim.DMVPROD', '=', 'producto.ARCODI')->where('DMVNGUI', '=', $request->id)->get();
 
         $id_ingreso = $request->id;
 
@@ -31,6 +31,7 @@ class IngresosController extends Controller
     public function editardetalle(Request $request){
         //stristr($email, 'e');
         $id_ingreso = $request->get('id_ingreso');
+        //dd($request->request);
         DB::table('dmovim')->where('DMVNGUI', $id_ingreso)->delete();
         foreach($request->request as $item){
             //$id_ingreso = $item['id_ingreso'];
@@ -62,7 +63,7 @@ class IngresosController extends Controller
                           'DMVUNID' => $item['t_unid'],
                           'cant_ingresada' => 0
             ];
-
+            error_log(print_r($nuevo, true));
             DB::table('dmovim')->insert($nuevo);
         }
         $ingreso = DB::table('dmovim')->join('producto', 'dmovim.DMVPROD', '=', 'producto.ARCODI')->where('DMVNGUI', '=', $id_ingreso)->get();
