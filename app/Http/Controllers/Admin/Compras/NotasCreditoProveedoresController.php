@@ -28,6 +28,7 @@ class NotasCreditoProveedoresController extends Controller
         ->where('folio', $request->get('folio_nc'))->first();
 
         $nota_credito = ['rut' => $request->get('rut_proveedor'),
+                    'rason_social' => strtoupper($request->get('razon_social')),
                     'folio' => $request->get('folio_nc'),
                     'folio_factura' => $request->get('folio_factura'),
                     'fecha_emision' => $request->get('fecha_emision_nc'),
@@ -36,7 +37,7 @@ class NotasCreditoProveedoresController extends Controller
                     'total' => $request->get('total_nc')
         ];
 
-        if($existe_factura != null){
+        if($existe_factura != null || $request->get('folio_factura') == null){
             if($existe_nc == null){
                 DB::table('nc_proveedor')->insert($nota_credito);
                 return redirect()->route('NotasCreditoProveedores')->with('success','Se ha Agregado la Nota Credito correctamente');

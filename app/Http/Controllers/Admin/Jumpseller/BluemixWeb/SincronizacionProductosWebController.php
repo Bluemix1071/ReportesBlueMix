@@ -50,8 +50,7 @@ class SincronizacionProductosWebController extends Controller
                             'name' => $product['product']['name'],
                             'sku' => $product['product']['sku'],
                             'stock' => $product['product']['stock'],
-                            'price' => $product['product']['price'],
-                            'url' => $product['product']['images'][0]['url'],
+                            'price' => $product['product']['price']
                         ]);
 
                            // logger($insert);
@@ -69,7 +68,6 @@ class SincronizacionProductosWebController extends Controller
                                     'stock' => $variant['stock'],
                                     'price' => $variant['price'],
                                     'parent_id' => $insert->id_ai,
-                                    'url' => $variant['image']['url'],
                                     'parent_id_jp' => $product['product']['id'],
                                 ]);
                             }
