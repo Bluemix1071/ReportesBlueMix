@@ -557,6 +557,15 @@
                                     </a>
                                 </li>
 
+
+                                <li class="nav-item">
+                                    <a href="{{ route('AvanceAnualMensual') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Avance Mensual Anual
+                                        </p>
+                                    </a>
+                                </li>
+
                                 @can('LibroVentas')
                                     <li class="nav-item">
                                         <a href="{{ route('consultafacturaboleta') }}" class="nav-link">
