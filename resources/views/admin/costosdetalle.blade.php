@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Compra Productos
+Costos Detalles
 @endsection
 @section('styles')
 
