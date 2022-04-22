@@ -2093,7 +2093,7 @@ public function stocktiemporeal (Request $request){
         $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$fecha1,$fecha1]);
 
 
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','anual2018','anual2019','anual2020','anual2021','anual2022','precio'));
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','anual2018','anual2019','anual2020','anual2021','anual2022'));
 
 
     }
