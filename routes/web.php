@@ -224,6 +224,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');
     Route::post('/ResumenDeVentaFiltro','AdminController@ResumenDeVentaFiltro')->name('ResumenDeVentaFiltro');
 
+    Route::get('/AvanceAnualMensual','AdminController@AvanceAnualMensual')->name('AvanceAnualMensual');
+    Route::post('/AvanceAnualMensualFiltro','AdminController@AvanceAnualMensualFiltro')->name('AvanceAnualMensualFiltro');
+
     Route::get('/VentasPorVendedor','AdminController@VentasPorVendedor')->name('VentasPorVendedor');
     Route::post('/VentasPorVendedorFiltro','AdminController@VentasPorVendedorFiltro')->name('VentasPorVendedorFiltro');
 

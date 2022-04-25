@@ -549,10 +549,19 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ route('ResumenDeVenta') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Resumen De Venta
+                                        </p>
+                                    </a>
+                                </li> --}}
+
+
+                                <li class="nav-item">
+                                    <a href="{{ route('AvanceAnualMensual') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Avance Mensual Anual
                                         </p>
                                     </a>
                                 </li>

@@ -2042,6 +2042,63 @@ public function stocktiemporeal (Request $request){
     }
 
 
+    public function AvanceAnualMensual(Request $request){
+
+
+        return view('admin.AvanceAnualMensual');
+
+
+    }
+
+    public function AvanceAnualMensualFiltro(Request $request){
+
+        // dd($request->all());
+        $fecha1=$request->fecha1;
+
+        $ventadiariadocumentos=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as ventadeldia from cargos where catipo != 3  and cafeco between ? and ? ;' , [$fecha1, $fecha1, $fecha1,$fecha1]);
+        $fechames=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames' , [$fecha1]);
+        $ano2018=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -49 MONTH) as ano2018' , [$fecha1]);
+        $ano2019=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -37 MONTH) as ano2019' , [$fecha1]);
+        $ano2020=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -25 MONTH) as ano2020' , [$fecha1]);
+        $ano2021=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -13 MONTH) as ano2021' , [$fecha1]);
+        $hasta2018=DB::select('select DATE_ADD(?,INTERVAL -4 YEAR) as hasta2018' , [$fecha1]);
+        $hasta2019=DB::select('select DATE_ADD(?,INTERVAL -3 YEAR) as hasta2019' , [$fecha1]);
+        $hasta2020=DB::select('select DATE_ADD(?,INTERVAL -2 YEAR) as hasta2020' , [$fecha1]);
+        $hasta2021=DB::select('select DATE_ADD(?,INTERVAL -1 YEAR) as hasta2021' , [$fecha1]);
+        $h2018=$hasta2018[0]->hasta2018;
+        $h2019=$hasta2019[0]->hasta2019;
+        $h2020=$hasta2020[0]->hasta2020;
+        $h2021=$hasta2021[0]->hasta2021;
+
+        $a2018=$ano2018[0]->ano2018;
+        $a2019=$ano2019[0]->ano2019;
+        $a2020=$ano2020[0]->ano2020;
+        $a2021=$ano2021[0]->ano2021;
+
+
+        $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
+        $fechainiciomes=$fechames[0]->primerdiames;
+
+
+        $mensual2018=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2018 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2018,$h2018,$a2018,$h2018]);
+        $mensual2019=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2019 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2019,$h2019,$a2019,$h2019]);
+        $mensual2020=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2020 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2020,$h2020,$a2020,$h2020]);
+        $mensual2021=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2021 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2021,$h2021,$a2021,$h2021]);
+        $mensual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2022 from cargos where catipo != 3  and cafeco between ? and ?' , [$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);
+
+        $anual2018=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2018-01-01" and ?) as anualaño2018 from cargos where catipo != 3  and cafeco between "2018-01-01" and ?' , [$h2018,$h2018]);
+        $anual2019=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2019-01-01" and ?) as anualaño2019 from cargos where catipo != 3  and cafeco between "2019-01-01" and ?' , [$h2019,$h2019]);
+        $anual2020=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2020-01-01" and ?) as anualaño2020 from cargos where catipo != 3  and cafeco between "2020-01-01" and ?' , [$h2020,$h2020]);
+        $anual2021=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2021-01-01" and ?) as anualaño2021 from cargos where catipo != 3  and cafeco between "2021-01-01" and ?' , [$h2021,$h2021]);
+        $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$fecha1,$fecha1]);
+
+
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','anual2018','anual2019','anual2020','anual2021','anual2022'));
+
+
+    }
+
+
     public function VentasPorVendedor(Request $request){
 
         $vendedor=DB::table('tablas')

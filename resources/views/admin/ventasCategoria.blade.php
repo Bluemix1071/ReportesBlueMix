@@ -239,12 +239,15 @@ ventas Categoria
     var categorias = [];
     var valor = [];
 
+    // console.log(valor);
+
     if (typeof tabla != 'undefined'){
             for(let item of tabla){
 
                 categorias.push(item.cells[1].innerText);
                 valor.push(item.cells[2].innerText.replace(/\./g, ''));
             }
+    // console.log(categorias);
     // console.log(valor);
     // valor = (valor.toLocaleString('de-DE'));
     const ctx = document.getElementById('myChart').getContext('2d');

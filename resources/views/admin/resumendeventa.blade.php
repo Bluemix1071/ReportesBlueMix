@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Libro De Ventas Diario
+Resumen De Venta
 @endsection
 @section('styles')
 
