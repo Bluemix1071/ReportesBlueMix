@@ -70,6 +70,7 @@
                                     <td>{{ $item->razon_social }}</td>
                                     <!-- <td>{{ $item->folio_factura }}</td> -->
                                     <td>
+
                                         @if($item->folio_factura != 0)
                                         <form action="{{ route('EditarCompra', ['rut' => $item->rut, 'folio' => $item->folio_factura]) }}" method="post" enctype="multipart/form-data" target="_blank">
                                         @csrf
@@ -85,6 +86,7 @@
                                         @else
                                         <p> </p>
                                         @endif
+
                                     </td>
                                     <td>{{ $item->fecha_creacion }}</td>
                                     <td>{{ $item->fecha_emision }}</td>
