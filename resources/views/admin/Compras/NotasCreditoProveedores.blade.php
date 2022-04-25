@@ -70,17 +70,23 @@
                                     <td>{{ $item->razon_social }}</td>
                                     <!-- <td>{{ $item->folio_factura }}</td> -->
                                     <td>
-                                    <form action="{{ route('EditarCompra', ['rut' => $item->rut, 'folio' => $item->folio_factura]) }}" method="post" enctype="multipart/form-data" target="_blank">
-                                    @csrf
-                                        <button type="submit" style="background: none!important;
-                                        border: none;
-                                        padding: 0!important;
-                                        /*optional*/
-                                        font-family: arial, sans-serif;
-                                        /*input has OS specific font-family*/
-                                        color: #007bff;
-                                        cursor: pointer;">{{ $item->folio_factura }}</i></button>
-                                    </form>
+
+                                        @if($item->folio_factura != 0)
+                                        <form action="{{ route('EditarCompra', ['rut' => $item->rut, 'folio' => $item->folio_factura]) }}" method="post" enctype="multipart/form-data" target="_blank">
+                                        @csrf
+                                            <button type="submit" style="background: none!important;
+                                            border: none;
+                                            padding: 0!important;
+                                            /*optional*/
+                                            font-family: arial, sans-serif;
+                                            /*input has OS specific font-family*/
+                                            color: #007bff;
+                                            cursor: pointer;">{{ $item->folio_factura }}</i></button>
+                                        </form>
+                                        @else
+                                        <p> </p>
+                                        @endif
+
                                     </td>
                                     <td>{{ $item->fecha_creacion }}</td>
                                     <td>{{ $item->fecha_emision }}</td>
