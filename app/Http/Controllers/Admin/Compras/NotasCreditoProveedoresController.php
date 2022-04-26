@@ -90,7 +90,7 @@ class NotasCreditoProveedoresController extends Controller
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
         }
 
-        $observacion = "Sin Observaciones";
+        $observacion = "";
         $folio_factura = "";
 
         if(!is_array($referencia)){

@@ -88,7 +88,14 @@
                                     </td>
                                     <td>{{ $item->fecha_creacion }}</td>
                                     <td>{{ $item->fecha_emision }}</td>
-                                    <td>{{ $item->observacion }}</td>
+                                    <td>
+                                        @if($item->observacion)
+                                            {{ $item->observacion }}
+                                        @else      
+                                            <p> </p>
+                                        @endif
+                                        <!-- {{ $item->observacion }} -->
+                                    </td>
                                     <td>{{ number_format(($item->neto), 0, ',', '.') }}</td>
                                     <td>{{ number_format(($item->iva), 0, ',', '.') }}</td>
                                     <td>{{ number_format(($item->total), 0, ',', '.') }}</td>
