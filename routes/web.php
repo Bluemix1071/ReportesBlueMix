@@ -44,6 +44,9 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/OrdenesDeDiseño','SalaController@OrdenesDeDiseño')->name('OrdenesDeDiseño');
     Route::post('/GuardarOrdenesDeDiseño','SalaController@GuardarOrdenesDeDiseño')->name('GuardarOrdenesDeDiseño');
 
+    Route::get('/ListarOrdenesDiseño','SalaController@ListarOrdenesDiseño')->name('ListarOrdenesDiseñoSala');
+    Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','SalaController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalleSala');
+
 
     //cambio
 
