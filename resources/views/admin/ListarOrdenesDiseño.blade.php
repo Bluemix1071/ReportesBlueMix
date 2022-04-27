@@ -9,8 +9,7 @@
 @endsection
 @section('contenido')
     <div class="container my-4">
-      <h1 class="display-4">Ordenes De Trabajo
-      </h1>
+      <h1 class="display-4">Ordenes De Trabajo</h1>
       <hr>
       <a href="{{route('OrdenesDeDiseño')}}" type="button" class="btn btn-success">Agregar Orden</a>
       <hr>
@@ -49,19 +48,25 @@
                         @else
                         <td><h5><span class="badge badge-danger">Terminado</span></h5></td>
                         @endif
+                        @if(session()->get('tipo_usuario') != "sala")
                         <td class="col-2"><a href="{{route('ListarOrdenesDisenoDetalle', $item->idOrdenesDiseño)}}" type="button" class="btn btn-primary" target="_blank" title="Ver Más"><i class="fas fa-eye"></i></a>
-                        &nbsp;
-                        @if ($item->estado !='Terminado')
-                        <!-- <form action="{{ route('ListarOrdenesDisenoDetalleedittermino', [ 'idorden' => $item->idOrdenesDiseño ]) }}" method="POST">
-                          <input type="text" name="idorden" value="{{ $item->idOrdenesDiseño }}" hidden>
-                          <button type="submit" class="btn btn-danger" target="_blank" title="Terminar Trabajo"><i class="fas fa-clipboard-check"></i></button>
-                        </form> -->
-                          <a href="#" type="button" class="btn btn-danger" target="_blank" title="Terminar Trabajo" data-toggle="modal" data-target="#confirmacion" onclick="cargarid({{$item->idOrdenesDiseño}})"><i class="fas fa-clipboard-check"></i></a>
                         @else
-                          <button type="button" class="btn btn-secondary" target="_blank" title="Terminar Trabajo"><i class="fas fa-clipboard-check"></i></button>
+                        <td class="col-2"><a href="{{route('ListarOrdenesDisenoDetalleSala', $item->idOrdenesDiseño)}}" type="button" class="btn btn-primary" target="_blank" title="Ver Más"><i class="fas fa-eye"></i></a>
                         @endif
                         &nbsp;
-                        <button type="button" class="btn btn-dark" target="_blank" title="Desactivar Trabajo" data-toggle="modal" data-target="#desactivar" onclick="cargariddesactivar({{$item->idOrdenesDiseño}})"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        @if (session()->get('tipo_usuario') != "sala")
+                          @if ($item->estado !='Terminado')
+                          <!-- <form action="{{ route('ListarOrdenesDisenoDetalleedittermino', [ 'idorden' => $item->idOrdenesDiseño ]) }}" method="POST">
+                            <input type="text" name="idorden" value="{{ $item->idOrdenesDiseño }}" hidden>
+                            <button type="submit" class="btn btn-danger" target="_blank" title="Terminar Trabajo"><i class="fas fa-clipboard-check"></i></button>
+                          </form> -->
+                            <a href="#" type="button" class="btn btn-danger" target="_blank" title="Terminar Trabajo" data-toggle="modal" data-target="#confirmacion" onclick="cargarid({{$item->idOrdenesDiseño}})"><i class="fas fa-clipboard-check"></i></a>
+                          @else
+                            <button type="button" class="btn btn-secondary" target="_blank" title="Terminar Trabajo"><i class="fas fa-clipboard-check"></i></button>
+                          @endif
+                          &nbsp;
+                          <button type="button" class="btn btn-dark" target="_blank" title="Desactivar Trabajo" data-toggle="modal" data-target="#desactivar" onclick="cargariddesactivar({{$item->idOrdenesDiseño}})"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        @endif
                       </td>
                     </tr>
                     @endif

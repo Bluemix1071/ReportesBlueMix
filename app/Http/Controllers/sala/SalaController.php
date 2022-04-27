@@ -461,5 +461,34 @@ class SalaController extends Controller
 
     }
 
+    public function ListarOrdenesDiseño(Request $request){
+
+      $ordenes=DB::table('ordenesdiseño')
+      ->orderBy('idOrdenesDiseño', 'desc')
+      ->get();
+
+
+
+      return view('admin.ListarOrdenesDiseño',compact('ordenes'));
+  }
+
+    public function ListarOrdenesDisenoDetalle($idOrdenesDiseño){
+
+        $ordenesdiseño=DB::table('ordenesdiseño')
+        ->where('idOrdenesDiseño', $idOrdenesDiseño)
+        ->get();
+
+        $path = storage_path('app/'.$ordenesdiseño[0]->archivo);
+        $data = file_get_contents($path);
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $base64 = base64_encode($data);
+
+        $img = 'data:image/' . $type . ';base64,' . $base64;
+
+        //  dd($ordenesdiseño);
+
+        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenesdiseño', 'img'));
+    }
+
 
 }

@@ -849,11 +849,22 @@
                                 </li>
                             @endcan
 
+                             @can('ordenesdiseno')
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('ListarOrdenesDiseñoSala') }}"
+                                            class="nav-link {{ setActive('ListarOrdenesDiseñoSala') }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Admin Ordenes Diseño</p>
+                                        </a>
+                                    </li>
+                                @endcan
+
                         </ul>
                     </li>
                 @endcan
 
-                @can('ordenesdiseno')
+                @can('Administrador')
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon far fa-money-bill-alt"></i>
