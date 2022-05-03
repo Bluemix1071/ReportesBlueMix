@@ -101,7 +101,11 @@ class NotasCreditoProveedoresController extends Controller
         }else{
             foreach($referencia as $item){
                 if($item->TpoDocRef == "33"){
-                    $observacion = $item->RazonRef;
+                    if(empty($item->RazonRef)){
+                        $observacion = null;
+                    }else{
+                        $observacion = $item->RazonRef;
+                    }
                     $folio_factura = $item->FolioRef;
                 }
             }
