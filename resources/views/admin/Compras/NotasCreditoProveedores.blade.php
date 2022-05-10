@@ -9,23 +9,53 @@
 @endsection
 @section('contenido')
     <div class="container my-4">
-        <h1 class="display-4">Notas Crédito de Proveedores
-        </h1>
+        <h1 class="display-4">Notas Crédito de Proveedores</h1>
         <hr>
-            <a href="" type="button" class="btn btn-success" data-toggle="modal" data-target="#modalingresarnotacredito">Agregar Nota Crédito</a>
+        <div class="row">
+            <div class="col-5">
+                <br>
+                <a href="" type="button" class="btn btn-success" data-toggle="modal" data-target="#modalingresarnotacredito">Agregar Nota Crédito</a>
+            </div>
+           
+            <hr style="border-left: 1px solid gray; height: 50px;">
+
+            <form action="{{ route('XmlUpNC') }}" method="POST"  class="form-inline col-6" enctype="multipart/form-data">
+                <input type="file" id="myfile" name="myfile" accept="text/xml" required>  
+                &nbsp;<button type="submit" class="btn btn-success">Agregar Nota Credito DTE</button>
+            </form>
+           
+        </div>
         <hr>
         <section class="content">
             <div class="card">
                 <div class="card-header">
                     <div class="table-responsive-xl">
+                        <div style="text-align:center">
+                        <tbody>
+                            <tr>
+                                <td>Desde:</td>
+                                    <td><input type="date" id="min" name="min" value="2021-01-01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Hasta:</td>
+                                    <td><input type="date" id="max" name="max" value="{{ $fecha_hoy }}"></td>
+                                </tr>
+                        </tbody>
+                            &nbsp &nbsp &nbsp
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#mimodalinfo1">
+                            ?
+                            </button>
+                        </div>
                         <table id="users" class="table table-sm table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">Folio</th>
                                     <th scope="col">Rut Proveedor</th>
+                                    <th scope="col">Razon Social</th>
                                     <th scope="col">Folio Factura</th>
                                     <th scope="col">Fecha Creación</th>
                                     <th scope="col">Fecha Emisión</th>
+                                    <th scope="col">Observacion</th>
                                     <th scope="col">Neto</th>
                                     <th scope="col">IVA</th>
                                     <th scope="col">Total</th>
@@ -37,19 +67,56 @@
                                 <tr>
                                     <td>{{ $item->folio }}</td>
                                     <td>{{ $item->rut }}</td>
-                                    <td>{{ $item->folio_factura }}</td>
+                                    <td>{{ $item->razon_social }}</td>
+                                    <!-- <td>{{ $item->folio_factura }}</td> -->
+                                    <td>
+
+                                        @if($item->folio_factura != 0)
+                                        <form action="{{ route('EditarCompra', ['rut' => $item->rut, 'folio' => $item->folio_factura]) }}" method="post" enctype="multipart/form-data" target="_blank">
+                                        @csrf
+                                            <button type="submit" style="background: none!important;
+                                            border: none;
+                                            padding: 0!important;
+                                            /*optional*/
+                                            font-family: arial, sans-serif;
+                                            /*input has OS specific font-family*/
+                                            color: #007bff;
+                                            cursor: pointer;">{{ $item->folio_factura }}</i></button>
+                                        </form>
+                                        @else
+                                        <p> </p>
+                                        @endif
+
+                                    </td>
                                     <td>{{ $item->fecha_creacion }}</td>
                                     <td>{{ $item->fecha_emision }}</td>
+                                    <td>
+                                        @if($item->observacion)
+                                            {{ $item->observacion }}
+                                        @else      
+                                            <p> </p>
+                                        @endif
+                                        <!-- {{ $item->observacion }} -->
+                                    </td>
                                     <td>{{ number_format(($item->neto), 0, ',', '.') }}</td>
                                     <td>{{ number_format(($item->iva), 0, ',', '.') }}</td>
                                     <td>{{ number_format(($item->total), 0, ',', '.') }}</td>
-                                    <td> <button class="btn btn-danger" onclick="borrar({{ $item->id }})" style="margin-left: 5%">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                            </svg>
-                                        </button>
-                                    </td>
+                                    <td class="row"> 
+                                        <!-- <button class="btn btn-danger px-2" onclick="borrar({{ $item->id }})"></button> -->
+                                        <form>
+                                            <button type="button" onclick="borrar({{ $item->id }})" class="btn btn-danger px-2"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                        @if($item->xml)
+                                        <form action="{{ route('DescargaXml', ['ruta' => $item->xml, 'rut' => $item->rut, 'folio' => $item->folio]) }}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                            &nbsp;<button type="submit" class="btn btn-success px-2" title="Descargar XML"><i class="fas fa-download" title="Descargar XML"></i></button>
+                                        </form>
+                                        @else
+                                        <form>
+                                            &nbsp;<button type="button" class="btn btn-default px-2" ><i class="fas fa-download"></i></button>
+                                        </form>
+                                        @endif
+                                        </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -62,6 +129,23 @@
                 </div>
             </div>
         </section>
+
+         <!-- Modal AYUDA TABLAS POR PAGAR-->
+         <div class="modal fade bd-example-modal-lg" id="mimodalinfo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content col-md-6" style="margin-left: 25%">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Ayuda</h4>
+            </div>
+            <div class="modal-body">
+                <p>La fecha de filtrado es correspondiente a la columna número seis: <b>'FECHA EMISIÓN'</b>.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Salir</a>
+            </div>
+            </div>
+        </div>
+        </div>
 
         <!-- Modall ingreso nc-->
         <div class="modal fade" id="modalingresarnotacredito" tabindex="-1" role="dialog"
@@ -99,7 +183,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Factura Referencia</label>
                                         <div class="col-sm-10">
-                                            <input type="number" id="total" class="form-control" name="folio_factura" placeholder="Folio Factura Referencia">
+                                            <input type="number" id="total" class="form-control" name="folio_factura" placeholder="Folio Factura Referencia (Opcional)">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -124,6 +208,13 @@
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Total</label>
                                         <div class="col-sm-10">
                                             <input type="number" id="total_nc" class="form-control" required readonly name="total_nc" placeholder="Total">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Observacion</label>
+                                        <div class="col-sm-10">
+                                            <!-- <input type="text" id="observacion_nc" class="form-control" name="observacion_nc" placeholder="Observacion (Opcional)"> -->
+                                            <textarea id="observacion_nc" name="observacion_nc" rows="1" class="form-control" placeholder="Observacion (Opcional)"></textarea>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-success">Agregar Nota Credito</button>
@@ -166,7 +257,32 @@
         <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
         <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
 
-        <script>
+        <script type="text/javascript">
+
+        var minDate, maxDate = null;
+        var minDateDeuda, maxDateDeuda = null;
+
+        $.fn.dataTable.ext.search.push(
+        function( settings, data, dataIndex ) {
+            if ( settings.nTable.id !== 'users' ) {
+                return true;
+            }
+            var min = minDate.val();
+            var max = maxDate.val();
+            var date = data[5];
+    
+            if (
+                ( min === null && max === null ) ||
+                ( min === null && date <= max ) ||
+                ( min <= date   && max === null ) ||
+                ( min <= date   && date <= max )
+            ) {
+                return true;
+            }
+            return false;
+        }
+        );    
+
             function borrar(id){
                 var opcion = confirm("Desea eliminar la Nota de Credito?");
                 if (opcion == true) {
@@ -184,7 +300,12 @@
             }
 
             $(document).ready(function() {
-                $('#users').DataTable();
+                minDate = $('#min');
+                maxDate = $('#max');
+                var table = $('#users').DataTable();
+                $('#min, #max').on('change', function () {
+                table.draw();
+            });
             });
 
              $("#neto_nc").keyup(function(e){

@@ -76,6 +76,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
+                            @if(session()->get('tipo_usuario') != "sala")
                                 <a href="{{route('ListarOrdenesDiseño')}}" class="btn btn-default"><i
                                         class="fas fa-door-open"></i> Volver</a>
                                 @if ($ordenesdiseño[0]->estado == 'Ingresado')
@@ -97,13 +98,16 @@
                                     Terminado
                                 </button>
                             @endif
+                            @endif
                             @if ($ordenesdiseño[0]->archivo == null)
                             <button type="submit" disabled class="btn btn-primary float-right" style="margin-right: 5px;">
                                 <i class="fas fa-download"></i> No Contiene Archivos
                             </button>
                             @else
+                            @if(session()->get('tipo_usuario') != "sala")
                             <a type="button" class="btn btn-primary float-right" style="margin-right: 5px;" href="{{ route('descargaordendiseno', $ordenesdiseño[0]->idOrdenesDiseño ) }}" > <i class="fas fa-download"></i>Descargar Archivos</a>
                             <input type="text" name="idorden" value="{{ $ordenesdiseño[0]->idOrdenesDiseño }}" hidden>
+                            @endif
                             <br><br>
                             <div class="col-md-12">
                                 <div class="card card-secondary collapsed-card ">

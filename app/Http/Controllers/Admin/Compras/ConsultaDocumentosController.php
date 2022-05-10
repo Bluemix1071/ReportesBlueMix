@@ -106,11 +106,10 @@ class ConsultaDocumentosController extends Controller
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
     ->count();
 
-    $countnotacredito=DB::table('compras')
-    ->where('tipo_dte', 61 )
-    ->where('estado_verificacion', 2)
+    $countnotacredito=DB::table('nc_proveedor')
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
     ->count();
+    //dd($countnotacredito);
 
     $countdin=DB::table('compras')
     ->where('tipo_dte', 914 )
@@ -160,9 +159,7 @@ class ConsultaDocumentosController extends Controller
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
     ->sum('neto');
 
-    $netonotatacredito=DB::table('compras')
-    ->where('tipo_dte', 61 )
-    ->where('estado_verificacion', 2)
+    $netonotatacredito=DB::table('nc_proveedor')
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
     ->sum('neto');
 
@@ -182,10 +179,8 @@ class ConsultaDocumentosController extends Controller
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
     ->first();
 
-    $recuperablenotacredito=DB::table('compras')
+    $recuperablenotacredito=DB::table('nc_proveedor')
     ->selectRaw('(sum(neto)*0.19) as recuperablenotacredito')
-    ->where('tipo_dte', 61 )
-    ->where('estado_verificacion', 2)
     ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
     ->first();
 
@@ -206,9 +201,7 @@ class ConsultaDocumentosController extends Controller
      ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
      ->sum('total');
 
-     $totalnotatacredito=DB::table('compras')
-     ->where('tipo_dte', 61 )
-     ->where('estado_verificacion', 2)
+     $totalnotatacredito=DB::table('nc_proveedor')
      ->whereBetween('fecha_emision', array($request->fecha1,$request->fecha2))
      ->sum('total');
 

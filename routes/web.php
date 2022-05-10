@@ -44,6 +44,9 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/OrdenesDeDiseño','SalaController@OrdenesDeDiseño')->name('OrdenesDeDiseño');
     Route::post('/GuardarOrdenesDeDiseño','SalaController@GuardarOrdenesDeDiseño')->name('GuardarOrdenesDeDiseño');
 
+    Route::get('/ListarOrdenesDiseño','SalaController@ListarOrdenesDiseño')->name('ListarOrdenesDiseñoSala');
+    Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','SalaController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalleSala');
+
 
     //cambio
 
@@ -155,6 +158,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     /*  Mantenedor CRUD Notas Credito Proveedores */
     Route::get('/NotasCreditoProveedores','Compras\NotasCreditoProveedoresController@index')->name('NotasCreditoProveedores');
     Route::post('/NotasCreditoProveedores','Compras\NotasCreditoProveedoresController@insert')->name('AgregarNC');
+    Route::post('/XmlUpNC','Compras\NotasCreditoProveedoresController@xmlUpNC')->name('XmlUpNC');
     Route::delete('/NotasCreditoProveedores/{id}','Compras\NotasCreditoProveedoresController@destroy')->name('BorrarNC');
     // fin
     Route::get('/CuadroMando', 'AdminController@CuadroDeMando')->name('cuadroMando');

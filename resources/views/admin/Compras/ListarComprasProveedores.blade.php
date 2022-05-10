@@ -35,7 +35,7 @@
                             @foreach($compras as $item)
                             <tr>
                                 <td>{{ $item->folio }}</td>
-                                <td>{{ $item->rut }}</td>
+                                <td title="{{ $item->razon_social }}">{{ $item->rut }}</td>
                                 <td>{{ $item->fecha_creacion }}</td>
                                 <td>{{ $item->fecha_emision }}</td>
                                 <td>{{ $item->fecha_venc }}</td>

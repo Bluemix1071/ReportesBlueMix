@@ -96,7 +96,7 @@
             <div class="col-md-12">
                 <div class="form-row">
                     <div class="col-md-2 mb-2">
-                        <label for="validationTooltip02">tipo Documentos</label>
+                        <label for="validationTooltip02">Tipo Documentos</label>
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02"
                             readonly value="Facturas Electronicas" required>
                     </div>
