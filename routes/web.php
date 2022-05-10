@@ -123,6 +123,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ComprasProveedores','Compras\ComprasProveedoresController@index')->name('ComprasProveedores');
     Route::post('/XmlUp','Compras\ComprasProveedoresController@xmlUp')->name('XmlUp');
     Route::post('/DescargaXml', 'Compras\ComprasProveedoresController@descargaXml')->name('DescargaXml');
+    Route::post('/ComprasProveedores','Compras\ComprasProveedoresController@insert')->name('AgregarCompras');
+    Route::get('/ListarComprasProveedores','Compras\ComprasProveedoresController@list')->name('ListarCompras');
+    Route::post('/EditarCompraProveedores','Compras\ComprasProveedoresController@editar')->name('EditarCompra');
+    Route::put('/EditarCompraProveedores','Compras\ComprasProveedoresController@update')->name('UpdateCompra');
+    Route::post('/DINCompraProveedores','Compras\ComprasProveedoresController@insertDIN')->name('AgregarDIN');
 
     /*  Mantenedor CRUD Ingreso */
     Route::get('/Ingresos', 'Bodega\IngresosController@index')->name('ListarIngresos');
@@ -147,12 +152,6 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/VerificacionDocumentos','Compras\ConsultaDocumentosController@VerificacionDocumentos')->name('VerificacionDocumentos');
     Route::post('/VerificacionDocumentosAutorizar','Compras\ConsultaDocumentosController@VerificacionDocumentosAutorizar')->name('VerificacionDocumentosAutorizar');
     Route::post('/VerificacionDocumentosAutorizarTodo','Compras\ConsultaDocumentosController@VerificacionDocumentosAutorizarTodo')->name('VerificacionDocumentosAutorizarTodo');
-
-    Route::post('/ComprasProveedores','Compras\ComprasProveedoresController@insert')->name('AgregarCompras');
-
-    Route::get('/ListarComprasProveedores','Compras\ComprasProveedoresController@list')->name('ListarCompras');
-    Route::post('/EditarCompraProveedores','Compras\ComprasProveedoresController@editar')->name('EditarCompra');
-    Route::put('/EditarCompraProveedores','Compras\ComprasProveedoresController@update')->name('UpdateCompra');
 
     // fin
     /*  Mantenedor CRUD Notas Credito Proveedores */

@@ -12,10 +12,19 @@
         <h1 class="display-4">Ingresos De Compras</h1>
         <hr>
             <div class="row">
+
+            <div class="col-5">
+                <br>
+                <a href="" type="button" class="btn btn-success" data-toggle="modal" data-target="#modalingresarnotacredito">Agregar Declaración de Ingreso (DIN)</a>
+            </div>
+           
+            <hr style="border-left: 1px solid gray; height: 50px;">
+
                 <form action="{{ route('XmlUp') }}" method="POST"  class="form-inline" enctype="multipart/form-data">
                     <input type="file" id="myfile" name="myfile" accept="text/xml" required>  
                     &nbsp;<button type="submit" class="btn btn-success">Agregar Factura DTE</button>
                 </form>
+
             </div>
         <section class="content">
         <div class="container-fluid">
@@ -25,7 +34,7 @@
                 <form action="{{ route('AgregarCompras') }}" enctype="multipart/form-data" method="post" id="desvForm" >
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"> Agregar Encabezado Factura</h3>
+                            <h3 class="card-title"> Agregar Encabezado Documento</h3>
                         </div>
                         <div class="card-body">
 
@@ -48,6 +57,11 @@
                                         id="tipo_documento_gratis" value="3">
                                     <label class="form-check-label" for="tipo_documento_id_guia">Sin Costo</label>
                                 </div>
+                                <!-- <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tipo_documento"
+                                        id="tipo_documento_din" value="4">
+                                    <label class="form-check-label" for="tipo_documento_id_guia">Declaración Ingreso (DIN)</label>
+                                </div> -->
                             </div>
 
                             <div class="form-group row">
@@ -94,6 +108,7 @@
                                     <!-- <input type="text" class="form-control" required name="razon_social" id="razon_social" placeholder="Razón Social"> -->
                                 </div>
                             </div>
+                            <div id="hidden_form">
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Giro</label>
                                 <div class="col-sm-10">
@@ -129,6 +144,7 @@
                                     </datalist>
                                 </div>
                             </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Neto</label>
                                 <div class="col-sm-10">
@@ -149,7 +165,7 @@
                             </div>
                             </div>
                         </div>
-                        <div class="card card-primary">
+                        <div class="card card-primary" id="detalles">
                             <div class="card-header">
                                 <h2 class="card-title">Agregar Detalles</h2>
                                 <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button_detalle">Agregar <i class="fas fa-plus"></i></button>
@@ -161,7 +177,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card card-primary">
+                        <div class="card card-primary" id="referencias">
                             <div class="card-header">
                                 <h2 class="card-title">Agregar Referencias</h2>
                                 <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button">Agregar <i class="fas fa-plus"></i></button>
@@ -236,58 +252,58 @@
             <div class="modal-dialog" role="document" >
                 <div class="modal-content"  style="width: 200%; margin-left: -40%">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Ingresar Nota Credito</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Ingresar Declaración de Ingreso</h5>
                         <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button> -->
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('AgregarNC') }}" method="post" id="desvForm" >
+                        <form action="{{ route('AgregarDIN') }}" method="post" id="desvForm" >
                             <div class="card card-primary">
                                 <div class="card-body">
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Rut</label>
                                         <div class="col-sm-10">
-                                            <input type="text" id="total" class="form-control" required name="rut_proveedor" placeholder="Rut Proveedor" oninput="checkRut(this)">
+                                            <input type="text" id="total" class="form-control" required name="rut_din" placeholder="Rut Proveedor" oninput="checkRut(this)" value="60805000-0">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Folio</label>
                                         <div class="col-sm-10">
-                                            <input type="number" id="total" class="form-control" required name="folio_nc" placeholder="Folio">
+                                            <input type="number" id="total" class="form-control" required name="folio_din" placeholder="Folio">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Factura Referencia</label>
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Razón Social</label>
                                         <div class="col-sm-10">
-                                            <input type="number" id="total" class="form-control" required name="folio_factura" placeholder="Folio Factura Referencia">
+                                            <input type="text" id="total" class="form-control" required name="razon_social_din" placeholder="Razón Social" value="TESORERIA GENERAL DE LA REPUBLICA">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha Emisión</label>
                                         <div class="col-sm-10">
-                                            <input type="date" class="form-control" name="fecha_emision_nc" required>
+                                            <input type="date" class="form-control" name="fecha_emision_din" required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Neto</label>
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Exento</label>
                                         <div class="col-sm-10">
-                                            <input type="number" id="neto_nc" class="form-control" required name="neto_nc" min="0" placeholder="Neto">
+                                            <input type="number" id="exento_din" class="form-control" required name="exento_din" min="0" placeholder="Exento">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">IVA</label>
                                         <div class="col-sm-10">
-                                            <input type="number" id="iva_nc" class="form-control" required name="iva_nc" placeholder="IVA">
+                                            <input type="number" id="iva_din" class="form-control" required name="iva_din" placeholder="IVA">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Total</label>
                                         <div class="col-sm-10">
-                                            <input type="number" id="total_nc" class="form-control" required readonly name="total_nc" placeholder="Total">
+                                            <input type="number" id="total_din" class="form-control" required readonly name="total_din" placeholder="Total">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-success">Agregar Nota Credito</button>
+                                    <button type="submit" class="btn btn-success">Agregar DIN</button>
                                 </div>
                             </div>
                         </form>
@@ -306,6 +322,22 @@
 
         <script>
             $(document).ready(function() {
+
+                $('input[type=radio][name=tipo_documento]').change(function() {
+                    if (this.value == 4) {
+                        $('#fecha_vencimiento').prop('disabled', true);
+                        $('#fecha_a_vencer').prop('disabled', true);
+                        $('#detalles').prop('hidden', true);
+                        $('#referencias').prop('hidden', true);
+                        $('#hidden_form').prop('hidden', true);
+                    }else{
+                        $('#fecha_vencimiento').prop('disabled', false);
+                        $('#fecha_a_vencer').prop('disabled', false);
+                        $('#detalles').prop('hidden', false);
+                        $('#referencias').prop('hidden', false);
+                        $('#hidden_form').prop('hidden', false);
+                    }
+                });
 
                 $("#neto").keyup(function(e){
                     var neto =  $('#neto').val();
@@ -336,10 +368,10 @@
                         x++; //text box increment
                         $(wrapper).append(
                             '<div class="row" style="margin-bottom: 1%">'+
-                            '<input type="text" list="referencias" placeholder="Tipo Documento" name="referencias[referencia_'+x+'][]" class="form-control col" />'+
+                            '<input type="text" list="referencia" placeholder="Tipo Documento" name="referencias[referencia_'+x+'][]" class="form-control col" />'+
                             '&nbsp;<input type="number" placeholder="Folio" name="referencias[referencia_'+x+'][]" class="form-control col" />'+
                             '&nbsp;<input type="date" placeholder="Fecha" name="referencias[referencia_'+x+'][]" class="form-control col" />'+
-                            '<datalist id="referencias">'+
+                            '<datalist id="referencia">'+
                                 '<option value="801">Orden de Compra</option>'+
                                 '<option value="802">Nota de Pedido</option>'+
                                 '<option value="803">Contrato</option>'+
@@ -456,6 +488,22 @@
                 $('#ciudad').val(ciudad);
                 $('#comuna').val(comuna);
             }
+
+            $("#exento_din").keyup(function(e){
+                var neto =  $('#exento_din').val();
+                var iva  =  $('#iva_din').val();
+                var total = Math.round(+neto + +iva)
+                //$('#iva_din').val(iva);
+                $('#total_din').val(total);
+            });
+
+            $("#iva_din").keyup(function(e){
+                var neto =  $('#exento_din').val();
+                var iva  =  $('#iva_din').val();
+                var total = Math.round(+neto + +iva)
+                //$('#iva_din').val(iva);
+                $('#total_din').val(total);
+            });
             
         </script>
 

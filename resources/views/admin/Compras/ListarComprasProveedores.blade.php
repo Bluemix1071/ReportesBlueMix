@@ -15,6 +15,19 @@
             <div class="card">
                 <div class="card-header">
                     <div class="table-responsive-xl">
+                    <div style="text-align:center">
+                        <td>Desde:</td>
+                                    <td><input type="date" id="min" name="min" value="2021-01-01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Hasta:</td>
+                                    <td><input type="date" id="max" name="max" value="{{ $fecha_hoy }}"></td>
+                                </tr>
+                                &nbsp &nbsp &nbsp
+                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#mimodalinfo1">
+                                ?
+                                </button>
+                    </div>
                         <table id="users" class="table table-sm table-hover">
                             <thead>
                                 <tr>
@@ -25,7 +38,7 @@
                                     <th scope="col">Fecha Vencimiento</th>
                                     <th scope="col">Tipo</th>
                                     <th scope="col">Tipo Pago</th>
-                                    <th scope="col">Neto</th>
+                                    <th scope="col">Neto/Exento</th>
                                     <th scope="col">IVA</th>
                                     <th scope="col">Total</th>
                                     <th scope="col">Acciones</th>
@@ -45,6 +58,8 @@
                                     <td>Factura Exenta</td>
                                 @elseif($item->tipo_dte == 39)
                                     <td>Boleta</td>
+                                @elseif($item->tipo_dte == 914)
+                                    <td>DIN</td>
                                 @endif
 
                                 @if($item->tpo_pago == 1)
@@ -52,7 +67,13 @@
                                 @elseif($item->tpo_pago == 2)
                                     <td>Credito</td>
                                 @endif
-                                <td>{{ number_format(($item->neto), 0, ',', '.') }}</td>
+                                <td>
+                                @if($item->tipo_dte == 914)
+                                    {{ number_format(($item->mnto_exento), 0, ',', '.') }}
+                                @else
+                                    {{ number_format(($item->neto), 0, ',', '.') }}
+                                 @endif
+                                </td>
                                 <td>{{  number_format(($item->iva), 0, ',', '.') }}</td>
                                 <td>{{  number_format(($item->total), 0, ',', '.') }}</td>
                                 <td class="row">
@@ -60,7 +81,7 @@
                                     @csrf
                                         <button type="submit" class="btn btn-primary px-2"><i class="fas fa-edit"></i></button>
                                     </form>
-                                    @if($item->xml)
+                                    @if($item->xml && $item->xml != "Null")
                                     <form action="{{ route('DescargaXml', ['ruta' => $item->xml, 'rut' => $item->rut, 'folio' => $item->folio]) }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                         &nbsp;<button type="submit" class="btn btn-success px-2" title="Descargar XML"><i class="fas fa-download" title="Descargar XML"></i></button>
@@ -84,6 +105,23 @@
                 </div>
             </div>
         </section>
+
+        <!-- Modal info help -->
+        <div class="modal fade bd-example-modal-lg" id="mimodalinfo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content col-md-6" style="margin-left: 25%">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Ayuda</h4>
+            </div>
+            <div class="modal-body">
+                <p>La fecha de filtrado es correspondiente a la columna número cuatro: <b>'FECHA EMISIÓN'</b>.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Salir</a>
+            </div>
+            </div>
+        </div>
+        </div>
 
 
         <!-- Modal Editar -->
@@ -313,7 +351,31 @@
         <script src="{{asset("js/buttons.html5.min.js")}}"></script>
         <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
-        <script>
+        <script type="text/javascript">
+
+        var minDate, maxDate = null;
+
+        $.fn.dataTable.ext.search.push(
+        function( settings, data, dataIndex ) {
+            if ( settings.nTable.id !== 'users' ) {
+                return true;
+            }
+            var min = minDate.val();
+            var max = maxDate.val();
+            var date = data[3];
+    
+            if (
+                ( min === null && max === null ) ||
+                ( min === null && date <= max ) ||
+                ( min <= date   && max === null ) ||
+                ( min <= date   && date <= max )
+            ) {
+                return true;
+            }
+            return false;
+        }
+        );   
+
             function borrar(id){
                 var opcion = confirm("Desea eliminar la Nota de Credito?");
                 if (opcion == true) {
@@ -331,31 +393,36 @@
             }
 
             $(document).ready(function() {
+                minDate = $('#min');
+                maxDate = $('#max');
                 var table = $('#users').DataTable({
                     orderCellsTop: true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
 
-        ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
+                    ],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
 
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
                 });
-
+                
+                $('#min, #max').on('change', function () {
+                table.draw();
                 //table.columns(2).search( '2021-10-25' ).draw();
+                });
             });
 
              $("#neto_nc").keyup(function(e){
