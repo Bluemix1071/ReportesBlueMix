@@ -467,7 +467,9 @@ class ComprasProveedoresController extends Controller
 
         $compras =DB::table('compras')->where('estado_verificacion', 2)->get();
 
-        return view('admin.Compras.ListarComprasProveedores', compact('compras'));
+        $fecha_hoy = date('Y-m-d');
+
+        return view('admin.Compras.ListarComprasProveedores', compact('compras', 'fecha_hoy'));
     }
 
     public function editar(Request $request){
@@ -543,6 +545,53 @@ class ComprasProveedoresController extends Controller
     public function descargaXml(Request $request){
         //dd($request->get('ruta'));
         return response()->download(storage_path("app/" .$request->get('ruta')), ($request->get('folio').'_'.$request->get('rut').'.xml'));
+    }
+
+    public function insertDIN(Request $request){
+        $din = ['folio' => $request->get('folio_din'),
+                    'fecha_emision' => $request->get('fecha_emision_din'),
+                    'fecha_venc' => $request->get('fecha_emision_din'),
+                    'tipo_dte' => 914,
+                    'tpo_pago' =>  1,
+                    'rut' => strtoupper($request->get('rut_din')),
+                    'razon_social' => strtoupper($request->get('razon_social_din')),
+                    'giro' => "",
+                    'direccion' => "",
+                    'comuna' => "",
+                    'ciudad' => "",
+                    'mnto_exento' => $request->get('exento_din'),
+                    'iva' => $request->get('iva_din'),
+                    'total' => $request->get('total_din'),
+                    'xml' => null,
+                    'estado_verificacion' => 2
+            ];
+
+            $existe_din = $this->buscaDte($request->get('rut_din'), 914, $request->get('folio_din'));
+
+            if($existe_din != null){
+                return redirect()->route('ComprasProveedores')->with('warning','Documento ya existe para este Proveedor');
+            }else{
+                DB::table('compras')->insert($din);
+    
+                return redirect()->route('ComprasProveedores')->with('success','Se ha Agregado el Documento correctamente');
+            }
+
+
+           /*  $compra = ['folio' => $request->get('folio_din'),
+                    'fecha_emision' => $request->get('fecha_emision_din'),
+                    'fecha_venc' => $request->get('fecha_emision_din'),
+                    'tipo_dte' => 914,
+                    'tpo_pago' =>  1,
+                    'rut' => strtoupper($request->get('rut_din')),
+                    'razon_social' => strtoupper($request->get('razon_social_din')),
+                    'giro' => "ADM. PUBLICA Y DEFENSA",
+                    'direccion' => "TEATINOS 28",
+                    'comuna' => "SANTIAGO",
+                    'ciudad' => "SANTIAGO",
+                    'neto' => $request->get('exento_din'),
+                    'iva' => $request->get('iva_din'),
+                    'total' => $request->get('total_din')
+            ]; */
     }
 
     

@@ -260,7 +260,6 @@
         <script type="text/javascript">
 
         var minDate, maxDate = null;
-        var minDateDeuda, maxDateDeuda = null;
 
         $.fn.dataTable.ext.search.push(
         function( settings, data, dataIndex ) {
