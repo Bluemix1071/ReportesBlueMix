@@ -165,6 +165,18 @@
                                 </li>
                             @endcan
 
+
+                            @can('ControlDeFolios')
+
+                                <li class="nav-item">
+                                    <a href="{{ route('ControlDeFolios') }}"
+                                        class="nav-link {{ setActive('ControlDeFolios') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Control De Folios</p>
+                                    </a>
+                                </li>
+                            @endcan
+
                             @can('ControlIpMac')
 
                                 <li class="nav-item">

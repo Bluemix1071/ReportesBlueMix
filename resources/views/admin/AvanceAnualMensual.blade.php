@@ -32,9 +32,20 @@
                 <div class="form-row">
                     <div class="col-md-6 mb-4">
                         @if (empty($ventadiaria))
-                            <h2>Venta Diaria: $ 0</h2>
+                            <h3>Venta Diaria: $ 0</h3>
                         @else
-                            <h2>Venta Diaria: ${{ number_format($ventadiaria, 0, ',', '.') }}</h2>
+                            <h3>Venta Diaria: ${{ number_format($ventadiaria, 0, ',', '.') }}</h3>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                        @if (empty($facturasporcobrar[0]->porcobrar))
+                            <h3>Facturas Por Cobrar del dia: $ 0</h3>
+                        @else
+                            <h3>Facturas Por Cobrar del dia: ${{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}</h3>
                         @endif
                     </div>
                 </div>
@@ -239,6 +250,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                    <button type="button" onclick="javascript:window.print()" class="btn btn-primary"><i class="fa fa-print"></i>  Imprimir</button>
+                </div>
                 </div>
             </div>
         </div>
