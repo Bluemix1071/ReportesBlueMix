@@ -2056,6 +2056,7 @@ public function stocktiemporeal (Request $request){
         $fecha1=$request->fecha1;
 
         $ventadiariadocumentos=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as ventadeldia from cargos where catipo != 3  and cafeco between ? and ? ;' , [$fecha1, $fecha1, $fecha1,$fecha1]);
+        $facturasporcobrar=DB::select('select sum(cavalo) as porcobrar from cargos where forma_pago = "X" and cafeco = ? ' , [$fecha1]);
         $fechames=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames' , [$fecha1]);
         $ano2018=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -49 MONTH) as ano2018' , [$fecha1]);
         $ano2019=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -37 MONTH) as ano2019' , [$fecha1]);
@@ -2079,6 +2080,8 @@ public function stocktiemporeal (Request $request){
         $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
         $fechainiciomes=$fechames[0]->primerdiames;
 
+        // dd($facturasporcobrar);
+
 
         $mensual2018=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2018 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2018,$h2018,$a2018,$h2018]);
         $mensual2019=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2019 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2019,$h2019,$a2019,$h2019]);
@@ -2093,7 +2096,7 @@ public function stocktiemporeal (Request $request){
         $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$fecha1,$fecha1]);
 
 
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','anual2018','anual2019','anual2020','anual2021','anual2022'));
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','anual2018','anual2019','anual2020','anual2021','anual2022'));
 
 
     }
@@ -2255,6 +2258,19 @@ public function stocktiemporeal (Request $request){
         // dd($productos);
 
         return view('admin.VentaProductosPorDia',compact('fecha1','fecha2','marcas','productos'));
+
+    }
+
+
+    public function ControlDeFolios(Request $request){
+
+        $productos=DB::select('select USCODI, USFADE as desde, USFAHA as hasta, max(CANMRO) as ultima_factura, (USFAHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 8 group by USCODI');
+
+        // dd($productos);
+
+        return view('admin.ControlDeFolios',compact('productos'));
+
+
 
     }
 
