@@ -2264,11 +2264,13 @@ public function stocktiemporeal (Request $request){
 
     public function ControlDeFolios(Request $request){
 
-        $productos=DB::select('select USCODI, USFADE as desde, USFAHA as hasta, max(CANMRO) as ultima_factura, (USFAHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 8 group by USCODI');
+        $facturas=DB::select('select USCODI, USFADE as desde, USFAHA as hasta, max(CANMRO) as ultima_factura, (USFAHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 8 group by USCODI');
 
-        // dd($productos);
+        $boletas=DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and fpago = "contado" group by USCODI');
 
-        return view('admin.ControlDeFolios',compact('productos'));
+        // dd($boletas);
+
+        return view('admin.ControlDeFolios',compact('facturas','boletas'));
 
 
 
