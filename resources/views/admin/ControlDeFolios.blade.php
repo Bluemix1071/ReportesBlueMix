@@ -6,117 +6,129 @@ Control De Folios
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 
-
 @endsection
-
 @section('contenido')
-
-    <div class="container-fluid">
-        <h3 class="display-4">Control De Folios</h3>
-        <div class="row">
-          <div class="col-md-12">
-            {{-- BUSCADOR --}}
-            <hr>
-{{--
-            <form action="{{ route('costosfiltro') }}" method="post" id="desvForm" class="form-inline">
-                @csrf
-                <div class="form-group mb-2">
-                    @if (empty($fecha1))
-                        <label for="staticEmail2" class="sr-only">Fecha 1</label>
-                        <input type="date" id="fecha1" class="form-control" name="fecha1">
-                    @else
-                        <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}">
-                    @endif
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-
-                    @if (empty($fecha2))
-                        <label for="inputPassword2" class="sr-only">Fecha 2</label>
-                        <input type="date" id="fecha2" name="fecha2" class="form-control">
-                    @else
-                        <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{ $fecha2 }}">
-                    @endif
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                </div>
-            </form> --}}
-
+    <div class="container my-4">
+      <h1 class="display-4">Control De Folios</h1>
+      <hr>
+      <h4>Facturas</h4>
+      <hr>
+      <section class="content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Facturas</h3>
             <div class="table-responsive-xl">
-                <table id="productos" class="table table-bordered table-hover dataTable table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col" style="text-align:left">Caja</th>
-                            <th scope="col" style="text-align:left">Desde</th>
-                            <th scope="col" style="text-align:right">Hasta</th>
-                            <th scope="col" style="text-align:right">Ultima Factura</th>
-                            <th scope="col" style="text-align:right">Restantes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (empty($productos))
+            <table id="users" class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align:left">Caja</th>
+                        <th scope="col" style="text-align:right">Desde</th>
+                        <th scope="col" style="text-align:right">Hasta</th>
+                        <th scope="col" style="text-align:right">Ultima Factura</th>
+                        <th scope="col" style="text-align:right">Restantes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (empty($facturas))
 
-                        @else
-                            @foreach ($productos as $item)
-                                <tr>
-                                    <td style="text-align:left">{{ $item->USCODI}}</td>
-                                    <td style="text-align:right">{{ number_format($item->desde, 0, ',', '.') }}</td>
-                                    <td style="text-align:right">{{ number_format($item->hasta, 0, ',', '.') }}</td>
-                                    <td style="text-align:right">{{ number_format($item->ultima_factura, 0, ',', '.') }}</td>
-                                    <td style="text-align:right">{{ number_format($item->restantes, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-            </div>
+                    @else
+                        @foreach ($facturas as $item)
+                            <tr>
+                                <td style="text-align:left">{{ $item->USCODI}}</td>
+                                <td style="text-align:right">{{ number_format($item->desde, 0, ',', '.') }}</td>
+                                <td style="text-align:right">{{ number_format($item->hasta, 0, ',', '.') }}</td>
+                                <td style="text-align:right">{{ number_format($item->ultima_factura, 0, ',', '.') }}</td>
+                                @if ($item->restantes < 0)
+                                <td style="text-align:right">0</td>
+                                @else
+                                <td style="text-align:right">{{ number_format($item->restantes, 0, ',', '.') }}</td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+             </div>
+          </div>
+          <div class="card-body">
+            <div id="jsGrid1"></div>
+
           </div>
         </div>
+      </section>
 
-</div>
+      <hr>
+      <h4>Boletas</h4>
+      <hr>
+      <section class="content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Facturas</h3>
+            <div class="table-responsive-xl">
+            <table id="users2" class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align:left">Caja</th>
+                        <th scope="col" style="text-align:right">Desde</th>
+                        <th scope="col" style="text-align:right">Hasta</th>
+                        <th scope="col" style="text-align:right">Ultima Factura</th>
+                        <th scope="col" style="text-align:right">Restantes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (empty($boletas))
+
+                    @else
+                        @foreach ($boletas as $item)
+                            <tr>
+                                <td style="text-align:left">{{ $item->USCODI}}</td>
+                                <td style="text-align:right">{{ number_format($item->desde, 0, ',', '.') }}</td>
+                                <td style="text-align:right">{{ number_format($item->hasta, 0, ',', '.') }}</td>
+                                <td style="text-align:right">{{ number_format($item->ultima_boleta, 0, ',', '.') }}</td>
+                                @if ($item->restantes < 0)
+                                <td style="text-align:right">0</td>
+                                @else
+                                <td style="text-align:right">{{ number_format($item->restantes, 0, ',', '.') }}</td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+             </div>
+          </div>
+          <div class="card-body">
+            <div id="jsGrid1"></div>
+
+          </div>
+        </div>
+      </section>
+      <br>
+
 @endsection
-
 @section('script')
+
+<script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}"></script>
+<script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}"></script>
+
 <script>
-  $(document).ready(function() {
-    $('#productos').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-
-        ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
-
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
+  $(document).ready( function () {
+    $('#users').DataTable({
+        "order": [[ 0, "desc" ]]
     } );
-  } );
-  </script>
-  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
-  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
-  <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
-  <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
-  <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
-  <script src="{{asset("js/buttons.flash.min.js")}}"></script>
-  <script src="{{asset("js/jszip.min.js")}}"></script>
-  <script src="{{asset("js/pdfmake.min.js")}}"></script>
-  <script src="{{asset("js/vfs_fonts.js")}}"></script>
-  <script src="{{asset("js/buttons.html5.min.js")}}"></script>
-  <script src="{{asset("js/buttons.print.min.js")}}"></script>
+} );
+
+</script>
 
 
+<script>
+  $(document).ready( function () {
+    $('#users2').DataTable({
+        "order": [[ 0, "desc" ]]
+    } );
+} );
 
-<script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
+</script>
+
 
 @endsection
