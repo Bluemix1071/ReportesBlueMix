@@ -1773,13 +1773,13 @@ public function stocktiemporeal (Request $request){
 
         if($request->codigo == null){
 
-        // $contrato=DB::table('Vista_Productos')
-        // ->join('contrato_detalle','codigo_producto', '=', 'interno')
-        // ->join('contratos','id_contratos', '=', 'fk_contrato')
-        // ->where('nombre_contrato', $request->contrato)
-        // ->get();
+        $contrato=DB::table('Vista_Productos')
+        ->join('contrato_detalle','codigo_producto', '=', 'interno')
+        ->join('contratos','id_contratos', '=', 'fk_contrato')
+        ->where('nombre_contrato', $request->contrato)
+        ->get();
 
-        $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO,sum(decant) as venta,cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5) and DECODI = interno and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate() group by decodi', [$request->contrato]);
+        // $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO,sum(decant) as venta,cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5) and DECODI = interno and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate() group by decodi', [$request->contrato]);
 
 
         $contratos=DB::table('contratos')
@@ -1799,14 +1799,14 @@ public function stocktiemporeal (Request $request){
 
         else{
 
-        // $contrato=DB::table('Vista_Productos')
-        // ->join('contrato_detalle','codigo_producto', '=', 'interno')
-        // ->join('contratos','id_contratos', '=', 'fk_contrato')
-        // ->where('interno', $request->codigo)
-        // ->get();
+        $contrato=DB::table('Vista_Productos')
+        ->join('contrato_detalle','codigo_producto', '=', 'interno')
+        ->join('contratos','id_contratos', '=', 'fk_contrato')
+        ->where('interno', $request->codigo)
+        ->get();
 
 
-        $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
+        // $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
 
 
         $contratos=DB::table('contratos')
