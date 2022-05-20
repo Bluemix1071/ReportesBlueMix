@@ -1,22 +1,19 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Agregar Contrato
+    Agregar Contrato
 @endsection
 @section('styles')
-
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css") }}">
-
-
 @endsection
 
 @section('contenido')
-
     <div class="container-fluid">
         <h1>Agregar Contrato</h1>
         <hr>
         <div class="container">
             <div class="col-md-12">
-                <form action="{{ route('MantenedorContratoAgregarContrato') }}" enctype="multipart/form-data" method="post" id="desvForm" >
+                <form action="{{ route('MantenedorContratoAgregarContrato') }}" enctype="multipart/form-data"
+                    method="post" id="desvForm">
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title"> Datos del Contrato</h3>
@@ -25,25 +22,29 @@ Agregar Contrato
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">ID Contrato</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="idcontrato" required placeholder="ID Contrato">
+                                    <input type="text" class="form-control" name="idcontrato" required
+                                        placeholder="ID Contrato">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Nombre Contrato</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nombrecontrato" required placeholder="Nombre Contrato">
+                                    <input type="text" class="form-control" name="nombrecontrato" required
+                                        placeholder="Nombre Contrato">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Plazo Entrega</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="plazoentrega" placeholder="Plazo Entrega">
+                                    <input type="text" class="form-control" required name="plazoentrega"
+                                        placeholder="Plazo Entrega">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Contado Desde</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="contadodesde" placeholder="Contado Desde">
+                                    <input type="text" class="form-control" required name="contadodesde"
+                                        placeholder="Contado Desde">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -55,19 +56,20 @@ Agregar Contrato
                             <div class="form-group row">
                                 <label for="inputEmail3" class="col-sm-2 col-form-label">Multa</label>
                                 <div class="table-responsive-xl">
-                                <div class="col-sm-10">
-                                    <textarea name="multa" placeholder="Multa..." id="" cols="95" required
-                                        rows="7"></textarea>
+                                    <div class="col-sm-10">
+                                        <textarea name="multa" placeholder="Multa..." id="" cols="95" required rows="7"></textarea>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
             </div>
+            <br>
             <button type="submit" class="btn btn-primary">Agregar Contrato</button>
             </form>
         </div>
-
+        <br>
+        <hr>
     </div>
 @endsection
 
@@ -97,7 +99,6 @@ Agregar Contrato
                 }
             });
         });
-
     </script>
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
@@ -113,23 +114,23 @@ Agregar Contrato
     <script src="{{ asset('js/ajaxproductospormarca.js') }}"></script>
 
 
-      <script>  function ValidarFecha(e) {
+    <script>
+        function ValidarFecha(e) {
 
-        var fecha_item = document.getElementById('fecha_id')
-        var fecha = moment(fecha_item.value).format('YYYY/MM/DD')
-        const now = moment().format('YYYY/MM/DD')
+            var fecha_item = document.getElementById('fecha_id')
+            var fecha = moment(fecha_item.value).format('YYYY/MM/DD')
+            const now = moment().format('YYYY/MM/DD')
 
-        if (fecha < now) {
-            fecha_item.className = 'form-control is-invalid'
-            fecha_item.value = ''
-            alert('No Puede Agendar Trabajos Para Dias Que Ya Pasaron')
+            if (fecha < now) {
+                fecha_item.className = 'form-control is-invalid'
+                fecha_item.value = ''
+                alert('No Puede Agendar Trabajos Para Dias Que Ya Pasaron')
 
-        } else {
+            } else {
 
-            fecha_item.className = 'form-control is-valid'
+                fecha_item.className = 'form-control is-valid'
+            }
+
         }
-
-    }
-</script>
-
+    </script>
 @endsection

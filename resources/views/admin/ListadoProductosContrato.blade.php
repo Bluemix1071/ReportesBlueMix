@@ -145,6 +145,8 @@
                                 <th scope="col" style="text-align:left">Descripción</th>
                                 <th scope="col" style="text-align:left">Marca</th>
                                 <th scope="col" style="text-align:left">Contrato</th>
+                                <th scope="col" style="text-align:left">Ult. Precio Costo</th>
+                                <th scope="col" style="text-align:left">Venta Ult. Año</th>
                                 <th scope="col" style="text-align:left">Cantidad Contrato</th>
                                 <th scope="col" style="text-align:left">Cantidad sala</th>
                                 <th scope="col" style="text-align:left">Cantidad Bodega</th>
@@ -160,6 +162,8 @@
                                         <td style="text-align:left">{{ $item->descripcion}}</td>
                                         <td style="text-align:left">{{ $item->marca}}</td>
                                         <td style="text-align:left">{{ $item->nombre_contrato}}</td>
+                                        <td style="text-align:right">{{ number_format($item->PCCOSTO, 0, ',', '.') }}</td>
+                                        <td style="text-align:right">{{ number_format($item->venta, 0, ',', '.') }}</td>
                                         <td style="text-align:right">{{ number_format($item->cantidad_contrato, 0, ',', '.') }}</td>
                                         <td style="text-align:right">{{ number_format($item->sala, 0, ',', '.') }}</td>
                                         <td style="text-align:right">{{ number_format($item->bodega, 0, ',', '.') }}</td>
