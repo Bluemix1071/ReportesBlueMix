@@ -42,14 +42,14 @@
                                 value="">
                         @endif
                     </div>
-                    <div class="col-md-2 ">
+                    {{-- <div class="col-md-2 ">
                         <button type="submit" class="btn btn-primary mb-2">Buscar</button>
                     </div>
                     @if (empty($consulta))
                             <div class="col">
                                 <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#mimodalclientecredito">Buscar Cliente</button>
                             </div>
-                    @endif
+                    @endif --}}
                 </form>
                 <hr>
             </div>
@@ -593,7 +593,7 @@
     </section>
 
      <!-- Modal lista clientes credito-->
- <div class="modal fade" id="mimodalclientecredito" tabindex="-1" role="dialog" aria-labelledby="myModalLabelupdate" aria-hidden="true">
+ {{-- <div class="modal fade" id="mimodalclientecredito" tabindex="-1" role="dialog" aria-labelledby="myModalLabelupdate" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -668,7 +668,7 @@
      </div>
     </div>
   </div>
-</div>
+</div> --}}
 
 @endsection
 
