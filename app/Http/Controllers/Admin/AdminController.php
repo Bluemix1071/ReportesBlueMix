@@ -1400,14 +1400,14 @@ public function stocktiemporeal (Request $request){
             ->leftjoin('tablas', 'cliente.CLCIUF' , '=', 'tablas.TAREFE')
             ->where('CLTCLI', 7)
             ->get('CLRUTC', 'CLRUTD', 'DEPARTAMENTO', 'CLRSOC', 'tablas.TAGLOS AS GIRO'); */
-            $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI
+            /* $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI
               FROM cliente
               LEFT JOIN tablas ON cliente.CLCIUF = tablas.TAREFE
-              AND tablas.TACODI = 8");
+              AND tablas.TACODI = 8"); */
 
             //dd($clientescredito);
 
-            return view('admin.MantencionClientes', compact('clientescredito'));
+            return view('admin.MantencionClientes');
     }
 
     public function MantencionClientesFiltro(Request $request){
@@ -2274,11 +2274,30 @@ public function stocktiemporeal (Request $request){
 
         $boletas=DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and fpago = "contado" group by USCODI');
 
-        // dd($boletas);
+        $ultima_factura = DB::select('SELECT * FROM usuario order by USFAHA desc limit 1')[0];
 
-        return view('admin.ControlDeFolios',compact('facturas','boletas'));
+        $ultima_boleta = DB::select('SELECT * FROM usuario order by USBOHA desc limit 1')[0];
 
+        return view('admin.ControlDeFolios',compact('facturas','boletas','ultima_factura','ultima_boleta'));
 
+    }
+
+    public function EditarFolios(Request $request){
+
+      dd($request);
+
+      $primer_folio = $request->get("ultimo")+1;
+      $asignados = $request->get("folios");
+      
+      if($asignados > 0 ){
+        dd($primer_folio+$asignados);
+        DB::table('usuario')
+        ->where('USCODI' , 100)
+        ->update(['USFADE' => $primer_folio,
+                  'USFAHA' => ($primer_folio+$asignados)]);
+      }elseif($asignados == 0){
+        dd("gual 0");
+      }
 
     }
 
