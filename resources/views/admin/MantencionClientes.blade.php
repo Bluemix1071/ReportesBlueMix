@@ -42,9 +42,10 @@
                                 value="">
                         @endif
                     </div>
-                    {{-- <div class="col-md-2 ">
+                    <div class="col-md-2 ">
                         <button type="submit" class="btn btn-primary mb-2">Buscar</button>
                     </div>
+                    {{--
                     @if (empty($consulta))
                             <div class="col">
                                 <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#mimodalclientecredito">Buscar Cliente</button>
