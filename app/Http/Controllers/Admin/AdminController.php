@@ -2284,19 +2284,44 @@ public function stocktiemporeal (Request $request){
 
     public function EditarFolios(Request $request){
 
-      dd($request);
+      $primer_folio = $request->get("ultimo")+1;
+      $asignados = $request->get("folios");
+      $caja = $request->get("caja");
+      
+      if($asignados > 0 ){
+        DB::table('usuario')
+        ->where('USCODI' , $caja)
+        ->update(['USFADE' => $primer_folio,
+                  'USFAHA' => ($primer_folio+$asignados)]);
+      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
+      }elseif($asignados == 0){
+        DB::table('usuario')
+        ->where('USCODI' , $caja)
+        ->update(['USFADE' => $request->get("desde"),
+                  'USFAHA' => $request->get("hasta")]);
+      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
+      }
+
+    }
+
+    public function EditarFoliosBoletas(Request $request){
 
       $primer_folio = $request->get("ultimo")+1;
       $asignados = $request->get("folios");
+      $caja = $request->get("caja");
       
       if($asignados > 0 ){
-        dd($primer_folio+$asignados);
         DB::table('usuario')
-        ->where('USCODI' , 100)
-        ->update(['USFADE' => $primer_folio,
-                  'USFAHA' => ($primer_folio+$asignados)]);
+        ->where('USCODI' , $caja)
+        ->update(['USBODE' => $primer_folio,
+                  'USBOHA' => ($primer_folio+$asignados)]);
+      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
       }elseif($asignados == 0){
-        dd("gual 0");
+        DB::table('usuario')
+        ->where('USCODI' , $caja)
+        ->update(['USBODE' => $request->get("desde"),
+                  'USBOHA' => $request->get("hasta")]);
+      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
       }
 
     }
