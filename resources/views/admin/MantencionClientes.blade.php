@@ -303,7 +303,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @if(!empty($t_c_a_a) && !empty($t_c_a_m))
+                                    {{-- @if(!empty($t_c_a_a) && !empty($t_c_a_m)) --}}
                                     <div class="row">
                                     <div class="col">
                                         <strong class="row">Total Adjudicadas: {{ $t_c_a_a }}</strong>
@@ -314,7 +314,7 @@
                                         <strong class="row">Principal Adjudicador: {{ $p_p_e->adjudicatorio }}</strong>
                                     </div>
                                     </div>
-                                    @endif
+                                    {{-- @endif --}}
                                 </div>
                             </div>
                         </div>
