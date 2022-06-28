@@ -1407,7 +1407,12 @@ public function stocktiemporeal (Request $request){
 
             //dd($clientescredito);
 
-            return view('admin.MantencionClientes');
+            $p_r_a = [];
+            $p_p_e = [];
+            $t_c_a_a = 0;
+            $t_c_a_m = 0;
+
+            return view('admin.MantencionClientes', compact('p_r_a', 'p_p_e', 't_c_a_a', 't_c_a_m'));
     }
 
     public function MantencionClientesFiltro(Request $request){
@@ -1474,7 +1479,7 @@ public function stocktiemporeal (Request $request){
               order by moda desc
               limit 1")[0];
         }catch(\Throwable $th){
-          $p_r_a = [ "observacion" => ""];
+          $p_r_a = [];
         }
 
         $p_p_e = [];
@@ -1490,7 +1495,7 @@ public function stocktiemporeal (Request $request){
               order by moda desc
               limit 1")[0];
         }catch(\Throwable $th){
-          $p_p_e = [ "adjudicatorio" => ""];
+          $p_p_e = [];
         }
 
         $t_c_a_a = 0;
