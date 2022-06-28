@@ -303,18 +303,33 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    {{-- @if(!empty($t_c_a_a) && !empty($t_c_a_m)) --}}
+                                    @if($t_c_a_a != 0 && $t_c_a_m != 0)
                                     <div class="row">
                                     <div class="col">
                                         <strong class="row">Total Adjudicadas: {{ $t_c_a_a }}</strong>
                                         <strong class="row">Monto Total Adjudicadas: ${{ number_format(($t_c_a_m), 0, ',', '.') }}</strong>
                                     </div>
+                                    @else
+                                    <div class="row">
+                                    <div class="col">
+                                        <strong class="row">Total Adjudicadas: 0</strong>
+                                        <strong class="row">Monto Total Adjudicadas: 0</strong>
+                                    </div>
+                                    @endif
+
+                                    @if(!empty($p_r_a) && !empty($p_p_e))
                                     <div class="col">
                                         <strong class="row">Principal Razon Adjudicación: {{ $p_r_a->observacion }}</strong>
                                         <strong class="row">Principal Adjudicador: {{ $p_p_e->adjudicatorio }}</strong>
                                     </div>
+                                    @else
+                                    <div class="col">
+                                        <strong class="row">Principal Razon Adjudicación: </strong>
+                                        <strong class="row">Principal Adjudicador: </strong>
                                     </div>
-                                    {{-- @endif --}}
+                                    @endif
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
