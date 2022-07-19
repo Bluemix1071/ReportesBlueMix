@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Stock Tiempo Real
+    Productos Sin Subir
 @endsection
 @section('styles')
 
@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <h3 class="display-3">Productos Sin Subir</h3>
+                <h3 class="display-4">Productos Sin Subir</h3>
             </div>
             <div class="col md-6">
                 {{-- algo al lado del titulo --}}
@@ -69,7 +69,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="card-body">Consulta Orientada Para conocer los productos que no están ingresado a la página web, se Recomienda sincronizar
-                        antes los productos para saber realmente los que aún no se suben pinchando en <a href="{{ route('index.jumpsellerEmpresas') }}">Sincronizar Productos.</a></div>
+                        antes los productos para saber realmente los que aún no se suben pinchando en <a href="{{ route('index.jumpsellerEmpresas') }}">Sincronizar Productos.</a> considerar que los productos mostrados son aquellos que en la suma de sala y bodega es mayor a 0.</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
