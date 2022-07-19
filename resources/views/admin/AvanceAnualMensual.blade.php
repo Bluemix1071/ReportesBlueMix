@@ -45,7 +45,8 @@
                         @if (empty($facturasporcobrar[0]->porcobrar))
                             <h3>Facturas Por Cobrar del dia: $ 0</h3>
                         @else
-                            <h3>Facturas Por Cobrar del dia: ${{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}</h3>
+                            <h3>Facturas Por Cobrar del dia:
+                                ${{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}</h3>
                         @endif
                     </div>
                 </div>
@@ -68,7 +69,8 @@
                                     <label for="validationTooltip02"> {{ $fecha1 }}</label>
                                 @endif
                                 @if (empty($mensual2018[0]->año2018))
-                                    <input type="text" class="form-control" id="2018mensual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2018mensual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2018mensual" readonly
                                         value="{{ number_format($mensual2018[0]->año2018, 0, ',', '.') }}" required>
@@ -83,7 +85,8 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($mensual2019[0]->año2019))
-                                    <input type="text" class="form-control" id="2019mensual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2019mensual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2019mensual" readonly
                                         value="{{ number_format($mensual2019[0]->año2019, 0, ',', '.') }}" required>
@@ -98,7 +101,8 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($mensual2020[0]->año2020))
-                                    <input type="text" class="form-control" id="2020mensual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2020mensual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2020mensual" readonly
                                         value="{{ number_format($mensual2020[0]->año2020, 0, ',', '.') }}" required>
@@ -113,7 +117,8 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($mensual2021[0]->año2021))
-                                    <input type="text" class="form-control" id="2021mensual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2021mensual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2021mensual" readonly
                                         value="{{ number_format($mensual2021[0]->año2021, 0, ',', '.') }}" required>
@@ -128,7 +133,8 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($mensual2022[0]->año2022))
-                                    <input type="text" class="form-control" id="2022mensual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2022mensual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2022mensual" readonly
                                         value="{{ number_format($mensual2022[0]->año2022, 0, ',', '.') }}" required>
@@ -143,8 +149,9 @@
                             <div class="card-body" width="200" height="250">
                                 <div width="200" height="100" class="container-fluid">
 
-                                    <canvas id="myChart" height="0" style="height: 0px; display: block; width: 0px;"
-                                        width="0" class="chartjs-render-monitor"></canvas>
+                                    <canvas id="myChart" height="0"
+                                        style="height: 0px; display: block; width: 0px;" width="0"
+                                        class="chartjs-render-monitor"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +176,8 @@
                                     <label for="validationTooltip02"> {{ $fecha1 }}</label>
                                 @endif
                                 @if (empty($anual2018[0]->anualaño2018))
-                                    <input type="text" class="form-control" id="2018anual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2018anual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2018anual" readonly
                                         value="{{ number_format($anual2018[0]->anualaño2018, 0, ',', '.') }}" required>
@@ -184,7 +192,8 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($anual2019[0]->anualaño2019))
-                                    <input type="text" class="form-control" id="2019anual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2019anual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2019anual" readonly
                                         value="{{ number_format($anual2019[0]->anualaño2019, 0, ',', '.') }}" required>
@@ -199,7 +208,8 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($anual2020[0]->anualaño2020))
-                                    <input type="text" class="form-control" id="2020anual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2020anual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2020anual" readonly
                                         value="{{ number_format($anual2020[0]->anualaño2020, 0, ',', '.') }}" required>
@@ -214,7 +224,8 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($anual2021[0]->anualaño2021))
-                                    <input type="text" class="form-control" id="2021anual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2021anual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2021anual" readonly
                                         value="{{ number_format($anual2021[0]->anualaño2021, 0, ',', '.') }}" required>
@@ -229,7 +240,8 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($anual2022[0]->anualaño2022))
-                                    <input type="text" class="form-control" id="2022anual" readonly value="0" required>
+                                    <input type="text" class="form-control" id="2022anual" readonly value="0"
+                                        required>
                                 @else
                                     <input type="text" class="form-control" id="2022anual" readonly
                                         value="{{ number_format($anual2022[0]->anualaño2022, 0, ',', '.') }}" required>
@@ -244,15 +256,94 @@
                             <div class="card-body" width="200" height="250">
                                 <div width="200" height="100" class="container-fluid">
 
-                                    <canvas id="myChart2" height="0" style="height: 0px; display: block; width: 0px;"
-                                        width="0" class="chartjs-render-monitor"></canvas>
+                                    <canvas id="myChart2" height="0"
+                                        style="height: 0px; display: block; width: 0px;" width="0"
+                                        class="chartjs-render-monitor"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                    <button type="button" onclick="javascript:window.print()" class="btn btn-primary"><i class="fa fa-print"></i>  Imprimir</button>
-                </div>
+                        <form action="{{ route('AvanceAnualMensualExcel') }}" method="post" id="desvForm" class="form-inline">
+                            <div class="col-md-6">
+                                <button type="button" onclick="javascript:window.print()" class="btn btn-primary"><i
+                                        class="fa fa-print"></i> Imprimir</button>
+                                <button type="submit" class="btn btn-success"><i class="fa fa-file"></i> Excel</button>
+                                @if (empty($ventadiaria))
+                                <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="{{ number_format($ventadiaria, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($facturasporcobrar[0]->porcobrar))
+                                <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="{{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($mensual2018[0]->año2018))
+                                <input type="text" class="form-control" hidden id="m2018" name="m2018" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="m2018" name="m2018" readonly value="{{ number_format($mensual2018[0]->año2018, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($mensual2019[0]->año2019))
+                                <input type="text" class="form-control" hidden id="m2019" name="m2019" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="m2019" name="m2019" readonly value="{{ number_format($mensual2019[0]->año2019, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($mensual2020[0]->año2020))
+                                <input type="text" class="form-control" hidden id="m2020" name="m2020" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="m2020" name="m2020" readonly value="{{ number_format($mensual2020[0]->año2020, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($mensual2021[0]->año2021))
+                                <input type="text" class="form-control" hidden id="m2021" name="m2021" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="m2021" name="m2021" readonly value="{{ number_format($mensual2021[0]->año2021, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($mensual2022[0]->año2022))
+                                <input type="text" class="form-control" hidden id="m2022" name="m2022" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="m2022" name="m2022" readonly value="{{ number_format($mensual2022[0]->año2022, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($anual2018[0]->anualaño2018))
+                                <input type="text" class="form-control" hidden id="a2018" name="a2018" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="a2018" name="a2018" readonly value="{{ number_format($anual2018[0]->anualaño2018, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($anual2019[0]->anualaño2019))
+                                <input type="text" class="form-control" hidden id="a2019" name="a2019" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="a2019" name="a2019" readonly value="{{ number_format($anual2019[0]->anualaño2019, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($anual2020[0]->anualaño2020))
+                                <input type="text" class="form-control" hidden id="a2020" name="a2020" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="a2020" name="a2020" readonly value="{{ number_format($anual2020[0]->anualaño2020, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($anual2021[0]->anualaño2021))
+                                <input type="text" class="form-control" hidden id="a2021" name="a2021" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="a2021" name="a2021" readonly value="{{ number_format($anual2021[0]->anualaño2021, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($anual2022[0]->anualaño2022))
+                                <input type="text" class="form-control" hidden id="a2022" name="a2022" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="a2022" name="a2022" readonly value="{{ number_format($anual2022[0]->anualaño2022, 0, ',', '.') }}" required>
+                                @endif
+                                {{-- <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="{{ number_format($ventadiaria, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="{{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="m2018" name="m2018" readonly value="{{ number_format($mensual2018[0]->año2018, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="m2019" name="m2019" readonly value="{{ number_format($mensual2019[0]->año2019, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="m2020" name="m2020" readonly value="{{ number_format($mensual2020[0]->año2020, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="m2021" name="m2021" readonly value="{{ number_format($mensual2021[0]->año2021, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="m2022" name="m2022" readonly value="{{ number_format($mensual2022[0]->año2022, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="a2018" name="a2018" readonly value="{{ number_format($anual2018[0]->anualaño2018, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="a2019" name="a2019" readonly value="{{ number_format($anual2019[0]->anualaño2019, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="a2020" name="a2020" readonly value="{{ number_format($anual2020[0]->anualaño2020, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="a2021" name="a2021" readonly value="{{ number_format($anual2021[0]->anualaño2021, 0, ',', '.') }}" required> --}}
+                                {{-- <input type="text" class="form-control" hidden id="a2022" name="a2022" readonly value="{{ number_format($anual2022[0]->anualaño2022, 0, ',', '.') }}" required> --}}
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -265,7 +356,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
 
     <script>
-        document.body.style.zoom = "127%";
+        document.body.style.zoom = "100%"; // era 127%
 
         let mensual2018 = $("#2018mensual").val().replace(/\./g, '');
         let mensual2019 = $("#2019mensual").val().replace(/\./g, '');

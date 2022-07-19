@@ -228,6 +228,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/AvanceAnualMensual','AdminController@AvanceAnualMensual')->name('AvanceAnualMensual');
     Route::post('/AvanceAnualMensualFiltro','AdminController@AvanceAnualMensualFiltro')->name('AvanceAnualMensualFiltro');
+    Route::post('/AvanceAnualMensualExcel','AdminController@AvanceAnualMensualExcel')->name('AvanceAnualMensualExcel');
 
     Route::get('/VentasPorVendedor','AdminController@VentasPorVendedor')->name('VentasPorVendedor');
     Route::post('/VentasPorVendedorFiltro','AdminController@VentasPorVendedorFiltro')->name('VentasPorVendedorFiltro');
@@ -241,6 +242,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ControlDeFolios', 'AdminController@ControlDeFolios')->name('ControlDeFolios');
     Route::post('/ControlDeFolios', 'AdminController@EditarFolios')->name('EditarFolios');
     Route::post('/ControlDeFoliosBoletas', 'AdminController@EditarFoliosBoletas')->name('EditarFoliosBoletas');
+
+    Route::get('/InformeUtilidades','AdminController@InformeUtilidades')->name('InformeUtilidades');
+    Route::post('/InformeUtilidadesFiltro','AdminController@InformeUtilidadesFiltro')->name('InformeUtilidadesFiltro');
+
+    Route::get('/VentasPorRut','AdminController@VentasPorRut')->name('VentasPorRut');
+    Route::post('/VentasPorRutFiltro','AdminController@VentasPorRutFiltro')->name('VentasPorRutFiltro');
 
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//

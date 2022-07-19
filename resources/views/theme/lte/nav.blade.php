@@ -359,14 +359,14 @@
 
 
                                 @can('Admindiseno')
-
+{{--
                                 <li class="nav-item">
                                     <a href="{{ route('GastosInternosDiseño') }}"
                                         class="nav-link {{ setActive('GastosInternosDiseño') }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Gastos Internos Diseño</p>
                                     </a>
-                                </li>
+                                </li> --}}
                             @endcan
 
                             @can('Admindiseno')
@@ -401,6 +401,14 @@
                                         </a>
                                     </li>
                                 @endcan
+
+                                <li class="nav-item">
+                                    <a href="{{ route('VentasPorRut') }}"
+                                        class="nav-link {{ setActive('VentasPorRut') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Ventas Por Rut</p>
+                                    </a>
+                                </li>
 
                                 @can('ventasCategoria')
 
@@ -552,14 +560,14 @@
                                         </p>
                                     </a>
                                 </li>
-
+{{--
                                 <li class="nav-item">
                                     <a href="{{ route('InformeExistencia') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Informe Existencia
                                         </p>
                                     </a>
-                                </li>
+                                </li> --}}
 
                                 {{-- <li class="nav-item">
                                     <a href="{{ route('ResumenDeVenta') }}" class="nav-link">
@@ -568,6 +576,14 @@
                                         </p>
                                     </a>
                                 </li> --}}
+
+                                <li class="nav-item">
+                                    <a href="{{ route('InformeUtilidades') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Informe Utilidades
+                                        </p>
+                                    </a>
+                                </li>
 
 
                                 <li class="nav-item">
@@ -757,13 +773,13 @@
                                             @endcan
                                             {{-- Fin Bluemix.cl --}}
 
-                                            {{-- <li class="nav-item">
+                                            <li class="nav-item">
                                                 <a href="{{ route('ProductosFaltantes') }}"
                                                     class="nav-link {{ setActive('ProductosFaltantes') }}">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Productos Sin Subir</p>
                                                 </a>
-                                            </li> --}}
+                                            </li>
 
                                         </ul>
                                     </li>

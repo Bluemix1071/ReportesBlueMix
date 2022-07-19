@@ -22,6 +22,8 @@ use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use App\Modelos\InventarioTemporal;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 
@@ -1778,15 +1780,18 @@ public function stocktiemporeal (Request $request){
 
         if($request->codigo == null){
 
-        $contrato=DB::table('Vista_Productos')
-        ->join('contrato_detalle','codigo_producto', '=', 'interno')
-        ->join('contratos','id_contratos', '=', 'fk_contrato')
-        ->where('nombre_contrato', $request->contrato)
-        ->get();
+        // $contrato=DB::table('Vista_Productos')
+        // ->join('contrato_detalle','codigo_producto', '=', 'interno')
+        // ->join('contratos','id_contratos', '=', 'fk_contrato')
+        // ->where('nombre_contrato', $request->contrato)
+        // ->get();
 
-        // $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO,sum(decant) as venta,cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5) and DECODI = interno and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate() group by decodi', [$request->contrato]);
+        $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO,sum(decant) as venta,cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5) and DECODI = interno and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate() group by decodi', [$request->contrato]);
 
 
+        // $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO, cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5)', [$request->contrato]);
+
+        //ultima fecha llegada
         $contratos=DB::table('contratos')
         ->get();
 
@@ -1804,14 +1809,16 @@ public function stocktiemporeal (Request $request){
 
         else{
 
-        $contrato=DB::table('Vista_Productos')
-        ->join('contrato_detalle','codigo_producto', '=', 'interno')
-        ->join('contratos','id_contratos', '=', 'fk_contrato')
-        ->where('interno', $request->codigo)
-        ->get();
+        // $contrato=DB::table('Vista_Productos')
+        // ->join('contrato_detalle','codigo_producto', '=', 'interno')
+        // ->join('contratos','id_contratos', '=', 'fk_contrato')
+        // ->where('interno', $request->codigo)
+        // ->get();
+
+        $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
 
 
-        // $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
+        // $contrato=DB::select('select * from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo]);
 
 
         $contratos=DB::table('contratos')
@@ -1900,16 +1907,16 @@ public function stocktiemporeal (Request $request){
 
     }
 
-    // public function ProductosFaltantes(Request $request){
+    public function ProductosFaltantes(Request $request){
 
-    //     // dd($request->all());
+        // dd($request->all());
 
-    //     $consulta=DB::table('productos_faltantes')->get();
+        $consulta=DB::table('productos_faltantes')->get();
 
 
-    //     return view('admin.ProductosFaltantes',compact('consulta'));
+        return view('admin.ProductosFaltantes',compact('consulta'));
 
-    // }
+    }
 
     public function MantenedorProducto(Request $request){
 
@@ -2107,8 +2114,83 @@ public function stocktiemporeal (Request $request){
         $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$fecha1,$fecha1]);
 
 
+
         return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','anual2018','anual2019','anual2020','anual2021','anual2022'));
 
+
+    }
+
+
+    public function AvanceAnualMensualExcel(Request $request){
+
+        // SE USA LIBRERIA PhpSpreadsheet para excel
+
+        // dd($request->all());
+
+        $ventadiaria=$request->ventadiaria;
+        $facturasporcobrar=$request->facturasporcobrar;
+        // $ventacajas=$ventadiaria-$facturasporcobrar;
+        $m2018=$request->m2018;
+        $m2019=$request->m2019;
+        $m2020=$request->m2020;
+        $m2021=$request->m2021;
+        $m2022=$request->m2022;
+        $a2018=$request->a2018;
+        $a2019=$request->a2019;
+        $a2020=$request->a2020;
+        $a2021=$request->a2021;
+        $a2022=$request->a2022;
+
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getColumnDimension('A')->setWidth(30);
+        $sheet->getColumnDimension('B')->setWidth(20);
+        $sheet->setCellValue('A3', 'Ingreso');
+        $sheet->setCellValue('A4', 'Total Diario');
+        $sheet->setCellValue('A5', 'Facturas Por Cobrar / Total');
+        $sheet->setCellValue('A6', 'Venta /Cajas');
+        $sheet->setCellValue('A7', 'Costo Venta Diaria');
+        $sheet->setCellValue('A8', 'Margen De Contribucion');
+        $sheet->setCellValue('A9', 'Porcentaje Del Día');
+        $sheet->setCellValue('A10', 'Ingreso Semanal');
+        $sheet->setCellValue('A11', 'Ingreso Promedio Diario');
+        $sheet->setCellValue('A12', 'Avance Mensual');
+        $sheet->setCellValue('A13', '2018');
+        $sheet->setCellValue('A14', '2019');
+        $sheet->setCellValue('A15', '2020');
+        $sheet->setCellValue('A16', '2021');
+        $sheet->setCellValue('A17', '2022');
+        $sheet->setCellValue('A18', 'Avance Anual');
+        $sheet->setCellValue('A19', '2018');
+        $sheet->setCellValue('A20', '2019');
+        $sheet->setCellValue('A21', '2020');
+        $sheet->setCellValue('A21', '2021');
+        $sheet->setCellValue('A22', '2022');
+        $sheet->setCellValue('B4', $ventadiaria);
+        $sheet->setCellValue('B5', $facturasporcobrar);
+        // $sheet->setCellValue('B6', $ventacajas);
+        $sheet->setCellValue('B13', $m2018);
+        $sheet->setCellValue('B14', $m2019);
+        $sheet->setCellValue('B15', $m2020);
+        $sheet->setCellValue('B16', $m2021);
+        $sheet->setCellValue('B17', $m2022);
+        $sheet->setCellValue('B18', $a2018);
+        $sheet->setCellValue('B19', $a2019);
+        $sheet->setCellValue('B20', $a2020);
+        $sheet->setCellValue('B21', $a2021);
+        $sheet->setCellValue('B22', $a2022);
+
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Avance Mensual Anual.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+
+        // return view('admin.VentasPorVendedor',compact('vendedor'));
 
     }
 
@@ -2328,6 +2410,71 @@ public function stocktiemporeal (Request $request){
                   'USBOHA' => $request->get("hasta")]);
       return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
       }
+
+    }
+
+
+
+
+    public function InformeUtilidades(Request $request){
+
+        $contratos=DB::table('contratos')
+        ->get();
+
+        // dd($contratos);
+
+
+        return view('admin.InformeUtilidades');
+
+
+    }
+
+    public function InformeUtilidadesFiltro(Request $request){
+
+        // dd($request->all());
+
+
+        return view('admin.InformeUtilidades',compact('contratos'));
+
+
+    }
+
+
+
+    public function VentasPorRut(Request $request){
+
+
+        return view('admin.VentasPorRut');
+
+
+    }
+
+    public function VentasPorRutFiltro(Request $request){
+
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
+        $rut=$request->rut;
+
+
+        $ventas=DB::table('cargos')
+        ->where('CATIPO' , 8)
+        ->where('CATIPO' , 7)
+        ->where('CARUTC' , $request->rut)
+        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        ->get();
+
+        // dd($ventas);
+
+
+        // $ventas=DB::table('cargos')
+        // ->selectRaw("CANMRO,CATIPO,CARUTC,razon,CAFECO,CAIVA,CANETO,CAVALO,(CANETO * $comision) as comision")
+        // ->where('CACOVE' , $request->vendedor)
+        // ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+        // ->get();
+
+
+        return view('admin.VentasPorRut',compact('ventas'));
+
 
     }
 
