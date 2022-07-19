@@ -106,26 +106,8 @@
             </div>
         </section>
 
-        <!-- Modal info help -->
-        <div class="modal fade bd-example-modal-lg" id="mimodalinfo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content col-md-6" style="margin-left: 25%">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Ayuda</h4>
-            </div>
-            <div class="modal-body">
-                <p>La fecha de filtrado es correspondiente a la columna número cuatro: <b>'FECHA EMISIÓN'</b>.</p>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Salir</a>
-            </div>
-            </div>
-        </div>
-        </div>
-
-
         <!-- Modal Editar -->
-        <div class="modal fade" id="mimodalejemploCOMBO" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="mimodaleditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

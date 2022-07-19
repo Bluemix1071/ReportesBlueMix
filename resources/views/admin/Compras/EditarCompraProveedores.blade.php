@@ -238,8 +238,14 @@
                         </div>
                         <button type="submit" class="btn btn-success">Editar Factura</button>
                     </div>
-            </div>
+                </div>
             </form>
+            @if($compra->xml != "Null")
+            <form action="{{ route('DescargaXml', ['ruta' => $compra->xml, 'rut' => $compra->rut, 'folio' => $compra->folio]) }}" method="post" enctype="multipart/form-data">
+                @csrf
+                &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-success px-2" title="Descargar XML">Descargar XML <i class="fas fa-download" title="Descargar XML"></i></button>
+            </form>
+            @endif
         </div>
        <!--  <hr>
         <h1 class="display-4">Notas Credito</h1>

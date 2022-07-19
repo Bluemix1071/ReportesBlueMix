@@ -1402,14 +1402,19 @@ public function stocktiemporeal (Request $request){
             ->leftjoin('tablas', 'cliente.CLCIUF' , '=', 'tablas.TAREFE')
             ->where('CLTCLI', 7)
             ->get('CLRUTC', 'CLRUTD', 'DEPARTAMENTO', 'CLRSOC', 'tablas.TAGLOS AS GIRO'); */
-            $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI
+            /* $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI
               FROM cliente
               LEFT JOIN tablas ON cliente.CLCIUF = tablas.TAREFE
-              AND tablas.TACODI = 8");
+              AND tablas.TACODI = 8"); */
 
             //dd($clientescredito);
 
-            return view('admin.MantencionClientes', compact('clientescredito'));
+            $p_r_a = [];
+            $p_p_e = [];
+            $t_c_a_a = 0;
+            $t_c_a_m = 0;
+
+            return view('admin.MantencionClientes', compact('p_r_a', 'p_p_e', 't_c_a_a', 't_c_a_m'));
     }
 
     public function MantencionClientesFiltro(Request $request){
@@ -1476,7 +1481,7 @@ public function stocktiemporeal (Request $request){
               order by moda desc
               limit 1")[0];
         }catch(\Throwable $th){
-          $p_r_a = [ "observacion" => ""];
+          $p_r_a = [];
         }
 
         $p_p_e = [];
@@ -1492,7 +1497,7 @@ public function stocktiemporeal (Request $request){
               order by moda desc
               limit 1")[0];
         }catch(\Throwable $th){
-          $p_p_e = [ "adjudicatorio" => ""];
+          $p_p_e = [];
         }
 
         $t_c_a_a = 0;
@@ -2356,11 +2361,55 @@ public function stocktiemporeal (Request $request){
 
         $boletas=DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and fpago = "contado" group by USCODI');
 
-        // dd($boletas);
+        $ultima_factura = DB::select('SELECT * FROM usuario order by USFAHA desc limit 1')[0];
 
-        return view('admin.ControlDeFolios',compact('facturas','boletas'));
+        $ultima_boleta = DB::select('SELECT * FROM usuario order by USBOHA desc limit 1')[0];
 
+        return view('admin.ControlDeFolios',compact('facturas','boletas','ultima_factura','ultima_boleta'));
 
+    }
+
+    public function EditarFolios(Request $request){
+
+      $primer_folio = $request->get("ultimo")+1;
+      $asignados = $request->get("folios");
+      $caja = $request->get("caja");
+      
+      if($asignados > 0 ){
+        DB::table('usuario')
+        ->where('USCODI' , $caja)
+        ->update(['USFADE' => $primer_folio,
+                  'USFAHA' => ($primer_folio+$asignados)]);
+      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
+      }elseif($asignados == 0){
+        DB::table('usuario')
+        ->where('USCODI' , $caja)
+        ->update(['USFADE' => $request->get("desde"),
+                  'USFAHA' => $request->get("hasta")]);
+      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
+      }
+
+    }
+
+    public function EditarFoliosBoletas(Request $request){
+
+      $primer_folio = $request->get("ultimo")+1;
+      $asignados = $request->get("folios");
+      $caja = $request->get("caja");
+      
+      if($asignados > 0 ){
+        DB::table('usuario')
+        ->where('USCODI' , $caja)
+        ->update(['USBODE' => $primer_folio,
+                  'USBOHA' => ($primer_folio+$asignados)]);
+      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
+      }elseif($asignados == 0){
+        DB::table('usuario')
+        ->where('USCODI' , $caja)
+        ->update(['USBODE' => $request->get("desde"),
+                  'USBOHA' => $request->get("hasta")]);
+      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
+      }
 
     }
 

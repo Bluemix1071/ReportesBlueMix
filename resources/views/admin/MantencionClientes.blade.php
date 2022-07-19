@@ -45,11 +45,12 @@
                     <div class="col-md-2 ">
                         <button type="submit" class="btn btn-primary mb-2">Buscar</button>
                     </div>
+                    {{--
                     @if (empty($consulta))
                             <div class="col">
                                 <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#mimodalclientecredito">Buscar Cliente</button>
                             </div>
-                    @endif
+                    @endif --}}
                 </form>
                 <hr>
             </div>
@@ -302,18 +303,33 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @if(!empty($t_c_a_a) && !empty($t_c_a_m))
+                                    @if($t_c_a_a != 0 && $t_c_a_m != 0)
                                     <div class="row">
                                     <div class="col">
                                         <strong class="row">Total Adjudicadas: {{ $t_c_a_a }}</strong>
                                         <strong class="row">Monto Total Adjudicadas: ${{ number_format(($t_c_a_m), 0, ',', '.') }}</strong>
                                     </div>
+                                    @else
+                                    <div class="row">
+                                    <div class="col">
+                                        <strong class="row">Total Adjudicadas: 0</strong>
+                                        <strong class="row">Monto Total Adjudicadas: 0</strong>
+                                    </div>
+                                    @endif
+
+                                    @if(!empty($p_r_a) && !empty($p_p_e))
                                     <div class="col">
                                         <strong class="row">Principal Razon Adjudicación: {{ $p_r_a->observacion }}</strong>
                                         <strong class="row">Principal Adjudicador: {{ $p_p_e->adjudicatorio }}</strong>
                                     </div>
+                                    @else
+                                    <div class="col">
+                                        <strong class="row">Principal Razon Adjudicación: </strong>
+                                        <strong class="row">Principal Adjudicador: </strong>
                                     </div>
                                     @endif
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -593,7 +609,7 @@
     </section>
 
      <!-- Modal lista clientes credito-->
- <div class="modal fade" id="mimodalclientecredito" tabindex="-1" role="dialog" aria-labelledby="myModalLabelupdate" aria-hidden="true">
+ {{-- <div class="modal fade" id="mimodalclientecredito" tabindex="-1" role="dialog" aria-labelledby="myModalLabelupdate" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -668,7 +684,7 @@
      </div>
     </div>
   </div>
-</div>
+</div> --}}
 
 @endsection
 

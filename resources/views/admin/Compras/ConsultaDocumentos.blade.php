@@ -110,7 +110,7 @@
                                         <td style="text-align:left">Factura No Afecta</td>
                                     @elseif ($item->tipo_dte == 61)
                                         <td style="text-align:left">Nota Credito</td>
-                                    @else
+                                    @elseif ($item->tipo_dte == 914)
                                         <td style="text-align:left">Declaración De Ingreso</td>
                                     @endif
                                     <td style="text-align:left">{{ $item->rut }}</td>

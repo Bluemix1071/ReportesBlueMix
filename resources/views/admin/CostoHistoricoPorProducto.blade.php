@@ -134,12 +134,13 @@ Costos Históricos
           console.log(tabla[0].cells[4].innerText); */
           var costos = [];
           var fecha = [];
+          console.log(tabla);
 
           if (typeof tabla != 'undefined'){
             for(let item of tabla){
               //console.log(item.cells[3].innerText,'-',item.cells[4].innerText);
               //products.push({costo : item.cells[3].innerText, fecha : item.cells[4].innerText});
-              costos.push(item.cells[3].innerText);
+              costos.push(parseInt(item.cells[3].innerText));
               fecha.push(item.cells[4].innerText);
             }
 
