@@ -357,9 +357,10 @@
                                     <tr>
                                         <th scope="col">Documento</th>
                                         <th scope="col">N° Documento</th>
+                                        <th scope="col">OC</th>
                                         <th scope="col">Fecha</th>
                                         <th scope="col" style="text-align:right">Valor</th>
-                                        <th scope="col" style="text-align:right">Accciones</th>
+                                        <!-- <th scope="col" style="text-align:right">Accciones</th> -->
 
                                     </tr>
                                 </thead>
@@ -381,11 +382,12 @@
                                                     <td style="text-align:left">Factura</td>
                                                 @endif
                                                 <td style="text-align:left">{{ $item->CANMRO }}</td>
+                                                <td style="text-align:left">{{ $item->nro_oc }}</td>
                                                 <td style="text-align:left">{{ $item->CAFECO }}</td>
                                                 <td style="text-align:right">
                                                     {{ number_format($item->CAVALO, 0, ',', '.') }}
                                                 </td>
-                                                <td style="text-align:right"><a href="" type="button" class="btn btn-primary" >Ver Mas</a></td>
+                                                <!-- <td style="text-align:right"><a href="" type="button" class="btn btn-primary" >Ver Mas</a></td> -->
                                             </tr>
                                         @endforeach
                                 @endif
@@ -819,10 +821,13 @@
         });
 
     </script>
+
+    <script src="{{ asset('js/ajaxproductospormarca.js') }}"></script>
+    <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
+    <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
+
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
@@ -832,10 +837,6 @@
     <script src="{{ asset('js/vfs_fonts.js') }}"></script>
     <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-
-    <script src="{{ asset('js/ajaxproductospormarca.js') }}"></script>
-    <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
-    <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -849,7 +850,26 @@
     <script>
         $(document).ready(function() {
             $('#users2').DataTable({
-        "order": [[ 2, "desc" ]]
+        "order": [[ 2, "desc" ]],
+        dom: 'Bfrtip',
+        buttons: [
+                    'copy', 'pdf', 'print'
+                ],
+                "language": {
+                    "info": "_TOTAL_ registros",
+                    "search": "Buscar",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+
+                    },
+                    "loadingRecords": "cargando",
+                    "processing": "procesando",
+                    "emptyTable": "no hay resultados",
+                    "zeroRecords": "no hay coincidencias",
+                    "infoEmpty": "",
+                    "infoFiltered": ""
+                }
     });
         });
 
@@ -858,7 +878,26 @@
     <script>
     $(document).ready(function() {
         $('#users3').DataTable({
-        "order": [[ 1, "desc" ]]
+        "order": [[ 3, "desc" ]],
+        dom: 'Bfrtip',
+        buttons: [
+                    'copy', 'pdf', 'print'
+                ],
+                "language": {
+                    "info": "_TOTAL_ registros",
+                    "search": "Buscar",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+
+                    },
+                    "loadingRecords": "cargando",
+                    "processing": "procesando",
+                    "emptyTable": "no hay resultados",
+                    "zeroRecords": "no hay coincidencias",
+                    "infoEmpty": "",
+                    "infoFiltered": ""
+                }
     });
     });
 
