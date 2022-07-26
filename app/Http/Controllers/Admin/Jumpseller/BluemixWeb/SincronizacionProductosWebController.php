@@ -156,7 +156,7 @@ class SincronizacionProductosWebController extends Controller
                     $productVariant = $this->apiJumpseller->putVariant($item->parent_id_jp,$item->id,$bodyvariant);
                     //error_log(print_r($bodyvariant, true));
                 }else{
-                     //envia a put funcion que crea url para actualizar solo productos
+                    //envia a put funcion que crea url para actualizar solo productos
                     $product = $this->apiJumpseller->put($item->id,$body);
                     //error_log(print_r($body, true));
                 }

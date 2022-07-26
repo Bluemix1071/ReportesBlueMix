@@ -121,7 +121,11 @@ class SincronizacionProductosController extends Controller
 
                 foreach($exepciones as $exep){
                     if($item->sku == $exep->inarti){
-                        $item->stock_total = 0;
+                        if(($item->stock_total - $exep->cantidad) < 0){
+                            $item->stock_total = 0;
+                        }else{
+                            $item->stock_total = ($item->stock_total - $exep->cantidad);
+                        }
                     }
                 }
 
@@ -143,16 +147,12 @@ class SincronizacionProductosController extends Controller
                             "stock" => $item->stock_total
                         ]
                     ];
-                    //error_log(print_r($bodyvariant, true));
                     //envia a putVariante funcion que crea url para actualizar variantes
                     $productVariant = $this->apiJumpseller->putVariant($item->parent_id_jp,$item->id,$bodyvariant);
                     //error_log(print_r($bodyvariant, true));
                 }else{
                      //envia a put funcion que crea url para actualizar solo productos
                     $product = $this->apiJumpseller->put($item->id,$body);
-                    /* if($body['product']['stock'] == 0){
-                        error_log(print_r($body, true));
-                    } */
                 }
                 //error_log(print_r(number_format($porcentaje,0).'%', true));
                   $porcentaje = (($i*100)/$count);

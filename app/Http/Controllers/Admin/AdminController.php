@@ -1512,7 +1512,7 @@ public function stocktiemporeal (Request $request){
         }else{
           return redirect()->route('MantencionClientes')->with('warning','Cliente no Existe');
         }
-
+        
         return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz','compras_agiles','regiones','t_c_a_a','t_c_a_m','p_r_a','p_p_e','clientescredito'));
 
 }
