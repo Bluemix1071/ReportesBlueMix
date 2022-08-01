@@ -75,7 +75,7 @@ Control De Folios
       <section class="content">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Facturas</h3>
+            <h3 class="card-title">Boletas</h3>
             <div class="table-responsive-xl">
             <table id="users2" class="table table-sm table-hover">
                 <thead>
@@ -83,7 +83,7 @@ Control De Folios
                         <th scope="col" style="text-align:left">Caja</th>
                         <th scope="col" style="text-align:right">Desde</th>
                         <th scope="col" style="text-align:right">Hasta</th>
-                        <th scope="col" style="text-align:right">Ultima Factura</th>
+                        <th scope="col" style="text-align:right">Ultima Boleta</th>
                         <th scope="col" style="text-align:right">Restantes</th>
                         <th scope="col" style="text-align:right">Acciones</th>
                     </tr>
