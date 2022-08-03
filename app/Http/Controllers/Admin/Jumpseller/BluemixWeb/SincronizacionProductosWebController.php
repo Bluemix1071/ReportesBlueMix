@@ -130,7 +130,11 @@ class SincronizacionProductosWebController extends Controller
 
                 foreach($exepciones as $exep){
                     if($item->sku == $exep->inarti){
-                        $item->stock_total = 0;
+                        if(($item->stock_total - $exep->cantidad) < 0){
+                            $item->stock_total = 0;
+                        }else{
+                            $item->stock_total = ($item->stock_total - $exep->cantidad);
+                        }
                     }
                 }
                 
