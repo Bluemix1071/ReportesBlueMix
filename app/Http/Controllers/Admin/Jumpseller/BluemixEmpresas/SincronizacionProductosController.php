@@ -103,6 +103,10 @@ class SincronizacionProductosController extends Controller
 
     //funcion actualiza precio y stock de productos a jumpseller
     public function actualizarProducto(){
+
+        $test = DB::table('productos_faltantes')->get();
+
+        dd($test);
         
         $productos=DB::table('subida_productos_empresa')->where('sku','!=',null)->get();
 
