@@ -701,6 +701,7 @@
                                                                     <p>Sincronizar Productos</p>
                                                                 </a>
                                                             </li>
+
                                                         @endcan
                                                         {{-- Fin Sincronizacion productos --}}
 
@@ -728,6 +729,13 @@
                                                                 </a>
                                                             </li>
                                                         @endcan
+                                                        <li class="nav-item">
+                                                                <a href="{{ route('ProductosFaltantes') }}"
+                                                                    class="nav-link {{ setActive('ProductosFaltantes') }}">
+                                                                    <i class="far fa-circle nav-icon"></i>
+                                                                    <p>Productos Sin Subir Empresas</p>
+                                                                </a>
+                                                         </li>
                                                         {{-- Fin Actualizar Stock --}}
                                                     </ul>
                                                 </li>
@@ -754,6 +762,7 @@
                                                                 </a>
                                                             </li>
                                                         @endcan
+
                                                         {{-- Fin Sincronizacion productos --}}
 
                                                         {{-- Actualizar Stock --}}
@@ -767,19 +776,19 @@
                                                                 </a>
                                                             </li>
                                                         @endcan
+                                                        <li class="nav-item">
+                                                                <a href="{{ route('ProductosFaltantesWeb') }}"
+                                                                    class="nav-link {{ setActive('ProductosFaltantesWeb') }}">
+                                                                    <i class="far fa-circle nav-icon"></i>
+                                                                    <p>Productos Sin Subir Web</p>
+                                                                </a>
+                                                            </li>
                                                         {{-- Fin Actualizar Stock --}}
                                                     </ul>
                                                 </li>
                                             @endcan
                                             {{-- Fin Bluemix.cl --}}
 
-                                            <li class="nav-item">
-                                                <a href="{{ route('ProductosFaltantes') }}"
-                                                    class="nav-link {{ setActive('ProductosFaltantes') }}">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Productos Sin Subir</p>
-                                                </a>
-                                            </li>
 
                                         </ul>
                                     </li>

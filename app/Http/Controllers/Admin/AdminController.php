@@ -1907,16 +1907,77 @@ public function stocktiemporeal (Request $request){
 
     }
 
-    public function ProductosFaltantes(Request $request){
+    //Controlador productos_x_subir Empresas
+   public function ProductosFaltantes(Request $request){
 
         // dd($request->all());
-
-        $consulta=DB::table('productos_faltantes')->get();
-
+        //$consulta=DB::table('db_bluemix.productos_x_subir')->get(); OK, sin condicion WHERE.
+        //$consulta=DB::select('SELECT * FROM db_bluemix.productos_x_subir where stock_sala >0;');//OK con WHERE.
+        $consulta=DB::select('select * from (SELECT 
+            `list`.`codigo` AS `codigo`,
+            `list`.`descripcion` AS `descripcion`,
+            `list`.`marca` AS `marca`,
+            `list`.`stock_sala` AS `stock_sala`,
+            `list`.`stock_bodega` AS `stock_bodega`,
+          COUNT(0) AS `total`
+      FROM
+          (SELECT 
+              `conveniomarco`.`codigo` AS `codigo`,
+                  `conveniomarco`.`descripcion` AS `descripcion`,
+                  `conveniomarco`.`marca` AS `marca`,
+                  `conveniomarco`.`stock_sala` AS `stock_sala`,
+                  `conveniomarco`.`stock_bodega` AS `stock_bodega`
+          FROM
+              `db_bluemix`.`conveniomarco` UNION ALL SELECT 
+              `db_bluemix`.`productosjumpseller`.`sku` AS `sku`,
+                  `db_bluemix`.`productosjumpseller`.`name` AS `name`,
+                  NULL AS `NULL`,
+                  NULL AS `NULL`,
+                  NULL AS `NULL`
+          FROM
+              `db_bluemix`.`productosjumpseller`) `list`
+      GROUP BY `list`.`codigo`
+      HAVING `total` = 1) as list1
+      where list1.stock_sala > 0;');
 
         return view('admin.ProductosFaltantes',compact('consulta'));
 
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Controlador productos_x_subir Web
+    public function ProductosFaltantesweb(Request $request){
+
+      $consulta=DB::select('select * from (SELECT 
+          `list`.`codigo` AS `codigo`,
+          `list`.`descripcion` AS `descripcion`,
+          `list`.`marca` AS `marca`,
+          `list`.`stock_sala` AS `stock_sala`,
+          `list`.`stock_bodega` AS `stock_bodega`,
+        COUNT(0) AS `total`
+    FROM
+        (SELECT 
+            `conveniomarco`.`codigo` AS `codigo`,
+                `conveniomarco`.`descripcion` AS `descripcion`,
+                `conveniomarco`.`marca` AS `marca`,
+                `conveniomarco`.`stock_sala` AS `stock_sala`,
+                `conveniomarco`.`stock_bodega` AS `stock_bodega`
+        FROM
+            `db_bluemix`.`conveniomarco` UNION ALL SELECT 
+            `db_bluemix`.`productosjumpsellerweb`.`sku` AS `sku`,
+                `db_bluemix`.`productosjumpsellerweb`.`name` AS `name`,
+                NULL AS `NULL`,
+                NULL AS `NULL`,
+                NULL AS `NULL`
+        FROM
+            `db_bluemix`.`productosjumpsellerweb`) `list`
+    GROUP BY `list`.`codigo`
+    HAVING `total` = 1) as list1
+    where list1.stock_sala > 0;');
+
+      return view('admin.ProductosFaltantesWeb',compact('consulta'));
+
+  }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function MantenedorProducto(Request $request){
 

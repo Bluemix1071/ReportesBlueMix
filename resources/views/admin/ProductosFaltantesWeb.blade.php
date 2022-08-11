@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <h3 class="display-4">Productos Sin Subir Empresas</h3>
+                <h3 class="display-4">Productos Sin Subir Web</h3>
             </div>
             <div class="col md-6">
                 {{-- algo al lado del titulo --}}
