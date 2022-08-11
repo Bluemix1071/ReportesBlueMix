@@ -64,6 +64,8 @@ Venta Productos Por Dia
                                 <th scope="col" style="text-align:left">Descripcion</th>
                                 <th scope="col" style="text-align:left">Marca</th>
                                 <th scope="col" style="text-align:left">Cantidad</th>
+                                <th scope="col" style="text-align:left">Costo</th>
+                                <th scope="col" style="text-align:left">Venta</th>
                                 <th scope="col" style="text-align:left">Fecha</th>
                             </tr>
                         </thead>
@@ -81,6 +83,8 @@ Venta Productos Por Dia
                                         <td style="text-align:left">{{ $item->ardesc}}</td>
                                         <td style="text-align:left">{{ $item->armarca}}</td>
                                         <td style="text-align:left">{{ number_format($item->decant, 0, ',', '.') }}</td>
+                                        <td style="text-align:left">{{ number_format($item->costo, 0, ',', '.') }}</td>
+                                        <td style="text-align:left">{{ number_format($item->venta, 0, ',', '.') }}</td>
                                         <td style="text-align:left">{{ $item->defeco}}</td>
                                     </tr>
                                 @endforeach
@@ -102,7 +106,7 @@ Venta Productos Por Dia
       $('#productos').DataTable( {
           dom: 'Bfrtip',
           buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
+              'copy', 'pdf', 'print'
 
           ],
             "language":{
