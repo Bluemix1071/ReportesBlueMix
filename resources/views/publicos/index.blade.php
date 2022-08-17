@@ -44,39 +44,40 @@ Espacio Publico Bluemix
             <a href="{{route('ProductosNegativos')}}" class="small-box-footer">Mas info.<i class=""></i></a>
           </div>
         </div>
-        <!-- ./col -->
+
+        <!-- asd./col -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-warning">
+          <div class="small-box bg-blue">
             <div class="inner">
-              <h3 class="animate__animated animate__bounce">44</h3>
-
-              <p>Productos Sin Subir</p>
+              <h3 class="animate__animated animate__bounce">{{$consultaPs[0]->Ps}}</h3>
+              <p>Productos sin subir web</p>
             </div>
             <div class="icon">
               {{-- <i class="ion ion-person-add"></i> --}}
               <i class="ion ion-calendar"></i>
             </div>
-            <a href="" class="small-box-footer">Ver Mas.<i class=""></i></a>
+            <a href="/admin/ProductosFaltantesWeb" class="small-box-footer">Ver Mas.<i class=""></i></a>
           </div>
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-danger">
-            <div class="inner">
-              <h3 class="animate__animated animate__bounce">65</h3>
+        <!-- asd./col -->
 
-              <p>visitas del dia </p>
+<!-- -->
+<div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-warning">
+            <div class="inner">
+              <h3 class="animate__animated animate__bounce">{{$consultaPsE[0]->Ps}}</h3>
+              <p>Productos sin subir empresas</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              {{-- <i class="ion ion-person-add"></i> --}}
+              <i class="ion ion-calendar"></i>
             </div>
-            <a href="#" class="small-box-footer">{{$date}}<i class=""></i></a>
+            <a href="/admin/ProductosFaltantes" class="small-box-footer">Ver Mas.<i class=""></i></a>
           </div>
         </div>
-      </div>
-
+<!-- -->
     </div>
     <br>
 

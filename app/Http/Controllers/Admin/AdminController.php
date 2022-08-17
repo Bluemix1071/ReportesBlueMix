@@ -36,7 +36,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-
+      
 
     return view('/publicos');
 
@@ -1986,6 +1986,8 @@ public function stocktiemporeal (Request $request){
 
 
     }
+    //////////////////////////////////////////Funcion Mostar productos sin subir/////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     public function MantenedorProductoFiltro(Request $request){
