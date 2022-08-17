@@ -2404,10 +2404,13 @@ public function stocktiemporeal (Request $request){
         $marca = $request->marca;
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
+        if(is_null($marca)){
+          $productos=DB::select("select decodi,decant, ardesc, armarca, PrecioCosto as costo, precio_real_con_iva as venta, defeco from dcargos, producto where decodi = ARCODI and defeco between ? and ? group by defeco, decodi" , [$fecha1,$fecha2]);
+        }else{
+          $productos=DB::select("select decodi,decant, ardesc, armarca, PrecioCosto as costo, precio_real_con_iva as venta, defeco from dcargos, producto where decodi = ARCODI and armarca = ? and defeco between ? and ? group by defeco, decodi" , [$marca,$fecha1,$fecha2]);
+        }
 
         $marcas=DB::table('marcas')->get();
-
-        $productos=DB::select('select decodi,decant, ardesc, armarca, PrecioCosto as costo, precio_real_con_iva as venta, defeco from dcargos, producto where decodi = ARCODI and armarca = ? and defeco between ? and ? group by defeco, decodi' , [$marca,$fecha1,$fecha2]);
 
         // dd($productos);
 
