@@ -20,7 +20,7 @@ Venta Productos Por Dia
 
                     <div class="col-md-2 mb-3" id="divmarca">
                         <input class="form-control" name="marca" list="marca" autocomplete="off" id="marcas" type="text"
-                            placeholder="Marca...">
+                            placeholder="TODAS LAS MARCAS">
                         <datalist id="marca">
                             @foreach ($marcas as $item)
                                 <option value="{{ $item->ARMARCA }}">
@@ -105,6 +105,7 @@ Venta Productos Por Dia
     $(document).ready(function() {
       $('#productos').DataTable( {
           dom: 'Bfrtip',
+          order: [[6, 'desc']],
           buttons: [
               'copy', 'pdf', 'print'
 
