@@ -9,7 +9,7 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h6 class="display-3">Ventas Por Rut</h6>n
+        <h6 class="display-3">Ventas Por Rut</h6>
         {{-- BUSCADOR --}}
         <form action="{{ route('VentasPorRutFiltro') }}" method="post" id="desvForm" class="form-inline">
             @csrf
@@ -38,7 +38,7 @@
             <div class="col-md-2 ">
 
                 <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-
+                
             </div>
         </form>
         <hr>
@@ -58,7 +58,7 @@
                             <th scope="col" style="text-align:left">Fecha</th>
                             <th scope="col" style="text-align:left">IVA</th>
                             <th scope="col" style="text-align:left">Neto</th>
-                            <th scope="col" style="text-align:right">Total</th>
+                            <th scope="col" style="text-algin:right">Total</th>
                         </tr>
                     </thead>
                     <tbody>

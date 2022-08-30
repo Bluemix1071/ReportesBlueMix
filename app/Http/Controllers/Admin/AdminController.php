@@ -982,6 +982,7 @@ public function filtrarconsultafacturaboleta(Request $request){
       $notacredito=DB::table('nota_credito')
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
       ->get();
+      
 
       $notacreditocount=DB::table('nota_credito')
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
@@ -2516,7 +2517,7 @@ public function stocktiemporeal (Request $request){
 
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
-        $rut=$request->rut;
+        //$rut=$request->rut;
 
 
         $ventas=DB::table('cargos')

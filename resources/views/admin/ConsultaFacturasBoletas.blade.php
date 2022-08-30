@@ -190,6 +190,7 @@
                         <tr>
                             <th scope="col" style="text-align:left">Folio</th>
                             <th scope="col" style="text-align:left">Tipo Doc.</th>
+                            <th scope="col" style="text-align:left">Doc. Referencia</th>
                             <th scope="col" style="text-align:left">RUT</th>
                             <th scope="col" style="text-align:left">Nombre</th>
                             <th scope="col" style="text-align:left">Fecha</th>
@@ -212,6 +213,7 @@
                                 <tr>
                                     <th style="text-align:left">{{ $item->folio }}</th>
                                     <td style="text-align:left">Nota Credito</td>
+                                    <td style="text-align:left">{{ $item->nro_doc_refe }}</th>
                                     <td style="text-align:left">{{ $item->rut }}</td>
                                     <td style="text-align:left">{{ $item->nombre }}</td>
                                     <td style="text-align:left">{{ $item->fecha_actual }}</td>
