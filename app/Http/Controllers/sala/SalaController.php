@@ -492,7 +492,7 @@ class SalaController extends Controller
 
     public function RequerimientoCompra(Request $request){
 
-      $requerimiento_compra = DB::table('requerimiento_compra')->get();
+      $requerimiento_compra = DB::table('requerimiento_compra')->where('estado', '!=', 'DESACTIVADO')->get();
 
       $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"]];
 
