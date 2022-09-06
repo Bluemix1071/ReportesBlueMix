@@ -195,14 +195,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                        {{-- @foreach($productos as $producto)
+                        @foreach($productos as $producto)
                         <tr>
                             <td>{{ $producto->ARCODI }}</td>
                             <td>{{ $producto->ARDESC }}</td>
                             <td>{{ $producto->ARMARCA }}</td>
                             <td><button type="button" onclick="selectproducto('{{ $producto->ARCODI }}', '{{ $producto->ARDESC }}', '{{ $producto->ARMARCA }}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button></td>
                         </tr>
-                        @endforeach --}}
+                        @endforeach
                       </tbody>
                     </table>
                     </div>

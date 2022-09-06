@@ -496,13 +496,13 @@ class SalaController extends Controller
 
       $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"]];
 
-      //$productos = DB::table('producto')->get();
+      $productos = DB::table('producto')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
 
       //dd($productos->take(100));
 
       //dd($depto[5]['depto']);
 
-      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados'));
+      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'productos'));
     }
 
     public function AgregarRequerimientoCompra(Request $request){
