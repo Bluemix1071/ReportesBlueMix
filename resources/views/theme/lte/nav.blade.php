@@ -897,6 +897,17 @@
                                     </li>
                                 @endcan
 
+                                @can('VentaGiftCard')
+
+                                <li class="nav-item">
+                                    <a href="{{ route('RequerimientoCompra') }}"
+                                        class="nav-link {{ setActive('RequerimientoCompra') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Reqerimientos de Compra</p>
+                                    </a>
+                                </li>
+                            @endcan
+
                         </ul>
                     </li>
                 @endcan

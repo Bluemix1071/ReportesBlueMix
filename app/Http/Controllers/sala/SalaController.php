@@ -490,5 +490,58 @@ class SalaController extends Controller
         return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenesdiseño', 'img'));
     }
 
+    public function RequerimientoCompra(Request $request){
+
+      $requerimiento_compra = DB::table('requerimiento_compra')->get();
+
+      $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"]];
+
+      $productos = DB::table('producto')->get();
+
+      //dd($productos->take(100));
+
+      //dd($depto[5]['depto']);
+
+      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'productos'));
+    }
+
+    public function AgregarRequerimientoCompra(Request $request){
+
+      DB::table('requerimiento_compra')->insert([
+        [
+            "codigo" => strtoupper($request->codigo),
+            "descripcion" => strtoupper($request->descripcion),
+            "marca" => strtoupper($request->marca),
+            "cantidad" => $request->cantidad,
+            "depto" => $request->depto,
+            "estado" => $request->estado,
+            "observacion" => $request->observacion
+        ]
+      ]);
+
+      return redirect()->route('RequerimientoCompra')->with('success','Requerimiento de Compra Agregado');
+    }
+
+    public function DesactivarRequerimiento(Request $request){
+
+      //$requerimiento_compra = DB::table('requerimiento_compra')->get();
+      //dd($request->idrequerimiento);
+      DB::table('requerimiento_compra')
+      ->where('id' , $request->idrequerimiento)
+      ->update(['estado' => "DESACTIVADO"]);
+
+      return redirect()->route('RequerimientoCompra')->with('success','Requerimiento Desactivado');
+    }
+
+    public function EditarEstadoRequerimientoCompra(Request $request){
+
+      //$requerimiento_compra = DB::table('requerimiento_compra')->get();
+      DB::table('requerimiento_compra')
+      ->where('id' , $request->idrequerimiento)
+      ->update(['estado' => $request->estadorequerimiento]);
+
+      return redirect()->route('RequerimientoCompra')->with('success','Estado Cambiado');
+    }
+    
 
 }

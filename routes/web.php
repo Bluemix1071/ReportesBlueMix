@@ -47,6 +47,11 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/ListarOrdenesDiseño','SalaController@ListarOrdenesDiseño')->name('ListarOrdenesDiseñoSala');
     Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','SalaController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalleSala');
 
+    Route::get('/RequerimientoCompra','SalaController@RequerimientoCompra')->name('RequerimientoCompra');
+    Route::post('/AgregarRequerimientoCompra','SalaController@AgregarRequerimientoCompra')->name('AgregarRequerimientoCompra');
+    Route::post('/DesactivarRequerimiento','SalaController@DesactivarRequerimiento')->name('DesactivarRequerimiento');
+    Route::post('/EditarEstadoRequerimientoCompra','SalaController@EditarEstadoRequerimientoCompra')->name('EditarEstadoRequerimientoCompra');
+
 
     //cambio
 
