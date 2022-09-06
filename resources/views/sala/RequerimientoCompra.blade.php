@@ -90,7 +90,7 @@
                       <td>{{ $item->cantidad }}</td>
                       <td>{{ $item->depto }}</td>
                       <td>
-                        @if($item->estado == "INGRESADO")
+                        <!-- @if($item->estado == "INGRESADO")
                         <select class="form-control form-control-sm bg-secondary" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
                         @elseif($item->estado == "ENVÍO OC")
                         <select class="form-control form-control-sm bg-primary" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
@@ -104,7 +104,8 @@
                                 <option value="{{ $estado['estado'] }}">{{ $estado['estado'] }}</option>
                               @endif
                             @endforeach
-                          </select><p hidden>{{ $item->estado }}</p></td>
+                          </select> -->
+                          <p>{{ $item->estado }}</p></td>
                       <td>{{ $item->observacion }}</td>
                       <td>{{ date('Y-m-d', strtotime($item->fecha)) }}</td>
                       <td>
