@@ -56,8 +56,8 @@
                             <th scope="col" style="text-align:left">F.Pago</th>
                             <th scope="col" style="text-align:left">Caja</th>
                             <th scope="col" style="text-align:left">Fecha</th>
-                            <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
+                            <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Total</th>
                         </tr>
                     </thead>
@@ -83,10 +83,10 @@
                                     <td style="text-align:left">{{ $item->FPAGO }}</td>
                                     <td style="text-align:left">{{ $item->CACOCA }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
-                                    <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalboletasiva += $item->CAIVA }}</div>
                                     <td style="text-align:right">{{ number_format($item->CANETO, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalboletasneto += $item->CANETO }}</div>
+                                    <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
+                                    <div style="display: none">{{ $totalboletasiva += $item->CAIVA }}</div>
                                     <td style="text-align:right">{{ number_format($item->CAVALO, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalboletas += $item->CAVALO }}</div>
                                 </tr>
@@ -126,8 +126,8 @@
                             <th scope="col" style="text-align:left">F.Pago</th>
                             <th scope="col" style="text-align:left">Caja</th>
                             <th scope="col" style="text-align:left">N° Orden</th>
-                            <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
+                            <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Total</th>
                             {{-- <th scope="col" style="text-align:center">Acciones</th> --}}
                         </tr>
@@ -156,10 +156,10 @@
                                     <td style="text-align:left">{{ $item->FPAGO }}</td>
                                     <td style="text-align:left">{{ $item->CACOCA }}</td>
                                     <td style="text-align:left">{{ $item->nro_oc }}</td>
-                                    <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalfacturaiva += $item->CAIVA }}</div>
                                     <td style="text-align:right">{{ number_format($item->CANETO, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalfacturaneto += $item->CANETO }}</div>
+                                    <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
+                                    <div style="display: none">{{ $totalfacturaiva += $item->CAIVA }}</div>
                                     <td style="text-align:right">{{ number_format($item->CAVALO, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalfactura += $item->CAVALO }}</div>
                                 </tr>
@@ -193,8 +193,8 @@
                             <th scope="col" style="text-align:left">RUT</th>
                             <th scope="col" style="text-align:left">Nombre</th>
                             <th scope="col" style="text-align:left">Fecha</th>
-                            <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Neto</th>
+                            <th scope="col" style="text-align:right">IVA</th>
                             <th scope="col" style="text-align:right">Total</th>
                         </tr>
                     </thead>
@@ -215,10 +215,10 @@
                                     <td style="text-align:left">{{ $item->rut }}</td>
                                     <td style="text-align:left">{{ $item->nombre }}</td>
                                     <td style="text-align:left">{{ $item->fecha_actual }}</td>
-                                    <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalnotacreiva += $item->iva }}</div>
                                     <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalnotacreneto += $item->neto }}</div>
+                                    <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
+                                    <div style="display: none">{{ $totalnotacreiva += $item->iva }}</div>
                                     <td style="text-align:right">{{ number_format($item->total_nc, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalnotacre += $item->total_nc }}</div>
                                 </tr>
