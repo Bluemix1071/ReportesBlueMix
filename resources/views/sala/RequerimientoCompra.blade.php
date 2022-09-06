@@ -43,7 +43,7 @@
                             <select class="form-control form-control-sm" aria-label="Default select example" name="estado" required readonly>
                               <option value="INGRESADO">INGRESADO</option>
                             </select>
-                          </div>
+                        </div>
                         @endif
 
             <div class="col"><textarea class="form-control form-control-sm" placeholder="Observaciones" name="observacion" rows="1"></textarea></div>
@@ -178,7 +178,7 @@
             </div>
         </div>
 
-         <!-- Modal cambiar estado -->
+         <!-- Modal LISTAR productos -->
       <div class="modal fade" id="modalproductos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
@@ -196,14 +196,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach($productos as $producto)
+                        <!-- @foreach($productos as $producto)
                         <tr>
                             <td>{{ $producto->ARCODI }}</td>
                             <td>{{ $producto->ARDESC }}</td>
                             <td>{{ $producto->ARMARCA }}</td>
                             <td><button type="button" onclick="selectproducto('{{ $producto->ARCODI }}', '{{ $producto->ARDESC }}', '{{ $producto->ARMARCA }}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button></td>
                         </tr>
-                        @endforeach
+                        @endforeach -->
                       </tbody>
                     </table>
                     </div>
