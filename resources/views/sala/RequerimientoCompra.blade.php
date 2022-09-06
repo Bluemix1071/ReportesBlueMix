@@ -83,7 +83,6 @@
               </thead>
               <tbody>
                 @foreach ($requerimiento_compra as $item)
-                    @if($item->estado != "DESACTIVADO")
                     <tr>
                       <td>{{ $item->codigo }}</td>
                       <td>{{ $item->descripcion }}</td>
@@ -118,7 +117,6 @@
                       @endif
                       </td>
                     </tr>
-                    @endif
                 @endforeach
             </tbody>
             </table>
@@ -178,7 +176,7 @@
             </div>
         </div>
 
-         <!-- Modal LISTAR productos -->
+         <!-- Modal LISTAR  -->
       <div class="modal fade" id="modalproductos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
@@ -196,14 +194,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <!-- @foreach($productos as $producto)
+                        @foreach($productos as $producto)
                         <tr>
                             <td>{{ $producto->ARCODI }}</td>
                             <td>{{ $producto->ARDESC }}</td>
                             <td>{{ $producto->ARMARCA }}</td>
                             <td><button type="button" onclick="selectproducto('{{ $producto->ARCODI }}', '{{ $producto->ARDESC }}', '{{ $producto->ARMARCA }}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button></td>
                         </tr>
-                        @endforeach -->
+                        @endforeach
                       </tbody>
                     </table>
                     </div>
