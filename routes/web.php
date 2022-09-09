@@ -46,12 +46,13 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
 
     Route::get('/ListarOrdenesDiseño','SalaController@ListarOrdenesDiseño')->name('ListarOrdenesDiseñoSala');
     Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','SalaController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalleSala');
-
+    /*  Mantenedor CRUD requerimientos de compra */
     Route::get('/RequerimientoCompra','SalaController@RequerimientoCompra')->name('RequerimientoCompra');
     Route::post('/AgregarRequerimientoCompra','SalaController@AgregarRequerimientoCompra')->name('AgregarRequerimientoCompra');
     Route::post('/DesactivarRequerimiento','SalaController@DesactivarRequerimiento')->name('DesactivarRequerimiento');
     Route::post('/EditarEstadoRequerimientoCompra','SalaController@EditarEstadoRequerimientoCompra')->name('EditarEstadoRequerimientoCompra');
-
+    Route::put('/EditarRequerimientoCompra','SalaController@EditarRequerimientoCompra')->name('EditarRequerimientoCompra');
+    /* fin */
 
     //cambio
 
@@ -282,9 +283,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     //---------------------Exportaciones----------------------------------------------//
 
-    Route::get('/pdf/{NroOrden}','exports\ExportsController@exportpdf')->name('pdf.orden');
-    Route::get('/ExcelOC/{NroOrden}','exports\ExportsController@exportExelOrdenDeCompra')->name('ordenExcel');
-    Route::get('/pdfprov/{NroOrden}','exports\ExportsController@exportpdfprov')->name('pdf.ordenprov');
+    Route::get('/pdf/{NroOrden?}','exports\ExportsController@exportpdf')->name('pdf.orden');
+    Route::get('/ExcelOC/{NroOrden?}','exports\ExportsController@exportExelOrdenDeCompra')->name('ordenExcel');
+    Route::get('/pdfprov/{NroOrden?}','exports\ExportsController@exportpdfprov')->name('pdf.ordenprov');
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
 
