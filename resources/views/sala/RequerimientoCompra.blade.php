@@ -30,6 +30,7 @@
                             <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                             <option value="SALA">SALA</option>
+                            <option value="BODEGA">BODEGA</option>
                           </select></div>
             <div class="col">
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
@@ -46,7 +47,17 @@
                         </div>
                         @endif
 
-            <div class="col"><textarea class="form-control form-control-sm" placeholder="Observaciones" name="observacion" rows="1"></textarea></div>
+            @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                <div class="col"><input type="number" class="form-control form-control-sm" placeholder="Orden Compra" name="oc"></textarea></div>
+            @else
+                <div class="col"><input type="number" class="form-control form-control-sm" placeholder="Orden Compra" name="oc" readonly></textarea></div>
+            @endif
+            <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Observaciones" name="observacion" rows="1"></textarea></div>
+            @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Observacion Interna" name="observacion_interna" rows="1"></textarea></div>
+            @else
+                <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Observacion Interna" name="observacion_interna" rows="1" readonly></textarea></div>
+            @endif
             <div class="col" style="text-align:center"><button type="submit" class="btn btn-success">Agregar</button></div>
         </div>
       </form>
@@ -67,7 +78,7 @@
                     </div>
             
             <div>
-            <table id="users" class="table table-bordered table-hover" style="text-align:center">
+            <table id="users" class="table table-bordered table-hover" style="text-align:center; font-size: 15px;">
               <thead>
                 <tr>
                   <th scope="col">Codigo</th>
@@ -76,7 +87,8 @@
                   <th scope="col">Cantidad</th>
                   <th scope="col">Departamento</th>
                   <th scope="col">Estado</th>
-                  <th scope="col">Observación</th>
+                  <th scope="col">OC</th>
+                  {{-- <th scope="col">Observación</th> --}}
                   <th scope="col">Fecha Ingreso</th>
                   <th scope="col">Acciones</th>
                 </tr>
@@ -90,12 +102,14 @@
                       <td>{{ $item->cantidad }}</td>
                       <td>{{ $item->depto }}</td>
                       <td>
-                        @if($item->estado == "INGRESADO")
+                        {{-- @if($item->estado == "INGRESADO")
                         <select class="form-control form-control-sm bg-secondary" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
                         @elseif($item->estado == "ENVÍO OC")
                         <select class="form-control form-control-sm bg-primary" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
                         @elseif($item->estado == "BODEGA")
                         <select class="form-control form-control-sm bg-success" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
+                        @elseif($item->estado == "DESACTIVADO")
+                        <select class="form-control form-control-sm bg-danger" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
                         @endif
                             @foreach($estados as $estado)
                               @if($item->estado == $estado['estado'] )
@@ -104,18 +118,42 @@
                                 <option value="{{ $estado['estado'] }}">{{ $estado['estado'] }}</option>
                               @endif
                             @endforeach
-                          </select>
-                          <p hidden>{{ $item->estado }}</p></td>
-                      <td>{{ $item->observacion }}</td>
-                      <td>{{ date('Y-m-d', strtotime($item->fecha)) }}</td>
+                          </select> --}}
+                        
+                        @if($item->estado == "INGRESADO")
+                            <h4><span class="badge badge-secondary">{{ $item->estado }}</span></h4>
+                        @elseif($item->estado == "ENVÍO OC")
+                            <h4><span class="badge badge-primary">{{ $item->estado }}</span></h4>
+                        @elseif($item->estado == "BODEGA")
+                            <h4><span class="badge badge-success">{{ $item->estado }}</span></h4>
+                        @elseif($item->estado == "DESACTIVADO")
+                            <h4><span class="badge badge-danger">{{ $item->estado }}</span></h4>
+                        @endif
+                        </td>
+                      <td><a href="{{route('pdf.orden', $item->oc)}}" target="_blank">{{ $item->oc }}</a></td>
+                      {{-- <td>{{ $item->observacion }}</td> --}}
+                      <td>{{ $item->fecha }}</td>
                       <td>
-                      @if (session()->get('email') == "adquisiciones@bluemix.cl")
-                        <button type="button" class="btn btn-primary" target="_blank" title="Cambiar estado Requerimiento" data-toggle="modal" data-target="#cambiarestado"  onclick="cargaridcambiar({{$item->id}}, $('#estado{{$item->id}} option:selected').text())"><i class="fa fa-save" aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-danger" target="_blank" title="Desactivar Requerimiento" data-toggle="modal" data-target="#desactivar"  onclick="cargariddesactivar({{$item->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                      @else
-                      <button type="button" class="btn btn-primary" target="_blank" title="Cambiar estado Requerimiento" disabled><i class="fa fa-save" aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-danger" target="_blank" title="Desactivar Requerimiento" disabled><i class="fa fa-trash" aria-hidden="true"></i></button>
-                      @endif
+                     
+                        {{-- <button type="button" class="btn btn-primary" target="_blank" title="Cambiar estado Requerimiento" data-toggle="modal" data-target="#cambiarestado" onclick="cargaridcambiar({{$item->id}}, $('#estado{{$item->id}} option:selected').text())"><i class="fa fa-save" aria-hidden="true"></i></button> --}}
+                        {{-- <button type="button" class="btn btn-danger" target="_blank" title="Desactivar Requerimiento" data-toggle="modal" data-target="#desactivar" onclick="cargariddesactivar({{$item->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button> --}}
+                        <a href="" class="btn btn-primary btm-sm" title="Editar Requerimiento" data-toggle="modal" data-target="#editarrequerimiento"
+                            data-id='{{ $item->id }}'
+                            data-codigo='{{ $item->codigo }}'
+                            data-descripcion='{{ $item->descripcion }}'
+                            data-marca='{{ $item->marca }}'
+                            data-cantidad='{{ $item->cantidad }}'
+                            data-departamento='{{ $item->depto }}'
+                            data-estado='{{ $item->estado }}'
+                            data-oc='{{ $item->oc }}'
+                            data-observacion='{{ $item->observacion }}'
+                            data-observacion_interna='{{ $item->observacion_interna }}'
+                        ><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    
+                      {{-- <button type="button" class="btn btn-primary" title="Cambiar estado Requerimiento" disabled><i class="fa fa-save" aria-hidden="true"></i></button> --}}
+                      {{-- <button type="button" class="btn btn-danger" title="Desactivar Requerimiento" disabled><i class="fa fa-trash" aria-hidden="true"></i></button> --}}
+                      {{-- <button type="button" class="btn btn-primary" title="Editar Requerimiento" disabled><i class="fa fa-eye" aria-hidden="true"></i></button> --}}
+                    
                       </td>
                     </tr>
                 @endforeach
@@ -197,10 +235,10 @@
                       <tbody>
                         @foreach($productos as $producto)
                         <tr>
-                            <td>{{ $producto->ARCODI }}</td>
-                            <td>{{ $producto->ARDESC }}</td>
-                            <td>{{ $producto->ARMARCA }}</td>
-                            <td><button type="button" onclick="selectproducto('{{ $producto->ARCODI }}', '{{ $producto->ARDESC }}', '{{ $producto->ARMARCA }}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button></td>
+                            <td>{{ $producto->codigo }}</td>
+                            <td>{{ $producto->descripcion }}</td>
+                            <td>{{ $producto->marca }}</td>
+                            <td><button type="button" onclick="selectproducto('{{ $producto->codigo }}', '{{ $producto->descripcion }}', '{{ $producto->marca }}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button></td>
                         </tr>
                         @endforeach
                       </tbody>
@@ -214,9 +252,241 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Editar -->
+        <div class="modal fade" id="editarrequerimiento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Visualizar Requerimiento</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('EditarRequerimientoCompra') }}">
+                                {{ method_field('put') }}
+                                {{ csrf_field() }}
+                                @csrf
+                                <input type="hidden" name="id" id="id" value="">
+                                <div class="form-group row">
+                                    <label for="codigo"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Codigo') }}</label>
+
+                                    <div class="col-md-6">
+                                        <input id="codigo" type="text"
+                                            class="form-control @error('codigo') is-invalid @enderror" name="codigo"
+                                            value="{{ old('codigo') }}" required autocomplete="codigo" autofocus readonly>
+
+                                        @error('codigo')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- Descripcion -->
+                                <div class="form-group row">
+                                    <label for="descripcion"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
+
+                                    <div class="col-md-6">
+                                        <input id="descripcion" type="descripcion"
+                                            class="form-control @error('descripcion') is-invalid @enderror" name="descripcion"
+                                            value="{{ old('descripcion') }}" required autocomplete="descripcion" readonly>
+
+                                        @error('descripcion')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                 <!-- Marca -->
+                                 <div class="form-group row">
+                                    <label for="marca"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Marca') }}</label>
+
+                                    <div class="col-md-6">
+                                        <input id="marca" type="marca"
+                                            class="form-control @error('marca') is-invalid @enderror" name="marca"
+                                            value="{{ old('marca') }}" required autocomplete="marca" readonly>
+
+                                        @error('marca')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- Cantidad -->
+                                <div class="form-group row">
+                                    <label for="cantidad"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Cantidad') }}</label>
+
+                                    <div class="col-md-6">
+                                        <input id="cantidad" type="number"
+                                            class="form-control @error('cantidad') is-invalid @enderror" name="cantidad"
+                                            value="{{ old('cantidad') }}" required autocomplete="cantidad" readonly>
+
+                                        @error('cantidad')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- Departamento -->
+                                <div class="form-group row">
+                                    <label for="departamento"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Departamento') }}</label>
+
+                                    <div class="col-md-6">
+                                    @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                        <select id="departamento" list="departamento" class="form-control" name="departamento" value="" required>
+                                            <option value="LICITACIONES">LICITACIONES</option>
+                                            <option value="VENTAS WEB">VENTAS WEB</option>
+                                            <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
+                                            <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
+                                            <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
+                                            <option value="SALA">SALA</option>
+                                            <option value="BODEGA">BODEGA</option>
+                                        </select>
+                                    @else
+                                    <input id="departamento" type="text"
+                                            class="form-control @error('departamento') is-invalid @enderror" name="departamento"
+                                            value="{{ old('departamento') }}" required autocomplete="departamento" readonly>
+                                    @endif
+
+                                        @error('departamento')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- Estado de Usuarioo -->
+                                <div class="form-group row">
+                                    <label for="estado" class="col-md-4 col-form-label text-md-right">Estado</label>
+
+                                    <div class="col-md-6">
+                                    @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                        <select id="estado" list="estado" class="form-control" name="estado" value="" required>
+                                            <option value="INGRESADO">INGRESADO</option>
+                                            <option value="ENVÍO OC">ENVÍO OC</option>
+                                            <option value="BODEGA">BODEGA</option>
+                                            <option value="DESACTIVADO">DESACTIVADO</option>
+                                        </select>
+                                    @else
+                                    <input id="estado" type="text"
+                                            class="form-control @error('estado') is-invalid @enderror" name="estado"
+                                            value="{{ old('estado') }}" required autocomplete="estado" readonly>
+                                    @endif
+
+                                    </div>
+
+                                    @error('estado')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                                <!-- OC -->
+                                <div class="form-group row">
+                                    <label for="oc"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('OC') }}</label>
+
+                                    <div class="col-md-6">
+
+                                    @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                        <input id="oc" type="number"
+                                                class="form-control @error('oc') is-invalid @enderror" name="oc"
+                                                value="{{ old('oc') }}" autocomplete="oc">
+                                    @else
+                                        <input id="oc" type="number"
+                                                class="form-control @error('oc') is-invalid @enderror" name="oc"
+                                                value="{{ old('oc') }}" autocomplete="oc" readonly>
+                                    @endif
+
+                                        @error('oc')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- Observacion -->
+                                <div class="form-group row">
+                                    <label for="observacion"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Observación') }}</label>
+
+                                    <div class="col-md-6">
+                                    <textarea id="observacion" maxlength="250" class="form-control form-control-sm" placeholder="Observaciones" name="observacion" rows="3"></textarea>
+
+                                        @error('observacion')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- Observacion interna-->
+                                <div class="form-group row">
+                                    <label for="observacion_interna"
+                                        class="col-md-4 col-form-label text-md-right">{{ __('Observación Interna') }}</label>
+
+                                    <div class="col-md-6">
+                                    @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                        <textarea id="observacion_interna" maxlength="250" class="form-control form-control-sm" placeholder="Observaciones Internas" name="observacion_interna" rows="3"></textarea>
+                                    @else
+                                        <textarea id="observacion_interna" maxlength="250" class="form-control form-control-sm" placeholder="Observaciones Internas" name="observacion_interna" rows="3" readonly></textarea>
+                                    @endif
+
+                                        @error('observacion_interna')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 @endsection
 @section('script')
+
+<script>
+    $('#editarrequerimiento').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var codigo = button.data('codigo')
+        var descripcion = button.data('descripcion')
+        var marca = button.data('marca')
+        var cantidad = button.data('cantidad')
+        var departamento = button.data('departamento')
+        var estado = button.data('estado')
+        var oc = button.data('oc')
+        var observacion = button.data('observacion')
+        var observacion_interna = button.data('observacion_interna')
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #codigo').val(codigo);
+        modal.find('.modal-body #descripcion').val(descripcion);
+        modal.find('.modal-body #marca').val(marca);
+        modal.find('.modal-body #cantidad').val(cantidad);
+        modal.find('.modal-body #departamento').val(departamento);
+        modal.find('.modal-body #estado').val(estado);
+        modal.find('.modal-body #oc').val(oc);
+        modal.find('.modal-body #observacion').val(observacion);
+        modal.find('.modal-body #observacion_interna').val(observacion_interna);
+})
+</script>
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
@@ -241,7 +511,8 @@ function( settings, data, dataIndex ) {
     }
     var min = minDate.val();
     var max = maxDate.val();
-    var date = data[7];
+    var date = data[7].substring(0, 10);
+    //alert(date.substring(0, 10));
 
     if (
         ( min === null && max === null ) ||

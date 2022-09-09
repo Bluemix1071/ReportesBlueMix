@@ -492,13 +492,13 @@ class SalaController extends Controller
 
     public function RequerimientoCompra(Request $request){
 
-      $requerimiento_compra = DB::table('requerimiento_compra')->where('estado', '!=', 'DESACTIVADO')->get();
+      $requerimiento_compra = DB::table('requerimiento_compra')->get();
 
-      $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"]];
+      $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
 
-      $productos = DB::table('producto')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+      //$productos = DB::table('producto')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
 
-      //dd($productos->take(100));
+      $productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
 
       //dd($depto[5]['depto']);
 
@@ -515,7 +515,9 @@ class SalaController extends Controller
             "cantidad" => $request->cantidad,
             "depto" => $request->depto,
             "estado" => $request->estado,
-            "observacion" => $request->observacion
+            "oc" => $request->oc,
+            "observacion" => $request->observacion,
+            "observacion_interna" => $request->observacion_interna
         ]
       ]);
 
@@ -541,6 +543,26 @@ class SalaController extends Controller
       ->update(['estado' => $request->estadorequerimiento]);
 
       return redirect()->route('RequerimientoCompra')->with('success','Estado Cambiado');
+    }
+
+    public function EditarRequerimientoCompra(Request $request){
+
+      DB::table('requerimiento_compra')
+      ->where('id' , $request->id)
+      ->update(
+        ['codigo' => $request->codigo,
+          'descripcion' => $request->descripcion,
+          'marca' => $request->marca,
+          'cantidad' => $request->cantidad,
+          'depto' => $request->departamento,
+          'estado' => $request->estado,
+          'oc' => $request->oc,
+          'observacion' => $request->observacion,
+          'observacion_interna' => $request->observacion_interna]
+      );
+
+      return redirect()->route('RequerimientoCompra')->with('success','Requerimiento Editado Correctamente');
+
     }
     
 
