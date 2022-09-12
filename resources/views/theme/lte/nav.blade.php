@@ -903,7 +903,7 @@
                                     <a href="{{ route('RequerimientoCompra') }}"
                                         class="nav-link {{ setActive('RequerimientoCompra') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Reqerimientos de Compra</p>
+                                        <p>Requerimientos de Compra</p>
                                     </a>
                                 </li>
                             @endcan
