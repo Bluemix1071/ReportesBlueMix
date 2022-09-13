@@ -71,6 +71,8 @@ Route::prefix('api')->middleware('auth')->group(function(){
 Route::prefix('publicos')->middleware('auth')->group(function(){
 
     Route::get('/','InicioController@index')->name('Publico');
+    Route::get('/ProductosFaltantesWebAPI','InicioController@ProductosFaltantesWebAPI')->name('ProductosFaltantesWebAPI');
+    Route::get('/ProductosFaltantesAPI','InicioController@ProductosFaltantesAPI')->name('ProductosFaltantesAPI');
     Route::post('/mensaje','InicioController@store')->name('mensaje');
     Route::post('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('filtrar');
     Route::get('/ProductosNegativos','publico\PublicoController@filtarProductosNegativos')->name('ProductosNegativos');
