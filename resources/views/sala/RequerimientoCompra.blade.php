@@ -8,7 +8,7 @@
 
 @endsection
 @section('contenido')
-    <div class="container-fluid">
+    <div class="container-fluid" style="pointer-events: none; opacity: 0.4;" id="maindiv">
       <h1 class="display-4">Requerimiento de Compras</h1>
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>
@@ -22,7 +22,7 @@
             <div class="col input-group"><input type="text" class="form-control form-control-sm" placeholder="Codigo" name="codigo" id="codigo" required><span><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalproductos"><i class="fa fa-search"></i></button></span></div>
             <div class="col"><input type="text" class="form-control form-control-sm" placeholder="Descripción" name="descripcion" required id="descripcion"></div>
             <div class="col"><input type="text" class="form-control form-control-sm" placeholder="Marca" name="marca" required id="marca"></div>
-            <div class="col"><input type="number" class="form-control form-control-sm" placeholder="Cantidad" name="cantidad" required></div>
+            <div class="col"><input type="number" class="form-control form-control-sm" placeholder="Cantidad" name="cantidad" required min="1" max="99999999"></div>
             <div class="col"><select class="form-control form-control-sm" aria-label="Default select example" name="depto" required>
                             <option value="LICITACIONES">LICITACIONES</option>
                             <option value="VENTAS WEB">VENTAS WEB</option>
@@ -501,6 +501,10 @@
 <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
 <script>
+
+$(window).on('load', function () {
+            $("#maindiv").css({"pointer-events": "all", "opacity": "1"});
+        }) 
 
 var minDate, maxDate = null;
 
