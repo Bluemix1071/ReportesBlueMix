@@ -171,25 +171,27 @@ Espacio Publico Bluemix
 <script>
 
 $(document).ready( function () {
-  $.ajax({
-      url: '../publicos/ProductosFaltantesWebAPI/',
-      type: 'GET',
-      success: function(result) {
-         // Do something with the result
-         //console.log(result.Ps);
-         $('#faltantesweb').text(result.Ps);
-      }
-  });
-
-  $.ajax({
-      url: '../publicos/ProductosFaltantesAPI/',
-      type: 'GET',
-      success: function(result) {
-         // Do something with the result
-         //console.log(result.Ps);
-         $('#faltantes').text(result.Ps);
-      }
-  });
+  setTimeout(function() { 
+      $.ajax({
+          url: '../publicos/ProductosFaltantesWebAPI/',
+          type: 'GET',
+          success: function(result) {
+            // Do something with the result
+            //console.log(result.Ps);
+            $('#faltantesweb').text(result.Ps);
+          }
+      });
+    
+      $.ajax({
+          url: '../publicos/ProductosFaltantesAPI/',
+          type: 'GET',
+          success: function(result) {
+            // Do something with the result
+            //console.log(result.Ps);
+            $('#faltantes').text(result.Ps);
+          }
+      });
+    }, 3000);
 });
 
 </script>
