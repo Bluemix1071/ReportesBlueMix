@@ -191,7 +191,7 @@ $(document).ready( function () {
             $('#faltantes').text(result.Ps);
           }
       });
-    }, 3000);
+    }, 2000);
 });
 
 </script>
