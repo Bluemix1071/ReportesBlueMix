@@ -47,9 +47,47 @@ class InicioController extends Controller
 
         $conteo1 = $conteo->count();
 
-        // $sinsubir = DB::table('productos_faltantes')->count();
+        // $sinsubir = DB::table('productos_faltantes')->count();s
 
-        $consultaPs=DB::select(
+    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1'));
+    }
+
+    public function ProductosFaltantesAPI(){
+
+      $consultaPsE=DB::select(
+        'select count(codigo) AS `Ps` from (SELECT 
+            `list`.`codigo` AS `codigo`,
+            `list`.`descripcion` AS `descripcion`,
+            `list`.`marca` AS `marca`,
+            `list`.`stock_sala` AS `stock_sala`,
+            `list`.`stock_bodega` AS `stock_bodega`,
+        COUNT(0) AS `total`
+                FROM
+        (SELECT 
+          `conveniomarco`.`codigo` AS `codigo`,
+              `conveniomarco`.`descripcion` AS `descripcion`,
+              `conveniomarco`.`marca` AS `marca`,
+              `conveniomarco`.`stock_sala` AS `stock_sala`,
+              `conveniomarco`.`stock_bodega` AS `stock_bodega`
+        FROM
+          `db_bluemix`.`conveniomarco` UNION ALL SELECT 
+          `db_bluemix`.`productosjumpseller`.`sku` AS `sku`,
+              `db_bluemix`.`productosjumpseller`.`name` AS `name`,
+              NULL AS `NULL`,
+              NULL AS `NULL`,
+              NULL AS `NULL`
+        FROM
+          `db_bluemix`.`productosjumpseller`) `list`
+        GROUP BY `list`.`codigo`
+        HAVING `total` = 1) as list1
+        where list1.stock_sala > 0;');
+
+      return response()->json($consultaPsE[0]);
+    }
+
+    public function ProductosFaltantesWebAPI(){
+
+      $consultaPs=DB::select(
         'select count(codigo) AS `Ps` from (SELECT 
             `list`.`codigo` AS `codigo`,
             `list`.`descripcion` AS `descripcion`,
@@ -76,39 +114,8 @@ class InicioController extends Controller
         GROUP BY `list`.`codigo`
         HAVING `total` = 1) as list1
         where list1.stock_sala > 0;');
-        //dd($consultaPs[0]);
 
-        $consultaPsE=DB::select(
-            'select count(codigo) AS `Ps` from (SELECT 
-                `list`.`codigo` AS `codigo`,
-                `list`.`descripcion` AS `descripcion`,
-                `list`.`marca` AS `marca`,
-                `list`.`stock_sala` AS `stock_sala`,
-                `list`.`stock_bodega` AS `stock_bodega`,
-            COUNT(0) AS `total`
-                    FROM
-            (SELECT 
-              `conveniomarco`.`codigo` AS `codigo`,
-                  `conveniomarco`.`descripcion` AS `descripcion`,
-                  `conveniomarco`.`marca` AS `marca`,
-                  `conveniomarco`.`stock_sala` AS `stock_sala`,
-                  `conveniomarco`.`stock_bodega` AS `stock_bodega`
-            FROM
-              `db_bluemix`.`conveniomarco` UNION ALL SELECT 
-              `db_bluemix`.`productosjumpseller`.`sku` AS `sku`,
-                  `db_bluemix`.`productosjumpseller`.`name` AS `name`,
-                  NULL AS `NULL`,
-                  NULL AS `NULL`,
-                  NULL AS `NULL`
-            FROM
-              `db_bluemix`.`productosjumpseller`) `list`
-            GROUP BY `list`.`codigo`
-            HAVING `total` = 1) as list1
-            where list1.stock_sala > 0;');
-            //dd($consultaPs[0]);
-
-
-    return view('publicos.index',compact('date','variable1','negativo1','users','mensaje','conteo1','consultaPs','consultaPsE'));
+      return response()->json($consultaPs[0]);
     }
 
 

@@ -50,7 +50,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-blue">
             <div class="inner">
-              <h3 class="animate__animated animate__bounce">{{$consultaPs[0]->Ps}}</h3>
+              <h3 class="animate__animated animate__bounce" id="faltantesweb">Cargando...</h3>
               <p>Productos sin subir web</p>
             </div>
             <div class="icon">
@@ -67,7 +67,7 @@ Espacio Publico Bluemix
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3 class="animate__animated animate__bounce">{{$consultaPsE[0]->Ps}}</h3>
+              <h3 class="animate__animated animate__bounce" id="faltantes">Cargando...</h3>
               <p>Productos sin subir empresas</p>
             </div>
             <div class="icon">
@@ -167,6 +167,32 @@ Espacio Publico Bluemix
 @section('script')
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<script>
+
+$(document).ready( function () {
+  $.ajax({
+      url: '../publicos/ProductosFaltantesWebAPI/',
+      type: 'GET',
+      success: function(result) {
+         // Do something with the result
+         //console.log(result.Ps);
+         $('#faltantesweb').text(result.Ps);
+      }
+  });
+
+  $.ajax({
+      url: '../publicos/ProductosFaltantesAPI/',
+      type: 'GET',
+      success: function(result) {
+         // Do something with the result
+         //console.log(result.Ps);
+         $('#faltantes').text(result.Ps);
+      }
+  });
+});
+
+</script>
 
 @endsection
 
