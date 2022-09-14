@@ -564,6 +564,29 @@ class SalaController extends Controller
       return redirect()->route('RequerimientoCompra')->with('success','Requerimiento Editado Correctamente');
 
     }
+
+    public function EditarRequerimientoCompraMultiple(Request $request){
+
+      //dd($request);
+
+      if(is_null($request->case)){
+        return redirect()->route('RequerimientoCompra')->with('warning','No seleccionó Requerimientos para Editar');
+      }else{
+        foreach($request->case as $item){
+
+          error_log(print_r($item, true));
+
+          DB::table('requerimiento_compra')
+            ->where('id' , $item)
+            ->update(
+            ['oc' => $request->oc_multiple,
+            'observacion_interna' => $request->observacion_interna_multiple]
+          );
+
+        }
+        return redirect()->route('RequerimientoCompra')->with('success','Requerimientos Editados Correctamente');
+      }
+    }
     
 
 }
