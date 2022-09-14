@@ -96,7 +96,7 @@ Costos Detalles
     $('#productos').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            'copy', 'pdf', 'print'
 
         ],
           "language":{
