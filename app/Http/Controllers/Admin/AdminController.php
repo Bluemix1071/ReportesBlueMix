@@ -1223,7 +1223,8 @@ public function actualizaripmac(Request $request)
       $fecha2=$request->fecha2;
 
       $costos=DB::table('dcargos')
-      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle, PrecioCosto as PrecioCosto,  DECANT*(PrecioCosto) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO')
+      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle, PrecioCosto as PrecioCosto,  DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO, precios.PCCOSTO')
+      ->join('precios',  \DB::raw('substr(dcargos.DECODI, 1, 5)'), '=', 'precios.PCCODI')
       ->where('DETIPO', '!=' , '3')
       ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
       ->get();
