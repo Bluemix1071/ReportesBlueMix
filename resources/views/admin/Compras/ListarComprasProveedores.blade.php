@@ -33,6 +33,7 @@
                                 <tr>
                                     <th scope="col">Folio</th>
                                     <th scope="col">Rut Proveedor</th>
+                                    <th scope="col">Razon Social</th>
                                     <th scope="col">Fecha Creación</th>
                                     <th scope="col">Fecha Emisión</th>
                                     <th scope="col">Fecha Vencimiento</th>
@@ -48,7 +49,8 @@
                             @foreach($compras as $item)
                             <tr>
                                 <td>{{ $item->folio }}</td>
-                                <td title="{{ $item->razon_social }}">{{ $item->rut }}</td>
+                                <td>{{ $item->rut }}</td>
+                                <td>{{ $item->razon_social }}</td>
                                 <td>{{ $item->fecha_creacion }}</td>
                                 <td>{{ $item->fecha_emision }}</td>
                                 <td>{{ $item->fecha_venc }}</td>
@@ -381,7 +383,7 @@
                     orderCellsTop: true,
                     dom: 'Bfrtip',
                     buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
+                        'copy', 'pdf', 'print'
 
                     ],
                     "language":{

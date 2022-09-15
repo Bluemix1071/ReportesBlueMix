@@ -579,8 +579,9 @@ class SalaController extends Controller
           DB::table('requerimiento_compra')
             ->where('id' , $item)
             ->update(
-            ['oc' => $request->oc_multiple,
-            'observacion_interna' => $request->observacion_interna_multiple]
+            [ 'estado' => $request->estado_multiple,
+              'oc' => $request->oc_multiple,
+              'observacion_interna' => $request->observacion_interna_multiple]
           );
 
         }

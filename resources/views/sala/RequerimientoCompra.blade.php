@@ -31,12 +31,12 @@
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
-                            <h3 class="card-title">Logs de Cambios:</h3>
+                            <h3 class="card-title">Logs de Cambios (15-09-2022):</h3>
                             <br>
                             <hr>
                                 * Ahora es posible editar cantidades de los requerimientos.
                                 <br>
-                                * Ahora es posible agregar OC y Observaciones Internas de forma masiva (SOLO ALISON).
+                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON).
                         </div>
                 </div>
 
@@ -226,8 +226,15 @@
                         <div id="selects">
                         </div>
                         
-                        <textarea required maxlength="250" class="form-control form-control" placeholder="Observaciones Internas Míltipes" name="observacion_interna_multiple" rows="3"></textarea>
+                        <select class="form-control form-control-sm" aria-label="Default select example" name="estado_multiple" required style="margin-bottom: 1%; margin-top: 1%;">
+                              <option value="INGRESADO">INGRESADO</option>
+                              <option value="ENVÍO OC">ENVÍO OC</option>
+                              <option value="BODEGA">BODEGA</option>
+                              <option value="RECHAZADO">RECHAZADO</option>
+                              <option value="BODEGA">DESACTIVADO</option>
+                        </select>
                         <input type="number" placeholder="Orden de Compra" required name="oc_multiple" class="form-control col" style="margin-bottom: 1%; margin-top: 1%;"  />
+                        <textarea required maxlength="250" class="form-control form-control" placeholder="Observaciones Internas Míltipes" name="observacion_interna_multiple" rows="3" style="margin-bottom: 1%; margin-top: 1%;"></textarea>
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
                             <button type="submit" class="btn btn-success">Editar Múltiple</button>
                         @else
