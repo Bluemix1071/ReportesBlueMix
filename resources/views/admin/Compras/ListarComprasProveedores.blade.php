@@ -8,7 +8,7 @@
 
 @endsection
 @section('contenido')
-    <div class="container my-4">
+    <div class="container-fluid" >
         <h1 class="display-4">Editar Compras de Proveedores
         </h1>
         <section class="content">
@@ -346,7 +346,7 @@
             }
             var min = minDate.val();
             var max = maxDate.val();
-            var date = data[3];
+            var date = data[4];
     
             if (
                 ( min === null && max === null ) ||
@@ -382,6 +382,7 @@
                 var table = $('#users').DataTable({
                     orderCellsTop: true,
                     dom: 'Bfrtip',
+                    order: [[ 3, "desc" ]],
                     buttons: [
                         'copy', 'pdf', 'print'
 
