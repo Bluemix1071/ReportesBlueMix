@@ -33,7 +33,7 @@
                                 <tr>
                                     <th scope="col">Folio</th>
                                     <th scope="col">Rut Proveedor</th>
-                                    <th scope="col">Razon Social</th>
+                                    <th scope="col">Razón Social</th>
                                     <th scope="col">Fecha Creación</th>
                                     <th scope="col">Fecha Emisión</th>
                                     <th scope="col">Fecha Vencimiento</th>
