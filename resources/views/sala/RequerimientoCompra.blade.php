@@ -47,7 +47,7 @@
 
         <div class="card">
         <br>
-        <form method="POST" action="{{ route('AgregarRequerimientoCompra') }}">
+        <form method="POST" action="{{ route('AgregarRequerimientoCompra') }}" id="basic-form">
         <div class="row form-control-sm">
             <div class="col input-group"><input type="text" class="form-control form-control-sm" placeholder="Codigo" name="codigo" id="codigo" required><span><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalproductos"><i class="fa fa-search"></i></button></span></div>
             <div class="col"><input type="text" class="form-control form-control-sm" placeholder="Descripción" name="descripcion" required id="descripcion"></div>
@@ -90,7 +90,7 @@
             @else
                 <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Observacion Interna" name="observacion_interna" rows="1" readonly></textarea></div>
             @endif
-            <div class="col" style="text-align:center"><button type="submit" class="btn btn-success">Agregar</button></div>
+            <div class="col" style="text-align:center"><button type="submit" class="btn btn-success" onclick="validar()" id="agregar"><div id="text_add">Agregar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button></div>
         </div>
       </form>
           <hr>
@@ -736,6 +736,23 @@ function contador(monto, id){
             }
         }); */
     }
+
+    function validar(){
+       /*  $("#agregar").prop("disabled", true);
+        setTimeout(function(){
+            $("#agregar").prop("disabled", false);
+        }, 2000); */
+
+        if ( $('#basic-form')[0].checkValidity() ) {
+            $("#text_add").prop("hidden", true);
+            $('#spinner').prop('hidden', false);
+            $("#agregar").prop("disabled", true);
+            $('#basic-form').submit();
+        }else{
+            console.log("formulario no es valido");
+        }
+    }
+
 </script>
 
 
