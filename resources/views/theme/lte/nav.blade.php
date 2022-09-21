@@ -718,7 +718,7 @@
                                                         @endcan
                                                         {{-- Fin generar carrito --}}
 
-                                                        {{-- Actualizar Stock --}}
+                                                        {{-- Actualizar Stock 
                                                         @can('ActualizarStock')
                                                             <li class="nav-item">
                                                                 <a href="#" class="nav-link">
@@ -728,7 +728,7 @@
                                                                     </p>
                                                                 </a>
                                                             </li>
-                                                        @endcan
+                                                        @endcan --}}
                                                         <li class="nav-item">
                                                                 <a href="{{ route('ProductosFaltantes') }}"
                                                                     class="nav-link {{ setActive('ProductosFaltantes') }}">
@@ -765,7 +765,7 @@
 
                                                         {{-- Fin Sincronizacion productos --}}
 
-                                                        {{-- Actualizar Stock --}}
+                                                        {{-- Actualizar Stock 
                                                         @can('ActualizarStockweb')
                                                             <li class="nav-item">
                                                                 <a href="#" class="nav-link">
@@ -775,7 +775,7 @@
                                                                     </p>
                                                                 </a>
                                                             </li>
-                                                        @endcan
+                                                        @endcan --}}
                                                         <li class="nav-item">
                                                                 <a href="{{ route('ProductosFaltantesWeb') }}"
                                                                     class="nav-link {{ setActive('ProductosFaltantesWeb') }}">

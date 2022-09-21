@@ -11,7 +11,7 @@ class IngresosController extends Controller
     //
     public function index(){
 
-        $ingresos = DB::table('cmovim')->join('proveed', 'cmovim.CMVCPRV', '=' , 'proveed.PVRUTP')->where('CMVNGUI', '>=', '26676')->orderBy('CMVNGUI', 'desc')->get();
+        $ingresos = DB::table('cmovim')->join('proveed', 'cmovim.CMVCPRV', '=' , 'proveed.PVRUTP')->where('CMVFECG', '>=', '2022-01-10')->orderBy('CMVNGUI', 'desc')->get();
         //dd($ingresos);
 
         return view('admin.Bodega.ListarIngresos', compact('ingresos'));
