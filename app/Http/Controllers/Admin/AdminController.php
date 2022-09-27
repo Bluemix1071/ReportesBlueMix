@@ -1779,7 +1779,7 @@ public function stocktiemporeal (Request $request){
 
         // dd($request->all());
 
-        if($request->codigo == null){
+        if($request->codigo == null && $request->descripcion == null){
 
         // $contrato=DB::table('Vista_Productos')
         // ->join('contrato_detalle','codigo_producto', '=', 'interno')
@@ -1806,17 +1806,18 @@ public function stocktiemporeal (Request $request){
 
         return view('admin.ListadoProductosContrato',compact('contrato','contratos','datos','datoscontrato'));
 
-        }
-
-        else{
+        }else{
 
         // $contrato=DB::table('Vista_Productos')
         // ->join('contrato_detalle','codigo_producto', '=', 'interno')
         // ->join('contratos','id_contratos', '=', 'fk_contrato')
         // ->where('interno', $request->codigo)
         // ->get();
-
-        $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
+        if($request->codigo != null){
+          $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
+        }elseif($request->descripcion != null){
+          $contrato=DB::select("select *, (select sum(DECANT) from dcargos where Detalle like ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and descripcion like ? and PCCODI = LEFT(interno, 5)", ['%'.$request->descripcion.'%', '%'.$request->descripcion.'%']);
+        }
 
 
         // $contrato=DB::select('select * from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo]);
