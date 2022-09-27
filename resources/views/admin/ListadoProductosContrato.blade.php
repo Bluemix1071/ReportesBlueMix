@@ -15,7 +15,7 @@
         <h3 class="display-3">Listado Productos Contratos</h3>
         <div class="row">
             <div class="col-md-12">
-                <form action="{{ route('ListadoProductosContratoFiltro') }}" method="post" id="desvForm" class="form-inline">
+                <form action="{{ route('ListadoProductosContratoFiltro') }}" method="post" id="basic-form" class="form-inline">
                     @csrf
                     <div class="form-group mb-2">
                         @if (empty($codigo_producto))
@@ -44,7 +44,7 @@
                         </label>
                     </div> --}}
                     <div class="form-group mx-sm-3 mb-2">
-                        <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+                        <button type="submit" class="btn btn-primary mb-2" onclick="validar()" id="agregar"><div id="text_add">Buscar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
                     </div>
                 </form>
                 @if(is_null($datos))
@@ -238,6 +238,22 @@
             $("#descripcion").prop('readonly', false);
             $("#codigo").val(null);
         }
+
+        function validar(){
+       /*  $("#agregar").prop("disabled", true);
+        setTimeout(function(){
+            $("#agregar").prop("disabled", false);
+        }, 2000); */
+
+        if ( $('#basic-form')[0].checkValidity() ) {
+            $("#text_add").prop("hidden", true);
+            $('#spinner').prop('hidden', false);
+            $("#agregar").prop("disabled", true);
+            $('#basic-form').submit();
+        }else{
+            console.log("formulario no es valido");
+        }
+    }
 
     </script>
 
