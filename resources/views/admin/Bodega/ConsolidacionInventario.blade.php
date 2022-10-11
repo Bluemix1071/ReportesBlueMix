@@ -11,41 +11,37 @@
     @if((new \Jenssegers\Agent\Agent())->isDesktop())
     <section>
     <div class="container my-4">
-        <h1 class="display-4">Conteo Inventario Bodega</h1>
+        <h1 class="display-4">Consolidacion Inventario Bodega</h1>
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                                <button type="button" class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modalingresarconteo">Agregar <i class="fas fa-plus"></i></button>
-                                <input type="text" hidden placeholder="id_ingreso" id="id_ingreso" class="form-control col-2" />
-                    </div>
+                    
                     <div class="card-body">
                     <div class="table-responsive-xl">
                         <table id="users" class="table table-sm table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Ubicacion</th>
-                                    <th scope="col">Modulo</th>
-                                    <th scope="col">Encargado</th>
-                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Detalle</th>
+                                    <th scope="col">Marca</th>
                                     <th scope="col">Estado</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Modulo</th>
                                     <th scope="col">Accion</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($conteo_inventario as $item)
+                                @foreach($consolidacion as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->ubicacion }}</td>
-                                    <td>{{ $item->modulo }}</td>
-                                    <td>{{ $item->encargado }}</td>
-                                    <td>{{ $item->fecha }}</td>
+                                    <td>{{ $item->codigo }}</td>
+                                    <td>{{ $item->detalle }}</td>
+                                    <td>{{ $item->marca }}</td>
                                     <td>{{ $item->estado }}</td>
-                                    <td>
-                                    <form action="{{ route('ConteoInventarioDetalleBodega', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
-                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
-                                    </form>
-                                    </td>
+                                    <td>{{ $item->cantidad }}</td>
+                                    <td>{{ $item->modulo }}</td>
+                                    <td>Consolidar</td>
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -107,4 +107,12 @@ class ConteoInventarioBodegaController extends Controller
         return view('admin.Bodega.ConteoInventarioDetalle', compact('detalles', 'id_conteo'));
     }
 
+    public function ConsolidacionInventarioBodega(){
+
+        $consolidacion = DB::select("select conteo_inventario_detalle.*, sum(cantidad) , conteo_inventario.modulo from conteo_inventario_detalle left join conteo_inventario on conteo_inventario_detalle.id_conteo_inventario = conteo_inventario.id group by codigo, modulo");
+
+        return view('admin.Bodega.ConsolidacionInventario', compact('consolidacion'));
+
+    }
+
 }

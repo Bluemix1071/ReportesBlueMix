@@ -1014,7 +1014,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../UI/buttons.html" class="nav-link">
+                                <a href="{{ route('ConsolidacionInventarioBodega') }}" class="nav-link {{ setActive('ConsolidacionInventario') }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Consolidación Inventario</p>
                                 </a>
