@@ -21,12 +21,9 @@
         </div>
       </div> -->
 
-      <div class="card text-white bg-warning mb-3">
+      <!-- <div class="card text-white bg-warning mb-3">
                     <div class="card-header">
                         <div class="card-tools">
-                            <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-plus"></i>
-                            </button> -->
                             <button type="button" class="btn btn-tool" data-card-widget="remove">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
@@ -38,7 +35,7 @@
                                 <br>
                                 * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON).
                         </div>
-                </div>
+                </div> -->
 
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>
