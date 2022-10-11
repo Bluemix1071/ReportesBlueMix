@@ -108,123 +108,21 @@
             </div>
         </section>
 
-        <!-- Modal Editar -->
-        <div class="modal fade" id="mimodaleditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Editar Usuarios</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card-body">
-                            <form method="POST" action="{{ route('EditarUserCombo') }}">
-                                {{ method_field('put') }}
-                                {{ csrf_field() }}
-                                @csrf
-                                <input type="hidden" name="id" id="id" value="">
-                                <div class="form-group row">
-                                    <label for="name"
-                                        class="col-md-4 col-form-label text-md-right">{{ __('Nombre') }}</label>
-
-                                    <div class="col-md-6">
-                                        <input id="name" type="text"
-                                            class="form-control @error('name') is-invalid @enderror" name="name"
-                                            value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="username"
-                                        class="col-md-4 col-form-label text-md-right">{{ __('Nombre Usuario') }}</label>
-
-                                    <div class="col-md-6">
-                                        <input id="username" type="username"
-                                            class="form-control @error('username') is-invalid @enderror" name="username"
-                                            value="{{ old('username') }}" required autocomplete="username">
-
-                                        @error('username')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <!-- Tipo de Usuarioo -->
-                                <div class="form-group row d-none">
-                                    <label for="Tipo" class="col-md-4 col-form-label text-md-right">Tipo Usuario</label>
-
-                                    <div class="col-md-6">
-                                        <input id="tipo" type="tipo"
-                                            class="form-control @error('tipo') is-invalid @enderror" name="tipo"
-                                            value="{{ old('tipo') }}" autocomplete="tipo">
-
-                                        @error('tipo')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <!-- Estado de Usuarioo -->
-                                <div class="form-group row">
-                                    <label for="estado" class="col-md-4 col-form-label text-md-right">Estado De
-                                        Usuario</label>
-
-                                    <div class="col-md-6">
-                                        <select id="estado" list="estado" class="form-control" name="estado" value="" required>
-                                            <option value="A">Activo</option>
-                                            <option value="N">No Activo</option>
-                                        </select>
-                                    </div>
-                                <!-- Fecha Nacimiento -->
-                                </div>
-                                <div class="form-group row">
-                                    <label for="fecha_nacimiento" class="col-md-4 col-form-label text-md-right">Fecha Nacimiento</label>
-
-                                    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" onchange="ValidarFecha(this)" required
-                                    value="{{ old('fecha_nacimiento') }}" autocomplete="fecha_nacimiento" class="form-control-lg @error('fecha_nacimiento') is-invalid @enderror">
-                                    
-                                </div>
-                                <!-- PASSWORD -->
-                                <div class="form-group row">
-                                    <label for="pass"
-                                        class="col-md-4 col-form-label text-md-right">Contraseña</label>
-
-                                    <div class="col-md-5">
-                                        <input id="pass" type="password"
-                                            class="form-control @error('pass') is-invalid @enderror" name="pass"
-                                            value="" required autocomplete="pass">
-
-                                        @error('pass')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16" id="contarsena">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Editar</button>
-                                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+         <!-- Modal AYUDA TABLAS POR PAGAR-->
+         <div class="modal fade bd-example-modal-lg" id="mimodalinfo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content col-md-6" style="margin-left: 25%">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Ayuda</h4>
             </div>
+            <div class="modal-body">
+                <p>La fecha de filtrado es correspondiente a la columna número cinco: <b>'FECHA EMISIÓN'</b>.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Salir</a>
+            </div>
+            </div>
+        </div>
         </div>
         <!-- FIN Modall -->
         <!-- Modall ingreso nc-->

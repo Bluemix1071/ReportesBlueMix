@@ -1008,15 +1008,15 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="../UI/icons.html" class="nav-link">
+                                <a href="{{ route('ConteoInventarioBodega') }}" class="nav-link {{ setActive('ConteoInventarioBodega') }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Consulta</p>
+                                    <p>Conteo Inventario</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="../UI/buttons.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Consulta</p>
+                                    <p>Consolidación Inventario</p>
                                 </a>
                             </li>
                             <li class="nav-item">

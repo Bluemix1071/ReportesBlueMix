@@ -1,7 +1,10 @@
 <?php
 
 //use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FrontController;
 
+Route::get('detect-device', [FrontController::class, 'detuctDebice'])->name('detect-device');
 
 
 Route::get('/api/{any}', function () {
@@ -146,6 +149,14 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Ingresos', 'Bodega\IngresosController@index')->name('ListarIngresos');
     Route::post('/IngresoDetalle', 'Bodega\IngresosController@detalle')->name('IngresoDetalle');
     Route::post('/EditarDetalle', 'Bodega\IngresosController@editardetalle')->name('EditarDetalle');
+
+    /*  Mantenedor CRUD Conteo Inventario Bodega */
+    Route::get('/ConteoInventarioBodega', 'Bodega\ConteoInventarioBodegaController@index')->name('ConteoInventarioBodega');
+    Route::post('/ConteoInventarioBodega', 'Bodega\ConteoInventarioBodegaController@NuevoConteo')->name('NuevoConteoInventarioBodega');
+    Route::post('/ConteoInventarioDetalleBodega', 'Bodega\ConteoInventarioBodegaController@ConteoDetalle')->name('ConteoInventarioDetalleBodega');
+    Route::post('/GuardarConteoInventarioDetalleBodega', 'Bodega\ConteoInventarioBodegaController@GuardarConteoDetalle')->name('GuardarConteoDetalleBodega');
+    Route::get('/BuscarProducto/{codigo}','Bodega\ConteoInventarioBodegaController@BuscarProducto')->name('BuscarProducto');
+
 
     /*  Mantenedor Clientes Credito */
     Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
