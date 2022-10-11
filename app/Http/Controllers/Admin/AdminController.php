@@ -1788,9 +1788,6 @@ public function stocktiemporeal (Request $request){
 
         $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO,sum(decant) as venta,cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and PCCODI = LEFT(interno, 5) and DECODI = interno and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate() group by decodi', [$request->contrato]);
 
-        dd($contrato);
-
-
         // $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO, cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5)', [$request->contrato]);
 
         //ultima fecha llegada
