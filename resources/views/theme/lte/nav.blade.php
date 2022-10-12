@@ -604,6 +604,27 @@
                                     </li>
                                 @endcan
 
+                                {{--
+                                <li class="nav-item">
+                                   <a href="{{ route('AvanceAnualMensual') }}" class="nav-link">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Avance Mensual Anual
+                                      </p>
+                                  </a>
+                                </li>
+                                --}}
+
+                                {{--@can('ArqueoC')--}}
+                                <li class="nav-item">
+                                       <a href="{{ route('ArqueoC') }}" class="nav-link">
+                                           <i class="far fa-circle nav-icon"></i>
+                                           <p>Arqueo Caja
+                                           </p>
+                                       </a>
+                                </li>
+                                {{--@endcan--}}
+
+
                                 @can('Costos')
                                     <li class="nav-item">
                                         <a href="" class="nav-link ">
@@ -670,7 +691,41 @@
                                         </ul>
                                     </li>
                                 @endcan
-
+                                    {{--AQUI! --}}
+                                @can('Contratos')
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link ">
+                                            <i class="nav-icon fas fa-circle"></i>
+                                            <p>Cotizaciones
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ route('ListaEscolar') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Lista Escolar
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Municipal(pronto)
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Otros(pronto)
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endcan
+                                    {{--AQUI! --}}
                                 @can('Jumpseller')
                                     <li class="nav-item">
                                         <a href="" class="nav-link ">
@@ -793,6 +848,7 @@
                                         </ul>
                                     </li>
                                 @endcan
+
                             </ul>
                         </li>
                     @endcan

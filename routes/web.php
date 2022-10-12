@@ -189,8 +189,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/areaproveedorfamilia','AdminController@areaproveedorfamilia')->name('areaproveedorfamilia');
 
     Route::get('/consultafacturaboleta','AdminController@consultafacturaboleta')->name('consultafacturaboleta');
-    
+    Route::get('/ArqueoC','AdminController@ArqueoC')->name('ArqueoC');
+
     Route::post('/filtrarconsultafacturaboleta','AdminController@filtrarconsultafacturaboleta')->name('filtrarconsultafacturaboleta');
+    Route::post('/filtrarArqueoC','AdminController@filtrarArqueoC')->name('filtrarArqueoC');/**>AQUI ARQUEO */
 
     Route::get('/CostoHistoricoPorProducto','CostoHistoricoPorProductoController@index')->name('CostoHistoricoPorProducto');
 
@@ -238,7 +240,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ProductosFaltantes','AdminController@ProductosFaltantes')->name('ProductosFaltantes');
     Route::get('/ProductosFaltantesWeb','AdminController@ProductosFaltantesWeb')->name('ProductosFaltantesWeb');/*AQUI!!*/
     //Ruta para mostrar los productos no subidos en "Index"
-    
+
+
+    /* Cotizaciones */
+    Route::get('/ListaEscolar','AdminController@ListaEscolar')->name('ListaEscolar');
+    /* */
 
     Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');
     Route::post('/ResumenDeVentaFiltro','AdminController@ResumenDeVentaFiltro')->name('ResumenDeVentaFiltro');
@@ -269,7 +275,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     //------------------------------FILTROS Y OTRAS COSAS XD-----------------------------------------------//
     Route::post('/Desviacion','AdminController@filtrarDesviacion')->name('filtrarDesv');
-    Route::post('/Productospormarca','AdminController@filtarProductospormarca')->name('filtrarpormarca');
+    Route::post('/Productospormarca','AdminController@filtarProductospormarca')->name('filtrarpormarca');/*Referencia Aqui*/
     Route::post('/Productos','AdminController@FiltrarProductos')->name('filtrarProductos');
     Route::post('VentasProdutos','AdminController@VentaProductosPorFechas')->name('ventaProdFiltro');
 
@@ -330,7 +336,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/CrearCarrito','Jumpseller\BluemixEmpresas\GenerarCarritoController@CrearCarrito')->name('GenerarCarrito.store');
 
     Route::get('/jumpsellerWeb','Jumpseller\BluemixWeb\SincronizacionProductosWebController@index')->name('index.jumpsellerWeb');
-    
+
     Route::get('/SincronizarProductosWeb','Jumpseller\BluemixWeb\SincronizacionProductosWebController@sincronizarProductos')->name('sincronizarWeb');
     Route::get('/ActualizarProductoWeb','Jumpseller\BluemixWeb\SincronizacionProductosWebController@actualizarProductoWeb')->name('updateProductoWeb');
 

@@ -36,7 +36,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-      
+
 
     return view('/publicos');
 
@@ -143,11 +143,11 @@ class AdminController extends Controller
       return view('admin.PorcentajeDesviacion',compact('porcentaje','fecha1','fecha2'));
     }
 
-    public function filtarProductospormarca (Request $request){
+    public function filtarProductospormarca (Request $request){ /*Referencia Aqui */
 
       if ($request->searchText==null) {
        $productos=DB::table('Productos_x_Marca')->paginate(10);
-       return view('admin.productospormarca',compact('productos'));
+       return view('admin.productospormarca',comparct('productos'));
        }else{
         $buscador=$request->searchText;
 
@@ -942,6 +942,10 @@ class AdminController extends Controller
 
 }
 
+  public function ArqueoC(){
+    return view('admin.ArqueoC');
+  }
+
 public function filtrarconsultafacturaboleta(Request $request){
 
 
@@ -982,7 +986,6 @@ public function filtrarconsultafacturaboleta(Request $request){
       $notacredito=DB::table('nota_credito')
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
       ->get();
-      
 
       $notacreditocount=DB::table('nota_credito')
       ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
@@ -1115,6 +1118,282 @@ public function filtrarconsultafacturaboleta(Request $request){
 
 
 }
+//-----------------------------Inicio Controller ArqueoC--------------------------------------//
+public function filtrarArqueoC(Request $requestT){
+
+    $fecha1T=$requestT->fecha1T;
+    $fecha2T=$requestT->fecha2T;
+
+
+
+    $facturaT=db::select("select * from cargos where CATIPO = 8 and FPAGO = 'Contado' and CAFECO between ? and ? union
+    select cargos.* from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and
+    cargos.FPAGO = 'Credito' and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+
+    $facturaTX=DB::select("Select
+    cargos.CANMRO,cargos.CATIPO,cargos.CARUTC,cargos.razon,
+    ccorclie_ccpclien.CCPFECHAHO,ccorclie_ccpclien.CCPFECHAP1,
+    cargos.FPAGO,cargos.cacoca,cargos.caneto,cargos.CAIVA,cargos.cavalo
+    from ccorclie_ccpclien JOIN cargos
+    on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $facturacountT=count($facturaT);
+
+    $facturacountTX=count($facturaTX);
+
+
+    $boletaT=DB::table('cargos')
+    ->where('CATIPO',7)
+ /**->where('forma_pago',"T")*/
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->get();
+
+    //dd(count($boletaT));
+
+    $boletaTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('forma_pago',"T")
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->get();
+
+    $boletacountT=DB::table('cargos')
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->where('catipo',7)
+    ->where('CANMRO' ,'<', 1100000001)
+    ->count('CANMRO');
+
+    $boletacountTR=DB::table('cargos')
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->where('catipo',7)
+    ->where('CANMRO' ,'<', 1100000001)
+    ->count('CANMRO');
+
+    $boletatransbankcountT=DB::table('cargos')  /////transbank
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->where('catipo',7)
+    ->where('CANMRO' ,'>', 1100000001)
+    ->count('CANMRO');
+
+    $boletatransbankcountTR=DB::table('cargos')  /////transbank
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->where('catipo',7)
+    ->where('CANMRO' ,'>', 1100000001)
+    ->count('CANMRO');
+
+    $guiaT=DB::select("select
+    cargos.CANMRO,cargos.CARUTC,cargos.razon,cargos.CAFECO,
+    cargos.FPAGO,cargos.cacoca,cargos.CANETO,cargos.CAIVA,cargos.CASUTO
+    from cargos where cargos.catipo=3 and cargos.cafeco between ? and ?",array($requestT->fecha1T,$requestT->fecha2T));
+
+    $guiacountT=count($guiaT);
+
+    $guiasumnT=DB::table('cargos')
+    ->where('CATIPO',3)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');
+
+
+
+    $notacreditoT=DB::table('nota_credito')
+    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
+    ->get();
+
+    $notacreditocountT=DB::table('nota_credito')
+    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
+    ->count('id');
+
+    $boletasumaT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('cavalo');
+
+    $boletasumaTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('cavalo');
+
+    $facturasumaT=DB::table('cargos')
+    ->where('CATIPO',8)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('cavalo');
+
+    $facturasumaTX=DB::table('cargos')
+    ->where('CATIPO',8)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('cavalo');
+
+    $notacreditosumaT=DB::table('nota_credito') //notacredito.
+    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('total_nc');
+
+    $totalboletasumanetoT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO','<',1100000001)  //boleta
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');
+
+    $totalboletasumanetoTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO','<',1100000001)  //boleta
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');
+
+    $boletatransbanksumanetoT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO','>',1100000001)  //transbank
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');
+
+    $boletatransbanksumanetoTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO','>',1100000001)  //transbank
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');
+
+    $totalboletasumaivaT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO','<', 1100000001)  //boleta
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAIVA');
+
+    $totalboletasumaivaTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO','<', 1100000001)  //boleta
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAIVA');
+
+    $boletatransbanksumaivaT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO','>', 1100000001)  //transbank
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAIVA');
+
+    $boletatransbanksumaivaTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO','>', 1100000001)  //transbank
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAIVA');
+
+    $totalboletasumaT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO' ,'<', 1100000001)   //boleta
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAVALO');
+
+    $totalboletasumaTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO' ,'<', 1100000001)   //boleta
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAVALO');
+
+    $boletatransbanktotalT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO' ,'>', 1100000001)   //transbank
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAVALO');
+
+    $boletatransbanktotalTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->where('CANMRO' ,'>', 1100000001)   //transbank
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAVALO');
+
+    $totalT=(($boletasumaT+$facturasumaTX)-$notacreditosumaT);
+
+
+    $boletasumaivaT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAIVA');
+
+    $facturasumaivaT=DB::table('cargos')
+    ->where('CATIPO',8)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAIVA');
+
+    $facturasumaivaTX=DB::table('cargos')
+    ->where('CATIPO',8)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CAIVA');
+
+
+    $notacreditosumaivaT=DB::table('nota_credito')
+    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('iva');
+
+    $totalivaT=(($boletasumaivaT+$facturasumaivaTX)-$notacreditosumaivaT);
+
+    $boletasumanetoT=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');
+
+    $boletasumanetoTR=DB::table('cargos')
+    ->where('CATIPO',7)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');///
+
+    $facturasumanetoT=DB::table('cargos')
+    ->where('CATIPO',8)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');
+
+    $facturasumanetoTX=DB::table('cargos')
+    ->where('CATIPO',8)
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('CANETO');
+
+    $notacreditosumanetoT=DB::table('nota_credito')
+    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
+    ->sum('neto');
+
+
+    $totalnetoT=(($boletasumanetoT+$guiasumnT+$facturasumanetoTX)-$notacreditosumanetoT);
+    //$totalnetoT=(($totalboletasumanetoT+$boletatransbanksumanetoT+$totalfacturanetoT)-($totalfacturanetoTX+$totalguianetoT+$totalnotacrenetoT));
+
+    $sumadocumentosT = ($facturacountT+$guiacountT+$facturacountTX+ $notacreditocountT + $boletacountT + $boletatransbankcountT);
+
+
+
+
+    $porcajaT=DB::table('cargos')
+    ->selectRaw('cacoca AS CAJA,
+    count(cacoca) AS cantidad,
+    SUM(CAVALO) AS TOTAL')
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->where('CATIPO',7)
+    ->groupBy('cacoca')
+    ->get();
+
+
+
+    $porimpresoraT=DB::table('cargos')
+    ->selectRaw('cacoca AS CAJA,
+    count(cacoca) AS cantidad,
+    SUM(CAVALO) AS TOTAL')
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->where('CATIPO',8)
+    ->groupBy('cacoca')
+    ->get();
+
+    $porguiaT=DB::table('cargos')
+    ->selectRaw('cacoca AS CAJA,
+    count(cacoca) AS cantidad,
+    SUM(CAVALO) AS TOTAL')
+    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
+    ->where('CATIPO',3)
+    ->groupBy('cacoca')
+    ->get();
+
+
+
+
+return view('admin.ArqueoC',compact('guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT','totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT','boletatransbankcountT','boletatransbankcountTR','boletatransbanksumaivaT','boletatransbanksumaivaTR','boletatransbanksumanetoT','boletatransbanksumanetoTR','boletatransbanktotalT','boletatransbanktotalTR','totalboletasumanetoT','totalboletasumanetoTR','totalboletasumaivaT','totalboletasumaivaTR','totalboletasumaT','totalboletasumaTR','porguiaT'));
+
+}
+//-----------------------------Fin Controller ArqueoC-----------------------------------------//
 
 //------------------------------ ControL IP mac-----------------------------------------------//
 
@@ -1513,7 +1792,7 @@ public function stocktiemporeal (Request $request){
         }else{
           return redirect()->route('MantencionClientes')->with('warning','Cliente no Existe');
         }
-        
+
         return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz','compras_agiles','regiones','t_c_a_a','t_c_a_m','p_r_a','p_p_e','clientescredito'));
 
 }
@@ -1889,6 +2168,16 @@ public function stocktiemporeal (Request $request){
 
     }
 
+    public function ListaEscolar(){
+
+
+        return view('admin.cotizaciones.ListaEscolar');
+
+    }
+
+
+
+
     public function UpdateContrato(Request $request){
 
         // dd($request->all());
@@ -1914,7 +2203,7 @@ public function stocktiemporeal (Request $request){
         // dd($request->all());
         //$consulta=DB::table('db_bluemix.productos_x_subir')->get(); OK, sin condicion WHERE.
         //$consulta=DB::select('SELECT * FROM db_bluemix.productos_x_subir where stock_sala >0;');//OK con WHERE.
-        $consulta=DB::select('select * from (SELECT 
+        $consulta=DB::select('select * from (SELECT
             `list`.`codigo` AS `codigo`,
             `list`.`descripcion` AS `descripcion`,
             `list`.`marca` AS `marca`,
@@ -1922,14 +2211,14 @@ public function stocktiemporeal (Request $request){
             `list`.`stock_bodega` AS `stock_bodega`,
           COUNT(0) AS `total`
       FROM
-          (SELECT 
+          (SELECT
               `conveniomarco`.`codigo` AS `codigo`,
                   `conveniomarco`.`descripcion` AS `descripcion`,
                   `conveniomarco`.`marca` AS `marca`,
                   `conveniomarco`.`stock_sala` AS `stock_sala`,
                   `conveniomarco`.`stock_bodega` AS `stock_bodega`
           FROM
-              `db_bluemix`.`conveniomarco` UNION ALL SELECT 
+              `db_bluemix`.`conveniomarco` UNION ALL SELECT
               `db_bluemix`.`productosjumpseller`.`sku` AS `sku`,
                   `db_bluemix`.`productosjumpseller`.`name` AS `name`,
                   NULL AS `NULL`,
@@ -1948,7 +2237,7 @@ public function stocktiemporeal (Request $request){
     //Controlador productos_x_subir Web
     public function ProductosFaltantesweb(Request $request){
 
-      $consulta=DB::select('select * from (SELECT 
+      $consulta=DB::select('select * from (SELECT
           `list`.`codigo` AS `codigo`,
           `list`.`descripcion` AS `descripcion`,
           `list`.`marca` AS `marca`,
@@ -1956,14 +2245,14 @@ public function stocktiemporeal (Request $request){
           `list`.`stock_bodega` AS `stock_bodega`,
         COUNT(0) AS `total`
     FROM
-        (SELECT 
+        (SELECT
             `conveniomarco`.`codigo` AS `codigo`,
                 `conveniomarco`.`descripcion` AS `descripcion`,
                 `conveniomarco`.`marca` AS `marca`,
                 `conveniomarco`.`stock_sala` AS `stock_sala`,
                 `conveniomarco`.`stock_bodega` AS `stock_bodega`
         FROM
-            `db_bluemix`.`conveniomarco` UNION ALL SELECT 
+            `db_bluemix`.`conveniomarco` UNION ALL SELECT
             `db_bluemix`.`productosjumpsellerweb`.`sku` AS `sku`,
                 `db_bluemix`.`productosjumpsellerweb`.`name` AS `name`,
                 NULL AS `NULL`,
@@ -2441,7 +2730,7 @@ public function stocktiemporeal (Request $request){
       $primer_folio = $request->get("ultimo")+1;
       $asignados = $request->get("folios");
       $caja = $request->get("caja");
-      
+
       if($asignados > 0 ){
         DB::table('usuario')
         ->where('USCODI' , $caja)
@@ -2463,7 +2752,7 @@ public function stocktiemporeal (Request $request){
       $primer_folio = $request->get("ultimo")+1;
       $asignados = $request->get("folios");
       $caja = $request->get("caja");
-      
+
       if($asignados > 0 ){
         DB::table('usuario')
         ->where('USCODI' , $caja)
