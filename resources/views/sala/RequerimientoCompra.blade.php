@@ -10,6 +10,33 @@
 @section('contenido')
     <div class="container-fluid" style="pointer-events: none; opacity: 0.4;" id="maindiv">
       <h1 class="display-4">Requerimiento de Compras</h1>
+
+      <!-- <div id="collapseExample" class>
+        <div class="card card-body">
+            Logs de Cambios:
+            <hr>
+            * Ahora es posible editar cantidades de los requerimientos.
+            <br>
+            * Ahora es posible agregar OC y Observaciones Internas de forma masiva (SOLO ALISON).
+        </div>
+      </div> -->
+
+      <!-- <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                            <h3 class="card-title">Logs de Cambios (15-09-2022):</h3>
+                            <br>
+                            <hr>
+                                * Ahora es posible editar cantidades de los requerimientos.
+                                <br>
+                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON).
+                        </div>
+                </div> -->
+
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>
       <hr> -->
@@ -17,7 +44,7 @@
 
         <div class="card">
         <br>
-        <form method="POST" action="{{ route('AgregarRequerimientoCompra') }}">
+        <form method="POST" action="{{ route('AgregarRequerimientoCompra') }}" id="basic-form">
         <div class="row form-control-sm">
             <div class="col input-group"><input type="text" class="form-control form-control-sm" placeholder="Codigo" name="codigo" id="codigo" required><span><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalproductos"><i class="fa fa-search"></i></button></span></div>
             <div class="col"><input type="text" class="form-control form-control-sm" placeholder="Descripción" name="descripcion" required id="descripcion"></div>
@@ -38,6 +65,8 @@
                               <option value="INGRESADO">INGRESADO</option>
                               <option value="ENVÍO OC">ENVÍO OC</option>
                               <option value="BODEGA">BODEGA</option>
+                              <option value="RECHAZADO">RECHAZADO</option>
+                              <option value="BODEGA">DESACTIVADO</option>
                             </select>
                           </div>
                         @else
@@ -58,14 +87,14 @@
             @else
                 <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Observacion Interna" name="observacion_interna" rows="1" readonly></textarea></div>
             @endif
-            <div class="col" style="text-align:center"><button type="submit" class="btn btn-success">Agregar</button></div>
+            <div class="col" style="text-align:center"><button type="submit" class="btn btn-success" onclick="validar()" id="agregar"><div id="text_add">Agregar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button></div>
         </div>
       </form>
           <hr>
           <div class="card-header">
           <div style="text-align:center">
                         <td>Desde:</td>
-                                    <td><input type="date" id="min" name="min" value="2021-01-01"></td>
+                                    <td><input type="date" id="min" name="min" value="2022-09-12"></td>
                                 </tr>
                                 <tr>
                                     <td>Hasta:</td>
@@ -78,24 +107,28 @@
                     </div>
             
             <div>
-            <table id="users" class="table table-bordered table-hover" style="text-align:center; font-size: 15px;">
+            <table id="users" class="table table-bordered table-hover dataTable table-sm" style="text-align:center; font-size: 15px;">
               <thead>
                 <tr>
+                  <th scope="col" style="width: 3%;"></th>
+                  <th scope="col" style="width: 5%;">ID</th>
                   <th scope="col">Codigo</th>
-                  <th scope="col">Descipción</th>
+                  <th scope="col" class="col-3">Descipción</th>
                   <th scope="col">Marca</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Departamento</th>
                   <th scope="col">Estado</th>
                   <th scope="col">OC</th>
                   {{-- <th scope="col">Observación</th> --}}
-                  <th scope="col">Fecha Ingreso</th>
+                  <th scope="col" class="col-1">Fecha Ingreso</th>
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($requerimiento_compra as $item)
                     <tr>
+                      <td><input type="checkbox" id="id_{{ $item->id }}" class="case" name="case[]" value="{{ $item->id }}" onclick="contador({{ $item->id }}, {{ $item->id }})"></td> 
+                      <td>{{ $item->id }}</td>
                       <td>{{ $item->codigo }}</td>
                       <td>{{ $item->descripcion }}</td>
                       <td>{{ $item->marca }}</td>
@@ -108,6 +141,8 @@
                         <select class="form-control form-control-sm bg-primary" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
                         @elseif($item->estado == "BODEGA")
                         <select class="form-control form-control-sm bg-success" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
+                        @elseif($item->estado == "RECHAZADO")
+                        <select class="form-control form-control-sm bg-warning" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
                         @elseif($item->estado == "DESACTIVADO")
                         <select class="form-control form-control-sm bg-danger" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
                         @endif
@@ -126,6 +161,8 @@
                             <h4><span class="badge badge-primary">{{ $item->estado }}</span></h4>
                         @elseif($item->estado == "BODEGA")
                             <h4><span class="badge badge-success">{{ $item->estado }}</span></h4>
+                        @elseif($item->estado == "RECHAZADO")
+                            <h4><span class="badge badge-warning">{{ $item->estado }}</span></h4>    
                         @elseif($item->estado == "DESACTIVADO")
                             <h4><span class="badge badge-danger">{{ $item->estado }}</span></h4>
                         @endif
@@ -166,6 +203,43 @@
 
           </div>
         </div>
+
+        <form method="post" action="{{ route('EditarRequerimientoCompraMultiple') }}" id="desvForm">
+                {{ method_field('put') }}
+                {{ csrf_field() }}
+                @csrf
+                <div class="card card-primary">
+                    <div class="card-header">
+                            <h3 class="card-title">Edición Múltiple</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                </button>
+                            </div>
+                        </div>
+                    <div class="card-body collapse hide">
+                        <div id="selects">
+                        </div>
+                        
+                        <select class="form-control form-control-sm" aria-label="Default select example" name="estado_multiple" required style="margin-bottom: 1%; margin-top: 1%;">
+                              <option value="INGRESADO">INGRESADO</option>
+                              <option value="ENVÍO OC">ENVÍO OC</option>
+                              <option value="BODEGA">BODEGA</option>
+                              <option value="RECHAZADO">RECHAZADO</option>
+                              <option value="BODEGA">DESACTIVADO</option>
+                        </select>
+                        <input type="number" placeholder="Orden de Compra" required name="oc_multiple" class="form-control col" style="margin-bottom: 1%; margin-top: 1%;"  />
+                        <textarea required maxlength="250" class="form-control form-control" placeholder="Observaciones Internas Míltipes" name="observacion_interna_multiple" rows="3" style="margin-bottom: 1%; margin-top: 1%;"></textarea>
+                        @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                            <button type="submit" class="btn btn-success">Editar Múltiple</button>
+                        @else
+                            <button type="button" disabled class="btn btn-success">Editar Múltiple</button>
+                        @endif
+                    </div>
+                </div>
+                </form>
       </section>
 
         <!-- Modal desactivar -->
@@ -324,7 +398,7 @@
                                     <div class="col-md-6">
                                         <input id="cantidad" type="number"
                                             class="form-control @error('cantidad') is-invalid @enderror" name="cantidad"
-                                            value="{{ old('cantidad') }}" required autocomplete="cantidad" readonly>
+                                            value="{{ old('cantidad') }}" required autocomplete="cantidad" min="0" max="99999999">
 
                                         @error('cantidad')
                                             <span class="invalid-feedback" role="alert">
@@ -372,6 +446,7 @@
                                             <option value="INGRESADO">INGRESADO</option>
                                             <option value="ENVÍO OC">ENVÍO OC</option>
                                             <option value="BODEGA">BODEGA</option>
+                                            <option value="RECHAZADO">RECHAZADO</option>
                                             <option value="DESACTIVADO">DESACTIVADO</option>
                                         </select>
                                     @else
@@ -515,7 +590,7 @@ function( settings, data, dataIndex ) {
     }
     var min = minDate.val();
     var max = maxDate.val();
-    var date = data[7].substring(0, 10);
+    var date = data[9].substring(0, 10);
     //alert(date.substring(0, 10));
 
     if (
@@ -552,7 +627,7 @@ function( settings, data, dataIndex ) {
     var table = $('#users').DataTable({
         orderCellsTop: true,
         dom: 'Bfrtip',
-        order: [[ 7, "desc" ]],
+        order: [[ 9, "desc" ]],
         buttons: [
             'copy', 'pdf', 'print'
 
@@ -620,6 +695,61 @@ function selectproducto(codigo,descripcion,marca){
   $('#descripcion').val(descripcion);
   $('#marca').val(marca);
 }
+
+function contador(monto, id){
+        var max_fields = 999;
+        var wrapper = $("#selects");
+        var x = 0;
+        var input = document.getElementById('input_'+id+'');
+
+        var acumulado = $("#monto_total_multiple").val();
+
+        //alert(typeof monto);
+
+        //console.log($('input[class="case"]:checked'));
+
+        if ($('#id_'+id).is(":checked")) {
+            $("#monto_total_multiple").val(Number(Number(acumulado)+Number(monto)));
+            if(x < max_fields){
+                x++;
+                $(wrapper).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+id+'" name="case[]" value='+id+'>'
+            );
+        }
+        } else {
+            $("#monto_total_multiple").val(Number(Number(acumulado)-Number(monto)));
+            input.remove();
+            x--;
+        }
+
+        /* var input = $( "input[class=case]" ).on("click");
+        console.log(input); */
+
+        /* $('.case').change(function() {
+            if(this.checked) {
+                alert(true);
+            }else{
+                alert(false);
+            }
+        }); */
+    }
+
+    function validar(){
+       /*  $("#agregar").prop("disabled", true);
+        setTimeout(function(){
+            $("#agregar").prop("disabled", false);
+        }, 2000); */
+
+        if ( $('#basic-form')[0].checkValidity() ) {
+            $("#text_add").prop("hidden", true);
+            $('#spinner').prop('hidden', false);
+            $("#agregar").prop("disabled", true);
+            $('#basic-form').submit();
+        }else{
+            console.log("formulario no es valido");
+        }
+    }
+
 </script>
 
 

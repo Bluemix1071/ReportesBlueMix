@@ -48,8 +48,8 @@
                             <th scope="col" style="text-align:left">Rut</th>
                             <th scope="col" style="text-align:left">Razon</th>
                             <th scope="col" style="text-align:left">Fecha Emision</th>
-                            <th scope="col" style="text-align:left">IVA</th>
                             <th scope="col" style="text-align:left">Neto</th>
+                            <th scope="col" style="text-align:left">IVA</th>
                             <th scope="col" style="text-align:right">Total</th>
                         </tr>
                     </thead>

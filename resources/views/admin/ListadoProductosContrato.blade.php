@@ -15,12 +15,14 @@
         <h3 class="display-3">Listado Productos Contratos</h3>
         <div class="row">
             <div class="col-md-12">
-                <form action="{{ route('ListadoProductosContratoFiltro') }}" method="post" id="desvForm" class="form-inline">
+                <form action="{{ route('ListadoProductosContratoFiltro') }}" method="post" id="basic-form" class="form-inline">
                     @csrf
                     <div class="form-group mb-2">
                         @if (empty($codigo_producto))
                             <label for="staticEmail2" class="sr-only">Codigo</label>
-                            <input type="text" id="codigo" minlength="7" maxlength="7" class="form-control" name="codigo" placeholder="codigo...">
+                            <input type="text" id="codigo" minlength="7" maxlength="7" class="form-control" name="codigo" placeholder="Código..."  onclick="desDesc()">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="text" id="descripcion" class="form-control" name="descripcion" placeholder="Descripcion..." readonly onclick="desCod()">
                         @else
                             <input type="text" id="codigo" minlength="7" maxlength="7" patricio class="form-control" name="codigo" value="{{$codigo_producto}}">
                         @endif
@@ -42,7 +44,7 @@
                         </label>
                     </div> --}}
                     <div class="form-group mx-sm-3 mb-2">
-                        <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+                        <button type="submit" class="btn btn-primary mb-2" onclick="validar()" id="agregar"><div id="text_add">Buscar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
                     </div>
                 </form>
                 @if(is_null($datos))
@@ -181,11 +183,30 @@
 
 @section('script')
     <script>
+
         $(document).ready(function() {
-            $('#productos').DataTable({
+
+            $('#productos thead tr').clone(true).appendTo( '#productos thead' );
+                    $('#productos thead tr:eq(1) th').each( function (i) {
+                        var title = $(this).text();
+                        $(this).html( '<input type="text" class="form-control form-control-sm" placeholder="Buscar '+title+'" />' );
+                
+                        $( 'input', this ).on( 'keyup change', function () {
+                            if ( table.column(i).search() !== this.value ) {
+                                table
+                                    .column(i)
+                                    .search( this.value )
+                                    .draw();
+                    } 
+                    });
+            } );
+        
+            var table = $('#productos').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true,
                 dom: 'Bfrtip',
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'copy', 'pdf', 'print'
 
                 ],
                 "language": {
@@ -206,7 +227,36 @@
             });
         });
 
+        function desDesc(){
+            $("#descripcion").prop('readonly', true);
+            $("#codigo").prop('readonly', false);
+            $("#descripcion").val(null);
+        }
+
+        function desCod(){
+            $("#codigo").prop('readonly', true);
+            $("#descripcion").prop('readonly', false);
+            $("#codigo").val(null);
+        }
+
+        function validar(){
+       /*  $("#agregar").prop("disabled", true);
+        setTimeout(function(){
+            $("#agregar").prop("disabled", false);
+        }, 2000); */
+
+        if ( $('#basic-form')[0].checkValidity() ) {
+            $("#text_add").prop("hidden", true);
+            $('#spinner').prop('hidden', false);
+            $("#agregar").prop("disabled", true);
+            $('#basic-form').submit();
+        }else{
+            console.log("formulario no es valido");
+        }
+    }
+
     </script>
+
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>

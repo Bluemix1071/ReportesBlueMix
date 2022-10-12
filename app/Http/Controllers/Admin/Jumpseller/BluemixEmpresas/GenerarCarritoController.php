@@ -127,36 +127,35 @@ class GenerarCarritoController extends Controller
                 "shipping_method_id" => 314661,
                 "shipping_method_name" => "DESPACHO A DOMICILIO (Entre 1 a 2 días hábiles)",
                 "shipping_price" => 59,
+                "shipping_required" => true,
                 "customer" => [
                     "id" => 4206733,
                     "shipping_address" => [
-                        "name" => "INGRESE NOMBRE",
-                        "surname" => "INGRESE APELLIDO",
-                        "address" => "INGRESE DIRECCIÓN",
-                        "city" => "INGRESE CIUDAD",
-                        "postal" => "null",
+                        "name" => "Ferenc",
+                        "surname" => "Riquelme",
+                        "address" => "Puren 737",
+                        "city" => "Chillán",
+                        "postal" => "3780000",
                         "municipality" => "Chillán",
-                        "region" => "18",
-                        "country" => "CL",
+                        "region" => "Ñuble",
+                        "country" => "CI"
                     ],
                     "billing_address" => [
-                        "name" => "INGRESE NOMBRE",
-                        "surname" => "INGRESE APELLIDO",
+                        "name" => "Ferenc",
+                        "surname" => "Riquelme",
                         "taxid" => "null",
-                        "address" => "NGRESE DIRECCIÓN",
+                        "address" => "Puren 737",
                         "city" => "Chillán",
-                        "postal" => "null",
+                        "postal" => "3780000",
                         "municipality" => "Chillán",
-                        "region" => "18",
-                        "country" => "CL",
+                        "region" => "Ñuble",
+                        "country" => "CI"
                     ]
                 ],
                 "products" => $ProductosOrden
 
             ]
         ];
-
-
 
         $response = $this->apiJumpseller->post("orders", [], $order);
 

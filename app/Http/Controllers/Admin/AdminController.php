@@ -1502,7 +1502,8 @@ public function actualizaripmac(Request $request)
       $fecha2=$request->fecha2;
 
       $costos=DB::table('dcargos')
-      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle, PrecioCosto as PrecioCosto,  DECANT*(PrecioCosto) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO')
+      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle, PrecioCosto as PrecioCosto,  DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO, precios.PCCOSTO')
+      ->join('precios',  \DB::raw('substr(dcargos.DECODI, 1, 5)'), '=', 'precios.PCCODI')
       ->where('DETIPO', '!=' , '3')
       ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
       ->get();
@@ -2058,16 +2059,19 @@ public function stocktiemporeal (Request $request){
 
         // dd($request->all());
 
-        if($request->codigo == null){
-
+        if($request->codigo == null && $request->descripcion == null){
         // $contrato=DB::table('Vista_Productos')
         // ->join('contrato_detalle','codigo_producto', '=', 'interno')
         // ->join('contratos','id_contratos', '=', 'fk_contrato')
         // ->where('nombre_contrato', $request->contrato)
         // ->get();
 
-        $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO,sum(decant) as venta,cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5) and DECODI = interno and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate() group by decodi', [$request->contrato]);
-
+        $contrato=DB::select('select codigo_producto, descripcion, marca, nombre_contrato, PCCOSTO, sum(decant) as venta, cantidad_contrato, sala, bodega from contrato_detalle 
+        left join Vista_Productos on contrato_detalle.codigo_producto = Vista_Productos.interno
+        left join contratos on contrato_detalle.fk_contrato = contratos.id_contratos
+        left join precios on LEFT(contrato_detalle.codigo_producto, 5) = precios.PCCODI
+        left join dcargos on contrato_detalle.codigo_producto = dcargos.DECODI
+        where contratos.nombre_contrato = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate() group by DECODI', [$request->contrato]);
 
         // $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO, cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5)', [$request->contrato]);
 
@@ -2085,17 +2089,18 @@ public function stocktiemporeal (Request $request){
 
         return view('admin.ListadoProductosContrato',compact('contrato','contratos','datos','datoscontrato'));
 
-        }
-
-        else{
+        }else{
 
         // $contrato=DB::table('Vista_Productos')
         // ->join('contrato_detalle','codigo_producto', '=', 'interno')
         // ->join('contratos','id_contratos', '=', 'fk_contrato')
         // ->where('interno', $request->codigo)
         // ->get();
-
-        $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
+        if($request->codigo != null){
+          $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
+        }elseif($request->descripcion != null){
+          $contrato=DB::select("select *, (select sum(DECANT) from dcargos where Detalle like ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and descripcion like ? and PCCODI = LEFT(interno, 5)", ['%'.$request->descripcion.'%', '%'.$request->descripcion.'%']);
+        }
 
 
         // $contrato=DB::select('select * from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo]);

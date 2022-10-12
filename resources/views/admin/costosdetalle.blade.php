@@ -51,8 +51,8 @@ Costos Detalles
                             <th scope="col" style="text-align:left">Codigo</th>
                             <th scope="col" style="text-align:left">Cantidad</th>
                             <th scope="col" style="text-align:left">Detalle</th>
-                            <th scope="col" style="text-align:left">Precio Costo</th>
-                            <th scope="col" style="text-align:left">Total Costo</th>
+                            <th scope="col" style="text-align:left">Precio Costo Hoy</th>
+                            <th scope="col" style="text-align:left">Total Costo Hoy</th>
                             <th scope="col" style="text-align:left">Precio Venta</th>
                             <th scope="col" style="text-align:left">Total Venta</th>
                             <th scope="col" style="text-align:left">Fecha Venta</th>
@@ -73,7 +73,7 @@ Costos Detalles
                                     <td style="text-align:left">{{ $item->DECODI}}</td>
                                     <td style="text-align:left">{{ $item->DECANT}}</td>
                                     <td style="text-align:left">{{ $item->Detalle}}</td>
-                                    <td style="text-align:right">{{ number_format($item->PrecioCosto, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ number_format($item->PCCOSTO, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->costototal, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->totalventa, 0, ',', '.') }}</td>
@@ -96,7 +96,7 @@ Costos Detalles
     $('#productos').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            'copy', 'pdf', 'print'
 
         ],
           "language":{

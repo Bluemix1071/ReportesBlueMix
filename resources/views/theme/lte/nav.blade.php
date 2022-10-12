@@ -773,7 +773,7 @@
                                                         @endcan
                                                         {{-- Fin generar carrito --}}
 
-                                                        {{-- Actualizar Stock --}}
+                                                        {{-- Actualizar Stock 
                                                         @can('ActualizarStock')
                                                             <li class="nav-item">
                                                                 <a href="#" class="nav-link">
@@ -783,7 +783,7 @@
                                                                     </p>
                                                                 </a>
                                                             </li>
-                                                        @endcan
+                                                        @endcan --}}
                                                         <li class="nav-item">
                                                                 <a href="{{ route('ProductosFaltantes') }}"
                                                                     class="nav-link {{ setActive('ProductosFaltantes') }}">
@@ -820,7 +820,7 @@
 
                                                         {{-- Fin Sincronizacion productos --}}
 
-                                                        {{-- Actualizar Stock --}}
+                                                        {{-- Actualizar Stock 
                                                         @can('ActualizarStockweb')
                                                             <li class="nav-item">
                                                                 <a href="#" class="nav-link">
@@ -830,7 +830,7 @@
                                                                     </p>
                                                                 </a>
                                                             </li>
-                                                        @endcan
+                                                        @endcan --}}
                                                         <li class="nav-item">
                                                                 <a href="{{ route('ProductosFaltantesWeb') }}"
                                                                     class="nav-link {{ setActive('ProductosFaltantesWeb') }}">
@@ -1064,15 +1064,15 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="../UI/icons.html" class="nav-link">
+                                <a href="{{ route('ConteoInventarioBodega') }}" class="nav-link {{ setActive('ConteoInventarioBodega') }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Consulta</p>
+                                    <p>Conteo Inventario</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../UI/buttons.html" class="nav-link">
+                                <a href="{{ route('ConsolidacionInventarioBodega') }}" class="nav-link {{ setActive('ConsolidacionInventario') }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Consulta</p>
+                                    <p>Consolidación Inventario</p>
                                 </a>
                             </li>
                             <li class="nav-item">

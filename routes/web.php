@@ -1,7 +1,10 @@
 <?php
 
 //use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FrontController;
 
+Route::get('detect-device', [FrontController::class, 'detuctDebice'])->name('detect-device');
 
 
 Route::get('/api/{any}', function () {
@@ -52,6 +55,7 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/DesactivarRequerimiento','SalaController@DesactivarRequerimiento')->name('DesactivarRequerimiento');
     Route::post('/EditarEstadoRequerimientoCompra','SalaController@EditarEstadoRequerimientoCompra')->name('EditarEstadoRequerimientoCompra');
     Route::put('/EditarRequerimientoCompra','SalaController@EditarRequerimientoCompra')->name('EditarRequerimientoCompra');
+    Route::put('/EditarRequerimientoCompraMultiple','SalaController@EditarRequerimientoCompraMultiple')->name('EditarRequerimientoCompraMultiple');
     /* fin */
 
     //cambio
@@ -145,6 +149,15 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Ingresos', 'Bodega\IngresosController@index')->name('ListarIngresos');
     Route::post('/IngresoDetalle', 'Bodega\IngresosController@detalle')->name('IngresoDetalle');
     Route::post('/EditarDetalle', 'Bodega\IngresosController@editardetalle')->name('EditarDetalle');
+
+    /*  Mantenedor CRUD Conteo Inventario Bodega */
+    Route::get('/ConteoInventarioBodega', 'Bodega\ConteoInventarioBodegaController@index')->name('ConteoInventarioBodega');
+    Route::post('/ConteoInventarioBodega', 'Bodega\ConteoInventarioBodegaController@NuevoConteo')->name('NuevoConteoInventarioBodega');
+    Route::post('/ConteoInventarioDetalleBodega', 'Bodega\ConteoInventarioBodegaController@ConteoDetalle')->name('ConteoInventarioDetalleBodega');
+    Route::post('/GuardarConteoInventarioDetalleBodega', 'Bodega\ConteoInventarioBodegaController@GuardarConteoDetalle')->name('GuardarConteoDetalleBodega');
+    Route::get('/BuscarProducto/{codigo}','Bodega\ConteoInventarioBodegaController@BuscarProducto')->name('BuscarProducto');
+    Route::get('/ConsolidacionInventarioBodega', 'Bodega\ConteoInventarioBodegaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioBodega');
+
 
     /*  Mantenedor Clientes Credito */
     Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
