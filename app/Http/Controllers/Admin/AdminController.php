@@ -1146,7 +1146,7 @@ public function filtrarArqueoC(Request $requestT){
 
     $boletaT=DB::table('cargos')
     ->where('CATIPO',7)
- /**->where('forma_pago',"T")*/
+    ->where('forma_pago',"E")
     ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
     ->get();
 
@@ -1161,7 +1161,7 @@ public function filtrarArqueoC(Request $requestT){
     $boletacountT=DB::table('cargos')
     ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
     ->where('catipo',7)
-    ->where('CANMRO' ,'<', 1100000001)
+    ->where('forma_pago',"E")
     ->count('CANMRO');
 
     $boletacountTR=DB::table('cargos')
