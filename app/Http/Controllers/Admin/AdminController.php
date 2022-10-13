@@ -1387,10 +1387,23 @@ public function filtrarArqueoC(Request $requestT){
     ->groupBy('cacoca')
     ->get();
 
+    $cajas = [["cacoca" => "101"], ["cacoca" => "102"],["cacoca" => "103"],["cacoca" => "104"],["cacoca" => "105"],["cacoca" => "106"],["cacoca" => "17"],["cacoca" => "108"]];
+    
+    $boletas_efec_mnto_tot = DB::select('select cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? group by CACOCA;', array($requestT->fecha1T,$requestT->fecha2T));
 
+    $boletas_trans_mnto_tot = DB::select('select cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? group by CACOCA', array($requestT->fecha1T,$requestT->fecha2T));
 
+    $facturas_pagadas_mnto_tot = DB::select('select cargos.cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? group by CACOCA', array($requestT->fecha1T,$requestT->fecha2T));
 
-return view('admin.ArqueoC',compact('guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT','totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT','boletatransbankcountT','boletatransbankcountTR','boletatransbanksumaivaT','boletatransbanksumaivaTR','boletatransbanksumanetoT','boletatransbanksumanetoTR','boletatransbanktotalT','boletatransbanktotalTR','totalboletasumanetoT','totalboletasumanetoTR','totalboletasumaivaT','totalboletasumaivaTR','totalboletasumaT','totalboletasumaTR','porguiaT'));
+    $facturas_x_pagar_mnto_tot = DB::select('select cacoca, sum(suma) as total from(
+    select cacoca, sum(cavalo) as suma from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between ? and ? group by cacoca union
+    select cacoca, sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and
+    cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between ? and ? group by cacoca) t group by cacoca',array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+
+    $guias_mnto_tot = DB::select('select cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? group by CACOCA', array($requestT->fecha1T,$requestT->fecha2T));
+
+    $nc_mnto_tot = DB::select('select cargos.cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? group by cargos.cacoca', array($requestT->fecha1T,$requestT->fecha2T));
+return view('admin.ArqueoC',compact('guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT','totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT','boletatransbankcountT','boletatransbankcountTR','boletatransbanksumaivaT','boletatransbanksumaivaTR','boletatransbanksumanetoT','boletatransbanksumanetoTR','boletatransbanktotalT','boletatransbanktotalTR','totalboletasumanetoT','totalboletasumanetoTR','totalboletasumaivaT','totalboletasumaivaTR','totalboletasumaT','totalboletasumaTR','porguiaT', 'boletas_efec_mnto_tot','boletas_trans_mnto_tot','facturas_pagadas_mnto_tot','facturas_x_pagar_mnto_tot','guias_mnto_tot','nc_mnto_tot', 'cajas'));
 
 }
 //-----------------------------Fin Controller ArqueoC-----------------------------------------//
@@ -2066,12 +2079,11 @@ public function stocktiemporeal (Request $request){
         // ->where('nombre_contrato', $request->contrato)
         // ->get();
 
-        $contrato=DB::select('select codigo_producto, descripcion, marca, nombre_contrato, PCCOSTO, sum(decant) as venta, cantidad_contrato, sala, bodega from contrato_detalle 
+        $contrato=DB::select('select codigo_producto, descripcion, marca, nombre_contrato, PCCOSTO, 0 as venta, cantidad_contrato, sala, bodega from contrato_detalle 
         left join Vista_Productos on contrato_detalle.codigo_producto = Vista_Productos.interno
         left join contratos on contrato_detalle.fk_contrato = contratos.id_contratos
         left join precios on LEFT(contrato_detalle.codigo_producto, 5) = precios.PCCODI
-        left join dcargos on contrato_detalle.codigo_producto = dcargos.DECODI
-        where contratos.nombre_contrato = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate() group by DECODI', [$request->contrato]);
+        where contratos.nombre_contrato = ? group by codigo_producto', [$request->contrato]);
 
         // $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO, cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5)', [$request->contrato]);
 

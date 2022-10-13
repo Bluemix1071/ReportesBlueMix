@@ -835,111 +835,52 @@
         <div class="col">
             <div class="form-row">
                 <div class="col-md-2 mb-3">
-                    <label for="validationTooltip02">Tipo Documentos</label>
+                <label for="validationTooltip02">Tipo Documentos</label>
+                </div>
+                <div class="col">
+                    <label for="validationTooltip02">101</label>
+                </div>
+                <div class="col">
+                    <label for="validationTooltipUsername">102</label>
+                </div>
+                <div class="col">
+                    <label for="validationTooltipUsername">103</label>
+                </div>
+                <div class="col">
+                    <label for="validationTooltipUsername">104</label>
+                </div>
+                <div class="col">
+                    <label for="validationTooltipUsername">105</label>
+                </div>
+                <div class="col">
+                    <label for="validationTooltipUsername">106</label>
+                </div>
+                <div class="col">
+                    <label for="validationTooltipUsername">17</label>
+                </div>
+                <div class="col">
+                    <label for="validationTooltipUsername">108</label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-2 mb-3">
 
                     <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly
                         value="Boletas" required>
                 </div>
-                <div class="col">
-                    <label for="validationTooltip02">101</label>
-                    @if (empty($boletaT))
-                        <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
-                    @else
-                        <input type="text" class="form-control" id="validationTooltip02" readonly
-                            value="{{count($boletaT)}}" required>
-                    @endif
-                </div>
-                <div class="col">
-                    <label for="validationTooltipUsername">102</label>
-                    <div class="input-group">
-                        @if (empty($totalboletasnetoT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalboletasnetoT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="validationTooltipUsername">103</label>
-                    <div class="input-group">
-                        @if (empty($totalboletasivaT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalboletasivaT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="validationTooltipUsername">104</label>
-                    <div class="input-group">
-                        @if (empty($totalboletasT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" value="" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend"
-                                value="${{ number_format($totalboletasT, 0, ',', '.') }}" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="validationTooltipUsername">105</label>
-                    <div class="input-group">
-                        @if (empty($totalboletasT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" value="" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend"
-                                value="${{ number_format($totalboletasT, 0, ',', '.') }}" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="validationTooltipUsername">106</label>
-                    <div class="input-group">
-                        @if (empty($totalboletasT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" value="" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend"
-                                value="${{ number_format($totalboletasT, 0, ',', '.') }}" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="validationTooltipUsername">17</label>
-                    <div class="input-group">
-                        @if (empty($totalboletasT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" value="" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend"
-                                value="${{ number_format($totalboletasT, 0, ',', '.') }}" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="validationTooltipUsername">108</label>
-                    <div class="input-group">
-                        @if (empty($totalboletasT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" value="" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername" readonly
-                                aria-describedby="validationTooltipUsernamePrepend"
-                                value="${{ number_format($totalboletasT, 0, ',', '.') }}" required>
-                        @endif
-                    </div>
-                </div>
+
+                
+                    @foreach($cajas as $caja)
+
+                        <div class="col">
+                                <input type="text" class="form-control" id="validationTooltip02" readonly
+                                value="" required>
+                        </div>
+                        
+                    @endforeach
+               
+
             </div>
             <div class="form-row">
                 <div class="col-md-2 mb-3">
