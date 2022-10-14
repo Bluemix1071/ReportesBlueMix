@@ -681,13 +681,13 @@
                                                     <p>Listado Contratos
                                                     </p>
                                                 </a>
-                                            <li class="nav-item">
+                                            <!-- <li class="nav-item">
                                                 <a href="{{ route('ListadoProductosContrato') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Listado Productos
                                                     </p>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </li>
                                 @endcan

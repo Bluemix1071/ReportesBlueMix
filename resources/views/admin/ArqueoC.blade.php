@@ -870,16 +870,128 @@
                         value="Boletas" required>
                 </div>
 
-                
-                    @foreach($cajas as $caja)
+                @foreach($boletas_efec_mnto_tot as $item)
+                    @if($item[0]->total != null)
+                    <div class="col">
+                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                        value="{{ $item[0]->total }}" required>
+                    </div>
+                    @else
+                    <div class="col">
+                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                        value="0" required>
+                    </div>
+                    @endif
+                @endforeach
 
-                        <div class="col">
-                                <input type="text" class="form-control" id="validationTooltip02" readonly
-                                value="" required>
-                        </div>
-                        
-                    @endforeach
-               
+                    {{-- @foreach($cajas as $caja)
+
+                        @if(!empty($boletas_efec_mnto_tot[0]->cacoca))
+                            @if($boletas_efec_mnto_tot[0]->cacoca == $caja['cacoca'])
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="{{ $boletas_efec_mnto_tot[0]->total }}" required>
+                                </div>
+                            @else
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="" required>
+                                </div>
+                            @endif
+                        @endif
+                        @if(!empty($boletas_efec_mnto_tot[1]->cacoca))
+                            @if($boletas_efec_mnto_tot[1]->cacoca == $caja['cacoca'])
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="{{ $boletas_efec_mnto_tot[1]->total }}" required>
+                                </div>
+                            @else
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="" required>
+                                </div>
+                            @endif
+                        @endif
+                        @if(!empty($boletas_efec_mnto_tot[2]->cacoca))
+                            @if($boletas_efec_mnto_tot[2]->cacoca == $caja['cacoca'])
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="{{ $boletas_efec_mnto_tot[2]->total }}" required>
+                                </div>
+                            @else
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="" required>
+                                </div>
+                            @endif
+                        @endif
+                        @if(!empty($boletas_efec_mnto_tot[3]->cacoca))
+                            @if($boletas_efec_mnto_tot[3]->cacoca == $caja['cacoca'])
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="{{ $boletas_efec_mnto_tot[3]->total }}" required>
+                                </div>
+                            @else
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="" required>
+                                </div>
+                            @endif
+                        @endif
+                        @if(!empty($boletas_efec_mnto_tot[4]->cacoca))
+                            @if($boletas_efec_mnto_tot[4]->cacoca == $caja['cacoca'])
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="{{ $boletas_efec_mnto_tot[4]->total }}" required>
+                                </div>
+                            @else
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="" required>
+                                </div>
+                            @endif
+                        @endif
+                        @if(!empty($boletas_efec_mnto_tot[5]->cacoca))
+                            @if($boletas_efec_mnto_tot[5]->cacoca == $caja['cacoca'])
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="{{ $boletas_efec_mnto_tot[5]->total }}" required>
+                                </div>
+                            @else
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="" required>
+                                </div>
+                            @endif
+                        @endif
+                        @if(!empty($boletas_efec_mnto_tot[6]->cacoca))
+                            @if($boletas_efec_mnto_tot[6]->cacoca == $caja['cacoca'])
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="{{ $boletas_efec_mnto_tot[6]->total }}" required>
+                                </div>
+                            @else
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="" required>
+                                </div>
+                            @endif
+                        @endif
+                        @if(!empty($boletas_efec_mnto_tot[7]->cacoca))
+                            @if($boletas_efec_mnto_tot[7]->cacoca == $caja['cacoca'])
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="{{ $boletas_efec_mnto_tot[7]->total }}" required>
+                                </div>
+                            @else
+                                <div class="col">
+                                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                                        value="" required>
+                                </div>
+                            @endif
+                        @endif
+
+                        @endforeach --}}
 
             </div>
             <div class="form-row">
@@ -887,98 +999,21 @@
                     <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly
                         value="Boletas Transbank" required>
                 </div>
-                <div class="col">
-                    @if (empty($boletatransbankcountT))
-                        <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
-                    @else
+
+                @foreach($boletas_trans_mnto_tot as $item)
+                    @if($item[0]->total != null)
+                    <div class="col">
                         <input type="text" class="form-control" id="validationTooltip02" readonly
-                            value="{{ $boletatransbankcountT }}" required>
+                        value="{{ $item[0]->total }}" required>
+                    </div>
+                    @else
+                    <div class="col">
+                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                        value="0" required>
+                    </div>
                     @endif
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($boletatransbanksumanetoT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($boletatransbanksumanetoT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($boletatransbanksumaivaT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($boletatransbanksumaivaT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($boletatransbanktotalT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($boletatransbanktotalT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($boletatransbanktotalT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($boletatransbanktotalT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($boletatransbanktotalT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($boletatransbanktotalT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($boletatransbanktotalT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($boletatransbanktotalT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($boletatransbanktotalT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($boletatransbanktotalT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
+                @endforeach
+                
             </div>
             {{-- Facturas Pagadas --}}
             <div class="form-row">
@@ -986,98 +1021,22 @@
                     <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly
                         value="Facturas pagadas" required>
                 </div>
-                <div class="col">
-                    @if (empty($facturacountT))
-                        <input type="text" class="form-control" id="validationTooltip02" readonly value="" required>
-                    @else
+                
+                @foreach($facturas_pagadas_mnto_tot as $item)
+                    @if($item[0]->total != null)
+                    <div class="col">
                         <input type="text" class="form-control" id="validationTooltip02" readonly
-                            value="{{ $facturacountT }}" required>
+                        value="{{ $item[0]->total }}" required>
+                    </div>
+                    @else
+                    <div class="col">
+                        <input type="text" class="form-control" id="validationTooltip02" readonly
+                        value="0" required>
+                    </div>
                     @endif
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($totalfacturanetoT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalfacturanetoT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($totalfacturaivaT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalfacturaivaT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($totalfacturaT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalfacturaT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($totalfacturaT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalfacturaT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($totalfacturaT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalfacturaT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($totalfacturaT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalfacturaT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group">
-                        @if (empty($totalfacturaT))
-                            <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @else
-                            <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalfacturaT, 0, ',', '.') }}" readonly
-                                aria-describedby="validationTooltipUsernamePrepend" required>
-                        @endif
-                    </div>
-                </div>
+                @endforeach
+                
+
             </div>
             {{--Facturas por Pagar--}}
             <div class="form-row">
