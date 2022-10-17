@@ -1175,6 +1175,8 @@ public function filtrarArqueoC(Request $requestT){
         cargos.FPAGO = 'Credito' and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between ? and ?) t",
     array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
 
+
+
     $facturasxiva=DB::select("select sum(suma) as total from(
         select sum(caiva) as suma from cargos where CATIPO = 8 and FPAGO = 'Contado' and CAFECO between ? and ? union
         select sum(caiva) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and
@@ -1191,6 +1193,7 @@ public function filtrarArqueoC(Request $requestT){
     //Inicio Valores BoletasE
     $boletasneto=DB::select("select sum(caneto) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
     array($requestT->fecha1T,$requestT->fecha2T));
+
 
 
     $boletasiva=DB::select("select sum(caiva) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
@@ -1235,12 +1238,12 @@ public function filtrarArqueoC(Request $requestT){
     //Fin Valores Nota Credito
 
     //Total neto
-    $neto=(($facturasneto[0]->total)+($facturasxneto[0]->total)+($boletasneto[0]->total)+($boletasnetot[0]->total)+($guiasneto[0]->total)+($notacreditoneto[0]->total));
+    $neto=(($facturasneto[0]->total)+($boletasneto[0]->total)+($boletasnetot[0]->total)-($notacreditoneto[0]->total));
 
     //Total iva
-    $iva=(($facturasiva[0]->total)+($facturasxiva[0]->total)+($boletasiva[0]->total)+($boletasivat[0]->total)+($guiasiva[0]->total)+($notacreditoiva[0]->total));
+    $iva=(($facturasiva[0]->total)+($boletasiva[0]->total)+($boletasivat[0]->total)-($notacreditoiva[0]->total));
     //Totaltotal
-    $total=(($facturastotal[0]->total)+($facturasxtotal[0]->total)+($boletastotal[0]->total)+($boletastotalt[0]->total)+($guiastotal[0]->total)+($notacreditototal[0]->total));
+    $total=(($facturastotal[0]->total)+($boletastotal[0]->total)+($boletastotalt[0]->total)-($notacreditototal[0]->total));
 
     $boletaT=DB::table('cargos')
     ->where('CATIPO',7)
@@ -1487,9 +1490,85 @@ public function filtrarArqueoC(Request $requestT){
     ->get();
 
 
+    $boletas_efec_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot = [[$boletas_efec_mnto_tot_101[0]], [$boletas_efec_mnto_tot_102[0]], [$boletas_efec_mnto_tot_103[0]], [$boletas_efec_mnto_tot_104[0]], [$boletas_efec_mnto_tot_105[0]], [$boletas_efec_mnto_tot_106[0]], [$boletas_efec_mnto_tot_17[0]], [$boletas_efec_mnto_tot_108[0]]];
+    //------------------boletas en tarjeta-----------------------------------
+    $boletas_trans_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot = [[$boletas_trans_mnto_tot_101[0]], [$boletas_trans_mnto_tot_102[0]], [$boletas_trans_mnto_tot_103[0]], [$boletas_trans_mnto_tot_104[0]], [$boletas_trans_mnto_tot_105[0]], [$boletas_trans_mnto_tot_106[0]], [$boletas_trans_mnto_tot_17[0]], [$boletas_trans_mnto_tot_108[0]]];
+    //------------------facturas pagadas-----------------------------------
+    $facturas_pagadas_mnto_tot_101 = DB::select('Select 101 as cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_102 = DB::select('Select 102 as cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_103 = DB::select('Select 103 as cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_104 = DB::select('Select 104 as cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_105 = DB::select('Select 105 as cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_106 = DB::select('Select 106 as cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_17 = DB::select('Select 17 as cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_108 = DB::select('Select 108 as cacoca, sum(CAVALO) AS total from ccorclie_ccpclien JOIN cargos on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot = [[$facturas_pagadas_mnto_tot_101[0]], [$facturas_pagadas_mnto_tot_102[0]], [$facturas_pagadas_mnto_tot_103[0]], [$facturas_pagadas_mnto_tot_104[0]], [$facturas_pagadas_mnto_tot_105[0]], [$facturas_pagadas_mnto_tot_106[0]], [$facturas_pagadas_mnto_tot_17[0]], [$facturas_pagadas_mnto_tot_108[0]]];
+    //------------------facturas x pagadar-----------------------------------
+    $facturas_x_pagar_mnto_tot_101 = DB::select('select cacoca, sum(total) as total from(select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "101" union select 101 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "101") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_102 = DB::select('select cacoca, sum(total) as total from(select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "102" union select 102 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "102") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_103 = DB::select('select cacoca, sum(total) as total from(select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "103" union select 103 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "103") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_104 = DB::select('select cacoca, sum(total) as total from(select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "104" union select 104 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "104") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_105 = DB::select('select cacoca, sum(total) as total from(select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "105" union select 105 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "105") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_106 = DB::select('select cacoca, sum(total) as total from(select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "106" union select 106 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "106") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_17 = DB::select('select cacoca, sum(total) as total from(select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "17" union select 17 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "17") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_108 = DB::select('select cacoca, sum(total) as total from(select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "108" union select 108 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "108") t group by cacoca');
+    $facturas_x_pagar_mnto_tot = [[$facturas_x_pagar_mnto_tot_101[0]], [$facturas_x_pagar_mnto_tot_102[0]], [$facturas_x_pagar_mnto_tot_103[0]], [$facturas_x_pagar_mnto_tot_104[0]], [$facturas_x_pagar_mnto_tot_105[0]], [$facturas_x_pagar_mnto_tot_106[0]], [$facturas_x_pagar_mnto_tot_17[0]], [$facturas_x_pagar_mnto_tot_108[0]]];
+    //------------------guias-----------------------------------
+    $guias_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot = [[$guias_mnto_tot_101[0]], [$guias_mnto_tot_102[0]], [$guias_mnto_tot_103[0]], [$guias_mnto_tot_104[0]], [$guias_mnto_tot_105[0]], [$guias_mnto_tot_106[0]], [$guias_mnto_tot_17[0]], [$guias_mnto_tot_108[0]]];
+    //------------------notas credito-----------------------------------
+    $nc_mnto_tot_101 = DB::select('select 101 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot_102 = DB::select('select 102 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot_103 = DB::select('select 103 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot_104 = DB::select('select 104 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot_105 = DB::select('select 105 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot_106 = DB::select('select 106 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot_17 = DB::select('select 17 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot_108 = DB::select('select 108 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot = [[$nc_mnto_tot_101[0]], [$nc_mnto_tot_102[0]], [$nc_mnto_tot_103[0]], [$nc_mnto_tot_104[0]], [$nc_mnto_tot_105[0]], [$nc_mnto_tot_106[0]], [$nc_mnto_tot_17[0]], [$nc_mnto_tot_108[0]]];
+
+    //------------------------------Totalisadores de cajas---------------------------
+    $suma_mnto_tot_101 = intval($boletas_efec_mnto_tot_101[0]->total)+intval($boletas_trans_mnto_tot_101[0]->total)+intval($facturas_pagadas_mnto_tot_101[0]->total)-intval($nc_mnto_tot_101[0]->total);
+    $suma_mnto_tot_102 = intval($boletas_efec_mnto_tot_102[0]->total)+intval($boletas_trans_mnto_tot_102[0]->total)+intval($facturas_pagadas_mnto_tot_102[0]->total)-intval($nc_mnto_tot_102[0]->total);
+    $suma_mnto_tot_103 = intval($boletas_efec_mnto_tot_103[0]->total)+intval($boletas_trans_mnto_tot_103[0]->total)+intval($facturas_pagadas_mnto_tot_103[0]->total)-intval($nc_mnto_tot_103[0]->total);
+    $suma_mnto_tot_104 = intval($boletas_efec_mnto_tot_104[0]->total)+intval($boletas_trans_mnto_tot_104[0]->total)+intval($facturas_pagadas_mnto_tot_104[0]->total)-intval($nc_mnto_tot_104[0]->total);
+    $suma_mnto_tot_105 = intval($boletas_efec_mnto_tot_105[0]->total)+intval($boletas_trans_mnto_tot_105[0]->total)+intval($facturas_pagadas_mnto_tot_105[0]->total)-intval($nc_mnto_tot_105[0]->total);
+    $suma_mnto_tot_106 = intval($boletas_efec_mnto_tot_106[0]->total)+intval($boletas_trans_mnto_tot_106[0]->total)+intval($facturas_pagadas_mnto_tot_106[0]->total)-intval($nc_mnto_tot_106[0]->total);
+    $suma_mnto_tot_17 = intval($boletas_efec_mnto_tot_17[0]->total)+intval($boletas_trans_mnto_tot_17[0]->total)+intval($facturas_pagadas_mnto_tot_17[0]->total)-intval($nc_mnto_tot_17[0]->total);
+    $suma_mnto_tot_108 = intval($boletas_efec_mnto_tot_108[0]->total)+intval($boletas_trans_mnto_tot_108[0]->total)+intval($facturas_pagadas_mnto_tot_108[0]->total)-intval($nc_mnto_tot_108[0]->total);
 
 
-return view('admin.ArqueoC',compact('guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT','totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT','boletatransbankcountT','boletatransbankcountTR','boletatransbanksumaivaT','boletatransbanksumaivaTR','boletatransbanksumanetoT','boletatransbanksumanetoTR','boletatransbanktotalT','boletatransbanktotalTR','totalboletasumanetoT','totalboletasumanetoTR','totalboletasumaivaT','totalboletasumaivaTR','totalboletasumaT','totalboletasumaTR','porguiaT'));
+return view('admin.ArqueoC',compact('guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT',
+'totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT',
+'boletatransbankcountT','boletatransbankcountTR','boletatransbanksumaivaT','boletatransbanksumaivaTR','boletatransbanksumanetoT','boletatransbanksumanetoTR',
+'boletatransbanktotalT','boletatransbanktotalTR','totalboletasumanetoT','totalboletasumanetoTR','totalboletasumaivaT','totalboletasumaivaTR','totalboletasumaT',
+'totalboletasumaTR','porguiaT','facturasneto','facturasxneto','facturasxneto','boletasneto','boletasnetot','guiasneto','notacreditoneto','facturasiva','facturasxiva',
+'boletasiva','boletasivat','guiasiva','notacreditoiva','facturastotal','facturasxtotal','boletastotal','boletastotalt','guiastotal','notacreditototal','neto','iva','total',
+'boletas_efec_mnto_tot', 'boletas_trans_mnto_tot', 'facturas_pagadas_mnto_tot', 'facturas_x_pagar_mnto_tot', 'guias_mnto_tot', 'nc_mnto_tot',
+'suma_mnto_tot_101', 'suma_mnto_tot_102', 'suma_mnto_tot_103', 'suma_mnto_tot_104', 'suma_mnto_tot_105', 'suma_mnto_tot_106', 'suma_mnto_tot_17', 'suma_mnto_tot_108'));
 
 }
 //-----------------------------Fin Controller ArqueoC-----------------------------------------//
