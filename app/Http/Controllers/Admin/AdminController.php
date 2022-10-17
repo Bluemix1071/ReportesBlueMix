@@ -1126,10 +1126,13 @@ public function filtrarArqueoC(Request $requestT){
 
 
 
+
     $facturaT=db::select("select * from cargos where CATIPO = 8 and FPAGO = 'Contado' and CAFECO between ? and ? union
     select cargos.* from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and
     cargos.FPAGO = 'Credito' and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between ? and ?",
     array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+
+
 
     $facturaTX=DB::select("Select
     cargos.CANMRO,cargos.CATIPO,cargos.CARUTC,cargos.razon,
@@ -1139,10 +1142,105 @@ public function filtrarArqueoC(Request $requestT){
     on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ?",
     array($requestT->fecha1T,$requestT->fecha2T));
 
+
+
     $facturacountT=count($facturaT);
 
     $facturacountTX=count($facturaTX);
 
+    //Inicio Valores Facturas
+    $facturasneto=DB::select("Select
+    sum(CANETO) as total
+    from ccorclie_ccpclien JOIN cargos
+    on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $facturasiva=DB::select("Select
+    sum(CAIVA) AS total
+    from ccorclie_ccpclien JOIN cargos
+    on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $facturastotal=DB::select("Select
+    sum(CAVALO) as total
+    from ccorclie_ccpclien JOIN cargos
+    on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+    //Fin Valores Facturas
+
+    //Inicio Valores Facturas x pagar
+    $facturasxneto=DB::select("select sum(suma) as total from(
+        select sum(caneto) as suma from cargos where CATIPO = 8 and FPAGO = 'Contado' and CAFECO between ? and ? union
+        select sum(caneto) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and
+        cargos.FPAGO = 'Credito' and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between ? and ?) t",
+    array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+
+    $facturasxiva=DB::select("select sum(suma) as total from(
+        select sum(caiva) as suma from cargos where CATIPO = 8 and FPAGO = 'Contado' and CAFECO between ? and ? union
+        select sum(caiva) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and
+        cargos.FPAGO = 'Credito' and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between ? and ?) t",
+    array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+
+    $facturasxtotal=DB::select("select sum(suma) as total from(
+        select sum(cavalo) as suma from cargos where CATIPO = 8 and FPAGO = 'Contado' and CAFECO between ? and ? union
+        select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and
+        cargos.FPAGO = 'Credito' and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and CCPFECHAHO between ? and ?) t",
+    array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+    //Fin Valores Facturas x pagar
+
+    //Inicio Valores BoletasE
+    $boletasneto=DB::select("select sum(caneto) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+
+    $boletasiva=DB::select("select sum(caiva) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $boletastotal=DB::select("select sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+    //Fin Valores BoletasE
+
+    //Inicio Valores BoletasT
+    $boletasnetot=DB::select("select sum(caneto) as total from cargos where CATIPO = 7 and forma_pago = 'T' and CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $boletasivat=DB::select("select sum(caiva) as total from cargos where CATIPO = 7 and forma_pago = 'T' AND CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $boletastotalt=DB::select("select sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = 'T' AND CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+    //Fin Valores BoletasT
+
+    //Inicio Valores Guias
+    $guiasneto=DB::select("select sum(caneto) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $guiasiva=DB::select("select sum(caiva) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $guiastotal=DB::select("select sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+    //Fin Valores Guias
+
+    //Inicio Valores Nota Credito
+    $notacreditoneto=DB::select("select sum(nota_credito.neto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $notacreditoiva=DB::select("select sum(nota_credito.iva) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    $notacreditototal=DB::select("select sum(nota_credito.total_nc) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
+    array($requestT->fecha1T,$requestT->fecha2T));
+
+    //Fin Valores Nota Credito
+
+    //Total neto
+    $neto=(($facturasneto[0]->total)+($facturasxneto[0]->total)+($boletasneto[0]->total)+($boletasnetot[0]->total)+($guiasneto[0]->total)+($notacreditoneto[0]->total));
+
+    //Total iva
+    $iva=(($facturasiva[0]->total)+($facturasxiva[0]->total)+($boletasiva[0]->total)+($boletasivat[0]->total)+($guiasiva[0]->total)+($notacreditoiva[0]->total));
+    //Totaltotal
+    $total=(($facturastotal[0]->total)+($facturasxtotal[0]->total)+($boletastotal[0]->total)+($boletastotalt[0]->total)+($guiastotal[0]->total)+($notacreditototal[0]->total));
 
     $boletaT=DB::table('cargos')
     ->where('CATIPO',7)
@@ -1186,6 +1284,7 @@ public function filtrarArqueoC(Request $requestT){
     cargos.CANMRO,cargos.CARUTC,cargos.razon,cargos.CAFECO,
     cargos.FPAGO,cargos.cacoca,cargos.CANETO,cargos.CAIVA,cargos.CASUTO
     from cargos where cargos.catipo=3 and cargos.cafeco between ? and ?",array($requestT->fecha1T,$requestT->fecha2T));
+
 
     $guiacountT=count($guiaT);
 
@@ -1387,10 +1486,7 @@ public function filtrarArqueoC(Request $requestT){
     ->groupBy('cacoca')
     ->get();
 
-
-
-
-return view('admin.ArqueoC',compact('guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT','totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT','boletatransbankcountT','boletatransbankcountTR','boletatransbanksumaivaT','boletatransbanksumaivaTR','boletatransbanksumanetoT','boletatransbanksumanetoTR','boletatransbanktotalT','boletatransbanktotalTR','totalboletasumanetoT','totalboletasumanetoTR','totalboletasumaivaT','totalboletasumaivaTR','totalboletasumaT','totalboletasumaTR','porguiaT'));
+return view('admin.ArqueoC',compact('neto','iva','total','notacreditototal','notacreditoiva','notacreditoneto','guiastotal','guiasiva','guiasneto','facturasxtotal','facturasxiva','facturasxneto','facturastotal','facturasiva','facturasneto','boletastotalt','boletasivat','boletasnetot','boletastotal','boletasneto','boletasiva','guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT','totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT','boletatransbankcountT','boletatransbankcountTR','boletatransbanksumaivaT','boletatransbanksumaivaTR','boletatransbanksumanetoT','boletatransbanksumanetoTR','boletatransbanktotalT','boletatransbanktotalTR','totalboletasumanetoT','totalboletasumanetoTR','totalboletasumaivaT','totalboletasumaivaTR','totalboletasumaT','totalboletasumaTR','porguiaT'));
 
 }
 //-----------------------------Fin Controller ArqueoC-----------------------------------------//
@@ -2066,7 +2162,7 @@ public function stocktiemporeal (Request $request){
         // ->where('nombre_contrato', $request->contrato)
         // ->get();
 
-        $contrato=DB::select('select codigo_producto, descripcion, marca, nombre_contrato, PCCOSTO, sum(decant) as venta, cantidad_contrato, sala, bodega from contrato_detalle 
+        $contrato=DB::select('select codigo_producto, descripcion, marca, nombre_contrato, PCCOSTO, sum(decant) as venta, cantidad_contrato, sala, bodega from contrato_detalle
         left join Vista_Productos on contrato_detalle.codigo_producto = Vista_Productos.interno
         left join contratos on contrato_detalle.fk_contrato = contratos.id_contratos
         left join precios on LEFT(contrato_detalle.codigo_producto, 5) = precios.PCCODI
