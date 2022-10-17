@@ -886,12 +886,12 @@
                 <div class="col">
                     <label for="validationTooltipUsername">102</label>
                     <div class="input-group">
-                        @if (empty($totalboletasnetoT))
+                        @if (empty($boletasneto))
                             <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
                                 aria-describedby="validationTooltipUsernamePrepend" required>
                         @else
                             <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalboletasnetoT, 0, ',', '.') }}" readonly
+                                value="${{ number_format($boletasneto, 0, ',', '.') }}" readonly
                                 aria-describedby="validationTooltipUsernamePrepend" required>
                         @endif
                     </div>
@@ -1386,12 +1386,12 @@
                 </div>
                 <div class="col">
                     <div class="input-group">
-                        @if (empty($totalnotacrenetoT))
+                        @if (empty($notacreditototal))
                             <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
                                 aria-describedby="validationTooltipUsernamePrepend" required>
                         @else
                             <input type="text" class="form-control" id="validationTooltipUsername"
-                                value="${{ number_format($totalnotacrenetoT, 0, ',', '.') }}" readonly
+                                value="${{ number_format($notacreditototal, 0, ',', '.') }}" readonly
                                 aria-describedby="validationTooltipUsernamePrepend" required>
                         @endif
                     </div>
@@ -1500,12 +1500,12 @@
                 </div>
                 <div class="col">
                     <div class="input-group">
-                        @if (empty($totalnotacreivaT))
-                            <input type="text" class="form-control" value="" id="validationTooltipUsername" readonly
+                        @if (empty($iva))
+                            <input type="text" class="form-control" value="0" id="validationTooltipUsername" readonly
                                 aria-describedby="validationTooltipUsernamePrepend" required>
                         @else
                             <input type="text" class="form-control" style="font-weight: bold;"
-                                value="${{ number_format($totalboletasivaT+$boletatransbanksumaivaT+$totalfacturaivaT-$totalfacturaivaTX-$totalnotacreivaT-($guiasiva[0]->total), 0, ',', '.') }}" id="validationTooltipUsername" readonly
+                                value="${{ number_format($iva, 0, ',', '.') }}" id="validationTooltipUsername" readonly
                                 aria-describedby="validationTooltipUsernamePrepend" required>
                         @endif
                     </div>

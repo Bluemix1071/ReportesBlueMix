@@ -16,7 +16,7 @@
             
         <div class="card card-primary">
                             <div class="card-header">
-                                <h2 class="card-title">Detalles Conteo</h2>
+                                <h2 class="card-title">Detalles Conteo</h2>                         
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                         <i class="fas fa-plus"></i>
@@ -112,8 +112,40 @@
         <script src="{{asset("js/vfs_fonts.js")}}"></script>
         <script src="{{asset("js/buttons.html5.min.js")}}"></script>
         <script src="{{asset("js/buttons.print.min.js")}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.js"></script>
 
         <script>
+
+                Quagga.init({           
+                    inputStream : {
+                        name : "Live",
+                        type : "LiveStream",
+                        target: document.querySelector('#barcode-scanner'), 
+                        constraints: {
+                            width: 520,
+                            height: 400,                  
+                            facingMode: "environment"  //"environment" for back camera, "user" front camera
+                            }               
+                    },                         
+                    decoder : {
+                        readers : ["code_128_reader","code_39_reader"]
+                    }
+
+                }, function(err) {
+                    if (err) {
+                        console.log(err);
+                            return
+                    }
+
+                    Quagga.start();
+
+                    Quagga.onDetected(function(result) {                              
+                            var last_code = result.codeResult.code;                   
+                                console.log("last_code "); 
+                        });
+                });
+
+
             $(document).ready(function() {
 
                 var codigo = null;
