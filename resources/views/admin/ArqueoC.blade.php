@@ -643,7 +643,7 @@
                 <div class="col-md-2 mb-3">
                     <div class="input-group">
 
-                    @if (empty($facturastotal[0]->total))
+                    @if (empty($facturasxneto[0]->total))
                         <input type="text" class="form-control" id="validationTooltipUsername" value="0" readonly
                         aria-describedby="validationTooltipUsernamePrepend" required>
                     @else
