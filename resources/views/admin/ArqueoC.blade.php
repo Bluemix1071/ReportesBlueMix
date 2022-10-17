@@ -44,7 +44,7 @@
         {{--Inicio Boletas Efectivo--}}
         <div class="row">
             <div class="col-md-12">
-                <h2>Boletas</h2>
+                <h2>Boletas Efectivo</h2>
                 <table id="productos" class="table table-bordered table-hover dataTable table-sm">
                     <thead>
                         <tr>
@@ -458,7 +458,7 @@
                     <label for="validationTooltip02">Documentos</label>
 
                     <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly
-                        value="Boletas" required>
+                        value="Boletas Efectivo" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="validationTooltip02">Cantidad</label>
