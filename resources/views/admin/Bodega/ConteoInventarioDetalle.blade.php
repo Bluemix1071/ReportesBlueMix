@@ -93,6 +93,107 @@
     @endif
 
     @if((new \Jenssegers\Agent\Agent())->isMobile())
+    <section>
+    <div>
+        <h5 class="display-5">Conteo Inventario Detalle</h5>
+        <section class="content">
+
+        <div id="barcode-scanner" class="size"> </div>  
+            
+        <div class="card card-primary">
+                            <div class="card-header">
+                                <h2 class="card-title">Detalles Conteo</h2>                         
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                    <!--  <i class="fas fa-times"></i> -->
+                                    </button>
+                                </div>
+                                <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" >Agregar <i class="fas fa-plus"></i></button> -->
+                            </div>
+                            <div class="card-body collapse hide">
+                                
+                            <div class="callout callout-success row">
+                                
+                                <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>Ubicación:</strong> balba <br>
+                                    <strong>Modulo:</strong> asd <br>
+                                    <strong>Encargado:</strong> asdas <br>
+                                    <strong>Fecha:</strong> 2022-10-04 <br>
+                                    <strong>Estado:</strong> asdas <br>
+                                </div>
+
+                                <!-- <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>Ciudad:</strong> <br>
+                                    <strong>Vendedor:</strong> <br>
+                                    <strong>Fecha Cotización:</strong> <br>
+                                </div> -->
+                            
+                            </div>
+
+                            </div>
+                        </div>
+
+            <div class="card">
+                <div class="card-header">
+                                    <div>
+                                        <div class="row">
+                                            <input type="text" id="buscar_codigo" placeholder="Cod" required class="form-control col" value=""/>
+                                            &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
+                                            &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
+                                            &nbsp;<input type="text" id="buscar_cantidad" placeholder="Cant" required name="" class="form-control col" value="" min="1" max="99999999"/>
+                                            <input type="text" hidden id="conteo" class="form-control col-2" value="{{ count($detalles) }}" />
+                                        </div>
+                                    </div>
+                    <br>
+                    <form method="post" action="{{ route('GuardarConteoDetalleBodega', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
+                    <div class="form-group" id="input_fields_wrap">
+                                    <div>
+                                        <div class="row" style="text-align-last: center;">
+                                            <input type="text" placeholder="Codigo" disabled class="form-control col-2" value="Codigo" style="border: none; background: rgba(0, 0, 0, 0);" data-toggle="tooltip" title="Some tooltip text!"/>
+                                            &nbsp;<input type="text" placeholder="Detalle" disabled class="form-control col-6" value="Detalle"style="border: none; background: rgba(0, 0, 0, 0);" />
+                                            &nbsp;<input type="text" placeholder="Marca" disabled class="form-control col" value="Marca" style="border: none; background: rgba(0, 0, 0, 0);"/>
+                                            &nbsp;<input type="text" placeholder="Cantidad" disabled class="form-control col" value="Cantidad" style="border: none; background: rgba(0, 0, 0, 0);"/>
+                                            &nbsp;<a href="#" style="visibility: hidden" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
+                                        </div>
+                                    </div>
+                                    @foreach($detalles as $item)
+                                    <div>
+                                        <div class="row" style="margin-top: 1%;">
+                                            <input type="text" placeholder="Codigo" readonly class="form-control col-2" value="{{ $item->codigo }}" name='detalle_{{ $loop->index }}[codigo]'/>
+                                            &nbsp;<input type="text" placeholder="Detalle" readonly class="form-control col-6" value="{{ $item->detalle }}" name='detalle_{{ $loop->index }}[detalle]'/>
+                                            &nbsp;<input type="text" placeholder="Marca" readonly class="form-control col" value="{{ $item->marca }}" name='detalle_{{ $loop->index }}[marca]'/>
+                                            &nbsp;<input type="number" placeholder="Cantidad" required class="form-control col" value="{{ $item->cantidad }}" name="detalle_{{ $loop->index }}[cantidad]"/>
+                                            &nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <button type="submit" class="btn btn-success">Guardar</button>
+                            </div>
+                    </form>
+                    <!-- <form method="post" action="{{ route('GuardarConteoDetalleBodega', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
+                        @foreach($detalles as $item)
+                        <div class="card" id="input_fields_wrap">
+                            <div class="card-body row">
+                                <div class="col-12">
+                                    <h4 class="card-title"><b>Código</b>: {{ $item->codigo }}</h4>
+                                    <br>
+                                    <h4 class="card-title"><b>Detalle</b>: {{ $item->detalle }}</h4>
+                                    <br>
+                                    <br>
+                                    <h4 class="card-title"><b>Marca:</b> {{ $item->marca }}</h4>
+                                    <br>
+                                    <h4 class="card-title"><b>Cantidad:</b> {{ $item->cantidad }}</h4>
+                                </div>
+                                </div>
+                                <a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
+                        </div>
+                        @endforeach
+                    </form> -->
+    </section>
         
     @endif
 
