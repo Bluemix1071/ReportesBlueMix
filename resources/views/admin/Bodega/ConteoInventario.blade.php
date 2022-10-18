@@ -55,6 +55,8 @@
             </div>
     </section>
 
+    @endif
+    
     <!-- Modal agregar nuevo conteo-->
     <div class="modal fade" id="modalingresarconteo" tabindex="-1" role="dialog"
             aria-labelledby="eliminarproductocontrato" aria-hidden="true">
@@ -108,9 +110,65 @@
                 </div>
             </div>
         </div>
-    @endif
-
     @if((new \Jenssegers\Agent\Agent())->isMobile())
+
+    <section>
+    <div class="container my-10">
+        <h5 class="display-5">Conteo Inventario Bodega</h5>
+        <section class="content">
+            <div class="card">
+                <div class="card-header">
+                                <button type="button" class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modalingresarconteo">Agregar <i class="fas fa-plus"></i></button>
+                                <input type="text" hidden placeholder="id_ingreso" id="id_ingreso" class="form-control col-2" />
+                    </div>
+                    <div class="card-body">
+                    <div class="table-responsive-xl">
+                        <!-- <table id="users" class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Modulo</th>
+                                    <th scope="col">Encargado</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($conteo_inventario as $item)
+                                <tr>
+                                    <td>{{ $item->modulo }}</td>
+                                    <td>{{ $item->encargado }}</td>
+                                    <td>{{ $item->fecha }}</td>
+                                    <td>
+                                    <form action="{{ route('ConteoInventarioDetalleBodega', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
+                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                                    </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table> -->
+                        @foreach($conteo_inventario as $item)
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="col-10">
+                                    <h4 class="card-title"><b>Modulo</b>: {{ $item->modulo }}</h4>
+                                    <br>
+                                    <h4 class="card-title"><b>Encargado</b>: {{ $item->encargado }}</h4>
+                                    <br>
+                                    <h4 class="card-title"><b>Fecha:</b> {{ $item->fecha }}</h4>
+                                </div>
+                                <div class="col-1">
+                                    <form action="{{ route('ConteoInventarioDetalleBodega', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+    </section>
         
     @endif
 
