@@ -114,6 +114,7 @@
                 }, function(err) {
                     if (err) {
                         console.log(err);
+                        alert(err);
                             return
                     }
 
