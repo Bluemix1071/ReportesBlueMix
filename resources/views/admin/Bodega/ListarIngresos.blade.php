@@ -11,6 +11,9 @@
     <div class="container my-4">
         <h1 class="display-4">Ingresos
         </h1>
+
+        <div id="barcode-scanner" class="size"> </div>  
+
         <section class="content">
             <div class="card">
                 <div class="card-header">
@@ -89,8 +92,39 @@
         <script src="{{asset("js/vfs_fonts.js")}}"></script>
         <script src="{{asset("js/buttons.html5.min.js")}}"></script>
         <script src="{{asset("js/buttons.print.min.js")}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.js"></script>
 
         <script>
+
+            Quagga.init({           
+                    inputStream : {
+                        name : "Live",
+                        type : "LiveStream",
+                        target: document.querySelector('#barcode-scanner'), 
+                        constraints: {
+                            width: 520,
+                            height: 400,                  
+                            facingMode: "environment"  //"environment" for back camera, "user" front camera
+                            }               
+                    },                         
+                    decoder : {
+                        readers : ["code_128_reader","code_39_reader"]
+                    }
+
+                }, function(err) {
+                    if (err) {
+                        console.log(err);
+                            return
+                    }
+
+                    Quagga.start();
+
+                    Quagga.onDetected(function(result) {                              
+                            var last_code = result.codeResult.code;                   
+                                console.log("last_code "); 
+                        });
+                });
+
             $(document).ready(function() {
                 var table = $('#users').DataTable({
                     order: [[ 0, "desc" ]],
