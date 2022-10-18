@@ -112,7 +112,9 @@
         </div>
     @if((new \Jenssegers\Agent\Agent())->isMobile())
 
-    <section>
+    <div id="barcode-scanner" class="size"> </div>  
+
+    <!-- <section>
     <div class="container my-10">
         <h5 class="display-5">Conteo Inventario Bodega</h5>
         <section class="content">
@@ -123,30 +125,6 @@
                     </div>
                     <div class="card-body">
                     <div class="table-responsive-xl">
-                        <!-- <table id="users" class="table table-sm table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Modulo</th>
-                                    <th scope="col">Encargado</th>
-                                    <th scope="col">Fecha</th>
-                                    <th scope="col">Accion</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($conteo_inventario as $item)
-                                <tr>
-                                    <td>{{ $item->modulo }}</td>
-                                    <td>{{ $item->encargado }}</td>
-                                    <td>{{ $item->fecha }}</td>
-                                    <td>
-                                    <form action="{{ route('ConteoInventarioDetalleBodega', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
-                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
-                                    </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table> -->
                         @foreach($conteo_inventario as $item)
                         <div class="card">
                             <div class="card-body row">
@@ -168,7 +146,7 @@
                     </div>
                 </div>
             </div>
-    </section>
+    </section> -->
         
     @endif
 
@@ -188,8 +166,38 @@
         <script src="{{asset("js/vfs_fonts.js")}}"></script>
         <script src="{{asset("js/buttons.html5.min.js")}}"></script>
         <script src="{{asset("js/buttons.print.min.js")}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.js"></script>
 
         <script>
+                Quagga.init({           
+                    inputStream : {
+                        name : "Live",
+                        type : "LiveStream",
+                        target: document.querySelector('#barcode-scanner'), 
+                        constraints: {
+                            width: 520,
+                            height: 400,                  
+                            facingMode: "environment"  //"environment" for back camera, "user" front camera
+                            }               
+                    },                         
+                    decoder : {
+                        readers : ["code_128_reader","code_39_reader"]
+                    }
+
+                }, function(err) {
+                    if (err) {
+                        console.log(err);
+                            return
+                    }
+
+                    Quagga.start();
+
+                    Quagga.onDetected(function(result) {                              
+                            var last_code = result.codeResult.code;                   
+                                console.log("last_code "); 
+                        });
+                });
+
             $(document).ready(function() {
                 var table = $('#users').DataTable({
                     order: [[ 0, "desc" ]],
