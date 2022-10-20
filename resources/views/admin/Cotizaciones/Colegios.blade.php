@@ -30,7 +30,7 @@ Lista Escolar
                     </div>
                                     @foreach ($colegios as $item)
                                         <tr>
-                                            <a href="{{ route('colegios') }}">
+
                                             <td scope="col" style="text-align:left">{{ $item->colegio }}</td>
                                             <td style="text-align:left">{{ $item->comuna }}</td>
                                             <td><button type="submit" class="btn btn-primary mb-2">VER</button></td>

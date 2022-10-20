@@ -257,7 +257,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     /* Cotizaciones */
     Route::get('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
-    Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
+    //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     /* */
 
     Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');//
