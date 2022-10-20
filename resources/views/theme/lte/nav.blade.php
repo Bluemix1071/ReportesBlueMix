@@ -692,7 +692,7 @@
                                     </li>
                                 @endcan
                                     {{--AQUI! --}}
-                                @can('Contratos')
+
                                     <li class="nav-item">
                                         <a href="" class="nav-link ">
                                             <i class="nav-icon fas fa-circle"></i>
@@ -708,23 +708,9 @@
                                                     </p>
                                                 </a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a href="" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Municipal(pronto)
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Otros(pronto)
-                                                    </p>
-                                                </a>
-                                            </li>
                                         </ul>
                                     </li>
-                                @endcan
+
                                     {{--AQUI! --}}
                                 @can('Jumpseller')
                                     <li class="nav-item">
@@ -773,7 +759,7 @@
                                                         @endcan
                                                         {{-- Fin generar carrito --}}
 
-                                                        {{-- Actualizar Stock 
+                                                        {{-- Actualizar Stock
                                                         @can('ActualizarStock')
                                                             <li class="nav-item">
                                                                 <a href="#" class="nav-link">
@@ -820,7 +806,7 @@
 
                                                         {{-- Fin Sincronizacion productos --}}
 
-                                                        {{-- Actualizar Stock 
+                                                        {{-- Actualizar Stock
                                                         @can('ActualizarStockweb')
                                                             <li class="nav-item">
                                                                 <a href="#" class="nav-link">

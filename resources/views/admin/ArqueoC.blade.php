@@ -14,8 +14,7 @@
     <div class="container-fluid">
         <h6 class="display-3">Arqueo Caja Contable</h6>
         {{-- BUSCADOR --}}
-        {{-- <form action="{{ route('filtrarArqueoC',['rut' => $item->CLRUTC, 'dv' => $item->CLRUTD, 'depto' => $item->DEPARTAMENTO]) }}" method="post" id="desvForm" class="form-inline")}">--}}
-        {{--SI<form action="{{ route('filtarArqueoC', ['fecha1T' => $requestT->fecha1TX, 'fecha2T' => $requestT->fecha2TX]) }}" method="post" id="desvForm" class="form-inline">--}}
+
         <form action="{{ route('filtrarArqueoC') }}" method="post" id="desvForm" class="form-inline">
             @csrf
             <div class="form-group mb-2">

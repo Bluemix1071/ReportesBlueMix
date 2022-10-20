@@ -35,7 +35,7 @@ Compra Productos
                                        @foreach ($marcas as $item)
                                        <option value="{{ $item->ARMARCA }}">
                                        @endforeach
-                                   </datalist>                                   
+                                   </datalist>
                                    @endif
                                  </div>
 
@@ -63,7 +63,7 @@ Compra Productos
 
                                   <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
 
-                          </div>
+                                </div>
                           <div class="col-md-2 col-md offset-">
 
                             <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>

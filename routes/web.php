@@ -256,10 +256,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
 
     /* Cotizaciones */
-    Route::get('/ListaEscolar','AdminController@ListaEscolar')->name('ListaEscolar');
+    Route::get('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
+    Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     /* */
 
-    Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');
+    Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');//
     Route::post('/ResumenDeVentaFiltro','AdminController@ResumenDeVentaFiltro')->name('ResumenDeVentaFiltro');
 
     Route::get('/AvanceAnualMensual','AdminController@AvanceAnualMensual')->name('AvanceAnualMensual');
