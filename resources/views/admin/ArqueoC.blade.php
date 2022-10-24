@@ -85,7 +85,7 @@
 
                                     <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalboletasivaT += $item->CAIVA }}</div>
-                                    <td style="text-align:right">{{ number_format($item->CAVALO, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ number_format($item->CAVALO, 0,',','.') }}</td>
                                     <div style="display: none">{{ $totalboletasT += $item->CAVALO }}</div>
                                 </tr>
                             @endforeach
@@ -902,7 +902,7 @@
                     <div class="col-md-2 mb-3">
 
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02" readonly
-                            value="Boletas" required>
+                            value="Boletas Efectivo" required>
                     </div>
 
                     @if(!empty($boletas_efec_mnto_tot))
