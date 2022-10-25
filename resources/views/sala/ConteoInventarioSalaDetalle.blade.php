@@ -79,7 +79,7 @@
                                             <input type="text" placeholder="Codigo" readonly class="form-control col-2" value="{{ $item->codigo }}" name='detalle_{{ $loop->index }}[codigo]'/>
                                             &nbsp;<input type="text" placeholder="Detalle" readonly class="form-control col-6" value="{{ $item->detalle }}" name='detalle_{{ $loop->index }}[detalle]'/>
                                             &nbsp;<input type="text" placeholder="Marca" readonly class="form-control col" value="{{ $item->marca }}" name='detalle_{{ $loop->index }}[marca]'/>
-                                            &nbsp;<input type="number" placeholder="Cantidad" required class="form-control col" value="{{ $item->cantidad }}" name="detalle_{{ $loop->index }}[cantidad]"/>
+                                            &nbsp;<input type="number" placeholder="Cantidad" required class="form-control col" value="{{ $item->cantidad }}" name="detalle_{{ $loop->index }}[cantidad]" min="1" max="99999999"/>
                                             &nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
                                         </div>
                                     </div>
@@ -180,7 +180,7 @@
                                             <input type="text" placeholder="Codigo" readonly class="form-control col-2" value="{{ $item->codigo }}" name='detalle_{{ $loop->index }}[codigo]'/>
                                             &nbsp;<input type="text" placeholder="Detalle" readonly class="form-control col-6" value="{{ $item->detalle }}" name='detalle_{{ $loop->index }}[detalle]'/>
                                             &nbsp;<input type="text" placeholder="Marca" readonly class="form-control col" value="{{ $item->marca }}" name='detalle_{{ $loop->index }}[marca]'/>
-                                            &nbsp;<input type="number" placeholder="Cantidad" required class="form-control col" value="{{ $item->cantidad }}" name="detalle_{{ $loop->index }}[cantidad]"/>
+                                            &nbsp;<input type="number" placeholder="Cantidad" required class="form-control col" value="{{ $item->cantidad }}" name="detalle_{{ $loop->index }}[cantidad]" min="1" max="99999999"/>
                                             &nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
                                         </div>
                                     </div>
@@ -347,6 +347,7 @@
             }
 
                 $('#buscar_cantidad').bind("enterKey",function(e){
+                    if($('#buscar_cantidad').val() >= 1 && descripcion != null){
                     cantidad = $( "#buscar_cantidad" ).val();
                     console.log(x);
                     e.preventDefault();
@@ -357,7 +358,7 @@
                             '<input type="text" required placeholder="Codigo" readonly name="detalle_'+x+'[codigo]" class="form-control col-2" value="'+codigo+'" />'+
                             '&nbsp;<input type="text" placeholder="Detalle" readonly name="detalle_'+x+'[detalle]" class="form-control col-6" value="'+descripcion+'"/>'+
                             '&nbsp;<input type="text" placeholder="Marca" readonly name="detalle_'+x+'[marca]" class="form-control col" value="'+marca+'"/>'+
-                            '&nbsp;<input type="number" placeholder="Cant" required name="detalle_'+x+'[cantidad]" class="form-control col" value="'+cantidad+'"/>'+
+                            '&nbsp;<input type="number" placeholder="Cant" required name="detalle_'+x+'[cantidad]" class="form-control col" value="'+cantidad+'" min="1" max="99999999"/>'+
                             '&nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
                             '</div>'); //add input box
                     }
@@ -367,6 +368,14 @@
                     $( "#buscar_marca" ).val("");
                     $( "#buscar_cantidad" ).val("");
                     $( "#buscar_codigo" ).focus();
+
+                    codigo = null;
+                    descripcion = null;
+                    marca = null;
+                    cantidad = null;
+                    }else{
+                        alert("La cantidad no puede ser menor o igual 0");
+                    }
                 });
 
                 $("#button_find").click(function(){
@@ -386,6 +395,7 @@
                 });
 
                 $( "#button_add" ).click(function() {
+                    if($('#buscar_cantidad').val() >= 1 && descripcion != null){
                         cantidad = $( "#buscar_cantidad" ).val();
                         console.log(x);
                         if(x < max_fields){ //max input box allowed
@@ -395,7 +405,7 @@
                                 '<input type="text" required placeholder="Codigo" readonly name="detalle_'+x+'[codigo]" class="form-control col-2" value="'+codigo+'" />'+
                                 '&nbsp;<input type="text" placeholder="Detalle" readonly name="detalle_'+x+'[detalle]" class="form-control col-6" value="'+descripcion+'"/>'+
                                 '&nbsp;<input type="text" placeholder="Marca" readonly name="detalle_'+x+'[marca]" class="form-control col" value="'+marca+'"/>'+
-                                '&nbsp;<input type="number" placeholder="Cant" required name="detalle_'+x+'[cantidad]" class="form-control col" value="'+cantidad+'"/>'+
+                                '&nbsp;<input type="number" placeholder="Cant" required name="detalle_'+x+'[cantidad]" class="form-control col" value="'+cantidad+'" min="1" max="99999999"/>'+
                                 '&nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
                                 '</div>'); //add input box
                         }
@@ -405,6 +415,14 @@
                         $( "#buscar_marca" ).val("");
                         $( "#buscar_cantidad" ).val("");
                         $( "#buscar_codigo" ).focus();
+
+                        codigo = null;
+                        descripcion = null;
+                        marca = null;
+                        cantidad = null;
+                    }else{
+                        alert("La cantidad no puede ser menor o igual 0");
+                    }
                 });
 
                 $('#buscar_cantidad').keyup(function(e){
