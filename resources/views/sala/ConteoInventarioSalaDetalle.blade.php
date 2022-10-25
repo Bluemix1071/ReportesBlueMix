@@ -62,7 +62,7 @@
                                         </div>
                                     </div>
                     <div class="card-body">
-                    <form method="post" action="{{ route('GuardarConteoDetalleBodega', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
+                    <form method="post" action="{{ route('GuardarConteoDetalleSala', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
                     <div class="form-group" id="input_fields_wrap">
                                     <div>
                                         <div class="row" style="text-align-last: center;">
@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <a href="{{ route('ConteoInventarioBodega') }}" class="btn btn-success">Conteo Inventario Bodega</a>
+                                        <a href="{{ route('ConteoInventarioSala') }}" class="btn btn-success">Conteo Inventario Sala</a>
                                     </div>
                                     <div class="col-6 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-success">Guardar</button>
@@ -155,7 +155,7 @@
                                         </div>
                                     </div>
                     <br>
-                    <form method="post" action="{{ route('GuardarConteoDetalleBodega', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
+                    <form method="post" action="{{ route('GuardarConteoDetalleSala', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
                     <div class="form-group" id="input_fields_wrap">
                                     <div>
                                         <div class="row" style="text-align-last: center;">
@@ -180,7 +180,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <a href="{{ route('ConteoInventarioBodega') }}" class="btn btn-success">< Conteo Bodega</a>
+                                        <a href="{{ route('ConteoInventarioSala') }}" class="btn btn-success">< Conteo Sala</a>
                                     </div>
                                     <div class="col-6 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-success">Guardar</button>

@@ -59,6 +59,13 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     /* fin */
 
     //cambio
+    /*  Mantenedor CRUD Conteo Inventario Sala */
+    Route::get('/ConteoInventarioSala', 'SalaController@ConteoInventarioSala')->name('ConteoInventarioSala');
+    Route::post('/ConteoInventarioSala', 'SalaController@NuevoConteo')->name('NuevoConteoInventarioSala');
+    Route::post('/ConteoInventarioDetalleSala', 'SalaController@ConteoDetalle')->name('ConteoInventarioDetalleSala');
+    Route::post('/GuardarConteoInventarioDetalleSala', 'SalaController@GuardarConteoDetalle')->name('GuardarConteoDetalleSala');
+    Route::get('/BuscarProducto/{codigo}','SalaController@BuscarProducto')->name('BuscarProducto');
+    Route::get('/ConsolidacionInventarioBodega', 'SalaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioSala');
 
 
 });
@@ -158,7 +165,6 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/BuscarProducto/{codigo}','Bodega\ConteoInventarioBodegaController@BuscarProducto')->name('BuscarProducto');
     Route::get('/ConsolidacionInventarioBodega', 'Bodega\ConteoInventarioBodegaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioBodega');
 
-
     /*  Mantenedor Clientes Credito */
     Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
     Route::post('/MantencionClientesCreditoDetalle', 'MantencionClientesCreditoController@DetalleCliente')->name('MantencionClientesCreditoDetalle');
@@ -257,6 +263,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     /* Cotizaciones */
     Route::get('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
+    Route::post('/Cursos','ListaEscolarController@Cursos')->name('Cursos');
+    Route::post('/AgregarCurso','ListaEscolarController@AgregarCurso')->name('AgregarCurso');
+    Route::delete('/EliminarCurso/{id}','ListaEscolarController@EliminarCurso')->name('EliminarCurso');
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     /* */
 
