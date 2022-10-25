@@ -62,7 +62,7 @@
                                         </div>
                                     </div>
                     <div class="card-body">
-                    <form method="post" action="{{ route('GuardarConteoDetalleSala', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
+                    <form method="post" action="{{ route('GuardarConteoDetalleSala', ['id_conteo' => $id_conteo]) }}" id="basic-form" >
                     <div class="form-group" id="input_fields_wrap">
                                     <div>
                                         <div class="row" style="text-align-last: center;">
@@ -90,7 +90,7 @@
                                         <a href="{{ route('ConteoInventarioSala') }}" class="btn btn-success">Conteo Inventario Sala</a>
                                     </div>
                                     <div class="col-6 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-success">Guardar</button>
+                                        <button type="submit" class="btn btn-success" onclick="validar()" id="agregar"><div id="text_add">Guardar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +163,7 @@
                                         </div>
                                     </div>
                     <br>
-                    <form method="post" action="{{ route('GuardarConteoDetalleSala', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
+                    <form method="post" action="{{ route('GuardarConteoDetalleSala', ['id_conteo' => $id_conteo]) }}" id="basic-form" >
                     <div class="form-group" id="input_fields_wrap">
                                     <div>
                                         <div class="row" style="text-align-last: center;">
@@ -191,7 +191,7 @@
                                         <a href="{{ route('ConteoInventarioSala') }}" class="btn btn-success">< Conteo Sala</a>
                                     </div>
                                     <div class="col-6 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-success">Guardar</button>
+                                        <button type="submit" class="btn btn-success" onclick="validar()" id="agregar"><div id="text_add">Guardar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
                                     </div>
                                 </div>
                             </div>
@@ -463,6 +463,17 @@
 
                 //table.columns(2).search( '2021-10-25' ).draw();
             });
+
+            function validar(){
+                if ( $('#basic-form')[0].checkValidity() ) {
+                    $("#text_add").prop("hidden", true);
+                    $('#spinner').prop('hidden', false);
+                    $("#agregar").prop("disabled", true);
+                    $('#basic-form').submit();
+                }else{
+                    console.log("formulario no es valido");
+                }
+            }
 
         </script>
 
