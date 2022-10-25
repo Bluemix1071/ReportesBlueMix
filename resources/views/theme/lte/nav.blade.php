@@ -623,6 +623,12 @@
                                        </a>
                                 </li>
                                 {{--@endcan--}}
+                                <li class="nav-item">
+                                    <a href="{{ route('ConsolidacionInventarioBodega') }}" class="nav-link {{ setActive('ConsolidacionInventario') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Consolidación Inventario</p>
+                                    </a>
+                                </li>
 
 
                                 @can('Costos')
@@ -950,6 +956,15 @@
                                 </li>
                             @endcan
 
+                            @can('Sala')
+                            <li class="nav-item">
+                                <a href="{{ route('ConteoInventarioSala') }}" class="nav-link {{ setActive('ConteoInventarioSala') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Conteo Inventario</p>
+                                </a>
+                            </li>
+                            @endcan
+
                         </ul>
                     </li>
                 @endcan
@@ -1055,12 +1070,12 @@
                                     <p>Conteo Inventario</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="{{ route('ConsolidacionInventarioBodega') }}" class="nav-link {{ setActive('ConsolidacionInventario') }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Consolidación Inventario</p>
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a href="../UI/sliders.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>

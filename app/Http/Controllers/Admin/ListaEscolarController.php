@@ -30,14 +30,54 @@ class ListaEscolarController extends Controller
 
     public function ListaEscolar(Request $request){
 
-        $colegios=DB::select("select colegio.nombre as colegio, comunas.nombre as comuna from colegio
+        $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id");
-
 
         return view('Admin.Cotizaciones.Colegios',compact('colegios'));
 
     }
 
+    public function Cursos(Request $request){
+        //dd($request->get("id"));
+        //$colegio=DB::table("colegio")->where('id', $request->get("id"))->first();
+
+        $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
+        inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id").'')[0];
+
+        $cursos=DB::table('curso')->where('id_colegio', $request->get("id"))->get();
+
+        return view('Admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
+    }
+
+    public function AgregarCurso(Request $request){
+        $inputs = request()->all();
+
+       /*  $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
+        inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get('id_colegio').'')[0]; */
+
+        /* $cursos=DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get(); */
+
+        $elcurso = DB::table('curso')->insert([
+                [
+                "nombre_curso" => request()->get('nombre'),
+                "letra" => request()->get('subcurso'),
+                "id_colegio" => request()->get('id_colegio'),
+                ]
+            ]);
+
+            error_log(print_r(request()->all(), true));
+
+            return response()->json(request()->all());
+    }
+
+    public function eliminar($id)
+    {  
+        $update = DB::table('compra_agil')
+        ->where('id' , $id)
+        ->delete();
+
+        return redirect()->route('CompraAgil')->with('success','Compra Ágil Eliminada');
+    }
 
     /*public function ListaEscolarfiltro(Request $request){
 

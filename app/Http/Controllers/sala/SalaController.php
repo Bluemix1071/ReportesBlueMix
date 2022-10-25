@@ -588,6 +588,93 @@ class SalaController extends Controller
         return redirect()->route('RequerimientoCompra')->with('success','Requerimientos Editados Correctamente');
       }
     }
+
+    public function ConteoInventarioSala(){
+      $conteo_inventario = DB::table('conteo_inventario')->where('ubicacion', 'Sala')->get();
+
+      $modulos = [['modulo' => 'ARTE 1'], ['modulo' => 'ARTE 2'], ['modulo' => 'ASEO'], ['modulo' => 'BLISTERIA'], ['modulo' => 'CABECERA 1'], ['modulo' => 'CABECERA 2'], ['modulo' => 'CABECERA 3'], ['modulo' => 'CABECERA 4'], ['modulo' => 'CABECERA 5'], ['modulo' => 'CABECERA 6'],
+      ['modulo' => 'CABECERA 7'], ['modulo' => 'CABECERA 8'], ['modulo' => 'CORDONEDRIA 1'] , ['modulo' => 'CORDONEDRIA 2'], ['modulo' => 'CORDONEDRIA 3'], ['modulo' => 'DISEÑO 1'], ['modulo' => 'DISEÑO 2'], ['modulo' => 'GONDOLA 1 (ESCOLARES)'], ['modulo' => 'GONDOLA 2 (ARCHIVADORES)'], ['modulo' => 'GONDOLA 3 (CARPETAS)'],
+      ['modulo' => 'GONDOLA 4 (LANAS)'], ['modulo' => 'GONDOLA 5 (CUADERNOS)'], ['modulo' => 'GONDOLA 6 (REGLAS)'], ['modulo' => 'GONDOLA 7 (JUGUETES)'], ['modulo' => 'GONDOLA 8 (DIDACTICOS)'], ['modulo' => 'LIBROS'], ['modulo' => 'PAPELERIA 1'], ['modulo' => 'PAPELERIA 2'], ['modulo' => 'PAPELERIA 3 (METALES)'], ['modulo' => 'PAPELERIA 4 (GOMA EVA)'],
+      ['modulo' => 'PAPELERIA 5 (FOTOGRAFICO)'], ['modulo' => 'PAPELERIA 6 (CINTAS)'], ['modulo' => 'PAPELERIA MESON 1'], ['modulo' => 'PAPELERIA MESON 2'], ['modulo' => 'REGALERÍA'], ['modulo' => 'SERVICIOS 1 Y ADETEC'], ['modulo' => 'SERVICIOS CENTRAL'], ['modulo' => 'VENTA ASISTIDA 1'], ['modulo' => 'VENTA ASISTIDA 2'], ['modulo' => 'VENTA ASISTIDA 3'], ['modulo' => 'ZIÑA']];
+
+      return view('sala.ConteoInventarioSala', compact('conteo_inventario', 'modulos'));
+
+    }
+
+    public function NuevoConteo(Request $request){
+
+      $nuevo = ['ubicacion' => $request->ubicacion,
+          'modulo' => $request->modulo,
+          'encargado' => $request->encargado,
+          'estado' => "Ingresado"
+      ];
+      
+      DB::table('conteo_inventario')->insert($nuevo);
+
+      return redirect()->route('ConteoInventarioSala')->with('success','Agregado Correctamente');
+    }
+
+    public function ConteoDetalle(Request $request){
+      
+      $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $request->id)->orderBy('posicion', 'asc')->get();
+
+      $conteo = DB::table('conteo_inventario')->where('id', $request->id)->get()[0];
+
+      $id_conteo = $request->id;
+
+      return view('sala.ConteoInventarioSalaDetalle', compact('detalles', 'id_conteo', 'conteo'));
+    }
+
+    public function BuscarProducto($codigo){
+
+      //error_log(print_r($codigo, true));
+
+      $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
+
+      return response()->json($producto);
+    }
+
+    public function GuardarConteoDetalle(Request $request){
+      //stristr($email, 'e');
+      $id_conteo = $request->get('id_conteo');
+      
+      DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id_conteo)->delete();
+
+      $i = 1;
+
+      $groups = array();
+
+      foreach ($request->request as $item) {
+          $key = $item['codigo'];
+          if (!array_key_exists($key, $groups)) {
+              $groups[$key] = array(
+                  'posicion' => $i++,
+                  'codigo' => $item['codigo'],
+                  'detalle' => $item['detalle'],
+                  'marca' => $item['marca'],
+                  'costo' => 0,
+                  'precio' => 0,
+                  'cantidad' => $item['cantidad'],
+                  'estado' => 'exeptuado',
+                  'id_conteo_inventario' => $id_conteo
+              );
+          } else {
+              $groups[$key]['cantidad'] = $groups[$key]['cantidad'] + $item['cantidad'];
+          }
+
+      }
+
+      foreach($groups as $item){
+          //error_log(print_r($item, true));
+          DB::table('conteo_inventario_detalle')->insert($item);
+      }
+
+      $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $id_conteo)->orderBy('posicion', 'asc')->get();
+
+      $conteo = DB::table('conteo_inventario')->where('id', $id_conteo)->get()[0];
+
+      return view('sala.ConteoInventarioSalaDetalle', compact('detalles', 'id_conteo', 'conteo'));
+  }
     
 
 }

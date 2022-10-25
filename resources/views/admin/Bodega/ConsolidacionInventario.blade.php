@@ -11,7 +11,7 @@
     @if((new \Jenssegers\Agent\Agent())->isDesktop())
     <section>
     <div class="container my-4">
-        <h1 class="display-4">Consolidacion Inventario Bodega</h1>
+        <h1 class="display-4">Consolidacion Inventario</h1>
         <section class="content">
             <div class="card">
                 <div class="card-header">
@@ -21,27 +21,23 @@
                         <table id="users" class="table table-sm table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
                                     <th scope="col">Código</th>
                                     <th scope="col">Detalle</th>
                                     <th scope="col">Marca</th>
-                                    <th scope="col">Estado</th>
                                     <th scope="col">Cantidad</th>
+                                    <th scope="col">Ubicacion</th>
                                     <th scope="col">Modulo</th>
-                                    <th scope="col">Accion</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($consolidacion as $item)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
                                     <td>{{ $item->codigo }}</td>
                                     <td>{{ $item->detalle }}</td>
                                     <td>{{ $item->marca }}</td>
-                                    <td>{{ $item->estado }}</td>
                                     <td>{{ $item->cantidad }}</td>
+                                    <td>{{ $item->ubicacion }}</td>
                                     <td>{{ $item->modulo }}</td>
-                                    <td>Consolidar</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -129,28 +125,44 @@
 
         <script>
             $(document).ready(function() {
+
+                $('#users thead tr').clone(true).appendTo( '#users thead' );
+                        $('#users thead tr:eq(1) th').each( function (i) {
+                            var title = $(this).text();
+                            $(this).html( '<input type="text" class="form-control form-control-sm" placeholder="Buscar '+title+'" />' );
+                    
+                            $( 'input', this ).on( 'keyup change', function () {
+                                if ( table.column(i).search() !== this.value ) {
+                                    table
+                                        .column(i)
+                                        .search( this.value )
+                                        .draw();
+                        } 
+                        });
+                } );
+
                 var table = $('#users').DataTable({
                     order: [[ 0, "desc" ]],
                     orderCellsTop: true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'pdf', 'print'
-        ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'pdf', 'print'
+                    ],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
 
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
                 });
 
                 //table.columns(2).search( '2021-10-25' ).draw();

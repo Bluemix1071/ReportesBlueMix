@@ -30,10 +30,13 @@ Lista Escolar
                     </div>
                                     @foreach ($colegios as $item)
                                         <tr>
-
                                             <td scope="col" style="text-align:left">{{ $item->colegio }}</td>
                                             <td style="text-align:left">{{ $item->comuna }}</td>
-                                            <td><button type="submit" class="btn btn-primary mb-2">VER</button></td>
+                                            <td>
+                                            <form action="{{ route('Cursos', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
+                                                <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                                            </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                             </tbody>

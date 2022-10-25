@@ -11,9 +11,11 @@ class ConteoInventarioBodegaController extends Controller
     //
     public function index(){
 
-        $conteo_inventario = DB::table('conteo_inventario')->get();
+        $conteo_inventario = DB::table('conteo_inventario')->where('ubicacion', 'Bodega')->get();
 
-        return view('admin.Bodega.ConteoInventario', compact('conteo_inventario'));
+        $modulos = DB::table('vv_tablas25')->orderBy('taglos', 'asc')->get();
+
+        return view('admin.Bodega.ConteoInventario', compact('conteo_inventario', 'modulos'));
 
     }
 
@@ -22,8 +24,7 @@ class ConteoInventarioBodegaController extends Controller
         $nuevo = ['ubicacion' => $request->ubicacion,
             'modulo' => $request->modulo,
             'encargado' => $request->encargado,
-            'fecha' => $request->fecha,
-            'estado' => $request->estado
+            'estado' => "Ingresado"
         ];
         
         DB::table('conteo_inventario')->insert($nuevo);
@@ -35,9 +36,11 @@ class ConteoInventarioBodegaController extends Controller
 
         $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $request->id)->orderBy('posicion', 'asc')->get();
 
+        $conteo = DB::table('conteo_inventario')->where('id', $request->id)->get()[0];
+
         $id_conteo = $request->id;
 
-        return view('admin.Bodega.ConteoInventarioDetalle', compact('detalles', 'id_conteo'));
+        return view('admin.Bodega.ConteoInventarioDetalle', compact('detalles', 'id_conteo', 'conteo'));
     }
 
     public function BuscarProducto($codigo){
@@ -104,12 +107,14 @@ class ConteoInventarioBodegaController extends Controller
 
         $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $id_conteo)->orderBy('posicion', 'asc')->get();
 
-        return view('admin.Bodega.ConteoInventarioDetalle', compact('detalles', 'id_conteo'));
+        $conteo = DB::table('conteo_inventario')->where('id', $id_conteo)->get()[0];
+
+        return view('admin.Bodega.ConteoInventarioDetalle', compact('detalles', 'id_conteo', 'conteo'));
     }
 
     public function ConsolidacionInventarioBodega(){
 
-        $consolidacion = DB::select("select conteo_inventario_detalle.*, sum(cantidad) , conteo_inventario.modulo from conteo_inventario_detalle left join conteo_inventario on conteo_inventario_detalle.id_conteo_inventario = conteo_inventario.id group by codigo, modulo");
+        $consolidacion = DB::select("select conteo_inventario_detalle.*, sum(cantidad) , conteo_inventario.modulo, conteo_inventario.ubicacion from conteo_inventario_detalle left join conteo_inventario on conteo_inventario_detalle.id_conteo_inventario = conteo_inventario.id group by codigo, modulo");
 
         return view('admin.Bodega.ConsolidacionInventario', compact('consolidacion'));
 

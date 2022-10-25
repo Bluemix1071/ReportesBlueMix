@@ -11,7 +11,7 @@
     @if((new \Jenssegers\Agent\Agent())->isDesktop())
     <section>
     <div class="container my-4">
-        <h1 class="display-4">Conteo Inventario Bodega</h1>
+        <h1 class="display-4">Conteo Inventario Sala</h1>
         <section class="content">
             <div class="card">
                 <div class="card-header">
@@ -40,7 +40,7 @@
                                     <td>{{ $item->fecha }}</td>
                                     <td>{{ $item->estado }}</td>
                                     <td>
-                                    <form action="{{ route('ConteoInventarioDetalleBodega', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
+                                    <form method="post" action="{{ route('ConteoInventarioDetalleSala', ['id' => $item->id]) }}" enctype="multipart/form-data">
                                         <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                                     </form>
                                     </td>
@@ -67,22 +67,21 @@
                         </button> -->
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="{{ route('NuevoConteoInventarioBodega') }}" id="desvForm" >
+                        <form method="post" action="{{ route('NuevoConteoInventarioSala') }}" id="desvForm" >
                             <div class="card card-primary">
                                 <div class="card-body">
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Ubicación</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" required name="ubicacion" placeholder="Ubicación" value="Bodega" readonly>
+                                            <input type="text" class="form-control" required name="ubicacion" placeholder="Ubicación" value="Sala" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Modulo</label>
                                         <div class="col-sm-10">
-                                            <!-- <input type="text" id="total" class="form-control" required name="modulo" placeholder="Modulo"> -->
                                             <select class="form-control" id="exampleFormControlSelect1" name="modulo">
                                                 @foreach($modulos as $item)
-                                                    <option>{{ $item->taglos }}</option>
+                                                    <option>{{ $item['modulo'] }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -111,7 +110,7 @@
 
     <section>
     <div class="container my-10">
-        <h5 class="display-5">Conteo Inventario Bodega</h5>
+        <h5 class="display-5">Conteo Inventario Sala</h5>
         <section class="content">
             <div class="card">
                 <div class="card-header">
@@ -120,7 +119,7 @@
                     </div>
                     <div class="card-body">
                     <div class="table-responsive-xl">
-                        @foreach($conteo_inventario as $item)
+                    @foreach($conteo_inventario as $item)
                         <div class="card">
                             <div class="card-body row">
                                 <div class="col-10">
@@ -131,7 +130,7 @@
                                     <h4 class="card-title"><b>Fecha:</b> {{ $item->fecha }}</h4>
                                 </div>
                                 <div class="col-1">
-                                    <form action="{{ route('ConteoInventarioDetalleBodega', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
+                                    <form action="{{ route('ConteoInventarioDetalleSala', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
                                         <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
                                     </form>
                                 </div>
