@@ -153,6 +153,14 @@
                                             &nbsp;<input type="text" id="buscar_cantidad" placeholder="Cant" required name="" class="form-control col" value="" min="1" max="99999999"/>
                                             <input type="text" hidden id="conteo" class="form-control col-2" value="{{ count($detalles) }}" />
                                         </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <span><button type="button" class="btn btn-primary btn-sm" id="button_find"><i class="fa fa-search"></i></button></span>
+                                            </div>
+                                            <div class="col d-flex justify-content-end">
+                                                <span><button type="button" class="btn btn-primary btn-sm" id="button_add"><i class="fa fa-plus"></i></button></span>
+                                            </div>
+                                        </div>
                                     </div>
                     <br>
                     <form method="post" action="{{ route('GuardarConteoDetalleBodega', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
@@ -338,22 +346,6 @@
                 var x = parseInt(conteo); //initlal text box count
             }
 
-           /*  $(add_button).click(function(e){ //on add input button click
-                    console.log(x);
-                    e.preventDefault();
-                    if(x < max_fields){ //max input box allowed
-                        x++; //text box increment
-                        $(wrapper).append(
-                            '<div class="row" style="margin-bottom: 1%">'+
-                            '<input type="text" required placeholder="Codigo" name="detalle_'+x+'[codigo]" class="form-control col-2" />'+
-                            '&nbsp;<input type="text" placeholder="Detalle" disabled class="form-control col-5" />'+
-                            '&nbsp;<input type="text" placeholder="Marca" disabled class="form-control col" />'+
-                            '&nbsp;<input type="number" placeholder="Cant" required name="detalle_'+x+'[cantidad]" class="form-control col" />'+
-                            '&nbsp;<input list="tipos_unidad" type="text" placeholder="T. Unidad" required name="detalle_'+x+'[t_unid]" class="form-control col-1" />'+
-                            '&nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
-                            '</div>'); //add input box
-                    }
-                }); */
 
                 $('#buscar_cantidad').bind("enterKey",function(e){
                     cantidad = $( "#buscar_cantidad" ).val();
@@ -376,6 +368,44 @@
                     $( "#buscar_marca" ).val("");
                     $( "#buscar_cantidad" ).val("");
                     $( "#buscar_codigo" ).focus();
+                });
+
+                $("#button_find").click(function(){
+                    $.ajax({
+                        url: '../admin/BuscarProducto/'+$('#buscar_codigo').val(),
+                        type: 'GET',
+                        success: function(result) {
+                            $('#buscar_detalle').val(result[0].ARDESC);
+                            $('#buscar_marca').val(result[0].ARMARCA);
+                            $( "#buscar_cantidad" ).focus();
+                            $( "#buscar_cantidad" ).val(1);
+                            codigo = result[0].ARCODI;
+                            descripcion = result[0].ARDESC;
+                            marca = result[0].ARMARCA;
+                        }
+                    });
+                });
+
+                $( "#button_add" ).click(function() {
+                        cantidad = $( "#buscar_cantidad" ).val();
+                        console.log(x);
+                        if(x < max_fields){ //max input box allowed
+                            x++; //text box increment
+                            $(wrapper).append(
+                                '<div class="row" style="margin-top: 1%">'+
+                                '<input type="text" required placeholder="Codigo" readonly name="detalle_'+x+'[codigo]" class="form-control col-2" value="'+codigo+'" />'+
+                                '&nbsp;<input type="text" placeholder="Detalle" readonly name="detalle_'+x+'[detalle]" class="form-control col-6" value="'+descripcion+'"/>'+
+                                '&nbsp;<input type="text" placeholder="Marca" readonly name="detalle_'+x+'[marca]" class="form-control col" value="'+marca+'"/>'+
+                                '&nbsp;<input type="number" placeholder="Cant" required name="detalle_'+x+'[cantidad]" class="form-control col" value="'+cantidad+'"/>'+
+                                '&nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
+                                '</div>'); //add input box
+                        }
+
+                        $( "#buscar_codigo" ).val("");
+                        $( "#buscar_detalle" ).val("");
+                        $( "#buscar_marca" ).val("");
+                        $( "#buscar_cantidad" ).val("");
+                        $( "#buscar_codigo" ).focus();
                 });
 
                 $('#buscar_cantidad').keyup(function(e){
