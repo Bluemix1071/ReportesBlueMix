@@ -35,7 +35,7 @@
                                     <td>{{ $item->codigo }}</td>
                                     <td>{{ $item->detalle }}</td>
                                     <td>{{ $item->marca }}</td>
-                                    <td>{{ $item->cantidad }}</td>
+                                    <td>{{ $item->total }}</td>
                                     <td>{{ $item->ubicacion }}</td>
                                     <td>{{ $item->modulo }}</td>
                                 </tr>

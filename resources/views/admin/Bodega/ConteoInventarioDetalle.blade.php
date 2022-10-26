@@ -86,11 +86,17 @@
                                     @endforeach
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
-                                        <a href="{{ route('ConteoInventarioBodega') }}" class="btn btn-success">Conteo Inventario Bodega</a>
+                                    <div class="col">
+                                        <a href="{{ route('ConteoInventarioBodega') }}" class="btn btn-warning">Atras</a>
                                     </div>
-                                    <div class="col-6 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-success" onclick="validar()" id="agregar"><div id="text_add">Guardar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
+                                    <div class="col d-flex justify-content-center">
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalcargarvale">Cargar Vale</button>
+                                    </div>
+                                    <div class="col d-flex justify-content-center">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalterminarconteo">Terminar</button>
+                                    </div>
+                                    <div class="col d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-info" onclick="validar()" id="agregar"><div id="text_add">Guardar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
                                     </div>
                                 </div>
                             </div>
@@ -98,6 +104,61 @@
             </div>
     </section>
     @endif
+
+        <!-- Modal cargar vale-->
+        <div class="modal fade" id="modalcargarvale" tabindex="-1" role="dialog"
+            aria-labelledby="eliminarproductocontrato" aria-hidden="true">
+            <div class="modal-dialog" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Cargar Vale</h5>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{{ route('CargarValeConteoBodega', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">N° Vale</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" placeholder="N° Vale" required class="form-control col-lg-4" name="nro_vale" min="1" max="99999999"/>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Cargar Vale</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal terminar conteo-->
+        <div class="modal fade" id="modalterminarconteo" tabindex="-1" role="dialog"
+            aria-labelledby="eliminarproductocontrato" aria-hidden="true">
+            <div class="modal-dialog" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">¿Seguro de terminar el Conteo?</h5>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{{ route('TerminarConteoBodega', ['id_conteo' => $id_conteo]) }}" id="desvForm" >
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <button type="submit" class="btn btn-success">Terminar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     @if((new \Jenssegers\Agent\Agent())->isMobile())
     <section>
@@ -187,11 +248,19 @@
                                     @endforeach
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
-                                        <a href="{{ route('ConteoInventarioBodega') }}" class="btn btn-success">< Conteo Bodega</a>
+                                    <div class="col">
+                                        <a href="{{ route('ConteoInventarioBodega') }}" class="btn btn-warning"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                                     </div>
-                                    <div class="col-6 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-success" onclick="validar()" id="agregar"><div id="text_add">Guardar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
+                                    <div class="col d-flex justify-content-center">
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalcargarvale"><i class="fa fa-file" aria-hidden="true"></i></button>
+                                    </div>
+                                    <div class="col d-flex justify-content-center">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalterminarconteo"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                    </div>
+                                    <div class="col d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-info" onclick="validar()" id="agregar"><div id="text_add"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                                        </svg></div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
                                     </div>
                                 </div>
                             </div>
@@ -238,6 +307,12 @@
         <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.js"></script>
 
         <script>
+
+        $(window).on('load', function () {
+            //$('#basic-form').submit();
+            document.getElementById("basic-form").reset();
+            document.getElementById("desvForm").reset();
+        }) 
 
                 Quagga.init({           
                     inputStream : {
