@@ -674,7 +674,52 @@ class SalaController extends Controller
       $conteo = DB::table('conteo_inventario')->where('id', $id_conteo)->get()[0];
 
       return view('sala.ConteoInventarioSalaDetalle', compact('detalles', 'id_conteo', 'conteo'));
+    }
+
+    public function CargarValeConteoSala(Request $request){
+  
+      $conteo = DB::table('conteo_inventario')->where('id', $request->get('id_conteo'))->get()[0];
+      $contador = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $request->get('id_conteo'))->get()->count();
+      $contador = $contador+1;
+      //dd(DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $request->get('id_conteo'))->get());
+      
+      //dd($request->get('nro_vale'));
+
+      $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant from dvales left join producto on dvales.vaarti = producto.ARCODI where vanmro = '.$request->get('nro_vale').'');
+      if(!empty($vale)){
+          foreach($vale as $item){
+  
+              $nuevo = ['posicion' => $contador++,
+                            'codigo' => $item->vaarti,
+                            'detalle' => $item->ARDESC,
+                            'marca' => $item->ARMARCA,
+                            'costo' => 0,
+                            'precio' => 0,
+                            'cantidad' => $item->vacant,
+                            'estado' => 'exeptuado',
+                            'id_conteo_inventario' => $request->get('id_conteo')
+              ];
+              //error_log(print_r($nuevo, true));
+              DB::table('conteo_inventario_detalle')->insert($nuevo);
+          }
+      }
+
+      $id_conteo = $request->get('id_conteo');
+
+      $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $id_conteo)->orderBy('posicion', 'asc')->get();
+
+      return view('sala.ConteoInventarioSalaDetalle', compact('detalles', 'id_conteo', 'conteo'));
+
+    }
+
+  public function TerminarConteoSala(Request $request){
+      DB::table('conteo_inventario')
+          ->where('id' , $request->get('id_conteo'))
+          ->update(
+          [ 'estado' => "Terminado"]
+        );
+
+      return redirect()->route('ConteoInventarioSala')->with('success','Conteo Terminado');
   }
-    
 
 }

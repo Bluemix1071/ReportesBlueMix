@@ -165,7 +165,7 @@
         <script>
             $(document).ready(function() {
                 var table = $('#users').DataTable({
-                    order: [[ 0, "desc" ]],
+                    order: [[ 3, "desc" ]],
                     orderCellsTop: true,
         dom: 'Bfrtip',
         buttons: [

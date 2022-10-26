@@ -66,7 +66,8 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/GuardarConteoInventarioDetalleSala', 'SalaController@GuardarConteoDetalle')->name('GuardarConteoDetalleSala');
     Route::get('/BuscarProducto/{codigo}','SalaController@BuscarProducto')->name('BuscarProducto');
     Route::get('/ConsolidacionInventarioBodega', 'SalaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioSala');
-
+    Route::post('/CargarValeConteoSala', 'SalaController@CargarValeConteoSala')->name('CargarValeConteoSala');
+    Route::post('/TerminarConteoSala', 'SalaController@TerminarConteoSala')->name('TerminarConteoSala');
 
 });
 
@@ -164,6 +165,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/GuardarConteoInventarioDetalleBodega', 'Bodega\ConteoInventarioBodegaController@GuardarConteoDetalle')->name('GuardarConteoDetalleBodega');
     Route::get('/BuscarProducto/{codigo}','Bodega\ConteoInventarioBodegaController@BuscarProducto')->name('BuscarProducto');
     Route::get('/ConsolidacionInventarioBodega', 'Bodega\ConteoInventarioBodegaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioBodega');
+    Route::post('/CargarValeConteoBodega', 'Bodega\ConteoInventarioBodegaController@CargarValeConteoBodega')->name('CargarValeConteoBodega');
+    Route::post('/TerminarConteoBodega', 'Bodega\ConteoInventarioBodegaController@TerminarConteoBodega')->name('TerminarConteoBodega');
 
     /*  Mantenedor Clientes Credito */
     Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
