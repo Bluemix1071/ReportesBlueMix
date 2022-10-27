@@ -32,6 +32,7 @@
                             <div class="callout callout-success row">
                                 
                                 <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>ID:</strong> {{ $conteo->id }}<br>
                                     <strong>Ubicación:</strong> {{ $conteo->ubicacion }}<br>
                                     <strong>Modulo:</strong> {{ $conteo->modulo }}<br>
                                     <strong>Encargado:</strong> {{ $conteo->encargado }} <br>
@@ -186,6 +187,7 @@
                             <div class="callout callout-success row">
                                 
                                 <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>ID:</strong> {{ $conteo->id }}<br>
                                     <strong>Ubicación:</strong> {{ $conteo->ubicacion }}<br>
                                     <strong>Modulo:</strong> {{ $conteo->modulo }}<br>
                                     <strong>Encargado:</strong> {{ $conteo->encargado }} <br>
@@ -211,7 +213,7 @@
                                             <input type="text" id="buscar_codigo" placeholder="Cod" required class="form-control col" value=""/>
                                             &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
                                             &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
-                                            &nbsp;<input type="text" id="buscar_cantidad" placeholder="Cant" required name="" class="form-control col" value="" min="1" max="99999999"/>
+                                            &nbsp;<input type="number" id="buscar_cantidad" placeholder="Cant" required name="" class="form-control col" value="" min="1" max="99999999"/>
                                             <input type="text" hidden id="conteo" class="form-control col-2" value="{{ count($detalles) }}" />
                                         </div>
                                         <div class="row">

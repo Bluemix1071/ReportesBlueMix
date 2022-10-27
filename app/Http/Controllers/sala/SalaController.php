@@ -590,7 +590,7 @@ class SalaController extends Controller
     }
 
     public function ConteoInventarioSala(){
-      $conteo_inventario = DB::table('conteo_inventario')->where('ubicacion', 'Sala')->get();
+      $conteo_inventario = DB::table('conteo_inventario')->where('ubicacion', 'Sala')->orderBy('fecha', 'desc')->get();
 
       $modulos = [['modulo' => 'ARTE 1'], ['modulo' => 'ARTE 2'], ['modulo' => 'ASEO'], ['modulo' => 'BLISTERIA'], ['modulo' => 'CABECERA 1'], ['modulo' => 'CABECERA 2'], ['modulo' => 'CABECERA 3'], ['modulo' => 'CABECERA 4'], ['modulo' => 'CABECERA 5'], ['modulo' => 'CABECERA 6'],
       ['modulo' => 'CABECERA 7'], ['modulo' => 'CABECERA 8'], ['modulo' => 'CORDONEDRIA 1'] , ['modulo' => 'CORDONEDRIA 2'], ['modulo' => 'CORDONEDRIA 3'], ['modulo' => 'DESPACHO'], ['modulo' => 'DISEÑO 1'], ['modulo' => 'DISEÑO 2'], ['modulo' => 'GONDOLA 1 (ESCOLARES)'], ['modulo' => 'GONDOLA 2 (ARCHIVADORES)'], ['modulo' => 'GONDOLA 3 (CARPETAS)'],
