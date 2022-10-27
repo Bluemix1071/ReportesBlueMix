@@ -32,6 +32,7 @@
                             <div class="callout callout-success row">
                                 
                                 <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>ID:</strong> {{ $conteo->id }}<br>
                                     <strong>Ubicación:</strong> {{ $conteo->ubicacion }}<br>
                                     <strong>Modulo:</strong> {{ $conteo->modulo }}<br>
                                     <strong>Encargado:</strong> {{ $conteo->encargado }} <br>
@@ -194,9 +195,10 @@
                             <div class="callout callout-success row">
                                 
                                 <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>ID:</strong> {{ $conteo->id }}<br>
                                     <strong>Ubicación:</strong> {{ $conteo->ubicacion }}<br>
                                     <strong>Modulo:</strong> {{ $conteo->modulo }}<br>
-                                    <strong>Encargado:</strong> {{ $conteo->encargado }} <br>
+                                    <strong>Encargado:</strong> {{ $conteo->encargado }}<br>
                                     <strong>Fecha:</strong> {{ $conteo->fecha }}<br>
                                     <strong>Estado:</strong> {{ $conteo->estado }}<br>
                                 </div>

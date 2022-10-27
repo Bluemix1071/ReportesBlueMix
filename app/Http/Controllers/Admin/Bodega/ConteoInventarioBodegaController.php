@@ -11,7 +11,7 @@ class ConteoInventarioBodegaController extends Controller
     //
     public function index(){
 
-        $conteo_inventario = DB::table('conteo_inventario')->where('ubicacion', 'Bodega')->get();
+        $conteo_inventario = DB::table('conteo_inventario')->where('ubicacion', 'Bodega')->orderBy('fecha', 'desc')->get();
 
         $modulos = DB::table('vv_tablas25')->orderBy('taglos', 'asc')->get();
 
