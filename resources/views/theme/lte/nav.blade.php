@@ -960,7 +960,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('ConteoInventarioSala') }}" class="nav-link {{ setActive('ConteoInventarioSala') }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Conteo Inventario</p>
+                                    <p>Conteo Inventario Sala</p>
                                 </a>
                             </li>
                             @endcan
@@ -1067,7 +1067,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('ConteoInventarioBodega') }}" class="nav-link {{ setActive('ConteoInventarioBodega') }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Conteo Inventario</p>
+                                    <p>Conteo Inventario Bodega</p>
                                 </a>
                             </li>
                             <!-- <li class="nav-item">
