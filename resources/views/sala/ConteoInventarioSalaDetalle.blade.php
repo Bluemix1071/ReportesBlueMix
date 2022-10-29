@@ -77,9 +77,9 @@
                                     @foreach($detalles as $item)
                                     <div>
                                         <div class="row" style="margin-top: 1%;">
-                                            <input type="text" placeholder="Codigo" readonly class="form-control col-2" value="{{ $item->codigo }}" name='detalle_{{ $loop->index }}[codigo]'/>
-                                            &nbsp;<input type="text" placeholder="Detalle" readonly class="form-control col-6" value="{{ $item->detalle }}" name='detalle_{{ $loop->index }}[detalle]'/>
-                                            &nbsp;<input type="text" placeholder="Marca" readonly class="form-control col" value="{{ $item->marca }}" name='detalle_{{ $loop->index }}[marca]'/>
+                                            <input type="text" placeholder="Codigo" readonly required class="form-control col-2" value="{{ $item->codigo }}" name='detalle_{{ $loop->index }}[codigo]'/>
+                                            &nbsp;<input type="text" placeholder="Detalle" required readonly class="form-control col-6" value="{{ $item->detalle }}" name='detalle_{{ $loop->index }}[detalle]'/>
+                                            &nbsp;<input type="text" placeholder="Marca" required readonly class="form-control col" value="{{ $item->marca }}" name='detalle_{{ $loop->index }}[marca]'/>
                                             &nbsp;<input type="number" placeholder="Cantidad" required class="form-control col" value="{{ $item->cantidad }}" name="detalle_{{ $loop->index }}[cantidad]" min="1" max="99999999"/>
                                             &nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
                                         </div>
@@ -248,9 +248,9 @@
                                     @foreach($detalles as $item)
                                     <div>
                                         <div class="row" style="margin-top: 1%;">
-                                            <input type="text" placeholder="Codigo" readonly class="form-control col-2" value="{{ $item->codigo }}" name='detalle_{{ $loop->index }}[codigo]'/>
-                                            &nbsp;<input type="text" placeholder="Detalle" readonly class="form-control col-6" value="{{ $item->detalle }}" name='detalle_{{ $loop->index }}[detalle]'/>
-                                            &nbsp;<input type="text" placeholder="Marca" readonly class="form-control col" value="{{ $item->marca }}" name='detalle_{{ $loop->index }}[marca]'/>
+                                            <input type="text" placeholder="Codigo" readonly required  class="form-control col-2" value="{{ $item->codigo }}" name='detalle_{{ $loop->index }}[codigo]'/>
+                                            &nbsp;<input type="text" placeholder="Detalle" readonly required  class="form-control col-6" value="{{ $item->detalle }}" name='detalle_{{ $loop->index }}[detalle]'/>
+                                            &nbsp;<input type="text" placeholder="Marca" readonly required class="form-control col" value="{{ $item->marca }}" name='detalle_{{ $loop->index }}[marca]'/>
                                             &nbsp;<input type="number" placeholder="Cantidad" required class="form-control col" value="{{ $item->cantidad }}" name="detalle_{{ $loop->index }}[cantidad]" min="1" max="99999999"/>
                                             &nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>
                                         </div>
@@ -422,7 +422,7 @@
                     }
                 });
 
-                var max_fields      = 999; //maximum input boxes allowed
+                var max_fields      = 9999; //maximum input boxes allowed
             var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
             var add_button      = $("#add_field_button"); //Add button ID
             var conteo      = $("#conteo").val();
