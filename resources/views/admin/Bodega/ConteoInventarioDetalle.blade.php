@@ -85,8 +85,8 @@
                                         </div>
                                     </div>
                                     @endforeach
-                                    <div>Total: {{ $detalles->count() }}</div>
                                 </div>
+                                <div>Total: {{ $detalles->count() }}</div>
                                 <div class="row">
                                     <div class="col">
                                         <a href="{{ route('ConteoInventarioBodega') }}" class="btn btn-warning">Atras</a>
@@ -249,8 +249,8 @@
                                         </div>
                                     </div>
                                     @endforeach
-                                    <div>Total: {{ $detalles->count() }}</div>
                                 </div>
+                                <div>Total: {{ $detalles->count() }}</div>
                                 <div class="row">
                                     <div class="col">
                                         <a href="{{ route('ConteoInventarioBodega') }}" class="btn btn-warning"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
@@ -466,7 +466,7 @@
                             $('#buscar_detalle').val(result[0].ARDESC);
                             $('#buscar_marca').val(result[0].ARMARCA);
                             $( "#buscar_cantidad" ).focus();
-                            $( "#buscar_cantidad" ).val(1);
+                            $( "#buscar_cantidad" ).val(null);
                             codigo = result[0].ARCODI;
                             descripcion = result[0].ARDESC;
                             marca = result[0].ARMARCA;
