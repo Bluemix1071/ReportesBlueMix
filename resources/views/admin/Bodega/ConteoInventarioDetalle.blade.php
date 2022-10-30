@@ -85,6 +85,7 @@
                                         </div>
                                     </div>
                                     @endforeach
+                                    <div>Total: {{ $detalles->count() }}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
@@ -248,6 +249,7 @@
                                         </div>
                                     </div>
                                     @endforeach
+                                    <div>Total: {{ $detalles->count() }}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
@@ -398,7 +400,7 @@
                             $('#buscar_detalle').val(result[0].ARDESC);
                             $('#buscar_marca').val(result[0].ARMARCA);
                             $( "#buscar_cantidad" ).focus();
-                            $( "#buscar_cantidad" ).val(1);
+                            $( "#buscar_cantidad" ).val(null);
                             codigo = result[0].ARCODI;
                             descripcion = result[0].ARDESC;
                             marca = result[0].ARMARCA;
@@ -412,7 +414,7 @@
                     }
                 });
 
-                var max_fields      = 999; //maximum input boxes allowed
+                var max_fields      = 9999; //maximum input boxes allowed
             var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
             var add_button      = $("#add_field_button"); //Add button ID
             var conteo      = $("#conteo").val();
