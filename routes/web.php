@@ -266,9 +266,13 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     /* Cotizaciones */
     Route::get('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
+    Route::post('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
     Route::post('/Cursos','ListaEscolarController@Cursos')->name('Cursos');
     Route::post('/AgregarCurso','ListaEscolarController@AgregarCurso')->name('AgregarCurso');
-    Route::delete('/EliminarCurso/{id}','ListaEscolarController@EliminarCurso')->name('EliminarCurso');
+    Route::delete('/EliminarCurso/{id}','ListaEscolarController@eliminar')->name('EliminarCurso');
+
+    Route::get('/Listas','ListaEscolarController@Listas')->name('listas');
+    Route::post('/Listas','ListaEscolarController@Listas')->name('listas');
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     /* */
 

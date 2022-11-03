@@ -71,12 +71,12 @@ class ListaEscolarController extends Controller
     }
 
     public function eliminar($id)
-    {  
-        $update = DB::table('compra_agil')
+    {
+        $update = DB::table('Curso')
         ->where('id' , $id)
         ->delete();
 
-        return redirect()->route('CompraAgil')->with('success','Compra Ágil Eliminada');
+        return redirect()->route('Curso')->with('success','Curso Eliminado!');
     }
 
     /*public function ListaEscolarfiltro(Request $request){
@@ -88,5 +88,21 @@ class ListaEscolarController extends Controller
 
 
       }*/
+
+    public function Listas(Request $request){
+
+        $listas=DB::select('select ListaEscolar_detalle.cod_articulo,conveniomarco.descripcion,ListaEscolar_detalle.cantidad,conveniomarco.stock_sala,conveniomarco.stock_bodega,
+        conveniomarco.precio_detalle from ListaEscolar_detalle left join conveniomarco on ListaEscolar_detalle.cod_articulo = conveniomarco.codigo');
+
+        $colegiol=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
+        inner join comunas on colegio.id_comuna = comunas.id where colegio.id=2')[0];
+
+       // $colegiol=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
+       //   inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id").'')[0];
+
+
+
+        return view('Admin.Cotizaciones.ListasEscolares', compact('listas','colegiol'));
+    }
 
 }
