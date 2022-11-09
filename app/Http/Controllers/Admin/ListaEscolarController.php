@@ -32,7 +32,6 @@ class ListaEscolarController extends Controller
 
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id");
-
         return view('Admin.Cotizaciones.Colegios',compact('colegios'));
 
     }
