@@ -56,7 +56,7 @@ Lista Escolar
                                     <div class="col"><input type="text" class="form-control" placeholder="ID COLEGIO" name="id_colegio" required id="id_colegio" value="{{ $colegio->id }}" style="display: none"></div>
                                     <div class="col"><input type="text" class="form-control" placeholder="Nombre" name="nombre" required id="nombre"></div>
                                     <div class="col"><input type="text" class="form-control" placeholder="Sub Curso" name="subcurso" required id="subcurso"></div>
-                                    <div class="col"><button type="submit" class="btn btn-success" onclick="guardar()">Agregar</button></div>
+                                    <div class="col"><button type="submit" class="btn btn-success" onclick="guardar()">Agregar Curso</button></div>
                                 </div>
                             </form>
                         </div>
@@ -78,14 +78,16 @@ Lista Escolar
                                             <td scope="col" style="text-align:left">{{ $item->nombre_curso }}</td>
                                             <td style="text-align:left">{{ $item->letra }}</td>
                                             <td>
+                                            <form action="{{ route('listas', ['idcolegio' => $colegio->id ,'idcurso' => $item->id]) }}" method="post" enctype="multipart/form-data">
                                             <button class="btn btn-danger" onclick="eliminar({{ $item->id }})" style="margin-left: 5%">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                                 <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                                                 </svg>
                                             </button>
-                                            <form action="{{ route('listas')}}" method="post" enctype="multipart/form-data">
-                                                <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
                                             </form>
                                         </td>
                                         </tr>
@@ -122,8 +124,7 @@ Lista Escolar
     }
 
     function eliminar(id){
-        alert(id);
-        var opcion = confirm("Desea eliminar Curso?");
+        var opcion = confirm("¿Desea eliminar Curso?");
         if (opcion == true) {
             $.ajax({
             url: '../admin/EliminarCurso/'+id,

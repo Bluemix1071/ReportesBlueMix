@@ -34,25 +34,33 @@ Lista Escolar
                             <div class="callout callout-success row">
 
                                 <div class="col-sm-6 col-md-6 invoice-col col">
-                                    <strong>Colegio:</strong> {{ $colegiol->colegio}} <br>
-                                    <strong>Curso:</strong>  <br>
-                                    <strong>Subcurso:</strong>  <br>
+                                    <strong>Colegio:</strong> {{ $colegio->colegio}} <br>
+                                    <strong>Curso:</strong> {{ $curso->nombre_curso }} <br>
+                                    <strong>Subcurso:</strong> {{ $curso->letra }} <br>
                                 </div>
 
                             </div>
 
                             </div>
                         </div>
-                        <div>
-                            <form id="basic-form" class="d-flex justify-content-end">
-                                Agregar item a lista escolar AQUI!
-                            </form>
-                        </div>
-                        <br>
+                        <!-- Inicio Modal agregar Item-->
+                            <div>
+                                <form id="basic-form" class="d-flex justify-content-end">
+                                    <a href="{{ route('Cursos', ['id' => $colegio->id]) }}" class="btn btn-success d-flex justify-content-start">Volver</a>
 
+                                    <div class="row">
+                                        <div class="col"><input type="text" class="form-control" placeholder="ID_CURSO" name="id_curso" required id="id_curso" value="{{ $curso->id }}" style="display: none"></div>
+                                        <div class="col"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
+                                        <div class="col"><input type="text" class="form-control" placeholder="Cantidad" name="cantidad" required id="cantidad"></div>
+                                        <div class="col"><button type="submit" class="btn btn-success" onclick="guardar()">Agregar Item</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        <!-- Fin Modal agregar Item -->
+                        <br>
             <div class="row">
                     <div class="col-md-12">
-                        <table id="cursos" class="table table-bordered table-hover dataTable table-sm">
+                        <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left">Codigo Producto</th>
@@ -73,30 +81,36 @@ Lista Escolar
                                     <td style="text-align:left">{{ $item->stock_sala }}</td>
                                     <td style="text-align:left">{{ $item->stock_bodega }}</td>
                                     <td style="text-align:left">{{ $item->precio_detalle }}</td>
-                                    <td style="text-align:left">XD</td>
+                                    <td>
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        <button class="btn btn-danger" onclick="eliminar({{ $item->id }})" style="margin-left: 5%">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                            </svg>
+                                        </button>
+                                     </form>
+                                    </td>
                                 </tr>
-                            @endforeach
+                                @endforeach
                             </tbody>
                     </table>
                 </div>
             </div>
-
           </div>
         </div>
-
 </div>
 @endsection
 
 @section('script')
 <script>
-
-    function guardar(){
+        function guardar(){
         if ( $('#basic-form')[0].checkValidity() ) {
             $('#basic-form').submit();
             $.ajax({
-                url: '../admin/AgregarCurso/',
+                url: '../admin/AgregarItem/',
                 type: 'POST',
-                data: {'id_colegio': $('#id_colegio').val(), 'nombre': $('#nombre').val(), 'subcurso': $('#subcurso').val()},
+                data: {'id_curso': $('#id_curso').val(), 'codigo': $('#codigo').val(), 'cantidad': $('#cantidad').val()},
                 success: function(result) {
                     console.log(result);
                     location.reload();
@@ -108,11 +122,11 @@ Lista Escolar
     }
 
     function eliminar(id){
-        alert(id);
-        var opcion = confirm("Desea eliminar Curso?");
+
+        var opcion = confirm("Desea eliminar Item?");
         if (opcion == true) {
             $.ajax({
-            url: '../admin/EliminarCurso/'+id,
+            url: '../admin/EliminarItem/'+id,
             type: 'DELETE',
             success: function(result) {
 
@@ -125,10 +139,10 @@ Lista Escolar
     }
 
   $(document).ready(function() {
-    $('#cursos').DataTable( {
+    $('#Listas').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            'copy', 'pdf', 'print'
 
         ],
           "language":{

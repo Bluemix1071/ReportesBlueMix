@@ -64,7 +64,9 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/ConteoInventarioSala', 'SalaController@NuevoConteo')->name('NuevoConteoInventarioSala');
     Route::post('/ConteoInventarioDetalleSala', 'SalaController@ConteoDetalle')->name('ConteoInventarioDetalleSala');
     Route::post('/GuardarConteoInventarioDetalleSala', 'SalaController@GuardarConteoDetalle')->name('GuardarConteoDetalleSala');
+    //Cargar descripcion segun codigo
     Route::get('/BuscarProducto/{codigo}','SalaController@BuscarProducto')->name('BuscarProducto');
+    //
     Route::get('/ConsolidacionInventarioBodega', 'SalaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioSala');
     Route::post('/CargarValeConteoSala', 'SalaController@CargarValeConteoSala')->name('CargarValeConteoSala');
     Route::post('/TerminarConteoSala', 'SalaController@TerminarConteoSala')->name('TerminarConteoSala');
@@ -267,12 +269,24 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     /* Cotizaciones */
     Route::get('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
     Route::post('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
+
     Route::post('/Cursos','ListaEscolarController@Cursos')->name('Cursos');
+    Route::get('/Cursos','ListaEscolarController@Cursos')->name('Cursos');
+
     Route::post('/AgregarCurso','ListaEscolarController@AgregarCurso')->name('AgregarCurso');
+
     Route::delete('/EliminarCurso/{id}','ListaEscolarController@eliminar')->name('EliminarCurso');
+
+    Route::delete('/Eliminaritem/{id}','ListaEscolarController@eliminaritem')->name('EliminarItem');
+
+    Route::post('/AgregarItem','ListaEscolarController@AgregarItem')->name('AgregarItem');
+
+    Route::delete('/EliminarItem/{id}','ListaEscolarController@eliminaritem')->name('EliminarItem');
 
     Route::get('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::post('/Listas','ListaEscolarController@Listas')->name('listas');
+
+    Route::get('/BuscarProducto/{codigo}','ListaEscolarController@BuscarProducto')->name('BuscarProducto');
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     /* */
 

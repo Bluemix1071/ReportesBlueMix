@@ -13,10 +13,10 @@
     <div class="container my-4">
         <h1 class="display-4">Conteo Inventario Detalle</h1>
         <section class="content">
-            
+
         <div class="card card-primary">
                             <div class="card-header">
-                                <h2 class="card-title">Detalles Conteo</h2>                         
+                                <h2 class="card-title">Detalles Conteo</h2>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                         <i class="fas fa-plus"></i>
@@ -28,9 +28,9 @@
                                 <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" >Agregar <i class="fas fa-plus"></i></button> -->
                             </div>
                             <div class="card-body collapse hide">
-                                
+
                             <div class="callout callout-success row">
-                                
+
                                 <div class="col-sm-6 col-md-6 invoice-col col">
                                     <strong>ID:</strong> {{ $conteo->id }}<br>
                                     <strong>Ubicación:</strong> {{ $conteo->ubicacion }}<br>
@@ -45,7 +45,7 @@
                                     <strong>Vendedor:</strong> <br>
                                     <strong>Fecha Cotización:</strong> <br>
                                 </div> -->
-                            
+
                             </div>
 
                             </div>
@@ -110,7 +110,7 @@
                                     </div>
                                 </div>
                             </div>
-                    </form>
+                </form>
             </div>
     </section>
     @endif
@@ -177,10 +177,10 @@
         <section class="content">
 
         <!-- <div id="barcode-scanner" class="size"> </div> -->
-            
+
         <div class="card card-primary">
                             <div class="card-header">
-                                <h2 class="card-title">Detalles Conteo</h2>                         
+                                <h2 class="card-title">Detalles Conteo</h2>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                         <i class="fas fa-plus"></i>
@@ -192,9 +192,9 @@
                                 <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" >Agregar <i class="fas fa-plus"></i></button> -->
                             </div>
                             <div class="card-body collapse hide">
-                                
+
                             <div class="callout callout-success row">
-                                
+
                                 <div class="col-sm-6 col-md-6 invoice-col col">
                                     <strong>ID:</strong> {{ $conteo->id }}<br>
                                     <strong>Ubicación:</strong> {{ $conteo->ubicacion }}<br>
@@ -209,7 +209,7 @@
                                     <strong>Vendedor:</strong> <br>
                                     <strong>Fecha Cotización:</strong> <br>
                                 </div> -->
-                            
+
                             </div>
 
                             </div>
@@ -305,7 +305,7 @@
                         @endforeach
                     </form> -->
     </section>
-        
+
     @endif
 
     @endsection
@@ -328,14 +328,14 @@
 
         <script>
 
-                Quagga.init({           
+                Quagga.init({
                     inputStream : {
                         name : "Live",
                         type : "LiveStream",
-                        target: document.querySelector('#barcode-scanner'), 
+                        target: document.querySelector('#barcode-scanner'),
                         constraints: {
                             width: 640,
-                            height: 480,                  
+                            height: 480,
                             facingMode: "environment"  //"environment" for back camera, "user" front camera
                         },
                         area: { // defines rectangle of the detection/localization area
@@ -349,7 +349,7 @@
                     locate: true,
                     debug: false,
                     frequency: 1000,
-                    singleChannel: false,                  
+                    singleChannel: false,
                     decoder : {
                         readers : ["ean_reader", "code_128_reader", "ean_8_reader"],
                         debug: {
@@ -388,9 +388,9 @@
 
                     Quagga.start();
 
-                    Quagga.onDetected(function(result) {                              
-                            var last_code = result.codeResult.code;                   
-                                console.log("last_code: "+last_code); 
+                    Quagga.onDetected(function(result) {
+                            var last_code = result.codeResult.code;
+                                console.log("last_code: "+last_code);
                         });
                 });
 
