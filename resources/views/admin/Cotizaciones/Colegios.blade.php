@@ -6,7 +6,6 @@ Lista Escolar
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 
-
 @endsection
 
 @section('contenido')
@@ -46,7 +45,6 @@ Lista Escolar
 
           </div>
         </div>
-
 </div>
 @endsection
 
