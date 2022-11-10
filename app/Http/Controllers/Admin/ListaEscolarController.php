@@ -32,7 +32,7 @@ class ListaEscolarController extends Controller
 
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id");
-        return view('Admin.Cotizaciones.Colegios',compact('colegios'));
+        return view('admin.Cotizaciones.Colegios',compact('colegios'));
 
     }
 
@@ -47,7 +47,7 @@ class ListaEscolarController extends Controller
         //dd($cursos)
 
 
-        return view('Admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
+        return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
     }
 
     public function AgregarCurso(Request $request){
@@ -110,7 +110,7 @@ class ListaEscolarController extends Controller
         //dd($curso);
 
         //dd($request);
-        return view('Admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
+        return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
     }
 
     public function eliminaritem($id)
