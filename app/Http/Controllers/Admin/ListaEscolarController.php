@@ -44,7 +44,8 @@ class ListaEscolarController extends Controller
         inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id").'')[0];
 
         $cursos=DB::table('curso')->where('id_colegio', $request->get("id"))->get();
-        //dd($cursos)
+        //$cursos=DB::select('select * from curso where id_colegio='.$request->get("idcolegio"))->get();
+        //dd($cursos);
 
 
         return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
