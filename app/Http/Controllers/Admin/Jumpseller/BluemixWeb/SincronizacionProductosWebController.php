@@ -107,7 +107,7 @@ class SincronizacionProductosWebController extends Controller
         
         $productos=DB::table('subida_productos_web')->where('sku','!=',null)->get();
 
-        $exepciones = DB::table('suma_bodega_jumpseller')->where('id_rack', 371)->orWhere('id_rack', 372)->get();
+        $exepciones = DB::table('suma_bodega_jumpseller')->where('id_rack', 375)->orWhere('id_rack', 115)->get();
 
         /* $sql =  DB::select("select productosjumpsellerweb.*
                 FROM productosjumpsellerweb
