@@ -9,7 +9,7 @@
 @endsection
 @section('contenido')
     <div class="container my-4">
-        <h1 class="display-4">Ingresos
+        <h1 class="display-4">Ingresos Bodega
         </h1>
         <section class="content">
             <div class="card">
