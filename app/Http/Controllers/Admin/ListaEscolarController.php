@@ -40,11 +40,13 @@ class ListaEscolarController extends Controller
         //dd($request->get("id"));
         //$colegio=DB::table("colegio")->where('id', $request->get("id"))->first();
 
+        $cursos=DB::table('curso')->where('id_colegio', $request->get('id'))->get();
+
         $colegio=DB::select('select colegio.id,colegio.nombre as colegio,comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.id=?',[$request->get("id")])[0];
         //dd($colegio);
 
-        $cursos=DB::table('curso')->where('id_colegio', $request->get('id'))->get();
+
         //$cursos=DB::select('select * from curso where id_colegio='.$request->get("idcolegio"))->get();
         //dd($cursos);
 
