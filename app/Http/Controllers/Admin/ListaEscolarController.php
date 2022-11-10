@@ -37,7 +37,7 @@ class ListaEscolarController extends Controller
     }
 
     public function Cursos(Request $request){
-        //dd($request->get("id"));
+        dd($request->get("id"));
         //$colegio=DB::table("colegio")->where('id', $request->get("id"))->first();
 
         $cursos=DB::table('curso')->where('id_colegio', $request->get('id'))->get();
