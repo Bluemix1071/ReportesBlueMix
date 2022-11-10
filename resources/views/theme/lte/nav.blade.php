@@ -630,6 +630,46 @@
                                     </a>
                                 </li>
 
+                                @can('Costos')
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link ">
+                                            <i class="nav-icon fas fa-circle"></i>
+                                            <p>Rectificación Inventario Sala
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ route('RectificacionNotasCredito') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Notas Crédito</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Cotizaciones Salida(-)
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Cotizaciones Entrada(+)
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Guías
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endcan
+
 
                                 @can('Costos')
                                     <li class="nav-item">

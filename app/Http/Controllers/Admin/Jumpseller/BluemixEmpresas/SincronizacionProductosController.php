@@ -110,7 +110,7 @@ class SincronizacionProductosController extends Controller
         
         $productos=DB::table('subida_productos_empresa')->where('sku','!=',null)->get();
 
-        $exepciones = DB::table('suma_bodega_jumpseller')->where('id_rack', 371)->orWhere('id_rack', 372)->get();
+        $exepciones = DB::table('suma_bodega_jumpseller')->where('id_rack', 375)->orWhere('id_rack', 115)->get();
 
         $count = count($productos);
         /* $cantidadDePaginas = ceil($count / 100);

@@ -323,8 +323,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/ComprasPorHora','AdminController@DocumentosPorHora')->name('ComprasPorHora');
     Route::post('/Proyeccion','AdminController@ProyeccionDeCompras')->name('proyeccionFiltro');
 
-
-
+    /*  Mantenedor CRUD rectificacion inventario sala */
+    Route::get('/RectificacionNotasCredito','Rectificacion\RectificacionInventarioSalaController@RectificacionNotasCredito')->name('RectificacionNotasCredito');
+    Route::post('/RectificacionNotasCredito','Rectificacion\RectificacionInventarioSalaController@DevolverNotasCredito')->name('DevolverNotasCredito');
+    /* fin */
 
     //---------------------Exportaciones----------------------------------------------//
 
