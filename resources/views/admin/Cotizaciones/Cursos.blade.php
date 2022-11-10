@@ -114,7 +114,7 @@ Lista Escolar
                 type: 'POST',
                 data: {'id_colegio': $('#id_colegio').val(), 'nombre': $('#nombre').val(), 'subcurso': $('#subcurso').val()},
                 success: function(result) {
-                    console.log(result);
+                    alert(result);
                     location.reload();
                 }
             });
