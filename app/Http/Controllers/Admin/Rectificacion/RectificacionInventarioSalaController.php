@@ -13,7 +13,7 @@ class RectificacionInventarioSalaController extends Controller
 
         $nc=DB::table('nota_credito')->leftJoin('detalle_devolucion', 'nota_credito.id', '=', 'detalle_devolucion.folio')->where('nota_credito.fecha', '>=', '2022-11-02')->select('nota_credito.id','nota_credito.folio', 'nota_credito.fecha as fecha_nc', 'rut', 'nro_doc_refe', 'monto', 'glosa', 'detalle_devolucion.estado', 't_doc')->orderBy('fecha_nc', 'DESC')->get();
         
-        return view('Admin.Rectificacion.RectificacionNotasCredito',compact('nc'));
+        return view('admin.Rectificacion.RectificacionNotasCredito',compact('nc'));
     }
 
     public function DevolverNotasCredito(Request $request){
