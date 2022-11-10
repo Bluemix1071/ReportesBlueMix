@@ -50,7 +50,7 @@ class ListaEscolarController extends Controller
         ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
         ->where('colegio.id',$request->get('id'))
         ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
-        ->get();
+        ->get()[0];
         //dd($colegio);
         //$cursos=DB::select('select * from curso where id_colegio='.$request->get("idcolegio"))->get();
         //dd($cursos);
