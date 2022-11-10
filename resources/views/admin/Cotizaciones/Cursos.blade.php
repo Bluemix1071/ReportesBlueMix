@@ -49,14 +49,14 @@ Lista Escolar
                             </div>
                         </div>
                         <div>
-                            <form id="basic-form" class="d-flex justify-content-end">
+                            <form method="post" action="{{ route('AgregarCurso') }}" id="basic-form" class="d-flex justify-content-end">
                                 <!-- <button type="button" class="btn btn-success d-flex justify-content-start" href="{{ route('ListaEscolar') }}">< Ver Colegios</button> -->
                                 <a href="{{ route('ListaEscolar') }}" class="btn btn-success d-flex justify-content-start">Ver Colegios</a>
                                 <div class="row">
                                     <div class="col"><input type="text" class="form-control" placeholder="ID COLEGIO" name="id_colegio" required id="id_colegio" value="{{ $colegio->id }}" style="display: none"></div>
                                     <div class="col"><input type="text" class="form-control" placeholder="Nombre" name="nombre" required id="nombre"></div>
                                     <div class="col"><input type="text" class="form-control" placeholder="Sub Curso" name="subcurso" required id="subcurso"></div>
-                                    <div class="col"><button type="submit" class="btn btn-success" onclick="guardar()">Agregar Curso</button></div>
+                                    <div class="col"><button type="submit" class="btn btn-success">Agregar Curso</button></div>
                                 </div>
                             </form>
                         </div>
@@ -106,7 +106,7 @@ Lista Escolar
 @section('script')
 <script>
 
-    function guardar(){
+    /* function guardar(){
         if ( $('#basic-form')[0].checkValidity() ) {
             $('#basic-form').submit();
             $.ajax({
@@ -114,14 +114,14 @@ Lista Escolar
                 type: 'POST',
                 data: {'id_colegio': $('#id_colegio').val(), 'nombre': $('#nombre').val(), 'subcurso': $('#subcurso').val()},
                 success: function(result) {
-                    alert(result);
+                    console.log(result);
                     location.reload();
                 }
             });
         }else{
             console.log("formulario no es valido");
         }
-    }
+    } */
 
     function eliminar(id){
         var opcion = confirm("¿Desea eliminar Curso?");

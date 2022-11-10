@@ -60,24 +60,24 @@ class ListaEscolarController extends Controller
     }
 
     public function AgregarCurso(Request $request){
-        $inputs = request()->all();
-
-       /*  $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
-        inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get('id_colegio').'')[0]; */
-
-        /* $cursos=DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get(); */
 
         $elcurso = DB::table('curso')->insert([
                 [
-                "nombre_curso" => request()->get('nombre'),
-                "letra" => request()->get('subcurso'),
-                "id_colegio" => request()->get('id_colegio'),
+                "nombre_curso" => $request->get('nombre'),
+                "letra" => $request->get('subcurso'),
+                "id_colegio" => $request->get('id_colegio'),
                 ]
-            ]);
+        ]);
 
-            error_log(print_r(request()->all(), true));
+        $cursos=DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get();
 
-            return response()->json(request()->all());
+        $colegio=DB::table('colegio')
+        ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
+        ->where('colegio.id',$request->get('id_colegio'))
+        ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
+        ->get()[0];
+
+        return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
     }
 
     public function eliminar($id)
