@@ -45,7 +45,7 @@ Lista Escolar
                         </div>
                         <!-- Inicio Modal agregar Item-->
                             <div>
-                                <form id="basic-form" class="d-flex justify-content-end">
+                                <form method="post" action="{{ route('AgregarItem') }}" id="basic-form" class="d-flex justify-content-end">
                                     <a href="{{ route('Cursos', ['id' => $colegio->id]) }}" class="btn btn-success d-flex justify-content-start">Volver</a>
 
                                     <div class="row">
@@ -104,7 +104,7 @@ Lista Escolar
 
 @section('script')
 <script>
-        function guardar(){
+        /*function guardar(){
         if ( $('#basic-form')[0].checkValidity() ) {
             $('#basic-form').submit();
             $.ajax({
@@ -119,7 +119,7 @@ Lista Escolar
         }else{
             console.log("formulario no es valido");
         }
-    }
+    }*/
 
     function eliminar(id){
 

@@ -273,7 +273,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/Cursos','ListaEscolarController@Cursos')->name('Cursos');
     Route::get('/Cursos','ListaEscolarController@Cursos')->name('Cursos');
     Route::post('/AgregarCurso','ListaEscolarController@AgregarCurso')->name('AgregarCurso');
-    Route::delete('/EliminarCurso/{id}','ListaEscolarController@eliminar')->name('EliminarCurso');
+
+    Route::post('/EliminarCurso','ListaEscolarController@eliminar')->name('EliminarCurso');
+
     Route::delete('/Eliminaritem/{id}','ListaEscolarController@eliminaritem')->name('EliminarItem');
     Route::post('/AgregarItem','ListaEscolarController@AgregarItem')->name('AgregarItem');
     Route::delete('/EliminarItem/{id}','ListaEscolarController@eliminaritem')->name('EliminarItem');
