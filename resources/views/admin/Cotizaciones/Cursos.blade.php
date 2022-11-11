@@ -74,15 +74,24 @@ Lista Escolar
                             </thead>
                             <tbody>
                                     @foreach ($cursos as $item)
+
                                         <tr>
                                             <td scope="col" style="text-align:left">{{ $item->nombre_curso }}</td>
                                             <td style="text-align:left">{{ $item->letra }}</td>
                                             <td>
+
+                                        <div class="container">
+                                        <div class="row">
+
+                                        <div class="col-2" style="text-algin:right">
                                             <form action="{{ route('listas', ['idcolegio' => $colegio->id ,'idcurso' => $item->id]) }}" method="post" enctype="multipart/form-data">
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                             </form>
+                                        </div>
+
+                                        <div class="col-1" style="text-algin:right">
                                             <form action="{{ route('EliminarCurso')}}" method="post" enctype="multipart/form-data">
                                                 <input type="text" value="{{$item->id}}" name="id" hidden>
                                                 <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
@@ -93,8 +102,12 @@ Lista Escolar
                                                     </svg>
                                                 </button>
                                             </form>
+                                        </div>
+
                                         </td>
                                         </tr>
+                                        </div>
+                                    </div>
                                     @endforeach
                             </tbody>
                     </table>
@@ -109,6 +122,8 @@ Lista Escolar
 
 @section('script')
 <script>
+    .felim { text-align: right; }
+    .felim { width: 60%; }
 
     /* function guardar(){
         if ( $('#basic-form')[0].checkValidity() ) {
