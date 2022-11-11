@@ -68,19 +68,29 @@ Lista Escolar
                                     <th scope="col" style="text-align:left">Cantidad</th>
                                     <th scope="col" style="text-align:left">Stock Sala</th>
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
+                                    <th scope="col" style="text-align:left">Costo C/U</th>
                                     <th scope="col" style="text-align:left">Costo Total</th>
                                     <th scope="col" style="text-align:left">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($listas as $item)
+                                @if (empty($listas))
+
+                                    @else
+                                <div style="display: none">
+                                    {{-- variable suma --}}
+                                    {{ $total = 0 }}
+
+                                    @foreach ($listas as $item)
                                 <tr>
                                     <td scope="col" style="text-align:left">{{ $item->cod_articulo }}</td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
                                     <td style="text-align:left">{{ $item->cantidad }}</td>
                                     <td style="text-align:left">{{ $item->stock_sala }}</td>
                                     <td style="text-align:left">{{ $item->stock_bodega }}</td>
-                                    <td style="text-align:left">{{ $item->precio_detalle }}</td>
+                                    <td style="text-align:left">${{ number_format(($item->preciou), 0, ',', '.') }}</td>
+                                    <td style="text-align:left">${{ number_format(($item->precio_detalle), 0, ',', '.') }}</td>
+                                    <div style="display: none">{{ $total += $item->precio_detalle }}</div>
                                     <td>
                                     <form action="{{ route('EliminarItem')}}" method="post" enctype="multipart/form-data">
                                         <input type="text" value="{{$item->id}}" name="id" hidden>
@@ -97,7 +107,21 @@ Lista Escolar
                                     </td>
                                 </tr>
                                 @endforeach
+                                @endif
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7"><strong>Total</strong> </td>
+                                    @if (empty($total))
+                                        <td><span class="price text-success">$</span></td>
+                                    @else
+                                        <td style="text-align:right"><span
+                                                class="price text-success">${{ number_format($total, 0, ',', '.') }}</span>
+                                        </td>
+                                    @endif
+                                </tr>
+                            </tfoot>
+
                     </table>
                 </div>
             </div>
