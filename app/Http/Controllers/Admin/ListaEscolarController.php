@@ -93,11 +93,21 @@ class ListaEscolarController extends Controller
                 ]
             ]);
 
-            $listas=DB::select('select ListaEscolar_detalle.id,ListaEscolar_detalle.id_curso,ListaEscolar_detalle.cod_articulo,conveniomarco.descripcion,ListaEscolar_detalle.cantidad,
-            conveniomarco.stock_sala,conveniomarco.stock_bodega,
-            (ListaEscolar_detalle.cantidad * conveniomarco.precio_detalle) as precio_detalle from ListaEscolar_detalle
-            left join conveniomarco on ListaEscolar_detalle.cod_articulo = conveniomarco.codigo where ListaEscolar_detalle.id_curso='.$request->get('idcurso'));
-
+            $listas=DB::select('select
+            ListaEscolar_detalle.id,
+            ListaEscolar_detalle.id_curso,
+            ListaEscolar_detalle.cod_articulo,
+            producto.ARDESC as descripcion,
+            ListaEscolar_detalle.cantidad,
+            bodeprod.bpsrea as stock_sala,
+            inventa.incant as stock_bodega,
+            (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle from ListaEscolar_detalle
+            left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+            left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+            left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+            left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
+            where ListaEscolar_detalle.id_curso='.$request->get('idcurso'));
+            //dd($listas);
 
             $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
             inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
@@ -140,10 +150,20 @@ class ListaEscolarController extends Controller
         ->delete();
 
 
-        $listas=DB::select('select ListaEscolar_detalle.id,ListaEscolar_detalle.id_curso,ListaEscolar_detalle.cod_articulo,conveniomarco.descripcion,ListaEscolar_detalle.cantidad,
-        conveniomarco.stock_sala,conveniomarco.stock_bodega,
-        (ListaEscolar_detalle.cantidad * conveniomarco.precio_detalle) as precio_detalle from ListaEscolar_detalle
-        left join conveniomarco on ListaEscolar_detalle.cod_articulo = conveniomarco.codigo where ListaEscolar_detalle.id_curso='.$request->get('idcurso'));
+        $listas=DB::select('select
+        ListaEscolar_detalle.id,
+        ListaEscolar_detalle.id_curso,
+        ListaEscolar_detalle.cod_articulo,
+        producto.ARDESC as descripcion,
+        ListaEscolar_detalle.cantidad,
+        bodeprod.bpsrea as stock_sala,
+        inventa.incant as stock_bodega,
+        (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle from ListaEscolar_detalle
+        left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+        left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+        left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+        left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
+        where ListaEscolar_detalle.id_curso='.$request->get('idcurso'));
 
 
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
@@ -174,10 +194,20 @@ class ListaEscolarController extends Controller
     public function Listas(Request $request){
         //dd($request);
 
-        $listas=DB::select('select ListaEscolar_detalle.id,ListaEscolar_detalle.id_curso,ListaEscolar_detalle.cod_articulo,conveniomarco.descripcion,ListaEscolar_detalle.cantidad,
-        conveniomarco.stock_sala,conveniomarco.stock_bodega,
-        (ListaEscolar_detalle.cantidad * conveniomarco.precio_detalle) as precio_detalle from ListaEscolar_detalle
-        left join conveniomarco on ListaEscolar_detalle.cod_articulo = conveniomarco.codigo where ListaEscolar_detalle.id_curso='.$request->get("idcurso"));
+        $listas=DB::select('select
+        ListaEscolar_detalle.id,
+        ListaEscolar_detalle.id_curso,
+        ListaEscolar_detalle.cod_articulo,
+        producto.ARDESC as descripcion,
+        ListaEscolar_detalle.cantidad,
+        bodeprod.bpsrea as stock_sala,
+        inventa.incant as stock_bodega,
+        (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle from ListaEscolar_detalle
+        left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+        left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+        left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+        left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
+        where ListaEscolar_detalle.id_curso='.$request->get("idcurso"));
         //dd($listas);
 
 
