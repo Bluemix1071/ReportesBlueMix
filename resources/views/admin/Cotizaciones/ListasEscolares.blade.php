@@ -76,7 +76,7 @@ Lista Escolar
                             <tbody>
                                 @if (empty($listas))
 
-                                    @else
+                                @else
                                 <div style="display: none">
                                     {{-- variable suma --}}
                                     {{ $total = 0 }}
@@ -85,7 +85,9 @@ Lista Escolar
                                 <tr>
                                     <td scope="col" style="text-align:left">{{ $item->cod_articulo }}</td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
+
                                     <td style="text-align:left">{{ $item->cantidad }}</td>
+
                                     <td style="text-align:left">{{ $item->stock_sala }}</td>
                                     <td style="text-align:left">{{ $item->stock_bodega }}</td>
                                     <td style="text-align:left">${{ number_format(($item->preciou), 0, ',', '.') }}</td>

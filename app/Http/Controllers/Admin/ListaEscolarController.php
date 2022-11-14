@@ -98,7 +98,7 @@ class ListaEscolarController extends Controller
             ListaEscolar_detalle.id_curso,
             ListaEscolar_detalle.cod_articulo,
             producto.ARDESC as descripcion,
-            ListaEscolar_detalle.cantidad,
+            sum(ListaEscolar_detalle.cantidad) as cantidad,
             bodeprod.bpsrea as stock_sala,
             SUM(inventa.incant) AS stock_bodega,
             (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
@@ -108,8 +108,8 @@ class ListaEscolarController extends Controller
             left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
             left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
             left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-            where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti');
-            //dd($listas);
+            where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,producto.ARDESC');
+
 
             $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
             inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
@@ -157,7 +157,7 @@ class ListaEscolarController extends Controller
         ListaEscolar_detalle.id_curso,
         ListaEscolar_detalle.cod_articulo,
         producto.ARDESC as descripcion,
-        ListaEscolar_detalle.cantidad,
+        sum(ListaEscolar_detalle.cantidad) as cantidad,
         bodeprod.bpsrea as stock_sala,
         SUM(inventa.incant) AS stock_bodega,
         (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
@@ -167,7 +167,7 @@ class ListaEscolarController extends Controller
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti');
+        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,producto.ARDESC');
 
 
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
@@ -203,7 +203,7 @@ class ListaEscolarController extends Controller
         ListaEscolar_detalle.id_curso,
         ListaEscolar_detalle.cod_articulo,
         producto.ARDESC as descripcion,
-        ListaEscolar_detalle.cantidad,
+        sum(ListaEscolar_detalle.cantidad) as cantidad,
         bodeprod.bpsrea as stock_sala,
         SUM(inventa.incant) AS stock_bodega,
         (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
@@ -213,7 +213,7 @@ class ListaEscolarController extends Controller
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti');
+        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,producto.ARDESC');
 
 
 
