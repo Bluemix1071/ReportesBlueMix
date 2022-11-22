@@ -108,7 +108,7 @@ class ListaEscolarController extends Controller
             left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
             left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
             left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-            where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,producto.ARDESC');
+            where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,inventa.incant');
 
 
             $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
@@ -167,7 +167,7 @@ class ListaEscolarController extends Controller
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,producto.ARDESC');
+        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,inventa.incant');
 
 
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
@@ -213,7 +213,7 @@ class ListaEscolarController extends Controller
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,producto.ARDESC');
+        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,inventa.incant');
 
 
 
