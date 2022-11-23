@@ -97,12 +97,10 @@ class ListaEscolarController extends Controller
             ListaEscolar_detalle.id,
             ListaEscolar_detalle.id_curso,
             ListaEscolar_detalle.cod_articulo,
-            inventa.inarti,
             producto.ARDESC as descripcion,
             ListaEscolar_detalle.cantidad as cantidad,
             bodeprod.bpsrea as stock_sala,
             SUM(inventa.incant) as stock_bodega,
-            sum(inventa.inmodu),
             (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
             precios.PCPVDET as preciou
             from ListaEscolar_detalle
@@ -158,12 +156,10 @@ class ListaEscolarController extends Controller
         ListaEscolar_detalle.id,
         ListaEscolar_detalle.id_curso,
         ListaEscolar_detalle.cod_articulo,
-        inventa.inarti,
         producto.ARDESC as descripcion,
         ListaEscolar_detalle.cantidad as cantidad,
         bodeprod.bpsrea as stock_sala,
         SUM(inventa.incant) as stock_bodega,
-        sum(inventa.inmodu),
         (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou
         from ListaEscolar_detalle
@@ -206,12 +202,10 @@ class ListaEscolarController extends Controller
         ListaEscolar_detalle.id,
         ListaEscolar_detalle.id_curso,
         ListaEscolar_detalle.cod_articulo,
-        inventa.inarti,
         producto.ARDESC as descripcion,
         ListaEscolar_detalle.cantidad as cantidad,
         bodeprod.bpsrea as stock_sala,
         SUM(inventa.incant) as stock_bodega,
-        sum(inventa.inmodu),
         (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou
         from ListaEscolar_detalle
