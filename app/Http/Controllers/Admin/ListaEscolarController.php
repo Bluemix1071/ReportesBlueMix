@@ -104,11 +104,11 @@ class ListaEscolarController extends Controller
             (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
             precios.PCPVDET as preciou
             from ListaEscolar_detalle
-            left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
-            left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
-            left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
-            left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-            where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,inventa.inbode');
+            LEFT JOIN precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+            LEFT JOIN producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+            LEFT JOIN bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+            LEFT JOIN inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
+            where ListaEscolar_detalle.id_curso='.$request->get("idcurso").'group by ListaEscolar_detalle.`cod_articulo`');
 
 
             $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
@@ -163,11 +163,11 @@ class ListaEscolarController extends Controller
         (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou
         from ListaEscolar_detalle
-        left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
-        left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
-        left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
-        left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,inventa.inbode');
+        LEFT JOIN precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+        LEFT JOIN producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+        LEFT JOIN bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+        LEFT JOIN inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
+        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").'group by ListaEscolar_detalle.`cod_articulo`');
 
 
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
@@ -209,11 +209,11 @@ class ListaEscolarController extends Controller
         (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou
         from ListaEscolar_detalle
-        left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
-        left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
-        left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
-        left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
-        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by inventa.inarti,inventa.inbode');
+        LEFT JOIN precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+        LEFT JOIN producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+        LEFT JOIN bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+        LEFT JOIN inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
+        where ListaEscolar_detalle.id_curso='.$request->get("idcurso").'group by ListaEscolar_detalle.`cod_articulo`');
 
 
 
