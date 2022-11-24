@@ -107,7 +107,7 @@ class ListaEscolarController extends Controller
             left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
             left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
             left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
-            left join inventa on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5) = inventa.inarti
+            left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
             where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 
@@ -166,7 +166,7 @@ class ListaEscolarController extends Controller
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
-        left join inventa on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5) = inventa.inarti
+        left join inventa on SUBSTRINGListaEscolar_detalle.cod_articulo = inventa.inarti
         where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 
@@ -212,7 +212,7 @@ class ListaEscolarController extends Controller
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
-        left join inventa on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5) = inventa.inarti
+        left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
         where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 
