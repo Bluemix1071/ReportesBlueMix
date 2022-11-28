@@ -326,6 +326,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     /*  Mantenedor CRUD rectificacion inventario sala */
     Route::get('/RectificacionNotasCredito','Rectificacion\RectificacionInventarioSalaController@RectificacionNotasCredito')->name('RectificacionNotasCredito');
     Route::post('/RectificacionNotasCredito','Rectificacion\RectificacionInventarioSalaController@DevolverNotasCredito')->name('DevolverNotasCredito');
+    Route::get('/RectificacionCotizacionesSalida','Rectificacion\RectificacionInventarioSalaController@RectificacionCotizacionesSalida')->name('RectificacionCotizacionesSalida');
+    Route::post('/RectificacionCotizacionesSalida','Rectificacion\RectificacionInventarioSalaController@DevolverCotizacionSalida')->name('RectificacionCotizacionesSalida');
+    Route::post('/RectificacionCotizacionesSalidaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverCotizacionSalidaDetalle')->name('RectificacionCotizacionesSalidaDetalle');
     /* fin */
 
     //---------------------Exportaciones----------------------------------------------//

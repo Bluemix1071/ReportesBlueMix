@@ -13,7 +13,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6">
-            <h3 class="display-3">Productos Negativos</h3>
+            <h3 class="display-3">Productos Negativos SALA</h3>
         </div>
         <div class="col md-6">
         {{-- algo al lado del titulo --}}
@@ -27,23 +27,19 @@
                               <table id="productos" class="table table-bordered table-hover dataTable">
                                   <thead>
                                     <tr>
+                                      <th scope="col">Codigo</th>
                                       <th scope="col">Descripción</th>
                                       <th scope="col">Marca</th>
-                                      <th scope="col">Ubicación</th>
-                                      <th scope="col">Codigo</th>
-                                      <th scope="col">Stock Bodega</th>
-                                      <th scope="col">Stock Sala</th>
+                                      <th scope="col">Cantidad</th>
                                     </tr>
                                   </thead>
                                   <tbody id="res">
                                   @foreach($productos as $item)
                                     <tr>
-                                      <th >{{$item->nombre}}</th>
-                                      <td >{{$item->Marca}}</td>
-                                      <td>{{$item->ubicacion}}</td>
-                                      <td>{{$item->codigo}}</td>
-                                      <td>{{$item->bodega_stock}}</td>
-                                      <td>{{$item->sala_stock}}</td>
+                                      <th>{{ $item->bpprod }}</th>
+                                      <td>{{ $item->ARDESC }}</td>
+                                      <td>{{ $item->ARMARCA }}</td>
+                                      <td>{{ $item->bpsrea }}</td>
                                     </tr>
                                     @endforeach
                                   </tbody>

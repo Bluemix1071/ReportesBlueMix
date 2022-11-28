@@ -639,14 +639,14 @@
                                             </p>
                                         </a>
                                         <ul class="nav nav-treeview">
-                                            <li class="nav-item">
+                                            <!-- <li class="nav-item">
                                                 <a href="{{ route('RectificacionNotasCredito') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Notas Crédito</p>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             <li class="nav-item">
-                                                <a href="" class="nav-link">
+                                                <a href="{{ route('RectificacionCotizacionesSalida') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Cotizaciones Salida(-)
                                                     </p>
