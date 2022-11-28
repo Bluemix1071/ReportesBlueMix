@@ -45,14 +45,14 @@ Lista Escolar
                         </div>
                         <!-- Inicio Modal agregar Item-->
                             <div>
-                                <form id="basic-form" class="d-flex justify-content-end">
-                                    <a href="{{ route('Cursos', ['id' => $colegio->id]) }}" class="btn btn-success d-flex justify-content-start">Volver</a>
-
+                                <form action="{{ route('AgregarItem') }}" method="post" enctype="multipart/form-data">
+                                    <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
                                     <div class="row">
-                                        <div class="col"><input type="text" class="form-control" placeholder="ID_CURSO" name="id_curso" required id="id_curso" value="{{ $curso->id }}" style="display: none"></div>
+                                        <a href="{{ route('Cursos', ['id' => $colegio->id]) }}" class="btn btn-success d-flex justify-content-start">Volver</a>
+                                        <div class="col"><input type="text" class="form-control" placeholder="ID CURSO" name="idcurso" required id="idcurso" value="{{ $curso->id }}" style="display: none"></div>
                                         <div class="col"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
                                         <div class="col"><input type="text" class="form-control" placeholder="Cantidad" name="cantidad" required id="cantidad"></div>
-                                        <div class="col"><button type="submit" class="btn btn-success" onclick="guardar()">Agregar Item</button></div>
+                                        <div class="col"><button type="submit" class="btn btn-success" >Agregar Item</button></div>
                                     </div>
                                 </form>
                             </div>
@@ -68,32 +68,62 @@ Lista Escolar
                                     <th scope="col" style="text-align:left">Cantidad</th>
                                     <th scope="col" style="text-align:left">Stock Sala</th>
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
+                                    <th scope="col" style="text-align:left">Costo C/U</th>
                                     <th scope="col" style="text-align:left">Costo Total</th>
                                     <th scope="col" style="text-align:left">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($listas as $item)
+                                @if (empty($listas))
+
+                                @else
+                                <div style="display: none">
+                                    {{-- variable suma --}}
+                                    {{ $total = 0 }}
+
+                                    @foreach ($listas as $item)
                                 <tr>
                                     <td scope="col" style="text-align:left">{{ $item->cod_articulo }}</td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
+
                                     <td style="text-align:left">{{ $item->cantidad }}</td>
+
                                     <td style="text-align:left">{{ $item->stock_sala }}</td>
                                     <td style="text-align:left">{{ $item->stock_bodega }}</td>
-                                    <td style="text-align:left">{{ $item->precio_detalle }}</td>
+                                    <td style="text-align:left">${{ number_format(($item->preciou), 0, ',', '.') }}</td>
+                                    <td style="text-align:left">${{ number_format(($item->precio_detalle), 0, ',', '.') }}</td>
+                                    <div style="display: none">{{ $total += $item->precio_detalle }}</div>
                                     <td>
-                                    <form action="" method="post" enctype="multipart/form-data">
-                                        <button class="btn btn-danger" onclick="eliminar({{ $item->id }})" style="margin-left: 5%">
+                                    <form action="{{ route('EliminarItem')}}" method="post" enctype="multipart/form-data">
+                                        <input type="text" value="{{$item->id}}" name="id" hidden>
+                                        <input type="text" value="{{ $curso->id }}" name="idcurso" hidden>
+                                        <input type="text" value="{{ $colegio->id }}" name="id_colegio" hidden>
+                                        <button class="btn btn-danger" style="margin-left: 5%" type="submit">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                                             </svg>
                                         </button>
-                                     </form>
+                                    </form>
+
                                     </td>
                                 </tr>
                                 @endforeach
+                                @endif
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7"><strong>Total</strong> </td>
+                                    @if (empty($total))
+                                        <td><span class="price text-success">$</span></td>
+                                    @else
+                                        <td style="text-align:right"><span
+                                                class="price text-success">${{ number_format($total, 0, ',', '.') }}</span>
+                                        </td>
+                                    @endif
+                                </tr>
+                            </tfoot>
+
                     </table>
                 </div>
             </div>
@@ -104,7 +134,7 @@ Lista Escolar
 
 @section('script')
 <script>
-        function guardar(){
+        /*function guardar(){
         if ( $('#basic-form')[0].checkValidity() ) {
             $('#basic-form').submit();
             $.ajax({
@@ -119,9 +149,9 @@ Lista Escolar
         }else{
             console.log("formulario no es valido");
         }
-    }
+    }*/
 
-    function eliminar(id){
+    /*function eliminar(id){
 
         var opcion = confirm("Desea eliminar Item?");
         if (opcion == true) {
@@ -136,7 +166,7 @@ Lista Escolar
             } else {
 
             }
-    }
+    }*/
 
   $(document).ready(function() {
     $('#Listas').DataTable( {
