@@ -21,10 +21,8 @@ class InicioController extends Controller
     
 
 
-        $negativo1 = DB::table('productos_negativos')->count();
-
-
-        // dd($variable1,$compras);
+        //$negativo1 = DB::table('productos_negativos')->count();
+        $negativo1 = DB::table('bodeprod')->leftjoin('producto', 'bodeprod.bpprod', '=' ,'producto.ARCODI')->where('bpsrea', '<', 0)->count();
 
 
         $users = User::where('id','!=',auth()->id())->
