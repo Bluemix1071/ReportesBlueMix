@@ -85,11 +85,17 @@ Lista Escolar
                                 <tr>
                                     <td scope="col" style="text-align:left">{{ $item->cod_articulo }}</td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
-
                                     <td style="text-align:left">{{ $item->cantidad }}</td>
-
+                                    @if (empty($item->stock_sala))
+                                        <td style="text-align:left">{{ 0 }}</td>
+                                    @else
                                     <td style="text-align:left">{{ $item->stock_sala }}</td>
-                                    <td style="text-align:left">{{ $item->stock_bodega }}</td>
+                                    @endif
+                                    @if (empty($item->stock_bodega))
+                                        <td style="text-align:left">{{ 0 }}</td>
+                                    @else
+                                        <td style="text-align:left">{{ $item->stock_bodega }}</td>
+                                    @endif
                                     <td style="text-align:left">${{ number_format(($item->preciou), 0, ',', '.') }}</td>
                                     <td style="text-align:left">${{ number_format(($item->precio_detalle), 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $total += $item->precio_detalle }}</div>

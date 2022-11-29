@@ -101,7 +101,7 @@ class ListaEscolarController extends Controller
             sum(ListaEscolar_detalle.cantidad) as cantidad,
             bodeprod.bpsrea as stock_sala,
             SUM(inventa.incant) AS stock_bodega,
-            (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
+            (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
             precios.PCPVDET as preciou
             from ListaEscolar_detalle
             left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
@@ -148,8 +148,18 @@ class ListaEscolarController extends Controller
     public function eliminaritem(Request $request)
     {
         $update = DB::table('ListaEscolar_detalle')
-        ->where('id' , $request->get('id'))
+        //->where('id' , $request->get('id'))
+        ->where('cod_articulo' , $request->get('cod_articulo'))
+        ->where('id_curso' , $request->get('idcurso'))
+        ->orderBy(DB::raw("RAND()"))
+        ->take(5)
         ->delete();
+
+        /*DB::table('users')
+        ->whereIn('id', DB::table('users')
+        ->orderBy(DB::raw("RAND()"))
+        >take(5)->lists('id'))
+        ->delete();*/
 
 
         $listas=DB::select('select
@@ -160,13 +170,13 @@ class ListaEscolarController extends Controller
         sum(ListaEscolar_detalle.cantidad) as cantidad,
         bodeprod.bpsrea as stock_sala,
         SUM(inventa.incant) AS stock_bodega,
-        (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
+        (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
-        left join inventa on SUBSTRINGListaEscolar_detalle.cod_articulo = inventa.inarti
+        left join inventa on ListaEscolar_detalle.cod_articulo = inventa.inarti
         where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 
@@ -206,7 +216,7 @@ class ListaEscolarController extends Controller
         sum(ListaEscolar_detalle.cantidad) as cantidad,
         bodeprod.bpsrea as stock_sala,
         SUM(inventa.incant) AS stock_bodega,
-        (ListaEscolar_detalle.cantidad * precios.PCPVDET) as precio_detalle,
+        (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
