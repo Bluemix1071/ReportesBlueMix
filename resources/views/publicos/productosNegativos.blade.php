@@ -31,6 +31,7 @@
                                       <th scope="col">Descripción</th>
                                       <th scope="col">Marca</th>
                                       <th scope="col">Cantidad</th>
+                                      <th scope="col">Familia</th>
                                     </tr>
                                   </thead>
                                   <tbody id="res">
@@ -40,6 +41,7 @@
                                       <td>{{ $item->ARDESC }}</td>
                                       <td>{{ $item->ARMARCA }}</td>
                                       <td>{{ $item->bpsrea }}</td>
+                                      <td>{{ $item->TAGLOS }}</td>
                                     </tr>
                                     @endforeach
                                   </tbody>

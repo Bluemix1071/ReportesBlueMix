@@ -51,8 +51,11 @@ class PublicoController extends Controller
 
     public function filtarProductosNegativos(Request  $request){
 
-      $productos = DB::table('bodeprod')->leftjoin('producto', 'bodeprod.bpprod', '=' ,'producto.ARCODI')->where('bpsrea', '<', 0)->get();
-
+      $productos = DB::table('bodeprod')
+      ->leftjoin('producto', 'bodeprod.bpprod', '=' ,'producto.ARCODI')
+      ->leftjoin('tablas', 'producto.ARGRPO2', '=', 'tablas.TAREFE')
+      ->where('bpsrea', '<', 0)
+      ->where('tablas.TACODI', 22)->get();
       //select bodeprod.*, `producto`.`ARDESC`, `producto`.`ARMARCA` from `bodeprod` left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` where `bodeprod`.`bpsrea` < 0;
       //$cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2022-11-02')->orderBy('CZ_FECHA', 'DESC')->get();
       //$productos=DB::table('productos_negativos')->get();
