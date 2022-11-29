@@ -65,6 +65,7 @@ Lista Escolar
                                 <tr>
                                     <th scope="col" style="text-align:left">Codigo Producto</th>
                                     <th scope="col" style="text-align:left">Detalle</th>
+                                    <th scope="col" style="text-align:left">Marca</th>
                                     <th scope="col" style="text-align:left">Cantidad</th>
                                     <th scope="col" style="text-align:left">Stock Sala</th>
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
@@ -85,6 +86,7 @@ Lista Escolar
                                 <tr>
                                     <td scope="col" style="text-align:left">{{ $item->cod_articulo }}</td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
+                                    <td style="text-align:left">{{ $item->marca }}</td>
                                     <td style="text-align:left">{{ $item->cantidad }}</td>
                                     @if (empty($item->stock_sala))
                                         <td style="text-align:left">{{ 0 }}</td>
@@ -97,7 +99,7 @@ Lista Escolar
                                         <td style="text-align:left">{{ $item->stock_bodega }}</td>
                                     @endif
                                     <td style="text-align:left">${{ number_format(($item->preciou), 0, ',', '.') }}</td>
-                                    <td style="text-align:left">${{ number_format(($item->precio_detalle), 0, ',', '.') }}</td>
+                                    <td style="text-align:left">${{ number_format(($item->cantidad*$item->preciou), 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $total += $item->precio_detalle }}</div>
                                     <td>
                                     <form action="{{ route('EliminarItem')}}" method="post" enctype="multipart/form-data">
@@ -120,7 +122,7 @@ Lista Escolar
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="7"><strong>Total</strong> </td>
+                                    <td colspan="8"><strong>Total</strong> </td>
                                     @if (empty($total))
                                         <td><span class="price text-success">$</span></td>
                                     @else
