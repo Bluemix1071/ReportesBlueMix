@@ -151,15 +151,13 @@ class ListaEscolarController extends Controller
         //->where('id' , $request->get('id'))
         ->where('cod_articulo' , $request->get('cod_articulo'))
         ->where('id_curso' , $request->get('idcurso'))
-        ->orderBy(DB::raw("RAND()"))
         ->take(5)
         ->delete();
 
-        /*DB::table('users')
-        ->whereIn('id', DB::table('users')
-        ->orderBy(DB::raw("RAND()"))
-        >take(5)->lists('id'))
-        ->delete();*/
+
+        //$update=DB::select('Delete FROM ListaEscolar_detalle WHERE cod_articulo='.$request->get("cod_articulo").' and id_curso='.$request->get("idcurso").' limit 15');
+
+
 
 
         $listas=DB::select('select

@@ -101,6 +101,7 @@ Lista Escolar
                                     <div style="display: none">{{ $total += $item->precio_detalle }}</div>
                                     <td>
                                     <form action="{{ route('EliminarItem')}}" method="post" enctype="multipart/form-data">
+                                        <input type="text" value="{{$item->cod_articulo}}" name="cod_articulo" hidden>
                                         <input type="text" value="{{$item->id}}" name="id" hidden>
                                         <input type="text" value="{{ $curso->id }}" name="idcurso" hidden>
                                         <input type="text" value="{{ $colegio->id }}" name="id_colegio" hidden>
