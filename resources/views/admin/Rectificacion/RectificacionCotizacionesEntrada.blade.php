@@ -10,7 +10,7 @@
 @section('contenido')
     <section>
     <div class="container my-4">
-        <h1 class="display-4">Rectificación de Cotizaciones de Salida (-)</h1>
+        <h1 class="display-4">Rectificación de Cotizaciones de Entrada (+)</h1>
         <section class="content">
             <div class="card">
                 <div class="card-header">
@@ -31,7 +31,7 @@
                             </thead>
                             <tbody>
                                 @foreach($cotiz as $item)
-                                    @if($item->t_doc != "Cotizacion Entrada")
+                                @if($item->t_doc != "Cotizacion Salida")
                                     <tr>
                                         <td>{{ $item->CZ_NRO }}</td>
                                         <td>{{ $item->CZ_FECHA }}</td>
@@ -40,17 +40,17 @@
                                         <td>{{ $item->CZ_GIRO }}</td>
                                         <td>${{ number_format(intval($item->CZ_MONTO), 0, ',', '.') }}</td>
                                         <td class="row">
-                                        @if($item->t_doc != "Cotizacion Salida")
-                                            <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='{{ $item->CZ_NRO }}'>Sacar Mercadería</button>
+                                        @if($item->t_doc != "Cotizacion Entrada")
+                                            <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='{{ $item->CZ_NRO }}'>Entrar Mercadería</button>
                                         @else
-                                            <button type="button" class="btn btn-primary btn-sm col" disabled>Sacar Mercadería</button>
+                                            <button type="button" class="btn btn-primary btn-sm col" disabled>Entrar Mercadería</button>
                                         @endif
-                                            <form method="post" action="{{ route('RectificacionCotizacionesSalidaDetalle', ['n_cotiz' => $item->CZ_NRO]) }}" target="_blank">
+                                            <form method="post" action="{{ route('RectificacionCotizacionesEntradaDetalle', ['n_cotiz' => $item->CZ_NRO]) }}" target="_blank">
                                                 &nbsp<button type="submit" class="btn btn-success btn-sm">Ver</button>
                                             </form>
                                         </td>
                                     </tr>
-                                    @endif
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -59,18 +59,18 @@
             </div>
     </section>
     
-    <!-- Modal oconfirmacion de devolucion-->
+    <!-- Modal oconfirmacion de entrada mercaderia-->
     <div class="modal fade" id="modalidevolver" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document" >
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">¿Seguro de Sacar la Mercadería?</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">¿Seguro de Entar la Mercadería?</h5>
                         <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button> -->
                     </div>
                     <div class="modal-body">
-                        <form method="post" id="desvForm" >
+                        <form method="post" id="desvForm" action="{{ route('RectificacionCotizacionesEntrada', ['id_cotiz' => $cotiz[0]->CZ_NRO]) }}">
                                 <div class="form-group row">
                                     <label for="name"
                                         class="col-md-4 col-form-label text-md-right">Solicita:</label>
@@ -88,7 +88,7 @@
                                     </div>
                                 </div>
                                 <input hidden name="id_cotiz" id="id" value="">
-                                <button type="submit" class="btn btn-success">Sacar Mercadería</button>
+                                <button type="submit" class="btn btn-success">Entrar Mercadería</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </form>
                     </div>

@@ -332,6 +332,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/RectificacionCotizacionesSalida','Rectificacion\RectificacionInventarioSalaController@RectificacionCotizacionesSalida')->name('RectificacionCotizacionesSalida');
     Route::post('/RectificacionCotizacionesSalida','Rectificacion\RectificacionInventarioSalaController@DevolverCotizacionSalida')->name('RectificacionCotizacionesSalida');
     Route::post('/RectificacionCotizacionesSalidaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverCotizacionSalidaDetalle')->name('RectificacionCotizacionesSalidaDetalle');
+    Route::get('/RectificacionCotizacionesEntrada','Rectificacion\RectificacionInventarioSalaController@RectificacionCotizacionesEntrada')->name('RectificacionCotizacionesEntrada');
+    Route::post('/RectificacionCotizacionesEntrada','Rectificacion\RectificacionInventarioSalaController@DevolverCotizacionEntrada')->name('RectificacionCotizacionesEntrada');
+    Route::post('/RectificacionCotizacionesEntradaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverCotizacionEntradaDetalle')->name('RectificacionCotizacionesEntradaDetalle');
     /* fin */
 
     //---------------------Exportaciones----------------------------------------------//
