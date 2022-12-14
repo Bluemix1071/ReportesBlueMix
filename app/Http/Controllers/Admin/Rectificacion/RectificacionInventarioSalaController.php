@@ -58,8 +58,42 @@ class RectificacionInventarioSalaController extends Controller
         $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_NRO', $request->get('n_cotiz'))->get();
         //dd($cotiz[0]);
 
-        $productos = DB::select('select `dcotiz`.*, (`bodeprod`.`bpsrea`-`dcotiz`.`DZ_CANT`) as CANT, current_date() as fecha, bodeprod.bpsrea as sala from `dcotiz` left join `bodeprod` on `dcotiz`.`DZ_CODIART` = `bodeprod`.`bpprod` where `dcotiz`.`DZ_NUMERO` = "'.$request->get('n_cotiz').'"');
+        $productos = DB::select('select `dcotiz`.*, (`bodeprod`.`bpsrea`-`dcotiz`.`DZ_CANT`) as CANT, current_date() as fecha, bodeprod.bpsrea as sala from `dcotiz` left join `bodeprod` on `dcotiz`.`DZ_CODIART` = `bodeprod`.`bpprod` where `dcotiz`.`DZ_NUMERO` = "'.$request->get('n_cotiz').'" order by `dcotiz`.`posicion` asc');
 
         return view('admin.Rectificacion.RectificacionCotizacionesSalidaDetalle', compact('productos', 'cotiz'));
+    }
+
+    public function RectificacionCotizacionesEntrada(Request $request){
+        $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2022-11-02')->orderBy('CZ_FECHA', 'DESC')->get();
+        
+        return view('admin.Rectificacion.RectificacionCotizacionesEntrada',compact('cotiz'));
+    }
+
+    public function DevolverCotizacionEntrada(Request $request){
+        //$devuelve = DB::select('select nota_credito_detalle.codigo, nota_credito_detalle.descripcion, bodeprod.bpsrea as sala, nota_credito_detalle.cantidad as cant_nc, current_date() as fecha ,sum(bodeprod.bpsrea + nota_credito_detalle.cantidad) as total from nota_credito_detalle left join bodeprod on nota_credito_detalle.codigo = bodeprod.bpprod where id_nota_cred = "'.$request->get('id_nc').'" group by codigo order by codigo desc');
+        $entra = DB::select('select `dcotiz`.*, (`bodeprod`.`bpsrea`+`dcotiz`.`DZ_CANT`) as CANT, current_date() as fecha, bodeprod.bpsrea as sala from `dcotiz` left join `bodeprod` on `dcotiz`.`DZ_CODIART` = `bodeprod`.`bpprod` where `dcotiz`.`DZ_NUMERO` = "'.$request->get('id_cotiz').'"');
+        foreach($entra as $item){
+            if($item->CANT < 0){
+                return redirect()->route('RectificacionCotizacionesEntrada')->with('warning','Existe Mercadería que esta en negativo o quedará en negativo, rectifique stock');
+            }
+        }
+
+        foreach($entra as $item){
+            DB::table('bodeprod')->where('bpprod', $item->DZ_CODIART)->update(['bpsrea' => $item->CANT]);
+            DB::table('solicitud_ajuste')->insert(['codprod' => $item->DZ_CODIART, 'producto' => $item->DZ_DESCARTI, 'fecha' => $item->fecha, 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => $request->get('solicita'), 'observacion' => 'Entrada MercaderÍa Cotizacion N: '.$request->get('id_cotiz').'' ]);
+        }
+
+        $devolucion = DB::table('detalle_devolucion')->insert(['folio' => $request->get('id_cotiz'), 't_doc' => 'Cotizacion Entrada', 'estado' => 'Entrada']);
+
+        return redirect()->route('RectificacionCotizacionesEntrada')->with('success','Mercadería Entrada Correctamente');
+    }
+
+    public function DevolverCotizacionEntradaDetalle(Request $request){
+        $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_NRO', $request->get('n_cotiz'))->get();
+        //dd($cotiz[0]);
+
+        $productos = DB::select('select `dcotiz`.*, (`bodeprod`.`bpsrea`+`dcotiz`.`DZ_CANT`) as CANT, current_date() as fecha, bodeprod.bpsrea as sala from `dcotiz` left join `bodeprod` on `dcotiz`.`DZ_CODIART` = `bodeprod`.`bpprod` where `dcotiz`.`DZ_NUMERO` = "'.$request->get('n_cotiz').'" order by `dcotiz`.`posicion` asc');
+
+        return view('admin.Rectificacion.RectificacionCotizacionesEntradaDetalle', compact('productos', 'cotiz'));
     }
 }

@@ -12,7 +12,7 @@ Lista Escolar
 @section('contenido')
 
     <div class="container">
-        <h3 class="display-4">Cotización de Salida N°: {{ $cotiz[0]->CZ_NRO }}</h3>
+        <h3 class="display-4">Cotización de Entrada N°: {{ $cotiz[0]->CZ_NRO }}</h3>
         <div class="row">
           <div class="col-md-12">
             <hr>
@@ -85,26 +85,26 @@ Lista Escolar
                 </div>
             </div>
             <br>
-            @if($cotiz[0]->t_doc != "Cotizacion Salida")
-                <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='1'>Sacar Mercadería</button>
+            @if($cotiz[0]->t_doc != "Cotizacion Entrada")
+                <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='1'>Entrar Mercadería</button>
             @else
-                <button type="button" class="btn btn-primary btn-sm col" disabled>Sacar Mercadería</button>
+                <button type="button" class="btn btn-primary btn-sm col" disabled>Entrar Mercadería</button>
             @endif
           </div>
         </div>
 
-        <!-- Modal oconfirmacion de devolucion-->
-    <div class="modal fade" id="modalidevolver" tabindex="-1" role="dialog" aria-hidden="true">
+     <!-- Modal oconfirmacion de entrada mercaderia-->
+     <div class="modal fade" id="modalidevolver" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document" >
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">¿Seguro de Sacar la Mercadería?</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">¿Seguro de Entar la Mercadería?</h5>
                         <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button> -->
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="{{ route('RectificacionCotizacionesSalida', ['id_cotiz' => $cotiz[0]->CZ_NRO]) }}" id="desvForm" >
+                        <form method="post" id="desvForm" action="{{ route('RectificacionCotizacionesEntrada', ['id_cotiz' => $cotiz[0]->CZ_NRO]) }}">
                                 <div class="form-group row">
                                     <label for="name"
                                         class="col-md-4 col-form-label text-md-right">Solicita:</label>
@@ -122,7 +122,7 @@ Lista Escolar
                                     </div>
                                 </div>
                                 <input hidden name="id_cotiz" id="id" value="">
-                                <button type="submit" class="btn btn-success">Sacar Mercadería</button>
+                                <button type="submit" class="btn btn-success">Entrar Mercadería</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </form>
                     </div>
