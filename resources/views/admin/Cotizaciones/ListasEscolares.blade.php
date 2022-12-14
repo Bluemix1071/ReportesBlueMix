@@ -64,7 +64,6 @@ Lista Escolar
                         <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align:left">ID</th>
                                     <th scope="col" style="text-align:left">Codigo Producto</th>
                                     <th scope="col" style="text-align:left">Detalle</th>
                                     <th scope="col" style="text-align:left">Marca</th>
@@ -86,7 +85,6 @@ Lista Escolar
 
                                     @foreach ($listas as $item)
                                 <tr>
-                                    <td scope="col" style="text-align:left">{{ $item->id }}</td>
                                     <td scope="col" style="text-align:left">{{ $item->cod_articulo }}</td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
                                     <td style="text-align:left">{{ $item->marca }}</td>
