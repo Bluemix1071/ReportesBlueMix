@@ -54,10 +54,16 @@ Lista Escolar
                                         <div class="col"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
                                         <div class="col"><input type="text" class="form-control" placeholder="Cantidad" name="cantidad" required id="cantidad"></div>
                                         <div class="col"><button type="submit" class="btn btn-success" >Agregar Item</button></div>
+
+                                        <!-- <div class="col" style="text-algin:right">
+                                            <a href="" title="Cargar Cotizacion" data-toggle="modal" data-target="#nombremodal"
+                                            class="btn btn-info">Cotización</a>
+                                        </div> -->
+
                                     </div>
                                 </form>
                             </div>
-                        <!-- Fin Modal agregar Item -->
+
                         <br>
             <div class="row">
                     <div class="col-md-12">
@@ -170,11 +176,6 @@ Lista Escolar
             {{ method_field('put') }}
             {{ csrf_field() }}
              @csrf
-            <!-- <input type="text" value="{{$item->cod_articulo}}" name="cod_articulo" hidden>
-             <input type="text" value="{{$item->id}}" name="id" hidden>
-             <input type="text" value="{{ $curso->id }}" name="idcurso" hidden>
-             <input type="text" value="{{ $colegio->id }}" name="id_colegio" hidden -->
-            <!-- comentario -->
                 <div class="form-group row">
                     <label for="comentario"
                     class="col-md-4 col-form-label text-md-right">{{ __('Comentario') }}</label>
