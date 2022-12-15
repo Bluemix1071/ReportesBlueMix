@@ -284,6 +284,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::get('/BuscarProducto/{codigo}','ListaEscolarController@BuscarProducto')->name('BuscarProducto');
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
+    //Route::post('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');
+    Route::put('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');
     /* */
 
     Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');//
@@ -335,6 +337,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/RectificacionCotizacionesEntrada','Rectificacion\RectificacionInventarioSalaController@RectificacionCotizacionesEntrada')->name('RectificacionCotizacionesEntrada');
     Route::post('/RectificacionCotizacionesEntrada','Rectificacion\RectificacionInventarioSalaController@DevolverCotizacionEntrada')->name('RectificacionCotizacionesEntrada');
     Route::post('/RectificacionCotizacionesEntradaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverCotizacionEntradaDetalle')->name('RectificacionCotizacionesEntradaDetalle');
+    Route::get('/RectificacionGuia','Rectificacion\RectificacionInventarioSalaController@RectificacionGuia')->name('RectificacionGuia');
+    Route::post('/RectificacionGuia','Rectificacion\RectificacionInventarioSalaController@DevolverGuia')->name('RectificacionGuia');
+    Route::post('/RectificacionGuiaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverGuiaDetalle')->name('RectificacionGuiaDetalle');
     /* fin */
 
     //---------------------Exportaciones----------------------------------------------//
