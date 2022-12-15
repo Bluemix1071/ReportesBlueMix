@@ -660,7 +660,7 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="" class="nav-link">
+                                                <a href="{{ route('RectificacionGuia') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Guías
                                                     </p>
