@@ -103,7 +103,7 @@ class ListaEscolarController extends Controller
             bodeprod.bpsrea as stock_sala,
             Suma_Bodega.cantidad AS stock_bodega,
             (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
-            precios.PCPVDET as preciou
+            precios.PCPVDET as preciou,ListaEscolar_detalle.comentario
             from ListaEscolar_detalle
             left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
             left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
@@ -125,6 +125,92 @@ class ListaEscolarController extends Controller
             //dd($request);
             return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
     }
+
+    public function AgregarComentario(Request $request){
+        //dd($request->get("id"));
+        DB::table('ListaEscolar_detalle')
+        ->where('ListaEscolar_detalle.id', $request->get("id"))
+
+        ->update(
+            [
+                'ListaEscolar_detalle.comentario'=> $request->comentario]
+
+            );
+            //DB::table('Update ListaEscolar_detalle set ListaEscolar_detalle.comentario='.$request->get("comentario").'where ListaEscolar_detalle.id='.$request->get("id"));
+
+            //return redirect()->route('listas')->with('success','Comentario Agregado Correctamente');
+
+            $listas=DB::select('select
+            ListaEscolar_detalle.id,
+            ListaEscolar_detalle.comentario,
+            ListaEscolar_detalle.id_curso,
+            ListaEscolar_detalle.cod_articulo,
+            producto.ARDESC as descripcion,
+            producto.ARMARCA as marca,
+            sum(ListaEscolar_detalle.cantidad) as cantidad,
+            bodeprod.bpsrea as stock_sala,
+            Suma_Bodega.cantidad AS stock_bodega,
+            (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
+            precios.PCPVDET as preciou
+            from ListaEscolar_detalle
+            left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+            left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+            left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+            left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+            where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
+
+
+            $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
+            inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
+            //dd($colegio);
+
+
+            //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
+            $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
+
+
+                //dd($curso);
+
+                //dd($request);
+            return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
+      }
+
+      //inicio Agregar Cotizacion
+      public function CargarValeConteoSala(Request $request){
+
+        $conteo = DB::table('conteo_inventario')->where('id', $request->get('id_conteo'))->get()[0];
+        $contador = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $request->get('id_conteo'))->get()->count();
+        $contador = $contador+1;
+
+
+        $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant from dvales left join producto on dvales.vaarti = producto.ARCODI where vanmro = '.$request->get('nro_vale').'');
+        if(!empty($vale)){
+            foreach($vale as $item){
+
+                $nuevo = ['posicion' => $contador++,
+                              'codigo' => $item->vaarti,
+                              'detalle' => $item->ARDESC,
+                              'marca' => $item->ARMARCA,
+                              'costo' => 0,
+                              'precio' => 0,
+                              'cantidad' => $item->vacant,
+                              'estado' => 'exeptuado',
+                              'id_conteo_inventario' => $request->get('id_conteo')
+                ];
+                //error_log(print_r($nuevo, true));
+                DB::table('conteo_inventario_detalle')->insert($nuevo);
+            }
+        }
+
+        $id_conteo = $request->get('id_conteo');
+
+        $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $id_conteo)->orderBy('posicion', 'asc')->get();
+
+        return view('sala.ConteoInventarioSalaDetalle', compact('detalles', 'id_conteo', 'conteo'));
+
+      }
+      //fin agregar cotizacion
+
 
     public function eliminar(Request $request)
     {
@@ -163,6 +249,7 @@ class ListaEscolarController extends Controller
 
         $listas=DB::select('select
         ListaEscolar_detalle.id,
+        ListaEscolar_detalle.comentario,
         ListaEscolar_detalle.id_curso,
         ListaEscolar_detalle.cod_articulo,
         producto.ARDESC as descripcion,
@@ -210,6 +297,7 @@ class ListaEscolarController extends Controller
 
         $listas=DB::select('select
         ListaEscolar_detalle.id,
+        ListaEscolar_detalle.comentario,
         ListaEscolar_detalle.id_curso,
         ListaEscolar_detalle.cod_articulo,
         producto.ARDESC as descripcion,
