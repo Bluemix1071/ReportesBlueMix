@@ -286,6 +286,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     //Route::post('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');
     Route::put('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');
+    Route::post('/CargarCotizacion', 'ListaEscolarController@CargarCotizacion')->name('CargarCotizacion');
     /* */
 
     Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');//

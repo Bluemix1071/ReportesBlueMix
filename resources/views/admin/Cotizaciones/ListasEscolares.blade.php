@@ -55,10 +55,10 @@ Lista Escolar
                                         <div class="col"><input type="text" class="form-control" placeholder="Cantidad" name="cantidad" required id="cantidad"></div>
                                         <div class="col"><button type="submit" class="btn btn-success" >Agregar Item</button></div>
 
-                                       <!--  <div class="col" style="text-algin:right">
+                                        <div class="col" style="text-algin:right">
                                             <a href="" title="Cargar Cotizacion" data-toggle="modal" data-target="#modalcotizacion"
                                             class="btn btn-info">Cotización</a>
-                                        </div> -->
+                                        </div>
 
                                     </div>
                                 </form>
@@ -214,13 +214,16 @@ Lista Escolar
                         <h5 class="modal-title" id="exampleModalLongTitle">Cargar Cotización</h5>
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="" id="desvForm" >
+                        <form method="post" action="{{ route('CargarCotizacion') }}" id="desvForm" >
                             <div class="card card-primary">
                                 <div class="card-body">
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-3 col-form-label">N° Cotización</label>
                                         <div class="col-sm-10">
-                                            <input type="number" placeholder="N° Cotización" required class="form-control col-lg-5" name="nro_vale" min="1" max="99999999"/>
+                                            <input type="number" placeholder="N° Cotización" required class="form-control col-lg-5" name="nro_cotiz" min="1" max="99999999"/>
+                                            <input type="text" value="" name="id" id="id" hidden>
+                                            <input type="text" value="{{ $curso->id }}" name="idcurso" hidden>
+                                            <input type="text" value="{{ $colegio->id }}" name="id_colegio" hidden>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-success">Cargar Cotización</button>
