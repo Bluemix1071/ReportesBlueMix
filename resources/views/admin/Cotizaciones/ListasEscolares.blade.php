@@ -57,7 +57,7 @@ Lista Escolar
 
                                         <div class="col" style="text-algin:right">
                                             <a href="" title="Cargar Cotizacion" data-toggle="modal" data-target="#modalcotizacion"
-                                            class="btn btn-info">Cotización</a>
+                                            class="btn btn-info">(+)Cotización</a>
                                         </div>
 
                                     </div>
