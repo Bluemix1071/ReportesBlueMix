@@ -16,6 +16,7 @@ use Mail;
 use App\mensajes;
 use App\ipmac;
 use App\cuponescolar;
+use App\categoria;
 use Illuminate\Support\Collection as Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -32,28 +33,30 @@ class ListaEscolarController extends Controller
 
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id");
-        return view('admin.Cotizaciones.Colegios',compact('colegios'));
+
+        $comunas=DB::select('select * from comunas');
+
+        //dd($comunas);
+
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
+
 
     }
 
     public function Cursos(Request $request){
-        //dd($request->get("id"));
-        //$colegio=DB::table("colegio")->where('id', $request->get("id"))->first();
+
 
         $cursos=DB::table('curso')->where('id_colegio', $request->get('id'))->get();
 
-        /*$colegio=DB::select('select colegio.id,colegio.nombre as colegio,comunas.nombre as comuna from colegio
-        inner join comunas on colegio.id_comuna = comunas.id where colegio.id=?',[$request->get("id")])[0];*/
-        //dd($colegio);
+
         $colegio=DB::table('colegio')
-        //->addSelect(['colegio.nombre as colegio', 'comunas.nombre as comuna']
+
         ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
         ->where('colegio.id',$request->get('id'))
         ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
         ->get()[0];
         //dd($colegio);
-        //$cursos=DB::select('select * from curso where id_colegio='.$request->get("idcolegio"))->get();
-        //dd($cursos);
+;
 
 
         return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
@@ -79,6 +82,25 @@ class ListaEscolarController extends Controller
 
         return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
     }
+
+    public function AgregarColegio(Request $request){
+
+        $elcurso = DB::table('colegio')->insert([
+                [
+                "nombre" => $request->get('nombrec'),
+                "id_comuna" => $request->get('comunas'),
+                ]
+        ]);
+
+        $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
+        inner join comunas on colegio.id_comuna = comunas.id");
+
+        $comunas=DB::select('select * from comunas');
+
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
+    }
+
+
 
     public function AgregarItem(Request $request){
         $inputs = request()->all();
@@ -298,15 +320,7 @@ class ListaEscolarController extends Controller
             return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
     }
 
-    /*public function ListaEscolarfiltro(Request $request){
 
-        $comunas=DB::select("select nombre from comunas");
-        //$comunas=DB::table('comunas')->get();
-
-        return view('Admin.Cotizaciones.ListaEscolar',compact('comunas'));
-
-
-      }*/
 
     public function Listas(Request $request){
         //dd($request);

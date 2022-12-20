@@ -15,6 +15,32 @@ Lista Escolar
         <div class="row">
           <div class="col-md-12">
             <hr>
+            <!-- Agregar Colegio-->
+            <div>
+                <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end">
+                    <div class="row">
+                        <h4>Agregar colegio:</h4>
+                        <div class="col"><input type="text" class="form-control" placeholder="Nombre Colegio" name="nombrec" required id="nombrec"></div>
+                        <div class="col">
+
+                            <select id="comunas" name="comunas" class="form-control">
+
+                                <option>Seleccione comuna</option>
+
+                                @foreach($comunas as $comuna)
+                                <option value="{{ $comuna->id }}">{{ $comuna->nombre}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+                        <div class="col"><button type="submit" class="btn btn-success">Agregar</button></div>
+                    </div>
+                </form>
+            </div>
+            <hr>
+            <br>
+            <!-- Agregar Colegio-->
             <div class="row">
                     <div class="col-md-12">
                         <table id="colegios" class="table table-bordered table-hover dataTable table-sm">
