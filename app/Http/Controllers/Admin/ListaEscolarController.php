@@ -36,7 +36,7 @@ class ListaEscolarController extends Controller
 
         $comunas=DB::select('select * from comunas');
 
-        //dd($comunas);
+        //dd($colegios);
 
         return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
 
@@ -91,6 +91,9 @@ class ListaEscolarController extends Controller
                 "id_comuna" => $request->get('comunas'),
                 ]
         ]);
+
+        //dd($request);
+
 
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id");
@@ -257,6 +260,11 @@ class ListaEscolarController extends Controller
         ->where('id' ,$request->get('id'))
         ->delete();
 
+        $update2 = DB::table('ListaEscolar_detalle')
+        ->where('ListaEscolar_detalle.id_curso' , $request->get('id'))
+        ->delete();
+
+
         $cursos=DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get();
         //dd($cursos);
         $colegio=DB::table('colegio')
@@ -269,6 +277,32 @@ class ListaEscolarController extends Controller
 
         return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
     }
+
+
+    public function EliminarColegio(Request $request)
+    {
+
+        $update2 = DB::table('ListaEscolar_detalle','curso')
+        ->join('curso','curso.id','=','ListaEscolar_detalle.id_curso')
+        ->where('curso.id_colegio' , $request->get('id'))
+        ->delete();
+
+        $update3 = DB::table('curso')
+        ->where('curso.id_colegio' , $request->get('id'))
+        ->delete();
+
+        $update = DB::table('colegio')
+        ->where('id' ,$request->get('id'))
+        ->delete();
+
+        $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
+        inner join comunas on colegio.id_comuna = comunas.id");
+
+        $comunas=DB::select('select * from comunas');
+
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
+    }
+
 
     public function eliminaritem(Request $request)
     {

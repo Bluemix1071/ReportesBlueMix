@@ -23,10 +23,10 @@ Lista Escolar
                         <div class="col"><input type="text" class="form-control" placeholder="Nombre Colegio" name="nombrec" required id="nombrec"></div>
                         <div class="col">
 
-                            <select id="comunas" name="comunas" class="form-control">
+                            <select id="comunas" name="comunas" class="form-control" required>
 
-                                <option>Seleccione comuna</option>
 
+                                <option value="" selected>Seleccione comuna</option>
                                 @foreach($comunas as $comuna)
                                 <option value="{{ $comuna->id }}">{{ $comuna->nombre}}</option>
                                 @endforeach
@@ -35,6 +35,7 @@ Lista Escolar
 
                         </div>
                         <div class="col"><button type="submit" class="btn btn-success">Agregar</button></div>
+
                     </div>
                 </form>
             </div>
@@ -58,9 +59,24 @@ Lista Escolar
                                             <td scope="col" style="text-align:left">{{ $item->colegio }}</td>
                                             <td style="text-align:left">{{ $item->comuna }}</td>
                                             <td>
-                                            <form action="{{ route('Cursos', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
-                                                <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
-                                            </form>
+                                                <div class="container">
+                                                <div class="row">
+                                                <div class="col-2" style="text-algin:right">
+                                                    <form action="{{ route('Cursos', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
+                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                                                    </form>
+                                                </div>
+
+                                                <div class="col-1" style="text-algin:right">
+                                                    <a href="" title="Eliminar Colegio" data-toggle="modal" data-target="#modaleliminarc"
+                                                    class="btn btn-danger"
+                                                    data-id_colegio='{{ $item->id }}'
+                                                    data-colegio='{{ $item->colegio }}'
+                                                    >Eliminar</a>
+                                                </div>
+                                        </div>
+                                    </div>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -72,9 +88,59 @@ Lista Escolar
           </div>
         </div>
 </div>
+<!-- Modal Eliminar Colegio-->
+
+<div class="modal fade" id="modaleliminarc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+             <h4 class="modal-title" id="myModalLabel">¿Eliminar Colegio?</h4>
+           </div>
+            <div class="modal-body">
+             <div class="card-body">
+            <form method="post" action="{{ route('EliminarColegio')}}">
+             {{ method_field('put') }}
+             {{ csrf_field() }}
+              @csrf
+                 <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-10">Se eliminara el colegio:
+                        <input readonly size="59" type="text" id="colegio" value="" style="border: none; display: inline;font-family: inherit; font-size: inherit; padding: none; width: auto;">
+                    </label>
+
+                     <div class="col-md-6">
+                         <input type="text" value="" name="id" id="id_colegio" hidden>
+                         <input type="text" value="" name="colegio" id="colegio" hidden>
+
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                 <button type="submit" class="btn btn-danger">Eliminar</button>
+                 <button type="button" data-dismiss="modal" class="btn btn-success">Cerrar</button>
+                 </div>
+             </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+
+<!-- Modal Eliminar Colegio -->
 @endsection
 
+
 @section('script')
+
+<script>
+    $('#modaleliminarc').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id_colegio = button.data('id_colegio')
+        var colegio = button.data('colegio')
+        var modal = $(this)
+        modal.find('.modal-body #id_colegio').val(id_colegio);
+        modal.find('.modal-body #colegio').val(colegio);
+})
+</script>
+
 <script>
   $(document).ready(function() {
     $('#colegios').DataTable( {

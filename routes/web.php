@@ -276,6 +276,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/AgregarColegio','ListaEscolarController@AgregarColegio')->name('AgregarColegio');
 
     Route::post('/EliminarCurso','ListaEscolarController@eliminar')->name('EliminarCurso');
+    Route::put('/EliminarColegio','ListaEscolarController@EliminarColegio')->name('EliminarColegio');
 
     Route::post('/Eliminaritem','ListaEscolarController@eliminaritem')->name('EliminarItem');
 
@@ -283,7 +284,6 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     //Route::delete('/EliminarItem/{id}','ListaEscolarController@eliminaritem')->name('EliminarItem');
     Route::get('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::post('/Listas','ListaEscolarController@Listas')->name('listas');
-    Route::get('/BuscarProducto/{codigo}','ListaEscolarController@BuscarProducto')->name('BuscarProducto');
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     //Route::post('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');
     Route::put('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');
