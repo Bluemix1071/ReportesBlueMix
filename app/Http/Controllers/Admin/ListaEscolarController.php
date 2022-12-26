@@ -36,7 +36,6 @@ class ListaEscolarController extends Controller
 
         $comunas=DB::select('select * from comunas');
 
-        //dd($colegios);
 
         return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
 
@@ -55,7 +54,7 @@ class ListaEscolarController extends Controller
         ->where('colegio.id',$request->get('id'))
         ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
         ->get()[0];
-        //dd($colegio);
+
 ;
 
 
@@ -92,7 +91,6 @@ class ListaEscolarController extends Controller
                 ]
         ]);
 
-        //dd($request);
 
 
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
@@ -108,7 +106,7 @@ class ListaEscolarController extends Controller
     public function AgregarItem(Request $request){
         $inputs = request()->all();
 
-        //dd($request);
+
 
         $lalista = DB::table('ListaEscolar_detalle')->insert([
                 [
@@ -139,15 +137,13 @@ class ListaEscolarController extends Controller
 
             $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
             inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
-            //dd($colegio);
+
 
 
             //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
             $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
 
-            //dd($curso);
 
-            //dd($request);
             return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
     }
 
@@ -187,16 +183,13 @@ class ListaEscolarController extends Controller
 
             $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
             inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
-            //dd($colegio);
+
 
 
             //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
             $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
 
 
-                //dd($curso);
-
-                //dd($request);
             return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
       }
 
@@ -213,7 +206,7 @@ class ListaEscolarController extends Controller
                               'cod_articulo' => $item->DZ_CODIART,
                               'cantidad' => $item->DZ_CANT,
                 ];
-                //dd($nuevo);
+
                 //error_log(print_r($nuevo, true));
                 DB::table('ListaEscolar_detalle')->insert($nuevo);
             }
@@ -241,7 +234,7 @@ class ListaEscolarController extends Controller
 
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
-        //dd($colegio);
+
 
 
         //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
@@ -255,7 +248,7 @@ class ListaEscolarController extends Controller
 
     public function eliminar(Request $request)
     {
-        //dd($request);
+
         $update = DB::table('curso')
         ->where('id' ,$request->get('id'))
         ->delete();
@@ -266,7 +259,7 @@ class ListaEscolarController extends Controller
 
 
         $cursos=DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get();
-        //dd($cursos);
+
         $colegio=DB::table('colegio')
         ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
         ->where('colegio.id',$request->get('id_colegio'))
@@ -307,7 +300,7 @@ class ListaEscolarController extends Controller
     public function eliminaritem(Request $request)
     {
         $update = DB::table('ListaEscolar_detalle')
-        //->where('id' , $request->get('id'))
+
         ->where('cod_articulo' , $request->get('cod_articulo'))
         ->where('id_curso' , $request->get('idcurso'))
         ->take(5)
@@ -341,23 +334,20 @@ class ListaEscolarController extends Controller
 
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
-        //dd($colegio);
 
 
         //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
         $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
 
 
-            //dd($curso);
 
-            //dd($request);
             return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
     }
 
 
 
     public function Listas(Request $request){
-        //dd($request);
+
 
         $listas=DB::select('select
         ListaEscolar_detalle.id,
@@ -382,14 +372,12 @@ class ListaEscolarController extends Controller
 
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("idcolegio").'')[0];
-        //dd($colegio);
+
 
 
         //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
         $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
-        //dd($curso);
 
-        //dd($request);
         return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
     }
 
