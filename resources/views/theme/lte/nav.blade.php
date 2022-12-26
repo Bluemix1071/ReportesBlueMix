@@ -666,6 +666,13 @@
                                                     </p>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a href="{{ route('RectificacionInsumoMerma') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Insumos/Mermas
+                                                    </p>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 @endcan

@@ -47,7 +47,10 @@ class ConteoInventarioBodegaController extends Controller
 
         //error_log(print_r($codigo, true));
 
-        $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
+        $producto = DB::table('producto')
+        ->leftjoin('precios', \DB::raw('substr(producto.ARCODI, 1, 5)'), '=', 'precios.PCCODI')
+        ->leftjoin('bodeprod', 'producto.ARCODI', '=', 'bodeprod.bpprod')
+        ->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
 
         return response()->json($producto);
     }

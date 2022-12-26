@@ -141,4 +141,101 @@ class RectificacionInventarioSalaController extends Controller
             $s=($s+$r%10*(9-$m++%6))%11;
         return chr($s?$s+47:75);
    }
+
+    public function RectificacionInsumoMerma(Request $request){
+
+        $insumos = DB::table('insumos_mermas')->get();
+    
+        return view('admin.Rectificacion.RectificacionInsumoMerma', compact('insumos'));
+    }
+
+    public function GuardarRectificacionInsumoMerma(Request $request){
+
+        $groups = array();
+
+        foreach($request->request as $item){
+            $key = $item['codigo'];
+            if (!array_key_exists($key, $groups)) {
+                $groups[$key] = array(
+                    'codigo' => $item['codigo'],
+                    'detalle' => $item['detalle'],
+                    'cantidad' => $item['cantidad'],
+                    'sala' => $item['sala'],
+                    'area' => $item['area']
+                );
+            } else {
+                $groups[$key]['cantidad'] = $groups[$key]['cantidad'] + $item['cantidad'];
+            }
+        }
+
+        foreach($groups as $item){
+            if((intval($item['sala'])-intval($item['cantidad'])) < 0){
+                return redirect()->route('RectificacionInsumoMerma')->with('error', 'El articulo '.$item['codigo'].' quedará en negativo. Rectificar stock');
+            }
+        }
+
+        foreach($groups as $item){
+            DB::table('bodeprod')->where('bpprod', $item['codigo'])->update(['bpsrea' => (intval($item['sala'])-intval($item['cantidad']))]);
+
+            if($item['area'] == "Merma"){
+                DB::table('solicitud_ajuste')->insert(['codprod' => $item['codigo'], 'producto' => $item['detalle'], 'fecha' => date("Y-m-d"), 'stock_anterior' => $item['sala'], 'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Alison Aedo', 'observacion' => $item['area'] ]);
+            }else{
+                DB::table('solicitud_ajuste')->insert(['codprod' => $item['codigo'], 'producto' => $item['detalle'], 'fecha' => date("Y-m-d"), 'stock_anterior' => $item['sala'], 'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Alison Aedo', 'observacion' => 'Insumo '.$item['area'].'' ]);
+            }
+        }
+
+        foreach($request->request as $item){
+            $insumo = ['codigo' => $item['codigo'],
+                'detalle' => $item['detalle'],
+                'marca' => $item['marca'],
+                'costo' => $item['costo'],
+                'cantidad' => $item['cantidad'],
+                'area' => $item['area']
+            ];
+            
+            DB::table('insumos_mermas')->insert($insumo);
+
+            //DB::table('bodeprod')->where('bpprod', $item['codigo'])->update(['bpsrea' => (intval($item['sala'])-intval($item['cantidad']))]);
+        }
+
+        return redirect()->route('RectificacionInsumoMerma')->with('success','Insumo/Merma ingresado');
+    }
+
+    public function CargarValeInsimoMerma(Request $request){
+
+        $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant, bodeprod.bpsrea, precios.PCCOSTO, (bodeprod.bpsrea-dvales.vacant) as CANT from dvales left join producto on dvales.vaarti = producto.ARCODI left join bodeprod on dvales.vaarti = bodeprod.bpprod left join precios on substr(dvales.vaarti,1, 5) = precios.PCCODI where vanmro = '.$request->get('n_vale').'');
+        
+        if(!empty($vale)){
+
+            foreach($vale as $item){
+                if($item->CANT < 0){
+                    return redirect()->route('RectificacionInsumoMerma')->with('error', 'El articulo '.$item->vaarti.' quedará en negativo. Rectificar stock');
+                }
+            }
+
+            foreach($vale as $item){
+                $insumo = ['codigo' => $item->vaarti,
+                'detalle' => $item->ARDESC,
+                'marca' => $item->ARMARCA,
+                'costo' => $item->PCCOSTO,
+                'cantidad' => $item->vacant,
+                'area' => $request->get('area')
+                ];
+                //error_log(print_r($nuevo, true));
+                DB::table('insumos_mermas')->insert($insumo);
+
+                DB::table('bodeprod')->where('bpprod', $item->vaarti)->update(['bpsrea' => $item->CANT]);
+
+                if($request->get('area') == "Merma"){
+                    DB::table('solicitud_ajuste')->insert(['codprod' => $item->vaarti, 'producto' => $item->ARDESC, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->bpsrea, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Alison Aedo', 'observacion' => 'Merma' ]);
+                }else{
+                    DB::table('solicitud_ajuste')->insert(['codprod' => $item->vaarti, 'producto' => $item->ARDESC, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->bpsrea, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Alison Aedo', 'observacion' => 'Insumo '.$request->get('area').'' ]);
+                }
+            }
+        }else{
+            return redirect()->route('RectificacionInsumoMerma')->with('warning','Vele no Encontrado');
+        }
+
+        return redirect()->route('RectificacionInsumoMerma')->with('success','Vale cargado Correctamente');
+    }
 }

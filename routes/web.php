@@ -342,6 +342,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/RectificacionGuia','Rectificacion\RectificacionInventarioSalaController@RectificacionGuia')->name('RectificacionGuia');
     Route::post('/RectificacionGuia','Rectificacion\RectificacionInventarioSalaController@DevolverGuia')->name('RectificacionGuia');
     Route::post('/RectificacionGuiaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverGuiaDetalle')->name('RectificacionGuiaDetalle');
+    Route::get('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@RectificacionInsumoMerma')->name('RectificacionInsumoMerma');
+    Route::post('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@GuardarRectificacionInsumoMerma')->name('GuardarRectificacionInsumoMerma');
+    Route::post('/RectificacionInsumoMermaCargarVale','Rectificacion\RectificacionInventarioSalaController@CargarValeInsimoMerma')->name('CargarValeInsimoMerma');
     /* fin */
 
     //---------------------Exportaciones----------------------------------------------//
