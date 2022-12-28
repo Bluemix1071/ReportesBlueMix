@@ -106,8 +106,6 @@ class ListaEscolarController extends Controller
     public function AgregarItem(Request $request){
         $inputs = request()->all();
 
-
-
         $lalista = DB::table('ListaEscolar_detalle')->insert([
                 [
                 "id_curso" => $request->get('idcurso'),

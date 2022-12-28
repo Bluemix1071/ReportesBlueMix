@@ -16,7 +16,7 @@
                     <div class="col" style="text-align-last: right;">
                         <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" value="1">Agregar <i class="fas fa-plus"></i></button>
                     </div>
-                </div> 
+                </div>
                 <br>   -->
             <div class="card">
                 <div class="card-header">
@@ -138,7 +138,7 @@
                                     <label for="name"
                                         class="col-md-4 col-form-label text-md-right">Area:</label>
                                     <div class="col-md-6">
-                                        
+
                                     <select name="area" id="buscar_area" class="form-control col">
                                         <option value="Aseo">Aseo</option>
                                         <option value="Arte">Arte</option>
@@ -195,7 +195,7 @@
         <script src="{{asset("js/vfs_fonts.js")}}"></script>
         <script src="{{asset("js/buttons.html5.min.js")}}"></script>
         <script src="{{asset("js/buttons.print.min.js")}}"></script>
-        
+
 
         <script>
             var minDate, maxDate = null;
@@ -220,7 +220,7 @@
                 }
                 return false;
             }
-            ); 
+            );
 
             $(document).ready(function() {
 
@@ -231,7 +231,7 @@
             $('#users thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
                 $(this).html( '<input type="text" class="form-control input-sm" placeholder="Buscar '+title+'" />' );
-        
+
                 $( 'input', this ).on( 'keyup change', function () {
                     if ( table.column(i).search() !== this.value ) {
                         table
@@ -328,9 +328,9 @@
                                 '&nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
                             '</div>'); //add input box
                         }
-                    
+
                     $('#select_'+x+'').val(area);
-                        
+
                     $( "#buscar_codigo" ).val("");
                     $( "#buscar_detalle" ).val("");
                     $( "#buscar_marca" ).val("");
@@ -416,9 +416,9 @@
                                 '&nbsp;<a id="remove_field" href="#" class="btn btn-danger"><i class="fas fa-trash-alt fa-1x"></i></a>'+
                             '</div>'); //add input box
                         }
-                    
+
                     $('#select_'+x+'').val(area);
-                        
+
                     $( "#buscar_codigo" ).val("");
                     $( "#buscar_detalle" ).val("");
                     $( "#buscar_marca" ).val("");

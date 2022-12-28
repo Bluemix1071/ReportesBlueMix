@@ -44,24 +44,39 @@ Lista Escolar
 
                             </div>
                         </div>
-                        <!-- Inicio Modal agregar Item-->
-                            <div>
-                                <form action="{{ route('AgregarItem') }}" method="post" enctype="multipart/form-data">
-                                    <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
-                                    <div class="row">
-                                        <a href="{{ route('Cursos', ['id' => $colegio->id]) }}" class="btn btn-success d-flex justify-content-start">Volver</a>
-                                        <div class="col"><input type="text" class="form-control" placeholder="ID CURSO" name="idcurso" required id="idcurso" value="{{ $curso->id }}" style="display: none"></div>
-                                        <div class="col"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
-                                        <div class="col"><input type="text" class="form-control" placeholder="Cantidad" name="cantidad" required id="cantidad"></div>
-                                        <div class="col"><button type="submit" class="btn btn-success" >Agregar Item</button></div>
+                            <div class="container">
 
-                                        <div class="col" style="text-algin:right">
+                                    <div class="form-group row">
+                                        <div class="col-1" style="text-algin:left">
+                                        <a href="{{ route('Cursos', ['id' => $colegio->id]) }}" class="btn btn-success d-flex justify-content-start">Volver</a>
+                                        </div>
+
+                                        <div class="col-md-5" style="text-algin:right">
                                             <a href="" title="Cargar Cotizacion" data-toggle="modal" data-target="#modalcotizacion"
                                             class="btn btn-info">(+)Cotización</a>
                                         </div>
-
                                     </div>
-                                </form>
+
+                                    <hr>
+                                <div class="form-group row">
+                                    <form action="{{ route('AgregarItem') }}" method="post" enctype="multipart/form-data" id="agregaritem">
+                                        <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="ID CURSO" name="idcurso" required id="idcurso" value="{{ $curso->id }}" style="display: none">
+                                        &nbsp;<input type="text" id="codigo" name="codigo" placeholder="Codigo" required class="form-control col-2" value=""/>
+                                        &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
+                                        &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
+                                        &nbsp;<input type="number" id="cantidad" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
+                                    </div>
+                                     </form>
+                                     <div class="col">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success" >Agregar Item</button>
+                                </div>
+
+                            </div>
+
+                                </div>
+                                    <hr>
+                                    <br>
                             </div>
 
                         <br>
@@ -298,5 +313,49 @@ Lista Escolar
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
+
+  <script>
+    var max_fields      = 9999; //maximum input boxes allowed
+    var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
+    var add_button      = $("#add_field_button"); //Add button ID
+    var conteo      = $("#conteo").val();
+
+    var codigo = null;
+    var descripcion = null;
+    var marca = null;
+    var area = null;
+    var cantidad = null;
+    var sala = null;
+
+        $('#codigo').bind("enterKey",function(e){
+            $.ajax({
+                url: '../admin/BuscarProducto/'+$('#codigo').val(),
+                type: 'GET',
+                success: function(result) {
+                    console.log(result);
+                    $('#buscar_detalle').val(result[0].ARDESC);
+                    $('#buscar_marca').val(result[0].ARMARCA);
+                    $( "#buscar_cantidad" ).focus();
+                    $( "#buscar_cantidad" ).val(null);
+                    codigo = result[0].ARCODI;
+                    descripcion = result[0].ARDESC;
+                    marca = result[0].ARMARCA;
+                    costo = result[0].PCCOSTO;
+                    sala = result[0].bpsrea;
+                }
+            });
+        });
+        $('#codigo').keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                $(this).trigger("enterKey");
+            }
+        });
+
+        $(add_button).click(function(e){
+            $( "#agregaritem" ).submit();
+        })
+
+</script>
 
 @endsection
