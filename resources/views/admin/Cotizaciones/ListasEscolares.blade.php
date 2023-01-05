@@ -367,7 +367,7 @@ Lista Escolar
                     console.log(result);
                     $('#buscar_detalle').val(result[0].ARDESC);
                     $('#buscar_marca').val(result[0].ARMARCA);
-                    $( "#buscar_cantidad" ).focus();
+                    $( "#cantidad" ).focus();
                     $( "#buscar_cantidad" ).val(null);
                     codigo = result[0].ARCODI;
                     descripcion = result[0].ARDESC;
