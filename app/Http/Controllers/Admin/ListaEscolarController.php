@@ -247,6 +247,7 @@ class ListaEscolarController extends Controller
     public function eliminar(Request $request)
     {
 
+
         $update = DB::table('curso')
         ->where('id' ,$request->get('id'))
         ->delete();

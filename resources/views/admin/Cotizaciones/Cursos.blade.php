@@ -92,16 +92,11 @@ Lista Escolar
                                         </div>
 
                                         <div class="col-1" style="text-algin:right">
-                                            <form action="{{ route('EliminarCurso')}}" method="post" enctype="multipart/form-data">
-                                                <input type="text" value="{{$item->id}}" name="id" hidden>
-                                                <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
-                                                <button class="btn btn-danger" style="margin-left: 5%" type="submit">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                                    </svg>
-                                                </button>
-                                            </form>
+                                            <a href="" title="Eliminar Curso" data-toggle="modal" data-target="#modaleliminarcurso"
+                                            class="btn btn-danger"
+                                            data-id='{{ $item->id }}'
+                                            data-id_colegio='{{ $colegio->id }}'
+                                            >Eliminar</a>
                                         </div>
 
                                         </td>
@@ -118,9 +113,55 @@ Lista Escolar
         </div>
 
 </div>
+
+<!-- Modal Eliminar Curso-->
+<div class="modal fade" id="modaleliminarcurso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+             <h4 class="modal-title" id="myModalLabel">¿Eliminar Curso?</h4>
+           </div>
+            <div class="modal-body">
+             <div class="card-body">
+            <form method="post" action="{{ route('EliminarCurso')}}">
+             {{ method_field('post') }}
+             {{ csrf_field() }}
+              @csrf
+                 <div class="form-group row" >
+                     <div class="col-md-6" >
+                         <input type="text" value="" name="id" id="id" hidden>
+                         <input type="text" value="" name="id_colegio" id="id_colegio" hidden>
+
+                         <input readonly size="59" type="text" id="" value="Se eliminará el curso y su lista escolar asociada." style="border: none; display: inline;font-family: inherit; font-size: inherit; padding: none; width: auto;">
+
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                 <button type="submit" class="btn btn-danger">Eliminar</button>
+                 <button type="button" data-dismiss="modal" class="btn btn-success">Cerrar</button>
+                 </div>
+             </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+<!-- Modal Eliminar Curso-->
 @endsection
 
 @section('script')
+
+<script>
+    $('#modaleliminarcurso').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var id_colegio = button.data('id_colegio')
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #id_colegio').val(id_colegio);
+})
+</script>
+
 <script>
     .felim { text-align: right; }
     .felim { width: 60%; }
