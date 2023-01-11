@@ -734,6 +734,7 @@
                                                     <p>Listado Contratos
                                                     </p>
                                                 </a>
+                                            </li>
                                             <!-- <li class="nav-item">
                                                 <a href="{{ route('ListadoProductosContrato') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
@@ -741,6 +742,13 @@
                                                     </p>
                                                 </a>
                                             </li> -->
+                                            <li class="nav-item">
+                                                <a href="{{ route('EstadisticaContrato') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Estadisticas De Contratos
+                                                    </p>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 @endcan
