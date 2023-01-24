@@ -142,6 +142,22 @@
                             </div>
                         </div>
                         <br>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-6">
+                                <input type="text" class="form-control" style="font-weight: bold;"
+                                    id="validationTooltip02" readonly value="2023" required>
+                            </div>
+                            <div class="col-md-6 mb-6">
+                                @if (empty($mensual2023[0]->año2023))
+                                    <input type="text" class="form-control" id="2023mensual" readonly value="0"
+                                        required>
+                                @else
+                                    <input type="text" class="form-control" id="2023mensual" readonly
+                                        value="{{ number_format($mensual2023[0]->año2023, 0, ',', '.') }}" required>
+                                @endif
+                            </div>
+                        </div>
+                        <br>
                     </div>
                     <div class="col-md-6">
                         <div class="card">
@@ -249,6 +265,22 @@
                             </div>
                         </div>
                         <br>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-6">
+                                <input type="text" class="form-control" style="font-weight: bold;"
+                                    id="validationTooltip02" readonly value="2023" required>
+                            </div>
+                            <div class="col-md-6 mb-6">
+                                @if (empty($anual2023[0]->anualaño2023))
+                                    <input type="text" class="form-control" id="2023anual" readonly value="0"
+                                        required>
+                                @else
+                                    <input type="text" class="form-control" id="2022anual" readonly
+                                        value="{{ number_format($anual2023[0]->anualaño2023, 0, ',', '.') }}" required>
+                                @endif
+                            </div>
+                        </div>
+                        <br>
                     </div>
                     <div class="col-md-6">
                         <div class="card">
@@ -329,6 +361,11 @@
                                 @else
                                 <input type="text" class="form-control" hidden id="a2022" name="a2022" readonly value="{{ number_format($anual2022[0]->anualaño2022, 0, ',', '.') }}" required>
                                 @endif
+                                @if (empty($anual2023[0]->anualaño2023))
+                                <input type="text" class="form-control" hidden id="a2023" name="a2023" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="a2023" name="a2023" readonly value="{{ number_format($anual2023[0]->anualaño2023, 0, ',', '.') }}" required>
+                                @endif
                                 {{-- <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="{{ number_format($ventadiaria, 0, ',', '.') }}" required> --}}
                                 {{-- <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="{{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}" required> --}}
                                 {{-- <input type="text" class="form-control" hidden id="m2018" name="m2018" readonly value="{{ number_format($mensual2018[0]->año2018, 0, ',', '.') }}" required> --}}
@@ -363,10 +400,12 @@
         let mensual2020 = $("#2020mensual").val().replace(/\./g, '');
         let mensual2021 = $("#2021mensual").val().replace(/\./g, '');
         let mensual2022 = $("#2022mensual").val().replace(/\./g, '');
+        let mensual2023 = $("#2023mensual").val().replace(/\./g, '');
 
 
-        var categorias = ['2018', '2019', '2020', '2021', '2022'];
-        var valor = [mensual2018, mensual2019, mensual2020, mensual2021, mensual2022];
+
+        var categorias = ['2018', '2019', '2020', '2021', '2022','2023'];
+        var valor = [mensual2018, mensual2019, mensual2020, mensual2021, mensual2022,mensual2023];
 
 
         const ctx = document.getElementById('myChart').getContext('2d');
@@ -408,15 +447,18 @@
     </script>
 
     <script>
+        document.body.style.zoom = "100%"; // era 127%
+
         let anual2018 = $("#2018anual").val().replace(/\./g, '');
         let anual2019 = $("#2019anual").val().replace(/\./g, '');
         let anual2020 = $("#2020anual").val().replace(/\./g, '');
         let anual2021 = $("#2021anual").val().replace(/\./g, '');
         let anual2022 = $("#2022anual").val().replace(/\./g, '');
+        let anual2023 = $("#2023anual").val().replace(/\./g, '');
 
 
-        var categorias2 = ['2018', '2019', '2020', '2021', '2022'];
-        var valor2 = [anual2018, anual2019, anual2020, anual2021, anual2022];
+        var categorias2 = ['2018', '2019', '2020', '2021', '2022', '2023'];
+        var valor2 = [anual2018, anual2019, anual2020, anual2021, anual2022, anual2023];
 
         const ctx2 = document.getElementById('myChart2').getContext('2d');
         const myChart2 = new Chart(ctx2, {
