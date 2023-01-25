@@ -386,9 +386,7 @@ Lista Escolar
         $(add_button).click(function(e){
 
             if( codigo == null){
-                window.alert("Debe ingresar Codigo");
-            }if(cantidad == null){
-                window.alert("Debe ingresar Cantidad");
+                window.alert("Debe ingresar Codigo y cantidad");
             }
             else{
                 $( "#agregaritem" ).submit();
