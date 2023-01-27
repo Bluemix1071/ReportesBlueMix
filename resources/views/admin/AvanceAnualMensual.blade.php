@@ -275,7 +275,7 @@
                                     <input type="text" class="form-control" id="2023anual" readonly value="0"
                                         required>
                                 @else
-                                    <input type="text" class="form-control" id="2022anual" readonly
+                                    <input type="text" class="form-control" id="2023anual" readonly
                                         value="{{ number_format($anual2023[0]->anualaño2023, 0, ',', '.') }}" required>
                                 @endif
                             </div>
@@ -335,6 +335,11 @@
                                 <input type="text" class="form-control" hidden id="m2022" name="m2022" readonly value="0" required>
                                 @else
                                 <input type="text" class="form-control" hidden id="m2022" name="m2022" readonly value="{{ number_format($mensual2022[0]->año2022, 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($mensual2023[0]->año2023))
+                                <input type="text" class="form-control" hidden id="m2023" name="m2023" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="m2023" name="m2023" readonly value="{{ number_format($mensual2023[0]->año2023, 0, ',', '.') }}" required>
                                 @endif
                                 @if (empty($anual2018[0]->anualaño2018))
                                 <input type="text" class="form-control" hidden id="a2018" name="a2018" readonly value="0" required>
@@ -447,7 +452,7 @@
     </script>
 
     <script>
-        document.body.style.zoom = "100%"; // era 127%
+
 
         let anual2018 = $("#2018anual").val().replace(/\./g, '');
         let anual2019 = $("#2019anual").val().replace(/\./g, '');
@@ -457,7 +462,8 @@
         let anual2023 = $("#2023anual").val().replace(/\./g, '');
 
 
-        var categorias2 = ['2018', '2019', '2020', '2021', '2022', '2023'];
+
+        var categorias2 = ['2018', '2019', '2020', '2021', '2022','2023'];
         var valor2 = [anual2018, anual2019, anual2020, anual2021, anual2022, anual2023];
 
         const ctx2 = document.getElementById('myChart2').getContext('2d');
@@ -475,6 +481,7 @@
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(255, 159, 64, 0.2)'
+
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
@@ -483,6 +490,7 @@
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)',
                         'rgba(255, 159, 64, 1)'
+
                     ],
                     borderWidth: 1
                 }]

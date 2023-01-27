@@ -63,14 +63,14 @@ Lista Escolar
                                         <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
                                     <div class="row">
                                         <input type="text" class="form-control" placeholder="ID CURSO" name="idcurso" required id="idcurso" value="{{ $curso->id }}" style="display: none">
-                                        &nbsp;<input type="text" id="codigo" name="codigo" placeholder="Codigo" required class="form-control col-2" value=""/>
+                                        &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col-2" value=""/>
                                         &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
                                         &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
                                         &nbsp;<input type="number" id="cantidad" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
                                     </div>
                                      </form>
                                      <div class="col">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success" >Agregar Item</button>
-                                </div>
+                                    </div>
 
                             </div>
                                 </div>

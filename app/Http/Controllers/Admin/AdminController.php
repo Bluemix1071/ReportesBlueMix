@@ -2158,8 +2158,13 @@ public function stocktiemporeal (Request $request){
             $contrato=DB::table('producto')
             ->join('contrato_detalle','codigo_producto', '=', 'ARCODI')
             ->join('contratos','id_contratos', '=', 'fk_contrato')
+            ->join('bodeprod','contrato_detalle.codigo_producto','=','bodeprod.bpprod')
+            ->join('Suma_Bodega','contrato_detalle.codigo_producto','=','Suma_Bodega.inarti')
             ->where('nombre_contrato', $request->contrato)
             ->get();
+
+            //  dd($contrato[0]);
+
 
             $contratos=DB::table('contratos')
             ->get();
@@ -2178,6 +2183,8 @@ public function stocktiemporeal (Request $request){
             $contrato=DB::table('producto')
             ->join('contrato_detalle','codigo_producto', '=', 'ARCODI')
             ->join('contratos','id_contratos', '=', 'fk_contrato')
+            ->join('bodeprod','contrato_detalle.codigo_producto','=','bodeprod.bpprod')
+            ->join('Suma_Bodega','contrato_detalle.codigo_producto','=','Suma_Bodega.inarti')
             ->where('ARCODI', $request->codigo)
             ->get();
 
@@ -2197,10 +2204,10 @@ public function stocktiemporeal (Request $request){
 
     public function MantenedorContratoAgregarProducto(Request $request){
 
-        // dd($request->all());
+
 
         $validacion=DB::table('producto')
-        ->where('ARCODI', $request->codigo)
+        ->where('ARCODI', $request->ccodigo)
         ->get();
 
         $validacion2=DB::table('contrato_detalle')
@@ -2208,6 +2215,13 @@ public function stocktiemporeal (Request $request){
         ->where('fk_contrato', $request->contrato)
         ->get();
 
+        dd($request);
+
+        $validacion3=DB::table('contrato_detalle')
+        ->where('fk_contrato',$request->contrato)
+        ->get();
+
+        //dd($validacion3);
 
         if($validacion->isEmpty()){
 
@@ -2224,16 +2238,27 @@ public function stocktiemporeal (Request $request){
               }
 
               else{
+                if(!$validacion3->isEmpty()){
 
-            DB::table('contrato_detalle')->insert([
-            [
-                "codigo_producto" => $request->codigo,
-                "cantidad_contrato" => $request->cantidad,
-                "fk_contrato" => $request->contrato,
-                ]
-            ]);
+                    return redirect()->route('MantenedorContrato')->with('warning','Debe seleccionar contrato');
 
-            return redirect()->route('MantenedorContrato')->with('success','Producto Agregado');
+                  }
+
+                  else{
+
+                    DB::table('contrato_detalle')->insert([
+                        [
+                            "codigo_producto" => $request->codigo,
+                            "cantidad_contrato" => $request->cantidad,
+                            "fk_contrato" => $request->contrato,
+                            ]
+                        ]);
+
+                        return redirect()->route('MantenedorContrato')->with('success','Producto Agregado');
+
+              }
+
+
           }
         }
 
@@ -2677,6 +2702,7 @@ public function stocktiemporeal (Request $request){
         $anual2021=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2021-01-01" and ?) as anualaño2021 from cargos where catipo != 3  and cafeco between "2021-01-01" and ?' , [$h2021,$h2021]);
         $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$h2022,$h2022]);
         $anual2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2023-01-01" and ?) as anualaño2023 from cargos where catipo != 3  and cafeco between "2023-01-01" and ?' , [$fecha1,$fecha1]);
+
 
 
 
