@@ -10,6 +10,19 @@
 @section('contenido')
     <section>
     <div class="container my-4">
+        <h1 class="display-4">Buscar Código</h1>
+            <div class="card">
+                    <div class="card-body">
+                        <form action="{{ route('EstadisticaContratoDetalle') }}" method="post" style="display: inherit" target="_blank">
+                            <div class="row">
+                                <input type="text" class="form-control col-10" name="codigo" value=""  maxlength="7" placeholder="Código" required>
+                                <button type="submit" class="btn btn-success col">Buscar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    <div class="container my-4">
         <h1 class="display-4">Porductos en contratos</h1>
             <div class="card">
                     <div class="card-body">
@@ -25,14 +38,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($productos as $item)
+                                @foreach($productos_contratos as $item)
                                     <tr>
                                         <td>{{ $item->codigo_producto }}</td>
                                         <td>{{ $item->ARCOPV }}</td>
                                         <td>{{ $item->ARDESC }}</td>
                                         <td>{{ $item->ARMARCA }}</td>
                                         <td>
-                                            <form action="{{ route('EstadisticaContratoDetalle') }}" method="post" style="display: inherit">
+                                            <form action="{{ route('EstadisticaContratoDetalle', ['codigo' => $item->codigo_producto]) }}" method="post" style="display: inherit" target="_blank">
                                                 <button type="submit" class="btn btn-success">Ver</button>
                                             </form>
                                         </td>
@@ -44,12 +57,12 @@
                 </div>
             </div>
 
-            <div class="container my-4">
-        <h1 class="display-4">Porductos historicos en contratos</h1>
+            <!-- <div class="container my-4">
+        <h1 class="display-4">Porductos en contratos sin ventas</h1>
             <div class="card">
                     <div class="card-body">
                     <div class="table-responsive-xl">
-                        <table id="users" class="table table-sm table-hover">
+                        <table id="productossinventa" class="table table-sm table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">Codigo</th>
@@ -60,13 +73,54 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($productos_contratos_sin_venta as $item)
+                                    <tr>
+                                        <td>{{ $item->codigo_producto }}</td>
+                                        <td>{{ $item->ARCOPV }}</td>
+                                        <td>{{ $item->ARDESC }}</td>
+                                        <td>{{ $item->ARMARCA }}</td>
+                                        <td>
+                                            <form action="{{ route('EstadisticaContratoDetalle', ['codigo' => $item->codigo_producto]) }}" method="post" style="display: inherit">
+                                                <button type="submit" class="btn btn-success">Ver</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="container my-4">
+        <h1 class="display-4">Porductos Historicos en Contratos</h1>
+            <div class="card">
+                    <div class="card-body">
+                    <div class="table-responsive-xl">
+                        <table id="historicos" class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Codigo</th>
+                                    <th scope="col">Codigo Proveedor</th>
+                                    <th scope="col">Detalle</th>
+                                    <th scope="col">Marca</th>
+                                    <th scope="col">Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               @foreach($productos_historicos_contratos as $item)
                                <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                    <td>{{ $item->decodi }}</td>
+                                    <td>{{ $item->ARCOPV }}</td>
+                                    <td>{{ $item->Detalle }}</td>
+                                    <td>{{ $item->ARMARCA }}</td>
+                                    <td>
+                                        <form action="{{ route('EstadisticaContratoDetalle', ['codigo' => $item->decodi]) }}" method="post" style="display: inherit" target="_blank">
+                                                <button type="submit" class="btn btn-success">Ver</button>
+                                        </form>
+                                    </td>
                                </tr>
+                               @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -140,28 +194,143 @@
         <script>
 
             $(document).ready(function() {
+
+                $('#users thead tr').clone(true).appendTo( '#users thead' );
+                $('#users thead tr:eq(1) th').each( function (i) {
+                var title = $(this).text();
+                $(this).html( '<input type="text" class="form-control input-sm" placeholder="Buscar '+title+'" />' );
+
+                $( 'input', this ).on( 'keyup change', function () {
+                    if ( table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search( this.value )
+                            .draw();
+                    }
+                    });
+                });
+
                 var table = $('#users').DataTable({
                     order: [[ 0, "desc" ]],
                     orderCellsTop: true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'pdf', 'print'
-        ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'pdf', 'print'
+                    ],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
 
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
+                });
+
+                //table.columns(2).search( '2021-10-25' ).draw();
+            });
+
+            $(document).ready(function() {
+
+                $('#productossinventa thead tr').clone(true).appendTo( '#productossinventa thead' );
+                $('#productossinventa thead tr:eq(1) th').each( function (i) {
+                var title = $(this).text();
+                $(this).html( '<input type="text" class="form-control input-sm" placeholder="Buscar '+title+'" />' );
+
+                $( 'input', this ).on( 'keyup change', function () {
+                    if ( table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search( this.value )
+                            .draw();
+                    }
+                    });
+                });
+
+                var table = $('#productossinventa').DataTable({
+                    order: [[ 0, "desc" ]],
+                    orderCellsTop: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'pdf', 'print'
+                    ],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
+
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
+                });
+
+                //table.columns(2).search( '2021-10-25' ).draw();
+            });
+
+            $(document).ready(function() {
+
+               /*  $.ajax({
+                        url: '../admin/EstadisticaContratoJSON/',
+                        type: 'GET',
+                        success: function(result) {
+                            console.log(result);
+                            result.forEach(()=>{
+                                table.row.add(["1","2","3","4","5"]).draw(false);
+                            })
+                        }
+                }); */
+
+                $('#historicos thead tr').clone(true).appendTo( '#historicos thead' );
+                $('#historicos thead tr:eq(1) th').each( function (i) {
+                var title = $(this).text();
+                $(this).html( '<input type="text" class="form-control input-sm" placeholder="Buscar '+title+'" />' );
+
+                $( 'input', this ).on( 'keyup change', function () {
+                    if ( table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search( this.value )
+                            .draw();
+                    }
+                    });
+                });
+
+                var table = $('#historicos').DataTable({
+                    order: [[ 0, "desc" ]],
+                    orderCellsTop: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'pdf', 'print'
+                    ],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
+
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
                 });
 
                 //table.columns(2).search( '2021-10-25' ).draw();

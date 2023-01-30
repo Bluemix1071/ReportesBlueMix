@@ -259,6 +259,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/UpdateContrato','AdminController@UpdateContrato')->name('UpdateContrato');
     Route::get('/EstadisticaContrato','Contratos\EstadisticaContratoController@EstadisticaContrato')->name('EstadisticaContrato');
     Route::post('/EstadisticaContrato','Contratos\EstadisticaContratoController@EstadisticaContratoDetalle')->name('EstadisticaContratoDetalle');
+    Route::get('/VentaProdXContrato/{codigo},{fecha_in},{fecha_ter}','Contratos\EstadisticaContratoController@VentaProdXContrato')->name('VentaProdXContrato');
 
     Route::get('/MantenedorProducto','AdminController@MantenedorProducto')->name('MantenedorProducto');
     Route::post('/MantenedorProductoFiltro','AdminController@MantenedorProductoFiltro')->name('MantenedorProductoFiltro');
