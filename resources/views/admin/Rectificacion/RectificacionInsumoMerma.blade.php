@@ -36,6 +36,7 @@
                                     <option value="Diseño">Diseño</option>
                                     <option value="Informática">Informatica</option>
                                     <option value="Merma">Merma</option>
+                                    <option value="Libros">Libros</option>
                                     <option value="Papeleria">Papeleria</option>
                                     <option value="Servicio">Servicio</option>
                                     <option value="Vta. Asistida">Vta. Asistida</option>
@@ -151,6 +152,7 @@
                                         <option value="Informática">Informatica</option>
                                         <option value="Merma">Merma</option>
                                         <option value="Papeleria">Papeleria</option>
+                                        <option value="Libros">Libros</option>
                                         <option value="Servicio">Servicio</option>
                                         <option value="Vta. Asistida">Vta. Asistida</option>
                                         <option value="Web">Web</option>
@@ -318,6 +320,7 @@
                                 '<option>Diseño</option>'+
                                 '<option>Informatica</option>'+
                                 '<option>Merma</option>'+
+                                '<option>Libros</option>'+
                                 '<option>Papeleria</option>'+
                                 '<option>Servicio</option>'+
                                 '<option>Vta. Asistida</option>'+
@@ -406,6 +409,7 @@
                                 '<option>Diseño</option>'+
                                 '<option>Informatica</option>'+
                                 '<option>Merma</option>'+
+                                '<option>Libros</option>'+
                                 '<option>Papeleria</option>'+
                                 '<option>Servicio</option>'+
                                 '<option>Vta. Asistida</option>'+
