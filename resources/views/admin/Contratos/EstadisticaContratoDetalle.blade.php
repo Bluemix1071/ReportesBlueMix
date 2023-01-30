@@ -182,7 +182,7 @@
                                     <td>{{ number_format(intval($item->DEPREC), 0, ',', '.') }}</td>
                                 </tr>
                                 @endforeach
-                                <tr>
+                                <tr class="bg-primary">
                                     <td>{{ date('Y-m-d') }}</td>
                                     <td>{{ number_format(intval($costo[0]->PCCOSTO ), 0, ',', '.') }}</td>
                                     <td>{{ number_format(intval($costo[0]->PCPVDET), 0, ',', '.') }}</td>
