@@ -30,7 +30,7 @@ class EstadisticaContratoController extends Controller
         FROM dcargos
         left join cargos on dcargos.DENMRO = cargos.CANMRO
         left join producto on dcargos.DECODI = producto.ARCODI
-        WHERE DECODI NOT IN (SELECT codigo_producto from contrato_detalle) and cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and dcargos.DEFECO >= "2020-01-01" group by DECODI');
+        WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and dcargos.DEFECO >= "2020-01-01" group by DECODI');
         
         //select contrato_detalle.codigo_producto, producto.ARCOPV, producto.ARDESC, producto.ARMARCA from contrato_detalle left join producto on contrato_detalle.codigo_producto = producto.ARCODI group by codigo_producto;
 
