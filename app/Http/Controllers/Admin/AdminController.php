@@ -2972,7 +2972,7 @@ public function stocktiemporeal (Request $request){
 
         $facturas=DB::select('select USCODI, USFADE as desde, USFAHA as hasta, max(CANMRO) as ultima_factura, (USFAHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 8 group by USCODI');
 
-        $boletas=DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and fpago = "contado" group by USCODI');
+        $boletas=DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and forma_pago != "T" group by USCODI');
 
         $ultima_factura = DB::select('SELECT * FROM usuario order by USFAHA desc limit 1')[0];
 
