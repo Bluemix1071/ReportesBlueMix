@@ -2170,7 +2170,7 @@ public function stocktiemporeal (Request $request){
             LEFT join contratos on id_contratos = fk_contrato
             left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
             left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
-            where contratos.nombre_contrato =? group by codigo_producto', [$request->contrato]);
+            where contratos.nombre_contrato =?', [$request->contrato]);
 
 
 
@@ -2205,7 +2205,7 @@ public function stocktiemporeal (Request $request){
             LEFT join contratos on id_contratos = fk_contrato
             left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
             left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
-            where contrato_detalle.codigo_producto =? group by nombre_contrato', [$request->codigo]);
+            where contrato_detalle.codigo_producto =?', [$request->codigo]);
 
             $contratos=DB::table('contratos')
             ->get();
