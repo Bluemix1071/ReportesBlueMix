@@ -41,8 +41,6 @@
 
             <div class="card ">
                 <div class="card-header">
-                    <h3 class="card-title">Mantenedor De Contratos</h3>
-                    <br>
                     <div class="table-responsive-xl">
                         <table id="users" class="table table-sm table-hover">
                             <thead>
@@ -82,29 +80,29 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <br>
-                <div class="container">
-
-                    <div class="form-group row">
-                            <form action="{{ route('MantenedorContratoAgregarProducto') }}" method="post" enctype="multipart/form-data" class="form-inline" id="agregaritem">
-
-                            <div class="row">
-                            <input type="text" id="ccodigo" minlength="7" maxlength="7" name="ccodigo" placeholder="codigo" required class="form-control" size="3"value=""/>
-                            <input type="text" id="buscar_detalle"  placeholder="Detalle" readonly class="form-control" size="49" value=""/>
-                            <input type="text" id="buscar_marca"  placeholder="Marca" readonly class="form-control" size="10" value=""/>
-                                <select class="form-control" name="contrato" id="contrato" required>
-                                    <option value="">Seleccione Un Contrato</option>
-                                    @foreach ($contratosagregar as $item)
-                                        <option value="{{ $item->id_contratos }}">{{ $item->nombre_contrato }}</option>
-                                    @endforeach
-                                </select>
-                            <input type="number" id="cantidad" placeholder="Cantidad" required name="cantidad" class="form-control" size="5" value="" min="1" max="99999999"/>
-                            </div>
-                        </form>
-                        <div class="col"><button type="submit" id="add_field_button" class="btn btn-success" >Agregar</button></div>
+                    <div class="container">
+                        <br>
+                        <div class="form-group">
+                                <form action="{{ route('MantenedorContratoAgregarProducto') }}" method="post" enctype="multipart/form-data" class="form-inline" id="agregaritem">
+    
+                                <div class="col-11">
+                                <input type="text" id="ccodigo" minlength="7" maxlength="7" name="ccodigo" placeholder="Codigo" required class="form-control" size="8" value=""/>
+                                <input type="text" id="buscar_detalle"  placeholder="Detalle" readonly class="form-control" size="40" value=""/>
+                                <input type="text" id="buscar_marca"  placeholder="Marca" readonly class="form-control" size="9" value=""/>
+                                    <select class="form-control" name="contrato" id="contrato" required>
+                                        <option value="">Seleccione Un Contrato</option>
+                                        @foreach ($contratosagregar as $item)
+                                            <option value="{{ $item->id_contratos }}">{{ $item->nombre_contrato }}</option>
+                                        @endforeach
+                                    </select>
+                                <input type="number" id="cantidad" placeholder="Cant" required name="cantidad" class="form-control" value="" min="1" max="99999999" style="width: 8%"/>
+                                </div>
+                                <!-- <button type="button" id="add_field_button" class="btn btn-success btn-sm col" >+</button> -->
+                                <a class="btn btn-success col" href="#" role="button" id="add_field_button">Agregar</a>
+                            </form>
+                        </div>
                     </div>
-            </div>
+                </div>
             </div>
 
 
@@ -234,7 +232,8 @@
                     // console.log($( "#agregaritem" )[0].checkValidity());
 
                     if( $( "#agregaritem" )[0].checkValidity() == false){
-                        window.alert("Debe completar todos los campos");
+                        alert("Debe completar todos los campos");
+                        $('#ccodigo').focus();
                     }
                     else{
                         $( "#agregaritem" ).submit();

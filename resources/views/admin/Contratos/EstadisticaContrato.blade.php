@@ -104,6 +104,8 @@
                                     <th scope="col">Codigo Proveedor</th>
                                     <th scope="col">Detalle</th>
                                     <th scope="col">Marca</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Total</th>
                                     <th scope="col">Accion</th>
                                 </tr>
                             </thead>
@@ -114,6 +116,8 @@
                                     <td>{{ $item->ARCOPV }}</td>
                                     <td>{{ $item->Detalle }}</td>
                                     <td>{{ $item->ARMARCA }}</td>
+                                    <td>{{ $item->cantidad }}</td>
+                                    <td>{{ number_format(intval($item->total ), 0, ',', '.') }}</td>
                                     <td>
                                         <form action="{{ route('EstadisticaContratoDetalle', ['codigo' => $item->decodi]) }}" method="post" style="display: inherit" target="_blank">
                                                 <button type="submit" class="btn btn-success">Ver</button>

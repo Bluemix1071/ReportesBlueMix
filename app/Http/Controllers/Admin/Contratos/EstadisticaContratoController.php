@@ -13,11 +13,13 @@ class EstadisticaContratoController extends Controller
 
         $productos_contratos = DB::table('contrato_detalle')->leftjoin('producto', 'contrato_detalle.codigo_producto', '=', 'producto.ARCODI')->groupBy('codigo_producto')->get();
 
-        $productos_contratos_sin_venta = DB::select('select contrato_detalle.codigo_producto, producto.ARCOPV, producto.ARDESC, producto.ARMARCA, dcargos.DECODI from contrato_detalle
+        /* $productos_contratos_sin_venta = DB::select('select contrato_detalle.codigo_producto, producto.ARCOPV, producto.ARDESC, producto.ARMARCA, dcargos.DECODI from contrato_detalle
         left join producto on contrato_detalle.codigo_producto = producto.ARCODI
         left join dcargos on contrato_detalle.codigo_producto = dcargos.DECODI
         where isnull(decodi)
-        group by codigo_producto');
+        group by codigo_producto'); */
+
+        $productos_contratos_sin_venta = [];
 
         /* $productos_historicos_contratos = DB::select('SELECT decodi, ARCOPV, Detalle, ARMARCA FROM dcargos 
         left join cargos on dcargos.DENMRO = cargos.CANMRO 
@@ -26,11 +28,11 @@ class EstadisticaContratoController extends Controller
         (select codigo_producto from contrato_detalle where contrato_detalle.codigo_producto = dcargos.DECODI) 
         and cargos.nro_oc like "%SE%" group by DECODI'); */
 
-        $productos_historicos_contratos = DB::select('SELECT decodi, ARCOPV, Detalle, ARMARCA
+        $productos_historicos_contratos = DB::select('SELECT decodi, ARCOPV, Detalle, ARMARCA, sum(dcargos.DECANT) as cantidad, sum(dcargos.DEPREC*dcargos.DECANT) as total
         FROM dcargos
         left join cargos on dcargos.DENMRO = cargos.CANMRO
         left join producto on dcargos.DECODI = producto.ARCODI
-        WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and dcargos.DEFECO >= "2020-01-01" group by DECODI');
+        WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and dcargos.DEFECO >= "2020-01-01" group by DECODI');
         
         //select contrato_detalle.codigo_producto, producto.ARCOPV, producto.ARDESC, producto.ARMARCA from contrato_detalle left join producto on contrato_detalle.codigo_producto = producto.ARCODI group by codigo_producto;
 
