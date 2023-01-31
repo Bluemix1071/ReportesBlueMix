@@ -2170,7 +2170,7 @@ public function stocktiemporeal (Request $request){
             LEFT join contratos on id_contratos = fk_contrato
             left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
             left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
-            where CONTRATOS.nombre_contrato =? group by codigo_producto', [$request->contrato]);
+            where contratos.nombre_contrato =? group by codigo_producto', [$request->contrato]);
 
 
 

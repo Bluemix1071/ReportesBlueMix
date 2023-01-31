@@ -84,7 +84,7 @@
                         <br>
                         <div class="form-group">
                                 <form action="{{ route('MantenedorContratoAgregarProducto') }}" method="post" enctype="multipart/form-data" class="form-inline" id="agregaritem">
-    
+
                                 <div class="col-11">
                                 <input type="text" id="ccodigo" minlength="7" maxlength="7" name="ccodigo" placeholder="Codigo" required class="form-control" size="8" value=""/>
                                 <input type="text" id="buscar_detalle"  placeholder="Detalle" readonly class="form-control" size="40" value=""/>
