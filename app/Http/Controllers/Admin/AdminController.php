@@ -2155,13 +2155,24 @@ public function stocktiemporeal (Request $request){
 
         if($request->codigo == null){
 
-            $contrato=DB::table('producto')
-            ->join('contrato_detalle','codigo_producto', '=', 'ARCODI')
-            ->join('contratos','id_contratos', '=', 'fk_contrato')
-            ->join('bodeprod','contrato_detalle.codigo_producto','=','bodeprod.bpprod')
-            ->join('Suma_Bodega','contrato_detalle.codigo_producto','=','Suma_Bodega.inarti')
-            ->where('nombre_contrato', $request->contrato)
-            ->get();
+            // $contrato=DB::table('producto')
+            // ->leftjoin('contrato_detalle','codigo_producto', '=', 'ARCODI')
+            // ->leftjoin('contratos','id_contratos', '=', 'fk_contrato')
+            // ->leftjoin('bodeprod','contrato_detalle.codigo_producto','=','bodeprod.bpprod')
+            // ->leftjoin('Suma_Bodega','contrato_detalle.codigo_producto','=','Suma_Bodega.inarti')
+            // ->where('nombre_contrato', $request->contrato)
+            // ->groupby('arcodi')
+            // ->get();
+
+            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad
+            from contrato_detalle
+            LEFT join producto on ARCODI = codigo_producto
+            LEFT join contratos on id_contratos = fk_contrato
+            left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
+            left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
+            where CONTRATOS.nombre_contrato =? group by codigo_producto', [$request->contrato]);
+
+
 
             //  dd($contrato[0]);
 
@@ -2180,13 +2191,21 @@ public function stocktiemporeal (Request $request){
 
             else{
 
-            $contrato=DB::table('producto')
-            ->join('contrato_detalle','codigo_producto', '=', 'ARCODI')
-            ->join('contratos','id_contratos', '=', 'fk_contrato')
-            ->join('bodeprod','contrato_detalle.codigo_producto','=','bodeprod.bpprod')
-            ->join('Suma_Bodega','contrato_detalle.codigo_producto','=','Suma_Bodega.inarti')
-            ->where('ARCODI', $request->codigo)
-            ->get();
+            // $contrato=DB::table('producto')
+            // ->leftjoin('contrato_detalle','codigo_producto', '=', 'ARCODI')
+            // ->leftjoin('contratos','id_contratos', '=', 'fk_contrato')
+            // ->leftjoin('bodeprod','contrato_detalle.codigo_producto','=','bodeprod.bpprod')
+            // ->leftjoin('Suma_Bodega','contrato_detalle.codigo_producto','=','Suma_Bodega.inarti')
+            // ->where('ARCODI', $request->codigo)
+            // ->get();
+
+            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad
+            from contrato_detalle
+            LEFT join producto on ARCODI = codigo_producto
+            LEFT join contratos on id_contratos = fk_contrato
+            left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
+            left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
+            where contrato_detalle.codigo_producto =? group by nombre_contrato', [$request->codigo]);
 
             $contratos=DB::table('contratos')
             ->get();
