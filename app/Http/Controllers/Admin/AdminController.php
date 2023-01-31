@@ -3076,7 +3076,7 @@ public function stocktiemporeal (Request $request){
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->get();
 
-        // dd($ventas);
+
 
 
         // $ventas=DB::table('cargos')
