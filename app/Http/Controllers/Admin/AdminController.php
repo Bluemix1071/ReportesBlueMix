@@ -2164,18 +2164,14 @@ public function stocktiemporeal (Request $request){
             // ->groupby('arcodi')
             // ->get();
 
-            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad
+            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
             LEFT join producto on ARCODI = codigo_producto
             LEFT join contratos on id_contratos = fk_contrato
             left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
             left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
-            where contratos.nombre_contrato =?', [$request->contrato]);
-
-
-
-            //  dd($contrato[0]);
-
+            left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO >= "2020-01-01" group by decodi) d on codigo_producto = d.decodi
+            where contratos.nombre_contrato = ?', [$request->contrato]);
 
             $contratos=DB::table('contratos')
             ->get();
@@ -2199,12 +2195,13 @@ public function stocktiemporeal (Request $request){
             // ->where('ARCODI', $request->codigo)
             // ->get();
 
-            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad
+            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
             LEFT join producto on ARCODI = codigo_producto
             LEFT join contratos on id_contratos = fk_contrato
             left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
             left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
+            left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO >= "2020-01-01" group by decodi) d on codigo_producto = d.decodi
             where contrato_detalle.codigo_producto =?', [$request->codigo]);
 
             $contratos=DB::table('contratos')

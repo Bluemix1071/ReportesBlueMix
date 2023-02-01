@@ -52,6 +52,8 @@
                                     <th scope="col">Cantidad Contrato</th>
                                     <th scope="col">Sala</th>
                                     <th scope="col">Bodega</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Total</th>
                                     <th scope="col">Eliminar</th>
                                 </tr>
                             </thead>
@@ -69,6 +71,8 @@
                                                 {{ number_format($item->cantidad_contrato, 0, ',', '.') }}</td>
                                             <td style="text-align:left">{{ $item->bpsrea }}</td>
                                             <td style="text-align:left">{{ $item->cantidad }}</td>
+                                            <td style="text-align:left">{{ $item->total_cant }}</td>
+                                            <td style="text-align:left">{{ number_format(intval($item->total_suma), 0, ',', '.') }}</td>
                                             <td><a href="" data-toggle="modal" data-target="#eliminarproductocontrato"
                                                     data-codigo='{{ $item->codigo_producto }}'
                                                     data-contrato='{{ $item->nombre_contrato }}'
