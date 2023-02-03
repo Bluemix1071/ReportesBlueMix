@@ -10,7 +10,13 @@
 @section('contenido')
     <section>
     <div class="container my-4">
-        <h1 class="display-4">Buscar Código</h1>
+        <div class="row">
+            <h1 class="display-4 col">Buscar Código</h1>
+            <div class="col-1">
+                <br>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalayuda">?</button>
+            </div>
+        </div>
             <div class="card">
                     <div class="card-body">
                         <form action="{{ route('EstadisticaContratoDetalle') }}" method="post" style="display: inherit" target="_blank">
@@ -130,40 +136,59 @@
                     </div>
                 </div>
             </div>
+
+            <div class="container my-4">
+        <h1 class="display-4">Entidades Historicas con Ventas</h1>
+            <div class="card">
+                    <div class="card-body">
+                    <div class="table-responsive-xl">
+                        <table id="historicoscontratos" class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Rut</th>
+                                    <th scope="col">Razón</th>
+                                    <th scope="col">Giro</th>
+                                    <th scope="col">Depto</th>
+                                    <th scope="col">Cod Depto</th>
+                                    <th scope="col">Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($contratos_historicos as $item)
+                                    <tr>
+                                        <td>{{ $item->CARUTC }}</td>
+                                        <td>{{ $item->razon }}</td>
+                                        <td>{{ $item->giro_cliente }}</td>
+                                        <td>{{ $item->depto }}</td>
+                                        <td>{{ $item->cod_depto }}</td>
+                                        <td>
+                                            <form action="{{ route('EstadisticaEntidadDetalle', ['rut' => $item->CARUTC, 'depto' => $item->depto, 'cod_depto' => $item->cod_depto]) }}"  method="post" style="display: inherit" target="_blank">
+                                                <button type="submit" class="btn btn-success">Ver</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
     </section>
     
     <!-- Modal oconfirmacion de entrada mercaderia-->
-    <div class="modal fade" id="modalidevolver" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="modalayuda" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document" >
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">¿Seguro de Entar la Mercadería?</h5>
-                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button> -->
+                        <h5 class="modal-title" id="exampleModalLongTitle">Información</h5>
                     </div>
                     <div class="modal-body">
-                        <form method="post" id="desvForm" action="}">
                                 <div class="form-group row">
-                                    <label for="name"
-                                        class="col-md-4 col-form-label text-md-right">Solicita:</label>
-
-                                    <div class="col-md-6">
-                                        <input id="name" type="text"
-                                            class="form-control @error('name') is-invalid @enderror" name="solicita"
-                                            value="" required max="50" min="5" autocomplete="name" autofocus>
-
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
+                                    <p>Este modulo esta destinado a agrupar códigos por productos vendidos solo en contratos asi como las entidades.
+                                        Cabe recalcar que la información recopilada de este modulo corresponde desde el 01-01-2020 hasta la fecha.
+                                    </p>
                                 </div>
-                                <input hidden name="id_cotiz" id="id" value="">
-                                <button type="submit" class="btn btn-success">Entrar Mercadería</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -202,7 +227,7 @@
                 $('#users thead tr').clone(true).appendTo( '#users thead' );
                 $('#users thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
-                $(this).html( '<input type="text" class="form-control input-sm" placeholder="Buscar '+title+'" />' );
+                $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
 
                 $( 'input', this ).on( 'keyup change', function () {
                     if ( table.column(i).search() !== this.value ) {
@@ -246,7 +271,7 @@
                 $('#productossinventa thead tr').clone(true).appendTo( '#productossinventa thead' );
                 $('#productossinventa thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
-                $(this).html( '<input type="text" class="form-control input-sm" placeholder="Buscar '+title+'" />' );
+                $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
 
                 $( 'input', this ).on( 'keyup change', function () {
                     if ( table.column(i).search() !== this.value ) {
@@ -301,7 +326,7 @@
                 $('#historicos thead tr').clone(true).appendTo( '#historicos thead' );
                 $('#historicos thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
-                $(this).html( '<input type="text" class="form-control input-sm" placeholder="Buscar '+title+'" />' );
+                $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
 
                 $( 'input', this ).on( 'keyup change', function () {
                     if ( table.column(i).search() !== this.value ) {
@@ -338,6 +363,50 @@
                 });
 
                 //table.columns(2).search( '2021-10-25' ).draw();
+            });
+
+            $(document).ready(function() {
+
+            $('#historicoscontratos thead tr').clone(true).appendTo( '#historicoscontratos thead' );
+            $('#historicoscontratos thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+            $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
+
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( table.column(i).search() !== this.value ) {
+                    table
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                }
+                });
+            });
+
+            var table = $('#historicoscontratos').DataTable({
+                order: [[ 0, "desc" ]],
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'pdf', 'print'
+                ],
+                "language":{
+                "info": "_TOTAL_ registros",
+                "search":  "Buscar",
+                "paginate":{
+                "next": "Siguiente",
+                "previous": "Anterior",
+
+            },
+            "loadingRecords": "cargando",
+            "processing": "procesando",
+            "emptyTable": "no hay resultados",
+            "zeroRecords": "no hay coincidencias",
+            "infoEmpty": "",
+            "infoFiltered": ""
+            }
+            });
+
+            //table.columns(2).search( '2021-10-25' ).draw();
             });
 
         </script>

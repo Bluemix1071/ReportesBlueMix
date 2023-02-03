@@ -32,11 +32,15 @@ class EstadisticaContratoController extends Controller
         FROM dcargos
         left join cargos on dcargos.DENMRO = cargos.CANMRO
         left join producto on dcargos.DECODI = producto.ARCODI
-        WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and dcargos.DEFECO >= "2020-01-01" group by DECODI');
+        WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and dcargos.DEFECO >= "2020-01-01" and DETIPO = 8 group by DECODI');
         
         //select contrato_detalle.codigo_producto, producto.ARCOPV, producto.ARDESC, producto.ARMARCA from contrato_detalle left join producto on contrato_detalle.codigo_producto = producto.ARCODI group by codigo_producto;
 
-        return view('admin.Contratos.EstadisticaContrato', compact('productos_contratos', 'productos_historicos_contratos', 'productos_contratos_sin_venta'));
+        $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto  from cargos where nro_oc like "%SE%" and CAFECO >= "2020-01-01" and CATIPO = 8 group by cod_depto, CARUTC, depto');
+
+        //dd($contratos_historicos);
+
+        return view('admin.Contratos.EstadisticaContrato', compact('productos_contratos', 'productos_historicos_contratos', 'productos_contratos_sin_venta', 'contratos_historicos'));
     }
 
     public function EstadisticaContratoDetalle(Request $request){
@@ -86,5 +90,47 @@ class EstadisticaContratoController extends Controller
         AND DETIPO = 8 group by CARUTC');
 
         return response()->json($venta_producto_x_contrato);
+    }
+
+    public function EstadisticaEntidadDetalle(Request $request){
+
+        $cod_depto = $request->get('cod_depto');
+
+        $entidad = DB::select('select CLRUTC, CLRUTD, CLRSOC, CLDIRF, tablas.taglos as giro, DEPARTAMENTO, ciudades.nombre as ciudad, regiones.nombre as region from cliente
+        left join ciudades on cliente.CLCIUF = ciudades.id
+        left join regiones on cliente.region = regiones.id
+        left join tablas on cliente.CLGIRO = tablas.TANMRO
+        where CLRUTC = "'.$request->get('rut').'" and DEPARTAMENTO = '.$request->get('depto').' and tablas.tacodi = 8')[0];
+
+        $fecha1 = "2020-01-01";
+        $fecha2 = date('Y-m-d');
+
+        $productos_contrato = DB::select('select DECODI, ARCOPV, ARDESC, ARMARCA, sum(DECANT) as cantidad, sum(DECANT*DEPREC) as total from dcargos
+        left join cargos on dcargos.DENMRO = cargos.canmro
+        left join producto on dcargos.DECODI = producto.ARCODI
+        where nro_oc like "'.$request->get('cod_depto').'%" and CAFECO >= "2020-01-01" and CARUTC = "'.$request->get('rut').'" and depto = "'.$request->get('depto').'" and CATIPO = 8 and DECODI not like "V%" group by decodi;');
+
+        return view('admin.Contratos.EstadisticaEntidadDetalle', compact('productos_contrato', 'fecha1', 'fecha2', 'entidad', 'cod_depto'));
+    }
+
+    public function EstadisticaEntidadDetalleFecha(Request $request){
+
+        $cod_depto = $request->get('cod_depto');
+
+        $entidad = DB::select('select CLRUTC, CLRUTD, CLRSOC, CLDIRF, tablas.taglos as giro, DEPARTAMENTO, ciudades.nombre as ciudad, regiones.nombre as region from cliente
+        left join ciudades on cliente.CLCIUF = ciudades.id
+        left join regiones on cliente.region = regiones.id
+        left join tablas on cliente.CLGIRO = tablas.TANMRO
+        where CLRUTC = "'.$request->get('rut').'" and DEPARTAMENTO = '.$request->get('depto').' and tablas.tacodi = 8')[0];
+
+        $fecha1 = $request->get('fecha1');
+        $fecha2 = $request->get('fecha2');
+
+        $productos_contrato = DB::select('select DECODI, ARCOPV, ARDESC, ARMARCA, sum(DECANT) as cantidad, sum(DECANT*DEPREC) as total from dcargos
+        left join cargos on dcargos.DENMRO = cargos.canmro
+        left join producto on dcargos.DECODI = producto.ARCODI
+        where nro_oc like "'.$request->get('cod_depto').'%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CARUTC = "'.$request->get('rut').'" and depto = "'.$request->get('depto').'" and CATIPO = 8 and DECODI not like "V%" group by decodi;');
+
+        return view('admin.Contratos.EstadisticaEntidadDetalle', compact('productos_contrato', 'fecha1', 'fecha2', 'entidad', 'cod_depto'));
     }
 }
