@@ -119,10 +119,10 @@
                                                 <a href="" data-toggle="modal" data-target="#eliminarproductocontrato"
                                                     data-codigo='{{ $item->codigo_producto }}'
                                                     data-contrato='{{ $item->nombre_contrato }}'
-                                                    class="btn btn-danger btm-sm">Eliminar</a>
+                                                    class="btn btn-danger btm-sm">🗑</a>
                                                 <a>
                                                     <form action="{{ route('EstadisticaContratoDetalle', ['codigo' => $item->codigo_producto]) }}" method="post" style="display: inherit" target="_blank" class="form-inline">
-                                                        <button type="submit" class="btn btn-success">Ver</button>
+                                                        <button type="submit" class="btn btn-success">👀</button>
                                                     </form>
                                                 </a>
                                             </td>
