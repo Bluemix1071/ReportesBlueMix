@@ -8,6 +8,7 @@
 
 @endsection
 @section('contenido')
+    <div class="container-fluid" style="pointer-events: none; opacity: 0.4;" id="maindiv">
     <section>
     <div class="container my-4">
         <div class="row">
@@ -174,6 +175,7 @@
                 </div>
             </div>
     </section>
+    </div>
     
     <!-- Modal oconfirmacion de entrada mercaderia-->
     <div class="modal fade" id="modalayuda" tabindex="-1" role="dialog" aria-hidden="true">
@@ -196,6 +198,7 @@
 
     @endsection
     @section('script')
+    
         <script>
         $('#modalidevolver').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
@@ -203,6 +206,10 @@
             var modal = $(this);
             modal.find('.modal-body #id').val(id);
         })
+
+        $(window).on('load', function () {
+            $("#maindiv").css({"pointer-events": "all", "opacity": "1"});
+        }) 
         </script>
 
         <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
