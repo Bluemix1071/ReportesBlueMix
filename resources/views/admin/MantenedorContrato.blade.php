@@ -8,7 +8,7 @@
 
 @endsection
 @section('contenido')
-    <div class="container">
+    <div class="container-fluid">
         <h1 class="display-4">Mantenedor De Contratos
         </h1>
         <hr>
@@ -16,26 +16,48 @@
         <hr>
         <form action="{{ route('MantenedorContratoFiltro') }}" method="post" id="desvForm" class="form-inline">
             @csrf
-            <div class="form-group mb-2">
+            {{-- <div class="form-group mb-2">
                 @if (empty($codigo_producto))
                     <label for="staticEmail2" class="sr-only">Codigo</label>
                     <input type="text" id="codigo" minlength="7" maxlength="7" class="form-control" name="codigo" placeholder="codigo...">
                 @else
                     <input type="text" id="codigo" minlength="7" maxlength="7" class="form-control" name="codigo" value="{{ $codigo_producto }}">
                 @endif
+            </div> --}}
+            <div class="form-group mb-2">
+                @if (empty($fecha1))
+                    <label for="staticEmail2" class="sr-only">Fecha 1</label>Desde
+                    <input type="date" id="fecha1" class="form-control" name="fecha1">
+                @else
+                    <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}" >
+                @endif
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                @if (empty($fecha2))
+                    <label for="inputPassword2" class="sr-only">Fecha 2</label>Hasta
+                    <input type="date" id="fecha2" name="fecha2" class="form-control">
+                @else
+                    <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{ $fecha2 }}">
+                @endif
             </div>
             <div class="form-group mx-sm-3 mb-2">
                 <div class="col-sm-8">
-                    <select class="form-control" name="contrato">
-                        <option value="">Seleccione Un Contrato</option>
+                    <select class="form-control" name="contrato" id="contrato" required>
+                        <option value="">Seleccione contrato</option>
                         @foreach ($contratos as $contratos)
-                            <option value="{{ $contratos->nombre_contrato }}">{{ $contratos->nombre_contrato }}</option>
+                        @if ($contratos->nombre_contrato==$contratof)
+                        <option value="{{ $contratos->nombre_contrato }}" selected>{{ $contratos->nombre_contrato }}</option>
+                        @else
+                        <option value="{{ $contratos->nombre_contrato }}">{{ $contratos->nombre_contrato }}</option>
+                        @endif
                         @endforeach
+
                     </select>
                 </div>
             </div>
-            <div class="form-group mx-sm-3 mb-2">
-                <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+            <div class="col-md-2">
+                {{-- <button type="submit" class="btn btn-primary mb-2">Buscar</button> --}}
+                <button type="submit" class="btn btn-primary mb-2" onclick="validar()" id="agregar"><div id="text_add">Buscar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
             </div>
         </form>
 
@@ -48,13 +70,13 @@
                                     <th scope="col">Codigo</th>
                                     <th scope="col">Descripción</th>
                                     <th scope="col">Marca</th>
-                                    <th scope="col">Contrato</th>
+                                    {{-- <th scope="col">Contrato</th> --}}
                                     <th scope="col">Cantidad Contrato</th>
-                                    <th scope="col">Sala</th>
-                                    <th scope="col">Bodega</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Total</th>
-                                    <th scope="col">Eliminar</th>
+                                    <th scope="col">Stock Sala</th>
+                                    <th scope="col">Stock Bodega</th>
+                                    <th scope="col">Cantidad Vendida</th>
+                                    <th scope="col">Total Vendido</th>
+                                    <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,19 +86,45 @@
                                     @foreach ($contrato as $item)
                                         <tr>
                                             <th scope="row">{{ $item->codigo_producto }}</th>
+                                            @if (empty($item->ARDESC))
+                                            <td style="text-align:left">{{ "(1 Sin Existencia)" }}</td>
+                                            @else
                                             <td style="text-align:left">{{ $item->ARDESC }}</td>
+                                            @endif
+                                            @if (empty($item->ARMARCA))
+                                            <td style="text-align:left">{{ "(1 Sin Existencia)" }}</td>
+                                            @else
                                             <td style="text-align:left">{{ $item->ARMARCA }}</td>
-                                            <td style="text-align:left">{{ $item->nombre_contrato }}</td>
+                                            @endif
+                                            {{-- <td style="text-align:left">{{ $item->nombre_contrato }}</td> --}}
                                             <td style="text-align:center">
                                                 {{ number_format($item->cantidad_contrato, 0, ',', '.') }}</td>
+                                            @if (empty($item->bpsrea))
+                                                <td style="text-align:left">{{ 0 }}</td>
+                                            @else
                                             <td style="text-align:left">{{ $item->bpsrea }}</td>
+                                            @endif
+                                            @if (empty($item->cantidad))
+                                            <td style="text-align:left">{{ 0 }}</td>
+                                            @else
                                             <td style="text-align:left">{{ $item->cantidad }}</td>
+                                            @endif
+                                            @if (empty($item->total_cant))
+                                            <td style="text-align:left">{{ 0 }}</td>
+                                            @else
                                             <td style="text-align:left">{{ $item->total_cant }}</td>
-                                            <td style="text-align:left">{{ number_format(intval($item->total_suma), 0, ',', '.') }}</td>
-                                            <td><a href="" data-toggle="modal" data-target="#eliminarproductocontrato"
+                                            @endif
+                                            <td style="text-align:left">${{ number_format(intval($item->total_suma), 0, ',', '.') }}</td>
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#eliminarproductocontrato"
                                                     data-codigo='{{ $item->codigo_producto }}'
                                                     data-contrato='{{ $item->nombre_contrato }}'
                                                     class="btn btn-danger btm-sm">Eliminar</a>
+                                                <a>
+                                                    <form action="{{ route('EstadisticaContratoDetalle', ['codigo' => $item->codigo_producto]) }}" method="post" style="display: inherit" target="_blank" class="form-inline">
+                                                        <button type="submit" class="btn btn-success">Ver</button>
+                                                    </form>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -91,7 +139,7 @@
 
                                 <div class="col-11">
                                 <input type="text" id="ccodigo" minlength="7" maxlength="7" name="ccodigo" placeholder="Codigo" required class="form-control" size="8" value=""/>
-                                <input type="text" id="buscar_detalle"  placeholder="Detalle" readonly class="form-control" size="40" value=""/>
+                                <input type="text" id="buscar_detalle"  placeholder="Detalle" readonly class="form-control" size="45" value=""/>
                                 <input type="text" id="buscar_marca"  placeholder="Marca" readonly class="form-control" size="9" value=""/>
                                     <select class="form-control" name="contrato" id="contrato" required>
                                         <option value="">Seleccione Un Contrato</option>
@@ -99,7 +147,7 @@
                                             <option value="{{ $item->id_contratos }}">{{ $item->nombre_contrato }}</option>
                                         @endforeach
                                     </select>
-                                <input type="number" id="cantidad" placeholder="Cant" required name="cantidad" class="form-control" value="" min="1" max="99999999" style="width: 8%"/>
+                                <input type="number" id="cantidad" placeholder="Cant" required name="cantidad" class="form-control" value="" min="0" max="99999999" style="width: 8%"/>
                                 </div>
                                 <!-- <button type="button" id="add_field_button" class="btn btn-success btn-sm col" >+</button> -->
                                 <a class="btn btn-success col" href="#" role="button" id="add_field_button">Agregar</a>
@@ -111,7 +159,37 @@
 
 
         <!-- Modal -->
+        <div class="modal fade" id="eliminarproductocontrato" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                   <div class="modal-header">
+                     <h4 class="modal-title" id="myModalLabel">¿Eliminar Producto?</h4>
+                   </div>
+                    <div class="modal-body">
+                     <div class="card-body">
+                    <form method="post" action="{{ route('deleteproductocontrato')}}">
+                     {{ method_field('post') }}
+                     {{ csrf_field() }}
+                      @csrf
+                         <div class="form-group row" >
+                             <div class="col-md-6" >
+                                 <input type="text" value="" name="codigo" id="codigo" hidden>
+                                 <input type="text" value="" name="contrato" id="contrato" hidden>
 
+                                 <input readonly size="59" type="text" id="" value="Se eliminará el producto de este contrato" style="border: none; display: inline;font-family: inherit; font-size: inherit; padding: none; width: auto;">
+
+                             </div>
+                         </div>
+                         <div class="modal-footer">
+                         <button type="submit" class="btn btn-danger">Eliminar</button>
+                         <button type="button" data-dismiss="modal" class="btn btn-success">Cerrar</button>
+                         </div>
+                     </form>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
         <!-- FIN Modall -->
     </div>
     @endsection
@@ -127,7 +205,7 @@
             $('#users thead tr').clone(true).appendTo( '#users thead' );
             $('#users thead tr:eq(1) th').each( function (i) {
             var title = $(this).text();
-            $(this).html( '<input type="text" class="form-control input-sm" placeholder="Buscar '+title+'" />' );
+            $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
 
             $( 'input', this ).on( 'keyup change', function () {
                 if ( table.column(i).search() !== this.value ) {
@@ -215,7 +293,7 @@
                             console.log(result);
                             $('#buscar_detalle').val(result[0].ARDESC);
                             $('#buscar_marca').val(result[0].ARMARCA);
-                            $( "#contrato" ).focus();
+                            $( "#cantidad" ).focus();
                             $( "#buscar_cantidad" ).val(null);
                             codigo = result[0].ARCODI;
                             descripcion = result[0].ARDESC;
@@ -245,6 +323,22 @@
 
 
                 })
+
+                function validar(){
+       /*  $("#agregar").prop("disabled", true);
+        setTimeout(function(){
+            $("#agregar").prop("disabled", false);
+        }, 2000); */
+
+        if ( $('#desvForm')[0].checkValidity() ) {
+            $("#text_add").prop("hidden", true);
+            $('#spinner').prop('hidden', false);
+            $("#agregar").prop("disabled", true);
+            $('#desvForm').submit();
+        }else{
+            console.log("formulario no es valido");
+        }
+    }
 
         </script>
 

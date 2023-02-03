@@ -2036,6 +2036,7 @@ public function stocktiemporeal (Request $request){
 
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
+        $contrato=$request->contrato;
 
         $diseno=DB::table('dcargos')
         ->join('producto','ARCODI', '=', 'decodi')
@@ -2094,12 +2095,16 @@ public function stocktiemporeal (Request $request){
 
 
 
-        return view('admin.ventasCategoria',compact('diseno','categorias','todo','suma','fecha1','fecha2'));
+        return view('admin.ventasCategoria',compact('diseno','categorias','todo','suma','fecha1','fecha2','contrato'));
 
     }
 
 
     public function MantenedorContrato(Request $request){
+
+        $fecha1="2023-01-01";
+        $fecha2=date("Y-m-d");
+        $contratof="";
 
         $contratos=DB::table('contratos')
         ->get();
@@ -2108,7 +2113,7 @@ public function stocktiemporeal (Request $request){
         ->get();
 
 
-        return view('admin.MantenedorContrato',compact('contratos','contratosagregar'));
+        return view('admin.MantenedorContrato',compact('contratof','fecha1','fecha2','contratos','contratosagregar'));
 
     }
 
@@ -2131,7 +2136,7 @@ public function stocktiemporeal (Request $request){
 
     public function deleteproductocontrato(Request $request){
 
-        // dd($request->all());
+         //dd($request->all());
 
         $update = DB::table('contrato_detalle')
             ->join('contratos','id_contratos', '=', 'fk_contrato')
@@ -2163,6 +2168,11 @@ public function stocktiemporeal (Request $request){
             // ->where('nombre_contrato', $request->contrato)
             // ->groupby('arcodi')
             // ->get();
+            $contratof=$request->get('contrato');
+            $fecha1=$request->fecha1;
+            $fecha2=$request->fecha2;
+
+
 
             $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
@@ -2170,8 +2180,9 @@ public function stocktiemporeal (Request $request){
             LEFT join contratos on id_contratos = fk_contrato
             left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
             left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
-            left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO >= "2020-01-01" group by decodi) d on codigo_producto = d.decodi
-            where contratos.nombre_contrato = ?', [$request->contrato]);
+            left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO between ? and ? group by decodi) d on codigo_producto = d.decodi
+            where contratos.nombre_contrato = ?', [$request->fecha1,$request->fecha2,$request->contrato]);
+
 
             $contratos=DB::table('contratos')
             ->get();
@@ -2181,7 +2192,7 @@ public function stocktiemporeal (Request $request){
 
             // dd($contrato);
 
-            return view('admin.MantenedorContrato',compact('contrato', 'contratos','contratosagregar'));
+            return view('admin.MantenedorContrato',compact('fecha1','fecha2','contratof','contrato', 'contratos','contratosagregar'));
 
             }
 
@@ -2212,7 +2223,7 @@ public function stocktiemporeal (Request $request){
 
             // dd($contrato);
 
-            return view('admin.MantenedorContrato',compact('contrato', 'contratos','contratosagregar'));
+            return view('admin.MantenedorContrato',compact('fecha1','fecha2','contrato', 'contratos','contratosagregar'));
 
             }
 
@@ -2227,17 +2238,17 @@ public function stocktiemporeal (Request $request){
         ->get();
 
         $validacion2=DB::table('contrato_detalle')
-        ->where('codigo_producto', $request->codigo)
+        ->where('codigo_producto', $request->ccodigo)
         ->where('fk_contrato', $request->contrato)
         ->get();
 
-        dd($request);
 
-        $validacion3=DB::table('contrato_detalle')
-        ->where('fk_contrato',$request->contrato)
-        ->get();
+        // $validacion3=DB::table('contrato_detalle')
+        // ->where('fk_contrato',$request->contrato)
+        // ->get();
 
-        //dd($validacion3);
+        //dd($validacion2);
+
 
         if($validacion->isEmpty()){
 
@@ -2254,26 +2265,16 @@ public function stocktiemporeal (Request $request){
               }
 
               else{
-                if(!$validacion3->isEmpty()){
+                //dd($request);
+                DB::table('contrato_detalle')->insert([
+                    [
+                        "codigo_producto" => $request->ccodigo,
+                        "cantidad_contrato" => $request->cantidad,
+                        "fk_contrato" => $request->contrato,
+                        ]
+                    ]);
 
-                    return redirect()->route('MantenedorContrato')->with('warning','Debe seleccionar contrato');
-
-                  }
-
-                  else{
-
-                    DB::table('contrato_detalle')->insert([
-                        [
-                            "codigo_producto" => $request->codigo,
-                            "cantidad_contrato" => $request->cantidad,
-                            "fk_contrato" => $request->contrato,
-                            ]
-                        ]);
-
-                        return redirect()->route('MantenedorContrato')->with('success','Producto Agregado');
-
-              }
-
+                    return redirect()->route('MantenedorContrato')->with('success','Producto Agregado');
 
           }
         }
