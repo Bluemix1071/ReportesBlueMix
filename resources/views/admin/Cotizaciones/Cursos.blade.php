@@ -91,12 +91,16 @@ Lista Escolar
                                             </form>
                                         </div>
 
-                                        <div class="col-1" style="text-algin:right">
+                                        <div class="col-2" style="text-algin:right">
                                             <a href="" title="Eliminar Curso" data-toggle="modal" data-target="#modaleliminarcurso"
                                             class="btn btn-danger"
                                             data-id='{{ $item->id }}'
                                             data-id_colegio='{{ $colegio->id }}'
                                             >Eliminar</a>
+                                        </div>
+
+                                        <div class="col-md1" style="text-algin:right">
+                                            <label><input type="checkbox" id="cbox1" value="first_checkbox">Revisado</label><br>
                                         </div>
 
                                         </td>

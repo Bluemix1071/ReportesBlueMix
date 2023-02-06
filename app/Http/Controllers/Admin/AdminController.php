@@ -1704,13 +1704,16 @@ public function actualizaripmac(Request $request)
       $fecha2=$request->fecha2;
 
       $costos=DB::table('dcargos')
-      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle, PrecioCosto as PrecioCosto,  DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO, precios.PCCOSTO')
+      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle,tablas.taglos as familia ,PrecioCosto as PrecioCosto,  DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO, precios.PCCOSTO')
       ->join('precios',  \DB::raw('substr(dcargos.DECODI, 1, 5)'), '=', 'precios.PCCODI')
+      ->join ('producto','dcargos.DECODI','=','producto.arcodi')
+      ->join ('tablas','producto.ARGRPO2','=','tablas.TAREFE')
       ->where('DETIPO', '!=' , '3')
+      ->where('tablas.tacodi','=','22')
       ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
       ->get();
 
-    // dd($costos);
+    //dd($costos[0]);
 
 
   return view('admin.costosdetalle',compact('costos'));
