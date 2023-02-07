@@ -13,6 +13,20 @@
     <div class="container my-4">
         <div class="row">
             <h1 class="display-4 col">Buscar Código</h1>
+            <div style="text-align:center" class="col">
+                <form action="{{ route('EstadisticaContratoFecha') }}" method="post" style="margin-top: 5%;" class="form-inline" id="form-fecha">
+                        <tr>
+                            <td>Desde:</td>
+                            <td><input type="date" id="min1" value="{{ $fecha1 }}" name="fecha1"></td>
+                        </tr>
+                        <tr>
+                            <td>Hasta:</td>
+                            <td><input type="date" id="max1" value="{{ $fecha2 }}" name="fecha2"></td>
+                        </tr>
+                        &nbsp &nbsp &nbsp
+                        <!-- <button type="submit" class="btn btn-success btn-sm row">Buscar</button> -->
+                </form>
+            </div>
             <div class="col-1">
                 <br>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalayuda">?</button>
@@ -187,7 +201,7 @@
                     <div class="modal-body">
                                 <div class="form-group row">
                                     <p>Este modulo esta destinado a agrupar códigos por productos vendidos solo en contratos asi como las entidades.
-                                        Cabe recalcar que la información recopilada de este modulo corresponde desde el 01-01-2020 hasta la fecha.
+                                        Cabe recalcar que la información recopilada de este módulo corresponde desde el 01-01-2023 hasta la fecha, se pueden cambiar los rangos de fecha, esto solo afectan las tablas de "Porductos Historicos en Contratos" y "Entidades Historicas con Ventas".
                                     </p>
                                 </div>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -413,7 +427,11 @@
             }
             });
 
-            //table.columns(2).search( '2021-10-25' ).draw();
+            $('#min1, #max1').on('change', function () {
+                    //alert("cambiaste fecha");
+                    $( "#form-fecha" ).submit();
+            });
+
             });
 
         </script>
