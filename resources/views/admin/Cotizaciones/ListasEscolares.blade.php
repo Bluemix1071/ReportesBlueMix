@@ -36,8 +36,13 @@ Lista Escolar
 
                                 <div class="col-sm-6 col-md-6 invoice-col col">
                                     <strong>Colegio:</strong> {{ $colegio->colegio}} <br>
+                                    <input type="text" value="{{ $colegio->colegio}}" id="colegio" hidden>
                                     <strong>Curso:</strong> {{ $curso->nombre_curso }} <br>
+                                    <input type="text" value="{{ $curso->nombre_curso }}" id="curso" hidden>
                                     <strong>Subcurso:</strong> {{ $curso->letra }} <br>
+                                    <input type="text" value="{{ $curso->letra }}" id="subcurso" hidden>
+                                    <input type="text" value="{{ date('d-m-Y') }}" id="fecha" hidden>
+                                    <input type="text" value="{{ count($listas) }}" id="total" hidden>
                                 </div>
 
                             </div>
@@ -126,7 +131,7 @@ Lista Escolar
                                         <div class="container">
                                         <div class="row">
 
-                                    <div class="col-4" style="text-algin:right">
+                                    <div class="col-3">
                                         <form action="{{ route('EliminarItem')}}" method="post" enctype="multipart/form-data">
 
                                             <input type="text" value="{{$item->cod_articulo}}" name="cod_articulo" hidden>
@@ -134,7 +139,7 @@ Lista Escolar
                                             <input type="text" value="{{ $curso->id }}" name="idcurso" hidden>
                                             <input type="text" value="{{ $colegio->id }}" name="id_colegio" hidden>
 
-                                            <button class="btn btn-danger" style="margin-left: 5%" type="submit" >
+                                            <button class="btn btn-danger" type="submit" style="margin-left: -50%;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                                     <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -142,9 +147,19 @@ Lista Escolar
                                             </button>
                                         </form>
                                     </div>
+                                    &nbsp;
                                     <!-- boton comentar-->
                                     <div class="col-1" style="text-algin:right">
+                                    @if($item->comentario != "")
+                                        <a href="" title="Agregar Comentario" data-toggle="modal" data-target="#mimodalejemplo"
+                                        class="btn btn-info bg-success"
+                                        data-id='{{ $item->id }}'
+                                        data-comentario='{{ $item->comentario }}'
 
+                                        data-curso='{{ $curso->id }}'
+                                        data-colegio='{{  $colegio->id }}'
+                                        >Comentar</a>
+                                    @else
                                         <a href="" title="Agregar Comentario" data-toggle="modal" data-target="#mimodalejemplo"
                                         class="btn btn-info"
                                         data-id='{{ $item->id }}'
@@ -152,7 +167,8 @@ Lista Escolar
 
                                         data-curso='{{ $curso->id }}'
                                         data-colegio='{{  $colegio->id }}'
-                                        >comentar</a>
+                                        >Comentar</a>
+                                        @endif
                                     </div>
                                     <!-- boton comentar-->
                                     </td>
@@ -168,6 +184,8 @@ Lista Escolar
                                     @else
                                         <td style="text-align:right"><span
                                                 class="price text-success">${{ number_format($total, 0, ',', '.') }}</span>
+                                                <input type="text" value="{{ number_format($total, 0, ',', '.') }}" id="montosubtotal" hidden>
+                                                <input type="text" value="{{ number_format(($total-($total*0.10)), 0, ',', '.') }}" id="montototal" hidden>
                                         </td>
                                     @endif
                                 </tr>
@@ -309,9 +327,35 @@ Lista Escolar
     $('#Listas').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'pdf', 'print'
-
-        ],
+                        'copy', 'pdf',
+                        {
+                            extend: 'print',
+                            messageTop: 
+                            '<div class="row">'+
+                                '<div class="col">'+
+                                    '<h6><b>Colegio:</b> '+$('#colegio').val()+'</h6>'+
+                                    '<h6><b>Curso:</b> '+$('#curso').val()+'</h6>'+
+                                '</div>'+
+                                '<div class="col">'+
+                                    '<h6><b>Sub Curso:</b> '+$('#subcurso').val()+'</h6>'+
+                                    '<h6><b>Fecha Impresion:</b> '+$('#fecha').val()+'</h6>'+
+                                '</div>'+
+                            '</div>',
+                            title: '<h5>Lista Escolar</h5>',
+                            messageBottom: 
+                            '<div class="row">'+
+                                '<div class="col">'+
+                                    '<h6><b>Total Items:</b> '+$('#total').val()+'</h6>'+
+                                '</div>'+
+                                '<div class="col">'+
+                                    '<h6><b>Sub Total:</b> '+$('#montosubtotal').val()+'</h6>'+
+                                '</div>'+
+                                '<div class="col">'+
+                                    '<h6><b>Total(-10%):</b> '+$('#montototal').val()+'</h6>'+
+                                '</div>'+
+                            '</div>',
+                        }
+                    ],
           "language":{
         "info": "_TOTAL_ registros",
         "search":  "Buscar",
