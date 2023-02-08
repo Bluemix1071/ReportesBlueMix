@@ -19,6 +19,15 @@ Lista Escolar
             <div>
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end">
                     <div class="row">
+
+
+                        <div class="col-2" style="text-algin:right">
+                            <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
+                            class="btn btn-success"
+                            >Reporte</a>
+                        </div>
+
+
                         <h4>Agregar colegio:</h4>
                         <div class="col"><input type="text" class="form-control" placeholder="Nombre Colegio" name="nombrec" required id="nombrec"></div>
                         <div class="col">
@@ -88,6 +97,56 @@ Lista Escolar
           </div>
         </div>
 </div>
+
+<!-- Modal reporte-->
+<div class="modal fade" id="modalreporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Reporte listas Escolares</h4>
+            </div>
+            <div class="modal-body">
+
+            <table id="reporte" class="table table-sm table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Comuna</th>
+                  <th scope="col">colegio</th>
+                  <th scope="col">Curso</th>
+                  <th scope="col">Sub Curso</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($reporte as $item)
+                <tr>
+                    <td>{{ $item->nombre_comuna }}</td>
+                    <td>{{ $item->nombre_colegio }}</td>
+                    <td>{{ $item->nombre_curso }}</td>
+                    <td>{{ $item->letra }}</td>
+                    <td>
+                        <div class="container">
+                        <div class="row">
+                        <div class="col-2" style="text-algin:right">
+                            <form action="{{ route('listas', ['idcolegio' => $item->id_colegio ,'idcurso' => $item->id_curso]) }}" method="post" enctype="multipart/form-data">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                            </form>
+                        </div>
+                        </div>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal reporte-->
+
 <!-- Modal Eliminar Colegio-->
 
 <div class="modal fade" id="modaleliminarc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -146,7 +205,10 @@ Lista Escolar
     $('#colegios').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            'copy', 'pdf', {
+        extend: 'print',
+                            title: '<h5>Colegios</h5>',
+    }
 
         ],
           "language":{
@@ -166,21 +228,80 @@ Lista Escolar
       }
     } );
   } );
+
   </script>
-  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
-  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
-  <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
-  <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
-  <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
-  <script src="{{asset("js/buttons.flash.min.js")}}"></script>
-  <script src="{{asset("js/jszip.min.js")}}"></script>
-  <script src="{{asset("js/pdfmake.min.js")}}"></script>
-  <script src="{{asset("js/vfs_fonts.js")}}"></script>
-  <script src="{{asset("js/buttons.html5.min.js")}}"></script>
-  <script src="{{asset("js/buttons.print.min.js")}}"></script>
+
+<script>
+
+    $(document).ready(function() {
+
+    var table = $('#reporte').DataTable({
+    order: [[ 0, "desc" ]],
+    orderCellsTop: true,
+    dom: 'Bfrtip',
+    buttons: [
+    'copy', 'pdf', {
+        extend: 'print',
+                            title: '<h5>Reporte listas Escolares</h5>',
+    }
+    ],
+    "language":{
+    "info": "_TOTAL_ registros",
+    "search":  "Buscar",
+    "paginate":{
+    "next": "Siguiente",
+    "previous": "Anterior",
+
+    },
+    "loadingRecords": "cargando",
+    "processing": "procesando",
+    "emptyTable": "no hay resultados",
+    "zeroRecords": "no hay coincidencias",
+    "infoEmpty": "",
+    "infoFiltered": ""
+    }
+    });
+
+    minDate = $('#min');
+    maxDate = $('#max');
+
+        $('#reporte thead tr').clone(false).appendTo( '#reporte thead' );
+        $('#reporte thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎'+title+'" />' );
+
+        $( 'input', this ).on( 'keyup change', function () {
+            if ( table.column(i).search() !== this.value ) {
+                table
+                    .column(i)
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+
+    $('#min, #max').on('change', function () {
+    table.draw();
+
+    });
+    });
 
 
+    </script>
 
-<script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
+
+<script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
+<script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
+<script src="{{asset("js/jquery-3.3.1.js")}}"></script>
+<script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
+<script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
+<script src="{{asset("js/buttons.flash.min.js")}}"></script>
+<script src="{{asset("js/jszip.min.js")}}"></script>
+<script src="{{asset("js/pdfmake.min.js")}}"></script>
+<script src="{{asset("js/vfs_fonts.js")}}"></script>
+<script src="{{asset("js/buttons.html5.min.js")}}"></script>
+<script src="{{asset("js/buttons.print.min.js")}}"></script>
 
 @endsection

@@ -96,10 +96,10 @@ Lista Escolar
                                             class="btn btn-danger"
                                             data-id='{{ $item->id }}'
                                             data-id_colegio='{{ $colegio->id }}'
-                                            >Eliminar</a>
+                                            >🗑</a>
                                         </div>
-{{--
-                                        <div class="col-md1" style="text-algin:right">
+
+                                        {{-- <div class="col-md1" style="text-algin:right">
                                             <label><input type="checkbox" id="cbox1" value="first_checkbox">Revisado</label><br>
                                         </div> --}}
 
