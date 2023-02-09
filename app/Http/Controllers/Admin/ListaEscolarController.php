@@ -68,7 +68,7 @@ class ListaEscolarController extends Controller
         // group by id_curso");
         // dd($criticod);
 
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte','critico','criticod'));
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
 
 
     }
