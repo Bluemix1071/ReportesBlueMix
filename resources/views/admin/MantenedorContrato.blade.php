@@ -46,7 +46,7 @@
                         <option value="">Seleccione contrato</option>
                         @foreach ($contratos as $contratos)
                         @if ($contratos->nombre_contrato==$contratof)
-                        <option value="{{ $contratos->nombre_contrato }}" selected>{{ $contratos->nombre_contrato }}</option>
+                        <option value="{{ $contratos->nombre_contrato }}" selected id="seleccionado">{{ $contratos->nombre_contrato }}</option>
                         @else
                         <option value="{{ $contratos->nombre_contrato }}">{{ $contratos->nombre_contrato }}</option>
                         @endif
@@ -223,8 +223,12 @@
                 orderCellsTop: true,
         dom: 'Bfrtip',
         buttons: [
-        'copy', 'pdf', 'print'
-        ],
+        {
+            extend: 'copy',
+            title: null,
+            messageTop: 'VENTAS '+$("#seleccionado").val()+' desde '+$("#fecha1").val()+' al '+$("#fecha2").val()+''
+        },
+        'pdf', 'print'],
         "language":{
         "info": "_TOTAL_ registros",
         "search":  "Buscar",

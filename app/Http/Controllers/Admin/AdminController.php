@@ -2174,8 +2174,17 @@ public function stocktiemporeal (Request $request){
             $contratof=$request->get('contrato');
             $fecha1=$request->fecha1;
             $fecha2=$request->fecha2;
+            
+            $contratos=DB::table('contratos')
+            ->get();
 
+            $idcontrato = "";
 
+            foreach($contratos as $item){
+              if($item->nombre_contrato == $contratof){
+                $idcontrato = explode("-", $item->id_contratos_licitacion)[0];
+              }
+            }
 
             $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
@@ -2183,12 +2192,8 @@ public function stocktiemporeal (Request $request){
             LEFT join contratos on id_contratos = fk_contrato
             left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
             left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
-            left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO between ? and ? group by decodi) d on codigo_producto = d.decodi
+            left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "'.$idcontrato.'%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO between ? and ? group by decodi) d on codigo_producto = d.decodi
             where contratos.nombre_contrato = ?', [$request->fecha1,$request->fecha2,$request->contrato]);
-
-
-            $contratos=DB::table('contratos')
-            ->get();
 
             $contratosagregar=DB::table('contratos')
             ->get();
