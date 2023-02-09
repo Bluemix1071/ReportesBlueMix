@@ -41,8 +41,34 @@ class ListaEscolarController extends Controller
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id");
         //dd($reporte);
+        $critico=DB::select("select
+        ListaEscolar_detalle.id as crid,
+        ListaEscolar_detalle.id_curso as crid_curso,
+        colegio.id as crid_colegio,
+        ListaEscolar_detalle.cod_articulo as crcod_articulo,
+        producto.ARDESC as crdescripcion,
+        producto.ARMARCA as crmarca,
+        sum(ListaEscolar_detalle.cantidad) as crcantidad,
+        Suma_Bodega.cantidad AS crstock_bodega
+        from ListaEscolar_detalle
+        left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+        left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+        left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+        left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+        left join curso on ListaEscolar_detalle.id_curso = curso.id
+        left join colegio on curso.id_colegio = colegio.id
+        where Suma_Bodega.cantidad <= 10 or isnull(Suma_Bodega.cantidad)
+        group by ListaEscolar_detalle.cod_articulo");
+        // dd($critico[0]);
 
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
+        $criticod=DB::select("select listaescolar_detalle.*,curso.*,colegio.*,comunas.nombre as nombre_comuna from listaescolar_detalle
+        left join curso on listaescolar_detalle.id_curso = curso.id
+        left join colegio on curso.id_colegio = colegio.id
+        left join comunas on colegio.id_comuna = comunas.id
+        group by id_curso");
+        // dd($criticod);
+
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte','critico','criticod'));
 
 
     }

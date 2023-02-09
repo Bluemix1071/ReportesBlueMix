@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Lista Escolar
+Colegios
 @endsection
 @section('styles')
 
@@ -20,12 +20,18 @@ Lista Escolar
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end">
                     <div class="row">
 
+                        {{-- <div class="col-2" style="text-algin:right">
+                            <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalcritico"
+                            class="btn btn-danger"
+                            >Stock Critico</a>
+                        </div> --}}
 
+{{--
                         <div class="col-2" style="text-algin:right">
                             <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
                             class="btn btn-success"
                             >Reporte</a>
-                        </div>
+                        </div> --}}
 
 
                         <h4>Agregar colegio:</h4>
@@ -98,8 +104,107 @@ Lista Escolar
         </div>
 </div>
 
+{{-- <!-- Modal critico-->
+<div class="modal fade" id="modalcritico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Stock Critico</h4>
+            </div>
+            <div class="modal-body">
+
+            <table id="critico" class="table table-sm table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Codigo articulo</th>
+                  <th scope="col">Descripcion</th>
+                  <th scope="col">Marca</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Stock bodega</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                 @foreach($critico as $cr)
+                <tr>
+                    <td>{{ $cr->crcod_articulo }}</td>
+                    <td>{{ $cr->crdescripcion }}</td>
+                    <td>{{ $cr->crmarca }}</td>
+                    <td>{{ $cr->crcantidad }}</td>
+                    @if (empty($cr->crstock_bodega ))
+                    <td style="text-align:left">{{ 0 }}</td>
+                    @else
+                    <td style="text-align:left">{{ $cr->crstock_bodega  }}</td>
+                    @endif
+                    <td>
+                        <div class="col-2" style="text-algin:right">
+                            {{-- <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalcriticod"
+                            class="btn btn-primary"
+                            ><i class="fas fa-eye"></i></a> --}}
+                            {{-- <a href="" data-toggle="modal" data-target="#criticod" data-id='{{ $cr->crcod_articulo }}' onclick="criticod({{ $cr->cod_articulo }})" class="btn btn-primary btm-sm"><i class="fas fa-eye"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+
+            </div>
+
+        </div>
+    </div>
+</div> --}}
+<!-- Modal critico-->
+
+{{-- <!-- Modal criticod-->
+<div class="modal fade" id="modalcriticod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Stock Critico</h4>
+            </div>
+            <div class="modal-body">
+
+            <table id="criticod" class="table table-sm table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Codigo producto</th>
+                  <th scope="col">Nombre Comuna</th>
+                  <th scope="col">Nombre Colegio</th>
+                  <th scope="col">Nombre Curso</th>
+                  <th scope="col">Sub curso</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                 @foreach($criticod as $crd)
+                <tr>
+                    <td>{{ $crd->cod_articulo }}</td>
+                    <td>{{ $crd->nombre_comuna }}</td>
+                    <td>{{ $crd->nombre }}</td>
+                    <td>{{ $crd->nombre_curso }}</td>
+                    <td>{{ $crd->letra }}</td>
+                    <td>
+                        <div class="col-2" style="text-algin:right">
+                            <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalcriticod"
+                            class="btn btn-primary"
+                            ><i class="fas fa-eye"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal criticod--> --}}
+
 <!-- Modal reporte-->
-<div class="modal fade" id="modalreporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+{{-- <div class="modal fade" id="modalreporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -144,7 +249,7 @@ Lista Escolar
 
         </div>
     </div>
-</div>
+</div> --}}
 <!-- Modal reporte-->
 
 <!-- Modal Eliminar Colegio-->
@@ -230,6 +335,83 @@ Lista Escolar
   } );
 
   </script>
+
+<script>
+    $(document).ready(function() {
+      $('#critico').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+              'copy', 'pdf', {
+          extend: 'print',
+                              title: '<h5>Colegios</h5>',
+      }
+
+          ],
+            "language":{
+          "info": "_TOTAL_ registros",
+          "search":  "Buscar",
+          "paginate":{
+            "next": "Siguiente",
+            "previous": "Anterior",
+
+        },
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        }
+      } );
+    } );
+
+    </script>
+
+<script>
+    $(document).ready(function() {
+      $('#criticod').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+              'copy', 'pdf', {
+          extend: 'print',
+                              title: '<h5>Colegios</h5>',
+      }
+
+          ],
+            "language":{
+          "info": "_TOTAL_ registros",
+          "search":  "Buscar",
+          "paginate":{
+            "next": "Siguiente",
+            "previous": "Anterior",
+
+        },
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        }
+      } );
+    } );
+
+    </script>
+
+<script>
+
+    var table = $('#criticod').DataTable({
+         paging: false,
+         // searching: disabled,
+         "order": [
+             [1, "desc"]
+         ]
+     });
+     function criticod(cod_articulo){
+         this.table.columns(0).search("(^"+cod_articulo+"$)",true,false).draw();
+     }
+
+</script>
 
 <script>
 
