@@ -69,7 +69,7 @@ class ListaEscolarController extends Controller
         group by id_curso");
         //dd($criticod);
 
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte','critico','criticod'));
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','critico','criticod'));
 
 
     }
@@ -180,7 +180,7 @@ class ListaEscolarController extends Controller
         left join comunas on colegio.id_comuna = comunas.id
         group by id_curso");
 
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte','critico','criticod'));
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','critico','criticod'));
     }
 
 
@@ -406,7 +406,7 @@ class ListaEscolarController extends Controller
         left join comunas on colegio.id_comuna = comunas.id
         group by id_curso");
 
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte','critico','criticod'));
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','critico','criticod'));
     }
 
 
