@@ -137,7 +137,7 @@ Colegios
                     <td style="text-align:center;font-weight:bold;color: #dc3545">0</td>
                     @else
                         @if ($cr->stock_bodega <= 50 && $cr->stock_bodega > 25)
-                            <td style="text-align:center;font-weight:bold;color: #fcf819">{{ $cr->stock_bodega  }}</td>
+                            <td style="text-align:center;font-weight:bold;color: #cac700">{{ $cr->stock_bodega  }}</td>
                         @else
                             @if ($cr->stock_bodega <= 25 && $cr->stock_bodega > 11)
                             <td style="text-align:center;font-weight:bold;color: #ff8800">{{ $cr->stock_bodega  }}</td>
