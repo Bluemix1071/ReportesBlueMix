@@ -27,11 +27,11 @@ Colegios
                         </div>
 
 
-                        <div class="col-2" style="text-algin:right">
+                        {{-- <div class="col-2" style="text-algin:right">
                             <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
                             class="btn btn-success"
                             >Reporte</a>
-                        </div>
+                        </div> --}}
 
 
                         <h4>Agregar colegio:</h4>
@@ -245,7 +245,7 @@ Colegios
 <!-- Modal criticod-->
 
 <!-- Modal reporte-->
-<div class="modal fade" id="modalreporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+{{-- <div class="modal fade" id="modalreporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -290,7 +290,7 @@ Colegios
 
         </div>
     </div>
-</div>
+</div> --}}
 <!-- Modal reporte-->
 
 <!-- Modal Eliminar Colegio-->
