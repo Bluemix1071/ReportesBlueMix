@@ -61,9 +61,9 @@ class ListaEscolarController extends Controller
         group by ListaEscolar_detalle.cod_articulo");
         //dd($critico[0]);
 
-        $criticod=DB::select("select listaescolar_detalle.*,curso.id as curso_id,curso.nombre_curso as nombre_curso,curso.letra as subcurso, curso.id_colegio as cursoid_colegio
-        ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from listaescolar_detalle
-        left join curso on listaescolar_detalle.id_curso = curso.id
+        $criticod=DB::select("select ListaEscolar_detalle.*,curso.id as curso_id,curso.nombre_curso as nombre_curso,curso.letra as subcurso, curso.id_colegio as cursoid_colegio
+        ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from ListaEscolar_detalle
+        left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id
         group by id_curso");
@@ -77,14 +77,14 @@ class ListaEscolarController extends Controller
     public function Reporte(Request $request){
 
         $reporte=DB::select("
-        select listaescolar_detalle.cod_articulo,
-        producto.ARDESC,producto.ARMARCA,listaescolar_detalle.cantidad,curso.nombre_curso,curso.letra,
+        select ListaEscolar_detalle.cod_articulo,
+        producto.ARDESC,producto.ARMARCA,ListaEscolar_detalle.cantidad,curso.nombre_curso,curso.letra,
         colegio.nombre colegio,comunas.nombre comuna
-        from listaescolar_detalle
-        left join curso on listaescolar_detalle.id_curso = curso.id
+        from ListaEscolar_detalle
+        left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id
-        left join producto on listaescolar_detalle.cod_articulo=producto.ARCODI");
+        left join producto on ListaEscolar_detalle.cod_articulo=producto.ARCODI");
 
 
         return view('admin.Cotizaciones.Colegios',compact('reporte'));
@@ -173,9 +173,9 @@ class ListaEscolarController extends Controller
         group by ListaEscolar_detalle.cod_articulo");
         // dd($critico[0]);
 
-        $criticod=DB::select("select listaescolar_detalle.*,curso.id as curso_id,curso.nombre_curso as nombre_curso,curso.letra as subcurso, curso.id_colegio as cursoid_colegio
-        ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from listaescolar_detalle
-        left join curso on listaescolar_detalle.id_curso = curso.id
+        $criticod=DB::select("select ListaEscolar_detalle.*,curso.id as curso_id,curso.nombre_curso as nombre_curso,curso.letra as subcurso, curso.id_colegio as cursoid_colegio
+        ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from ListaEscolar_detalle
+        left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id
         group by id_curso");
@@ -399,9 +399,9 @@ class ListaEscolarController extends Controller
         group by ListaEscolar_detalle.cod_articulo");
         // dd($critico[0]);
 
-        $criticod=DB::select("select listaescolar_detalle.*,curso.id as curso_id,curso.nombre_curso as nombre_curso,curso.letra as subcurso, curso.id_colegio as cursoid_colegio
-        ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from listaescolar_detalle
-        left join curso on listaescolar_detalle.id_curso = curso.id
+        $criticod=DB::select("select ListaEscolar_detalle.*,curso.id as curso_id,curso.nombre_curso as nombre_curso,curso.letra as subcurso, curso.id_colegio as cursoid_colegio
+        ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from ListaEscolar_detalle
+        left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id
         group by id_curso");
