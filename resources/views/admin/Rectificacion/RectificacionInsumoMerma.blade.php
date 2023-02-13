@@ -28,7 +28,8 @@
                             &nbsp;<select name="" id="buscar_area" class="form-control col">
                                     <option value="Aseo">Aseo</option>
                                     <option value="Arte">Arte</option>
-                                    <option value="Administración">Administracion</option>
+                                    <option value="Administracion">Administracion</option>
+                                    <option value="Bodega">Bodega</option>
                                     <option value="Caja">Caja</option>
                                     <option value="Custodia">Custodia</option>
                                     <option value="Cordoneria">Cordoneria</option>
@@ -143,7 +144,8 @@
                                     <select name="area" id="buscar_area" class="form-control col">
                                         <option value="Aseo">Aseo</option>
                                         <option value="Arte">Arte</option>
-                                        <option value="Administración">Administracion</option>
+                                        <option value="Administracion">Administracion</option>
+                                        <option value="Bodega">Bodega</option>
                                         <option value="Caja">Caja</option>
                                         <option value="Custodia">Custodia</option>
                                         <option value="Cordoneria">Cordoneria</option>
@@ -313,6 +315,7 @@
                                 '<option>Aseo</option>'+
                                 '<option>Arte</option>'+
                                 '<option>Administracion</option>'+
+                                '<option>Bodega</option>'+
                                 '<option>Caja</option>'+
                                 '<option>Custodia</option>'+
                                 '<option>Cordoneria</option>'+
@@ -402,6 +405,7 @@
                                 '<option>Aseo</option>'+
                                 '<option>Arte</option>'+
                                 '<option>Administracion</option>'+
+                                '<option>Bodega</option>'+
                                 '<option>Caja</option>'+
                                 '<option>Custodia</option>'+
                                 '<option>Cordoneria</option>'+
