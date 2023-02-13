@@ -439,8 +439,8 @@ class ListaEscolarController extends Controller
         // dd($critico[0]);
 
         $criticod=DB::select("select ListaEscolar_detalle.id,ListaEscolar_detalle.id_curso,ListaEscolar_detalle.cod_articulo,ListaEscolar_detalle.cantidad,curso.id as curso_id,curso.nombre_curso as nombre_curso,curso.letra as subcurso, curso.id_colegio as cursoid_colegio
-        ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from listaescolar_detalle
-        left join curso on listaescolar_detalle.id_curso = curso.id
+        ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from ListaEscolar_detalle
+        left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id");
 
