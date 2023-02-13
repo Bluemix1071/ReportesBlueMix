@@ -17,15 +17,21 @@ Colegios
             <hr>
             <!-- Agregar Colegio-->
             <div>
+                {{-- <form method="get" action="{{ route('reportes') }}" id="formreporte" class="d-flex justify-content-end">
+                <div class="col-2" style="text-algin:right">
+                    <button type="submit" class="btn btn-danger">Stock Critico</button>
+                </div>
+                </form> --}}
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end">
                     <div class="row">
 
                         <div class="col-2" style="text-algin:right">
-                            <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalcritico"
-                            class="btn btn-danger"
-                            >Stock Critico</a>
-                        </div>
 
+                            <a href="{{ route('reportes') }}" class="">
+                                <button type="button" class="btn btn-danger">Stock Critico</button>
+                            </a>
+
+                        </div>
 
                         {{-- <div class="col-2" style="text-algin:right">
                             <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
@@ -105,7 +111,7 @@ Colegios
 </div>
 
  <!-- Modal critico-->
-<div class="modal fade" id="modalcritico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+{{-- <div class="modal fade" id="modalcritico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -133,7 +139,7 @@ Colegios
                     <td>{{ $cr->cantidad }}</td>
 
                     @if (empty($cr->stock_bodega))
-                    {{-- <td style="text-align:left">{{ 0 }}</td> --}}
+
                     <td style="text-align:center;font-weight:bold;color: #dc3545">0</td>
                     @else
                         @if ($cr->stock_bodega <= 50 && $cr->stock_bodega > 25)
@@ -149,13 +155,13 @@ Colegios
                                 @endif
                             @endif
                         @endif
-                    {{-- <td style="text-align:left">{{ $cr->stock_bodega  }}</td> --}}
+
                     @endif
 
                     <td>
                         <div class="col-2" style="text-algin:right">
                             <a href="" data-toggle="modal" data-target="#modalcriticod" data-cod_articulo='{{ $cr->cod_articulo }}' onclick="criticod({{ $cr->cod_articulo }})" class="btn btn-primary btm-sm"><i class="fas fa-eye"></i></a>
-                            {{-- <a href="" data-toggle="modal" data-target="#criticod" data-id='{{ $cr->crcod_articulo }}' onclick="criticod({{ $cr->crcod_articulo }})" class="btn btn-primary btm-sm"><i class="fas fa-eye"></i></a> --}}
+
                         </div>
                     </td>
                 </tr>
@@ -167,11 +173,11 @@ Colegios
 
         </div>
     </div>
-</div>
+</div> --}}
 <!-- Modal critico-->
 
  <!-- Modal criticod-->
-<div class="modal fade" id="modalcriticod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+{{-- <div class="modal fade" id="modalcriticod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -217,23 +223,6 @@ Colegios
                     </tr>
                     @endforeach
                 @endif
-
-                 {{-- @foreach($criticod as $crd)
-                <tr>
-                    <td>{{ $crd->cod_articulo }}</td>
-                    <td>{{ $crd->nombre_comuna }}</td>
-                    <td>{{ $crd->nombre }}</td>
-                    <td>{{ $crd->nombre_curso }}</td>
-                    <td>{{ $crd->letra }}</td>
-                    <td>
-                        <div class="col-2" style="text-algin:right">
-                            <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalcriticod"
-                            class="btn btn-primary"
-                            ><i class="fas fa-eye"></i></a>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach --}}
               </tbody>
             </table>
 
@@ -241,7 +230,7 @@ Colegios
 
         </div>
     </div>
-</div>
+</div> --}}
 <!-- Modal criticod-->
 
 <!-- Modal reporte-->
@@ -377,7 +366,7 @@ Colegios
 
   </script>
 
-<script>
+{{-- <script>
     $(document).ready(function() {
       $('#critico').DataTable( {
           dom: 'Bfrtip',
@@ -406,11 +395,11 @@ Colegios
       } );
     } );
 
-    </script>
+    </script> --}}
 
 
 
-<script>
+{{-- <script>
 
     $(document).ready(function() {
 
@@ -466,7 +455,7 @@ $('#min, #max').on('change', function () {
 });
 
 
-</script>
+</script> --}}
 
 
 <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
@@ -483,7 +472,7 @@ $('#min, #max').on('change', function () {
 <script src="{{asset("js/buttons.html5.min.js")}}"></script>
 <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
-<script>
+{{-- <script>
 
     var table = $('#criticod').DataTable({
          paging: false,
@@ -496,6 +485,6 @@ $('#min, #max').on('change', function () {
             this.table.columns(0).search("(^"+cod_articulo+"$)",true,false).draw();
         }
 
-    </script>
+    </script> --}}
 
 @endsection
