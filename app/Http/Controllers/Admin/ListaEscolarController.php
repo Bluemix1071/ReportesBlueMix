@@ -37,7 +37,7 @@ class ListaEscolarController extends Controller
         $comunas=DB::select('select * from comunas');
 
         $reporte=DB::select("
-        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
+        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id");
         //dd($reporte);
@@ -122,7 +122,7 @@ class ListaEscolarController extends Controller
         $comunas=DB::select('select * from comunas');
 
         $reporte=DB::select("
-        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
+        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id");
 
@@ -321,7 +321,7 @@ class ListaEscolarController extends Controller
         $comunas=DB::select('select * from comunas');
 
         $reporte=DB::select("
-        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
+        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id");
 
