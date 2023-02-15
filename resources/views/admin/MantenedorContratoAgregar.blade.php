@@ -66,6 +66,10 @@
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Agregar Contrato</button>
+
+            <a href="{{ route('MantenedorContrato') }}" class="" target="_blank">
+                <button type="button" class="btn btn-success">Ver Contratos</button>
+            </a>
             </form>
         </div>
         <br>
