@@ -23,21 +23,23 @@ Colegios
                 </div>
                 </form> --}}
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end">
+
                     <div class="row">
 
-                        <div class="col-2" style="text-algin:right">
 
-                            <a href="{{ route('reportes') }}" class="">
+                        <div class="col" style="text-algin:right">
+
+                            <a href="{{ route('reportes') }}" class="" target="_blank">
                                 <button type="button" class="btn btn-danger">Stock Critico</button>
                             </a>
 
                         </div>
 
-                        {{-- <div class="col-2" style="text-algin:right">
+                        <div class="col" style="text-algin:right">
                             <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
                             class="btn btn-success"
-                            >Reporte</a>
-                        </div> --}}
+                            >Reporte Colegios</a>
+                        </div>
 
 
                         <h4>Agregar colegio:</h4>
@@ -234,7 +236,7 @@ Colegios
 <!-- Modal criticod-->
 
 <!-- Modal reporte-->
-{{-- <div class="modal fade" id="modalreporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="modalreporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -279,7 +281,7 @@ Colegios
 
         </div>
     </div>
-</div> --}}
+</div>
 <!-- Modal reporte-->
 
 <!-- Modal Eliminar Colegio-->
@@ -399,7 +401,7 @@ Colegios
 
 
 
-{{-- <script>
+<script>
 
     $(document).ready(function() {
 
@@ -410,7 +412,7 @@ Colegios
     buttons: [
     'copy', 'pdf', {
         extend: 'print',
-        title: '<h5>Reporte listas Escolares</h5>',
+        title: '<h5>Reporte listas Escolares por Colegio</h5>',
     }
 ],
 "language":{
@@ -455,7 +457,7 @@ $('#min, #max').on('change', function () {
 });
 
 
-</script> --}}
+</script>
 
 
 <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>

@@ -36,13 +36,13 @@ class ListaEscolarController extends Controller
 
         $comunas=DB::select('select * from comunas');
 
-        // $reporte=DB::select("
-        // select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
-        // left join colegio on curso.id_colegio = colegio.id
-        // left join comunas on colegio.id_comuna = comunas.id");
+        $reporte=DB::select("
+        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
+        left join colegio on curso.id_colegio = colegio.id
+        left join comunas on colegio.id_comuna = comunas.id");
         //dd($reporte);
 
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
 
 
     }
@@ -121,13 +121,12 @@ class ListaEscolarController extends Controller
 
         $comunas=DB::select('select * from comunas');
 
-        // $reporte=DB::select("
-        // select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
-        // left join colegio on curso.id_colegio = colegio.id
-        // left join comunas on colegio.id_comuna = comunas.id");
-        //dd($reporte);
+        $reporte=DB::select("
+        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
+        left join colegio on curso.id_colegio = colegio.id
+        left join comunas on colegio.id_comuna = comunas.id");
 
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
     }
 
 
@@ -321,14 +320,13 @@ class ListaEscolarController extends Controller
 
         $comunas=DB::select('select * from comunas');
 
-        // $reporte=DB::select("
-        // select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
-        // left join colegio on curso.id_colegio = colegio.id
-        // left join comunas on colegio.id_comuna = comunas.id");
-        //dd($reporte);
+        $reporte=DB::select("
+        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.id id_comuna,comunas.nombre nombre_comuna from curso
+        left join colegio on curso.id_colegio = colegio.id
+        left join comunas on colegio.id_comuna = comunas.id");
 
 
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas'));
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
     }
 
 
