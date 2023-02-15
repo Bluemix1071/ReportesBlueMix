@@ -432,7 +432,7 @@ class ListaEscolarController extends Controller
         left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
         left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
-        where Suma_Bodega.cantidad <= 50 or isnull(Suma_Bodega.cantidad)
+        where Suma_Bodega.cantidad <= 50 or isnull(Suma_Bodega.cantidad) and ListaEscolar_detalle.cod_articulo != 2516800
         group by ListaEscolar_detalle.cod_articulo");
         // dd($critico[0]);
 
@@ -440,7 +440,8 @@ class ListaEscolarController extends Controller
         ,colegio.id as id_colegio,colegio.nombre as nombre_colegio,colegio.id_comuna as id_comuna ,comunas.nombre as nombre_comuna from ListaEscolar_detalle
         left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
-        left join comunas on colegio.id_comuna = comunas.id");
+        left join comunas on colegio.id_comuna = comunas.id
+        where ListaEscolar_detalle.cod_articulo != 2516800");
 
         return view('admin.Cotizaciones.ReportesListas', compact('critico','criticod'));
 
