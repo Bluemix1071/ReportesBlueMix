@@ -547,6 +547,12 @@ class SalaController extends Controller
 
     public function EditarRequerimientoCompra(Request $request){
 
+      $estado = "";
+
+      $now = DB::select('select now() as hoy')[0]->hoy;
+
+      $requerimiento = DB::table('requerimiento_compra')->where('id' , $request->id)->get()[0];
+
       DB::table('requerimiento_compra')
       ->where('id' , $request->id)
       ->update(
@@ -561,27 +567,74 @@ class SalaController extends Controller
           'observacion_interna' => $request->observacion_interna]
       );
 
+      if($requerimiento->estado != $request->estado){
+
+      switch ($request->estado) {
+        case "INGRESADO":
+          $estado = "fecha";
+          break;
+        case "ENVÍO OC":
+            $estado = "fecha_enviooc";
+            break;
+        case "BODEGA":
+            $estado = "fecha_bodega";
+            break;
+        case "RECHAZADO":
+            $estado = "fecha_rechazado";
+            break;
+        case "DESACTIVADO":
+            $estado = "fecha_desactivado";
+            break;   
+      }
+
+        DB::table('requerimiento_compra')
+        ->where('id' , $request->id)
+        ->update(
+          [$estado => $now]
+        );
+
+      }
+
       return redirect()->route('RequerimientoCompra')->with('success','Requerimiento Editado Correctamente');
 
     }
 
     public function EditarRequerimientoCompraMultiple(Request $request){
 
-      //dd($request);
+      $estado = "";
+
+      $now = DB::select('select now() as hoy')[0]->hoy;
+
+      switch ($request->estado_multiple) {
+        case "INGRESADO":
+            $estado = "fecha";
+          break;
+        case "ENVÍO OC":
+            $estado = "fecha_enviooc";
+            break;
+        case "BODEGA":
+            $estado = "fecha_bodega";
+            break;
+        case "RECHAZADO":
+            $estado = "fecha_rechazado";
+            break;
+        case "DESACTIVADO":
+            $estado = "fecha_desactivado";
+            break;   
+      }
 
       if(is_null($request->case)){
         return redirect()->route('RequerimientoCompra')->with('warning','No seleccionó Requerimientos para Editar');
       }else{
         foreach($request->case as $item){
 
-          error_log(print_r($item, true));
-
           DB::table('requerimiento_compra')
             ->where('id' , $item)
             ->update(
             [ 'estado' => $request->estado_multiple,
               'oc' => $request->oc_multiple,
-              'observacion_interna' => $request->observacion_interna_multiple]
+              'observacion_interna' => $request->observacion_interna_multiple,
+              $estado => $now]
           );
 
         }

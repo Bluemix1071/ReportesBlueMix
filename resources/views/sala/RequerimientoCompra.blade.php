@@ -185,6 +185,11 @@
                             data-oc='{{ $item->oc }}'
                             data-observacion='{{ $item->observacion }}'
                             data-observacion_interna='{{ $item->observacion_interna }}'
+                            data-fecha_ingreso='{{ $item->fecha }}'
+                            data-fecha_enviooc='{{ $item->fecha_enviooc }}'
+                            data-fecha_bodega='{{ $item->fecha_bodega }}'
+                            data-fecha_rechazado='{{ $item->fecha_rechazado }}'
+                            data-fecha_desactivado='{{ $item->fecha_desactivado }}'
                         ><i class="fa fa-eye" aria-hidden="true"></i></a>
                     
                       {{-- <button type="button" class="btn btn-primary" title="Cambiar estado Requerimiento" disabled><i class="fa fa-save" aria-hidden="true"></i></button> --}}
@@ -521,6 +526,31 @@
                                         @enderror
                                     </div>
                                 </div>
+                               
+                                <p for="estados" class="text-md-center" ><b>Estados</b></p>
+                                <!-- <div class="col-md-6">
+                                        <div><b>Ingresado:</b>2023-02-14</div>
+                                        <div><b>Envío OC:</b>2023-02-14<div>
+                                        <div><b>Bodega:</b>2023-02-14</div>
+                                        <div><b>Rechazado:</b>2023-02-14</div>
+                                        <div><b>Desactivado:</b>2023-02-14</div>
+                                </div> -->
+                                <div class="row">
+                                    <div class="col text-md-right">
+                                        <h6><b>Ingresado:</b> </h6>
+                                        <h6><b>Envío OC:</b> </h6>
+                                        <h6><b>Bodega:</b> </h6>
+                                        <h6><b>Rechazado:</b> </h6>
+                                        <h6><b>Desactivado:</b> </h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6><b id="fecha_ingreso"></b> </h6>
+                                        <h6><b id="fecha_enviooc"></b> </h6>
+                                        <h6><b id="fecha_bodega"></b> </h6>
+                                        <h6><b id="fecha_rechazado"></b> </h6>
+                                        <h6><b id="fecha_desactivado"></b> </h6>
+                                    </div>
+                                </div>
 
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Editar</button>
@@ -549,6 +579,11 @@
         var oc = button.data('oc')
         var observacion = button.data('observacion')
         var observacion_interna = button.data('observacion_interna')
+        var fecha_ingreso = button.data('fecha_ingreso')
+        var fecha_enviooc = button.data('fecha_enviooc')
+        var fecha_bodega = button.data('fecha_bodega')
+        var fecha_rechazado = button.data('fecha_rechazado')
+        var fecha_desactivado = button.data('fecha_desactivado')
         var modal = $(this)
         modal.find('.modal-body #id').val(id);
         modal.find('.modal-body #codigo').val(codigo);
@@ -560,6 +595,11 @@
         modal.find('.modal-body #oc').val(oc);
         modal.find('.modal-body #observacion').val(observacion);
         modal.find('.modal-body #observacion_interna').val(observacion_interna);
+        if(fecha_ingreso != ""){modal.find('.modal-body #fecha_ingreso').html(fecha_ingreso);}else{modal.find('.modal-body #fecha_ingreso').html("No Indica");}
+        if(fecha_enviooc != ""){modal.find('.modal-body #fecha_enviooc').html(fecha_enviooc);}else{modal.find('.modal-body #fecha_enviooc').html("No Indica");}
+        if(fecha_bodega != ""){modal.find('.modal-body #fecha_bodega').html(fecha_bodega);}else{modal.find('.modal-body #fecha_bodega').html("No Indica");}
+        if(fecha_rechazado != ""){modal.find('.modal-body #fecha_rechazado').html(fecha_rechazado);}else{modal.find('.modal-body #fecha_rechazado').html("No Indica");}
+        if(fecha_desactivado != ""){modal.find('.modal-body #fecha_desactivado').html(fecha_desactivado);}else{modal.find('.modal-body #fecha_desactivado').html("No Indica");}
 })
 </script>
 
