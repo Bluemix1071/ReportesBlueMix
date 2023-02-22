@@ -22,25 +22,22 @@ Colegios
                     <button type="submit" class="btn btn-danger">Stock Critico</button>
                 </div>
                 </form> --}}
-                <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end">
+                <div class="row">
+                    <div class="col" style="text-algin:right">
+
+                        <a href="{{ route('reportes') }}" class="" target="_blank">
+                            <button type="button" class="btn btn-danger">Stock Critico</button>
+                        </a>
+                        
+                        <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
+                        class="btn btn-success"
+                        >Reporte Colegios</a>
+
+                    </div>
+
+                <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end col-6">
 
                     <div class="row">
-
-
-                        <div class="col" style="text-algin:right">
-
-                            <a href="{{ route('reportes') }}" class="" target="_blank">
-                                <button type="button" class="btn btn-danger">Stock Critico</button>
-                            </a>
-
-                        </div>
-
-                        <div class="col" style="text-algin:right">
-                            <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
-                            class="btn btn-success"
-                            >Reporte Colegios</a>
-                        </div>
-
 
                         <h4>Agregar colegio:</h4>
                         <div class="col"><input type="text" class="form-control" placeholder="Nombre Colegio" name="nombrec" required id="nombrec"></div>
@@ -61,6 +58,7 @@ Colegios
 
                     </div>
                 </form>
+                </div>
             </div>
             <hr>
             <br>

@@ -71,7 +71,7 @@ Reportes
 
                             <td>
                                 <div class="col-2" style="text-algin:right">
-                                    <a href="" data-toggle="modal" data-target="#modalcriticod" onclick="criticod({{ $cr->cod_articulo }})" class="btn btn-primary btm-sm"><i class="fas fa-eye"></i></a>
+                                    <a href="" data-toggle="modal" data-target="#modalcriticod" onclick="criticod('{{ $cr->cod_articulo }}')" class="btn btn-primary btm-sm"><i class="fas fa-eye"></i></a>
 
                                 </div>
                             </td>
@@ -113,7 +113,7 @@ Reportes
               <tbody>
 
 
-                @if (empty($criticod))
+                <!-- @if (empty($criticod))
 
                 @else
                     @foreach ($criticod as $crd)
@@ -136,7 +136,7 @@ Reportes
                         </td>
                     </tr>
                     @endforeach
-                @endif
+                @endif -->
 
               </tbody>
             </table>
@@ -215,8 +215,23 @@ Reportes
              [1, "desc"]
             ]
         });
+
         function criticod(cod_articulo){
-            this.table.columns(0).search("(^"+cod_articulo+"$)",true,false).draw();
+            
+            $.ajax({
+            url: '../admin/ColegiosXCodigo/'+cod_articulo,
+            type: 'GET',
+            success: function(result) {
+                table.clear().draw();
+                result.forEach(items => {
+                    var html = '\<form action="{{ route("listas") }}" method="post" enctype="multipart/form-data">\
+                                    <input type="text" name="idcolegio" hidden value="'+items.id_colegio+'"> \
+                                    <input type="text" name="idcurso" hidden value="'+items.id_curso+'"> \
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button></form>\ ';
+                    table.rows.add([[items.cod_articulo,items.nombre_comuna,items.nombre_colegio,items.nombre_curso,items.subcurso, html]]).draw();
+                })          
+            }
+        });
         }
 
     </script>
