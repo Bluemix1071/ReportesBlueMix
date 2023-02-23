@@ -86,6 +86,7 @@
                                 <th>Marca</th>
                                 <th>Cantidad</th>
                                 <th>Total</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                             @foreach($productos_contrato as $item)
@@ -96,6 +97,12 @@
                                     <td>{{ $item->ARMARCA }}</td>
                                     <td>{{ $item->cantidad }}</td>
                                     <td>{{ number_format(intval($item->total), 0, ',', '.') }}</td>
+                                    <td>
+                                            <form action="{{ route('EstadisticaContratoDetalle', ['codigo' => $item->DECODI]) }}" method="post" style="display: inherit" target="_blank">
+                                                <button type="submit" class="btn btn-success">Ver</button>
+                                            </form>
+                                            
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>

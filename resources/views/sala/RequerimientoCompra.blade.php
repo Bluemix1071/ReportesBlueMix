@@ -21,21 +21,21 @@
         </div>
       </div> -->
 
-      <!-- <div class="card text-white bg-warning mb-3">
+      <div class="card text-white bg-warning mb-3">
                     <div class="card-header">
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="remove">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
-                            <h3 class="card-title">Logs de Cambios (15-09-2022):</h3>
+                            <h3 class="card-title">Logs de Cambios (22-02-2023):</h3>
                             <br>
                             <hr>
-                                * Ahora es posible editar cantidades de los requerimientos.
-                                <br>
-                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON).
+                                * Ahora es posible visualizar los cambios de estado de un requerimiento con fecha y hora en el apartado "Editar Requerimiento".
+                                <!-- <br>
+                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON). -->
                         </div>
-                </div> -->
+                </div>
 
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>
