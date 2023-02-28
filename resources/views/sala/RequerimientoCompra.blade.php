@@ -31,7 +31,7 @@
                             <h3 class="card-title">Logs de Cambios (22-02-2023):</h3>
                             <br>
                             <hr>
-                                * Ahora es posible visualizar los cambios de estado de un requerimiento con fecha y hora en el apartado "Editar Requerimiento".
+                                * Ahora es posible visualizar los cambios de estado de un requerimiento con la fecha y hora en el apartado "Editar Requerimiento".
                                 <!-- <br>
                                 * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON). -->
                         </div>

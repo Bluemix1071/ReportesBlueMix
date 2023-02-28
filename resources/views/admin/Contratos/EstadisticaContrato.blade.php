@@ -25,6 +25,7 @@
                         </tr>
                         &nbsp &nbsp &nbsp
                         <!-- <button type="submit" class="btn btn-success btn-sm row">Buscar</button> -->
+                        <button type="button" class="btn btn-success btn-sm row" onclick="validar()" id="agregar"><div id="text_add">Buscar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
                 </form>
             </div>
             <div class="col-1">
@@ -427,13 +428,23 @@
             }
             });
 
-            $('#min1, #max1').on('change', function () {
-                    //alert("cambiaste fecha");
+            /* $('#min1, #max1').on('change', function () {
                     $( "#form-fecha" ).submit();
-            });
+            }); */
 
-            });
-
+            
+        });
+        
+        function validar(){
+            if ( $('#form-fecha')[0].checkValidity() ) {
+                $("#text_add").prop("hidden", true);
+                $('#spinner').prop('hidden', false);
+                $("#agregar").prop("disabled", true);
+                $('#form-fecha').submit();
+            }else{
+                console.log("formulario no es valido");
+            }
+        }
         </script>
 
     @endsection

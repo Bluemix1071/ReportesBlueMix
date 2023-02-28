@@ -2105,8 +2105,8 @@ public function stocktiemporeal (Request $request){
 
     public function MantenedorContrato(Request $request){
 
-        $fecha1="2023-01-01";
         $fecha2=date("Y-m-d");
+        $fecha1 = date("Y-m-d",strtotime($fecha2."- 1 month"));
         $contratof="";
 
         $contratos=DB::table('contratos')
