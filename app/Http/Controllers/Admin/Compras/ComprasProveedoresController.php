@@ -465,11 +465,24 @@ class ComprasProveedoresController extends Controller
 
     public function list(){
 
-        $compras =DB::table('compras')->where('estado_verificacion', 2)->get();
+        $max = date('Y-m-d');
 
-        $fecha_hoy = date('Y-m-d');
+        $min = date("Y-m-d",strtotime($max."- 1 month"));
 
-        return view('admin.Compras.ListarComprasProveedores', compact('compras', 'fecha_hoy'));
+        $compras =DB::table('compras')->where('estado_verificacion', 2)->whereBetween('fecha_emision', [$min, $max])->get();
+
+        return view('admin.Compras.ListarComprasProveedores', compact('compras', 'max', 'min'));
+    }
+
+    public function listFecha(Request $request){
+
+        $max = $request->get('max');
+
+        $min = $request->get('min');
+
+        $compras =DB::table('compras')->where('estado_verificacion', 2)->whereBetween('fecha_emision', [$min, $max])->get();
+
+        return view('admin.Compras.ListarComprasProveedores', compact('compras', 'max', 'min'));
     }
 
     public function editar(Request $request){

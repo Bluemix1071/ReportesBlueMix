@@ -13,7 +13,7 @@ class EstadisticaContratoController extends Controller
 
         //$fecha1 = "2023-01-01";
         $fecha2 = date('Y-m-d');
-        $fecha1 = date("Y-m-d",strtotime($fecha2."- 1 month")); 
+        $fecha1 = date("Y-m-d",strtotime($fecha2."- 1 month"));
 
         $productos_contratos = DB::table('contrato_detalle')->leftjoin('producto', 'contrato_detalle.codigo_producto', '=', 'producto.ARCODI')->groupBy('codigo_producto')->get();
 

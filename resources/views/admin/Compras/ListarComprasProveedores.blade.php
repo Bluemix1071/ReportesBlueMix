@@ -16,17 +16,19 @@
                 <div class="card-header">
                     <div class="table-responsive-xl">
                     <div style="text-align:center">
+                    <form action="{{ route('ListarComprasFecha') }}" id="form-facturas">
                         <td>Desde:</td>
-                                    <td><input type="date" id="min" name="min" value="2021-01-01"></td>
+                                    <td><input type="date" id="min" name="min" value="{{ $min }}"></td>
                                 </tr>
                                 <tr>
                                     <td>Hasta:</td>
-                                    <td><input type="date" id="max" name="max" value="{{ $fecha_hoy }}"></td>
+                                    <td><input type="date" id="max" name="max" value="{{ $max }}"></td>
                                 </tr>
                                 &nbsp &nbsp &nbsp
                                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#mimodalinfo1">
                                 ?
                                 </button>
+                    </form>
                     </div>
                         <table id="users" class="table table-sm table-hover">
                             <thead>
@@ -303,8 +305,8 @@
                 });
                 
                 $('#min, #max').on('change', function () {
-                table.draw();
-                //table.columns(2).search( '2021-10-25' ).draw();
+                //table.draw();
+                    $( "#form-facturas" ).submit();
                 });
             });
 
