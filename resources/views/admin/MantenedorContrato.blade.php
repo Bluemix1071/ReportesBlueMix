@@ -114,7 +114,7 @@
                                             @else
                                             <td style="text-align:left">{{ $item->total_cant }}</td>
                                             @endif
-                                            <td style="text-align:left">${{ number_format(intval($item->total_suma), 0, ',', '.') }}</td>
+                                            <td style="text-align:left">{{ number_format(intval($item->total_suma), 0, ',', '.') }}</td>
                                             <td>
                                                 <a href="" data-toggle="modal" data-target="#eliminarproductocontrato"
                                                     data-codigo='{{ $item->codigo_producto }}'
