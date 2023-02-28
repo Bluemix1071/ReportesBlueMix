@@ -110,7 +110,7 @@ Lista Escolar
 
                                     @foreach ($listas as $item)
                                 <tr>
-                                    <td scope="col" style="text-align:left">{{ $item->cod_articulo }}</td>
+                                    <td scope="col" style="text-align:left"><a href="https://www.libreriabluemix.cl/search?q={{ $item->cod_articulo }}" target="_blank">{{ $item->cod_articulo }}</a></td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
                                     <td style="text-align:left">{{ $item->marca }}</td>
                                     <td style="text-align:left">{{ $item->cantidad }}</td>
