@@ -494,8 +494,8 @@ class SalaController extends Controller
 
       //$requerimiento_compra = DB::table('requerimiento_compra')->get();
 
-      $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(suma_bodega.cantidad), 0, suma_bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join suma_bodega on requerimiento_compra.codigo = suma_bodega.inarti');
+      $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
+      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti');
 
       $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
 
