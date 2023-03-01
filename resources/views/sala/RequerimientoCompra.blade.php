@@ -21,7 +21,7 @@
         </div>
       </div> -->
 
-      <div class="card text-white bg-warning mb-3">
+      <!-- <div class="card text-white bg-warning mb-3">
                     <div class="card-header">
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="remove">
@@ -32,10 +32,10 @@
                             <br>
                             <hr>
                                 * Ahora es posible visualizar los cambios de estado de un requerimiento con la fecha y hora en el apartado "Editar Requerimiento".
-                                <!-- <br>
-                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON). -->
+                                 <br>
+                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON).
                         </div>
-                </div>
+                </div> -->
 
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>
@@ -116,6 +116,11 @@
                   <th scope="col" class="col-3">Descipción</th>
                   <th scope="col">Marca</th>
                   <th scope="col">Cantidad</th>
+                  @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                    <th scope="col">Stock Bodega</th>
+                  @else
+                    <th scope="col" hidden>Stock Bodega</th>
+                  @endif
                   <th scope="col">Departamento</th>
                   <th scope="col">Estado</th>
                   <th scope="col">OC</th>
@@ -133,6 +138,11 @@
                       <td>{{ $item->descripcion }}</td>
                       <td>{{ $item->marca }}</td>
                       <td>{{ $item->cantidad }}</td>
+                      @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                        <td>{{ $item->stock_bodega }}</td>
+                      @else
+                        <td hidden>{{ $item->stock_bodega }}</td>
+                      @endif
                       <td>{{ $item->depto }}</td>
                       <td>
                         {{-- @if($item->estado == "INGRESADO")
@@ -630,7 +640,7 @@ function( settings, data, dataIndex ) {
     }
     var min = minDate.val();
     var max = maxDate.val();
-    var date = data[9].substring(0, 10);
+    var date = data[10].substring(0, 10);
     //alert(date.substring(0, 10));
 
     if (
@@ -667,7 +677,7 @@ function( settings, data, dataIndex ) {
     var table = $('#users').DataTable({
         orderCellsTop: true,
         dom: 'Bfrtip',
-        order: [[ 9, "desc" ]],
+        order: [[ 10, "desc" ]],
         buttons: [
             'copy', 'pdf', 'print'
 
