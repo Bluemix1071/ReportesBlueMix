@@ -71,12 +71,12 @@
                                     id="tipo_documento_id_factura" value="8"  onClick="ConfiguracionFactura()" {{ old('tipo_documento') == '8' ? 'checked' : '' }} >
                                 <label class="form-check-label" for="tipo_documento_id_factura">Factura</label>
                             </div>
-                            <div class="form-check form-check-inline">
+                            <!-- <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="tipo_documento"
                                     id="tipo_documento_id_guia" value="3"
                                     {{ old('tipo_documento') == '3' ? 'checked' : '' }} onClick="ConfiguracionGuia()">
                                 <label class="form-check-label" for="tipo_documento_id_guia">Guia</label>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="form-group col-md-6">
@@ -110,6 +110,10 @@
                               <div class="form-check form-check-inline d-none" id="pago_id_cobrar_div">
                                 <input class="form-check-input" type="radio" name="pago" id="pago_id_cobrar_input" value="cobrar" {{ old('pago') == 'cobrar' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="pago_id_cobrar_input">cobrar</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="pago" id="pago_id_transferencia" value="transferencia" {{ old('pago') == 'trasferencia' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="pago_id_transferencia">trasferencia</label>
                               </div>
                             </div>
                         </div>

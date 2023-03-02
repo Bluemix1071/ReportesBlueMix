@@ -49,6 +49,7 @@ class AnulacionDocumentosController extends Controller
     public function store(AnulacionDocumentosRequest $request)
     {
         $pago_efectivo=[];
+        $pago_transferencia=[];
         $pago_tarjeta =[];
         $x_cobrar =[];
 
@@ -91,6 +92,16 @@ class AnulacionDocumentosController extends Controller
 
                 if (is_null($pago_tarjeta)) {
                     return back()->with("flash", "el Documento " . $cargos->CANMRO . " no fue pagado con tarjeta")->withInput();
+                }
+                break;
+            case 'transferencia':
+                $pago_transferencia = DB::table('pago_transferencia')->where('nro_doc', $cargos->CANMRO)
+                    ->where('fecha', $request->fecha)
+                    ->where('monto', $request->valor_documento)
+                    ->first();
+
+                if (is_null($pago_transferencia)) {
+                    return back()->with("flash", "el Documento " . $cargos->CANMRO . " no fue pagado con transferencia")->withInput();
                 }
                 break;
             case 'cobrar':
@@ -148,11 +159,11 @@ class AnulacionDocumentosController extends Controller
 
         if (!empty($pago_efectivo)) {
             $pago_efectivo->delete();
-        } elseif (!empty($pago_tarjeta)) {
-
+        }elseif (!empty($pago_transferencia)){
+            $pago_transferencia = DB::table('pago_transferencia')->where('id', $pago_transferencia->id)->delete();
+        }elseif (!empty($pago_tarjeta)) {
             $pago_tarjeta->delete();
         } elseif (!empty($x_cobrar)) {
-
             $x_cobrar->delete();
         }
 
