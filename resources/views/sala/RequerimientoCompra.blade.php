@@ -66,7 +66,7 @@
                               <option value="ENVÍO OC">ENVÍO OC</option>
                               <option value="BODEGA">BODEGA</option>
                               <option value="RECHAZADO">RECHAZADO</option>
-                              <option value="BODEGA">DESACTIVADO</option>
+                              <option value="DESACTIVADO">DESACTIVADO</option>
                             </select>
                           </div>
                         @else
@@ -111,7 +111,7 @@
               <thead>
                 <tr>
                   <th scope="col" style="width: 3%;"></th>
-                  <th scope="col" style="width: 5%;">ID</th>
+                  <th scope="col" style="width: 5%; display:none;">ID</th>
                   <th scope="col">Codigo</th>
                   <th scope="col" class="col-3">Descipción</th>
                   <th scope="col">Marca</th>
@@ -125,7 +125,8 @@
                   <th scope="col">Estado</th>
                   <th scope="col">OC</th>
                   {{-- <th scope="col">Observación</th> --}}
-                  <th scope="col" class="col-1">Fecha Ingreso</th>
+                  <th scope="col" class="col-1" style="display:none">Fecha Ingreso</th>
+                  <th scope="col" class="col-1">Observacion Interna</th>
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>
@@ -133,8 +134,12 @@
                 @foreach ($requerimiento_compra as $item)
                     <tr>
                       <td><input type="checkbox" id="id_{{ $item->id }}" class="case" name="case[]" value="{{ $item->id }}" onclick="contador({{ $item->id }}, {{ $item->id }})"></td> 
-                      <td>{{ $item->id }}</td>
-                      <td>{{ $item->codigo }}</td>
+                      <td style="display:none">{{ $item->id }}</td>
+                      @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                        <td data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary('{{ $item->codigo }}')" class="text-primary">{{ $item->codigo }}</td>
+                      @else
+                        <td>{{ $item->codigo }}</td>
+                      @endif
                       <td>{{ $item->descripcion }}</td>
                       <td>{{ $item->marca }}</td>
                       <td>{{ $item->cantidad }}</td>
@@ -145,25 +150,6 @@
                       @endif
                       <td>{{ $item->depto }}</td>
                       <td>
-                        {{-- @if($item->estado == "INGRESADO")
-                        <select class="form-control form-control-sm bg-secondary" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
-                        @elseif($item->estado == "ENVÍO OC")
-                        <select class="form-control form-control-sm bg-primary" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
-                        @elseif($item->estado == "BODEGA")
-                        <select class="form-control form-control-sm bg-success" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
-                        @elseif($item->estado == "RECHAZADO")
-                        <select class="form-control form-control-sm bg-warning" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
-                        @elseif($item->estado == "DESACTIVADO")
-                        <select class="form-control form-control-sm bg-danger" aria-label="Default select example" name="estado{{$item->id}}" id="estado{{$item->id}}">
-                        @endif
-                            @foreach($estados as $estado)
-                              @if($item->estado == $estado['estado'] )
-                                <option value="{{ $estado['estado'] }}" selected>{{ $estado['estado'] }}</option>
-                              @else
-                                <option value="{{ $estado['estado'] }}">{{ $estado['estado'] }}</option>
-                              @endif
-                            @endforeach
-                          </select> --}}
                         
                         @if($item->estado == "INGRESADO")
                             <h4><span class="badge badge-secondary">{{ $item->estado }}</span></h4>
@@ -179,7 +165,12 @@
                         </td>
                       <td><a href="{{route('pdf.orden', $item->oc)}}" target="_blank">{{ $item->oc }}</a></td>
                       {{-- <td>{{ $item->observacion }}</td> --}}
-                      <td>{{ $item->fecha }}</td>
+                      <td style="display:none">{{ $item->fecha }}</td>
+                        @if($item->estado == "RECHAZADO")
+                            <td><p class="text-danger">{{ $item->observacion_interna }}</p></td>
+                        @else
+                            <td><p>{{ $item->observacion_interna }}</p></td>
+                        @endif
                       <td>
                      
                         {{-- <button type="button" class="btn btn-primary" target="_blank" title="Cambiar estado Requerimiento" data-toggle="modal" data-target="#cambiarestado" onclick="cargaridcambiar({{$item->id}}, $('#estado{{$item->id}} option:selected').text())"><i class="fa fa-save" aria-hidden="true"></i></button> --}}
@@ -200,7 +191,7 @@
                             data-fecha_bodega='{{ $item->fecha_bodega }}'
                             data-fecha_rechazado='{{ $item->fecha_rechazado }}'
                             data-fecha_desactivado='{{ $item->fecha_desactivado }}'
-                        ><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        >Detalle</i></a>
                     
                       {{-- <button type="button" class="btn btn-primary" title="Cambiar estado Requerimiento" disabled><i class="fa fa-save" aria-hidden="true"></i></button> --}}
                       {{-- <button type="button" class="btn btn-danger" title="Desactivar Requerimiento" disabled><i class="fa fa-trash" aria-hidden="true"></i></button> --}}
@@ -246,7 +237,16 @@
                               <option value="BODEGA">DESACTIVADO</option>
                         </select>
                         <input type="number" placeholder="Orden de Compra" required name="oc_multiple" class="form-control col" style="margin-bottom: 1%; margin-top: 1%;"  />
-                        <textarea required maxlength="250" class="form-control form-control" placeholder="Observaciones Internas Míltipes" name="observacion_interna_multiple" rows="3" style="margin-bottom: 1%; margin-top: 1%;"></textarea>
+                        <textarea required maxlength="250" class="form-control form-control" placeholder="Observaciones Internas Míltipes" name="observacion_interna_multiple" rows="3" style="margin-bottom: 1%; margin-top: 1%;" id="observacion_interna_multiple"></textarea>
+                            <span class="badge badge-dark" onclick="observacion_multiple('Proveedor sin stock')">Proveedor sin stock</span>
+                            <span class="badge badge-dark" onclick="observacion_multiple('Con stock en bodega')">Con stock en bodega</span>
+                            <span class="badge badge-dark" onclick="observacion_multiple('Tenemos en otras marcas')">Tenemos en otras marcas</span>
+                            <span class="badge badge-dark" onclick="observacion_multiple('Producto Descontinuado')">Descontinuado</span>
+                            <span class="badge badge-dark" onclick="observacion_multiple('Sin movimiento en meses')">Sin movimiento en meses</span>
+                            <span class="badge badge-dark" onclick="observacion_multiple('En estudio para comprar')">En estudio para comprar</span>
+                            <span class="badge badge-danger" onclick="observacion_multiple(null)">X</span>
+                        <br>
+                        <br>
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
                             <button type="submit" class="btn btn-success">Editar Múltiple</button>
                         @else
@@ -256,6 +256,87 @@
                 </div>
                 </form>
       </section>
+
+      <!-- Modal resumen -->
+      <div class="modal fade" id="modalresumencodigo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content" style="width: 150%;">
+                  <div class="modal-header">
+                      <h4 class="modal-title" id="myModalLabel">Resumen Producto</h4>
+                  </div>
+                  <!-- <div class="modal-body"> -->
+                      <!-- <div class="card-body"> -->
+                      <div class="card card-primary">
+                            <div class="card-header">
+                                <h2 class="card-title">Detalles Producto</h2>                         
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                    <!--  <i class="fas fa-times"></i> -->
+                                    </button>
+                                </div>
+                                <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" >Agregar <i class="fas fa-plus"></i></button> -->
+                            </div>
+                            <div class="card-body hide">
+                                
+                            <div class="callout-success row">
+                                
+                                <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>Codigo: <i id="resumen_codigo">cargando...</i></strong><br>
+                                    <strong>Barra: <i id="resumen_barra">cargando...</i></strong><br>
+                                    <strong>Detalle: <i id="resumen_detalle">cargando...</i></strong><br>
+                                    <strong>Tipo Unidad: <i id="resumen_unidad">cargando...</i></strong><br>
+                                </div>
+                                
+                                <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>Marca: <i id="resumen_marca">cargando...</i></strong><br>
+                                    <strong>Stock Sala: <i id="resumen_stock_sala">cargando...</i></strong><br>
+                                    <strong>Stock Bodega: <i id="resumen_stock_bodega">cargando...</i></strong><br>
+                                    <strong>Ultima Venta: <i id="resumen_ultima_venta">cargando...</i></strong><br>
+                                </div>
+                            
+                            </div>
+
+                            </div>
+                        </div>
+                        <h5>Ingresos</h5>
+                        <table id="ingresos" class="table table-hover dataTable table-sm" style="text-align:center; font-size: 15px;">
+                            <thead>
+                                <tr>
+                                    <th>Fcha. Ingreso</th>
+                                    <th>Cantidad</th>
+                                    <th>Proveedor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                        <h5>Variación de Costos</h5>
+                        <table id="costos" class="table table-hover dataTable table-sm" style="text-align:center; font-size: 15px;">
+                        <thead>
+                                <tr>
+                                    <th>Fcha. Cambio</th>
+                                    <th>Precio Costo</th>
+                                    <th>Precio Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                            </tbody>
+                        </table>
+
+                              <div class="modal-footer">
+                                  <!-- <button type="submit" class="btn btn-danger">Desactivar</button> -->
+                                  <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                              </div>
+                     <!--  </div> -->
+                 <!--  </div> -->
+              </div>
+          </div>
+      </div>
 
         <!-- Modal desactivar -->
         <div class="modal fade" id="desactivar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -279,6 +360,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Modal cambiar estado -->
       <div class="modal fade" id="cambiarestado" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -524,7 +606,8 @@
 
                                     <div class="col-md-6">
                                     @if(session()->get('email') == "adquisiciones@bluemix.cl")
-                                        <textarea id="observacion_interna" maxlength="250" class="form-control form-control-sm" placeholder="Observaciones Internas" name="observacion_interna" rows="3"></textarea>
+                                        <textarea id="observacion_interna" maxlength="250" class="form-control form-control-sm" placeholder="Observaciones Internas" name="observacion_interna" rows="3" id="observacion_interna"></textarea>
+                                        
                                     @else
                                         <textarea id="observacion_interna" maxlength="250" class="form-control form-control-sm" placeholder="Observaciones Internas" name="observacion_interna" rows="3" readonly></textarea>
                                     @endif
@@ -536,6 +619,16 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                    <span class="badge badge-dark" onclick="observacion('Proveedor sin stock')">Proveedor sin stock</span>
+                                    <span class="badge badge-dark" onclick="observacion('Con stock en bodega')">Con stock en bodega</span>
+                                    <span class="badge badge-dark" onclick="observacion('Tenemos en otras marcas')">Tenemos otras marcas</span>
+                                    <span class="badge badge-dark" onclick="observacion('Producto Descontinuado')">Descontinuado</span>
+                                    <span class="badge badge-dark" onclick="observacion('Sin movimiento en meses')">Sin movimiento en meses</span>
+                                    <span class="badge badge-dark" onclick="observacion('En estudio para comprar')">En estudio para comprar</span>
+                                    <span class="badge badge-danger" onclick="observacion(null)">X</span>
+                                @endif
                                
                                 <p for="estados" class="text-md-center" ><b>Estados</b></p>
                                 <!-- <div class="col-md-6">
@@ -605,11 +698,11 @@
         modal.find('.modal-body #oc').val(oc);
         modal.find('.modal-body #observacion').val(observacion);
         modal.find('.modal-body #observacion_interna').val(observacion_interna);
-        if(fecha_ingreso != ""){modal.find('.modal-body #fecha_ingreso').html(fecha_ingreso);}else{modal.find('.modal-body #fecha_ingreso').html("No Indica");}
-        if(fecha_enviooc != ""){modal.find('.modal-body #fecha_enviooc').html(fecha_enviooc);}else{modal.find('.modal-body #fecha_enviooc').html("No Indica");}
-        if(fecha_bodega != ""){modal.find('.modal-body #fecha_bodega').html(fecha_bodega);}else{modal.find('.modal-body #fecha_bodega').html("No Indica");}
-        if(fecha_rechazado != ""){modal.find('.modal-body #fecha_rechazado').html(fecha_rechazado);}else{modal.find('.modal-body #fecha_rechazado').html("No Indica");}
-        if(fecha_desactivado != ""){modal.find('.modal-body #fecha_desactivado').html(fecha_desactivado);}else{modal.find('.modal-body #fecha_desactivado').html("No Indica");}
+        if(fecha_ingreso != "0000-00-00 00:00:00"){modal.find('.modal-body #fecha_ingreso').html(fecha_ingreso);}else{modal.find('.modal-body #fecha_ingreso').html("No Indica");}
+        if(fecha_enviooc != "0000-00-00 00:00:00"){modal.find('.modal-body #fecha_enviooc').html(fecha_enviooc);}else{modal.find('.modal-body #fecha_enviooc').html("No Indica");}
+        if(fecha_bodega != "0000-00-00 00:00:00"){modal.find('.modal-body #fecha_bodega').html(fecha_bodega);}else{modal.find('.modal-body #fecha_bodega').html("No Indica");}
+        if(fecha_rechazado != "0000-00-00 00:00:00"){modal.find('.modal-body #fecha_rechazado').html(fecha_rechazado);}else{modal.find('.modal-body #fecha_rechazado').html("No Indica");}
+        if(fecha_desactivado != "0000-00-00 00:00:00"){modal.find('.modal-body #fecha_desactivado').html(fecha_desactivado);}else{modal.find('.modal-body #fecha_desactivado').html("No Indica");}
 })
 </script>
 
@@ -626,6 +719,118 @@
 <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
 <script>
+
+var ingresos = $('#ingresos').DataTable({
+        orderCellsTop: true,
+        dom: 'Bfrtip',
+        order: [[ 0, "desc" ]],
+        buttons: [
+            'copy', 'pdf', 'print'
+
+        ],
+          "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
+      },
+      fixedHeader: true
+    }); 
+
+    var costos = $('#costos').DataTable({
+        orderCellsTop: true,
+        dom: 'Bfrtip',
+        order: [[ 0, "desc" ]],
+        buttons: [
+            'copy', 'pdf', 'print'
+
+        ],
+          "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
+      },
+      fixedHeader: true
+    });
+
+    truncateDecimals = function (number) {
+        return Math[number < 0 ? 'ceil' : 'floor'](number);
+    };
+
+function loadsumary(codigo){
+
+    ingresos.clear().draw();
+    costos.clear().draw();
+
+                $('#resumen_codigo').text('cargando...');
+                $('#resumen_barra').text('cargando...');
+                $('#resumen_detalle').text('cargando...');
+                $('#resumen_marca').text('cargando...');
+                $('#resumen_unidad').text('cargando...');
+                $('#resumen_stock_sala').text('cargando...');
+                $('#resumen_stock_bodega').text('cargando...');
+                $('#resumen_ultima_venta').text('cargando...');
+
+    $.ajax({
+            url: '../Sala/ResumenProducto/'+codigo,
+            type: 'GET',
+            success: function(result) {
+                $('#resumen_codigo').text(result[0].arcodi);
+                $('#resumen_barra').text(result[0].arcbar);
+                $('#resumen_detalle').text(result[0].ardesc);
+                $('#resumen_marca').text(result[0].armarca);
+                $('#resumen_unidad').text(result[0].ARDVTA);
+                $('#resumen_stock_sala').text(result[0].bpsrea);
+                $('#resumen_stock_bodega').text(result[0].cantidad);
+                $('#resumen_ultima_venta').text(result[0].defeco);
+
+                result[1].forEach(items => {
+                    ingresos.rows.add([['<tr>'+items.CMVFECG+'</tr>','<tr>'+items.DMVCANT+'</tr>','<tr>'+items.PVNOMB,+'</tr>']]).draw();
+                })
+
+                result[2].forEach(items => {
+                    costos.rows.add([['<tr>'+items.DEFECO+'</tr>','<tr>'+truncateDecimals(items.PrecioCosto, 0)+'</tr>','<tr>'+truncateDecimals(items.DEPREC, 0)+'</tr>']]).draw();
+                })
+            }
+    });
+}
+
+function observacion(observacion){
+    if(observacion == null){
+        $("#observacion_interna").val('');
+    }else{
+        var texto = $("#observacion_interna").val()+ " " + observacion;
+        $("#observacion_interna").val(texto);
+    }
+}
+
+function observacion_multiple(observacion){
+    if(observacion == null){
+        $("#observacion_interna_multiple").val('');
+    }else{
+        var texto = $("#observacion_interna_multiple").val()+ " " + observacion;
+        $("#observacion_interna_multiple").val(texto);
+    }
+}
 
 $(window).on('load', function () {
             $("#maindiv").css({"pointer-events": "all", "opacity": "1"});

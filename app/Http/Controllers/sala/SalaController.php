@@ -778,4 +778,24 @@ class SalaController extends Controller
       return redirect()->route('ConteoInventarioSala')->with('success','Conteo Terminado');
   }
 
+  public function ResumenProducto($codigo){
+
+    //error_log(print_r($codigo, true));
+    $producto = DB::select('SELECT arcodi, arcbar, ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea FROM producto
+    left join dcargos on ARCODI = dcargos.DECODI
+    left join suma_bodega on ARCODI = suma_bodega.inarti
+    left join bodeprod on ARCODI = bodeprod.bpprod
+    where ARCODI = "'.$codigo.'" order by DEFECO desc limit 1')[0];
+
+    $ingresos = DB::select('select DMVPROD, proveed.PVNOMB, DMVCANT, DMVUNID, CMVFECG, PrecioCosto from dmovim
+    left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI
+    left join dcargos on dmovim.DMVPROD = dcargos.DECODI
+    left join proveed on cmovim.CMVCPRV = proveed.PVRUTP
+    where CMVFECG >= "2020-01-01" and DMVPROD = "'.$codigo.'" and DEFECO >= "2020-01-01" group by CMVFECG');
+
+    $costos = DB::select('select DEFECO, PrecioCosto, DEPREC from dcargos where DECODI = "'.$codigo.'" and DETIPO != 3 and DEFECO >= "2020-01-01" AND PrecioCosto != 100 group by PrecioCosto order by DEFECO asc');
+
+    return response()->json([$producto,$ingresos,$costos]);
+  }
+
 }
