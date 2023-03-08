@@ -783,7 +783,7 @@ class SalaController extends Controller
     //error_log(print_r($codigo, true));
     $producto = DB::select('SELECT arcodi, arcbar, ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea FROM producto
     left join dcargos on ARCODI = dcargos.DECODI
-    left join suma_bodega on ARCODI = suma_bodega.inarti
+    left join Suma_Bodega on ARCODI = Suma_Bodega.inarti
     left join bodeprod on ARCODI = bodeprod.bpprod
     where ARCODI = "'.$codigo.'" order by DEFECO desc limit 1')[0];
 
