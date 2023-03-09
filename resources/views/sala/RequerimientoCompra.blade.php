@@ -291,6 +291,7 @@
                                 </div>
                                 
                                 <div class="col-sm-6 col-md-6 invoice-col col">
+                                    <strong>Codigo Proveedor: <i id="resumen_codigo_proveedor">cargando...</i></strong><br>
                                     <strong>Marca: <i id="resumen_marca">cargando...</i></strong><br>
                                     <strong>Stock Sala: <i id="resumen_stock_sala">cargando...</i></strong><br>
                                     <strong>Stock Bodega: <i id="resumen_stock_bodega">cargando...</i></strong><br>
@@ -782,6 +783,7 @@ function loadsumary(codigo){
     costos.clear().draw();
 
                 $('#resumen_codigo').text('cargando...');
+                $('#resumen_codigo_proveedor').text('cargando...');
                 $('#resumen_barra').text('cargando...');
                 $('#resumen_detalle').text('cargando...');
                 $('#resumen_marca').text('cargando...');
@@ -794,7 +796,9 @@ function loadsumary(codigo){
             url: '../Sala/ResumenProducto/'+codigo,
             type: 'GET',
             success: function(result) {
+                console.log(result[0]);
                 $('#resumen_codigo').text(result[0].arcodi);
+                $('#resumen_codigo_proveedor').text(result[0].ARCOPV);
                 $('#resumen_barra').text(result[0].arcbar);
                 $('#resumen_detalle').text(result[0].ardesc);
                 $('#resumen_marca').text(result[0].armarca);
