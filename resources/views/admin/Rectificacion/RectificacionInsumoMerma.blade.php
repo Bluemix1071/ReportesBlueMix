@@ -41,6 +41,7 @@
                                     <option value="Papeleria">Papeleria</option>
                                     <option value="Servicio">Servicio</option>
                                     <option value="Vta. Asistida">Vta. Asistida</option>
+                                    <option value="Vinculacion">Vinculación</option>
                                     <option value="Web">Web</option>
                                 </select>
                             &nbsp;<input type="number" id="buscar_cantidad" placeholder="Cantidad" required name="" class="form-control col" value="" min="1" max="99999999"/>
@@ -157,6 +158,7 @@
                                         <option value="Libros">Libros</option>
                                         <option value="Servicio">Servicio</option>
                                         <option value="Vta. Asistida">Vta. Asistida</option>
+                                        <option value="Vinculacion">Vinculacion</option>
                                         <option value="Web">Web</option>
                                     </select>
 
@@ -327,6 +329,7 @@
                                 '<option>Papeleria</option>'+
                                 '<option>Servicio</option>'+
                                 '<option>Vta. Asistida</option>'+
+                                '<option>Vinculacion</option>'+
                                 '<option>Web</option>'+
                                 '</select>'+
                                 '&nbsp;<input type="number" placeholder="Cant" required name="detalle_'+x+'[cantidad]" class="form-control col" value="'+cantidad+'" min="1" max="99999999"/>'+
@@ -417,6 +420,7 @@
                                 '<option>Papeleria</option>'+
                                 '<option>Servicio</option>'+
                                 '<option>Vta. Asistida</option>'+
+                                '<option>Vinculacion</option>'+
                                 '<option>Web</option>'+
                                 '</select>'+
                                 '&nbsp;<input type="number" placeholder="Cant" required name="detalle_'+x+'[cantidad]" class="form-control col" value="'+cantidad+'" min="1" max="99999999"/>'+
