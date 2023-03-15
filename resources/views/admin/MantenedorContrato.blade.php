@@ -45,10 +45,10 @@
                     <select class="form-control" name="contrato" id="contrato" required>
                         <option value="">Seleccione contrato</option>
                         @foreach ($contratos as $contratos)
-                        @if ($contratos->nombre_contrato==$contratof)
-                        <option value="{{ $contratos->nombre_contrato }}" selected id="seleccionado">{{ $contratos->nombre_contrato }}</option>
+                        @if (!is_null($elcontrato) && $contratos->nombre_contrato==$elcontrato->nombre_contrato)
+                        <option value="{{ $contratos->id_contratos }}" selected id="seleccionado">{{ $contratos->nombre_contrato }}</option>
                         @else
-                        <option value="{{ $contratos->nombre_contrato }}">{{ $contratos->nombre_contrato }}</option>
+                        <option value="{{ $contratos->id_contratos }}">{{ $contratos->nombre_contrato }}</option>
                         @endif
                         @endforeach
 
