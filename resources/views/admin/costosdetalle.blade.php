@@ -75,7 +75,7 @@ Costos Detalles
                                     <td style="text-align:left">{{ $item->DECANT}}</td>
                                     <td style="text-align:left">{{ $item->Detalle}}</td>
                                     <td style="text-align:left">{{ $item->familia}}</td>
-                                    <td style="text-align:right">{{ number_format($item->PCCOSTO, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ number_format(intval($item->PCCOSTO), 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->costototal, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->totalventa, 0, ',', '.') }}</td>
