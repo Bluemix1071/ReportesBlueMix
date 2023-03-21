@@ -28,11 +28,14 @@ Colegios
                         <a href="{{ route('reportes') }}" class="" target="_blank">
                             <button type="button" class="btn btn-danger">Stock Critico</button>
                         </a>
-                        
+
                         <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
                         class="btn btn-success"
                         >Reporte Colegios</a>
 
+                        {{-- <a href="{{ route('colegiosold') }}" class="" target="_blank">
+                            <button type="button" class="btn btn-secondary">last season</button>
+                        </a> --}}
                     </div>
 
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end col-6">
@@ -54,6 +57,18 @@ Colegios
                             </select>
 
                         </div>
+                        {{-- <div class="col">
+
+                            <select id="temporada" name="temporada" class="form-control" required>
+                                <option value="" selected>Seleccione temporada</option>
+
+                                <option value="">2022-2023</option>
+                                <option value="">2023-2024</option>
+
+
+                            </select>
+
+                        </div> --}}
                         <div class="col"><button type="submit" class="btn btn-success">Agregar</button></div>
 
                     </div>
@@ -70,6 +85,7 @@ Colegios
                                 <tr>
                                     <th scope="col" style="text-align:left">Colegio</th>
                                     <th scope="col" style="text-align:left">Comuna</th>
+                                    {{-- <th scope="col" style="text-algin:left">Temporada</th> --}}
                                     <th scope="col" style="text-align:left">Acciones</th>
                                 </tr>
                             </thead>

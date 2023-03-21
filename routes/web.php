@@ -293,6 +293,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::post('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::get('/Reportes','ListaEscolarController@Reportes')->name('reportes');
+    Route::get('/Colegiosold','ListaEscolarController@Colegiosold')->name('colegiosold');
 
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     //Route::post('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');

@@ -22,9 +22,9 @@ class NotasCreditoProveedoresController extends Controller
     }
 
     public function insert(Request $request){
-        
+
         $existe_factura = DB::table('compras')->where('folio', $request->get('folio_factura'))->first();
-        
+
         $existe_nc = DB::table('nc_proveedor')
         ->where('rut', $request->get('rut_proveedor'))
         ->where('folio', $request->get('folio_nc'))->first();
@@ -53,7 +53,7 @@ class NotasCreditoProveedoresController extends Controller
     }
 
     public function destroy($id)
-    {  
+    {
         $delete = DB::table('nc_proveedor')
         ->where('id' , $id)
         ->delete();
@@ -64,7 +64,7 @@ class NotasCreditoProveedoresController extends Controller
     public function xmlUpNC(Request $request){
 
         $url = $_FILES["myfile"]["tmp_name"];
-        
+
         try{
             $xml = simplexml_load_file($url);
         }catch(\Throwable $th){
@@ -77,15 +77,15 @@ class NotasCreditoProveedoresController extends Controller
         if(empty($json->SetDTE)){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE. No soportado!');
         }
-      
+
         if($json->SetDTE->DTE->Documento->Encabezado->IdDoc->TipoDTE !== "61"){
             return redirect()->route('ComprasProveedores')->with('warning','El Documento no corresponde al un formato DTE de Nota de Credito. No soportado!');
         }
-        
+
         $encabezado = $json->SetDTE->DTE->Documento->Encabezado;
-        
+
         $detalle = $json->SetDTE->DTE->Documento->Detalle;
-        
+
         if(!empty($json->SetDTE->DTE->Documento->Referencia)){
             $referencia = $json->SetDTE->DTE->Documento->Referencia;
         }
@@ -110,7 +110,7 @@ class NotasCreditoProveedoresController extends Controller
                 }
             }
         }
-        
+
         if(!empty($encabezado->Totales->MntExe)){
             $encabezado->Totales->MntNeto = $encabezado->Totales->MntTotal;
             $encabezado->Totales->IVA = 0;
@@ -134,7 +134,7 @@ class NotasCreditoProveedoresController extends Controller
             ];
 
             $nc += [ 'xml' => $request->file('myfile')->store('dte') ];
-        
+
         if($existe == null){
 
             DB::table('nc_proveedor')->insert($nc);
@@ -146,7 +146,7 @@ class NotasCreditoProveedoresController extends Controller
     }
 
     public function buscaDte($rut, $folio){
-        
+
         $nc = DB::table('nc_proveedor')
         ->where('rut', $rut)
         ->where('folio', $folio)->first();

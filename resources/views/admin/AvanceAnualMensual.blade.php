@@ -38,6 +38,17 @@
                         @endif
                     </div>
                 </div>
+
+                <div class="form-row">
+                    <div class="col-md-6 mb-4">
+
+                        @if (empty($ventasala))
+                            <h3>Venta Diaria Sala: $ 0</h3>
+                        @else
+                            <h3>Venta Diaria Sala: ${{ number_format($ventasala, 0, ',', '.') }}</h3>
+                        @endif
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-row">

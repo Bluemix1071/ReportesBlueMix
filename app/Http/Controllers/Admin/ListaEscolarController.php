@@ -34,6 +34,8 @@ class ListaEscolarController extends Controller
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
         inner join comunas on colegio.id_comuna = comunas.id");
 
+        // dd($colegios);
+
         $comunas=DB::select('select * from comunas');
 
         $reporte=DB::select("
@@ -43,6 +45,27 @@ class ListaEscolarController extends Controller
         //dd($reporte);
 
         return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
+
+
+    }
+
+    public function Colegiosold(Request $request){
+
+
+        $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
+        inner join comunas on colegio.id_comuna = comunas.id");
+
+        // dd($colegios);
+
+        $comunas=DB::select('select * from comunas');
+
+        $reporte=DB::select("
+        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
+        left join colegio on curso.id_colegio = colegio.id
+        left join comunas on colegio.id_comuna = comunas.id");
+        //dd($reporte);
+
+        return view('admin.Cotizaciones.Colegios',compact('comunas','reporte','colegios'));
 
 
     }

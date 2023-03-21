@@ -2174,7 +2174,7 @@ public function stocktiemporeal (Request $request){
             $contratof=$request->get('contrato');
             $fecha1=$request->fecha1;
             $fecha2=$request->fecha2;
-            
+
             $contratos=DB::table('contratos')
             ->get();
 
@@ -2710,8 +2710,12 @@ public function stocktiemporeal (Request $request){
 
         $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
         $fechainiciomes=$fechames[0]->primerdiames;
+        $ventasala=$ventadiaria-$facturasporcobrar[0]->porcobrar;
+        // dd($ventasala);
 
-        // dd($facturasporcobrar);
+
+        // dd($facturasporcobrar[0]);
+
 
 
         $mensual2018=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2018 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2018,$h2018,$a2018,$h2018]);
@@ -2731,7 +2735,7 @@ public function stocktiemporeal (Request $request){
 
 
 
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023'));
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala'));
 
 
     }
