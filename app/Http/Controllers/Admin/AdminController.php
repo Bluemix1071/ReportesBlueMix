@@ -2702,10 +2702,19 @@ public function stocktiemporeal (Request $request){
         $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
         $fechainiciomes=$fechames[0]->primerdiames;
         $ventasala=$ventadiaria-$facturasporcobrar[0]->porcobrar;
-        // dd($ventasala);
 
-
+        $factuasxnc=DB::select('select sum(suma) as total from ( (SELECT sum(total_nc) as suma FROM nota_credito
+                              left join cargos on nota_credito.nro_doc_refe = cargos.canmro
+                              WHERE fecha = ? and cargos.forma_pago="X" and glosa != "ANULA FACTURA"
+                              union all
+                              SELECT sum(total_nc) as suma FROM nota_credito
+                              left join cargos on nota_credito.nro_doc_refe = cargos.canmro
+                              WHERE fecha = ? and cargos.forma_pago="X" and glosa = "ANULA FACTURA"))t' , [$fecha1,$fecha1]);
+        $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc[0]->total;
+        //dd($facturasmenosnc);
+        // dd($factuasxnc[0]->total);
         // dd($facturasporcobrar[0]);
+
 
 
 
@@ -2726,7 +2735,7 @@ public function stocktiemporeal (Request $request){
 
 
 
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala'));
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala','factuasxnc','facturasmenosnc'));
 
 
     }

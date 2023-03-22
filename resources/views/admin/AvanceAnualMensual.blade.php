@@ -52,13 +52,30 @@
             </div>
             <div class="col-md-6">
                 <div class="form-row">
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md- mb-4">
                         @if (empty($facturasporcobrar[0]->porcobrar))
-                            <h3>Facturas Por Cobrar del dia: $ 0</h3>
+                            <h3>Facturas Por Cobrar del dia: $0</h3>
                         @else
-                            <h3>Facturas Por Cobrar del dia:
-                                ${{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}</h3>
+                            <h3>Facturas Por Cobrar del dia:${{number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.')}}</h3>
                         @endif
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-5 mb-4">
+                            @if (empty($factuasxnc[0]->total))
+                            <h3>-$0</h3>
+                            @else
+                            <h3>-${{ number_format($factuasxnc[0]->total,0,',','.')}}</h3>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-5 mb-4">
+                            @if (@empty($facturasmenosnc))
+                            <h3>=$0</h3>
+                            @else
+                            <h3>=${{ number_format($facturasmenosnc,0,',','.')}}</h3>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,10 +87,10 @@
                         <div class="form-row">
                             <div class="col-md-6 mb-6">
                                 <label for="validationTooltip02">Avance Mensual Al Dia: </label>
-                                <input type="text" class="form-control" style="font-weight: bold;"
-                                    id="validationTooltip02" readonly value="2018" required>
+                                {{-- <input type="text" class="form-control" style="font-weight: bold;"
+                                    id="validationTooltip02" readonly value="2018" required> --}}
                             </div>
-                            <div class="col-md-6 mb-6">
+                            {{-- <div class="col-md-6 mb-6">
                                 @if (empty($fecha1))
                                     <label for="validationTooltip02">-</label>
                                 @else
@@ -86,7 +103,7 @@
                                     <input type="text" class="form-control" id="2018mensual" readonly
                                         value="{{ number_format($mensual2018[0]->año2018, 0, ',', '.') }}" required>
                                 @endif
-                            </div>
+                            </div> --}}
                         </div>
                         <br>
                         <div class="form-row">
@@ -193,10 +210,10 @@
                         <div class="form-row">
                             <div class="col-md-6 mb-6">
                                 <label for="validationTooltip02">Avance Anual Al Dia </label>
-                                <input type="text" class="form-control" style="font-weight: bold;"
-                                    id="validationTooltip02" readonly value="2018" required>
+                                {{-- <input type="text" class="form-control" style="font-weight: bold;"
+                                    id="validationTooltip02" readonly value="2018" required> --}}
                             </div>
-                            <div class="col-md-6 mb-6">
+                            {{-- <div class="col-md-6 mb-6">
                                 @if (empty($fecha1))
                                     <label for="validationTooltip02">-</label>
                                 @else
@@ -209,7 +226,7 @@
                                     <input type="text" class="form-control" id="2018anual" readonly
                                         value="{{ number_format($anual2018[0]->anualaño2018, 0, ',', '.') }}" required>
                                 @endif
-                            </div>
+                            </div> --}}
                         </div>
                         <br>
                         <div class="form-row">
@@ -322,11 +339,11 @@
                                 @else
                                 <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="{{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}" required>
                                 @endif
-                                @if (empty($mensual2018[0]->año2018))
+                                {{-- @if (empty($mensual2018[0]->año2018))
                                 <input type="text" class="form-control" hidden id="m2018" name="m2018" readonly value="0" required>
                                 @else
                                 <input type="text" class="form-control" hidden id="m2018" name="m2018" readonly value="{{ number_format($mensual2018[0]->año2018, 0, ',', '.') }}" required>
-                                @endif
+                                @endif --}}
                                 @if (empty($mensual2019[0]->año2019))
                                 <input type="text" class="form-control" hidden id="m2019" name="m2019" readonly value="0" required>
                                 @else
@@ -352,11 +369,11 @@
                                 @else
                                 <input type="text" class="form-control" hidden id="m2023" name="m2023" readonly value="{{ number_format($mensual2023[0]->año2023, 0, ',', '.') }}" required>
                                 @endif
-                                @if (empty($anual2018[0]->anualaño2018))
+                                {{-- @if (empty($anual2018[0]->anualaño2018))
                                 <input type="text" class="form-control" hidden id="a2018" name="a2018" readonly value="0" required>
                                 @else
                                 <input type="text" class="form-control" hidden id="a2018" name="a2018" readonly value="{{ number_format($anual2018[0]->anualaño2018, 0, ',', '.') }}" required>
-                                @endif
+                                @endif --}}
                                 @if (empty($anual2019[0]->anualaño2019))
                                 <input type="text" class="form-control" hidden id="a2019" name="a2019" readonly value="0" required>
                                 @else
@@ -411,7 +428,7 @@
     <script>
         document.body.style.zoom = "100%"; // era 127%
 
-        let mensual2018 = $("#2018mensual").val().replace(/\./g, '');
+        // let mensual2018 = $("#2018mensual").val().replace(/\./g, '');
         let mensual2019 = $("#2019mensual").val().replace(/\./g, '');
         let mensual2020 = $("#2020mensual").val().replace(/\./g, '');
         let mensual2021 = $("#2021mensual").val().replace(/\./g, '');
@@ -420,8 +437,8 @@
 
 
 
-        var categorias = ['2018', '2019', '2020', '2021', '2022','2023'];
-        var valor = [mensual2018, mensual2019, mensual2020, mensual2021, mensual2022,mensual2023];
+        var categorias = [ '2019', '2020', '2021', '2022','2023'];
+        var valor = [ mensual2019, mensual2020, mensual2021, mensual2022,mensual2023];
 
 
         const ctx = document.getElementById('myChart').getContext('2d');
@@ -465,7 +482,7 @@
     <script>
 
 
-        let anual2018 = $("#2018anual").val().replace(/\./g, '');
+        // let anual2018 = $("#2018anual").val().replace(/\./g, '');
         let anual2019 = $("#2019anual").val().replace(/\./g, '');
         let anual2020 = $("#2020anual").val().replace(/\./g, '');
         let anual2021 = $("#2021anual").val().replace(/\./g, '');
@@ -474,8 +491,8 @@
 
 
 
-        var categorias2 = ['2018', '2019', '2020', '2021', '2022','2023'];
-        var valor2 = [anual2018, anual2019, anual2020, anual2021, anual2022, anual2023];
+        var categorias2 = [ '2019', '2020', '2021', '2022','2023'];
+        var valor2 = [ anual2019, anual2020, anual2021, anual2022, anual2023];
 
         const ctx2 = document.getElementById('myChart2').getContext('2d');
         const myChart2 = new Chart(ctx2, {
