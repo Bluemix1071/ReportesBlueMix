@@ -2703,14 +2703,17 @@ public function stocktiemporeal (Request $request){
         $fechainiciomes=$fechames[0]->primerdiames;
         $ventasala=$ventadiaria-$facturasporcobrar[0]->porcobrar;
 
-        $factuasxnc=DB::select('select sum(suma) as total from ( (SELECT sum(total_nc) as suma FROM nota_credito
-                              left join cargos on nota_credito.nro_doc_refe = cargos.canmro
-                              WHERE fecha = ? and cargos.forma_pago="X" and glosa != "ANULA FACTURA"
-                              union all
-                              SELECT sum(total_nc) as suma FROM nota_credito
-                              left join cargos on nota_credito.nro_doc_refe = cargos.canmro
-                              WHERE fecha = ? and cargos.forma_pago="X" and glosa = "ANULA FACTURA"))t' , [$fecha1,$fecha1]);
-        $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc[0]->total;
+        $factuasxnca=DB::select('select sum(nota_credito.total_nc) as suma FROM nota_credito
+        left join cargos on nota_credito.nro_doc_refe = cargos.canmro
+        WHERE fecha = ? and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
+        $factuasxncb=DB::select('select sum(nota_credito.total_nc) as suma FROM nota_credito
+        left join cargos on nota_credito.nro_doc_refe = cargos.canmro
+        WHERE fecha = ? and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
+
+
+        $factuasxnc=$factuasxnca[0]->suma+$factuasxncb[0]->suma;
+        // dd($factuasxnc);
+        $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc;
         //dd($facturasmenosnc);
         // dd($factuasxnc[0]->total);
         // dd($facturasporcobrar[0]);

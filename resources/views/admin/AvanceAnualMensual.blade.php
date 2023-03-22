@@ -61,10 +61,10 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-5 mb-4">
-                            @if (empty($factuasxnc[0]->total))
+                            @if (empty($factuasxnc))
                             <h3>-$0</h3>
                             @else
-                            <h3>-${{ number_format($factuasxnc[0]->total,0,',','.')}}</h3>
+                            <h3>-${{ number_format($factuasxnc,0,',','.')}}</h3>
                             @endif
                         </div>
                     </div>
