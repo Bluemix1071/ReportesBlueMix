@@ -2681,16 +2681,19 @@ public function stocktiemporeal (Request $request){
         $ano2020=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -37 MONTH) as ano2020' , [$fecha1]);
         $ano2021=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -25 MONTH) as ano2021' , [$fecha1]);
         $ano2022=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -13 MONTH) as ano2022' , [$fecha1]);
+        // dd($ano2022);
         $hasta2018=DB::select('select DATE_ADD(?,INTERVAL -5 YEAR) as hasta2018' , [$fecha1]);
         $hasta2019=DB::select('select DATE_ADD(?,INTERVAL -4 YEAR) as hasta2019' , [$fecha1]);
         $hasta2020=DB::select('select DATE_ADD(?,INTERVAL -3 YEAR) as hasta2020' , [$fecha1]);
         $hasta2021=DB::select('select DATE_ADD(?,INTERVAL -2 YEAR) as hasta2021' , [$fecha1]);
         $hasta2022=DB::select('select DATE_ADD(?,INTERVAL -1 YEAR) as hasta2022' , [$fecha1]);
+        // dd($hasta2022[0]->hasta2022);
         $h2018=$hasta2018[0]->hasta2018;
         $h2019=$hasta2019[0]->hasta2019;
         $h2020=$hasta2020[0]->hasta2020;
         $h2021=$hasta2021[0]->hasta2021;
         $h2022=$hasta2022[0]->hasta2022;
+
 
         $a2018=$ano2018[0]->ano2018;
         $a2019=$ano2019[0]->ano2019;
@@ -2710,13 +2713,9 @@ public function stocktiemporeal (Request $request){
         left join cargos on nota_credito.nro_doc_refe = cargos.canmro
         WHERE fecha = ? and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
 
-
         $factuasxnc=$factuasxnca[0]->suma+$factuasxncb[0]->suma;
-        // dd($factuasxnc);
         $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc;
-        //dd($facturasmenosnc);
-        // dd($factuasxnc[0]->total);
-        // dd($facturasporcobrar[0]);
+
 
 
 
@@ -2735,10 +2734,16 @@ public function stocktiemporeal (Request $request){
         $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$h2022,$h2022]);
         $anual2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2023-01-01" and ?) as anualaño2023 from cargos where catipo != 3  and cafeco between "2023-01-01" and ?' , [$fecha1,$fecha1]);
 
+        $destucan=DB::select('select sum(cavalo) as destucan from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$ano2022[0]->ano2022,$hasta2022[0]->hasta2022]);//anual al dia
+        $desnene=DB::select('select sum(cavalo) as desnene from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$ano2022[0]->ano2022,$hasta2022[0]->hasta2022]);//anual al dia
+
+        $destucanm=DB::select('select sum(cavalo) as destucanm from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$a2022,$h2022]);
+        $desnenem=DB::select('select sum(cavalo) as desnenem from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$a2022,$h2022]);
+        // dd($desnenem[0]->desnenem);
 
 
 
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala','factuasxnc','facturasmenosnc'));
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem'));
 
 
     }

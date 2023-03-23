@@ -160,7 +160,7 @@
                                     id="validationTooltip02" readonly value="2022" required>
                             </div>
                             <div class="col-md-6 mb-6">
-                                @if (empty($mensual2022[0]->año2022))
+                                @if (empty(($mensual2022[0]->año2022-$destucanm[0]->destucanm-$desnenem[0]->desnenem)))
                                     <input type="text" class="form-control" id="2022mensual" readonly value="0"
                                         required>
                                 @else
@@ -288,7 +288,7 @@
                                         required>
                                 @else
                                     <input type="text" class="form-control" id="2022anual" readonly
-                                        value="{{ number_format($anual2022[0]->anualaño2022, 0, ',', '.') }}" required>
+                                        value="{{ number_format(($anual2022[0]->anualaño2022-$destucan[0]->destucan-$desnene[0]->desnene), 0, ',', '.') }}" required>
                                 @endif
                             </div>
                         </div>
