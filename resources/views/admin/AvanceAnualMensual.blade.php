@@ -181,7 +181,7 @@
                                         required>
                                 @else
                                     <input type="text" class="form-control" id="2023mensual" readonly
-                                        value="{{ number_format($mensual2023[0]->año2023, 0, ',', '.') }}" required>
+                                        value="{{ number_format($mensual2023[0]->año2023-$destucanm23[0]->destucanm23-$desnenem23[0]->desnenem23, 0, ',', '.') }}" required>
                                 @endif
                             </div>
                         </div>
@@ -304,7 +304,7 @@
                                         required>
                                 @else
                                     <input type="text" class="form-control" id="2023anual" readonly
-                                        value="{{ number_format($anual2023[0]->anualaño2023, 0, ',', '.') }}" required>
+                                        value="{{ number_format(($anual2023[0]->anualaño2023-$destucan23[0]->destucan23-$desnene23[0]->desnene23), 0, ',', '.') }}" required>
                                 @endif
                             </div>
                         </div>
@@ -397,7 +397,7 @@
                                 @if (empty($anual2023[0]->anualaño2023))
                                 <input type="text" class="form-control" hidden id="a2023" name="a2023" readonly value="0" required>
                                 @else
-                                <input type="text" class="form-control" hidden id="a2023" name="a2023" readonly value="{{ number_format($anual2023[0]->anualaño2023, 0, ',', '.') }}" required>
+                                <input type="text" class="form-control" hidden id="a2023" name="a2023" readonly value="{{ number_format(($anual2023[0]->anualaño2023), 0, ',', '.') }}" required>
                                 @endif
                                 {{-- <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="{{ number_format($ventadiaria, 0, ',', '.') }}" required> --}}
                                 {{-- <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="{{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}" required> --}}

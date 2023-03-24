@@ -2737,13 +2737,20 @@ public function stocktiemporeal (Request $request){
         $destucan=DB::select('select sum(cavalo) as destucan from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76926330"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
         $desnene=DB::select('select sum(cavalo) as desnene from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76067436"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
 
+        $destucan23=DB::select('select sum(cavalo) as destucan23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330"',[$fecha1]);//anual al dia año 2023
+        $desnene23=DB::select('select sum(cavalo) as desnene23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76067436"',[$fecha1]);//anual al dia año 2023
+
+
         $destucanm=DB::select('select sum(cavalo) as destucanm from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76926330"',[$h2022]);// mensual al dia año 2022
         $desnenem=DB::select('select sum(cavalo) as desnenem from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76067436"',[$h2022]);// mensual al dia año 2022
-        // dd($desnenem[0]->desnenem);
+
+        $destucanm23=DB::select('select sum(cavalo) as destucanm23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330"',[$fecha1]);// mensual al dia año 2023
+        $desnenem23=DB::select('select sum(cavalo) as desnenem23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76067436"',[$fecha1]);// mensual al dia año 2023
 
 
 
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem'));
+
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem','destucan23','desnene23','destucanm23','desnenem23'));
 
 
     }
