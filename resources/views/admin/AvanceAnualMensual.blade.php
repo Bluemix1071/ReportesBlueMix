@@ -304,7 +304,7 @@
                                         required>
                                 @else
                                     <input type="text" class="form-control" id="2023anual" readonly
-                                        value="{{ number_format(($anual2023[0]->anualaño2023-$destucan23[0]->destucan23-$desnene23[0]->desnene23), 0, ',', '.') }}" required>
+                                        value="{{ number_format(($anual2023[0]->anualaño2023-$destucan23[0]->destucan23), 0, ',', '.') }}" required>
                                 @endif
                             </div>
                         </div>
