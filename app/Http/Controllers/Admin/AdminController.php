@@ -2724,6 +2724,8 @@ public function stocktiemporeal (Request $request){
 
         $factuasxnc=$factuasxnca[0]->suma+$factuasxncb[0]->suma;
         $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc;
+        dd($facturasmenosnc+$ventasala);
+
 
 
 
