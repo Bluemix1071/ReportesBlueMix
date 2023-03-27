@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 <div class="form-row">
                     <div class="col-md-6 mb-4">
-                        @if (empty(($facturasmenosnc+$ventasala)))
+                        @if (empty(($facturasmenosnc)))
                             <h3>Venta Diaria: $ 0</h3>
                         @else
                             <h3>Venta Diaria: ${{ number_format($facturasmenosnc+$ventasala, 0, ',', '.') }}</h3>
