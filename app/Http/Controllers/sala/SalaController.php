@@ -781,7 +781,10 @@ class SalaController extends Controller
   public function ResumenProducto($codigo){
 
     //error_log(print_r($codigo, true));
-    $producto = DB::select('SELECT arcodi, arcbar, ARCOPV,ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea FROM producto
+    $producto = DB::select('SELECT arcodi, arcbar, ARCOPV,ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea, (
+      select CMVFECG from dmovim
+      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo.'" order by CMVFECG desc limit 1
+    ) as ult_ingreso FROM producto
     left join dcargos on ARCODI = dcargos.DECODI
     left join Suma_Bodega on ARCODI = Suma_Bodega.inarti
     left join bodeprod on ARCODI = bodeprod.bpprod

@@ -138,7 +138,7 @@
                       @if(session()->get('email') == "adquisiciones@bluemix.cl")
                         <td data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary('{{ $item->codigo }}')" class="text-primary">{{ $item->codigo }}</td>
                       @else
-                        <td>{{ $item->codigo }}</td>
+                        <td data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary('{{ $item->codigo }}')" class="text-primary">{{ $item->codigo }}</td>
                       @endif
                       <td>{{ $item->descripcion }}</td>
                       <td>{{ $item->marca }}</td>
@@ -287,21 +287,27 @@
                                     <strong>Codigo: <i id="resumen_codigo">cargando...</i></strong><br>
                                     <strong>Barra: <i id="resumen_barra">cargando...</i></strong><br>
                                     <strong>Detalle: <i id="resumen_detalle">cargando...</i></strong><br>
+                                    @if(session()->get('email') == "adquisiciones@bluemix.cl")
                                     <strong>Tipo Unidad: <i id="resumen_unidad">cargando...</i></strong><br>
+                                    <strong>Codigo Proveedor: <i id="resumen_codigo_proveedor">cargando...</i></strong><br>
+                                    @endif
                                 </div>
                                 
                                 <div class="col-sm-6 col-md-6 invoice-col col">
-                                    <strong>Codigo Proveedor: <i id="resumen_codigo_proveedor">cargando...</i></strong><br>
                                     <strong>Marca: <i id="resumen_marca">cargando...</i></strong><br>
                                     <strong>Stock Sala: <i id="resumen_stock_sala">cargando...</i></strong><br>
                                     <strong>Stock Bodega: <i id="resumen_stock_bodega">cargando...</i></strong><br>
+                                    @if(session()->get('email') == "adquisiciones@bluemix.cl")
                                     <strong>Ultima Venta: <i id="resumen_ultima_venta">cargando...</i></strong><br>
+                                    @endif
+                                    <strong>Ultimo Ingreso: <i id="resumen_ultimo_ingreso">cargando...</i></strong><br>
                                 </div>
                             
                             </div>
 
                             </div>
                         </div>
+                        @if(session()->get('email') == "adquisiciones@bluemix.cl")
                         <h5>Ingresos</h5>
                         <table id="ingresos" class="table table-hover dataTable table-sm" style="text-align:center; font-size: 15px;">
                             <thead>
@@ -328,6 +334,7 @@
                                
                             </tbody>
                         </table>
+                        @endif
 
                               <div class="modal-footer">
                                   <!-- <button type="submit" class="btn btn-danger">Desactivar</button> -->
@@ -791,6 +798,7 @@ function loadsumary(codigo){
                 $('#resumen_stock_sala').text('cargando...');
                 $('#resumen_stock_bodega').text('cargando...');
                 $('#resumen_ultima_venta').text('cargando...');
+                $('#resumen_ultimo_ingreso').text('cargando...');
 
     $.ajax({
             url: '../Sala/ResumenProducto/'+codigo,
@@ -806,6 +814,7 @@ function loadsumary(codigo){
                 $('#resumen_stock_sala').text(result[0].bpsrea);
                 $('#resumen_stock_bodega').text(result[0].cantidad);
                 $('#resumen_ultima_venta').text(result[0].defeco);
+                $('#resumen_ultimo_ingreso').text(result[0].ult_ingreso);
 
                 result[1].forEach(items => {
                     ingresos.rows.add([['<tr>'+items.CMVFECG+'</tr>','<tr>'+items.DMVCANT+'</tr>','<tr>'+items.PVNOMB,+'</tr>']]).draw();
