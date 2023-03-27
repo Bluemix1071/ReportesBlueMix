@@ -31,10 +31,10 @@
             <div class="col-md-6">
                 <div class="form-row">
                     <div class="col-md-6 mb-4">
-                        @if (empty($ventadiaria))
+                        @if (empty($facturasmenosnc-$ventasala[0]->total))
                             <h3>Venta Diaria: $ 0</h3>
                         @else
-                            <h3>Venta Diaria: ${{ number_format($ventadiaria, 0, ',', '.') }}</h3>
+                            <h3>Venta Diaria: ${{ number_format($facturasmenosnc+$ventasala[0]->total, 0, ',', '.') }}</h3>
                         @endif
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                         @if (empty($ventasala))
                             <h3>Venta Diaria Sala: $ 0</h3>
                         @else
-                            <h3>Venta Diaria Sala: ${{ number_format($ventasala, 0, '.', '.') }}</h3>
+                            <h3>Venta Diaria Sala: ${{ number_format($ventasala[0]->total, 0, '.', '.') }}</h3>
                         @endif
                     </div>
                 </div>
