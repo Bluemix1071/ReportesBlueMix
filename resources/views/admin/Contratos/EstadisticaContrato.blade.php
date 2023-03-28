@@ -45,7 +45,7 @@
                 </div>
             </div>
     <div class="container my-4">
-        <h1 class="display-4">Porductos en contratos</h1>
+        <h1 class="display-4">Productos en contratos</h1>
             <div class="card">
                     <div class="card-body">
                     <div class="table-responsive-xl">
@@ -115,7 +115,7 @@
             </div> -->
 
             <div class="container my-4">
-        <h1 class="display-4">Porductos Historicos en Contratos</h1>
+        <h1 class="display-4">Productos Historicos en Contratos</h1>
             <div class="card">
                     <div class="card-body">
                     <div class="table-responsive-xl">
@@ -191,7 +191,7 @@
             </div>
     </section>
     </div>
-    
+
     <!-- Modal oconfirmacion de entrada mercaderia-->
     <div class="modal fade" id="modalayuda" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document" >
@@ -213,7 +213,7 @@
 
     @endsection
     @section('script')
-    
+
         <script>
         $('#modalidevolver').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
@@ -224,7 +224,7 @@
 
         $(window).on('load', function () {
             $("#maindiv").css({"pointer-events": "all", "opacity": "1"});
-        }) 
+        })
         </script>
 
         <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
@@ -240,7 +240,7 @@
         <script src="{{asset("js/vfs_fonts.js")}}"></script>
         <script src="{{asset("js/buttons.html5.min.js")}}"></script>
         <script src="{{asset("js/buttons.print.min.js")}}"></script>
-        
+
 
         <script>
 
@@ -432,9 +432,9 @@
                     $( "#form-fecha" ).submit();
             }); */
 
-            
+
         });
-        
+
         function validar(){
             if ( $('#form-fecha')[0].checkValidity() ) {
                 $("#text_add").prop("hidden", true);
