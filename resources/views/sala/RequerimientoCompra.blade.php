@@ -21,21 +21,21 @@
         </div>
       </div> -->
 
-      <!-- <div class="card text-white bg-warning mb-3">
+      <div class="card text-white bg-warning mb-3">
                     <div class="card-header">
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="remove">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
-                            <h3 class="card-title">Logs de Cambios (22-02-2023):</h3>
+                            <h3 class="card-title">Logs de Cambios (29-03-2023):</h3>
                             <br>
                             <hr>
-                                * Ahora es posible visualizar los cambios de estado de un requerimiento con la fecha y hora en el apartado "Editar Requerimiento".
-                                 <br>
-                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON).
+                                *Ahora solo se ingresarán requerimientos con ingresos a bodega depués del 01-11-2021.
+                                <!--  <br>
+                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON). -->
                         </div>
-                </div> -->
+                </div>
 
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>
@@ -244,6 +244,7 @@
                             <span class="badge badge-dark" onclick="observacion_multiple('Producto Descontinuado')">Descontinuado</span>
                             <span class="badge badge-dark" onclick="observacion_multiple('Sin movimiento en meses')">Sin movimiento en meses</span>
                             <span class="badge badge-dark" onclick="observacion_multiple('En estudio para comprar')">En estudio para comprar</span>
+                            <span class="badge badge-dark" onclick="observacion_multiple('Acuse Recibo')">Acuse Recibo</span>
                             <span class="badge badge-danger" onclick="observacion_multiple(null)">X</span>
                         <br>
                         <br>
@@ -635,6 +636,7 @@
                                     <span class="badge badge-dark" onclick="observacion('Producto Descontinuado')">Descontinuado</span>
                                     <span class="badge badge-dark" onclick="observacion('Sin movimiento en meses')">Sin movimiento en meses</span>
                                     <span class="badge badge-dark" onclick="observacion('En estudio para comprar')">En estudio para comprar</span>
+                                    <span class="badge badge-dark" onclick="observacion('Acuse Recibo')">Acuse Recibo</span>
                                     <span class="badge badge-danger" onclick="observacion(null)">X</span>
                                 @endif
                                
@@ -893,6 +895,7 @@ function( settings, data, dataIndex ) {
     } );
 
     var table = $('#users').DataTable({
+        pageLength : 20,
         orderCellsTop: true,
         dom: 'Bfrtip',
         order: [[ 10, "desc" ]],
