@@ -56,6 +56,7 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/EditarEstadoRequerimientoCompra','SalaController@EditarEstadoRequerimientoCompra')->name('EditarEstadoRequerimientoCompra');
     Route::put('/EditarRequerimientoCompra','SalaController@EditarRequerimientoCompra')->name('EditarRequerimientoCompra');
     Route::put('/EditarRequerimientoCompraMultiple','SalaController@EditarRequerimientoCompraMultiple')->name('EditarRequerimientoCompraMultiple');
+    Route::put('/EditarRequerimientoCompraMultiplePrioridad','SalaController@EditarRequerimientoCompraMultiplePrioridad')->name('EditarRequerimientoCompraMultiplePrioridad');
     Route::get('/ResumenProducto/{codigo}','SalaController@ResumenProducto')->name('ResumenProducto');
     /* fin */
 

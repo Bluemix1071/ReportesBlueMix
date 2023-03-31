@@ -601,8 +601,8 @@ class SalaController extends Controller
 
       switch ($request->estado) {
         case "INGRESADO":
-          $estado = "fecha";
-          break;
+            $estado = "fecha";
+            break;
         case "ENVÍO OC":
             $estado = "fecha_enviooc";
             break;
@@ -614,7 +614,7 @@ class SalaController extends Controller
             break;
         case "DESACTIVADO":
             $estado = "fecha_desactivado";
-            break;   
+            break; 
       }
 
         DB::table('requerimiento_compra')
@@ -669,6 +669,24 @@ class SalaController extends Controller
 
         }
         return redirect()->route('RequerimientoCompra')->with('success','Requerimientos Editados Correctamente');
+      }
+    }
+
+    public function EditarRequerimientoCompraMultiplePrioridad(Request $request){
+
+      if(is_null($request->case)){
+        return redirect()->route('RequerimientoCompra')->with('warning','No seleccionó Requerimientos para Priorizar');
+      }else{
+        foreach($request->case as $item){
+
+          DB::table('requerimiento_compra')
+            ->where('id' , $item)
+            ->update(
+            ['prioridad' => 1]
+          );
+
+        }
+        return redirect()->route('RequerimientoCompra')->with('success','Requerimientos Priorizados Correctamente');
       }
     }
 
