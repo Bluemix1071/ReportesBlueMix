@@ -93,13 +93,20 @@
           <hr>
           <div class="card-header">
           <div style="text-align:center">
-                        <td>Desde:</td>
+                                <tr>
+                                    <td>Desde:</td>
                                     <td><input type="date" id="min" name="min" value="2022-09-12"></td>
                                 </tr>
                                 <tr>
                                     <td>Hasta:</td>
                                     <td><input type="date" id="max" name="max" value="{{ date('Y-m-d') }}"></td>
                                 </tr>
+                                @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                &nbsp;&nbsp;&nbsp;
+                                <tr>
+                                    <td><input type="checkbox" name="prioridades" id="soloPrioridades">Mostar solo Prioridades</td>
+                                </tr>
+                                @endif
                                 <!-- &nbsp &nbsp &nbsp
                                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#mimodalinfo1">
                                 ?
@@ -128,6 +135,7 @@
                   <th scope="col" class="col-1" style="display:none">Fecha Ingreso</th>
                   <th scope="col" class="col-1">Observacion Interna</th>
                   <th scope="col">Acciones</th>
+                  <th scope="col" class="col-1" style="display:none;">Prioridad</th>
                 </tr>
               </thead>
               <tbody>
@@ -204,6 +212,7 @@
                       {{-- <button type="button" class="btn btn-primary" title="Editar Requerimiento" disabled><i class="fa fa-eye" aria-hidden="true"></i></button> --}}
                     
                       </td>
+                      <td style="display:none;">{{ $item->prioridad }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -955,6 +964,17 @@ function( settings, data, dataIndex ) {
     table.draw();
     //table.columns(2).search( '2021-10-25' ).draw();
     });
+
+    $('#soloPrioridades').on('click', function(){
+        var miCheckbox = document.getElementById('soloPrioridades');
+        if(miCheckbox.checked) {
+            table.columns(8).search("(^"+"INGRESADO"+"$)",true,false).draw();
+            table.columns(13).search("(^1$)",true,false).draw();
+        } else {
+            table.columns(8).search("",true,false).draw();
+            table.columns(13).search("",true,false).draw();
+        }
+    })
 } );
 
 function cargarid(id){
