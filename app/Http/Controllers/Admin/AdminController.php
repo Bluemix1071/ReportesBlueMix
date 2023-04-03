@@ -2706,12 +2706,14 @@ public function stocktiemporeal (Request $request){
         // $ventasala=$ventadiaria-$facturasporcobrar[0]->porcobrar;
 
 
-        $factuasxnca=DB::select('select sum(nota_credito.total_nc) as suma FROM nota_credito
-        left join cargos on nota_credito.nro_doc_refe = cargos.canmro
-        WHERE fecha = ? and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
-        $factuasxncb=DB::select('select sum(nota_credito.total_nc) as suma FROM nota_credito
-        left join cargos on nota_credito.nro_doc_refe = cargos.canmro
-        WHERE fecha = ? and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
+        $factuasxnca=DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
+        left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
+        WHERE cargos.`CAFECO`= ? and cargos.CATIPO=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
+        $factuasxncb=DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
+        left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
+        WHERE cargos.`CAFECO`= ? and cargos.CATIPO=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
+
+
 
         $ventasala101=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=101 and catipo != 3',[$fecha1]);
         $ventasala102=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=102 and catipo != 3',[$fecha1]);
@@ -2722,7 +2724,7 @@ public function stocktiemporeal (Request $request){
 
 
         $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
-        $factuasxnc=$factuasxnca[0]->suma+$factuasxncb[0]->suma;
+        $factuasxnc=$factuasxnca[0]->sumaa+$factuasxncb[0]->sumab;
         $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc;
 
 
@@ -2750,6 +2752,7 @@ public function stocktiemporeal (Request $request){
 
         $destucan=DB::select('select sum(cavalo) as destucan from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76926330"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
         $desnene=DB::select('select sum(cavalo) as desnene from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76067436"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
+
 
         $destucan23=DB::select('select sum(cavalo) as destucan23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330"',[$fecha1]);//anual al dia año 2023
         $desnene23=DB::select('select sum(cavalo) as desnene23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76067436"',[$fecha1]);//anual al dia año 2023
