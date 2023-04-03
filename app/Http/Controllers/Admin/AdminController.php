@@ -2723,9 +2723,12 @@ public function stocktiemporeal (Request $request){
         $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma;
 
 
-        $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
         $factuasxnc=$factuasxnca[0]->sumaa+$factuasxncb[0]->sumab;
         $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc;
+        $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
+        $totalventaxdia=$ventasala+$facturasmenosnc;
+
+
 
 
 
@@ -2768,7 +2771,7 @@ public function stocktiemporeal (Request $request){
 
 
 
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem','destucan23','desnene23','destucanm23','desnenem23'));
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem','destucan23','desnene23','destucanm23','desnenem23','totalventaxdia'));
 
 
     }
