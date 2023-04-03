@@ -21,21 +21,21 @@
         </div>
       </div> -->
 
-      <!-- <div class="card text-white bg-warning mb-3">
+      <div class="card text-white bg-warning mb-3">
                     <div class="card-header">
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="remove">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
-                            <h3 class="card-title">Logs de Cambios (22-02-2023):</h3>
+                            <h3 class="card-title">Logs de Cambios (29-03-2023):</h3>
                             <br>
                             <hr>
-                                * Ahora es posible visualizar los cambios de estado de un requerimiento con la fecha y hora en el apartado "Editar Requerimiento".
-                                 <br>
-                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON).
+                                *Ahora solo se ingresarán requerimientos con ingresos a bodega depués del 01-11-2021.
+                                <!--  <br>
+                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON). -->
                         </div>
-                </div> -->
+                </div>
 
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>
@@ -132,7 +132,13 @@
               </thead>
               <tbody>
                 @foreach ($requerimiento_compra as $item)
-                    <tr>
+                
+                    @if($item->prioridad == 1 && $item->estado == "INGRESADO" && session()->get('email') == "adquisiciones@bluemix.cl")
+                        <tr class="bg-dark bg-gradient">
+                    @else
+                        <tr>
+                    @endif
+
                       <td><input type="checkbox" id="id_{{ $item->id }}" class="case" name="case[]" value="{{ $item->id }}" onclick="contador({{ $item->id }}, {{ $item->id }})"></td> 
                       <td style="display:none">{{ $item->id }}</td>
                       @if(session()->get('email') == "adquisiciones@bluemix.cl")
@@ -191,7 +197,7 @@
                             data-fecha_bodega='{{ $item->fecha_bodega }}'
                             data-fecha_rechazado='{{ $item->fecha_rechazado }}'
                             data-fecha_desactivado='{{ $item->fecha_desactivado }}'
-                        >Detalle</i></a>
+                        ><i class="fa fa-eye"></i></a>
                     
                       {{-- <button type="button" class="btn btn-primary" title="Cambiar estado Requerimiento" disabled><i class="fa fa-save" aria-hidden="true"></i></button> --}}
                       {{-- <button type="button" class="btn btn-danger" title="Desactivar Requerimiento" disabled><i class="fa fa-trash" aria-hidden="true"></i></button> --}}
@@ -244,16 +250,23 @@
                             <span class="badge badge-dark" onclick="observacion_multiple('Producto Descontinuado')">Descontinuado</span>
                             <span class="badge badge-dark" onclick="observacion_multiple('Sin movimiento en meses')">Sin movimiento en meses</span>
                             <span class="badge badge-dark" onclick="observacion_multiple('En estudio para comprar')">En estudio para comprar</span>
+                            <span class="badge badge-dark" onclick="observacion_multiple('Acuso Recibo')">Acuso Recibo</span>
                             <span class="badge badge-danger" onclick="observacion_multiple(null)">X</span>
                         <br>
                         <br>
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
                             <button type="submit" class="btn btn-success">Editar Múltiple</button>
-                        @else
-                            <button type="button" disabled class="btn btn-success">Editar Múltiple</button>
+                            <button type="button" onclick="enviaPrioridad()" class="btn btn-dark">Pasar a Prioridad</button>
                         @endif
                     </div>
                 </div>
+                </form>
+
+                <form action="{{ route('EditarRequerimientoCompraMultiplePrioridad') }}" method="POST" id="enviaPrioridad">
+                        {{ method_field('put') }}
+                        {{ csrf_field() }}
+                        @csrf
+                        <div id="prioridades" style="display: none;"></div>
                 </form>
       </section>
 
@@ -635,6 +648,7 @@
                                     <span class="badge badge-dark" onclick="observacion('Producto Descontinuado')">Descontinuado</span>
                                     <span class="badge badge-dark" onclick="observacion('Sin movimiento en meses')">Sin movimiento en meses</span>
                                     <span class="badge badge-dark" onclick="observacion('En estudio para comprar')">En estudio para comprar</span>
+                                    <span class="badge badge-dark" onclick="observacion('Acuso Recibo')">Acuso Recibo</span>
                                     <span class="badge badge-danger" onclick="observacion(null)">X</span>
                                 @endif
                                
@@ -964,11 +978,17 @@ function selectproducto(codigo,descripcion,marca){
   $('#marca').val(marca);
 }
 
+function enviaPrioridad(){
+    $('#enviaPrioridad').submit();
+}
+
 function contador(monto, id){
         var max_fields = 999;
         var wrapper = $("#selects");
+        var prioridades = $("#prioridades");
         var x = 0;
         var input = document.getElementById('input_'+id+'');
+        var input_prioridad = document.getElementById('input_prioridad_'+id+'');
 
         var acumulado = $("#monto_total_multiple").val();
 
@@ -983,10 +1003,14 @@ function contador(monto, id){
                 $(wrapper).append(
                     '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+id+'" name="case[]" value='+id+'>'
             );
+                $(prioridades).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_prioridad_'+id+'" name="case[]" value='+id+'>'
+            );
         }
         } else {
             $("#monto_total_multiple").val(Number(Number(acumulado)-Number(monto)));
             input.remove();
+            input_prioridad.remove();
             x--;
         }
 

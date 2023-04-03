@@ -510,19 +510,46 @@ class SalaController extends Controller
 
     public function AgregarRequerimientoCompra(Request $request){
 
-      DB::table('requerimiento_compra')->insert([
-        [
-            "codigo" => strtoupper($request->codigo),
-            "descripcion" => strtoupper($request->descripcion),
-            "marca" => strtoupper($request->marca),
-            "cantidad" => $request->cantidad,
-            "depto" => $request->depto,
-            "estado" => $request->estado,
-            "oc" => $request->oc,
-            "observacion" => $request->observacion,
-            "observacion_interna" => $request->observacion_interna
-        ]
-      ]);
+      $fecha_ingreso = DB::select('select cmovim.* from dmovim
+      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.strtoupper($request->codigo).'" order by CMVFECG desc limit 1');
+
+      //dd(empty($fecha_ingreso));
+
+      if(!empty($fecha_ingreso)){
+        if($fecha_ingreso[0]->CMVFECG <= "2021-11-01"){
+          return redirect()->route('RequerimientoCompra')->with('error','El requerimiento de Compra no se agregó ya que el producto tiene ingresos de mercadería de antes de 01-11-2021');
+        }else{
+          DB::table('requerimiento_compra')->insert([
+            [
+                "codigo" => strtoupper($request->codigo),
+                "descripcion" => strtoupper($request->descripcion),
+                "marca" => strtoupper($request->marca),
+                "cantidad" => $request->cantidad,
+                "depto" => $request->depto,
+                "estado" => $request->estado,
+                "oc" => $request->oc,
+                "observacion" => $request->observacion,
+                "observacion_interna" => $request->observacion_interna
+            ]
+          ]);
+        }
+      }else{
+        DB::table('requerimiento_compra')->insert([
+          [
+              "codigo" => strtoupper($request->codigo),
+              "descripcion" => strtoupper($request->descripcion),
+              "marca" => strtoupper($request->marca),
+              "cantidad" => $request->cantidad,
+              "depto" => $request->depto,
+              "estado" => $request->estado,
+              "oc" => $request->oc,
+              "observacion" => $request->observacion,
+              "observacion_interna" => $request->observacion_interna
+          ]
+        ]);
+      }
+
+
 
       return redirect()->route('RequerimientoCompra')->with('success','Requerimiento de Compra Agregado');
     }
@@ -574,8 +601,8 @@ class SalaController extends Controller
 
       switch ($request->estado) {
         case "INGRESADO":
-          $estado = "fecha";
-          break;
+            $estado = "fecha";
+            break;
         case "ENVÍO OC":
             $estado = "fecha_enviooc";
             break;
@@ -587,7 +614,7 @@ class SalaController extends Controller
             break;
         case "DESACTIVADO":
             $estado = "fecha_desactivado";
-            break;   
+            break; 
       }
 
         DB::table('requerimiento_compra')
@@ -642,6 +669,24 @@ class SalaController extends Controller
 
         }
         return redirect()->route('RequerimientoCompra')->with('success','Requerimientos Editados Correctamente');
+      }
+    }
+
+    public function EditarRequerimientoCompraMultiplePrioridad(Request $request){
+
+      if(is_null($request->case)){
+        return redirect()->route('RequerimientoCompra')->with('warning','No seleccionó Requerimientos para Priorizar');
+      }else{
+        foreach($request->case as $item){
+
+          DB::table('requerimiento_compra')
+            ->where('id' , $item)
+            ->update(
+            ['prioridad' => 1]
+          );
+
+        }
+        return redirect()->route('RequerimientoCompra')->with('success','Requerimientos Priorizados Correctamente');
       }
     }
 
