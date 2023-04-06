@@ -59,6 +59,7 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::put('/EditarRequerimientoCompraMultiplePrioridad','SalaController@EditarRequerimientoCompraMultiplePrioridad')->name('EditarRequerimientoCompraMultiplePrioridad');
     Route::get('/ResumenProducto/{codigo}','SalaController@ResumenProducto')->name('ResumenProducto');
     Route::get('/DetalleVale/{n_vale}','SalaController@DetalleVale')->name('DetalleVale');
+    Route::post('/AgregarValeRequerimiento','SalaController@AgregarValeRequerimiento')->name('AgregarValeRequerimiento');
     /* fin */
 
     //cambio

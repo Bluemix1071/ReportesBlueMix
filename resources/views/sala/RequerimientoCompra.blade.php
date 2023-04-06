@@ -93,10 +93,10 @@
           <hr>
           <div class="card-header">
           <div style="text-align:center">
-                                <!-- <tr>
+                                <tr>
                                     <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#cargarvale">Cargar Vale</button></td>
                                 </tr>
-                                &nbsp;&nbsp;&nbsp; -->
+                                &nbsp;&nbsp;&nbsp;
                                 <tr>
                                     <td>Desde:</td>
                                     <td><input type="date" id="min" name="min" value="{{ $fecha1 }}"></td>
@@ -383,7 +383,7 @@
                         </button> -->
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="" id="desvForm">
+                        <form method="post" action="{{ route('AgregarValeRequerimiento') }}" id="desvForm">
                                 <div class="form-group row">
                                     <label for="name"
                                         class="col-md-4 col-form-label text-md-right">N° Vale:</label>
@@ -423,7 +423,7 @@
 
                                     <div class="col-md-6">
 
-                                        <textarea maxlength="250" class="form-control" placeholder="Observacion Interna" name="observacion"></textarea>
+                                        <textarea maxlength="250" class="form-control" placeholder="Observaciones" name="observacion"></textarea>
                                                
                                     </div>
                                 </div>

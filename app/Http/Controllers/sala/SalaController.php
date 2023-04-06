@@ -870,4 +870,31 @@ class SalaController extends Controller
     return response()->json($vale);
   }
 
+  public function AgregarValeRequerimiento(Request $request){
+
+    $vale = DB::select("select vaarti, ARDESC, ARMARCA, vacant, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea from dvales
+    left join producto on dvales.vaarti = producto.ARCODI
+    left join suma_bodega on dvales.vaarti = suma_bodega.inarti
+    left join bodeprod on dvales.vaarti = bodeprod.bpprod
+    where vanmro = '.$request->n_vale.'");
+
+    foreach ($vale as $item) {
+      //error_log(print_r($request->depto, true));
+      DB::table('requerimiento_compra')->insert([
+        [
+            "codigo" => strtoupper($item->vaarti),
+            "descripcion" => strtoupper($item->ARDESC),
+            "marca" => strtoupper($item->ARMARCA),
+            "cantidad" => $item->vacant,
+            "depto" => $request->depto,
+            "estado" => "INGRESADO",
+            "observacion" => $request->observacion
+        ]
+      ]);
+    }
+    
+    return redirect()->route('RequerimientoCompra')->with('success','Vale de Requerimientos Ingresados Correctamente');
+
+  }
+
 }
