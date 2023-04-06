@@ -863,7 +863,7 @@ class SalaController extends Controller
     //error_log(print_r($n_vale, true));
     $vale = DB::select("select vaarti, ARDESC, ARMARCA, vacant, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea from dvales
     left join producto on dvales.vaarti = producto.ARCODI
-    left join suma_bodega on dvales.vaarti = suma_bodega.inarti
+    left join Suma_Bodega on dvales.vaarti = Suma_Bodega.inarti
     left join bodeprod on dvales.vaarti = bodeprod.bpprod
     where vanmro = '.$n_vale.'");
 
@@ -874,7 +874,7 @@ class SalaController extends Controller
 
     $vale = DB::select("select vaarti, ARDESC, ARMARCA, vacant, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea from dvales
     left join producto on dvales.vaarti = producto.ARCODI
-    left join suma_bodega on dvales.vaarti = suma_bodega.inarti
+    left join Suma_Bodega on dvales.vaarti = Suma_Bodega.inarti
     left join bodeprod on dvales.vaarti = bodeprod.bpprod
     where vanmro = '.$request->n_vale.'");
 
