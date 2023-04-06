@@ -503,22 +503,35 @@ class SalaController extends Controller
 
       $productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
 
+      $fecha1 = date("Y-m-d",strtotime(date("Y-m-d")."- 1 month"));
+
       //dd($depto[5]['depto']);
 
-      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'productos'));
+      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'productos', 'fecha1'));
     }
 
     public function AgregarRequerimientoCompra(Request $request){
 
-      $fecha_ingreso = DB::select('select cmovim.* from dmovim
-      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.strtoupper($request->codigo).'" order by CMVFECG desc limit 1');
+      /* $fecha_ingreso = DB::select('select cmovim.* from dmovim
+      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.strtoupper($request->codigo).'" order by CMVFECG desc limit 1'); */
 
       //dd(empty($fecha_ingreso));
+      DB::table('requerimiento_compra')->insert([
+        [
+            "codigo" => strtoupper($request->codigo),
+            "descripcion" => strtoupper($request->descripcion),
+            "marca" => strtoupper($request->marca),
+            "cantidad" => $request->cantidad,
+            "depto" => $request->depto,
+            "estado" => $request->estado,
+            "oc" => $request->oc,
+            "observacion" => $request->observacion,
+            "observacion_interna" => $request->observacion_interna
+        ]
+      ]);
 
-      if(!empty($fecha_ingreso)){
+      /* if(!empty($fecha_ingreso)){
         if($fecha_ingreso[0]->CMVFECG <= "2021-11-01"){
-          return redirect()->route('RequerimientoCompra')->with('error','El requerimiento de Compra no se agregó ya que el producto tiene ingresos de mercadería de antes de 01-11-2021');
-        }else{
           DB::table('requerimiento_compra')->insert([
             [
                 "codigo" => strtoupper($request->codigo),
@@ -532,6 +545,8 @@ class SalaController extends Controller
                 "observacion_interna" => $request->observacion_interna
             ]
           ]);
+          return redirect()->route('RequerimientoCompra')->with('error','El requerimiento de Compra no se agregó ya que el producto tiene ingresos de mercadería de antes de 01-11-2021');
+        }else{
         }
       }else{
         DB::table('requerimiento_compra')->insert([
@@ -547,9 +562,7 @@ class SalaController extends Controller
               "observacion_interna" => $request->observacion_interna
           ]
         ]);
-      }
-
-
+      } */
 
       return redirect()->route('RequerimientoCompra')->with('success','Requerimiento de Compra Agregado');
     }
@@ -844,6 +857,17 @@ class SalaController extends Controller
     $costos = DB::select('select DEFECO, PrecioCosto, DEPREC from dcargos where DECODI = "'.$codigo.'" and DETIPO != 3 and DEFECO >= "2020-01-01" AND PrecioCosto != 100 group by PrecioCosto order by DEFECO asc');
 
     return response()->json([$producto,$ingresos,$costos]);
+  }
+
+  public function DetalleVale($n_vale){
+    //error_log(print_r($n_vale, true));
+    $vale = DB::select("select vaarti, ARDESC, ARMARCA, vacant, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea from dvales
+    left join producto on dvales.vaarti = producto.ARCODI
+    left join suma_bodega on dvales.vaarti = suma_bodega.inarti
+    left join bodeprod on dvales.vaarti = bodeprod.bpprod
+    where vanmro = '.$n_vale.'");
+
+    return response()->json($vale);
   }
 
 }
