@@ -85,7 +85,8 @@
                                 @else
                                     @foreach ($contrato as $item)
                                         <tr>
-                                            <th scope="row">{{ $item->codigo_producto }}</th>
+                                            {{-- <th scope="row">{{ $item->codigo_producto }}</th> --}}
+                                            <td data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary('{{ $item->codigo_producto }}')" class="text-primary">{{ $item->codigo_producto }}</td>
                                             @if (empty($item->ARDESC))
                                             <td style="text-align:left">{{ "(1 Sin Existencia)" }}</td>
                                             @else
@@ -191,6 +192,95 @@
            </div>
          </div>
         <!-- FIN Modall -->
+        <!-- Inicio Modal detalle producto -->
+        <div class="modal fade" id="modalresumencodigo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: 150%;">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Resumen Producto</h4>
+                    </div>
+                    <!-- <div class="modal-body"> -->
+                        <!-- <div class="card-body"> -->
+                        <div class="card card-primary">
+                              <div class="card-header">
+                                  <h2 class="card-title">Detalles Producto</h2>
+                                  <div class="card-tools">
+                                      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                          <i class="fas fa-minus"></i>
+                                      </button>
+                                      <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                      <!--  <i class="fas fa-times"></i> -->
+                                      </button>
+                                  </div>
+                                  <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" >Agregar <i class="fas fa-plus"></i></button> -->
+                              </div>
+                              <div class="card-body hide">
+
+                              <div class="callout-success row">
+
+                                  <div class="col-sm-6 col-md-6 invoice-col col">
+                                      <strong>Codigo: <i id="resumen_codigo">cargando...</i></strong><br>
+                                      <strong>Barra: <i id="resumen_barra">cargando...</i></strong><br>
+                                      <strong>Detalle: <i id="resumen_detalle">cargando...</i></strong><br>
+                                      {{-- @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                      <strong>Tipo Unidad: <i id="resumen_unidad">cargando...</i></strong><br>
+                                      <strong>Codigo Proveedor: <i id="resumen_codigo_proveedor">cargando...</i></strong><br>
+                                      @endif --}}
+                                  </div>
+
+                                  <div class="col-sm-6 col-md-6 invoice-col col">
+                                      <strong>Marca: <i id="resumen_marca">cargando...</i></strong><br>
+                                      <strong>Stock Sala: <i id="resumen_stock_sala">cargando...</i></strong><br>
+                                      <strong>Stock Bodega: <i id="resumen_stock_bodega">cargando...</i></strong><br>
+                                      {{-- @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                      <strong>Ultima Venta: <i id="resumen_ultima_venta">cargando...</i></strong><br>
+                                      @endif --}}
+                                      <strong>Ultimo Ingreso: <i id="resumen_ultimo_ingreso">cargando...</i></strong><br>
+                                  </div>
+
+                              </div>
+
+                              </div>
+                          </div>
+                          {{-- @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                          <h5>Ingresos</h5>
+                          <table id="ingresos" class="table table-hover dataTable table-sm" style="text-align:center; font-size: 15px;">
+                              <thead>
+                                  <tr>
+                                      <th>Fcha. Ingreso</th>
+                                      <th>Cantidad</th>
+                                      <th>Proveedor</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+
+                              </tbody>
+                          </table>
+                          <h5>Variación de Costos</h5>
+                          <table id="costos" class="table table-hover dataTable table-sm" style="text-align:center; font-size: 15px;">
+                          <thead>
+                                  <tr>
+                                      <th>Fcha. Cambio</th>
+                                      <th>Precio Costo</th>
+                                      <th>Precio Detalle</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+
+                              </tbody>
+                          </table>
+                          @endif --}}
+
+                                <div class="modal-footer">
+                                    <!-- <button type="submit" class="btn btn-danger">Desactivar</button> -->
+                                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                                </div>
+                       <!--  </div> -->
+                   <!--  </div> -->
+                </div>
+            </div>
+        </div>
+        <!-- Fin Modal detalle producto -->
     </div>
     @endsection
     @section('script')
@@ -259,6 +349,49 @@
             //         ]
             //     });
             // });
+
+            function loadsumary(codigo_producto){
+
+// ingresos.clear().draw();
+// costos.clear().draw();
+
+            $('#resumen_codigo').text('cargando...');
+            $('#resumen_codigo_proveedor').text('cargando...');
+            $('#resumen_barra').text('cargando...');
+            $('#resumen_detalle').text('cargando...');
+            $('#resumen_marca').text('cargando...');
+            $('#resumen_unidad').text('cargando...');
+            $('#resumen_stock_sala').text('cargando...');
+            $('#resumen_stock_bodega').text('cargando...');
+            $('#resumen_ultima_venta').text('cargando...');
+            $('#resumen_ultimo_ingreso').text('cargando...');
+
+$.ajax({
+        url: '../admin/ResumenProducto/'+codigo_producto,
+        type: 'GET',
+        success: function(result) {
+            console.log(result[0]);
+            $('#resumen_codigo').text(result[0].arcodi);
+            $('#resumen_codigo_proveedor').text(result[0].ARCOPV);
+            $('#resumen_barra').text(result[0].arcbar);
+            $('#resumen_detalle').text(result[0].ardesc);
+            $('#resumen_marca').text(result[0].armarca);
+            $('#resumen_unidad').text(result[0].ARDVTA);
+            $('#resumen_stock_sala').text(result[0].bpsrea);
+            $('#resumen_stock_bodega').text(result[0].cantidad);
+            $('#resumen_ultima_venta').text(result[0].defeco);
+            $('#resumen_ultimo_ingreso').text(result[0].ult_ingreso);
+
+            // result[1].forEach(items => {
+            //     ingresos.rows.add([['<tr>'+items.CMVFECG+'</tr>','<tr>'+items.DMVCANT+'</tr>','<tr>'+items.PVNOMB,+'</tr>']]).draw();
+            // })
+
+            // result[2].forEach(items => {
+            //     costos.rows.add([['<tr>'+items.DEFECO+'</tr>','<tr>'+truncateDecimals(items.PrecioCosto, 0)+'</tr>','<tr>'+truncateDecimals(items.DEPREC, 0)+'</tr>']]).draw();
+            // })
+        }
+});
+}
         </script>
 
     <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">

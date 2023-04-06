@@ -2280,6 +2280,30 @@ public function stocktiemporeal (Request $request){
 
     }
 
+    public function ResumenProducto($codigo_producto){
+
+        //error_log(print_r($codigo, true));
+        $producto = DB::select('select arcodi, arcbar, ARCOPV,ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea, (
+          select CMVFECG from dmovim
+          left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo_producto.'" order by CMVFECG desc limit 1
+        ) as ult_ingreso FROM producto
+        left join dcargos on ARCODI = dcargos.DECODI
+        left join Suma_Bodega on ARCODI = Suma_Bodega.inarti
+        left join bodeprod on ARCODI = bodeprod.bpprod
+        where ARCODI = "'.$codigo_producto.'" order by DEFECO desc limit 1')[0];
+
+
+        // $ingresos = DB::select('select DMVPROD, proveed.PVNOMB, DMVCANT, DMVUNID, CMVFECG, PrecioCosto from dmovim
+        // left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI
+        // left join dcargos on dmovim.DMVPROD = dcargos.DECODI
+        // left join proveed on cmovim.CMVCPRV = proveed.PVRUTP
+        // where CMVFECG >= "2020-01-01" and DMVPROD = "'.$codigo_producto.'" and DEFECO >= "2020-01-01" group by CMVFECG');
+
+        // $costos = DB::select('select DEFECO, PrecioCosto, DEPREC from dcargos where DECODI = "'.$codigo_producto.'" and DETIPO != 3 and DEFECO >= "2020-01-01" AND PrecioCosto != 100 group by PrecioCosto order by DEFECO asc');
+
+        return response()->json([$producto]);
+      }
+
 
 
     public function ListadoProductosContrato(Request $request){
