@@ -93,10 +93,10 @@
           <hr>
           <div class="card-header">
           <div style="text-align:center">
-                                <tr>
+                                <!-- <tr>
                                     <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#cargarvale">Cargar Vale</button></td>
                                 </tr>
-                                &nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp; -->
                                 <tr>
                                     <td>Desde:</td>
                                     <td><input type="date" id="min" name="min" value="{{ $fecha1 }}"></td>
