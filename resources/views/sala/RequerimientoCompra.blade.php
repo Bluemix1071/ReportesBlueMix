@@ -93,10 +93,10 @@
           <hr>
           <div class="card-header">
           <div style="text-align:center">
-                                <!-- <tr>
+                                <tr>
                                     <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#cargarvale">Cargar Vale</button></td>
                                 </tr>
-                                &nbsp;&nbsp;&nbsp; -->
+                                &nbsp;&nbsp;&nbsp;
                                 <tr>
                                     <td>Desde:</td>
                                     <td><input type="date" id="min" name="min" value="{{ $fecha1 }}"></td>
@@ -283,7 +283,85 @@
                 </form>
       </section>
 
-      <!-- Modal resumen -->
+        <!-- modal de ingresar vales -->
+    <div class="modal fade" id="cargarvale" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document" >
+                <div class="modal-content">
+                    <!-- <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Cargar Vale</h5>
+                    </div> -->
+                    <div class="modal-body">
+                        <form method="post" action="{{ route('AgregarValeRequerimiento') }}" id="form_vale">
+                                <div class="form-group row" style="margin-bottom: 0.5rem">
+                                    <label for="name"
+                                        class="col-md-4 col-form-label text-md-right">N° Vale:</label>
+
+                                    <div class="col-md-6">
+                                        <input id="n_vale" type="number"
+                                            class="form-control @error('name') is-invalid @enderror col" name="n_vale"
+                                            value="" required max="99999999" min="10" autocomplete="name" autofocus>
+                                            
+                                            @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <button class="btn" type="button" title="Buscar Vale" onclick="cargar_vale($('#n_vale').val())">🔎</button>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0.5rem">
+                                    <label for="name"
+                                        class="col-md-4 col-form-label text-md-right">Departamento:</label>
+                                    <div class="col-md-6">
+
+                                    <select name="depto" id="buscar_area" class="form-control col">
+                                        <option value="LICITACIONES">LICITACIONES</option>
+                                        <option value="VENTAS WEB">VENTAS WEB</option>
+                                        <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
+                                        <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
+                                        <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
+                                        <option value="SALA">SALA</option>
+                                        <option value="BODEGA">BODEGA</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 0.5rem">
+                                    <label for="name"
+                                        class="col-md-4 col-form-label text-md-right">Observaciones:</label>
+
+                                    <div class="col-md-6">
+
+                                        <textarea maxlength="250" class="form-control" placeholder="Observaciones" name="observacion" rows="1"></textarea>
+                                               
+                                    </div>
+                                </div>
+                                <div class="table-responsive-sm">
+                                <table id="vale" class="table table-bordered table-hover dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th style="width: 350px !important">Detalle</th>
+                                            <th>Marca</th>
+                                            <th>Cantidad</th>
+                                            <th style="text-align:center">Incluye?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                                </div>
+                                <div id="vale_cargar" hidden>
+                                </div>
+                                <button type="button" class="btn btn-success" id="guardar_vale" disabled onclick="confirmacion_guardar()">Cargar Vale</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          <!-- Modal resumen -->
       <div class="modal fade" id="modalresumencodigo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
               <div class="modal-content" style="width: 150%;">
@@ -323,10 +401,9 @@
                                     <strong>Marca: <i id="resumen_marca">cargando...</i></strong><br>
                                     <strong>Stock Sala: <i id="resumen_stock_sala">cargando...</i></strong><br>
                                     <strong>Stock Bodega: <i id="resumen_stock_bodega">cargando...</i></strong><br>
-                                    @if(session()->get('email') == "adquisiciones@bluemix.cl")
                                     <strong>Ultima Venta: <i id="resumen_ultima_venta">cargando...</i></strong><br>
-                                    @endif
                                     <strong>Ultimo Ingreso: <i id="resumen_ultimo_ingreso">cargando...</i></strong><br>
+                                    <strong>Ult. Cant Ingresada: <i id="resumen_ultima_cantidad">cargando...</i></strong><br>
                                 </div>
                             
                             </div>
@@ -364,91 +441,13 @@
 
                               <div class="modal-footer">
                                   <!-- <button type="submit" class="btn btn-danger">Desactivar</button> -->
-                                  <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                                  <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-secondary">Cerrar</button>
                               </div>
                      <!--  </div> -->
                  <!--  </div> -->
               </div>
           </div>
       </div>
-
-        <!-- modal de ingresar vales -->
-    <div class="modal fade" id="cargarvale" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document" >
-                <div class="modal-content" style="width: fit-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Cargar Vale</h5>
-                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button> -->
-                    </div>
-                    <div class="modal-body">
-                        <form method="post" action="{{ route('AgregarValeRequerimiento') }}" id="desvForm">
-                                <div class="form-group row">
-                                    <label for="name"
-                                        class="col-md-4 col-form-label text-md-right">N° Vale:</label>
-
-                                    <div class="col-md-6">
-                                        <input id="n_vale" type="number"
-                                            class="form-control @error('name') is-invalid @enderror col" name="n_vale"
-                                            value="" required max="99999999" min="10" autocomplete="name" autofocus>
-                                            
-                                            @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <button class="btn" type="button" title="Buscar Vale" onclick="cargar_vale($('#n_vale').val())">🔎</button>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="name"
-                                        class="col-md-4 col-form-label text-md-right">Departamento:</label>
-                                    <div class="col-md-6">
-
-                                    <select name="depto" id="buscar_area" class="form-control col">
-                                        <option value="LICITACIONES">LICITACIONES</option>
-                                        <option value="VENTAS WEB">VENTAS WEB</option>
-                                        <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
-                                        <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
-                                        <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
-                                        <option value="SALA">SALA</option>
-                                        <option value="BODEGA">BODEGA</option>
-                                    </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="name"
-                                        class="col-md-4 col-form-label text-md-right">Observaciones:</label>
-
-                                    <div class="col-md-6">
-
-                                        <textarea maxlength="250" class="form-control" placeholder="Observaciones" name="observacion"></textarea>
-                                               
-                                    </div>
-                                </div>
-                                <table id="vale" class="table table-bordered table-hover dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Código</th>
-                                            <th>Detalle</th>
-                                            <th>Marca</th>
-                                            <th>Cantidad</th>
-                                            <th>Sala</th>
-                                            <th>Bodega</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
-                                <button type="submit" class="btn btn-success" id="guardar_vale" disabled>Cargar Vale</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Modal desactivar -->
         <div class="modal fade" id="desactivar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -887,7 +886,7 @@ var ingresos = $('#ingresos').DataTable({
 
     var vale = $('#vale').DataTable({
         orderCellsTop: true,
-        paging: false,
+        pageLength : 7,
         dom: 'Plfrtip',
         order: [[ 0, "desc" ]],
         searching: false,
@@ -920,13 +919,16 @@ var ingresos = $('#ingresos').DataTable({
 
     function cargar_vale(n_vale){
         vale.clear().draw();
+        $("#vale_cargar input").remove();
         $.ajax({
             url: '../Sala/DetalleVale/'+n_vale,
             type: 'GET',
             success: function(result) {
                 if(result.length > 0 ){
                     result.forEach(items => {
-                        vale.rows.add([['<tr>'+items.vaarti+'</tr>','<tr>'+items.ARDESC+'</tr>','<tr>'+items.ARMARCA+'</tr>','<tr>'+items.vacant+'</tr>','<tr>'+items.bpsrea+'</tr>','<tr>'+items.cantidad+'</tr>']]).draw();
+                        //onclick="loadsumary('{{ $item->codigo }}')"
+                        vale.rows.add([['<p data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary(`'+items.vaarti+'`)" style="color: #009aff">'+items.vaarti+'</p>','<p style="width: 100%">'+items.ARDESC+'</p>','<td>'+items.ARMARCA+'</td>','<td>'+items.vacant+'</td>', '<input type="checkbox" id="id_'+items.vaarti+'" onclick="incluye(`'+items.vaarti+'`)" checked>']]).draw();
+                        $("#vale_cargar").append('<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+items.vaarti+'" name="vale[]" value="'+items.vaarti+'" title="'+items.vaarti+'">');
                     });
                     $("#guardar_vale").prop("disabled", false);
                 }else{
@@ -952,12 +954,14 @@ function loadsumary(codigo){
                 $('#resumen_stock_bodega').text('cargando...');
                 $('#resumen_ultima_venta').text('cargando...');
                 $('#resumen_ultimo_ingreso').text('cargando...');
+                $('#resumen_ultima_cantidad').text('cargando...');
+
 
     $.ajax({
             url: '../Sala/ResumenProducto/'+codigo,
             type: 'GET',
             success: function(result) {
-                console.log(result[0]);
+                //console.log(result[0]);
                 $('#resumen_codigo').text(result[0].arcodi);
                 $('#resumen_codigo_proveedor').text(result[0].ARCOPV);
                 $('#resumen_barra').text(result[0].arcbar);
@@ -968,6 +972,7 @@ function loadsumary(codigo){
                 $('#resumen_stock_bodega').text(result[0].cantidad);
                 $('#resumen_ultima_venta').text(result[0].defeco);
                 $('#resumen_ultimo_ingreso').text(result[0].ult_ingreso);
+                $('#resumen_ultima_cantidad').text(result[0].ult_cant);
 
                 result[1].forEach(items => {
                     ingresos.rows.add([['<tr>'+items.CMVFECG+'</tr>','<tr>'+items.DMVCANT+'</tr>','<tr>'+items.PVNOMB,+'</tr>']]).draw();
@@ -1130,6 +1135,29 @@ function selectproducto(codigo,descripcion,marca){
 
 function enviaPrioridad(){
     $('#enviaPrioridad').submit();
+}
+
+function confirmacion_guardar(){
+    if($("#n_vale").val() == ""){
+        alert("No ha ingresado ningún número de vale");
+    }else{
+        if (confirm("Seguro de cargar Vale?") == true) {
+            console.log("acepto");
+            $('#form_vale').submit();
+        } else {
+            console.log("cancelo");
+        }
+    }
+}
+
+function incluye(codigo){
+    var vale = $("#vale_cargar");
+
+    if ($('#id_'+codigo).is(":checked")) {
+        $(vale).append('<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+codigo+'" name="vale[]" value="'+codigo+'" title="'+codigo+'">');
+    }else{
+        $("#input_"+codigo).remove();
+    }
 }
 
 function contador(monto, id){

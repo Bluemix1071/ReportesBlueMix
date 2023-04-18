@@ -842,7 +842,9 @@ class SalaController extends Controller
     $producto = DB::select('SELECT arcodi, arcbar, ARCOPV,ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea, (
       select CMVFECG from dmovim
       left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo.'" order by CMVFECG desc limit 1
-    ) as ult_ingreso FROM producto
+    ) as ult_ingreso,
+    (select DMVCANT from dmovim
+      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo.'" order by CMVFECG desc limit 1) as ult_cant FROM producto
     left join dcargos on ARCODI = dcargos.DECODI
     left join Suma_Bodega on ARCODI = Suma_Bodega.inarti
     left join bodeprod on ARCODI = bodeprod.bpprod
@@ -860,12 +862,10 @@ class SalaController extends Controller
   }
 
   public function DetalleVale($n_vale){
-    //error_log(print_r($n_vale, true));
-    $vale = DB::select("select vaarti, ARDESC, ARMARCA, vacant, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea from dvales
+
+    $vale = DB::select('select vaarti, ARDESC, ARMARCA, dvales.vacant from dvales
     left join producto on dvales.vaarti = producto.ARCODI
-    left join Suma_Bodega on dvales.vaarti = Suma_Bodega.inarti
-    left join bodeprod on dvales.vaarti = bodeprod.bpprod
-    where vanmro = '.$n_vale.'");
+    where vanmro = '.$n_vale.' group by vaarti');
 
     return response()->json($vale);
   }
@@ -878,7 +878,34 @@ class SalaController extends Controller
     left join bodeprod on dvales.vaarti = bodeprod.bpprod
     where vanmro = '.$request->n_vale.'");
 
-    foreach ($vale as $item) {
+    if(count($vale) == 0){
+      return redirect()->route('RequerimientoCompra')->with('warning','El vale ingresado no existe');
+    }
+
+    if(is_null($request->vale)){
+      return redirect()->route('RequerimientoCompra')->with('warning','No seleccionó ningún producto para Ingresar');
+    }
+
+
+    foreach($vale as $item){
+      foreach($request->vale as $item2){
+        if($item->vaarti == $item2){
+          DB::table('requerimiento_compra')->insert([
+            [
+                "codigo" => strtoupper($item->vaarti),
+                "descripcion" => strtoupper($item->ARDESC),
+                "marca" => strtoupper($item->ARMARCA),
+                "cantidad" => $item->vacant,
+                "depto" => $request->depto,
+                "estado" => "INGRESADO",
+                "observacion" => $request->observacion
+            ]
+          ]);
+        }
+      }
+    }
+
+    /* foreach ($vale as $item) {
       //error_log(print_r($request->depto, true));
       DB::table('requerimiento_compra')->insert([
         [
@@ -891,7 +918,7 @@ class SalaController extends Controller
             "observacion" => $request->observacion
         ]
       ]);
-    }
+    } */
     
     return redirect()->route('RequerimientoCompra')->with('success','Vale de Requerimientos Ingresados Correctamente');
 
