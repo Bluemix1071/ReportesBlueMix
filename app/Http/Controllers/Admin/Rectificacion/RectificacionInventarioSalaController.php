@@ -178,9 +178,9 @@ class RectificacionInventarioSalaController extends Controller
             DB::table('bodeprod')->where('bpprod', $item['codigo'])->update(['bpsrea' => (intval($item['sala'])-intval($item['cantidad']))]);
 
             if($item['area'] == "Merma"){
-                DB::table('solicitud_ajuste')->insert(['codprod' => $item['codigo'], 'producto' => $item['detalle'], 'fecha' => date("Y-m-d"), 'stock_anterior' => $item['sala'], 'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Alison Aedo', 'observacion' => $item['area'] ]);
+                DB::table('solicitud_ajuste')->insert(['codprod' => $item['codigo'], 'producto' => $item['detalle'], 'fecha' => date("Y-m-d"), 'stock_anterior' => $item['sala'], 'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Valentin Bello', 'observacion' => $item['area'] ]);
             }else{
-                DB::table('solicitud_ajuste')->insert(['codprod' => $item['codigo'], 'producto' => $item['detalle'], 'fecha' => date("Y-m-d"), 'stock_anterior' => $item['sala'], 'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Alison Aedo', 'observacion' => 'Insumo '.$item['area'].'' ]);
+                DB::table('solicitud_ajuste')->insert(['codprod' => $item['codigo'], 'producto' => $item['detalle'], 'fecha' => date("Y-m-d"), 'stock_anterior' => $item['sala'], 'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Valentin Bello', 'observacion' => 'Insumo '.$item['area'].'' ]);
             }
         }
 
@@ -227,9 +227,9 @@ class RectificacionInventarioSalaController extends Controller
                 DB::table('bodeprod')->where('bpprod', $item->vaarti)->update(['bpsrea' => $item->CANT]);
 
                 if($request->get('area') == "Merma"){
-                    DB::table('solicitud_ajuste')->insert(['codprod' => $item->vaarti, 'producto' => $item->ARDESC, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->bpsrea, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Alison Aedo', 'observacion' => 'Merma' ]);
+                    DB::table('solicitud_ajuste')->insert(['codprod' => $item->vaarti, 'producto' => $item->ARDESC, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->bpsrea, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Valentin Bello', 'observacion' => 'Merma' ]);
                 }else{
-                    DB::table('solicitud_ajuste')->insert(['codprod' => $item->vaarti, 'producto' => $item->ARDESC, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->bpsrea, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Alison Aedo', 'observacion' => 'Insumo '.$request->get('area').'' ]);
+                    DB::table('solicitud_ajuste')->insert(['codprod' => $item->vaarti, 'producto' => $item->ARDESC, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->bpsrea, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Valentin Bello', 'observacion' => 'Insumo '.$request->get('area').'' ]);
                 }
             }
         }else{

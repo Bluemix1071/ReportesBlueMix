@@ -887,7 +887,7 @@ var ingresos = $('#ingresos').DataTable({
 
     var vale = $('#vale').DataTable({
         orderCellsTop: true,
-        pageLength : 7,
+        pageLength : 5,
         dom: 'Plfrtip',
         order: [[ 0, "desc" ]],
         searching: false,
