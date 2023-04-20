@@ -844,7 +844,9 @@ class SalaController extends Controller
       left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo.'" order by CMVFECG desc limit 1
     ) as ult_ingreso,
     (select DMVCANT from dmovim
-      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo.'" order by CMVFECG desc limit 1) as ult_cant FROM producto
+      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo.'" order by CMVFECG desc limit 1) as ult_cant,
+      (select date(fecha) from requerimiento_compra where codigo = "'.$codigo.'" order by fecha desc limit 1) as ult_requerimiento
+	FROM producto
     left join dcargos on ARCODI = dcargos.DECODI
     left join Suma_Bodega on ARCODI = Suma_Bodega.inarti
     left join bodeprod on ARCODI = bodeprod.bpprod

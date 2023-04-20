@@ -402,6 +402,7 @@
                                     <strong>Stock Sala: <i id="resumen_stock_sala">cargando...</i></strong><br>
                                     <strong>Stock Bodega: <i id="resumen_stock_bodega">cargando...</i></strong><br>
                                     <strong>Ultima Venta: <i id="resumen_ultima_venta">cargando...</i></strong><br>
+                                    <strong>Ult. Requerimiento: <i id="resumen_ultimo_requerimiento">cargando...</i></strong><br>
                                     <strong>Ultimo Ingreso: <i id="resumen_ultimo_ingreso">cargando...</i></strong><br>
                                     <strong>Ult. Cant Ingresada: <i id="resumen_ultima_cantidad">cargando...</i></strong><br>
                                 </div>
@@ -955,6 +956,7 @@ function loadsumary(codigo){
                 $('#resumen_ultima_venta').text('cargando...');
                 $('#resumen_ultimo_ingreso').text('cargando...');
                 $('#resumen_ultima_cantidad').text('cargando...');
+                $('#resumen_ultimo_requerimiento').text('cargando...');
 
 
     $.ajax({
@@ -973,6 +975,7 @@ function loadsumary(codigo){
                 $('#resumen_ultima_venta').text(result[0].defeco);
                 $('#resumen_ultimo_ingreso').text(result[0].ult_ingreso);
                 $('#resumen_ultima_cantidad').text(result[0].ult_cant);
+                $('#resumen_ultimo_requerimiento').text(result[0].ult_requerimiento);
 
                 result[1].forEach(items => {
                     ingresos.rows.add([['<tr>'+items.CMVFECG+'</tr>','<tr>'+items.DMVCANT+'</tr>','<tr>'+items.PVNOMB,+'</tr>']]).draw();
