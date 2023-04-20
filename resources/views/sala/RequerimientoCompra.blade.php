@@ -1035,6 +1035,11 @@ function( settings, data, dataIndex ) {
 ); 
 
   $(document).ready( function () {
+
+    if(window.screen.height <= 720){
+        document.body.style.zoom = "80%";
+    }
+
     minDate = $('#min');
     maxDate = $('#max');
 
