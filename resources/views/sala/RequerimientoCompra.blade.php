@@ -1036,7 +1036,7 @@ function( settings, data, dataIndex ) {
 
   $(document).ready( function () {
 
-    if(window.screen.height <= 720){
+    if(window.screen.height <= 768){
         document.body.style.zoom = "80%";
     }
 
