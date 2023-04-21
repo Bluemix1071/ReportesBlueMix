@@ -65,10 +65,10 @@ class ConvenioMarcoController extends Controller
         // dd($precioventa);
 
         if ($validaidconvenio == null){
-            return redirect()->route('ListarConvenio')->with('error', 'Ingresar precio de venta');
+            return redirect()->route('ListarConvenio')->with('error', 'Ingresar Id Convenio');
         } else {
         if ($precioventa == null){
-            return redirect()->route('ListarConvenio')->with('error', 'Ingresar precio de venta');
+            return redirect()->route('ListarConvenio')->with('error', 'Ingresar Precio de Venta');
 
         }
         else {
