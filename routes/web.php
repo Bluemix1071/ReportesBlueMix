@@ -302,6 +302,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Reportes','ListaEscolarController@Reportes')->name('reportes');
     Route::get('/Colegiosold','ListaEscolarController@Colegiosold')->name('colegiosold');
 
+    Route::put('/EditarProducto','ConvenioMarcoController@EditarProducto')->name('EditarProducto');
+
+    Route::post('/CargarCotizacion', 'ListaEscolarController@CargarCotizacion')->name('CargarCotizacion');
+    Route::post('/CargarCotizacion', 'ConvenioMarcoController@CargarCotizacion')->name('CargarCotizacion');
+    Route::post('/EliminarProd','ConvenioMarcoController@eliminarprod')->name('EliminarProd');
+
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     //Route::post('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');
     Route::put('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');

@@ -330,7 +330,7 @@ Lista Escolar
                         'copy', 'pdf',
                         {
                             extend: 'print',
-                            messageTop: 
+                            messageTop:
                             '<div class="row">'+
                                 '<div class="col">'+
                                     '<h6><b>Colegio:</b> '+$('#colegio').val()+'</h6>'+
@@ -342,7 +342,7 @@ Lista Escolar
                                 '</div>'+
                             '</div>',
                             title: '<h5>Lista Escolar</h5>',
-                            messageBottom: 
+                            messageBottom:
                             '<div class="row">'+
                                 '<div class="col">'+
                                     '<h6><b>Total Items:</b> '+$('#total').val()+'</h6>'+
