@@ -36,7 +36,7 @@ class ConvenioMarcoController extends Controller
         producto.ARMARCA as marca,
         convenio_marco.cantidad,
         bodeprod.bpsrea as stock_sala,
-        if(isnull(Suma_Bodega.cantidad),0,suma_bodega.cantidad) AS stock_bodega,
+        if(isnull(Suma_Bodega.cantidad),0,Suma_Bodega.cantidad) AS stock_bodega,
         convenio_marco.neto,
         convenio_marco.precio_venta,
         convenio_marco.margen
