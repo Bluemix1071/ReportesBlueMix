@@ -64,11 +64,11 @@ class ConvenioMarcoController extends Controller
         -> where('cod_articulo', $codigo)->first();
         // dd($precioventa);
 
-        if ($validaidconvenio == null){
-            return redirect()->route('ListarConvenio')->with('error', 'Ingresar Id Convenio');
-        } else {
         if ($precioventa == null){
             return redirect()->route('ListarConvenio')->with('error', 'Ingresar Precio de Venta');
+        } else {
+        if ($validaidconvenio == null){
+            return redirect()->route('ListarConvenio')->with('error', 'Ingresar Id Convenio');
 
         }
         else {
