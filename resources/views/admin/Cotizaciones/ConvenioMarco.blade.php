@@ -191,7 +191,6 @@ Convenio Marco
                         <div class="form-group row">
                             <label for="id_conveniomarco"
                                 class="col-md-4 col-form-label text-md-right">{{ __('ID Convenio') }}</label>
-
                             <div class="col-md-6">
                                  <input id="id_conveniomarco" type="number"
                                     class="form-control @error('id_conveniomarco') is-invalid @enderror" name="id_conveniomarco"

@@ -75,16 +75,16 @@ class ConvenioMarcoController extends Controller
 
         if ($codigof) {
 
-            $cantidad = $codigof->cantidad+$cantidadingresada;
+            // $cantidad = $codigof->cantidad+$cantidadingresada;
 
-            DB::table('convenio_marco')
-            ->where('convenio_marco.cod_articulo', $request->get("codigo"))
-            ->update(
-                [
-                    'convenio_marco.cantidad'=> $cantidad]
+            // DB::table('convenio_marco')
+            // ->where('convenio_marco.cod_articulo', $request->get("codigo"))
+            // ->update(
+            //     [
+            //         'convenio_marco.cantidad'=> $cantidad]
 
-                );
-
+            //     );
+            return redirect()->route('ListarConvenio')->with('error', 'El producto ya existe!');
         } else {
 
 
