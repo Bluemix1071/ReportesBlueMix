@@ -67,11 +67,11 @@ class ConvenioMarcoController extends Controller
         if ($precioventa == null){
             return redirect()->route('ListarConvenio')->with('error', 'Ingresar Precio de Venta');
         } else {
-        if ($validaidconvenio == null){
-            return redirect()->route('ListarConvenio')->with('error', 'Ingresar Id Convenio');
+        // if ($validaidconvenio == null){
+        //     return redirect()->route('ListarConvenio')->with('error', 'Ingresar Id Convenio');
 
-        }
-        else {
+        // }
+        // else {
 
         if ($codigof) {
 
@@ -101,7 +101,7 @@ class ConvenioMarcoController extends Controller
         }
 
             return redirect()->route('ListarConvenio')->with('success','Producto Agregado Correctamente');
-        }
+        // }
     }
     }
 

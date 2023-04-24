@@ -76,7 +76,11 @@ Convenio Marco
                                     @foreach ($convenio as $item)
                                 <tr>
                                     <td scope="col" style="text-align:left"><a href="https://www.libreriabluemix.cl/search?q={{ $item->cod_articulo }}" target="_blank">{{ $item->cod_articulo }}</a></td>
+                                    @if (empty($item->id_conveniomarco))
+                                    <td style="text-algin:left">{{0}}</td>
+                                    @else
                                     <td style="text-align:left">{{ $item->id_conveniomarco }}</td>
+                                    @endif
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
                                     <td style="text-align:left">{{ $item->marca }}</td>
                                     @if (empty($item->stock_sala))
@@ -492,7 +496,7 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
         $(add_button).click(function(e){
 
             if( codigo == null){
-                window.alert("Debe completar todos los campos");
+                window.alert("Debe ingresar codigo de producto");
 
             }
             else{
