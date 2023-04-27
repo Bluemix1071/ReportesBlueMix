@@ -46,9 +46,9 @@
                         <option value="">Seleccione contrato</option>
                         @foreach ($contratos as $contratos)
                         @if (!is_null($elcontrato) && $contratos->nombre_contrato==$elcontrato->nombre_contrato)
-                        <option value="{{ $contratos->id_contratos }}" selected id="seleccionado">{{ $contratos->nombre_contrato }}</option>
+                        <option value="{{ $contratos->id_contratos }}" selected id="seleccionado">{{ $contratos->nombre_contrato }} ({{ $contratos->estado }})</option>
                         @else
-                        <option value="{{ $contratos->id_contratos }}">{{ $contratos->nombre_contrato }}</option>
+                        <option value="{{ $contratos->id_contratos }}">{{ $contratos->nombre_contrato }} ({{ $contratos->estado }})</option>
                         @endif
                         @endforeach
 

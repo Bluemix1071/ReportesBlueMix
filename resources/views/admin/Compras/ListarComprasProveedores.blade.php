@@ -90,6 +90,7 @@
                                     @csrf
                                         &nbsp;<button type="submit" class="btn btn-success px-2" title="Descargar XML"><i class="fas fa-download" title="Descargar XML"></i></button>
                                     </form>
+                                    <a class="col-2" href="https://dte.azurewebsites.net/" style="font-size: 8px; font-weight: bolder;" target="_blank">PDF</a>
                                     @else
                                     <form>
                                     @csrf

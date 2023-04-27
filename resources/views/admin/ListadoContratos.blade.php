@@ -50,7 +50,9 @@
                                     <th scope="col">Nombre Contrato</th>
                                     <th scope="col">Plazo Entrega</th>
                                     <th scope="col">Contado Desde</th>
-                                    <th scope="col">Plazo Aceptar OC.</th>
+                                    <!-- <th scope="col">Plazo Aceptar OC.</th> -->
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">ID DEPTO</th>
                                     <th scope="col">Editar</th>
                                     {{-- <th scope="col">Agregar Productos</th> --}}
                                 </tr>
@@ -65,7 +67,8 @@
                                             <td style="text-align:left">{{ $item->nombre_contrato }}</td>
                                             <td style="text-align:left">{{ $item->plazo_entrega }}</td>
                                             <td style="text-align:left">{{ $item->contado_desde }}</td>
-                                            <td style="text-align:left">{{ $item->plazo_aceptar_oc }}</td>
+                                            <td style="text-align:left">{{ $item->estado }}</td>
+                                            <td style="text-align:left">{{ $item->id_depto }}</td>
                                             <td><a href="" data-toggle="modal" data-target="#modaleditarcontrato"
                                                     data-id_contratos_licitacion='{{ $item->id_contratos_licitacion }}'
                                                     data-nombre_contrato='{{ $item->nombre_contrato }}'
