@@ -11,8 +11,19 @@ class CompraAgilController extends Controller
 {
     //
 
+    public function ListarCompraAgil(Request $request){
+
+
+        // $convenio=DB::select("select);
+
+
+
+        return view('admin.Cotizaciones.Compragil');
+
+
+    }
     public function index()
-    {  
+    {
         $compras_agiles=DB::table('compra_agil')->orderBy('fecha','desc')->get();
 
         $adjudicatorios=DB::table('compra_agil')->where('adjudicatorio', '!=', '')->groupBy('adjudicatorio')->get('adjudicatorio');
@@ -90,7 +101,7 @@ class CompraAgilController extends Controller
     }
 
     public function destroy($id)
-    {  
+    {
         $update = DB::table('compra_agil')
         ->where('id' , $id)
         ->delete();
@@ -184,10 +195,10 @@ class CompraAgilController extends Controller
             return redirect()->route('CompraAgil');
         }else{
             $fecha = date("m-Y", strtotime($fecha1));
-    
+
             /* $fecha2=$request->fecha2; */
             $compras_agiles = DB::table('compra_agil')->where('fecha', 'LIKE', "%$fecha%")->get();
-    
+
             //return view('admin.CompraAgil',compact('diseno'));
             return view('admin.CompraAgil',compact('compras_agiles', 'adjudicatorios', 'clientes'));
         }

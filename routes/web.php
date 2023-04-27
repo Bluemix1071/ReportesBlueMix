@@ -283,6 +283,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
 
     Route::get('/ListarConvenio','ConvenioMarcoController@ListarConvenio')->name('ListarConvenio');
+    Route::get('/ListarCompraAgil','CompraAgilController@ListarCompraAgil')->name('ListarCompraAgil');
     Route::post('/AgregarProducto','ConvenioMarcoController@AgregarProducto')->name('AgregarProducto');
 
     Route::post('/Cursos','ListaEscolarController@Cursos')->name('Cursos');

@@ -2732,11 +2732,11 @@ public function stocktiemporeal (Request $request){
 
         $factuasxnca=DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE cargos.`CAFECO`= ? and cargos.CATIPO=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
+        WHERE cargos.`CAFECO`= ? and cargos.CATIPO=8 and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
         $factuasxncb=DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE cargos.`CAFECO`= ? and cargos.CATIPO=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
-
+        WHERE cargos.`CAFECO`= ? and cargos.CATIPO=8 and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
+        // dd($fecha1);
 
 
         $ventasala101=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=101 and catipo != 3',[$fecha1]);
@@ -2779,6 +2779,8 @@ public function stocktiemporeal (Request $request){
 
         $destucan=DB::select('select sum(cavalo) as destucan from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76926330"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
         $desnene=DB::select('select sum(cavalo) as desnene from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76067436"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
+        $desartel=DB::select('select sum(cavalo) as desartel22 from cargos where cafeco between "2022-01-01" and ? and CARUTC= "92642000"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
+        // dd($desartel[0]->desartel22);
 
 
         $destucan23=DB::select('select sum(cavalo) as destucan23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330"',[$fecha1]);//anual al dia año 2023
@@ -2790,7 +2792,6 @@ public function stocktiemporeal (Request $request){
 
         $destucanm23=DB::select('select sum(cavalo) as destucanm23 from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2023
         $desnenem23=DB::select('select sum(cavalo) as desnenem23 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2023
-        //dd($desnenem23);
 
 
 
