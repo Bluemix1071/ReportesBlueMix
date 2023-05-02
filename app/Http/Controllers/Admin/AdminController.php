@@ -2777,26 +2777,32 @@ public function stocktiemporeal (Request $request){
         $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$h2022,$h2022]);
         $anual2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2023-01-01" and ?) as anualaño2023 from cargos where catipo != 3  and cafeco between "2023-01-01" and ?' , [$fecha1,$fecha1]);
 
+        //Anual al día año 2022 (Tucan,Nene,Artel)
         $destucan=DB::select('select sum(cavalo) as destucan from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76926330"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
         $desnene=DB::select('select sum(cavalo) as desnene from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76067436"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
-        $desartel=DB::select('select sum(cavalo) as desartel22 from cargos where cafeco between "2022-01-01" and ? and CARUTC= "92642000"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
-        // dd($desartel[0]->desartel22);
+        //$desartel=DB::select('select sum(cavalo) as desartel from cargos where cafeco between "2022-01-01" and ? and CARUTC= "92642000"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
 
-
+        //Anual al día año 2023 (Tucan,Nene,Artel)
         $destucan23=DB::select('select sum(cavalo) as destucan23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330"',[$fecha1]);//anual al dia año 2023
         $desnene23=DB::select('select sum(cavalo) as desnene23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76067436"',[$fecha1]);//anual al dia año 2023
+        //$desartel23=DB::select('select sum(cavalo) as desartel23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "92642000"',[$fecha1]);//anual al dia año 2023
 
+        //Mensual al día año 2022 (Tucan,Nene,Artel)
+        $destucanm=DB::select('select sum(cavalo) as destucanm from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2022
+        $desnenem=DB::select('select sum(cavalo) as desnenem from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2022
+        //$desartelm=DB::select('select sum(cavalo) as desartelm from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC ="92642000"', [$fechainiciomes,$fecha1]);//mensual al dia año 2022
 
-        $destucanm=DB::select('select sum(cavalo) as destucanm from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2022
-        $desnenem=DB::select('select sum(cavalo) as desnenem from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2022
-
+        //Mensual al día año 2023 (Tucan,Nene,Artel)
         $destucanm23=DB::select('select sum(cavalo) as destucanm23 from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2023
         $desnenem23=DB::select('select sum(cavalo) as desnenem23 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2023
+       //$desartelm23=DB::select('select sum(cavalo) as desartelm23 from cargos where cafeco between ? and ? and CARUTC= "92642000"',[$fechainiciomes,$fecha1]);// mensual al dia año 2023
 
 
 
-
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019','mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022','anual2023','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem','destucan23','desnene23','destucanm23','desnenem23','totalventaxdia'));
+        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019',
+        'mensual2020','mensual2021','mensual2022','mensual2023','anual2018','anual2019','anual2020','anual2021','anual2022',
+        'anual2023','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem','destucan23',
+        'desnene23','destucanm23','desnenem23','totalventaxdia'));
 
 
     }
