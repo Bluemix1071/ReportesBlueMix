@@ -2732,16 +2732,16 @@ public function stocktiemporeal (Request $request){
 
         $factuasxnca=DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE cargos.`CAFECO`= ? and cargos.CATIPO=8 and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
+        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
         $factuasxncb=DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE cargos.`CAFECO`= ? and cargos.CATIPO=8 and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
+        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
         // dd($fecha1);
 
 
-        $ventasala101=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=101 and catipo != 3',[$fecha1]);
-        $ventasala102=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=102 and catipo != 3',[$fecha1]);
-        $ventasala103=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=103 and catipo != 3',[$fecha1]);
+        $ventasala101=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=101 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala102=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=102 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala103=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=103 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
 
 
         $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma;
