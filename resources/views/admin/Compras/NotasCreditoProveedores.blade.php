@@ -116,6 +116,7 @@
                                             &nbsp;<button type="button" class="btn btn-default px-2" ><i class="fas fa-download"></i></button>
                                         </form>
                                         @endif
+                                        <a class="col-2" href="https://dte.azurewebsites.net/" style="font-size: 8px; font-weight: bolder;" target="_blank">PDF</a>
                                         </td>
                                 </tr>
                             @endforeach

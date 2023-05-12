@@ -58,6 +58,7 @@
                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                             <option value="SALA">SALA</option>
                             <option value="BODEGA">BODEGA</option>
+                            <option value="MATERIA PRIMA">MATERIA PRIMA</option>
                           </select></div>
             <div class="col">
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
@@ -256,7 +257,7 @@
                               <option value="BODEGA">DESACTIVADO</option>
                         </select>
                         <input type="number" placeholder="Orden de Compra" required name="oc_multiple" class="form-control col" style="margin-bottom: 1%; margin-top: 1%;"  />
-                        <textarea required maxlength="250" class="form-control form-control" placeholder="Observaciones Internas Míltipes" name="observacion_interna_multiple" rows="3" style="margin-bottom: 1%; margin-top: 1%;" id="observacion_interna_multiple"></textarea>
+                        <textarea required maxlength="250" class="form-control form-control" placeholder="Observaciones Internas Múltipes" name="observacion_interna_multiple" rows="3" style="margin-bottom: 1%; margin-top: 1%;" id="observacion_interna_multiple"></textarea>
                             <span class="badge badge-dark" onclick="observacion_multiple('Proveedor sin stock')">Proveedor sin stock</span>
                             <span class="badge badge-dark" onclick="observacion_multiple('Con stock en bodega')">Con stock en bodega</span>
                             <span class="badge badge-dark" onclick="observacion_multiple('Tenemos en otras marcas')">Tenemos en otras marcas</span>
@@ -322,6 +323,7 @@
                                         <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                                         <option value="SALA">SALA</option>
                                         <option value="BODEGA">BODEGA</option>
+                                        <option value="MATERIA PRIMA">MATERIA PRIMA</option>
                                     </select>
                                     </div>
                                 </div>
@@ -631,6 +633,7 @@
                                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                                             <option value="SALA">SALA</option>
                                             <option value="BODEGA">BODEGA</option>
+                                            <option value="MATERIA PRIMA">MATERIA PRIMA</option>
                                         </select>
                                     @else
                                     <input id="departamento" type="text"

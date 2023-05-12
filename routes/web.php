@@ -294,6 +294,13 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/EliminarCurso','ListaEscolarController@eliminar')->name('EliminarCurso');
     Route::put('/EliminarColegio','ListaEscolarController@EliminarColegio')->name('EliminarColegio');
 
+    Route::get('/CotizacionProveedores','Cotizaciones\CotizacionProveedorController@ListarCotizacionProveedores')->name('ListarCotizacionProveedores');
+    Route::post('/CotizacionProveedores','Cotizaciones\CotizacionProveedorController@PasarACotizacionProveedores')->name('PasarACotizacionProveedores');
+    Route::post('/CargarCatalogoProveedor','Cotizaciones\CotizacionProveedorController@CargarCatalogoProveedor')->name('CargarCatalogoProveedor');
+    Route::post('/importCotizProveedor', 'exports\MyController@importCotizProveedores')->name('importCotizProveedores');
+    Route::get('/descargaPlantillaCotizProveedores', 'exports\MyController@descargaPlantillaCotizProveedores')->name('descargaPlantillaCotizProveedores');
+    Route::get('/ProvMarcaCat','Cotizaciones\CotizacionProveedorController@ProvMarcaCat')->name('ProvMarcaCat');
+
     Route::post('/Eliminaritem','ListaEscolarController@eliminaritem')->name('EliminarItem');
 
     Route::post('/AgregarItem','ListaEscolarController@AgregarItem')->name('AgregarItem');

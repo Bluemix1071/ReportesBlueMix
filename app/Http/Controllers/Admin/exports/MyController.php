@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Exports\ordenExport;
 use App\Imports\ordenImport;
 use App\Imports\ordendetalleImport;
+use App\Imports\cotizproveedorImport;
 use Maatwebsite\Excel\Facades\Excel;
 use DB;
 
@@ -63,6 +64,18 @@ class MyController extends Controller
     {
         return response()->download(public_path('../public/assets/lte/descargas/plantilla orden de compra (detalle).xlsx'));
 
+    }
+
+    public function importCotizProveedores()
+    {
+        Excel::import(new cotizproveedorImport,request()->file('listado'));
+
+        return back();
+    }
+
+    public function descargaPlantillaCotizProveedores()
+    {
+        return response()->download(public_path('../public/assets/lte/descargas/Plantilla Listado Proveedor.xlsx'));
     }
 
 
