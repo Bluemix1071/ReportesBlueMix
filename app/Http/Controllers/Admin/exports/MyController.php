@@ -68,9 +68,13 @@ class MyController extends Controller
 
     public function importCotizProveedores()
     {
-        Excel::import(new cotizproveedorImport,request()->file('listado'));
-
-        return back();
+        if(empty(request()->file('listado'))){
+            return back()->with('warning', 'No se seleccionó ningún archivo');
+        }else{
+            Excel::import(new cotizproveedorImport,request()->file('listado'));
+    
+            return back();
+        }
     }
 
     public function descargaPlantillaCotizProveedores()

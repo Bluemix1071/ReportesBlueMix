@@ -19,7 +19,7 @@ Cotizacion Proveedores
           <div class="row d-flex justify-content-center">
             <form action="{{ route('importCotizProveedores') }}" method="post" enctype="multipart/form-data">
               @csrf
-              <input type="file" name="listado">
+              <input type="file" name="listado" accept=".xls,.xlsx,.csv," required>
               <button class="btn btn-primary" type="submit"><i class="fas fa-upload fa-lg" style="color: #ffffff;" title="Cargar Plantilla"></i></button>&nbsp;&nbsp;
             </form>
             <!-- <button class="btn btn-success" type="button"><i class="fas fa-file-excel" style="color: #ffffff;"></i></button>&nbsp;&nbsp; -->
@@ -68,7 +68,7 @@ Cotizacion Proveedores
                                 0
                               @endif
                             </td>
-                            <td><button class="btn btn-white" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}"><i class="fas fa-arrow-right fa-lg" style="color: #007bff;"></i></button></td>
+                            <td><button class="btn btn-white" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button></td>
                           </tr>
                         @endforeach
                       </tbody>
@@ -120,7 +120,7 @@ Cotizacion Proveedores
                                 0
                               @endif
                             </td>
-                            <td>boton</td>
+                            <td><button class="btn btn-white" data-toggle="modal" data-target="#modalcotizingresado" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button></td>
                             <!-- <td>{{ $item->estado }}</td> -->
                           </tr>
                         @endif
@@ -143,7 +143,7 @@ Cotizacion Proveedores
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Agregar Producto</h4>
+                <h4 class="modal-title" id="myModalLabel">Editar Producto</h4>
             </div>
             <div class="modal-body">
 
@@ -152,6 +152,18 @@ Cotizacion Proveedores
               {{ csrf_field() }}
                @csrf
               <input type="hidden" name="id" id="id" value="">
+
+              <div class="form-group row">
+                  <label for="categoria"
+                      class="col-md-4 col-form-label text-md-right">SKU BM</label>
+
+                  <div class="col-md-6">
+                      <input id="sku_bm" type="text"
+                          class="form-control @error('categoria') is-invalid @enderror" name="sku_bm"
+                           value="{{ old('sku_bm') }}" autocomplete="sku_bm" autofocus>
+                  </div>
+              </div>
+
               <div class="form-group row">
                   <label for="categoria"
                       class="col-md-4 col-form-label text-md-right">Categoria</label>
@@ -159,7 +171,7 @@ Cotizacion Proveedores
                   <div class="col-md-6">
                       <input id="categoria" type="text"
                           class="form-control @error('categoria') is-invalid @enderror" name="categoria"
-                           value="{{ old('categoria') }}" required autocomplete="categoria" autofocus list="categorias">
+                           value="{{ old('categoria') }}" autocomplete="categoria" autofocus list="categorias">
 
                     <datalist id="categorias">
                       @foreach($categorias as $item)
@@ -202,7 +214,7 @@ Cotizacion Proveedores
                   <div class="col-md-6">
                       <input id="marca" type="text"
                           class="form-control @error('marca') is-invalid @enderror" name="marca"
-                           value="{{ old('marca') }}" required autocomplete="marca" autofocus list="marcas">
+                           value="{{ old('marca') }}" autocomplete="marca" autofocus list="marcas">
 
                     <datalist id="marcas">
                       @foreach($marcas as $item)
@@ -212,8 +224,137 @@ Cotizacion Proveedores
 
                   </div>
               </div>
+
+              <div class="form-group row">
+                  <label for="estado"
+                      class="col-md-4 col-form-label text-md-right">Estado</label>
+
+                  <div class="col-md-6">
+
+                    <select name="estado" id="estado" required class="form-control @error('estado') is-invalid @enderror">
+                        <option value="INGRESADO">INGRESADO</option>
+                        <option value="COTIZADO">COTIZADO</option>
+                    </select>
+
+                  </div>
+              </div>
+
                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Agregar</button>
+                    <button type="submit" class="btn btn-primary">Editar</button>
+                    <!-- <button type="submit" class="btn btn-success">Agregar</button> -->
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                 </div>
+            </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pasar codigo a ingresado-->
+<div class="modal fade" id="modalcotizingresado" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Editar Producto</h4>
+            </div>
+            <div class="modal-body">
+
+            <form method="post" action="{{ route('PasarACotizacionProveedores') }}">
+            {{ method_field('post') }}
+              {{ csrf_field() }}
+               @csrf
+              <input type="hidden" name="id" id="id_ing" value="">
+
+              <div class="form-group row">
+                  <label for="categoria"
+                      class="col-md-4 col-form-label text-md-right">SKU BM</label>
+
+                  <div class="col-md-6">
+                      <input id="sku_bm_ing" type="text"
+                          class="form-control @error('categoria') is-invalid @enderror" name="sku_bm"
+                           value="{{ old('sku_bm') }}" autocomplete="sku_bm" autofocus>
+                  </div>
+              </div>
+
+              <div class="form-group row">
+                  <label for="categoria"
+                      class="col-md-4 col-form-label text-md-right">Categoria</label>
+
+                  <div class="col-md-6">
+                      <input id="categoria_ing" type="text"
+                          class="form-control @error('categoria') is-invalid @enderror" name="categoria"
+                           value="{{ old('categoria') }}" autocomplete="categoria" autofocus list="categorias">
+
+                    <datalist id="categorias">
+                      @foreach($categorias as $item)
+                        <option value="{{ $item->categoria }}">
+                      @endforeach
+                      <!-- <option value="asdsd"> -->
+                    </datalist>
+
+                  </div>
+              </div>
+
+              <div class="form-group row">
+                  <label for="proveedor"
+                      class="col-md-4 col-form-label text-md-right">Proveedor</label>
+
+                  <div class="col-md-6">
+                    <input id="proveedor_ing" type="text"
+                          class="form-control @error('proveedor') is-invalid @enderror" name="proveedor"
+                           value="{{ old('proveedor') }}" required autocomplete="proveedor" autofocus list="proveedores">
+
+                    <datalist id="proveedores">
+                      @foreach($proveedores as $item)
+                        <option value="{{ strtoupper($item->proveedor) }}">
+                      @endforeach
+                    </datalist>
+
+                    <!-- <select name="proveedor" id="proveedor" required class="form-control @error('proveedor') is-invalid @enderror">
+                      @foreach($proveedores as $item)
+                        <option value="{{ strtoupper($item->proveedor) }}">{{ strtoupper($item->proveedor) }}</option>
+                      @endforeach
+                    </select> -->
+
+                  </div>
+              </div>
+
+              <div class="form-group row">
+                  <label for="marca"
+                      class="col-md-4 col-form-label text-md-right">Marca</label>
+
+                  <div class="col-md-6">
+                      <input id="marca_ing" type="text"
+                          class="form-control @error('marca') is-invalid @enderror" name="marca"
+                           value="{{ old('marca') }}" autocomplete="marca" autofocus list="marcas">
+
+                    <datalist id="marcas">
+                      @foreach($marcas as $item)
+                        <option value="{{ strtoupper($item->marca) }}">
+                      @endforeach
+                    </datalist>
+
+                  </div>
+              </div>
+
+              <div class="form-group row">
+                  <label for="estado"
+                      class="col-md-4 col-form-label text-md-right">Estado</label>
+
+                  <div class="col-md-6">
+
+                    <select name="estado" id="estado_ing" required class="form-control @error('estado') is-invalid @enderror">
+                        <option value="INGRESADO">INGRESADO</option>
+                        <option value="COTIZADO" selected>COTIZADO</option>
+                    </select>
+
+                  </div>
+              </div>
+
+                 <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Editar</button>
+                    <!-- <button type="submit" class="btn btn-success">Quitar</button> -->
                     <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
                  </div>
             </form>
@@ -235,11 +376,34 @@ Cotizacion Proveedores
         var id = button.data('id');
         var proveedor = button.data('proveedor');
         var marca = button.data('marca');
+        var sku_bm = button.data('sku_bm');
+        var estado = button.data('estado');
        
         var modal = $(this);
         modal.find('.modal-body #id').val(id);
         modal.find('.modal-body #proveedor').val(proveedor);
         modal.find('.modal-body #marca').val(marca);
+        modal.find('.modal-body #sku_bm').val(sku_bm);
+        modal.find('.modal-body #estado').val(estado);
+
+        //$( "#marca option:selected" ).text(proveedor);
+  })
+
+  $('#modalcotizingresado').on('show.bs.modal', function (event) {
+
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var proveedor = button.data('proveedor');
+        var marca = button.data('marca');
+        var sku_bm = button.data('sku_bm');
+        var estado = button.data('estado');
+       
+        var modal = $(this);
+        modal.find('.modal-body #id_ing').val(id);
+        modal.find('.modal-body #proveedor_ing').val(proveedor);
+        modal.find('.modal-body #marca_ing').val(marca);
+        modal.find('.modal-body #sku_bm_ing').val(sku_bm);
+        modal.find('.modal-body #estado_ing').val(estado);
 
         //$( "#marca option:selected" ).text(proveedor);
   })

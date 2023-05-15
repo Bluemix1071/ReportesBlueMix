@@ -30,14 +30,14 @@ class CotizacionProveedorController extends Controller
     public function PasarACotizacionProveedores(Request $request){
         
         DB::table('cotiz_proveedores')->where('id', $request->get('id'))->update([
-            "estado" => "COTIZADO",
+            "estado" => strtoupper($request->get('estado')),
             "categoria" => strtoupper($request->get('categoria')),
             "proveedor" => strtoupper($request->get('proveedor')),
             "marca" => strtoupper($request->get('marca'))
         ]);
 
         //return view('admin.Cotizaciones.CotizacionProveedor');
-        return redirect()->route('ListarCotizacionProveedores');
+        return redirect()->route('ListarCotizacionProveedores')->with('success', 'Producto Editado Correctamente');
     }
 
     public function ProvMarcaCat(){
