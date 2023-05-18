@@ -68,7 +68,10 @@ Cotizacion Proveedores
                                 0
                               @endif
                             </td>
-                            <td><button class="btn btn-white" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button></td>
+                            <td>
+                              <button class="btn btn-white col" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
+                              <input type="checkbox" id="id_multi_{{ $item->id }}" class="form-check-input" style="margin-top: 2%" onclick="contador_ing({{ $item->id }})">
+                            </td>
                           </tr>
                         @endforeach
                       </tbody>
@@ -78,6 +81,89 @@ Cotizacion Proveedores
 
                 </div>
                 </div>
+                <br>
+                
+                <form method="post" action="{{ route('EditarMultipleCatalogoProveedor') }}" id="desvForm">
+                {{ method_field('put') }}
+                {{ csrf_field() }}
+                @csrf
+                <div class="card card-primary">
+                    <div class="card-header">
+                            <h3 class="card-title">Edición Múltiple Ingresados</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                </button>
+                            </div>
+                        </div>
+                    <div class="card-body collapse hide">
+
+                    <div id="selects_cotizados" hidden>
+                    </div>
+                        
+                      <div class="form-group row">
+                        <div class="col-md">
+                          <input id="categoria_mult" type="text" placeholder="Categoria" required
+                              class="form-control @error('categoria') is-invalid @enderror" name="categoria_mult"
+                              value="{{ old('categoria_mult') }}" autocomplete="categoria_mult" autofocus list="categorias_mult">
+
+                          <datalist id="categorias_mult">
+                            @foreach($categorias as $item)
+                              <option value="{{ $item->categoria }}">
+                            @endforeach
+                          </datalist>
+
+                        </div>
+                        </div>
+
+                        <div class="form-group row">
+                          <div class="col-md">
+                            <input id="proveedor_mult" type="text" placeholder="Proveedor"
+                                  class="form-control @error('proveedor_mult') is-invalid @enderror" name="proveedor_mult"
+                                  value="{{ old('proveedor_mult') }}" required autocomplete="proveedor_mult" autofocus list="proveedores_mult">
+
+                            <datalist id="proveedores_mult">
+                              @foreach($proveedores as $item)
+                                <option value="{{ strtoupper($item->proveedor) }}">
+                              @endforeach
+                            </datalist>
+
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md">
+                                <input id="marca_mult" type="text" placeholder="Marca" required
+                                    class="form-control @error('marca_mult') is-invalid @enderror" name="marca_mult"
+                                    value="{{ old('marca_mult') }}" autocomplete="marca_muli" autofocus list="marcas_mult">
+
+                              <datalist id="marcas_mult">
+                                @foreach($marcas as $item)
+                                  <option value="{{ strtoupper($item->marca) }}">
+                                @endforeach
+                              </datalist>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md">
+
+                              <select name="estado_mult" id="estado_mult" required class="form-control @error('estado_mult') is-invalid @enderror">
+                                  <option value="INGRESADO">INGRESADO</option>
+                                  <option value="COTIZADO">COTIZADO</option>
+                              </select>
+
+                            </div>
+                        </div>
+
+                            <button type="submit" class="btn btn-success">Editar Múltiple</button>
+                        </div>
+                </div>
+                </form>
+
             </div>
 
             <div class="col-md-6">
@@ -133,6 +219,84 @@ Cotizacion Proveedores
 
                 </div>
                 </div>
+                <br>
+                <form method="post" action="" id="desvForm">
+                {{ method_field('put') }}
+                {{ csrf_field() }}
+                @csrf
+                <div class="card card-primary">
+                    <div class="card-header">
+                            <h3 class="card-title">Edición Múltiple Cotizados</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                </button>
+                            </div>
+                        </div>
+                    <div class="card-body collapse hide">
+                        
+                      <div class="form-group row">
+                        <div class="col-md">
+                          <input id="categoria_mult" type="text" placeholder="Categoria"
+                              class="form-control @error('categoria') is-invalid @enderror" name="categoria_mult"
+                              value="{{ old('categoria_mult') }}" autocomplete="categoria_mult" autofocus list="categorias_mult">
+
+                          <datalist id="categorias_mult">
+                            @foreach($categorias as $item)
+                              <option value="{{ $item->categoria }}">
+                            @endforeach
+                          </datalist>
+
+                        </div>
+                        </div>
+
+                        <div class="form-group row">
+                          <div class="col-md">
+                            <input id="proveedor_mult" type="text" placeholder="Proveedor"
+                                  class="form-control @error('proveedor_mult') is-invalid @enderror" name="proveedor_mult"
+                                  value="{{ old('proveedor_mult') }}" required autocomplete="proveedor_mult" autofocus list="proveedores_mult">
+
+                            <datalist id="proveedores_mult">
+                              @foreach($proveedores as $item)
+                                <option value="{{ strtoupper($item->proveedor) }}">
+                              @endforeach
+                            </datalist>
+
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md">
+                                <input id="marca_multi" type="text" placeholder="Marca"
+                                    class="form-control @error('marca_multi') is-invalid @enderror" name="marca_multi"
+                                    value="{{ old('marca_multi') }}" autocomplete="marca_multi" autofocus list="marcas_multi">
+
+                              <datalist id="marcas_multi">
+                                @foreach($marcas as $item)
+                                  <option value="{{ strtoupper($item->marca) }}">
+                                @endforeach
+                              </datalist>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md">
+
+                              <select name="estado_mult" id="estado_mult" required class="form-control @error('estado_mult') is-invalid @enderror">
+                                  <option value="INGRESADO">INGRESADO</option>
+                                  <option value="COTIZADO">COTIZADO</option>
+                              </select>
+
+                            </div>
+                        </div>
+
+                            <button type="submit" class="btn btn-success">Editar Múltiple</button>
+                        </div>
+                </div>
+                </form>
             </div>
 
         </div>
@@ -370,6 +534,29 @@ Cotizacion Proveedores
 @section('script')
 
 <script type="text/javascript">
+
+function contador_ing(id){
+        var max_fields = 999;
+        var wrapper = $("#selects_cotizados");
+        var x = 0;
+        var input = document.getElementById('input_ing_'+id+'');
+
+        //alert(typeof monto);
+
+        //console.log($('input[class="case"]:checked'));
+
+        if ($('#id_multi_'+id).is(":checked")) {
+            if(x < max_fields){
+                x++;
+                $(wrapper).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_ing_'+id+'" name="case[]" value='+id+'>'
+            );
+        }
+        } else {
+            input.remove();
+            x--;
+        }
+    }
 
   $('#modalcotiz').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);

@@ -25,6 +25,8 @@
                                     <td><input type="date" id="max" name="max" value="{{ $max }}"></td>
                                 </tr>
                                 &nbsp &nbsp &nbsp
+                                <button class="btn btn-success" type="submit">Buscar</button>
+                                &nbsp &nbsp &nbsp
                                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#mimodalinfo1">
                                 ?
                                 </button>
@@ -305,10 +307,10 @@
                 }
                 });
                 
-                $('#min, #max').on('change', function () {
+               /*  $('#min, #max').on('change', function () {
                 //table.draw();
                     $( "#form-facturas" ).submit();
-                });
+                }); */
             });
 
              $("#neto_nc").keyup(function(e){

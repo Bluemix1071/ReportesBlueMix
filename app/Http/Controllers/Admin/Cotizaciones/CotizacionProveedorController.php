@@ -51,6 +51,34 @@ class CotizacionProveedorController extends Controller
         return response()->json([$proveedores, $marcas, $categorias]);
     }
 
+    public function EditarMultipleCatalogoProveedor(Request $request){
+        //dd($request);
+        if(empty($request->get('case'))){
+            return back()->with('warning', 'No se seleccionó ningún Producto');
+        }else{
+            
+            foreach($request->get('case') as $item){
+
+                DB::table('cotiz_proveedores')->where('id', $item)->update([
+                    "estado" => strtoupper($request->get('estado_mult')),
+                    "categoria" => strtoupper($request->get('categoria_mult')),
+                    "proveedor" => strtoupper($request->get('proveedor_mult')),
+                    "marca" => strtoupper($request->get('marca_mult'))
+                ]);
+                /* error_log(print_r('---------------------------------------------------', true));
+                error_log(print_r($item, true));
+                error_log(print_r($request->get('categoria_mult'), true));
+                error_log(print_r($request->get('proveedor_mult'), true));
+                error_log(print_r($request->get('marca_mult'), true));
+                error_log(print_r($request->get('estado_mult'), true)); */
+            }
+
+            return back()->with('success', 'Productos Editados Correctamente');
+
+        }
+
+    }
+
     /* public function CargarCatalogoProveedor(Request $request){
         if($request->hasFile('listado')){
             $path = $request->file('listado')->getRealPath();
