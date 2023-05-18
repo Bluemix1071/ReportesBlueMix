@@ -324,6 +324,18 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ColegiosXCodigo/{codigo}','ListaEscolarController@ColegiosXCodigo')->name('ColegiosXCodigo');
     /* */
 
+    ////////////////////////////////////////////// Compra Agil ////////////////////////////////////////////////
+    Route::post('/AgregarCompraAgil','CompraAgilController@AgregarCompraAgil')->name('AgregarCompraAgil');
+    Route::post('/AgregarItemc','CompraAgilController@AgregarItemc')->name('AgregarItemc');
+    Route::post('/AgregarCotizacion', 'CompraAgilController@AgregarCotizacion')->name('AgregarCotizacion');
+    Route::put('/EditarItem','CompraAgilController@EditarItem')->name('EditarItem');
+    Route::put('/EditarCompra','CompraAgilController@EditarCompra')->name('EditarCompra');
+    Route::post('/Eliminaritemc','CompraAgilController@Eliminaritemc')->name('Eliminaritemc');
+    Route::post('/EliminarCompra','CompraAgilController@EliminarCompra')->name('EliminarCompra');
+    Route::post('/CompraAgilDetalle','CompraAgilController@CompraAgilDetalle')->name('CompraAgilDetalle');
+    Route::get('/CompraAgilDetalle','CompraAgilController@CompraAgilDetalle')->name('CompraAgilDetalle');
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');//
     Route::post('/ResumenDeVentaFiltro','AdminController@ResumenDeVentaFiltro')->name('ResumenDeVentaFiltro');
 
