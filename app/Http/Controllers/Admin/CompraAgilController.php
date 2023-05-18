@@ -25,7 +25,7 @@ class CompraAgilController extends Controller
         ->get(['CLRUTC','CLRUTD','DEPARTAMENTO','CLRSOC','TAGLOS AS CIUDAD','regiones.nombre AS REGION']);
 
 
-        return view('admin.Cotizaciones.Comprasagils',compact('lcompra','clientes'));
+        return view('admin.Cotizaciones.ComprasAgils',compact('lcompra','clientes'));
 
 
     }
