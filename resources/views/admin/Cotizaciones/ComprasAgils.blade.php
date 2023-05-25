@@ -32,7 +32,7 @@ Compras Agiles
 
                     <div class="col-sm-6 col-sm-6 invoice-col col">
                         {{-- <div style="width: 20px; height: 20px; background-color: #dc3545;"></div><strong>Comuna:</strong> <br> --}}
-                        <i>Las Compras ágiles que se muestren con este color  <i class="fas fa-square" style="color: #dc3545;">  </i>  ya fueron finalizadas,</i> <br>
+                        <i>Las Compras ágiles que se muestren con este color  <i class="fas fa-square" style="color: #dc3545;">  </i>  ya fueron finalizadas,</i>
                         <i>Además aquellas que se encuentren finalizadas solo se muestra la opción de eliminar dicha Compra Ágil ya que no es necesario volver a editar o agregar más productos.</i>
                     </div>
                 </div>
