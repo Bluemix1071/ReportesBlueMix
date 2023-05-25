@@ -15,6 +15,30 @@ Compras Agiles
         <div class="row">
           <div class="col-md-12">
             <hr>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h1 class="card-title">Información</h1>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body collapse hide">
+
+                <div class="callout callout-success row">
+
+                    <div class="col-sm-6 col-sm-6 invoice-col col">
+                        {{-- <div style="width: 20px; height: 20px; background-color: #dc3545;"></div><strong>Comuna:</strong> <br> --}}
+                        <i>Las Compras ágiles que se muestren con este color  <i class="fas fa-square" style="color: #dc3545;">  </i>  ya fueron finalizadas,</i> <br>
+                        <i>Además aquellas que se encuentren finalizadas solo se muestra la opción de eliminar dicha Compra Ágil ya que no es necesario volver a editar o agregar más productos.</i>
+                    </div>
+                </div>
+
+                </div>
+            </div>
             <!-- Agregar Compra -->
             {{-- <div class="row"> --}}
                 <h4>Agregar Compra:</h4>
@@ -102,40 +126,51 @@ Compras Agiles
                                         @endif
                                         <td style="text-align:left">
                                                 <div class="container">
+                                                    @if (($item->fecha_t == ""))
                                                     <div class="row">
-                                                        <div class="col-4">
-                                                            {{-- <a href="{{ route('CompraAgilDetalle')}}" class="btn btn-primary btm-sm" title="Editar Producto" data-id='{{ $item->id }}'><i class="fa fa-eye"></i></a> --}}
-                                                            <form action="{{ route('CompraAgilDetalle', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
-                                                                <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
-                                                            </form>
-                                                        </div>
+                                                      <div class="col-4">
+                                                          {{-- <a href="{{ route('CompraAgilDetalle')}}" class="btn btn-primary btm-sm" title="Editar Producto" data-id='{{ $item->id }}'><i class="fa fa-eye"></i></a> --}}
+                                                          <form action="{{ route('CompraAgilDetalle', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
+                                                              <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                                                          </form>
+                                                      </div>
+                                                      <div class="col-4" style="text-algin:left">
 
-                                                        <div class="col-4" style="text-algin:left">
+                                                              <a href="" class="btn btn-primary btm-sm" title="Editar Producto" data-toggle="modal" data-target="#modaleditarcompra"
+                                                              data-id='{{ $item->id }}'
+                                                              data-id_compra='{{$item->id_compra}}'
+                                                              data-rut='{{$item->rut}}'
+                                                              data-razon_social='{{$item->razon_social}}'
+                                                              data-ciudad='{{$item->ciudad}}'
+                                                              data-adjudicada='{{$item->adjudicada}}'
+                                                              data-depto='{{$item->depto}}'
+                                                              data-region='{{$item->region}}'
+                                                              data-oc='{{$item->oc}}'
+                                                              data-observacion='{{$item->observacion}}'
+                                                              ><i class="fas fa-edit"></i></a>
+                                                              {{-- <i class="fa fa-eye"></i> --}}
+                                                      </div>
 
-                                                                <a href="" class="btn btn-primary btm-sm" title="Editar Producto" data-toggle="modal" data-target="#modaleditarcompra"
-                                                                data-id='{{ $item->id }}'
-                                                                data-id_compra='{{$item->id_compra}}'
-                                                                data-rut='{{$item->rut}}'
-                                                                data-razon_social='{{$item->razon_social}}'
-                                                                data-ciudad='{{$item->ciudad}}'
-                                                                data-adjudicada='{{$item->adjudicada}}'
-                                                                data-depto='{{$item->depto}}'
-                                                                data-region='{{$item->region}}'
-                                                                data-oc='{{$item->oc}}'
-                                                                data-observacion='{{$item->observacion}}'
-                                                                ><i class="fas fa-edit"></i></a>
-                                                                {{-- <i class="fa fa-eye"></i> --}}
+                                                      <div class="col-3" style="text-algin:left">
+                                                          <a href="" title="Eliminar Compra" data-toggle="modal" data-target="#modaleliminarcompra"
+                                                          class="btn btn-danger"
+                                                          data-id='{{ $item->id }}'
+                                                          >🗑</a>
+                                                      </div>
+                                                  </div>
+                                                    @else
+                                                    <div class="row">
+                                                      <div class="col-3" style="text-algin:left">
+                                                          <a href="" title="Eliminar Compra" data-toggle="modal" data-target="#modaleliminarcompra"
+                                                          class="btn btn-danger"
+                                                          data-id='{{ $item->id }}'
+                                                          >🗑</a>
+                                                      </div>
+                                                  </div>
+                                                    @endif
+                                                    {{-- --}}
 
-
-                                                        </div>
-
-                                                        <div class="col-3" style="text-algin:left">
-                                                            <a href="" title="Eliminar Curso" data-toggle="modal" data-target="#modaleliminarcompra"
-                                                            class="btn btn-danger"
-                                                            data-id='{{ $item->id }}'
-                                                            >🗑</a>
-                                                        </div>
-                                                    </div>
+                                                    {{-- --}}
                                                     </div>
                                             </td>
                                         </tr>
