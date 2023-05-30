@@ -69,7 +69,7 @@ Cotizacion Proveedores
                               @endif
                             </td>
                             <td>
-                              <button class="btn btn-white col" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
+                              <button class="btn btn-white col" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-categoria="{{ $item->categoria }}" data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
                               <input type="checkbox" id="id_multi_{{ $item->id }}" class="form-check-input" style="margin-top: 2%" onclick="contador_ing({{ $item->id }})">
                             </td>
                           </tr>
@@ -105,7 +105,7 @@ Cotizacion Proveedores
                         
                       <div class="form-group row">
                         <div class="col-md">
-                          <input id="categoria_mult" type="text" placeholder="Categoria" required
+                          <input id="categoria_mult" type="text" placeholder="Categoria"
                               class="form-control @error('categoria') is-invalid @enderror" name="categoria_mult"
                               value="{{ old('categoria_mult') }}" autocomplete="categoria_mult" autofocus list="categorias_mult">
 
@@ -122,7 +122,7 @@ Cotizacion Proveedores
                           <div class="col-md">
                             <input id="proveedor_mult" type="text" placeholder="Proveedor"
                                   class="form-control @error('proveedor_mult') is-invalid @enderror" name="proveedor_mult"
-                                  value="{{ old('proveedor_mult') }}" required autocomplete="proveedor_mult" autofocus list="proveedores_mult">
+                                  value="{{ old('proveedor_mult') }}" autocomplete="proveedor_mult" autofocus list="proveedores_mult">
 
                             <datalist id="proveedores_mult">
                               @foreach($proveedores as $item)
@@ -135,7 +135,7 @@ Cotizacion Proveedores
 
                         <div class="form-group row">
                             <div class="col-md">
-                                <input id="marca_mult" type="text" placeholder="Marca" required
+                                <input id="marca_mult" type="text" placeholder="Marca"
                                     class="form-control @error('marca_mult') is-invalid @enderror" name="marca_mult"
                                     value="{{ old('marca_mult') }}" autocomplete="marca_muli" autofocus list="marcas_mult">
 
@@ -151,7 +151,7 @@ Cotizacion Proveedores
                         <div class="form-group row">
                             <div class="col-md">
 
-                              <select name="estado_mult" id="estado_mult" required class="form-control @error('estado_mult') is-invalid @enderror">
+                              <select name="estado_mult" id="estado_mult" class="form-control @error('estado_mult') is-invalid @enderror">
                                   <option value="INGRESADO">INGRESADO</option>
                                   <option value="COTIZADO">COTIZADO</option>
                               </select>
@@ -206,7 +206,10 @@ Cotizacion Proveedores
                                 0
                               @endif
                             </td>
-                            <td><button class="btn btn-white" data-toggle="modal" data-target="#modalcotizingresado" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button></td>
+                            <td>
+                              <button class="btn btn-white" data-toggle="modal" data-target="#modalcotizingresado" data-id='{{ $item->id }}' data-categoria="{{ $item->categoria }}" data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
+                              <input type="checkbox" id="id_multi_ingre_{{ $item->id }}" class="form-check-input" style="margin-top: 2%; margin-left: 0%;" onclick="contador_ing_cotiz({{ $item->id }})">
+                            </td>
                             <!-- <td>{{ $item->estado }}</td> -->
                           </tr>
                         @endif
@@ -220,7 +223,7 @@ Cotizacion Proveedores
                 </div>
                 </div>
                 <br>
-                <form method="post" action="" id="desvForm">
+                <form method="post" action="{{ route('EditarMultipleCotizadoProveedor') }}" id="desvForm">
                 {{ method_field('put') }}
                 {{ csrf_field() }}
                 @csrf
@@ -236,12 +239,15 @@ Cotizacion Proveedores
                             </div>
                         </div>
                     <div class="card-body collapse hide">
+
+                    <div id="selects_cotizados_ingre" hidden>
+                    </div>
                         
                       <div class="form-group row">
                         <div class="col-md">
-                          <input id="categoria_mult" type="text" placeholder="Categoria"
-                              class="form-control @error('categoria') is-invalid @enderror" name="categoria_mult"
-                              value="{{ old('categoria_mult') }}" autocomplete="categoria_mult" autofocus list="categorias_mult">
+                          <input id="categoria_mult_coti" type="text" placeholder="Categoria"
+                              class="form-control @error('categoria') is-invalid @enderror" name="categoria_mult_coti"
+                              value="{{ old('categoria_mult_coti') }}" autocomplete="categoria_mult_coti" autofocus list="categorias_mult_coti">
 
                           <datalist id="categorias_mult">
                             @foreach($categorias as $item)
@@ -254,11 +260,11 @@ Cotizacion Proveedores
 
                         <div class="form-group row">
                           <div class="col-md">
-                            <input id="proveedor_mult" type="text" placeholder="Proveedor"
-                                  class="form-control @error('proveedor_mult') is-invalid @enderror" name="proveedor_mult"
-                                  value="{{ old('proveedor_mult') }}" required autocomplete="proveedor_mult" autofocus list="proveedores_mult">
+                            <input id="proveedor_mult_coti" type="text" placeholder="Proveedor"
+                                  class="form-control @error('proveedor_mult_coti') is-invalid @enderror" name="proveedor_mult_coti"
+                                  value="{{ old('proveedor_mult_coti') }}" autocomplete="proveedor_mult_coti" autofocus list="proveedores_mult_coti">
 
-                            <datalist id="proveedores_mult">
+                            <datalist id="proveedores_mult_coti">
                               @foreach($proveedores as $item)
                                 <option value="{{ strtoupper($item->proveedor) }}">
                               @endforeach
@@ -269,11 +275,11 @@ Cotizacion Proveedores
 
                         <div class="form-group row">
                             <div class="col-md">
-                                <input id="marca_multi" type="text" placeholder="Marca"
-                                    class="form-control @error('marca_multi') is-invalid @enderror" name="marca_multi"
-                                    value="{{ old('marca_multi') }}" autocomplete="marca_multi" autofocus list="marcas_multi">
+                                <input id="marca_multi_coti" type="text" placeholder="Marca"
+                                    class="form-control @error('marca_multi_coti') is-invalid @enderror" name="marca_multi_coti"
+                                    value="{{ old('marca_multi_coti') }}" autocomplete="marca_multi_coti" autofocus list="marcas_multi_coti">
 
-                              <datalist id="marcas_multi">
+                              <datalist id="marcas_multi_coti">
                                 @foreach($marcas as $item)
                                   <option value="{{ strtoupper($item->marca) }}">
                                 @endforeach
@@ -285,9 +291,9 @@ Cotizacion Proveedores
                         <div class="form-group row">
                             <div class="col-md">
 
-                              <select name="estado_mult" id="estado_mult" required class="form-control @error('estado_mult') is-invalid @enderror">
+                              <select name="estado_mult_coti" id="estado_mult_coti" class="form-control @error('estado_mult_coti') is-invalid @enderror">
                                   <option value="INGRESADO">INGRESADO</option>
-                                  <option value="COTIZADO">COTIZADO</option>
+                                  <option value="COTIZADO" selected>COTIZADO</option>
                               </select>
 
                             </div>
@@ -558,9 +564,33 @@ function contador_ing(id){
         }
     }
 
+    function contador_ing_cotiz(id){
+        var max_fields = 999;
+        var wrapper = $("#selects_cotizados_ingre");
+        var x = 0;
+        var input = document.getElementById('input_ing_cotiz_'+id+'');
+
+        //alert(typeof monto);
+
+        //console.log($('input[class="case"]:checked'));
+
+        if ($('#id_multi_ingre_'+id).is(":checked")) {
+            if(x < max_fields){
+                x++;
+                $(wrapper).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_ing_cotiz_'+id+'" name="case[]" value='+id+'>'
+            );
+        }
+        } else {
+            input.remove();
+            x--;
+        }
+    }
+
   $('#modalcotiz').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var id = button.data('id');
+        var categoria = button.data('categoria');
         var proveedor = button.data('proveedor');
         var marca = button.data('marca');
         var sku_bm = button.data('sku_bm');
@@ -568,6 +598,7 @@ function contador_ing(id){
        
         var modal = $(this);
         modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #categoria').val(categoria);
         modal.find('.modal-body #proveedor').val(proveedor);
         modal.find('.modal-body #marca').val(marca);
         modal.find('.modal-body #sku_bm').val(sku_bm);
@@ -580,6 +611,7 @@ function contador_ing(id){
 
         var button = $(event.relatedTarget);
         var id = button.data('id');
+        var categoria = button.data('categoria');
         var proveedor = button.data('proveedor');
         var marca = button.data('marca');
         var sku_bm = button.data('sku_bm');
@@ -587,6 +619,7 @@ function contador_ing(id){
        
         var modal = $(this);
         modal.find('.modal-body #id_ing').val(id);
+        modal.find('.modal-body #categoria_ing').val(categoria);
         modal.find('.modal-body #proveedor_ing').val(proveedor);
         modal.find('.modal-body #marca_ing').val(marca);
         modal.find('.modal-body #sku_bm_ing').val(sku_bm);

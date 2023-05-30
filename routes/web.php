@@ -301,6 +301,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/descargaPlantillaCotizProveedores', 'exports\MyController@descargaPlantillaCotizProveedores')->name('descargaPlantillaCotizProveedores');
     Route::get('/ProvMarcaCat','Cotizaciones\CotizacionProveedorController@ProvMarcaCat')->name('ProvMarcaCat');
     Route::put('/EditarMultipleCatalogoProveedor','Cotizaciones\CotizacionProveedorController@EditarMultipleCatalogoProveedor')->name('EditarMultipleCatalogoProveedor');
+    Route::put('/EditarMultipleCotizadoProveedor','Cotizaciones\CotizacionProveedorController@EditarMultipleCotizadoProveedor')->name('EditarMultipleCotizadoProveedor');
 
     Route::post('/Eliminaritem','ListaEscolarController@eliminaritem')->name('EliminarItem');
 
