@@ -60,17 +60,17 @@ class CotizacionProveedorController extends Controller
         }else{
             
             if(!is_null($request->get('categoria_mult'))){
-                $producto['categoria'] = $request->get('categoria_mult');
+                $producto['categoria'] = strtoupper($request->get('categoria_mult'));
                 //array_push($producto, ['categoria' => $request->get('categoria_mult')]);
             }
 
             if(!is_null($request->get('proveedor_mult'))){
-                $producto['proveedor'] = $request->get('proveedor_mult');
+                $producto['proveedor'] = strtoupper($request->get('proveedor_mult'));
                 //array_push($producto, ['proveedor' => $request->get('proveedor_mult')]);
             }
 
             if(!is_null($request->get('marca_mult'))){
-                $producto['marca'] = $request->get('marca_mult');
+                $producto['marca'] = strtoupper($request->get('marca_mult'));
                 //array_push($producto, ['proveedor' => $request->get('proveedor_mult')]);
             }
 
@@ -102,17 +102,17 @@ class CotizacionProveedorController extends Controller
         }else{
             
             if(!is_null($request->get('categoria_mult_coti'))){
-                $producto['categoria'] = $request->get('categoria_mult_coti');
+                $producto['categoria'] = strtoupper($request->get('categoria_mult_coti'));
                 //array_push($producto, ['categoria' => $request->get('categoria_mult')]);
             }
 
             if(!is_null($request->get('proveedor_mult_coti'))){
-                $producto['proveedor'] = $request->get('proveedor_mult_coti');
+                $producto['proveedor'] = strtoupper($request->get('proveedor_mult_coti'));
                 //array_push($producto, ['proveedor' => $request->get('proveedor_mult')]);
             }
 
             if(!is_null($request->get('marca_mult_coti'))){
-                $producto['marca'] = $request->get('marca_mult_coti');
+                $producto['marca'] = strtoupper($request->get('marca_mult_coti'));
                 //array_push($producto, ['proveedor' => $request->get('proveedor_mult')]);
             }
 
