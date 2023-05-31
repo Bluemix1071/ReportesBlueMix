@@ -2778,17 +2778,22 @@ public function stocktiemporeal (Request $request){
         $anual2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2023-01-01" and ?) as anualaño2023 from cargos where catipo != 3  and cafeco between "2023-01-01" and ?' , [$fecha1,$fecha1]);
 
         //Anual al día año 2022 (Tucan,Nene,Artel)
-        $destucan=DB::select('select sum(cavalo) as destucan from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76926330"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
+        $destucan=DB::select('select sum(cavalo) as destucan
+        from cargos
+        where cafeco between "2022-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+                                                  FROM nota_credito where fecha between "2022-01-01" and ?)',[$hasta2022[0]->hasta2022,$hasta2022[0]->hasta2022]);//anual al dia año 2022
         $desnene=DB::select('select sum(cavalo) as desnene from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76067436"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
         //$desartel=DB::select('select sum(cavalo) as desartel from cargos where cafeco between "2022-01-01" and ? and CARUTC= "92642000"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
 
         //Anual al día año 2023 (Tucan,Nene,Artel)
-        $destucan23=DB::select('select sum(cavalo) as destucan23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330"',[$fecha1]);//anual al dia año 2023
+        $destucan23=DB::select('select sum(cavalo) as destucan23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between "2023-01-01" and ? )',[$fecha1,$fecha1]);//anual al dia año 2023
         $desnene23=DB::select('select sum(cavalo) as desnene23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76067436"',[$fecha1]);//anual al dia año 2023
         //$desartel23=DB::select('select sum(cavalo) as desartel23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "92642000"',[$fecha1]);//anual al dia año 2023
 
         //Mensual al día año 2022 (Tucan,Nene,Artel)
-        $destucanm=DB::select('select sum(cavalo) as destucanm from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2022
+        $destucanm=DB::select('select sum(cavalo) as destucanm from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year))',[$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);// mensual al dia año 2022
         $desnenem=DB::select('select sum(cavalo) as desnenem from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2022
         //$desartelm=DB::select('select sum(cavalo) as desartelm from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC ="92642000"', [$fechainiciomes,$fecha1]);//mensual al dia año 2022
 
