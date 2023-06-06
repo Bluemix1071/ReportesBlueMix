@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => ['cors']], function () {
 
 //---------------------------Mercaderia en trancito----------------------------------\\
 Route::post('/getProductos','ProductosEnTransito\ProductosEnTransitoController@Buscar');
@@ -49,6 +50,10 @@ Route::post('/Login','Api\AuthController@Login');
 
 Route::get('/Permisos/{id}','Api\AuthController@getPermission');
 
+Route::get('/User','Api\AuthController@User');
+
+Route::get('/Test','Api\AuthController@Test');
+
 // validar los productos faltantes de una cotizacion jumpseller
 
 Route::get('/ProductosFaltantes/{id}','Admin\Jumpseller\BluemixEmpresas\GenerarCarritoController@VerProductosFaltantes');
@@ -64,3 +69,5 @@ Route::get('ProductosNegativos',function(){
 //   return datatables(DB::table('productos_negativos'))->toJson();
 //
 });*/
+
+});

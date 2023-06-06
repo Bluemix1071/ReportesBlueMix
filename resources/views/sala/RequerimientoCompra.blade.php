@@ -82,7 +82,7 @@
             @else
                 <div class="col"><input type="number" class="form-control form-control-sm" placeholder="Orden Compra" name="oc" readonly></textarea></div>
             @endif
-            <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Observaciones" name="observacion" rows="1"></textarea></div>
+            <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Obs. Eje: Encargado" name="observacion" rows="1" required></textarea></div>
             @if(session()->get('email') == "adquisiciones@bluemix.cl")
                 <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Observacion Interna" name="observacion_interna" rows="1"></textarea></div>
             @else
@@ -333,7 +333,7 @@
 
                                     <div class="col-md-6">
 
-                                        <textarea maxlength="250" class="form-control" placeholder="Observaciones" name="observacion" rows="1"></textarea>
+                                        <textarea maxlength="250" class="form-control" placeholder="Obs. Eje: Encargado" name="observacion" rows="1" required></textarea>
                                                
                                     </div>
                                 </div>
@@ -1149,15 +1149,19 @@ function enviaPrioridad(){
 }
 
 function confirmacion_guardar(){
-    if($("#n_vale").val() == ""){
-        alert("No ha ingresado ningún número de vale");
-    }else{
-        if (confirm("Seguro de cargar Vale?") == true) {
-            console.log("acepto");
-            $('#form_vale').submit();
-        } else {
-            console.log("cancelo");
+    if ( $('#form_vale')[0].checkValidity() ) {
+        if($("#n_vale").val() == ""){
+            alert("No ha ingresado ningún número de vale");
+        }else{
+            if (confirm("Seguro de cargar Vale?") == true) {
+                console.log("acepto");
+                $('#form_vale').submit();
+            } else {
+                console.log("cancelo");
+            }
         }
+    }else{
+        alert("Formulario Incompleto");
     }
 }
 

@@ -36,7 +36,8 @@ class AuthController extends Controller
             $JwtAuth = new JwtAuth();
 
             if (Hash::check($password['password'], $user->password)) {
-                $data = $JwtAuth->signup($email['email'], $user->password);
+                $data = ["token" => $JwtAuth->signup($email['email'], $user->password), "user" => $user];
+                //$data = Auth::attempt($email['email'], $user->password, $user->id);
             } else {
                 $data = [
                     "data" => "Usuario no valido"
@@ -50,5 +51,20 @@ class AuthController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function User(Request $request){
+
+        $JwtAuth = new JwtAuth();
+
+        $token_data = $JwtAuth->CheckToken($request->header('Authorization', null), true);
+
+        //$user_data = ["id" => session()->get('id'), "email" => session()->get('email'), "name" => session()->get('name')];
+        
+        return response()->json($token_data);
+    }
+
+    public function Test(Request $request){
+        return response()->json(["status" => "ok"]);
     }
 }

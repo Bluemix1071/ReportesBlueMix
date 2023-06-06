@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'GiftCard'=>\App\Http\Middleware\GiftCard::class,
+        "cors" => \App\Http\Middleware\Cors::class,
     ];
 
     /**

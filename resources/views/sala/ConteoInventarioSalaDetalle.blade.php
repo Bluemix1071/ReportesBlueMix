@@ -176,7 +176,7 @@
         <h5 class="display-5">Conteo Inventario Detalle</h5>
         <section class="content">
 
-        <!-- <div id="barcode-scanner" class="size"> </div> -->
+        <!-- <div id="barcode-scanner"> </div> -->
 
         <div class="card card-primary">
                             <div class="card-header">
@@ -334,8 +334,8 @@
                         type : "LiveStream",
                         target: document.querySelector('#barcode-scanner'),
                         constraints: {
-                            width: 640,
-                            height: 480,
+                            width: 400,
+                            height: 200,
                             facingMode: "environment"  //"environment" for back camera, "user" front camera
                         },
                         area: { // defines rectangle of the detection/localization area
@@ -344,14 +344,15 @@
                             left: "0%",   // left offset
                             bottom: "0%"  // bottom offset
                         },
-                    singleChannel: true // true: only the red color-channel is read
+                    singleChannel: false // true: only the red color-channel is read
                     },
+                    numOfWorkers: 4,
                     locate: true,
                     debug: false,
-                    frequency: 1000,
+                    frequency: 50,
                     singleChannel: false,
                     decoder : {
-                        readers : ["ean_reader", "code_128_reader", "ean_8_reader"],
+                        readers : ["ean_reader"],
                         debug: {
                             drawBoundingBox: true,
                             showFrequency: false,
@@ -362,22 +363,8 @@
                     },
                     locator:
                         {
-                        halfSample: false,
-                        patchSize: "small", // x-small, small, medium, large, x-large
-                        debug: {
-                            showCanvas: false,
-                            showPatches: true,
-                            showFoundPatches: true,
-                            showSkeleton: true,
-                            showLabels: true,
-                            showPatchLabels: true,
-                            showRemainingPatchLabels: true,
-                            boxFromPatches: {
-                                showTransformed: true,
-                                showTransformedBox: true,
-                                showBB: true
-                            }
-                        }
+                            halfSample: true,
+                            patchSize: "medium", // x-small, small, medium, large, x-large
                         }
 
                 }, function(err) {
@@ -390,7 +377,11 @@
 
                     Quagga.onDetected(function(result) {
                             var last_code = result.codeResult.code;
+                            console.log("last_code: "+last_code);
+                            if(last_code.length == 13){
                                 console.log("last_code: "+last_code);
+                                //Quagga.stop();
+                            }
                         });
                 });
 
