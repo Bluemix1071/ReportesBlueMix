@@ -59,6 +59,8 @@ Route::get('/Test','Api\AuthController@Test');
 Route::get('/ProductosFaltantes/{id}','Admin\Jumpseller\BluemixEmpresas\GenerarCarritoController@VerProductosFaltantes');
 
 
+Route::get('/getProducto/{codigo}','Api\ProductosController@getProducto')->name('getProducto');
+
 
 
 
