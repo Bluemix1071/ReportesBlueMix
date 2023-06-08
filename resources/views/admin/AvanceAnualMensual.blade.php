@@ -330,16 +330,24 @@
                                 <button type="button" onclick="javascript:window.print()" class="btn btn-primary"><i
                                         class="fa fa-print"></i> Imprimir</button>
                                 <button type="submit" class="btn btn-success"><i class="fa fa-file"></i> Excel</button>
-                                @if (empty($ventadiaria))
-                                <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="0" required>
+                                @if (empty($totalventaxdia))
+                                <input type="text" class="form-control" hidden id="totalventaxdia" name="totalventaxdia" readonly value="0" required>
                                 @else
-                                <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="{{ number_format($ventadiaria, 0, ',', '.') }}" required>
+                                <input type="text" class="form-control" hidden id="totalventaxdia" name="totalventaxdia" readonly value="{{ number_format($totalventaxdia, 0, ',', '.') }}" required>
                                 @endif
+                                {{-- HERE--}}
+                                @if (empty($ventasala))
+                                <input type="text" class="form-control" hidden id="ventasala" name="ventasala" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="ventasala" name="ventasala" readonly value="{{ number_format($ventasala, 0, ',', '.') }}" required>
+                                @endif
+                                {{-- HERE--}}
                                 @if (empty($facturasporcobrar[0]->porcobrar))
                                 <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="0" required>
                                 @else
                                 <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="{{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}" required>
                                 @endif
+
                                 {{-- @if (empty($mensual2018[0]->año2018))
                                 <input type="text" class="form-control" hidden id="m2018" name="m2018" readonly value="0" required>
                                 @else
