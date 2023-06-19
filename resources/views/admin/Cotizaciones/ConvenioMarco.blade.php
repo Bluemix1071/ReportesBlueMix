@@ -34,7 +34,7 @@ Convenio Marco
                                             &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col-sm-1" value=""/>
                                             &nbsp;<input type="number" id="precio_venta" placeholder="Precio Venta" required name="precio_venta" class="form-control col-sm" value="" min="1" max="999999"/>
                                             &nbsp;<input type="number" id="buscar_costo" placeholder="Neto" required name="buscar_costo" readonly class="form-control col" value="" min="1" max="99999999"/>
-                                            &nbsp;<input type="number" id="idconvenio" placeholder="ID Convenio" required name="idconvenio" class="form-control col" value="" min="1" max="99999999"/>
+                                            &nbsp;<input type="text" id="idconvenio" placeholder="ID Convenio" required name="idconvenio" class="form-control col" value="" min="1" max="99999999"/>
                                             &nbsp;<input type="text" id="label_bara" required name="label_bara" placeholder="Margen" readonly class="form-control col" value="0%" min="1" max="99999999"/>
                                         </div>
                                          </form>
@@ -192,7 +192,7 @@ Convenio Marco
                             <label for="id_conveniomarco"
                                 class="col-md-4 col-form-label text-md-right">{{ __('ID Convenio') }}</label>
                             <div class="col-md-6">
-                                 <input id="id_conveniomarco" type="number"
+                                 <input id="id_conveniomarco" type="text"
                                     class="form-control @error('id_conveniomarco') is-invalid @enderror" name="id_conveniomarco"
                                     value="{{ old('id_conveniomarco') }}" required autocomplete="id_conveniomarco" min="0" max="99999999">
                             </div>

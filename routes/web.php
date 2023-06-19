@@ -175,6 +175,14 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/CargarValeConteoBodega', 'Bodega\ConteoInventarioBodegaController@CargarValeConteoBodega')->name('CargarValeConteoBodega');
     Route::post('/TerminarConteoBodega', 'Bodega\ConteoInventarioBodegaController@TerminarConteoBodega')->name('TerminarConteoBodega');
 
+    /* Modulo Productos pendientes*/
+    Route::get('/ListarProductosPendientes', 'Bodega\ProductosPendientesController@ListarProductosPendientes')->name('ListarProductosPendientes');
+    Route::post('/AgregarItemp','Bodega\ProductosPendientesController@AgregarItemp')->name('AgregarItemp');
+    Route::put('/EditarProd','Bodega\ProductosPendientesController@EditarProd')->name('EditarProd');
+    Route::post('/Eliminaritemp','Bodega\ProductosPendientesController@Eliminaritemp')->name('Eliminaritemp');
+    Route::put('/AgregarObservacion','Bodega\ProductosPendientesController@AgregarObservacion')->name('AgregarObservacion');
+
+
     /*  Mantenedor Clientes Credito */
     Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
     Route::post('/MantencionClientesCreditoDetalle', 'MantencionClientesCreditoController@DetalleCliente')->name('MantencionClientesCreditoDetalle');
