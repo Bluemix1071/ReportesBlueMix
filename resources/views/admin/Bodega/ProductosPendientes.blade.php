@@ -6,6 +6,54 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
+
+    <style>
+        /* Estilos generales */
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+        }
+
+        header, main, footer {
+          max-width: 1024px;
+          margin: 0 auto;
+        }
+
+        /* Estilos específicos para una resolución de 1024x768 */
+
+        /* Ejemplo: hacer que los elementos se muestren en una sola columna en pantallas pequeñas */
+        @media screen and (max-width: 1024px) {
+          header, main, footer {
+            display: block;
+          }
+        }
+
+        /* Ejemplo: reducir el tamaño del texto en pantallas pequeñas */
+        @media screen and (max-width: 1024px) {
+          body {
+            font-size: 14px;
+          }
+        }
+
+        /* Otros estilos específicos para diferentes elementos en pantallas pequeñas */
+
+        /* Ejemplo: reducir el tamaño de las imágenes en pantallas pequeñas */
+        @media screen and (max-width: 1024px) {
+          img {
+            max-width: 100%;
+            height: auto;
+          }
+        }
+
+        /* Ejemplo: ajustar el tamaño de los botones en pantallas pequeñas */
+        @media screen and (max-width: 1024px) {
+          button {
+            padding: 5px 10px;
+            font-size: 12px;
+          }
+        }
+      </style>
 @endsection
 
 @section('contenido')
