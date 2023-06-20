@@ -1,31 +1,28 @@
 @extends("theme.$theme.layout")
+
 @section('titulo')
-Pendientes de envio
+    Pendientes de envío
 @endsection
+
 @section('styles')
-
-<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
-
+    <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 @endsection
 
 @section('contenido')
-
     <div class="container-fluid">
         <h3 class="display-3">Productos Pendientes</h3>
         <div class="row">
-          <div class="col-md-12">
-            <hr>
-            <!-- Agregar Compra -->
-            {{-- <div class="row"> --}}
+            <div class="col-md-12">
+                <hr>
                 <h4>Agregar Pendiente:</h4>
-                <div class="row">
-
-                <form method="post" action="{{ route('AgregarItemp') }}" id="AgregarItemp" class="d-flex justify-content-end col">
-
-                    <div class="row">
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
-                        <div class="col-md-2"><input type="text" class="form-control" placeholder="Descripcion" name="buscar_detalle" required id="buscar_detalle" readonly></div>
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Marca" name="buscar_marca" required id="buscar_marca" readonly></div>
+                <form method="post" action="{{ route('AgregarItemp') }}" id="AgregarItemp" class="row">
+                    <div class="col-md-1">
+                        <input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" placeholder="Descripcion" name="buscar_detalle" required id="buscar_detalle" readonly>
+                    </div>
+                    <div class="col-md-1"><input type="text" class="form-control" placeholder="Marca" name="buscar_marca" required id="buscar_marca" readonly></div>
                         <div class="col-md-1"><input type="number" class="form-control" placeholder="Cantidad" name="buscar_cantidad" required id="buscar_cantidad"></div>
                         <div class="col-md-1"><input type="text" id="rut_auto" data-toggle="modal" data-target="#mimodalselectcliente" class="form-control" placeholder="Rut" name="rut_auto" required oninput="checkRut(this)" maxlength="10"></div>
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Razon Social" name="rsocial" required id="rsocial" readonly></div>
@@ -34,17 +31,16 @@ Pendientes de envio
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Departamento" name="depto" required id="depto"></div>
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Factura" name="factura" required id="factura"></div>
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Observacion" name="observacion" required id="observacion"></div>
+                    <div class="col-md-1">
+                        <button id="add_field_button" type="submit" class="btn btn-success">Agregar</button>
                     </div>
                 </form>
-                <div class="col-md-1"><button id="add_field_button" type="submit" class="btn btn-success">Agregar</button></div>
-                </div>
-            <hr>
-            <br>
-            <!-- Agregar Compra -->
-            <div class="row">
+                <hr>
+                <br>
+                <div class="row">
                     <div class="col-md-12">
                         <table id="pendientes" class="table table-bordered table-hover dataTable table-sm">
-                            <thead>
+                        <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
                                     <th scope="col" style="text-align:left">Codigo</th>
@@ -145,14 +141,13 @@ Pendientes de envio
                         </tr>
                     @endforeach
                             </tbody>
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
-
-          </div>
         </div>
-</div>
-<!-- Inicio Modal comentar item -->
+    </div>
+    <!-- Inicio Modal comentar item -->
 <div class="modal fade" id="modalcomentaritem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
        <div class="modal-content">
@@ -264,9 +259,7 @@ Pendientes de envio
   </div>
 <!-- FIN Modal -->
 
-
 @endsection
-
 
 @section('script')
 <script>
@@ -478,5 +471,9 @@ Pendientes de envio
         });
 
         </script>
+    <script>
+        document.write('Su resolución es de '.screen.width+'x'+screen.height)
+    </script>
 
 @endsection
+
