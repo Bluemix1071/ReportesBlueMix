@@ -50,7 +50,7 @@ Pendientes de envio
             <!-- Agregar Compra -->
             <div class="row">
                     <div class="col-md-12">
-                        <table id="pendientes" class="table table-bordered table-hover dataTable table-sm">
+                        <table id="pendientes" class="table table-responsive table-hover dataTable table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
