@@ -58,8 +58,13 @@ Route::get('/Test','Api\AuthController@Test');
 
 Route::get('/ProductosFaltantes/{id}','Admin\Jumpseller\BluemixEmpresas\GenerarCarritoController@VerProductosFaltantes');
 
-
+//endpoints productos
 Route::get('/getProducto/{codigo}','Api\ProductosController@getProducto')->name('getProducto');
+
+//enpoints conteos
+Route::get('/getConteosSala','Api\ConteosController@getConteosSala')->name('getConteosSala');
+Route::get('/getConteoSala/{id}','Api\ConteosController@getConteoSala')->name('getConteoSala');
+Route::delete('/deleteItem/{id}','Api\ConteosController@deleteItem')->name('deleteItem');
 
 
 

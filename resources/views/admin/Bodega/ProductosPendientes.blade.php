@@ -5,12 +5,6 @@ Pendientes de envio
 @section('styles')
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
-<style>
-  #content{
-    overflow-x: hidden;
-    white-space: nowrap;
-  }
-  </style>
 
 @endsection
 
@@ -49,28 +43,28 @@ Pendientes de envio
             <br>
             <!-- Agregar Compra -->
             <div class="row">
-                    <div class="col-md-12">
-                      <table id="pendientes" class="table table-bordered table-hover dataTable table-sm responsive-table">
+                    <div class="col">
+                      <table id="pendientes" class="table table-bordered table-hover dataTable table-sm responsive-table" style="font-size: small">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
                                     <th scope="col" style="text-align:left">Codigo</th>
                                     <th scope="col" style="text-align:left">Detalle</th> {{-- <th scope="col" style="width: 80%">Detalle</th> --}}
                                     <th scope="col" style="text-align:left">Marca</th>
-                                    <th scope="col" style="text-align:left">Cantidad</th>
+                                    <th scope="col" style="text-align:left">Cant</th>
                                     <th scope="col" style="text-align:left">Rut</th>
                                     <th scope="col" style="text-align:left">Razon Social</th>
                                     <th scope="col" style="text-align:left">Ciudad</th>
                                     <th scope="col" style="text-align:left">Region</th>
                                     <th scope="col" style="text-align:left">Depto</th>
-                                    <th scope="col" style="text-align:left">N° Factura</th>
-                                    <th scope="col" style="text-align:left">Stock sala</th>
-                                    <th scope="col" style="text-align:left">Stock Bodega</th>
+                                    <th scope="col" style="text-align:left">Factura</th>
+                                    <th scope="col" style="text-align:left">Sala</th>
+                                    <th scope="col" style="text-align:left">Bodega</th>
                                     <th scope="col" style="text-align: left">Fecha Ingreso</th>
                                     <th scope="col" style="text-align: left">Fecha Envio</th>
                                     {{-- <th scope="col" style="text-align:left">Observacion</th> --}}
                                     <th scope="col" style="text-align:left">Estado</th>
-                                    <th scope="col" style="width: 10%">Acciones</th>
+                                    <th scope="col" style="width: 10%">Tools</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -279,28 +273,6 @@ Pendientes de envio
 
 
 @section('script')
-{{-- Ajuste de resolucion --}}
-<script>
-  function adjustZoom(){
-      var newZoomCss = 'zoom:'+document.documentElement.clientWidth*95/content.scrollWidth+'%; ';
-      var truncUpTo = 0;
-      var firstNL = document.body.style.cssText.indexOf(';');
-      if(firstNL && document.body.style.cssText.substr(0,5)==='zoom:'){
-          truncUpTo = firstNL;
-      }
-      document.body.style.cssText = newZoomCss + document.body.style.cssText.substr(truncUpTo);
-  }
-  window.addEventListener('resize', function(){
-      adjustZoom();adjustZoom();adjustZoom();
-  });
-  window.addEventListener('load', function(){
-      adjustZoom();adjustZoom();adjustZoom();
-  });
-  </script>
-{{-- Ajuste de resolucion --}}
-{{-- <script>
-  alert("La resolución de tu pantalla es: " + screen.width + " x " + screen.height)
-</script> --}}
 
 <script>
     $('#modalcomentaritem').on('show.bs.modal', function (event) {
@@ -325,10 +297,18 @@ Pendientes de envio
 <script>
     $(document).ready(function() {
 
+      if(window.screen.height <= 768){
+        document.body.style.zoom = "85%";
+    }
+
+      if(window.screen.height == 768 && window.screen.width == 1024){
+        document.body.style.zoom = "70%";
+      }
+
         $('#pendientes thead tr').clone(true).appendTo( '#pendientes thead' );
             $('#pendientes thead tr:eq(1) th').each( function (i) {
             var title = $(this).text();
-            $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
+            $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎" />' );
 
             $( 'input', this ).on( 'keyup change', function () {
                 if ( table.column(i).search() !== this.value ) {
@@ -511,8 +491,4 @@ Pendientes de envio
         });
 
         </script>
-    <script>
-        document.write('Su resolución es de '.screen.width+'x'+screen.height)
-    </script>
-
 @endsection
