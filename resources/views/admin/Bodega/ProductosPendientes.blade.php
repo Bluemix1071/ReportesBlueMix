@@ -115,34 +115,36 @@ Pendientes de envio
                                           <form action="{{ route('EditarProd', ['id' => $item->id,'cantidad'=>$item->cantidad,'cod_articulo'=>$item->cod_articulo]) }}" method="POST" enctype="multipart/form-data">
                                             {{ method_field('put') }}
                                             {{ csrf_field() }}
-                                              <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                                              <button type="submit" class="btn btn-primary">📤</i></button>
                                           </form>
                                       </div>
                                       @else
                                       @endif
+                                      &nbsp;
                                       <div class="col-4" style="text-algin:left">
                                           <a href="" title="Eliminar Item" data-toggle="modal" data-target="#modaleliminaritem"
                                           class="btn btn-danger"
                                           data-id='{{ $item->id }}'
-                                          ><i class="fas fa-trash"></i></a>
+                                          >🗑</i></a>
                                       </div>
-
+                                      &nbsp;
                                       <div class="col-2" style="text-algin:left">
                                         @if ($item->observacion == "")
                                             <a href="" title="Comentar" data-toggle="modal" data-target="#modalcomentaritem"
                                             class="btn btn-primary"
                                             data-id='{{ $item->id }}'
                                             data-observacion='{{ $item->observacion }}'
-                                            ><i class="fas fa-comments"></i></a>
+                                            >✍</a>
                                         @else
                                             <a href="" title="Comentar" data-toggle="modal" data-target="#modalcomentaritem"
                                             class="btn btn-success"
                                             data-id='{{ $item->id }}'
                                             data-observacion='{{ $item->observacion }}'
-                                            ><i class="fas fa-comments"></i></a>
+                                            >✍</a>
                                         @endif
 
                                     </div>
+                                    &nbsp;
                                   </div>
                                     {{-- --}}
 
