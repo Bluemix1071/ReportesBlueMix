@@ -280,7 +280,7 @@ Pendientes de envio
 {{-- Ajuste de resolucion --}}
 <script>
   function adjustZoom(){
-      var newZoomCss = 'zoom:'+document.documentElement.clientWidth*100/content.scrollWidth+'%; ';
+      var newZoomCss = 'zoom:'+document.documentElement.clientWidth*95/content.scrollWidth+'%; ';
       var truncUpTo = 0;
       var firstNL = document.body.style.cssText.indexOf(';');
       if(firstNL && document.body.style.cssText.substr(0,5)==='zoom:'){
