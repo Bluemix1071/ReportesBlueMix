@@ -5,12 +5,12 @@ Pendientes de envio
 @section('styles')
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
-{{-- <style>
+<style>
   #content{
     overflow-x: hidden;
     white-space: nowrap;
   }
-  </style> --}}
+  </style>
 
 @endsection
 
@@ -50,7 +50,8 @@ Pendientes de envio
             <!-- Agregar Compra -->
             <div class="row">
                     <div class="col-md-12">
-                        <table id="pendientes" class="table table-responsive table-bordered table-hover dataTable table-sm">
+                      <div class="table-responsive"><!-- Aqui Tabla -->
+                        <table id="pendientes" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
@@ -153,6 +154,7 @@ Pendientes de envio
                     @endforeach
                             </tbody>
                     </table>
+                  </div>
                 </div>
             </div>
 
@@ -278,7 +280,7 @@ Pendientes de envio
 
 @section('script')
 {{-- Ajuste de resolucion --}}
-{{-- <script>
+<script>
   function adjustZoom(){
       var newZoomCss = 'zoom:'+document.documentElement.clientWidth*95/content.scrollWidth+'%; ';
       var truncUpTo = 0;
@@ -294,7 +296,7 @@ Pendientes de envio
   window.addEventListener('load', function(){
       adjustZoom();adjustZoom();adjustZoom();
   });
-  </script> --}}
+  </script>
 {{-- Ajuste de resolucion --}}
 {{-- <script>
   alert("La resolución de tu pantalla es: " + screen.width + " x " + screen.height)
