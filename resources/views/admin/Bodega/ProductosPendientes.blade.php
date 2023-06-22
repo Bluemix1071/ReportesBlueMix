@@ -11,45 +11,6 @@ Pendientes de envio
     white-space: nowrap;
   }
   </style>
-  <style>
-    @media screen and (max-width: 1024px) {
-  .responsive-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .responsive-table thead {
-    display: none;
-  }
-
-  .responsive-table tbody,
-  .responsive-table tr,
-  .responsive-table th,
-  .responsive-table td {
-    display: block;
-    border: none;
-  }
-
-  .responsive-table td {
-    border-top: none;
-    position: relative;
-    padding-left: 50%;
-  }
-
-  .responsive-table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 50%;
-    padding-right: 10px;
-    font-weight: bold;
-    text-align: left;
-  }
-}
-
-    </style>
 
 @endsection
 
