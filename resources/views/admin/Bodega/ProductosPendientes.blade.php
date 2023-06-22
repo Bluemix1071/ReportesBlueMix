@@ -55,7 +55,7 @@ Pendientes de envio
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
                                     <th scope="col" style="text-align:left">Codigo</th>
-                                    <th scope="col" style="width: 10%">Detalle</th> {{-- <th scope="col" style="width: 80%">Detalle</th> --}}
+                                    <th scope="col" style="text-align:left">Detalle</th> {{-- <th scope="col" style="width: 80%">Detalle</th> --}}
                                     <th scope="col" style="text-align:left">Marca</th>
                                     <th scope="col" style="text-align:left">Cantidad</th>
                                     <th scope="col" style="text-align:left">Rut</th>
@@ -70,7 +70,7 @@ Pendientes de envio
                                     <th scope="col" style="text-align: left">Fecha Envio</th>
                                     {{-- <th scope="col" style="text-align:left">Observacion</th> --}}
                                     <th scope="col" style="text-align:left">Estado</th>
-                                    <th scope="col" style="width: 25%">Acciones</th>
+                                    <th scope="col" style="width: 10%">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -111,40 +111,40 @@ Pendientes de envio
                                 <div class="container">
                                     <div class="row">
                                       @if(($item->estado == "1"))
-                                      <div class="col-4">
+                                      <div class="col-3">
                                           <form action="{{ route('EditarProd', ['id' => $item->id,'cantidad'=>$item->cantidad,'cod_articulo'=>$item->cod_articulo]) }}" method="POST" enctype="multipart/form-data">
                                             {{ method_field('put') }}
                                             {{ csrf_field() }}
-                                              <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                                              <button type="submit" class="btn btn-primary btn-xs"><i class="fas fa-paper-plane"></i></button>
                                           </form>
                                       </div>
                                       @else
                                       @endif
-                                      &nbsp;
-                                      <div class="col-4" style="text-algin:left">
+
+                                      <div class="col-3" style="text-algin:left">
                                           <a href="" title="Eliminar Item" data-toggle="modal" data-target="#modaleliminaritem"
-                                          class="btn btn-danger"
+                                          class="btn btn-danger btn-xs"
                                           data-id='{{ $item->id }}'
                                           ><i class="fas fa-trash"></i></a>
                                       </div>
-                                      &nbsp;
+
                                       <div class="col-2" style="text-algin:left">
                                         @if ($item->observacion == "")
                                             <a href="" title="Comentar" data-toggle="modal" data-target="#modalcomentaritem"
-                                            class="btn btn-primary"
+                                            class="btn btn-primary btn-xs"
                                             data-id='{{ $item->id }}'
                                             data-observacion='{{ $item->observacion }}'
                                             ><i class="fas fa-comments"></i></a>
                                         @else
                                             <a href="" title="Comentar" data-toggle="modal" data-target="#modalcomentaritem"
-                                            class="btn btn-success"
+                                            class="btn btn-success btn-xs"
                                             data-id='{{ $item->id }}'
                                             data-observacion='{{ $item->observacion }}'
                                             ><i class="fas fa-comments"></i></a>
                                         @endif
 
                                     </div>
-                                    &nbsp;
+
                                   </div>
                                     {{-- --}}
 
