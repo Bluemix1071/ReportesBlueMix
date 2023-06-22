@@ -55,7 +55,7 @@ Pendientes de envio
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
                                     <th scope="col" style="text-align:left">Codigo</th>
-                                    <th scope="col" style="width: 50%">Detalle</th> {{-- <th scope="col" style="width: 80%">Detalle</th> --}}
+                                    <th scope="col" style="width: 10%">Detalle</th> {{-- <th scope="col" style="width: 80%">Detalle</th> --}}
                                     <th scope="col" style="text-align:left">Marca</th>
                                     <th scope="col" style="text-align:left">Cantidad</th>
                                     <th scope="col" style="text-align:left">Rut</th>
@@ -115,7 +115,7 @@ Pendientes de envio
                                           <form action="{{ route('EditarProd', ['id' => $item->id,'cantidad'=>$item->cantidad,'cod_articulo'=>$item->cod_articulo]) }}" method="POST" enctype="multipart/form-data">
                                             {{ method_field('put') }}
                                             {{ csrf_field() }}
-                                              <button type="submit" class="btn btn-primary">📤</i></button>
+                                              <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
                                           </form>
                                       </div>
                                       @else
@@ -125,7 +125,7 @@ Pendientes de envio
                                           <a href="" title="Eliminar Item" data-toggle="modal" data-target="#modaleliminaritem"
                                           class="btn btn-danger"
                                           data-id='{{ $item->id }}'
-                                          >🗑</i></a>
+                                          ><i class="fas fa-trash"></i></a>
                                       </div>
                                       &nbsp;
                                       <div class="col-2" style="text-algin:left">
@@ -134,13 +134,13 @@ Pendientes de envio
                                             class="btn btn-primary"
                                             data-id='{{ $item->id }}'
                                             data-observacion='{{ $item->observacion }}'
-                                            >✍</a>
+                                            ><i class="fas fa-comments"></i></a>
                                         @else
                                             <a href="" title="Comentar" data-toggle="modal" data-target="#modalcomentaritem"
                                             class="btn btn-success"
                                             data-id='{{ $item->id }}'
                                             data-observacion='{{ $item->observacion }}'
-                                            >✍</a>
+                                            ><i class="fas fa-comments"></i></a>
                                         @endif
 
                                     </div>
