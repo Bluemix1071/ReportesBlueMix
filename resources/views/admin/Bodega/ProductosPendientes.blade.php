@@ -1,76 +1,38 @@
 @extends("theme.$theme.layout")
-
 @section('titulo')
-    Pendientes de envío
+Pendientes de envio
 @endsection
-
 @section('styles')
-    <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 
-    <style>
-        /* Estilos generales */
-        body {
-          margin: 0;
-          padding: 0;
-          font-family: Arial, sans-serif;
-        }
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
+<style>
+  #content{
+    overflow-x: hidden;
+    white-space: nowrap;
+  }
+  </style>
 
-        header, main, footer {
-          max-width: 1024px;
-          margin: 0 auto;
-        }
-
-        /* Estilos específicos para una resolución de 1024x768 */
-
-        /* Ejemplo: hacer que los elementos se muestren en una sola columna en pantallas pequeñas */
-        @media screen and (max-width: 1024px) {
-          header, main, footer {
-            display: block;
-          }
-        }
-
-        /* Ejemplo: reducir el tamaño del texto en pantallas pequeñas */
-        @media screen and (max-width: 1024px) {
-          body {
-            font-size: 14px;
-          }
-        }
-
-        /* Otros estilos específicos para diferentes elementos en pantallas pequeñas */
-
-        /* Ejemplo: reducir el tamaño de las imágenes en pantallas pequeñas */
-        @media screen and (max-width: 1024px) {
-          img {
-            max-width: 100%;
-            height: auto;
-          }
-        }
-
-        /* Ejemplo: ajustar el tamaño de los botones en pantallas pequeñas */
-        @media screen and (max-width: 1024px) {
-          button {
-            padding: 5px 10px;
-            font-size: 12px;
-          }
-        }
-      </style>
 @endsection
 
 @section('contenido')
+  <div id="content">
     <div class="container-fluid">
         <h3 class="display-3">Productos Pendientes</h3>
         <div class="row">
-            <div class="col-md-12">
-                <hr>
+            {{-- <div class="row" style="width:20%; margin-left: 5%"> --}}
+          <div class="col-md-12">
+            <hr>
+            <!-- Agregar Compra -->
+            {{-- <div class="row"> --}}
                 <h4>Agregar Pendiente:</h4>
-                <form method="post" action="{{ route('AgregarItemp') }}" id="AgregarItemp" class="row">
-                    <div class="col-md-1">
-                        <input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" placeholder="Descripcion" name="buscar_detalle" required id="buscar_detalle" readonly>
-                    </div>
-                    <div class="col-md-1"><input type="text" class="form-control" placeholder="Marca" name="buscar_marca" required id="buscar_marca" readonly></div>
+                <div class="row">
+
+                <form method="post" action="{{ route('AgregarItemp') }}" id="AgregarItemp" class="d-flex justify-content-end col">
+
+                    <div class="row">
+                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
+                        <div class="col-md-2"><input type="text" class="form-control" placeholder="Descripcion" name="buscar_detalle" required id="buscar_detalle" readonly></div>
+                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Marca" name="buscar_marca" required id="buscar_marca" readonly></div>
                         <div class="col-md-1"><input type="number" class="form-control" placeholder="Cantidad" name="buscar_cantidad" required id="buscar_cantidad"></div>
                         <div class="col-md-1"><input type="text" id="rut_auto" data-toggle="modal" data-target="#mimodalselectcliente" class="form-control" placeholder="Rut" name="rut_auto" required oninput="checkRut(this)" maxlength="10"></div>
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Razon Social" name="rsocial" required id="rsocial" readonly></div>
@@ -79,16 +41,17 @@
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Departamento" name="depto" required id="depto"></div>
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Factura" name="factura" required id="factura"></div>
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Observacion" name="observacion" required id="observacion"></div>
-                    <div class="col-md-1">
-                        <button id="add_field_button" type="submit" class="btn btn-success">Agregar</button>
                     </div>
                 </form>
-                <hr>
-                <br>
-                <div class="row">
+                <div class="col-md-1"><button id="add_field_button" type="submit" class="btn btn-success">Agregar</button></div>
+                </div>
+            <hr>
+            <br>
+            <!-- Agregar Compra -->
+            <div class="row">
                     <div class="col-md-12">
                         <table id="pendientes" class="table table-bordered table-hover dataTable table-sm">
-                        <thead>
+                            <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
                                     <th scope="col" style="text-align:left">Codigo</th>
@@ -99,7 +62,7 @@
                                     <th scope="col" style="text-align:left">Razon Social</th>
                                     <th scope="col" style="text-align:left">Ciudad</th>
                                     <th scope="col" style="text-align:left">Region</th>
-                                    <th scope="col" style="text-align:left">Departamento</th>
+                                    <th scope="col" style="text-align:left">Depto</th>
                                     <th scope="col" style="text-align:left">N° Factura</th>
                                     <th scope="col" style="text-align:left">Stock sala</th>
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
@@ -189,13 +152,15 @@
                         </tr>
                     @endforeach
                             </tbody>
-                        </table>
-                    </div>
+                    </table>
                 </div>
             </div>
+
+          </div>
         </div>
-    </div>
-    <!-- Inicio Modal comentar item -->
+</div>
+</div>
+<!-- Inicio Modal comentar item -->
 <div class="modal fade" id="modalcomentaritem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
        <div class="modal-content">
@@ -307,9 +272,34 @@
   </div>
 <!-- FIN Modal -->
 
+
 @endsection
 
+
 @section('script')
+{{-- Ajuste de resolucion --}}
+<script>
+  function adjustZoom(){
+      var newZoomCss = 'zoom:'+document.documentElement.clientWidth*94/content.scrollWidth+'%; ';
+      var truncUpTo = 0;
+      var firstNL = document.body.style.cssText.indexOf(';');
+      if(firstNL && document.body.style.cssText.substr(0,5)==='zoom:'){
+          truncUpTo = firstNL;
+      }
+      document.body.style.cssText = newZoomCss + document.body.style.cssText.substr(truncUpTo);
+  }
+  window.addEventListener('resize', function(){
+      adjustZoom();adjustZoom();adjustZoom();
+  });
+  window.addEventListener('load', function(){
+      adjustZoom();adjustZoom();adjustZoom();
+  });
+  </script>
+{{-- Ajuste de resolucion --}}
+{{-- <script>
+  alert("La resolución de tu pantalla es: " + screen.width + " x " + screen.height)
+</script> --}}
+
 <script>
     $('#modalcomentaritem').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
@@ -524,4 +514,3 @@
     </script>
 
 @endsection
-
