@@ -50,7 +50,7 @@ Pendientes de envio
             <!-- Agregar Compra -->
             <div class="row">
                     <div class="col-md-12">
-                        <table id="pendientes" class="table table-responsive table-hover dataTable table-sm">
+                        <table id="pendientes" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
@@ -280,7 +280,7 @@ Pendientes de envio
 {{-- Ajuste de resolucion --}}
 <script>
   function adjustZoom(){
-      var newZoomCss = 'zoom:'+document.documentElement.clientWidth*90/content.scrollWidth+'%; ';
+      var newZoomCss = 'zoom:'+document.documentElement.clientWidth*100/content.scrollWidth+'%; ';
       var truncUpTo = 0;
       var firstNL = document.body.style.cssText.indexOf(';');
       if(firstNL && document.body.style.cssText.substr(0,5)==='zoom:'){
