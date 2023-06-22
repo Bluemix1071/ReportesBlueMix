@@ -11,6 +11,45 @@ Pendientes de envio
     white-space: nowrap;
   }
   </style>
+  <style>
+    @media screen and (max-width: 1024px) {
+  .responsive-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table tbody,
+  .responsive-table tr,
+  .responsive-table th,
+  .responsive-table td {
+    display: block;
+    border: none;
+  }
+
+  .responsive-table td {
+    border-top: none;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    padding-right: 10px;
+    font-weight: bold;
+    text-align: left;
+  }
+}
+
+    </style>
 
 @endsection
 
@@ -50,8 +89,7 @@ Pendientes de envio
             <!-- Agregar Compra -->
             <div class="row">
                     <div class="col-md-12">
-                      <div class="table-responsive"><!-- Aqui Tabla -->
-                        <table id="pendientes" class="table table-bordered table-hover dataTable table-sm">
+                      <table id="pendientes" class="table table-bordered table-hover dataTable table-sm responsive-table">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>ID</th>
@@ -83,23 +121,23 @@ Pendientes de envio
                     <tr style="text-align:left;font-weight:bold;color: #ff0000">
                     @endif
                     <td style="text-align:left" hidden>{{ $item->id }}</td>
-                        <td style="text-align:left">{{ $item->cod_articulo }}</td>
-                        <td style="text-align:left">{{ $item->descripcion }}</td>
-                        <td style="text-align:left">{{ $item->marca}}</td>
-                        <td style="text-align:left">{{ $item->cantidad }}</td>
-                        <td style="text-align:left">{{ $item->rut }}</td>
-                        <td style="text-align:left">{{ $item->r_social }}</td>
-                        <td style="text-align:left">{{ $item->ciudad }}</td>
-                        <td style="text-align:left">{{ $item->region }}</td>
-                        <td style="text-align:left">{{ $item->depto }}</td>
-                        <td style="text-align: left">{{ $item->nro_factura}}</td>
-                        <td style="text-align: left">{{ $item->stock_sala}}</td>
-                        <td style="text-align: left">{{ $item->stock_bodega}}</td>
-                        <td style="text-align: left">{{ $item->fechai }}</td>
+                        <td style="text-align:left" data-label="Codigo">{{ $item->cod_articulo }}</td>
+                        <td style="text-align:left" data-label="Detalle">{{ $item->descripcion }}</td>
+                        <td style="text-align:left" data-label="Marca">{{ $item->marca}}</td>
+                        <td style="text-align:left" data-label="Cantidad">{{ $item->cantidad }}</td>
+                        <td style="text-align:left" data-label="Rut">{{ $item->rut }}</td>
+                        <td style="text-align:left" data-label="R_social">{{ $item->r_social }}</td>
+                        <td style="text-align:left" data-label="Ciudad">{{ $item->ciudad }}</td>
+                        <td style="text-align:left" data-label="Region">{{ $item->region }}</td>
+                        <td style="text-align:left" data-label="Depto">{{ $item->depto }}</td>
+                        <td style="text-align: left" data-label="Nro_factura">{{ $item->nro_factura}}</td>
+                        <td style="text-align: left" data-label="Stock_sala">{{ $item->stock_sala}}</td>
+                        <td style="text-align: left" data-label="Stock_bodega">{{ $item->stock_bodega}}</td>
+                        <td style="text-align: left" data-label="Fechai">{{ $item->fechai }}</td>
                         @if (($item->fechae == ""))
                         <td style="text-align: left">N/A</td>
                         @else
-                        <td style="text-align: left">{{ $item->fechae }}</td>
+                        <td style="text-align: left" data-label="Fechae">{{ $item->fechae }}</td>
                         @endif
                         {{-- <td style="text-align: left">{{ $item->observacion}}</td> --}}
                         {{-- <td style="text-align: left">{{ $item->estado}}</td> --}}
@@ -154,7 +192,6 @@ Pendientes de envio
                     @endforeach
                             </tbody>
                     </table>
-                  </div>
                 </div>
             </div>
 
