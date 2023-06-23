@@ -354,7 +354,7 @@ Pendientes de envio
     function selectcliente(rut,dv,rzoc,depto,ciudad,region){
       $('#rsocial').val(rzoc);
       $('#rut_auto').val((rut+"-"+dv));
-      $('#depto').val(depto);
+      $('#deptoo').val(depto);
       $('#ciudad').val(ciudad);
       $('#region').val(region);
     }
