@@ -51,20 +51,20 @@ Pendientes de envio
                                     <th scope="col" style="text-align:left">Codigo</th>
                                     <th scope="col" style="text-align:left">Detalle</th> {{-- <th scope="col" style="width: 80%">Detalle</th> --}}
                                     <th scope="col" style="text-align:left">Marca</th>
-                                    <th scope="col" style="text-align:left">Cant</th>
+                                    <th scope="col" style="text-align:left">Cantidad</th>
                                     <th scope="col" style="text-align:left">Rut</th>
                                     <th scope="col" style="text-align:left">Razon Social</th>
                                     <th scope="col" style="text-align:left">Ciudad</th>
                                     <th scope="col" style="text-align:left">Region</th>
                                     <th scope="col" style="text-align:left">Depto</th>
                                     <th scope="col" style="text-align:left">Factura</th>
-                                    <th scope="col" style="text-align:left">Sala</th>
-                                    <th scope="col" style="text-align:left">Bodega</th>
+                                    <th scope="col" style="text-align:left">stock sala</th>
+                                    <th scope="col" style="text-align:left">stock bodega</th>
                                     <th scope="col" style="text-align: left">Fecha Ingreso</th>
                                     <th scope="col" style="text-align: left">Fecha Envio</th>
                                     {{-- <th scope="col" style="text-align:left">Observacion</th> --}}
                                     <th scope="col" style="text-align:left">Estado</th>
-                                    <th scope="col" style="width: 10%">Tools</th>
+                                    <th scope="col" style="width: 10%"><i class="fas fa-cogs"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
