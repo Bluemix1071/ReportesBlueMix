@@ -12,7 +12,7 @@ class CotizacionProveedorController extends Controller
     //
     public function ListarCotizacionProveedores(){
 
-        $productos = DB::table('cotiz_proveedores')->where('proveedor', 'JM IMPORT')->get();
+        $productos = DB::table('cotiz_proveedores')->get();
 
         $categorias = DB::table('cotiz_proveedores')->where('categoria', '!=', null)->groupBy('categoria')->get(['categoria']);
 

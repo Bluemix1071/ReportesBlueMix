@@ -709,6 +709,7 @@ $(document).ready(function() {
 
       var table_critico = $('#critico').DataTable( {
           dom: 'Bfrtip',
+          "pageLength": 50,
           buttons: [
               'copy', 'pdf', 'excel'
           ],
