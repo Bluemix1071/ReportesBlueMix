@@ -69,7 +69,7 @@ class ProductosPendientesController extends Controller
                     "region" => $request->get('region'),
                     "depto" => $request->get('depto'),
                     "nro_factura" => $request->get('factura'),
-                    "observacion" => "XD",
+                    "observacion" => $request->get('observacion'),
                     "estado" => "1" ,
                     "fechai"=>$fechaingreso[0]->fechaingreso,
                     ]
