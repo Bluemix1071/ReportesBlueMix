@@ -52,27 +52,29 @@ Cotizacion Proveedores
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach($productos as $item)
-                          <tr>
-                            <td>{{ $item->sku_prov }}</td>
-                            <td>{{ $item->codigo }}</td>
-                            <td>{{ $item->detalle }}</td>
-                            <td>{{ $item->proveedor }}</td>
-                            <td>{{ $item->marca }}</td>
-                            <td>{{ $item->neto }}</td>
-                            <td>{{ $item->categoria }}</td>
-                            <td hidden>
-                              @if($item->estado == 'COTIZADO')
-                                1
-                              @else
-                                0
-                              @endif
-                            </td>
-                            <td>
-                              <button class="btn btn-white col" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-categoria="{{ $item->categoria }}" data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
-                              <input type="checkbox" id="id_multi_{{ $item->id }}" class="form-check-input" style="margin-top: 2%" onclick="contador_ing({{ $item->id }})">
-                            </td>
-                          </tr>
+                        @foreach($productos->chunk(100) as $items)
+                          @foreach($items as $item)
+                            <tr>
+                              <td>{{ $item->sku_prov }}</td>
+                              <td>{{ $item->codigo }}</td>
+                              <td>{{ $item->detalle }}</td>
+                              <td>{{ $item->proveedor }}</td>
+                              <td>{{ $item->marca }}</td>
+                              <td>{{ $item->neto }}</td>
+                              <td>{{ $item->categoria }}</td>
+                              <td hidden>
+                                @if($item->estado == 'COTIZADO')
+                                  1
+                                @else
+                                  0
+                                @endif
+                              </td>
+                              <td>
+                                <button class="btn btn-white col" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-categoria="{{ $item->categoria }}" data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
+                                <input type="checkbox" id="id_multi_{{ $item->id }}" class="form-check-input" style="margin-top: 2%" onclick="contador_ing({{ $item->id }})">
+                              </td>
+                            </tr>
+                          @endforeach
                         @endforeach
                       </tbody>
                     </table>
@@ -189,30 +191,31 @@ Cotizacion Proveedores
                       </thead>
                       <tbody>
                         
-                        @foreach($productos as $item)
-                        @if($item->estado == "COTIZADO")
-                          <tr>
-                            <td>{{ $item->sku_prov }}</td>
-                            <td>{{ $item->codigo }}</td>
-                            <td>{{ $item->detalle }}</td>
-                            <td>{{ $item->proveedor }}</td>
-                            <td>{{ $item->marca }}</td>
-                            <td>{{ $item->neto }}</td>
-                            <td>{{ $item->categoria }}</td>
-                            <td hidden>
-                              @if($item->estado == 'COTIZADO')
-                                1
-                              @else
-                                0
-                              @endif
-                            </td>
-                            <td>
-                              <button class="btn btn-white" data-toggle="modal" data-target="#modalcotizingresado" data-id='{{ $item->id }}' data-categoria="{{ $item->categoria }}" data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
-                              <input type="checkbox" id="id_multi_ingre_{{ $item->id }}" class="form-check-input" style="margin-top: 2%; margin-left: 0%;" onclick="contador_ing_cotiz({{ $item->id }})">
-                            </td>
-                            <!-- <td>{{ $item->estado }}</td> -->
-                          </tr>
-                        @endif
+                        @foreach($productos->chunk(100) as $items)
+                          @foreach($items as $item)
+                            @if($item->estado == "COTIZADO")
+                              <tr>
+                                <td>{{ $item->sku_prov }}</td>
+                                <td>{{ $item->codigo }}</td>
+                                <td>{{ $item->detalle }}</td>
+                                <td>{{ $item->proveedor }}</td>
+                                <td>{{ $item->marca }}</td>
+                                <td>{{ $item->neto }}</td>
+                                <td>{{ $item->categoria }}</td>
+                                <td hidden>
+                                  @if($item->estado == 'COTIZADO')
+                                    1
+                                  @else
+                                    0
+                                  @endif
+                                </td>
+                                <td>
+                                  <button class="btn btn-white" data-toggle="modal" data-target="#modalcotizingresado" data-id='{{ $item->id }}' data-categoria="{{ $item->categoria }}" data-proveedor='{{ $item->proveedor }}' data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
+                                  <input type="checkbox" id="id_multi_ingre_{{ $item->id }}" class="form-check-input" style="margin-top: 2%; margin-left: 0%;" onclick="contador_ing_cotiz({{ $item->id }})">
+                                </td>
+                              </tr>
+                            @endif
+                          @endforeach
                         @endforeach
 
                       </tbody>
@@ -709,7 +712,6 @@ $(document).ready(function() {
 
       var table_critico = $('#critico').DataTable( {
           dom: 'Bfrtip',
-          "pageLength": 50,
           buttons: [
               'copy', 'pdf', 'excel'
           ],
