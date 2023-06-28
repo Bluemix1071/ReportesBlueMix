@@ -24,9 +24,11 @@ class ConteosController extends Controller
     }
 
     public function deleteItem($id){
-        error_log(print_r($id, true));
-        DB::table('conteo_inventario_detalle')->where('id', $id)->delete();
+        //error_log(print_r($id, true));
 
-        return response()->json(["status" => "ok"]);
+        DB::table('conteo_inventario_detalle')->where('id', $id)->delete();
+        
+
+        return response()->json(["status" => "eliminado"]);
     }
 }
