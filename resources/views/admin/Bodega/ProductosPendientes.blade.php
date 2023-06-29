@@ -453,42 +453,37 @@ Pendientes de envio
             }
         });
 
-        $(add_button).click(function(e){
-            e.preventDefault();
+    $(add_button).click(function(e) {
+    e.preventDefault();
 
-            var codigo = $('#codigo').val();
-            var cantidad = $('#buscar_cantidad').val();
-            var rut = $('#rut_auto').val();
-            var depto = $('#depto').val();
-            var factura = $('#factura').val();
+    var codigo = $('#codigo').val();
+    var cantidad = $('#buscar_cantidad').val();
+    var rut = $('#rut_auto').val();
+    var depto = $('#depto').val();
+    var factura = $('#factura').val();
 
-            if (codigo == '') {
-                window.alert("¡Debe ingresar codigo!");
+    if (codigo == '') {
+        window.alert("¡Debe ingresar un código!");
+    } else {
+        if (cantidad == '') {
+            window.alert("¡Debe ingresar una cantidad!");
+        } else {
+            if (rut == '') {
+                window.alert("¡Debe seleccionar un RUT!");
             } else {
-                if (cantidad == ''){
-                    window.alert("¡Debe ingresar Cantidad!");
-                }
-                else{
-                    if (rut == ''){
-                        window.alert("¡Debe seleccionar un rut!");
-                    }else{
-                        if (depto == ''){
-                            windows.alert("Debe ingresar un departamento");
-                        }else {
-                            if (factura == ''){
-                                windows.alert("Debe ingresar N° de Factura");
-                            } else {
-
-                                $("#AgregarItemp").submit();
-
-                            }
-                        }
+                if (depto == '') {
+                    window.alert("¡Debe ingresar un departamento!");
+                } else {
+                    if (factura == '') {
+                        window.alert("¡Debe ingresar un número de factura!");
+                    } else {
+                        $("#AgregarItemp").submit();
                     }
-
                 }
-
             }
-        });
+        }
+    }
+});
 
         </script>
 @endsection

@@ -1047,6 +1047,15 @@
                             </li>
                             @endcan
 
+                            @can('Sala')
+                            <li class="nav-item">
+                                <a href="{{ route('Precios') }}" class="nav-link {{ setActive('Precios') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Precios</p>
+                                </a>
+                            </li>
+                            @endcan
+
                         </ul>
                     </li>
                 @endcan

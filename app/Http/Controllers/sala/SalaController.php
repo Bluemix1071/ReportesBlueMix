@@ -627,7 +627,7 @@ class SalaController extends Controller
             break;
         case "DESACTIVADO":
             $estado = "fecha_desactivado";
-            break; 
+            break;
       }
 
         DB::table('requerimiento_compra')
@@ -663,7 +663,7 @@ class SalaController extends Controller
             break;
         case "DESACTIVADO":
             $estado = "fecha_desactivado";
-            break;   
+            break;
       }
 
       if(is_null($request->case)){
@@ -722,14 +722,14 @@ class SalaController extends Controller
           'encargado' => $request->encargado,
           'estado' => "Ingresado"
       ];
-      
+
       DB::table('conteo_inventario')->insert($nuevo);
 
       return redirect()->route('ConteoInventarioSala')->with('success','Agregado Correctamente');
     }
 
     public function ConteoDetalle(Request $request){
-      
+
       $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $request->id)->orderBy('posicion', 'asc')->get();
 
       $conteo = DB::table('conteo_inventario')->where('id', $request->id)->get()[0];
@@ -751,7 +751,7 @@ class SalaController extends Controller
     public function GuardarConteoDetalle(Request $request){
       //stristr($email, 'e');
       $id_conteo = $request->get('id_conteo');
-      
+
       DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id_conteo)->delete();
 
       $i = 1;
@@ -791,18 +791,18 @@ class SalaController extends Controller
     }
 
     public function CargarValeConteoSala(Request $request){
-  
+
       $conteo = DB::table('conteo_inventario')->where('id', $request->get('id_conteo'))->get()[0];
       $contador = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $request->get('id_conteo'))->get()->count();
       $contador = $contador+1;
       //dd(DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $request->get('id_conteo'))->get());
-      
+
       //dd($request->get('nro_vale'));
 
       $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant from dvales left join producto on dvales.vaarti = producto.ARCODI where vanmro = '.$request->get('nro_vale').'');
       if(!empty($vale)){
           foreach($vale as $item){
-  
+
               $nuevo = ['posicion' => $contador++,
                             'codigo' => $item->vaarti,
                             'detalle' => $item->ARDESC,
@@ -921,9 +921,14 @@ class SalaController extends Controller
         ]
       ]);
     } */
-    
+
     return redirect()->route('RequerimientoCompra')->with('success','Vale de Requerimientos Ingresados Correctamente');
 
+  }
+
+  public function Precios(Request $request) {
+
+    return view('sala.Precios');
   }
 
 }

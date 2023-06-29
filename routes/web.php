@@ -75,6 +75,9 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/CargarValeConteoSala', 'SalaController@CargarValeConteoSala')->name('CargarValeConteoSala');
     Route::post('/TerminarConteoSala', 'SalaController@TerminarConteoSala')->name('TerminarConteoSala');
 
+    /* Modulo Creacion de precios oferta */
+    Route::get('/Precios', 'SalaController@Precios')->name('Precios');
+
 });
 
 
@@ -402,6 +405,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@GuardarRectificacionInsumoMerma')->name('GuardarRectificacionInsumoMerma');
     Route::post('/RectificacionInsumoMermaCargarVale','Rectificacion\RectificacionInventarioSalaController@CargarValeInsimoMerma')->name('CargarValeInsimoMerma');
     /* fin */
+
+
 
     //---------------------Exportaciones----------------------------------------------//
 
