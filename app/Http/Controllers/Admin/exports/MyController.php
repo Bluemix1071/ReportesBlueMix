@@ -73,7 +73,7 @@ class MyController extends Controller
         }else{
             Excel::import(new cotizproveedorImport,request()->file('listado'));
     
-            return back();
+            return back()->with('success', 'Archivo Importado Exitosamente');
         }
     }
 

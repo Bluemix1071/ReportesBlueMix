@@ -13,7 +13,7 @@ Cotizacion Proveedores
 
     <div class="container-fluid">
       <div class="row">
-        <h4 class="display-4 col">Cotizacion de Proveedores</h4>&nbsp;&nbsp;
+        <h4 class="display-4 col">Cotizacion de Proveedores (BETA)</h4>&nbsp;&nbsp;
         <div class="col">
           <div class="row" style="visibility: hidden; height: 33%;"></div>
           <div class="row d-flex justify-content-center">
@@ -30,7 +30,7 @@ Cotizacion Proveedores
       </div>
       <br>
         <div class="row" style="font-size: 85%; -webkit-text-stroke: thin;">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="row">
                     <div class="modal-content">
 
@@ -46,13 +46,13 @@ Cotizacion Proveedores
                           <th width="12%">Marca</th>
                           <th width="10%">Neto</th>
                           <th width="17%">Categoria</th>
-                          <th hidden>Cotizado?</th>
+                          <!-- <th hidden>Cotizado?</th> -->
                           <th width="10%"><i class="fas fa-cogs"></i></th>
                           <!-- <th scope="col">Estado</th> -->
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach($productos->chunk(100) as $items)
+                        @foreach($productos->chunk(10) as $items)
                           @foreach($items as $item)
                             <tr>
                               <td>{{ $item->sku_prov }}</td>
@@ -62,16 +62,16 @@ Cotizacion Proveedores
                               <td>{{ $item->marca }}</td>
                               <td>{{ $item->neto }}</td>
                               <td>{{ $item->categoria }}</td>
-                              <td hidden>
+                              <!-- <td hidden>
                                 @if($item->estado == 'COTIZADO')
                                   1
                                 @else
                                   0
                                 @endif
-                              </td>
+                              </td> -->
                               <td>
-                                <button class="btn btn-white col" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-categoria="{{ $item->categoria }}" data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
-                                <input type="checkbox" id="id_multi_{{ $item->id }}" class="form-check-input" style="margin-top: 2%" onclick="contador_ing({{ $item->id }})">
+                                <button class="btn btn-white col" data-toggle="modal" data-target="#modalcotiz" data-id='{{ $item->id }}' data-proveedor='{{ $item->proveedor }}' data-categoria="{{ $item->categoria }}" data-marca="{{ $item->marca }}" data-sku_bm="{{ $item->codigo }}" data-estado="{{ $item->estado }}" data-neto="{{ $item->neto }}"><i class="fas fa-bars fa-lg" style="color: #007bff;"></i></button>
+                                <input type="checkbox" id="id_multi_{{ $item->id }}" class="form-check-input" style="margin-top: 1%" onclick="contador_ing({{ $item->id }})">
                               </td>
                             </tr>
                           @endforeach
@@ -168,7 +168,7 @@ Cotizacion Proveedores
 
             </div>
 
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <div class="row">
                     <div class="modal-content">
 
@@ -186,12 +186,11 @@ Cotizacion Proveedores
                           <th width="17%">Categoria</th>
                           <th hidden>Cotizado?</th>
                           <th width="10%"><i class="fas fa-cogs"></i></th>
-                          <!-- <th scope="col">Estado</th> -->
                         </tr>
                       </thead>
                       <tbody>
                         
-                        @foreach($productos->chunk(100) as $items)
+                        @foreach($productos->chunk(10) as $items)
                           @foreach($items as $item)
                             @if($item->estado == "COTIZADO")
                               <tr>
@@ -306,7 +305,7 @@ Cotizacion Proveedores
                         </div>
                 </div>
                 </form>
-            </div>
+            </div>-->
 
         </div>
     </div>
@@ -316,7 +315,7 @@ Cotizacion Proveedores
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Editar Producto</h4>
+                <h4 class="modal-title" id="myModalLabel">Editar Producto Ingresado</h4>
             </div>
             <div class="modal-body">
 
@@ -399,6 +398,17 @@ Cotizacion Proveedores
               </div>
 
               <div class="form-group row">
+                  <label for="neto"
+                      class="col-md-4 col-form-label text-md-right">Neto</label>
+
+                  <div class="col-md-6">
+                      <input id="neto" type="number"
+                          class="form-control @error('neto') is-invalid @enderror" name="neto"
+                           value="{{ old('neto') }}" autocomplete="neto" autofocus>
+                  </div>
+              </div>
+
+              <div class="form-group row" hidden>
                   <label for="estado"
                       class="col-md-4 col-form-label text-md-right">Estado</label>
 
@@ -406,7 +416,7 @@ Cotizacion Proveedores
 
                     <select name="estado" id="estado" required class="form-control @error('estado') is-invalid @enderror">
                         <option value="INGRESADO">INGRESADO</option>
-                        <option value="COTIZADO">COTIZADO</option>
+                        <option value="COTIZADO" selected>COTIZADO</option>
                     </select>
 
                   </div>
@@ -637,7 +647,7 @@ $(document).ready(function() {
               $('#critico-1 thead tr:eq(1) th').each( function (i) {
               var title = $(this).text();
 
-              $(this).html( '<input type="text" style="width:130%; margin-left: -15%;" placeholder="🔎"/>');
+              $(this).html( '<input type="text" placeholder="🔎'+title+'"/>');
   
               $( 'input', this ).on( 'keyup change', function () {
                   if ( critico.column(i).search() !== this.value ) {
@@ -698,7 +708,7 @@ $(document).ready(function() {
                                 '<datalist id="proveedores">'+proveedores+'</datalist>');
                 }else{
                 } */
-                $(this).html( '<input type="text" style="width:130%; margin-left: -15%;" placeholder="🔎" />' );
+                $(this).html( '<input type="text" placeholder="🔎 '+title+'" />' );
 
                 $( 'input', this ).on( 'keyup change', function () {
                     if ( table_critico.column(i).search() !== this.value ) {

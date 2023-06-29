@@ -21,7 +21,7 @@ class cotizproveedorImport implements ToCollection
         {
             if($i > 0){
                 //error_log(print_r($row[0].' '.$row[1].' '.$row[2].' '.$row[3], true));
-                $estado = "INGRESADO";
+                $estado = "COTIZADO";
 
                 $producto = DB::table('cotiz_proveedores')
                 ->where('sku_prov', strtoupper($row[0]))
@@ -29,9 +29,9 @@ class cotizproveedorImport implements ToCollection
                 ->get();
 
                 //error_log(print_r($producto[0], true));
-                if($row[7] == 1){
+                /* if($row[7] == 1){
                     $estado = "COTIZADO";
-                }
+                } */
 
                 if(empty($producto[0])){
                     //error_log(print_r('no existe', true));
