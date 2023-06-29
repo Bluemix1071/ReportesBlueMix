@@ -4,7 +4,10 @@ Creacion de Precios
 @endsection
 @section('styles')
 
-<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">3
+<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
 @endsection
 
 @section('contenido')
@@ -34,7 +37,7 @@ Creacion de Precios
                     </div>
                 </form>
                 <div class="col-md-1">
-                    <button id="add_field_button" type="button" class="btn btn-success" onclick="agregarPrecio()">Agregar (Max16)</button>
+                    <button id="add_field_button" type="button" class="btn btn-success" onclick="agregarPrecio()">Agregar (Max12)</button>
                 </div>
                 </div>
             <hr>
@@ -42,7 +45,7 @@ Creacion de Precios
             </div>
             <div id="areaImprimir">
                 <h5>Listado De Precios:</h5>
-                <table id="tablaPrecios" class="table" style="width: 160%;">
+                <table id="tablaPrecios" class="table table-white">
                     <tbody>
                         <!-- Aquí se mostrarán los precios ingresados -->
                         {{-- <tr>
@@ -80,7 +83,8 @@ Creacion de Precios
             </div>
         </div>
         {{-- <button onclick="imprimirPrecios()" class="btn btn-primary">Imprimir</button> --}}
-        <input type="button" onclick="printDiv('areaImprimir')" value="imprimir div" />
+        {{-- <input type="button" id="imprimirTabla" onclick="printDiv('areaImprimir')" value="imprimir div" /> --}}
+        <button id="imprimirTabla">Imprimir</button>
         <button onclick="limpiarTabla()" class="btn btn-danger">Limpiar</button>
         </div>
 </div>
@@ -105,6 +109,10 @@ Creacion de Precios
 <script src="{{asset("js/vfs_fonts.js")}}"></script>
 <script src="{{asset("js/buttons.html5.min.js")}}"></script>
 <script src="{{asset("js/buttons.print.min.js")}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
 
 <script>
     var max_fields      = 9999; //maximum input boxes allowed
@@ -192,7 +200,7 @@ function agregarPrecio() {
         '<div class="row">' +
         '<div class="col">' +
         '<div class="row">' + marca + '</div>' +
-        '<div class="row">$ ' + precioDetalle + '</div>' +
+        '<div class="row">' + '<h2>'+'<p style="color: #ff0000">$ '+precioDetalle+'</p>'+'</h2>'+ '</div>' +
         '<div class="row">' + codigo + '</div>' +
         '</div>' +
         '<div class="col">' +
@@ -202,7 +210,7 @@ function agregarPrecio() {
         '</div>' +
         '</div>';
 
-    if (numFilas === 1 || numFilas === 3 || numFilas === 5 || numFilas === 7 || numFilas === 9 || numFilas === 11 || numFilas === 13) {
+    if (numFilas === 1 || numFilas === 3 || numFilas === 5 || numFilas === 7 || numFilas === 9) {
         // Si es el primer o tercer registro, crear una nueva fila para el siguiente registro debajo del actual
         var nuevaFila = tablaPrecios.insertRow();
         var nuevaCelda = nuevaFila.insertCell();
@@ -237,7 +245,8 @@ function imprimirPrecios() {
 }
 
 function printDiv(nombreDiv) {
-     var contenido= document.getElementById(nombreDiv).innerHTML;
+    var contenido = document.getElementById('tablaPrecios').outerHTML;
+    //  var contenido= document.getElementById(nombreDiv).innerHTML;
      var contenidoOriginal= document.body.innerHTML;
 
      document.body.innerHTML = contenido;
@@ -257,4 +266,17 @@ function limpiarTabla() {
     }
 }
 </script>
+
+<script>
+    $(document).ready(function() {
+      $('#tablaPrecios').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['print']
+      });
+
+      $('#imprimirTabla').on('click', function() {
+        $('#tablaPrecios').DataTable().button('print').trigger();
+      });
+    });
+  </script>
 @endsection
