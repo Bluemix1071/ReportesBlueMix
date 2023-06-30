@@ -25,19 +25,19 @@ Creacion de Precios
 
 
                     <div class="row">
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
-                        <div class="col-md-4"><input type="text" class="form-control" placeholder="Descripcion" name="buscar_detalle" required id="buscar_detalle" readonly></div>
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Marca" name="buscar_marca" required id="buscar_marca" readonly></div>
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="precio detalle" name="precio_detalle" required id="precio_detalle" readonly></div>
-                        <div class="col-md-2"><input type="text" class="form-control" placeholder="Codigo Barra" name="codigo_barra" required id="codigo_barra" readonly></div>
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Precio Mayor" name="precio_mayor" required id="precio_mayor" readonly></div>
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Unidad" name="unidad" required id="unidad" readonly></div>
-                        <div class="col-md-1"><input type="number" class="form-control" placeholder="Descuento" name="descuento" required id="descuento"></div>
-
+                        <div class="col"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
+                        <div class="col-3"><input type="text" class="form-control" placeholder="Descripcion" name="buscar_detalle" required id="buscar_detalle" readonly></div>
+                        <div class="col"><input type="text" class="form-control" placeholder="Marca" name="buscar_marca" required id="buscar_marca" readonly></div>
+                        <div class="col"><input type="text" class="form-control" placeholder="precio detalle" name="precio_detalle" required id="precio_detalle" readonly></div>
+                        <div class="col"><input type="text" class="form-control" placeholder="Codigo Barra" name="codigo_barra" required id="codigo_barra" readonly></div>
+                        <div class="col"><input type="text" class="form-control" placeholder="Precio Mayor" name="precio_mayor" required id="precio_mayor" readonly></div>
+                        <div class="col"><input type="text" class="form-control" placeholder="Unidad" name="unidad" required id="unidad" readonly></div>
+                        <div class="col"><input type="number" class="form-control" placeholder="Descuento" name="descuento" required id="descuento"></div>
+                        <div class="col"><input type="number" class="form-control" placeholder="Oferta" name="poferta" required id="poferta" readonly></div>
                     </div>
                 </form>
                 <div class="col-md-1">
-                    <button id="add_field_button" type="button" class="btn btn-success" onclick="agregarPrecio()">Agregar (Max12)</button>
+                    <button id="add_field_button" type="button" class="btn btn-success" onclick="agregarPrecio()">Agregar</button>
                 </div>
                 </div>
             <hr>
@@ -53,21 +53,7 @@ Creacion de Precios
                                 <div class="row">
                                     <div class="col">
                                         <div class="row">SPYRA</div>
-                                        <div class="row">$ 160</div>
-                                        <div class="row">1280300</div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="row">6923773224241</div>
-                                        <div class="row">MAYOR $139</div>
-                                        <div class="row">MICA GRANITO...</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row">SPYRA</div>
-                                        <div class="row">$ 160</div>
+                                        <div class="row"><h2>$ 160</h2></div>
                                         <div class="row">1280300</div>
                                     </div>
                                     <div class="col">
@@ -83,8 +69,8 @@ Creacion de Precios
             </div>
         </div>
         {{-- <button onclick="imprimirPrecios()" class="btn btn-primary">Imprimir</button> --}}
-        {{-- <input type="button" id="imprimirTabla" onclick="printDiv('areaImprimir')" value="imprimir div" /> --}}
-        <button id="imprimirTabla">Imprimir</button>
+        <input type="button" class="btn btn-primary" id="imprimirTabla" onclick="printDiv('areaImprimir')" value="imprimir" />
+        {{-- <button id="imprimirTabla" class="btn btn-primary">Imprimir</button> --}}
         <button onclick="limpiarTabla()" class="btn btn-danger">Limpiar</button>
         </div>
 </div>
@@ -180,10 +166,27 @@ function agregarPrecio() {
     var precioMayor = document.getElementById('precio_mayor').value;
     var unidad = document.getElementById('unidad').value;
     var descuento = document.getElementById('descuento').value;
+    var poferta = document.getElementById('poferta').value;
+
+    if (codigo === '') {
+        alert("¡Debe ingresar un código!");
+        return;
+    }
+
+    if (descripcion === '') {
+        alert("¡Al ingresar código precione ENTER!");
+        return;
+    }
 
     var tablaPrecios = document.getElementById('tablaPrecios');
     var filasActuales = tablaPrecios.getElementsByTagName('tr');
     var numFilas = filasActuales.length;
+
+    if (numFilas === 12) {
+        alert("No se pueden ingresar más de 12 códigos");
+        limpiarFormulario();
+        return;
+    }
 
     var filaActual;
     if (numFilas % 2 === 0) {
@@ -196,21 +199,54 @@ function agregarPrecio() {
 
     var celda = filaActual.insertCell();
 
+    if(descuento == ""){
     celda.innerHTML =
-        '<div class="row">' +
-        '<div class="col">' +
-        '<div class="row">' + marca + '</div>' +
-        '<div class="row">' + '<h2>'+'<p style="color: #ff0000">$ '+precioDetalle+'</p>'+'</h2>'+ '</div>' +
-        '<div class="row">' + codigo + '</div>' +
-        '</div>' +
-        '<div class="col">' +
-        '<div class="row">' + codigoBarra + '</div>' +
-        '<div class="row">$ ' + precioMayor + '&ensp;' + unidad + '</div>' +
-        '<div class="row">' + descripcion + '</div>' +
-        '</div>' +
-        '</div>';
+        '<div class="row" style="border: #000 2px solid;">' +
+            '<div class="col">' +
+                '<div class="row"><strong>' + marca + '</strong></div>' +
+                '<div class="row">' + '<h2>'+'<p style="color: #ff0000"><strong>'+'</strong></p>'+'</h2>'+ '</div>' +
+                '<div class="row" style="color: rgb(0 0 0 / 0%)"><strong>' + codigo + '</strong></div>' +
+                '<div class="row" style="color: rgb(0 0 0 / 0%)"><strong>' + codigo + '</strong></div>' +
+                '<div class="row"><strong>' + codigo + '</strong></div>' +
+            '</div>' +
+            '<div class="col">' +
+                '<div class="row"><strong style="text-align: left; margin-left: 60%;">' + codigoBarra + '</strong></div>' +
+                // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
+                '<div class="row">'+
+                    '<div class="col-9"><strong style="width: max-content;">'+ '<h2>'+'<p><strong> ' + '&ensp;$' +precioDetalle+'&ensp;'+unidad+'</strong></p>'+'</h2>'+ '</strong></div>'+
+                    '<div class="col-1"><strong><h6> Por mayor $'+precioMayor+unidad + '</h6></strong></div>' +
+                '</div>' +
+                '<div class="row"><strong style="width: max-content; ">' + descripcion + '</strong></div>' +
 
-    if (numFilas === 1 || numFilas === 3 || numFilas === 5 || numFilas === 7 || numFilas === 9) {
+            '</div>' +
+            // '<div class="col">' +
+            //     // '<div class="row"><strong>' + codigoBarra + '</strong></div>' +
+            //     '<div class="row"><strong>$ ' + precioMayor + '&ensp;' + unidad + '</strong></div>' +
+            // '</div>' +
+        '</div>';
+        }else {
+            celda.innerHTML =
+            '<div class="row" style="border: #000 2px solid;">' +
+            '<div class="col">' +
+                '<div class="row"><strong>' + marca + '</strong></div>' +
+                '<div class="row">' + '<h2>'+'<p style="color: #ff0000;text-align:center"><strong>OFERTA'+'</strong></p>'+'</h2>'+ '</div>' +
+                // '<div class="row"><strong style="color: rgb(0 0 0 / 0%)">' + codigo + '</strong></div>' +
+                '<div class="row"><strong>' + codigo + '</strong></div>' +
+            '</div>' +
+            '<div class="col">' +
+                '<div class="row"><strong style="text-align: left; margin-left: 60%;">' + codigoBarra + '</strong></div>' +
+                // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
+                '<div class="row">'+
+                    '<div class="col-9"><strong style="width: max-content;">'+ '<h2>'+'<p style="color: #ff0000"><strong> '+ '&ensp;' + '&ensp;$' +poferta+'&ensp;'+unidad+'</strong></p>'+'</h2>'+ '</strong></div>'+
+                    '<div class="col-2"><strong><h6>Precio normal $' + precioDetalle + unidad + '</h6></strong></div>' +
+                '</div>' +
+                // '<div class="row"><strong style="width: max-content;color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
+                '<div class="row"><strong style="width: max-content;">' + descripcion + '</strong></div>' +
+            '</div>' +
+        '</div>';
+        }
+
+    if (numFilas === 1 || numFilas === 3 || numFilas === 5 || numFilas === 7 || numFilas === 9 || numFilas === 11) {
         // Si es el primer o tercer registro, crear una nueva fila para el siguiente registro debajo del actual
         var nuevaFila = tablaPrecios.insertRow();
         var nuevaCelda = nuevaFila.insertCell();
@@ -231,6 +267,7 @@ function limpiarFormulario() {
     document.getElementById('precio_mayor').value = '';
     document.getElementById('unidad').value = '';
     document.getElementById('descuento').value = '';
+    document.getElementById('poferta').value= '';
 }
 
 
@@ -245,8 +282,7 @@ function imprimirPrecios() {
 }
 
 function printDiv(nombreDiv) {
-    var contenido = document.getElementById('tablaPrecios').outerHTML;
-    //  var contenido= document.getElementById(nombreDiv).innerHTML;
+     var contenido= document.getElementById(nombreDiv).innerHTML;
      var contenidoOriginal= document.body.innerHTML;
 
      document.body.innerHTML = contenido;
@@ -254,18 +290,31 @@ function printDiv(nombreDiv) {
      window.print();
 
      document.body.innerHTML = contenidoOriginal;
+     limpiarTabla();
+     window.location.reload();
 }
 
 
+// function limpiarTabla() {
+//     var tablaPrecios = document.getElementById('tablaPrecios');
+//     var filas = tablaPrecios.getElementsByTagName('tr');
+//     // Empezamos desde 1 para omitir la fila de encabezado (thead)
+//     for (var i = 0; i < filas.length; i++) {
+//         tablaPrecios.deleteRow(i);
+//     }
+// }
 function limpiarTabla() {
     var tablaPrecios = document.getElementById('tablaPrecios');
     var filas = tablaPrecios.getElementsByTagName('tr');
     // Empezamos desde 1 para omitir la fila de encabezado (thead)
     for (var i = 0; i < filas.length; i++) {
         tablaPrecios.deleteRow(i);
+        // Debemos disminuir el contador `i` cuando se elimina una fila, para evitar saltarse filas
+        i--;
     }
 }
 </script>
+
 
 <script>
     $(document).ready(function() {
@@ -279,4 +328,17 @@ function limpiarTabla() {
       });
     });
   </script>
+
+  <script type="text/javascript">
+    $( "#descuento" ).keyup(function() {
+      var pdetalle = $( "#precio_detalle" ).val();
+      var descuento = $( "#descuento" ).val();
+      if(descuento != ""){
+        // $('#poferta').val((Math.round((descuento/(pdetalle)-1)*100)+'%'));
+        $('#poferta').val(Math.round(((100-descuento)/100)*pdetalle));
+      }else{
+        $('#poferta').val('0%');
+      }
+    });
+</script>
 @endsection
