@@ -725,7 +725,7 @@ $(document).ready(function() {
       var table_critico = $('#critico').DataTable( {
           dom: 'Bfrtip',
           buttons: [
-              'copy', 'pdf', 'excel'
+              'copy', 'pdf', { extend: 'excel', title: null}
           ],
           orderCellsTop: true,
             "language":{
