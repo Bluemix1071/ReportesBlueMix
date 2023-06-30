@@ -13,7 +13,7 @@ Cotizacion Proveedores
 
     <div class="container-fluid">
       <div class="row">
-        <h4 class="display-4 col">Cotizacion de Proveedores (BETA)</h4>&nbsp;&nbsp;
+        <h4 class="display-4 col">Cotización de Proveedores (BETA)</h4>&nbsp;&nbsp;
         <div class="col">
           <div class="row" style="visibility: hidden; height: 33%;"></div>
           <div class="row d-flex justify-content-center">
@@ -91,7 +91,7 @@ Cotizacion Proveedores
                 @csrf
                 <div class="card card-primary">
                     <div class="card-header">
-                            <h3 class="card-title">Edición Múltiple Ingresados</h3>
+                            <h3 class="card-title">Edición Múltiple</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-plus"></i>
@@ -150,12 +150,12 @@ Cotizacion Proveedores
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row" hidden>
                             <div class="col-md">
 
                               <select name="estado_mult" id="estado_mult" class="form-control @error('estado_mult') is-invalid @enderror">
                                   <option value="INGRESADO">INGRESADO</option>
-                                  <option value="COTIZADO">COTIZADO</option>
+                                  <option value="COTIZADO" selected>COTIZADO</option>
                               </select>
 
                             </div>
@@ -608,6 +608,7 @@ function contador_ing(id){
         var marca = button.data('marca');
         var sku_bm = button.data('sku_bm');
         var estado = button.data('estado');
+        var neto = button.data('neto');
        
         var modal = $(this);
         modal.find('.modal-body #id').val(id);
@@ -616,6 +617,7 @@ function contador_ing(id){
         modal.find('.modal-body #marca').val(marca);
         modal.find('.modal-body #sku_bm').val(sku_bm);
         modal.find('.modal-body #estado').val(estado);
+        modal.find('.modal-body #neto').val(neto);
 
         //$( "#marca option:selected" ).text(proveedor);
   })

@@ -32,8 +32,10 @@ class CotizacionProveedorController extends Controller
         DB::table('cotiz_proveedores')->where('id', $request->get('id'))->update([
             "estado" => strtoupper($request->get('estado')),
             "categoria" => strtoupper($request->get('categoria')),
+            "codigo" => strtoupper($request->get('sku_bm')),
             "proveedor" => strtoupper($request->get('proveedor')),
-            "marca" => strtoupper($request->get('marca'))
+            "marca" => strtoupper($request->get('marca')),
+            "neto" => strtoupper($request->get('neto'))
         ]);
 
         //return view('admin.Cotizaciones.CotizacionProveedor');
