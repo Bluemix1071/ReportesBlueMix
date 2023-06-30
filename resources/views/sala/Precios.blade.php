@@ -204,7 +204,7 @@ function agregarPrecio() {
         '<div class="row" style="border: #000 2px solid;">' +
             '<div class="col">' +
                 '<div class="row"><strong>' + marca + '</strong></div>' +
-                '<div class="row">' + '<h2>'+'<p style="color: #ff0000"><strong>'+'</strong></p>'+'</h2>'+ '</div>' +
+                '<div class="row">' + '<h3>'+'<p style="color: #ff0000"><strong>'+'</strong></p>'+'</h3>'+ '</div>' +
                 '<div class="row" style="color: rgb(0 0 0 / 0%)"><strong>' + codigo + '</strong></div>' +
                 '<div class="row" style="color: rgb(0 0 0 / 0%)"><strong>' + codigo + '</strong></div>' +
                 '<div class="row"><strong>' + codigo + '</strong></div>' +
@@ -213,7 +213,7 @@ function agregarPrecio() {
                 '<div class="row"><strong style="text-align: left; margin-left: 60%;">' + codigoBarra + '</strong></div>' +
                 // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row">'+
-                    '<div class="col-9"><strong style="width: max-content;">'+ '<h2>'+'<p><strong> ' + '&ensp;$' +precioDetalle+'&ensp;'+unidad+'</strong></p>'+'</h2>'+ '</strong></div>'+
+                    '<div class="col-9"><strong style="width: max-content;">'+ '<h3>'+'<p><strong> ' + '&ensp;$' +precioDetalle+'&ensp;'+unidad+'</strong></p>'+'</h3>'+ '</strong></div>'+
                     '<div class="col-1"><strong><h6> Por mayor $'+precioMayor+unidad + '</h6></strong></div>' +
                 '</div>' +
                 '<div class="row"><strong style="width: max-content; ">' + descripcion + '</strong></div>' +
@@ -229,7 +229,7 @@ function agregarPrecio() {
             '<div class="row" style="border: #000 2px solid;">' +
             '<div class="col">' +
                 '<div class="row"><strong>' + marca + '</strong></div>' +
-                '<div class="row">' + '<h2>'+'<p style="color: #ff0000;text-align:center"><strong>OFERTA'+'</strong></p>'+'</h2>'+ '</div>' +
+                '<div class="row">' + '<h3>'+'<p style="color: #ff0000;text-align:center"><strong>¡OFERTA!'+'</strong></p>'+'</h3>'+ '</div>' +
                 // '<div class="row"><strong style="color: rgb(0 0 0 / 0%)">' + codigo + '</strong></div>' +
                 '<div class="row"><strong>' + codigo + '</strong></div>' +
             '</div>' +
@@ -237,7 +237,7 @@ function agregarPrecio() {
                 '<div class="row"><strong style="text-align: left; margin-left: 60%;">' + codigoBarra + '</strong></div>' +
                 // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row">'+
-                    '<div class="col-9"><strong style="width: max-content;">'+ '<h2>'+'<p style="color: #ff0000"><strong> '+ '&ensp;' + '&ensp;$' +poferta+'&ensp;'+unidad+'</strong></p>'+'</h2>'+ '</strong></div>'+
+                    '<div class="col-9"><strong style="width: max-content;">'+ '<h3>'+'<p style="color: #ff0000"><strong> '+ '&ensp;' + '&ensp;$' +poferta+'&ensp;'+unidad+'</strong></p>'+'</h3>'+ '</strong></div>'+
                     '<div class="col-2"><strong><h6>Precio normal $' + precioDetalle + unidad + '</h6></strong></div>' +
                 '</div>' +
                 // '<div class="row"><strong style="width: max-content;color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
