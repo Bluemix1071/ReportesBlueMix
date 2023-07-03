@@ -64,6 +64,8 @@ Creacion de Precios
                 </form>
                 <div class="col-md-1">
                     <button id="add_field_button" type="button" class="btn btn-success" onclick="agregarPrecio()">Agregar</button>
+                    &ensp;
+                    <a href="#imprimirTabla"><i class="fas fa-arrow-down" style="color: #2aa23e;"></i></a>
                 </div>
                 </div>
             <hr>
@@ -236,11 +238,11 @@ function agregarPrecio() {
                 '<div class="row"><strong>' + codigo + '</strong></div>' +
             '</div>' +
             '<div class="col">' +
-                '<div class="row"><strong style="text-align: left; margin-left: 60%;">' + codigoBarra + '</strong></div>' +
+                '<div class="row"><strong style="text-align: left; margin-left: 52%;">' + codigoBarra + '</strong></div>' +
                 // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row">'+
-                    '<div class="col-9"><strong style="width: max-content;">'+ '<h3>'+'<p><strong> ' + '&ensp;$' +precioDetalle+'&ensp;'+unidad+'</strong></p>'+'</h3>'+ '</strong></div>'+
-                    '<div class="col-1"><strong><h6> Por mayor $'+precioMayor+unidad + '</h6></strong></div>' +
+                    '<div class="col-9"><strong style="width: max-content;">'+ '<h3>'+'<p><strong> ' +precioDetalle+'&ensp;'+unidad+'</strong></p>'+'</h3>'+ '</strong></div>'+
+                    '<div class="col-2"><strong><h6> <font size=2>Por mayor $'+precioMayor+unidad+'</font>'+ '</h6></strong></div>' +
                 '</div>' +
                 '<div class="row"><strong style="width: max-content; ">' + descripcion + '</strong></div>' +
 
@@ -260,11 +262,11 @@ function agregarPrecio() {
                 '<div class="row"><strong>' + codigo + '</strong></div>' +
             '</div>' +
             '<div class="col">' +
-                '<div class="row"><strong style="text-align: left; margin-left: 60%;">' + codigoBarra + '</strong></div>' +
+                '<div class="row"><strong style="text-align: left; margin-left: 52%;">' + codigoBarra + '</strong></div>' +
                 // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row">'+
                     '<div class="col-9"><strong style="width: max-content;">'+ '<h3>'+'<p style="color: #ff0000"><strong> '+ '&ensp;' + '&ensp;$' +poferta+'&ensp;'+unidad+'</strong></p>'+'</h3>'+ '</strong></div>'+
-                    '<div class="col-2"><strong><h6>Precio normal $' + precioDetalle + unidad + '</h6></strong></div>' +
+                    '<div class="col-2"><strong><h6><font size=2>Precio normal $' + precioDetalle + unidad + '</font></h6></strong></div>' +
                 '</div>' +
                 // '<div class="row"><strong style="width: max-content;color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row"><strong style="width: max-content;">' + descripcion + '</strong></div>' +
