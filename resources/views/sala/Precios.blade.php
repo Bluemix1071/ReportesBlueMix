@@ -51,14 +51,14 @@ Creacion de Precios
 
 
                     <div class="row">
-                        <div class="col"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
+                        <div class="col"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo" maxlength="7"></div>
                         <div class="col-3"><input type="text" class="form-control" placeholder="Descripcion" name="buscar_detalle" required id="buscar_detalle" readonly></div>
                         <div class="col"><input type="text" class="form-control" placeholder="Marca" name="buscar_marca" required id="buscar_marca" readonly></div>
                         <div class="col"><input type="text" class="form-control" placeholder="precio detalle" name="precio_detalle" required id="precio_detalle" readonly></div>
                         <div class="col"><input type="text" class="form-control" placeholder="Codigo Barra" name="codigo_barra" required id="codigo_barra" readonly></div>
                         <div class="col"><input type="text" class="form-control" placeholder="Precio Mayor" name="precio_mayor" required id="precio_mayor" readonly></div>
                         <div class="col"><input type="text" class="form-control" placeholder="Unidad" name="unidad" required id="unidad" readonly></div>
-                        <div class="col"><input type="number" class="form-control" placeholder="% Descuento" name="descuento" required id="descuento"></div>
+                        <div class="col"><input type="number" class="form-control" placeholder="% Descuento" name="descuento" required id="descuento" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }"></div>
                         <div class="col"><input type="number" class="form-control" placeholder="Precio Oferta" name="poferta" required id="poferta" readonly></div>
                     </div>
                 </form>
