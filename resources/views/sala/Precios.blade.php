@@ -17,7 +17,33 @@ Creacion de Precios
         <div class="row">
           <div class="col-md-12">
             <hr>
-                <h4>Crear Precios:</h4>
+            {{-- inicio informacion --}}
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h1 class="card-title">Información</h1>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body collapse hide">
+
+                <div class="callout callout-success row">
+
+                    <div class="col-sm-9 col-sm-9 invoice-col col">
+                        <i>Como mínimo se puede realizar la impresión de 2 códigos y como máximo 18, si el producto cuenta con algún tipo de descuento incluir en el campo correspondiente, de lo contrario omitir este paso.</i>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+            {{-- fin informacion --}}
+            <hr>
+                <h4>Crear Precios(min 2):</h4>
+                <hr>
                 <div class="row">
 
                 {{-- <form method="post" action="" id="AgregarItemp" class="d-flex justify-content-end col"> --}}
@@ -32,8 +58,8 @@ Creacion de Precios
                         <div class="col"><input type="text" class="form-control" placeholder="Codigo Barra" name="codigo_barra" required id="codigo_barra" readonly></div>
                         <div class="col"><input type="text" class="form-control" placeholder="Precio Mayor" name="precio_mayor" required id="precio_mayor" readonly></div>
                         <div class="col"><input type="text" class="form-control" placeholder="Unidad" name="unidad" required id="unidad" readonly></div>
-                        <div class="col"><input type="number" class="form-control" placeholder="Descuento" name="descuento" required id="descuento"></div>
-                        <div class="col"><input type="number" class="form-control" placeholder="Oferta" name="poferta" required id="poferta" readonly></div>
+                        <div class="col"><input type="number" class="form-control" placeholder="% Descuento" name="descuento" required id="descuento"></div>
+                        <div class="col"><input type="number" class="form-control" placeholder="Precio Oferta" name="poferta" required id="poferta" readonly></div>
                     </div>
                 </form>
                 <div class="col-md-1">
@@ -182,8 +208,8 @@ function agregarPrecio() {
     var filasActuales = tablaPrecios.getElementsByTagName('tr');
     var numFilas = filasActuales.length;
 
-    if (numFilas === 12) {
-        alert("No se pueden ingresar más de 12 códigos");
+    if (numFilas === 18) {
+        alert("No se pueden ingresar más de 18 códigos");
         limpiarFormulario();
         return;
     }
@@ -246,7 +272,7 @@ function agregarPrecio() {
         '</div>';
         }
 
-    if (numFilas === 1 || numFilas === 3 || numFilas === 5 || numFilas === 7 || numFilas === 9 || numFilas === 11) {
+    if (numFilas === 1 || numFilas === 3 || numFilas === 5 || numFilas === 7 || numFilas === 9 || numFilas === 11 || numFilas === 13 || numFilas === 15 || numFilas === 17) {
         // Si es el primer o tercer registro, crear una nueva fila para el siguiente registro debajo del actual
         var nuevaFila = tablaPrecios.insertRow();
         var nuevaCelda = nuevaFila.insertCell();
