@@ -36,11 +36,11 @@ class EstadisticaContratoController extends Controller
         FROM dcargos
         left join cargos on dcargos.DENMRO = cargos.CANMRO
         left join producto on dcargos.DECODI = producto.ARCODI
-        WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and dcargos.DEFECO >= "2023-01-01" and DETIPO = 8 group by DECODI');
+        WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and dcargos.DEFECO between "'.$fecha1.'" and "'.$fecha2.'" and DETIPO = 8 group by DECODI');
         
         //select contrato_detalle.codigo_producto, producto.ARCOPV, producto.ARDESC, producto.ARMARCA from contrato_detalle left join producto on contrato_detalle.codigo_producto = producto.ARCODI group by codigo_producto;
 
-        $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto  from cargos where nro_oc like "%SE%" and CAFECO >= "2023-01-01" and CATIPO = 8 group by cod_depto, CARUTC');
+        $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto, sum(cargos.CAVALO) AS total from cargos where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by cod_depto, CARUTC');
 
         //dd($contratos_historicos);
 
@@ -160,7 +160,7 @@ class EstadisticaContratoController extends Controller
         left join producto on dcargos.DECODI = producto.ARCODI
         WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and dcargos.DEFECO between "'.$fecha1.'" and "'.$fecha2.'" and DETIPO = 8 group by DECODI');
 
-        $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto  from cargos where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by cod_depto, CARUTC');
+        $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto, sum(cargos.CAVALO) as total from cargos where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by cod_depto, CARUTC');
 
         return view('admin.Contratos.EstadisticaContrato', compact('productos_contratos', 'productos_historicos_contratos', 'productos_contratos_sin_venta', 'contratos_historicos', 'fecha1', 'fecha2'));
     }
