@@ -1073,7 +1073,7 @@
                                             <li class="nav-item">
                                                 <a href="{{ route('Precios') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
-                                                    <p>Precio Ganchera
+                                                    <p>Precio Ganchera (BETA)
                                                     </p>
                                                 </a>
                                             </li>
