@@ -1047,14 +1047,46 @@
                             </li>
                             @endcan
 
-                            @can('Sala')
+                            {{-- @can('Sala')
                             <li class="nav-item">
                                 <a href="{{ route('Precios') }}" class="nav-link {{ setActive('Precios') }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Precios</p>
                                 </a>
                             </li>
-                            @endcan
+                            @endcan --}}
+                            @can('Sala')
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link ">
+                                            <i class="nav-icon fas fa-circle"></i>
+                                            <p>precios
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ route('PreciosL') }}" class="nav-link {{ setActive('Precios') }}">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Precios l</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ route('Precios') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Precio Ganchera
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Precio Actual
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endcan
 
                         </ul>
                     </li>

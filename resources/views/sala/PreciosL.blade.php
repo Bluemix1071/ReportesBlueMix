@@ -13,7 +13,7 @@ Creacion de Precios
 @section('contenido')
   <div id="content">
     <div class="container-fluid">
-        <h3 class="display-3">Precios Ganchera</h3>
+        <h3 class="display-3">Precios L</h3>
         <div class="row">
           <div class="col-md-12">
             <hr>
@@ -34,7 +34,7 @@ Creacion de Precios
                 <div class="callout callout-success row">
 
                     <div class="col-sm-9 col-sm-9 invoice-col col">
-                        <i>Como mínimo se puede realizar la impresión de 2 códigos y como máximo 12, si el producto cuenta con algún tipo de descuento incluir en el campo correspondiente, de lo contrario omitir este paso.</i>
+                        <i>Como mínimo se puede realizar la impresión de 2 códigos y como máximo 18, si el producto cuenta con algún tipo de descuento incluir en el campo correspondiente, de lo contrario omitir este paso.</i>
                     </div>
                 </div>
 
@@ -210,8 +210,8 @@ function agregarPrecio() {
     var filasActuales = tablaPrecios.getElementsByTagName('tr');
     var numFilas = filasActuales.length;
 
-    if (numFilas === 12) {
-        alert("No se pueden ingresar más de 12 códigos");
+    if (numFilas === 18) {
+        alert("No se pueden ingresar más de 18 códigos");
         limpiarFormulario();
         return;
     }
@@ -229,81 +229,53 @@ function agregarPrecio() {
 
     if(descuento == ""){
     celda.innerHTML =
-            '<div class="row" style="border: #000 2px solid; width: 12cm; height: 5.6cm;">' +
+        '<div class="row" style="border: #000 2px solid;">' +
             '<div class="col">' +
                 '<div class="row"><strong>' + marca + '</strong></div>' +
-                '<div class="row"><h5 style="margin: 0;"><p style="color: #ff0000;"><strong>&nbsp;</strong></p></h5></div>' +
-                '<div class="row" style="color: rgb(0 0 0 / 0%);"><strong>' + codigo + '</strong></div>' +
-                '<div class="row" style="color: rgb(0 0 0 / 0%);"><strong>' + codigo + '</strong></div>' +
-                '<div class="row" style="color: rgb(0 0 0 / 0%);"><strong>' + codigo + '</strong></div>' +
-                '<div class="row" style="color: rgb(0 0 0 / 0%);"><strong>' + codigo + '</strong></div>' +
-                '<div class="row" style="color: rgb(0 0 0 / 0%);"><strong>' + codigo + '</strong></div>' +
-                '<div class="row"><strong>' + codigo + '</strong></div>' +
-            '</div>' +
-            '<div class="col">' +
-                '<div class="row"><strong style="text-align: left; margin-left: 65%;">' + codigoBarra + '</strong></div>' +
-                '<div class="row">' +
-                    '<div class="col-9">' +
-                        '<strong style="width: max-content; display: flex; align-items: center; justify-content: center;">' +
-                            '<h1 style="margin: 0;"><p style="margin: 0; font-size: 20px;">' +
-                                '<strong><font size="10">$' + parseFloat(precioDetalle).toLocaleString() + '<span style="font-size: 15px;">' + unidad.toLowerCase() + '</span></font></strong>' +
-                            '</p></h1>' +
-                        '</strong>' +
-                    '</div>' +
-                    '<div class="col-2">' +
-                        '<strong><h6 style="margin: 0;">' +
-                            '<font size="4">Por mayor $' + parseFloat(precioMayor).toLocaleString() + '<span style="font-size: 15px;">' + unidad.toLowerCase() + '</span></font>' +
-                        '</h6></strong>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="row">' +
-                    '<strong style="width: max-content; color: rgb(0 0 0 / 0%);"><font size="1">' + descripcion + '</font></strong>' +
-                '</div>' +
-                '<div class="row">' +
-                    '<strong style="width: max-content; color: rgb(0 0 0 / 0%);"><font size="1">' + descripcion + '</font></strong>' +
-                '</div>' +
-                '<div class="row">' +
-                    '<strong style="width: max-content; color: rgb(0 0 0 / 0%);"><font size="1">' + descripcion + '</font></strong>' +
-                '</div>' +
-                        '<div class="row">' +
-                    '<strong style="width: max-content; color: rgb(0 0 0 / 0%);"><font size="1">' + descripcion + '</font></strong>' +
-                '</div>' +
-                '<div class="row">' +
-                    '<strong style="width:max-content;">' + descripcion + '</strong>' +
-                '</div>' +
-            '</div>' +
-        '</div>';
-        }else {
-            celda.innerHTML =
-            '<div class="row" style="border: #000 2px solid; width: 12cm; height: 5.6cm;">' +
-            '<div class="col">' +
-                '<div class="row"><strong>' + marca + '</strong></div>' +
-                '<div class="row">' + '<h6>'+'<p style="color: #ff0000;text-align:left"><strong>¡OFERTA!'+'</strong></p>'+'</h6>'+ '</div>' +
-                // '<div class="row"><strong style="color: rgb(0 0 0 / 0%)">' + codigo + '</strong></div>' +
-                '<div class="row"><strong style="color: rgb(0 0 0 / 0%);">' + codigo + '</strong></div>' +
-                '<div class="row"><strong style="color: rgb(0 0 0 / 0%);">' + codigo + '</strong></div>' +
-                '<div class="row"><strong style="color: rgb(0 0 0 / 0%);">' + codigo + '</strong></div>' +
-                '<div class="row"><strong style="color: rgb(0 0 0 / 0%);">' + codigo + '</strong></div>' +
-                '<div class="row"><strong style="color: rgb(0 0 0 / 0%);">' + codigo + '</strong></div>' +
+                '<div class="row">' + '<h3>'+'<p style="color: #ff0000"><strong>'+'</strong></p>'+'</h3>'+ '</div>' +
+                '<div class="row" style="color: rgb(0 0 0 / 0%)"><strong>' + codigo + '</strong></div>' +
+                '<div class="row" style="color: rgb(0 0 0 / 0%)"><strong>' + codigo + '</strong></div>' +
                 '<div class="row"><strong>' + codigo + '</strong></div>' +
             '</div>' +
             '<div class="col">' +
                 '<div class="row"><strong style="text-align: left; margin-left: 52%;">' + codigoBarra + '</strong></div>' +
                 // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row">'+
-                    '<div class="col-9"><strong style="width: max-content;">'+ '<h1>'+'<p style="color: #ff0000"><strong> '+ '&ensp;$'+'<font size=10>' +parseFloat(poferta).toLocaleString()+'</font>'+'&ensp;'+unidad.toLowerCase()+'</strong></p>'+'</h1>'+ '</strong></div>'+
-                    '<div class="col-2"><strong><h6><font size=2>Precio normal $' + parseFloat(precioDetalle).toLocaleString() + unidad + '</font></h6></strong></div>' +
+                    // '<div class="col-9"><strong style="width: max-content;"><h1><p><strong><font size="10">$' + parseFloat(precioDetalle).toLocaleString() + '&ensp;' + unidad + '</font></strong></p></h1></strong></div>'+
+                    '<div class="col-9"><strong style="width: max-content;"><h1><p><strong><font size="10"><span style="font-size: 20px;">$&ensp;</span>' + parseFloat(precioDetalle).toLocaleString() + '</font><span style="font-size: 15px;">&ensp;' + unidad.toLowerCase() + '</span></strong></p></h1></strong></div>'+
+                    '<div class="col-2"><strong><h6> <font size=2>Por mayor $'+parseFloat(precioMayor).toLocaleString()+'<span style="font-size: 10px;">&ensp;' + unidad.toLowerCase() + '</span>'+'</font>'+ '</h6></strong></div>' +
+                '</div>' +
+                '<div class="row"><strong style="width: max-content; ">' + descripcion + '</strong></div>' +
+
+            '</div>' +
+            // '<div class="col">' +
+            //     // '<div class="row"><strong>' + codigoBarra + '</strong></div>' +
+            //     '<div class="row"><strong>$ ' + precioMayor + '&ensp;' + unidad + '</strong></div>' +
+            // '</div>' +
+        '</div>';
+        }else {
+            celda.innerHTML =
+            '<div class="row" style="border: #000 2px solid;">' +
+            '<div class="col">' +
+                '<div class="row"><strong>' + marca + '</strong></div>' +
+                '<div class="row">' + '<h3>'+'<p style="color: #ff0000;text-align:center"><strong>¡OFERTA!'+'</strong></p>'+'</h3>'+ '</div>' +
+                // '<div class="row"><strong style="color: rgb(0 0 0 / 0%)">' + codigo + '</strong></div>' +
+                '<div class="row"><strong>' + codigo + '</strong></div>' +
+            '</div>' +
+            '<div class="col">' +
+                '<div class="row"><strong style="text-align: left; margin-left: 52%;">' + codigoBarra + '</strong></div>' +
+                // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
+                '<div class="row">'+
+                    '<div class="col-9"><strong style="width: max-content;">'+ '<h3>'+'<p style="color: #ff0000"><strong> <font size=8>'+ '&ensp;' + '&ensp;$' +parseFloat(poferta).toLocaleString()+'&ensp;'+'<span style="font-size: 15px;">&ensp;'+unidad+'</span>'+'</font></strong></p>'+'</h3>'+ '</strong></div>'+
+                    '<div class="col-2"><strong><h6><font size=2>Precio normal $' + precioDetalle + unidad + '</font></h6></strong></div>' +
                 '</div>' +
                 // '<div class="row"><strong style="width: max-content;color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
-                '<div class="row"><strong style="width: max-content;color: rgb(0 0 0 / 0%);">' + descripcion + '</strong></div>' +
-                '<div class="row"><strong style="width: max-content;color: rgb(0 0 0 / 0%);">' + descripcion + '</strong></div>' +
-                '<div class="row"><strong style="width: max-content;color: rgb(0 0 0 / 0%);">' + descripcion + '</strong></div>' +
                 '<div class="row"><strong style="width: max-content;">' + descripcion + '</strong></div>' +
             '</div>' +
         '</div>';
         }
 
-    if (numFilas === 1 || numFilas === 3 || numFilas === 5 || numFilas === 7 || numFilas === 9 || numFilas === 11) {
+    if (numFilas === 1 || numFilas === 3 || numFilas === 5 || numFilas === 7 || numFilas === 9 || numFilas === 11 || numFilas === 13 || numFilas === 15 || numFilas === 17) {
         // Si es el primer o tercer registro, crear una nueva fila para el siguiente registro debajo del actual
         var nuevaFila = tablaPrecios.insertRow();
         var nuevaCelda = nuevaFila.insertCell();

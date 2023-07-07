@@ -931,4 +931,8 @@ class SalaController extends Controller
     return view('sala.Precios');
   }
 
+  public function PreciosL(Request $request) {
+
+    return view('sala.PreciosL');
+  }
 }

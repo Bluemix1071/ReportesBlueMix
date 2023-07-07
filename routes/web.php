@@ -77,6 +77,7 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
 
     /* Modulo Creacion de precios oferta */
     Route::get('/Precios', 'SalaController@Precios')->name('Precios');
+    Route::get('/PreciosL', 'SalaController@PreciosL')->name('PreciosL');
 
 });
 
