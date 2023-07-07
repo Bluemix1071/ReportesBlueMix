@@ -13,7 +13,7 @@ Creacion de Precios
 @section('contenido')
   <div id="content">
     <div class="container-fluid">
-        <h3 class="display-3">Precios Ganchera</h3>
+        <h3 class="display-3">Precios Ganchera(BETA)</h3>
         <div class="row">
           <div class="col-md-12">
             <hr>
