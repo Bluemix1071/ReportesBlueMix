@@ -29,7 +29,7 @@ Cotizacion Proveedores
         </div>
       </div>
       <br>
-        <div class="row" style="font-size: 85%; -webkit-text-stroke: thin;">
+        <div class="row" style="font-size: 77%; -webkit-text-stroke: thin;">
             <div class="col-md-12">
                 <div class="row">
                     <div class="modal-content">
