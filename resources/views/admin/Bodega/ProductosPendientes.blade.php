@@ -245,20 +245,27 @@ Pendientes de envio
         </thead>
         <tbody style="text-align:center">
           @foreach ($clientes as $item)
-            <tr>
-            <td>{{ $item->CLRUTC }}-{{ $item->CLRUTD }}</td>
-            <td>{{ $item->DEPARTAMENTO }}</td>
-            <td>{{ $item->CLRSOC }}</td>
-            <td>{{ $item->CIUDAD }}</td>
-            <td>{{ $item->REGION }}</td>
-            <td>
-              @if(!empty($item->REGION))
-                <button type="button" onclick="selectcliente({{$item->CLRUTC}},'{{ $item->CLRUTD }}','{{$item->CLRSOC}}',{{$item->DEPARTAMENTO}},'{{$item->CIUDAD}}','{{$item->REGION}}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button>
-              @else
-                <button type="button" disabled class="btn btn-success">Seleccionar</button>
-              @endif
-            </td>
-          </tr>
+          @if(!empty($item->REGION))
+          <tr>
+          <td>{{ $item->CLRUTC }}-{{ $item->CLRUTD }}</td>
+          <td>{{ $item->DEPARTAMENTO }}</td>
+          <td>{{ $item->CLRSOC }}</td>
+          <td>{{ $item->CIUDAD }}</td>
+          <td>{{ $item->REGION }}</td>
+          <td>
+            @if(!empty($item->REGION))
+              <button type="button" onclick="selectcliente({{$item->CLRUTC}},'{{ $item->CLRUTD }}','{{$item->CLRSOC}}',{{$item->DEPARTAMENTO}},'{{$item->CIUDAD}}','{{$item->REGION}}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button>
+            @else
+              <button type="button" disabled class="btn btn-success">Seleccionar</button>
+            @endif
+          </td>
+        </tr>
+
+          @else
+
+
+
+        @endif
           @endforeach
         </tbody>
       </table>
