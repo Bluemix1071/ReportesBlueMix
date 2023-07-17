@@ -124,6 +124,15 @@ Route::prefix('auth')->middleware('auth','SuperAdmin')->group(function(){
 
 });
 
+Route::prefix('Informatica')->middleware('auth', 'SuperAdmin')->group(function(){
+
+    //Informatica
+    Route::get('/FirmaFacturas','Informatica\FirmaDocumentosController@FirmaFacturas')->name('FirmaFacturas');
+    Route::get('/FirmaFacturasFiltro','Informatica\FirmaDocumentosController@FirmaFacturasFiltro')->name('FirmarFacturasFiltro');
+    Route::post('/FirmaFacturas','Informatica\FirmaDocumentosController@FirmarFacturasDia')->name('FirmarFacturasDia');
+
+});
+
 
 
 Route::prefix('admin')->namespace('Admin')->group(function(){
