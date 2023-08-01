@@ -13,7 +13,7 @@ Cotizacion Proveedores
 
     <div class="container-fluid">
       <div class="row">
-        <h4 class="display-4 col">Cotización de Proveedores (BETA)</h4>&nbsp;&nbsp;
+        <h4 class="display-4 col">Cotización de Proveedores</h4>&nbsp;&nbsp;
         <div class="col">
           <div class="row" style="visibility: hidden; height: 33%;"></div>
           <div class="row d-flex justify-content-center">
