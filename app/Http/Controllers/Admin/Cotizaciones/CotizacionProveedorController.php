@@ -137,6 +137,81 @@ class CotizacionProveedorController extends Controller
 
     }
 
+    public function EliminarMultipleCatalogoProveedor(Request $request){
+
+        if(empty($request->get('case'))){
+            return back()->with('warning', 'No se seleccionó ningún Producto');
+        }else{
+            foreach($request->get('case') as $item){
+
+                DB::table('cotiz_proveedores')->where('id', $item)->delete();
+                /* error_log(print_r('---------------------------------------------------', true));
+                error_log(print_r($item, true));
+                error_log(print_r($request->get('categoria_mult'), true));
+                error_log(print_r($request->get('proveedor_mult'), true));
+                error_log(print_r($request->get('marca_mult'), true));
+                error_log(print_r($request->get('estado_mult'), true)); */
+            }
+            return back()->with('success', 'Productos Eliminados Correctamente');
+        }
+    }
+
+    public function SinStockMultipleCatalogoProveedor(Request $request){
+
+        if(empty($request->get('case'))){
+            return back()->with('warning', 'No se seleccionó ningún Producto');
+        }else{
+            
+            foreach($request->get('case') as $item){
+                $producto = DB::table('cotiz_proveedores')->where('id', $item)->get();
+                //error_log(print_r($producto[0]->disponibilidad, true));
+                if(is_null($producto[0]->disponibilidad)){
+                    //error_log(print_r("no tiene nada", true));
+                    DB::table('cotiz_proveedores')->where('id', $item)->update(["disponibilidad" => "NOSTOCK"]);
+                }else{
+                    //error_log(print_r("tiene algun estado", true));
+                    if($producto[0]->disponibilidad == "NOSTOCK"){
+                        DB::table('cotiz_proveedores')->where('id', $item)->update(["disponibilidad" => null]);
+                    }else{
+                        DB::table('cotiz_proveedores')->where('id', $item)->update(["disponibilidad" => "NOSTOCK"]);
+                    }
+                }
+            }
+
+        }
+
+        return back()->with('success', 'Productos Editados Correctamente');
+        
+    }
+
+    public function DescontinuadoMultipleCatalogoProveedor(Request $request){
+
+        if(empty($request->get('case'))){
+            return back()->with('warning', 'No se seleccionó ningún Producto');
+        }else{
+            
+            foreach($request->get('case') as $item){
+                $producto = DB::table('cotiz_proveedores')->where('id', $item)->get();
+                //error_log(print_r($producto[0]->disponibilidad, true));
+                if(is_null($producto[0]->disponibilidad)){
+                    //error_log(print_r("no tiene nada", true));
+                    DB::table('cotiz_proveedores')->where('id', $item)->update(["disponibilidad" => "DESCONTINUADO"]);
+                }else{
+                    //error_log(print_r("tiene algun estado", true));
+                    if($producto[0]->disponibilidad == "DESCONTINUADO"){
+                        DB::table('cotiz_proveedores')->where('id', $item)->update(["disponibilidad" => null]);
+                    }else{
+                        DB::table('cotiz_proveedores')->where('id', $item)->update(["disponibilidad" => "DESCONTINUADO"]);
+                    }
+                }
+            }
+
+        }
+
+        return back()->with('success', 'Productos Editados Correctamente');
+        
+    }
+
     /* public function CargarCatalogoProveedor(Request $request){
         if($request->hasFile('listado')){
             $path = $request->file('listado')->getRealPath();

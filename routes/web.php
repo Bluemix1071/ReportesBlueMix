@@ -130,6 +130,7 @@ Route::prefix('Informatica')->middleware('auth', 'SuperAdmin')->group(function()
     Route::get('/FirmaFacturas','Informatica\FirmaDocumentosController@FirmaFacturas')->name('FirmaFacturas');
     Route::get('/FirmaFacturasFiltro','Informatica\FirmaDocumentosController@FirmaFacturasFiltro')->name('FirmarFacturasFiltro');
     Route::post('/FirmaFacturas','Informatica\FirmaDocumentosController@FirmarFacturasDia')->name('FirmarFacturasDia');
+    Route::get('/CreateFacturaJson','Informatica\FirmaDocumentosController@CreateFacturaJson')->name('CreateFacturaJson');
 
 });
 
@@ -323,6 +324,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ProvMarcaCat','Cotizaciones\CotizacionProveedorController@ProvMarcaCat')->name('ProvMarcaCat');
     Route::put('/EditarMultipleCatalogoProveedor','Cotizaciones\CotizacionProveedorController@EditarMultipleCatalogoProveedor')->name('EditarMultipleCatalogoProveedor');
     Route::put('/EditarMultipleCotizadoProveedor','Cotizaciones\CotizacionProveedorController@EditarMultipleCotizadoProveedor')->name('EditarMultipleCotizadoProveedor');
+    Route::post('/EliminarMultipleCatalogoProveedor','Cotizaciones\CotizacionProveedorController@EliminarMultipleCatalogoProveedor')->name('EliminarMultipleCatalogoProveedor');
+    Route::post('/SinStockMultipleCatalogoProveedor','Cotizaciones\CotizacionProveedorController@SinStockMultipleCatalogoProveedor')->name('SinStockMultipleCatalogoProveedor');
+    Route::post('/DescontinuadoMultipleCatalogoProveedor','Cotizaciones\CotizacionProveedorController@DescontinuadoMultipleCatalogoProveedor')->name('DescontinuadoMultipleCatalogoProveedor');
 
     Route::post('/Eliminaritem','ListaEscolarController@eliminaritem')->name('EliminarItem');
 

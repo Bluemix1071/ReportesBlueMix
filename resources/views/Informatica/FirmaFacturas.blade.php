@@ -26,6 +26,10 @@ Costos
               <form action="{{ route('FirmarFacturasDia', ['fecha' => $fecha ]) }}" method="post">
                   <button type="submit" class="btn btn-primary">Firmar</button>
               </form>
+              &nbsp; &nbsp; &nbsp; 
+              <form action="{{ route('CreateFacturaJson')}}" method="get">
+                  <button type="submit" class="btn btn-primary">Test json</button>
+              </form>
             </div>
 
             <br>
