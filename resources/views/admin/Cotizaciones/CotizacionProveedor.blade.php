@@ -13,7 +13,7 @@ Cotizacion Proveedores
 
     <div class="container-fluid">
       <div class="row">
-        <h4 class="display-4 col">Cotización de Proveedores (BETA)</h4>&nbsp;&nbsp;
+        <h4 class="display-4 col">Cotización de Proveedores</h4>&nbsp;&nbsp;
         <div class="col">
           <div class="row" style="visibility: hidden; height: 33%;"></div>
           <div class="row d-flex justify-content-center">
@@ -54,7 +54,13 @@ Cotizacion Proveedores
                       <tbody>
                         @foreach($productos->chunk(10) as $items)
                           @foreach($items as $item)
-                            <tr>
+                            @if($item->disponibilidad == "NOSTOCK")
+                              <tr style="color: #ffc107">
+                            @elseif($item->disponibilidad == "DESCONTINUADO")
+                              <tr style="color: red">
+                            @else
+                              <tr>
+                            @endif
                               <td>{{ $item->sku_prov }}</td>
                               <td>{{ $item->codigo }}</td>
                               <td>{{ $item->detalle }}</td>
@@ -91,7 +97,7 @@ Cotizacion Proveedores
                 @csrf
                 <div class="card card-primary">
                     <div class="card-header">
-                            <h3 class="card-title">Edición Múltiple</h3>
+                            <h3 class="card-title">Herramientas Múltiples</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-plus"></i>
@@ -162,8 +168,33 @@ Cotizacion Proveedores
                         </div>
 
                             <button type="submit" class="btn btn-success">Editar Múltiple</button>
+                            <button type="button" class="btn btn-secondary" onclick="EliminarIngresados()">Eliminar Múltiple</button>
+                            <button type="button" class="btn btn-warning" onclick="$('#desvFormSinStock').submit()">Sin Stock Múltiple</button>
+                            <button type="button" class="btn btn-danger" onclick="$('#desvFormDescontinuado').submit()">Descontinuado Múltiple</button>
+
                         </div>
                 </div>
+                </form>
+
+                <form method="post" action="{{ route('EliminarMultipleCatalogoProveedor') }}" id="desvFormEliminar">
+                
+                <div id="selects_cotizados_eliminar" hidden>
+                </div>
+
+                </form>
+
+                <form method="post" action="{{ route('SinStockMultipleCatalogoProveedor') }}" id="desvFormSinStock">
+                
+                <div id="selects_cotizados_nostock" hidden>
+                </div>
+
+                </form>
+
+                <form method="post" action="{{ route('DescontinuadoMultipleCatalogoProveedor') }}" id="desvFormDescontinuado">
+                
+                <div id="selects_cotizados_descontinuado" hidden>
+                </div>
+
                 </form>
 
             </div>
@@ -557,8 +588,14 @@ Cotizacion Proveedores
 function contador_ing(id){
         var max_fields = 999;
         var wrapper = $("#selects_cotizados");
+        var wrapperA = $("#selects_cotizados_eliminar");
+        var wrapperB = $("#selects_cotizados_nostock");
+        var wrapperC = $("#selects_cotizados_descontinuado");
         var x = 0;
         var input = document.getElementById('input_ing_'+id+'');
+        var inputA = document.getElementById('input_ing_'+id+'A');
+        var inputB = document.getElementById('input_ing_'+id+'B');
+        var inputC = document.getElementById('input_ing_'+id+'C');
 
         //alert(typeof monto);
 
@@ -570,9 +607,21 @@ function contador_ing(id){
                 $(wrapper).append(
                     '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_ing_'+id+'" name="case[]" value='+id+'>'
             );
+                $(wrapperA).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_ing_'+id+'A" name="case[]" value="'+id+'">'
+            );
+                $(wrapperB).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_ing_'+id+'B" name="case[]" value="'+id+'">'
+            );
+                $(wrapperC).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_ing_'+id+'C" name="case[]" value="'+id+'">'
+            );
         }
         } else {
             input.remove();
+            inputA.remove();
+            inputB.remove();
+            inputC.remove();
             x--;
         }
     }
@@ -598,6 +647,16 @@ function contador_ing(id){
             input.remove();
             x--;
         }
+    }
+
+    function EliminarIngresados(){
+
+      if (confirm("¿Está Seguro de eliminar los Productos?") == true) {
+        $("#desvFormEliminar").submit();
+      } else {
+        console.log("Cancelo la accion");
+      }
+
     }
 
   $('#modalcotiz').on('show.bs.modal', function (event) {

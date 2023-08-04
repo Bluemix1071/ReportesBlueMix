@@ -222,6 +222,51 @@
                                     </a>
                                 </li>
                             @endcan
+
+                            <li class="nav-item">
+                                        <a href="" class="nav-link ">
+                                            <i class="nav-icon fas fa-circle"></i>
+                                            <p>Firmar Documentos
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ route('FirmaFacturas') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Facturas
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ route('ListarConvenio') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Nota Credito
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ route('ListarCotizacionProveedores') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Guias de Despacho
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ route('ListarCompraAgil') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Boletas
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
                         </ul>
                     </li>
                 @endcan

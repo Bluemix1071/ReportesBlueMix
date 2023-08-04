@@ -2911,6 +2911,7 @@ public function stocktiemporeal (Request $request){
         $ventas=DB::table('cargos')
         ->selectRaw("CANMRO,CATIPO,CARUTC,razon,CAFECO,CAIVA,CANETO,CAVALO,(CANETO * $comision) as comision")
         ->where('CACOVE' , $request->vendedor)
+        ->where('CATIPO' , '<>', '3')
         ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
         ->get();
 
