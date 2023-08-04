@@ -293,6 +293,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     /* Cotizaciones */
     Route::get('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
     Route::post('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
+    Route::get('/colegios-temporada-2022', 'ListaEscolarController@colegiosTemporada2022')->name('colegios.temporada2022');
+
 
     Route::get('/ListarConvenio','ConvenioMarcoController@ListarConvenio')->name('ListarConvenio');
     Route::get('/ListarCompraAgil','CompraAgilController@ListarCompraAgil')->name('ListarCompraAgil');
@@ -322,7 +324,6 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::post('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::get('/Reportes','ListaEscolarController@Reportes')->name('reportes');
-    Route::get('/Colegiosold','ListaEscolarController@Colegiosold')->name('colegiosold');
 
     Route::put('/EditarProducto','ConvenioMarcoController@EditarProducto')->name('EditarProducto');
 

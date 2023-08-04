@@ -242,8 +242,8 @@ function agregarPrecio() {
                 // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row">'+
                     // '<div class="col-9"><strong style="width: max-content;"><h1><p><strong><font size="10">$' + parseFloat(precioDetalle).toLocaleString() + '&ensp;' + unidad + '</font></strong></p></h1></strong></div>'+
-                    '<div class="col-9"><strong style="width: max-content;"><h1><p><strong><font size="10"><span style="font-size: 20px;">$&ensp;</span>' + parseFloat(precioDetalle).toLocaleString() + '</font><span style="font-size: 15px;">&ensp;' + unidad.toLowerCase() + '</span></strong></p></h1></strong></div>'+
-                    '<div class="col-2"><strong><h6> <font size=2>Por mayor $'+parseFloat(precioMayor).toLocaleString()+'<span style="font-size: 10px;">&ensp;' + unidad.toLowerCase() + '</span>'+'</font>'+ '</h6></strong></div>' +
+                    '<div class="col-9"><strong style="width: max-content;"><h1><p><strong><font size="10"><span style="font-size: 20px;">$</span>' + parseFloat(precioDetalle).toLocaleString("es-CL") + '</font><span style="font-size: 15px;">&ensp;' + unidad.toLowerCase() + '</span></strong></p></h1></strong></div>'+
+                    '<div class="col-2"><strong><h6> <font size=2>Por mayor $'+parseFloat(precioMayor).toLocaleString("es-CL")+'<span style="font-size: 10px;">' + unidad.toLowerCase() + '</span>'+'</font>'+ '</h6></strong></div>' +
                 '</div>' +
                 '<div class="row"><strong style="width: max-content; ">' + descripcion + '</strong></div>' +
 
@@ -259,15 +259,15 @@ function agregarPrecio() {
             '<div class="col">' +
                 '<div class="row"><strong>' + marca + '</strong></div>' +
                 '<div class="row">' + '<h3>'+'<p style="color: #ff0000;text-align:center"><strong>¡OFERTA!'+'</strong></p>'+'</h3>'+ '</div>' +
-                // '<div class="row"><strong style="color: rgb(0 0 0 / 0%)">' + codigo + '</strong></div>' +
-                '<div class="row"><strong>' + codigo + '</strong></div>' +
+                '<div class="row"><strong style="color: rgb(0 0 0 / 0%)">'+codigo+'</strong></div>'+
+                '<div class="row"><strong>' + codigo + '</strong></div>'+
             '</div>' +
             '<div class="col">' +
-                '<div class="row"><strong style="text-align: left; margin-left: 52%;">' + codigoBarra + '</strong></div>' +
+                '<div class="row"><strong style="text-align: left; margin-left: 52%;">' + codigoBarra + '</strong></div>'+
                 // '<div class="row"><strong style="width: max-content; color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row">'+
-                    '<div class="col-9"><strong style="width: max-content;">'+ '<h3>'+'<p style="color: #ff0000"><strong> <font size=8>'+ '&ensp;' + '&ensp;$' +parseFloat(poferta).toLocaleString()+'&ensp;'+'<span style="font-size: 15px;">&ensp;'+unidad+'</span>'+'</font></strong></p>'+'</h3>'+ '</strong></div>'+
-                    '<div class="col-2"><strong><h6><font size=2>Precio normal $' + precioDetalle + unidad + '</font></h6></strong></div>' +
+                    '<div class="col-9"><strong style="width: max-content;">'+ '<h3>'+'<p style="color: #ff0000"><strong> <font size=7>'+ '&ensp;' + '<span style="font-size: 20px;">$</span><b>'+parseFloat(poferta).toLocaleString("es-CL")+'</b><span style="font-size: 15px;">'+unidad.toLowerCase()+'</span>'+'</font></strong></p>'+'</h3>'+ '</strong></div>'+
+                    '<div class="col-2"><strong><h6><font size=2>Precio normal $' + parseFloat(precioDetalle).toLocaleString("es-CL") + unidad.toLowerCase() + '</font></h6></strong></div>' +
                 '</div>' +
                 // '<div class="row"><strong style="width: max-content;color: rgb(0 0 0 / 0%)">' + descripcion + '</strong></div>' +
                 '<div class="row"><strong style="width: max-content;">' + descripcion + '</strong></div>' +
@@ -324,14 +324,7 @@ function printDiv(nombreDiv) {
 }
 
 
-// function limpiarTabla() {
-//     var tablaPrecios = document.getElementById('tablaPrecios');
-//     var filas = tablaPrecios.getElementsByTagName('tr');
-//     // Empezamos desde 1 para omitir la fila de encabezado (thead)
-//     for (var i = 0; i < filas.length; i++) {
-//         tablaPrecios.deleteRow(i);
-//     }
-// }
+
 function limpiarTabla() {
     var tablaPrecios = document.getElementById('tablaPrecios');
     var filas = tablaPrecios.getElementsByTagName('tr');
@@ -363,7 +356,6 @@ function limpiarTabla() {
       var pdetalle = $( "#precio_detalle" ).val();
       var descuento = $( "#descuento" ).val();
       if(descuento != ""){
-        // $('#poferta').val((Math.round((descuento/(pdetalle)-1)*100)+'%'));
         $('#poferta').val(Math.round(((100-descuento)/100)*pdetalle));
       }else{
         $('#poferta').val('0%');

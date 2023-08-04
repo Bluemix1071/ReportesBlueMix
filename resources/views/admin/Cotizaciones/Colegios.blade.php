@@ -25,7 +25,7 @@ Colegios
                 <div class="row">
                     <div class="col" style="text-algin:right">
 
-                        <a href="{{ route('reportes') }}" class="" target="_blank">
+                        <a href="{{ route('reportes') }}" class="" target="_blank" title="Stock Critico">
                             <button type="button" class="btn btn-danger">Stock Critico</button>
                         </a>
 
@@ -33,9 +33,12 @@ Colegios
                         class="btn btn-success"
                         >Reporte Colegios</a>
 
-                        {{-- <a href="{{ route('colegiosold') }}" class="" target="_blank">
-                            <button type="button" class="btn btn-secondary">last season</button>
-                        </a> --}}
+                        <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023"
+                        class="btn btn-warning">Temporada 2022-2023</a>
+
+                        {{-- <a href="{{ route('colegios.temporada2022') }}" id="cambiarTemporadaBtn" title="Temporada 2022-2023"
+                         class="btn btn-warning">Temporada 2022-2023</a> --}}
+
                     </div>
 
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end col-6">

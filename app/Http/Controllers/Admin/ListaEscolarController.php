@@ -32,7 +32,7 @@ class ListaEscolarController extends Controller
     public function ListaEscolar(Request $request){
 
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
-        inner join comunas on colegio.id_comuna = comunas.id");
+        inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada=2023");
 
         // dd($colegios);
 
@@ -49,13 +49,11 @@ class ListaEscolarController extends Controller
 
     }
 
-    public function Colegiosold(Request $request){
 
-
+    public function colegiosTemporada2022()
+    {
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
-        inner join comunas on colegio.id_comuna = comunas.id");
-
-        // dd($colegios);
+        inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada=2022");
 
         $comunas=DB::select('select * from comunas');
 
@@ -63,12 +61,10 @@ class ListaEscolarController extends Controller
         select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id");
-        //dd($reporte);
 
-        return view('admin.Cotizaciones.Colegios',compact('comunas','reporte','colegios'));
-
-
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
     }
+
 
     public function Reporte(Request $request){
 
@@ -134,13 +130,14 @@ class ListaEscolarController extends Controller
                 [
                 "nombre" => $request->get('nombrec'),
                 "id_comuna" => $request->get('comunas'),
+                "temporada"=>"2023",
                 ]
         ]);
 
 
 
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
-        inner join comunas on colegio.id_comuna = comunas.id");
+        inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada=2023");
 
         $comunas=DB::select('select * from comunas');
 
@@ -339,7 +336,7 @@ class ListaEscolarController extends Controller
         ->delete();
 
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna from colegio
-        inner join comunas on colegio.id_comuna = comunas.id");
+        inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada=2023");
 
         $comunas=DB::select('select * from comunas');
 

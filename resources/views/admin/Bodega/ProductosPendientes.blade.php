@@ -260,12 +260,9 @@ Pendientes de envio
             @endif
           </td>
         </tr>
-
           @else
 
-
-
-        @endif
+          @endif
           @endforeach
         </tbody>
       </table>

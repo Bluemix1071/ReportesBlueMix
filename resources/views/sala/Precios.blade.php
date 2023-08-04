@@ -252,7 +252,7 @@ function agregarPrecio() {
                     '</div>' +
                     '<div class="col-2">' +
                         '<strong><h6 style="margin: 0;">' +
-                            '<font size="4">Por mayor $' + parseFloat(precioMayor).toLocaleString() + '<span style="font-size: 15px;">' + unidad.toLowerCase() + '</span></font>' +
+                            '<font size="2">Por mayor $' + parseFloat(precioMayor).toLocaleString() + '<span style="font-size: 15px;">'+ unidad.toLowerCase() + '</span></font>' +
                         '</h6></strong>' +
                     '</div>' +
                 '</div>' +
