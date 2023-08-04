@@ -88,7 +88,7 @@ Colegios
                                 <tr>
                                     <th scope="col" style="text-align:left">Colegio</th>
                                     <th scope="col" style="text-align:left">Comuna</th>
-                                    {{-- <th scope="col" style="text-algin:left">Temporada</th> --}}
+                                    <th scope="col" style="text-algin:left">Temporada</th>
                                     <th scope="col" style="text-align:left">Acciones</th>
                                 </tr>
                             </thead>
@@ -98,6 +98,7 @@ Colegios
                                         <tr>
                                             <td scope="col" style="text-align:left">{{ $item->colegio }}</td>
                                             <td style="text-align:left">{{ $item->comuna }}</td>
+                                            <td style="text-align:left">{{ $item->temporada }}</td>
                                             <td>
                                                 <div class="container">
                                                 <div class="row">
