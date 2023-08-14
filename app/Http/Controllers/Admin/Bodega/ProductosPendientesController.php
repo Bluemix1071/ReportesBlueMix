@@ -119,7 +119,7 @@ class ProductosPendientesController extends Controller
                         "fecha" => $fechai[0]->fechai,//pendiente
                         "stock_anterior" => $bodeprod[0]->bpsrea,
                         "nuevo_stock" => $restabp,
-                        "autoriza" => 'Humberto Ortíz',
+                        "autoriza" => 'Ignacio Barrera',
                         "solicita" => 'Despacho',
                         "observacion" => 'Envio de Pendiente' . $request->get('factura'),
 

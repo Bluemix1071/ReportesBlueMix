@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Models\Colegio;
 
 
 
@@ -54,6 +55,11 @@ class ListaEscolarController extends Controller
     {
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada='2022-2023'");
+
+        // $colegios = colegio::select('colegio.id', 'colegio.nombre AS colegio', 'comunas.nombre AS comuna', 'colegio.temporada AS temporada')
+        // ->join('comunas', 'colegio.id_comuna', '=', 'comunas.id')
+        // ->where('colegio.temporada', '2022-2023')
+        // ->get();
 
         $comunas=DB::select('select * from comunas');
 

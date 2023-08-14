@@ -33,8 +33,12 @@ Colegios
                         class="btn btn-success"
                         >Reporte Colegios</a>
 
-                        <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023" target="_blank"
-                        class="btn btn-warning">Temporada 2022-2023</a>
+                        @if (request()->url() !== route('colegios.temporada2022'))
+                            <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023" target="_blank" class="btn btn-warning">Temporada 2022-2023</a>
+                        @endif
+
+                        {{-- <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023" target="_blank"
+                        class="btn btn-warning">Temporada 2022-2023</a> --}}
 
                         {{-- <a href="{{ route('colegios.temporada2022') }}" id="cambiarTemporadaBtn" title="Temporada 2022-2023"
                          class="btn btn-warning">Temporada 2022-2023</a> --}}
