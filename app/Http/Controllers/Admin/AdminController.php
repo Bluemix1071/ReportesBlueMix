@@ -1796,12 +1796,27 @@ public function stocktiemporeal (Request $request){
         ->where('idOrdenesDiseño', $idOrdenesDiseño)
         ->get();
 
-        $path = storage_path('app/'.$ordenesdiseño[0]->archivo);
-        $data = file_get_contents($path);
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-        $base64 = base64_encode($data);
-
-        $img = 'data:image/' . $type . ';base64,' . $base64;
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+          //dd('Este un servidor usando Windows!');
+          if(!is_null($ordenesdiseño[0]->archivo)){
+            $path = storage_path('app\archivos'.substr($ordenesdiseño[0]->archivo, 8));
+            $data = file_get_contents($path);
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $base64 = base64_encode($data);
+    
+            $img = 'data:image/' . $type . ';base64,' . $base64;
+          }else{
+            $img = null;
+          }
+        } else {
+          //dd('Este es un servidor que no usa Windows!');
+          $path = storage_path('app/'.$ordenesdiseño[0]->archivo);
+          $data = file_get_contents($path);
+          $type = pathinfo($path, PATHINFO_EXTENSION);
+          $base64 = base64_encode($data);
+  
+          $img = 'data:image/' . $type . ';base64,' . $base64;
+        }
 
         //  dd($ordenesdiseño);
 
