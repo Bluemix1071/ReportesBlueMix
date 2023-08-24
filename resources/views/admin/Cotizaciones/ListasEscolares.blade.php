@@ -104,6 +104,7 @@ Lista Escolar
                                     <th scope="col" style="text-align:left">Costo C/U</th>
                                     <th scope="col" style="text-align:left">Costo Total</th>
                                     <th scope="col" style="text-align:left">Acciones</th>
+                                    <th style="visibility:collapse; display:none;"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -135,7 +136,7 @@ Lista Escolar
                                     <td style="text-align:left">${{ number_format(($item->cantidad*$item->preciou), 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $total += $item->precio_detalle }}</div>
                                     <td>
-                                        <div class="container">
+                                    <div class="container">
                                         <div class="row">
 
                                     <div class="col-3">
@@ -180,7 +181,7 @@ Lista Escolar
                                     <!-- boton comentar-->
                                     &nbsp;
                                     <div class="col-1" style="text-algin:right">
-                                            <a href="" title="editar" data-toggle="modal" data-target="#modaleditarp"
+                                            <a href="" title="editarp" data-toggle="modal" data-target="#modaleditarp"
                                             class="btn btn-info bg-success"
                                             data-id='{{ $item->id }}'
                                             data-comentario='{{ $item->comentario }}'
@@ -218,8 +219,8 @@ Lista Escolar
                 </div>
             </div>
           </div>
+    </div>
         </div>
-</div>
 <!-- Modal -->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
    <div class="modal-dialog" role="document">
@@ -420,58 +421,6 @@ Lista Escolar
 
 @section('script')
 
-<script>
-  $(document).ready(function() {
-    $('#Listas').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-                        'copy', 'pdf',
-                        {
-                            extend: 'print',
-                            messageTop:
-                            '<div class="row">'+
-                                '<div class="col">'+
-                                    '<h6><b>Colegio:</b> '+$('#colegio').val()+'</h6>'+
-                                    '<h6><b>Curso:</b> '+$('#curso').val()+'</h6>'+
-                                '</div>'+
-                                '<div class="col">'+
-                                    '<h6><b>Sub Curso:</b> '+$('#subcurso').val()+'</h6>'+
-                                    '<h6><b>Fecha Impresion:</b> '+$('#fecha').val()+'</h6>'+
-                                '</div>'+
-                            '</div>',
-                            title: '<h5>Lista Escolar</h5>',
-                            messageBottom:
-                            '<div class="row">'+
-                                '<div class="col">'+
-                                    '<h6><b>Total Items:</b> '+$('#total').val()+'</h6>'+
-                                '</div>'+
-                                '<div class="col">'+
-                                    '<h6><b>Sub Total:</b> '+$('#montosubtotal').val()+'</h6>'+
-                                '</div>'+
-                                '<div class="col">'+
-                                    '<h6><b>Total(-10%):</b> '+$('#montototal').val()+'</h6>'+
-                                '</div>'+
-                            '</div>',
-                        }
-                    ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
-
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
-    } );
-  } );
-  </script>
   <script>
     $('#modaleditarp').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
@@ -507,6 +456,60 @@ Lista Escolar
     })
 </script>
 
+<script>
+    $(document).ready(function() {
+      $('#Listas').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+                          'copy', 'pdf',
+                          {
+                              extend: 'print',
+                              messageTop:
+                              '<div class="row">'+
+                                  '<div class="col">'+
+                                      '<h6><b>Colegio:</b> '+$('#colegio').val()+'</h6>'+
+                                      '<h6><b>Curso:</b> '+$('#curso').val()+'</h6>'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      '<h6><b>Sub Curso:</b> '+$('#subcurso').val()+'</h6>'+
+                                      '<h6><b>Fecha Impresion:</b> '+$('#fecha').val()+'</h6>'+
+                                  '</div>'+
+                              '</div>',
+                              title: '<h5>Lista Escolar</h5>',
+                              messageBottom:
+                              '<div class="row">'+
+                                  '<div class="col">'+
+                                      '<h6><b>Total Items:</b> '+$('#total').val()+'</h6>'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      '<h6><b>Sub Total:</b> '+$('#montosubtotal').val()+'</h6>'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      '<h6><b>Total(-10%):</b> '+$('#montototal').val()+'</h6>'+
+                                  '</div>'+
+                              '</div>',
+                          }
+                      ],
+            "language":{
+          "info": "_TOTAL_ registros",
+          "search":  "Buscar",
+          "paginate":{
+            "next": "Siguiente",
+            "previous": "Anterior",
+
+        },
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        }
+      } );
+    } );
+    </script>
+
+
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
 
@@ -520,7 +523,6 @@ Lista Escolar
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
-
 
   <script>
     var max_fields      = 9999; //maximum input boxes allowed
