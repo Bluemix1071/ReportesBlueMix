@@ -33,10 +33,10 @@ Colegios
                         class="btn btn-success"
                         >Reporte Colegios</a>
 
+
                         @if (request()->url() !== route('colegios.temporada2022'))
                             <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023" target="_blank" class="btn btn-warning">Temporada 2022-2023</a>
                         @endif
-
                         {{-- <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023" target="_blank"
                         class="btn btn-warning">Temporada 2022-2023</a> --}}
 
@@ -51,6 +51,7 @@ Colegios
 
                         <h4>Agregar colegio:</h4>
                         <div class="col"><input type="text" class="form-control" placeholder="Nombre Colegio" name="nombrec" required id="nombrec"></div>
+
                         <div class="col">
 
                             <select id="comunas" name="comunas" class="form-control" required>
@@ -79,9 +80,14 @@ Colegios
                         <div class="col"><button type="submit" class="btn btn-success">Agregar</button></div>
 
                     </div>
+                    @if ($errors->has('nombrec'))
+                    <div class="alert alert-danger" id="error-message">
+                        {{ $errors->first('nombrec') }}
+                    </div>
+                    @endif
                 </form>
-                </div>
             </div>
+        </div>
             <hr>
             <br>
             <!-- Agregar Colegio-->
@@ -119,6 +125,7 @@ Colegios
                                                     data-colegio='{{ $item->colegio }}'
                                                     >Eliminar</a>
                                                 </div>
+
                                         </div>
                                     </div>
 
@@ -133,130 +140,6 @@ Colegios
           </div>
         </div>
 </div>
-
- <!-- Modal critico-->
-{{-- <div class="modal fade" id="modalcritico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Stock Critico</h4>
-            </div>
-            <div class="modal-body">
-
-            <table id="critico" class="table table-sm table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Codigo articulo</th>
-                  <th scope="col">Descripcion</th>
-                  <th scope="col">Marca</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Stock bodega</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                 @foreach($critico as $cr)
-                <tr>
-                    <td>{{ $cr->cod_articulo }}</td>
-                    <td>{{ $cr->descripcion }}</td>
-                    <td>{{ $cr->marca }}</td>
-                    <td>{{ $cr->cantidad }}</td>
-
-                    @if (empty($cr->stock_bodega))
-
-                    <td style="text-align:center;font-weight:bold;color: #dc3545">0</td>
-                    @else
-                        @if ($cr->stock_bodega <= 50 && $cr->stock_bodega > 25)
-                            <td style="text-align:center;font-weight:bold;color: #cac700">{{ $cr->stock_bodega  }}</td>
-                        @else
-                            @if ($cr->stock_bodega <= 25 && $cr->stock_bodega > 11)
-                            <td style="text-align:center;font-weight:bold;color: #ff8800">{{ $cr->stock_bodega  }}</td>
-                            @else
-                            @if ($cr->stock_bodega < 10 && $cr->stock_bodega > 0)
-                               <td style="text-align:center;font-weight:bold;color: #ff0000">{{ $cr->stock_bodega  }}</td>
-                           @else
-                            <td style="text-align:center;font-weight:bold;color: #ff0000">{{ $cr->stock_bodega  }}</td>
-                                @endif
-                            @endif
-                        @endif
-
-                    @endif
-
-                    <td>
-                        <div class="col-2" style="text-algin:right">
-                            <a href="" data-toggle="modal" data-target="#modalcriticod" data-cod_articulo='{{ $cr->cod_articulo }}' onclick="criticod({{ $cr->cod_articulo }})" class="btn btn-primary btm-sm"><i class="fas fa-eye"></i></a>
-
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-
-            </div>
-
-        </div>
-    </div>
-</div> --}}
-<!-- Modal critico-->
-
- <!-- Modal criticod-->
-{{-- <div class="modal fade" id="modalcriticod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Stock Critico Detalle</h4>
-            </div>
-            <div class="modal-body">
-
-            <table id="criticod" class="table table-sm table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Codigo articulo</th>
-                  <th scope="col">Nombre Comuna</th>
-                  <th scope="col">Nombre Colegio</th>
-                  <th scope="col">Nombre Curso</th>
-                  <th scope="col">Sub curso</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-
-
-                @if (empty($criticod))
-
-                @else
-                    @foreach ($criticod as $crd)
-                    <tr>
-                        <td>{{ $crd->cod_articulo }}</td>
-                        <td>{{ $crd->nombre_comuna }}</td>
-                        <td>{{ $crd->nombre_colegio }}</td>
-                        <td>{{ $crd->nombre_curso }}</td>
-                        <td>{{ $crd->subcurso }}</td>
-                        <td>
-                            <div class="container">
-                            <div class="row">
-                            <div class="col-2" style="text-algin:right">
-                                <form action="{{ route('listas', ['idcolegio' => $crd->id_colegio ,'idcurso' => $crd->id_curso]) }}" method="post" enctype="multipart/form-data">
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
-                                </form>
-                            </div>
-                            </div>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                @endif
-              </tbody>
-            </table>
-
-            </div>
-
-        </div>
-    </div>
-</div> --}}
-<!-- Modal criticod-->
-
 <!-- Modal reporte-->
 <div class="modal fade" id="modalreporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-xl" role="document">
@@ -348,6 +231,7 @@ Colegios
 
 @section('script')
 
+
 <script>
     $('#modaleliminarc').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
@@ -356,9 +240,18 @@ Colegios
         var modal = $(this)
         modal.find('.modal-body #id_colegio').val(id_colegio);
         modal.find('.modal-body #colegio').val(colegio);
-})
+    })
 </script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Ocultar el mensaje después de 2 segundos (2000 milisegundos)
+        setTimeout(function() {
+            $("#error-message").fadeOut("slow");
+        }, 2000);
+    });
+</script>
 <script>
   $(document).ready(function() {
     $('#colegios').DataTable( {

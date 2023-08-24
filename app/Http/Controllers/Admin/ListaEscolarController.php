@@ -23,8 +23,7 @@ use Illuminate\Support\Arr;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\Colegio;
-
-
+use Illuminate\Validation\Rule;
 
 
 class ListaEscolarController extends Controller
@@ -35,7 +34,6 @@ class ListaEscolarController extends Controller
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada='2023-2024'");
 
-        // dd($colegios);
 
         $comunas=DB::select('select * from comunas');
 
@@ -43,7 +41,6 @@ class ListaEscolarController extends Controller
         select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
         left join colegio on curso.id_colegio = colegio.id
         left join comunas on colegio.id_comuna = comunas.id");
-        //dd($reporte);
 
         return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
 
@@ -51,15 +48,11 @@ class ListaEscolarController extends Controller
     }
 
 
+
     public function colegiosTemporada2022()
     {
         $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada='2022-2023'");
-
-        // $colegios = colegio::select('colegio.id', 'colegio.nombre AS colegio', 'comunas.nombre AS comuna', 'colegio.temporada AS temporada')
-        // ->join('comunas', 'colegio.id_comuna', '=', 'comunas.id')
-        // ->where('colegio.temporada', '2022-2023')
-        // ->get();
 
         $comunas=DB::select('select * from comunas');
 
@@ -109,64 +102,124 @@ class ListaEscolarController extends Controller
         return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
     }
 
-    public function AgregarCurso(Request $request){
+    // public function AgregarCurso(Request $request){
 
-        $elcurso = DB::table('curso')->insert([
-                [
-                "nombre_curso" => $request->get('nombre'),
-                "letra" => $request->get('subcurso'),
-                "id_colegio" => $request->get('id_colegio'),
-                ]
+    //     $elcurso = DB::table('curso')->insert([
+    //         [
+    //             "nombre_curso" => $request->get('nombre'),
+    //             "letra" => $request->get('subcurso'),
+    //             "id_colegio" => $request->get('id_colegio'),
+    //         ]
+    //     ]);
+
+    //     $cursos = DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get();
+
+    //     $colegio = DB::table('colegio')
+    //         ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
+    //         ->where('colegio.id', $request->get('id_colegio'))
+    //         ->select('colegio.id', 'colegio.nombre as colegio', 'comunas.nombre as comuna')
+    //         ->get()[0];
+
+    //     $request->session()->flash('success', 'Curso agregado correctamente');
+    //     return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
+    // }
+    //
+    public function AgregarCurso(Request $request)
+{
+    $nombreCurso = $request->get('nombre');
+    $letraCurso = $request->get('subcurso');
+    $idColegio = $request->get('id_colegio');
+
+    // Verificar si el curso ya existe en el colegio
+    $cursoExistente = DB::table('curso')
+        ->where('nombre_curso', $nombreCurso)
+        ->where('letra', $letraCurso)
+        ->where('id_colegio', $idColegio)
+        ->exists();
+
+    if ($cursoExistente) {
+        $request->session()->flash('error', 'El curso ya existe en este colegio.');
+    } else {
+        // Agregar el curso si no existe
+        DB::table('curso')->insert([
+            "nombre_curso" => $nombreCurso,
+            "letra" => $letraCurso,
+            "id_colegio" => $idColegio,
         ]);
 
-        $cursos=DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get();
-
-        $colegio=DB::table('colegio')
-        ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
-        ->where('colegio.id',$request->get('id_colegio'))
-        ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
-        ->get()[0];
-
-        return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
+        $request->session()->flash('success', 'Curso agregado correctamente.');
     }
+
+    $cursos = DB::table('curso')->where('id_colegio', $idColegio)->get();
+
+    $colegio = DB::table('colegio')
+        ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
+        ->where('colegio.id', $idColegio)
+        ->select('colegio.id', 'colegio.nombre as colegio', 'comunas.nombre as comuna')
+        ->first();
+
+    return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
+}
+    //
 
     public function AgregarColegio(Request $request){
+    // Validar los datos ingresados por el usuario
+    $validatedData = $request->validate([
+        'nombrec' => ['required', 'string', 'max:255', Rule::unique('colegio', 'nombre')->where(function ($query) use ($request) {
+            return $query->where('id_comuna', $request->comunas);
+        })],
+        'comunas' => 'required|integer',
+    ], [
+        'nombrec.unique' => 'El colegio ya existe en esta comuna',
+    ]);
+    // Insertar un nuevo colegio en la base de datos
+    $elcurso = DB::table('colegio')->insert([
+        [
+            "nombre" => $validatedData['nombrec'],
+            "id_comuna" => $validatedData['comunas'],
+            "temporada" => "2023-2024",
+        ]
+    ]);
 
-        $elcurso = DB::table('colegio')->insert([
-                [
-                "nombre" => $request->get('nombrec'),
-                "id_comuna" => $request->get('comunas'),
-                "temporada"=>"2023-2024",
-                ]
-        ]);
-
-
-
-        $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
-        inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada='2023-2024'");
-
-        $comunas=DB::select('select * from comunas');
-
-        $reporte=DB::select("
-        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
-        left join colegio on curso.id_colegio = colegio.id
-        left join comunas on colegio.id_comuna = comunas.id");
-
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
-    }
-
+    return redirect()->route('ListaEscolar')->with('success', 'El colegio se agregó correctamente.');
+}
+    //
 
 
     public function AgregarItem(Request $request){
         $inputs = request()->all();
 
-        $lalista = DB::table('ListaEscolar_detalle')->insert([
-                [
-                "id_curso" => $request->get('idcurso'),
-                "cod_articulo" => $request->get('codigo'),
-                "cantidad" => $request->get('cantidad')
-                ]
-            ]);
+        $idCurso = $request->get('idcurso');
+        $cod_articulo = $request->get('codigo');
+        $cantidad = $request->get('cantidad');
+
+        $productoExistente = DB::table('ListaEscolar_detalle')
+        ->where('id_curso', $idCurso)
+        ->where('cod_articulo', $cod_articulo)
+        ->exists();
+
+        if ($productoExistente) {
+            $request->session()->flash('error', 'El producto ya existe en este curso.');
+        } else {
+            // Agregar el producto si no existe
+            DB::table('ListaEscolar_detalle')->insert([
+                         [
+                         "id_curso" => $idCurso,
+                         "cod_articulo" => $cod_articulo,
+                         "cantidad" => $cantidad
+                         ]
+                     ]);
+
+            $request->session()->flash('success', 'Curso agregado correctamente.');
+        }
+
+        // $lalista = DB::table('ListaEscolar_detalle')->insert([
+        //         [
+        //         "id_curso" => $request->get('idcurso'),
+        //         "cod_articulo" => $request->get('codigo'),
+        //         "cantidad" => $request->get('cantidad')
+        //         ]
+        //     ]);
 
             $listas=DB::select('select
             ListaEscolar_detalle.id,
@@ -195,7 +248,7 @@ class ListaEscolarController extends Controller
             //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
             $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
 
-
+            // $request->session()->flash('success', 'Producto agregado correctamente');
             return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
     }
 
@@ -291,7 +344,7 @@ class ListaEscolarController extends Controller
 
         //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
         $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
-
+        $request->session()->flash('success', 'Cotización cargada correctamente');
         return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
 
       }
@@ -341,18 +394,7 @@ class ListaEscolarController extends Controller
         ->where('id' ,$request->get('id'))
         ->delete();
 
-        $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
-        inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada=2023");
-
-        $comunas=DB::select('select * from comunas');
-
-        $reporte=DB::select("
-        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
-        left join colegio on curso.id_colegio = colegio.id
-        left join comunas on colegio.id_comuna = comunas.id");
-
-
-        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
+        return redirect()->route('ListaEscolar')->with('success', 'El colegio se elimino correctamente.');
     }
 
 
@@ -367,8 +409,6 @@ class ListaEscolarController extends Controller
 
 
         //$update=DB::select('Delete FROM ListaEscolar_detalle WHERE cod_articulo='.$request->get("cod_articulo").' and id_curso='.$request->get("idcurso").' limit 15');
-
-
 
 
         $listas=DB::select('select
@@ -399,8 +439,8 @@ class ListaEscolarController extends Controller
         $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
 
 
-
-            return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
+        $request->session()->flash('success', 'Producto Eliminado correctamente');
+        return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
     }
 
 
@@ -483,6 +523,51 @@ class ListaEscolarController extends Controller
         where ListaEscolar_detalle.cod_articulo != 2516800 and ListaEscolar_detalle.cod_articulo = "'.$codigo.'"');
 
         return response()->json($colegios);
+    }
+
+    public function editarcantidadp(Request $request){
+
+        DB::table('listaescolar_detalle')
+        ->where('listaescolar_detalle.id', $request->get("id"))
+        ->update(
+          [
+              'cantidad'=> $request->cantidad,
+            ]
+
+          );
+
+          $listas=DB::select('select
+          ListaEscolar_detalle.id,
+          ListaEscolar_detalle.comentario,
+          ListaEscolar_detalle.id_curso,
+          ListaEscolar_detalle.cod_articulo,
+          producto.ARDESC as descripcion,
+          producto.ARMARCA as marca,
+          sum(ListaEscolar_detalle.cantidad) as cantidad,
+          bodeprod.bpsrea as stock_sala,
+          Suma_Bodega.cantidad AS stock_bodega,
+          (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
+          precios.PCPVDET as preciou
+          from ListaEscolar_detalle
+          left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+          left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+          left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+          left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+          where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
+
+
+          $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
+          inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
+
+
+
+          //$curso=DB::select('select curso.id,curso.nombre_curso as nombre, curso.letra,curso.id_colegio from curso where id='.$request->get("idcurso").'')[0];
+          $curso=DB::table('curso')->where('id', $request->get("idcurso"))->get()[0];
+
+          $request->session()->flash('success', 'Cantidad actualizada exitosamente');
+          return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso'));
+
+        //   return redirect()->route('listas')->with('success','Producto Editado Correctamente');
     }
 
 }

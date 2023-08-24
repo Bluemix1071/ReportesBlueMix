@@ -64,13 +64,14 @@ Lista Escolar
 
                                     <hr>
                                 <div class="form-group row">
-                                    <form action="{{ route('AgregarItem') }}" method="post" enctype="multipart/form-data" id="agregaritem">
+                                    <form action="{{ route('AgregarItem') }}" method="POST" enctype="multipart/form-data" id="agregaritem">
                                         <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
                                     <div class="row">
                                         <input type="text" class="form-control" placeholder="ID CURSO" name="idcurso" required id="idcurso" value="{{ $curso->id }}" style="display: none">
                                         &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col-2" value=""/>
                                         &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
                                         &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
+                                        &nbsp;<input type="number" id="stock_sala" placeholder="Sala" readonly class="form-control col" value=""/>
                                         &nbsp;<input type="number" id="cantidad" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
                                     </div>
                                      </form>
@@ -84,6 +85,11 @@ Lista Escolar
                             </div>
 
                         <br>
+                        {{-- @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif --}}
             <div class="row">
                     <div class="col-md-12">
                         <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
@@ -110,6 +116,7 @@ Lista Escolar
 
                                     @foreach ($listas as $item)
                                 <tr>
+                                    <td style="visibility:collapse; display:none;">{{ $item->id}}</td>
                                     <td scope="col" style="text-align:left"><a href="https://www.libreriabluemix.cl/search?q={{ $item->cod_articulo }}" target="_blank">{{ $item->cod_articulo }}</a></td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
                                     <td style="text-align:left">{{ $item->marca }}</td>
@@ -139,7 +146,7 @@ Lista Escolar
                                             <input type="text" value="{{ $curso->id }}" name="idcurso" hidden>
                                             <input type="text" value="{{ $colegio->id }}" name="id_colegio" hidden>
 
-                                            <button class="btn btn-danger" type="submit" style="margin-left: -50%;">
+                                            <button class="btn btn-danger" type="submit" style="margin-left: -50%;" title="Eliminar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                                     <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -149,7 +156,7 @@ Lista Escolar
                                     </div>
                                     &nbsp;
                                     <!-- boton comentar-->
-                                    <div class="col-1" style="text-algin:right">
+                                    <div class="col-4" style="text-algin:right">
                                     @if($item->comentario != "")
                                         <a href="" title="Agregar Comentario" data-toggle="modal" data-target="#mimodalejemplo"
                                         class="btn btn-info bg-success"
@@ -158,7 +165,7 @@ Lista Escolar
 
                                         data-curso='{{ $curso->id }}'
                                         data-colegio='{{  $colegio->id }}'
-                                        >Comentar</a>
+                                        ><i class="fas fa-comment-dots"></i></a>
                                     @else
                                         <a href="" title="Agregar Comentario" data-toggle="modal" data-target="#mimodalejemplo"
                                         class="btn btn-info"
@@ -167,10 +174,26 @@ Lista Escolar
 
                                         data-curso='{{ $curso->id }}'
                                         data-colegio='{{  $colegio->id }}'
-                                        >Comentar</a>
-                                        @endif
+                                        ><i class="fas fa-comment-dots"></i></a>
+                                    @endif
                                     </div>
                                     <!-- boton comentar-->
+                                    &nbsp;
+                                    <div class="col-1" style="text-algin:right">
+                                            <a href="" title="editar" data-toggle="modal" data-target="#modaleditarp"
+                                            class="btn btn-info bg-success"
+                                            data-id='{{ $item->id }}'
+                                            data-comentario='{{ $item->comentario }}'
+                                            data-curso='{{ $curso->id }}'
+                                            data-colegio='{{  $colegio->id }}'
+                                            data-cod_articulo='{{ $item->cod_articulo }}'
+                                            data-descripcion='{{ $item->descripcion }}'
+                                            data-marca='{{ $item->marca }}'
+                                            data-cantidad='{{ $item->cantidad }}'
+                                            data-stock_sala='{{ $item->stock_sala }}'
+                                            data-stock_bodega='{{ $item->stock_bodega }}'
+                                            ><i class="fas fa-edit"></i></a>
+                                    </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -239,7 +262,100 @@ Lista Escolar
   </div>
 </div>
 <!-- FIN Modal -->
-    <!-- Modal cargar cotizacion-->
+<!-- INICIO MODAL EDITAR PRODUCTO-->
+<div class="modal fade" id="modaleditarp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Editar Cantidad Producto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('editarcantidadp')}}">
+                        {{ method_field('put') }}
+                        {{ csrf_field() }}
+                        @csrf
+                        <input type="hidden" name="id" id="id" value="">
+                        <input type="text" value="{{ $curso->id }}" name="idcurso" hidden>
+                        <input type="text" value="{{ $colegio->id }}" name="id_colegio" hidden>
+
+                        <div class="form-group row">
+                            <label for="cod_articulo"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Codigo Producto') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="cod_articulo" type="text"
+                                    class="form-control @error('cod_articulo') is-invalid @enderror" name="cod_articulo"
+                                    value="{{ old('cod_articulo') }}" required autocomplete="cod_articulo" autofocus readonly>
+                            </div>
+                        </div>
+                        <!-- Detalle -->
+                        <div class="form-group row">
+                            <label for="descripcion"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Detalle') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="descripcion" type="descripcion"
+                                    class="form-control @error('descripcion') is-invalid @enderror" name="descripcion"
+                                    value="{{ old('descripcion') }}" required autocomplete="descripcion" readonly>
+                            </div>
+                        </div>
+                         <!-- Marca -->
+                         <div class="form-group row">
+                            <label for="marca"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Marca') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="marca" type="marca"
+                                    class="form-control @error('marca') is-invalid @enderror" name="marca"
+                                    value="{{ old('marca') }}" required autocomplete="marca" readonly>
+                            </div>
+                        </div>
+                        <!-- Cantidad -->
+                        <div class="form-group row">
+                            <label for="cantidad"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Cantidad') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="cantidad" type="number"
+                                    class="form-control @error('cantidad') is-invalid @enderror" name="cantidad"
+                                    value="{{ old('cantidad') }}" required autocomplete="cantidad" min="0" max="99999999">
+                            </div>
+                        </div>
+                        <!-- Stock Sala -->
+                        <div class="form-group row">
+                            <label for="stock_sala"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Stock Sala') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="stock_sala" type="number"
+                                    class="form-control @error('stock_sala') is-invalid @enderror" name="stock_sala"
+                                    value="{{ old('stock_sala') }}" required autocomplete="stock_sala" readonly min="0" max="99999999">
+                            </div>
+                        </div>
+                        <!-- Stock Bodega -->
+                        <div class="form-group row">
+                            <label for="stock_bodega"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Stock Bodega') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="stock_bodega" type="number"
+                                    class="form-control @error('stock_bodega') is-invalid @enderror" name="stock_bodega"
+                                    value="{{ old('stock_bodega') }}" required autocomplete="stock_bodega" readonly min="0" max="99999999">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Editar</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN MODAL EDITAR PRODUCTO-->
+<!-- Modal cargar cotizacion-->
     <div class="modal fade" id="modalcotizacion" tabindex="-1" role="dialog"
             aria-labelledby="eliminarproductocontrato" aria-hidden="true">
             <div class="modal-dialog" role="document" >
@@ -305,24 +421,6 @@ Lista Escolar
 @section('script')
 
 <script>
-    $('#mimodalejemplo').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var comentario = button.data('comentario')
-        var curso = button.data('idcurso')
-        //var cod_articulo = button.data('cod_articulo')
-        var colegio = button.data('id_colegio')
-        var modal = $(this)
-        modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #comentario').val(comentario);
-        //modal.find('.modal-body #cod_articulo').val(cod_articulo);
-        modal.find('.modal-body #idcurso').val(curso);
-        modal.find('.modal-body #id_colegio').val(colegio);
-})
-</script>
-
-<script>
-
   $(document).ready(function() {
     $('#Listas').DataTable( {
         dom: 'Bfrtip',
@@ -374,6 +472,40 @@ Lista Escolar
     } );
   } );
   </script>
+  <script>
+    $('#modaleditarp').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var cod_articulo = button.data('cod_articulo')
+        var descripcion = button.data('descripcion')
+        var marca = button.data('marca')
+        var cantidad = button.data('cantidad')
+        var stock_sala = button.data('stock_sala')
+        var stock_bodega = button.data('stock_bodega')
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #cod_articulo').val(cod_articulo);
+        modal.find('.modal-body #descripcion').val(descripcion);
+        modal.find('.modal-body #marca').val(marca);
+        modal.find('.modal-body #cantidad').val(cantidad);
+        modal.find('.modal-body #stock_sala').val(stock_sala);
+        modal.find('.modal-body #stock_bodega').val(stock_bodega);
+
+        $( "#precio_venta2" ).keyup(function() {
+          var neto = $( "#neto" ).val();
+          var total = $( "#precio_venta2" ).val();
+          if(total != ""){
+            // document.getElementById('label_bara').innerHTML = (Math.round((total/(neto*1.19)-1)*100)+'%');
+            // document.getElementById('label_bara').innerHTML = (Math.round((total/(neto)-1)*100)+'%');
+            $('#margen').val((Math.round((total/(neto)-1)*100)+'%'));
+          }else{
+            $('#margen').val('0%');
+            // document.getElementById('label_bara').innerHTML = ('0%');
+          }
+        });
+
+    })
+</script>
 
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
@@ -388,6 +520,7 @@ Lista Escolar
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
+
 
   <script>
     var max_fields      = 9999; //maximum input boxes allowed
@@ -412,6 +545,7 @@ Lista Escolar
                     $('#buscar_marca').val(result[0].ARMARCA);
                     $( "#cantidad" ).focus();
                     $( "#buscar_cantidad" ).val(null);
+                    $( "#stock_sala").val(result[0].bpsrea);
                     codigo = result[0].ARCODI;
                     descripcion = result[0].ARDESC;
                     marca = result[0].ARMARCA;
@@ -428,17 +562,35 @@ Lista Escolar
         });
 
         $(add_button).click(function(e){
+        var codigo = $('#codigo').val();
+        var cantidad = $('#cantidad').val();
 
-            if( codigo == null){
-                window.alert("Debe ingresar Codigo y cantidad");
-            }
-            else{
-                $( "#agregaritem" ).submit();
-            }
+        if (codigo === '') {
+        window.alert("Debe ingresar Codigo");
+        } else if (cantidad === '') {
+        window.alert("Debe ingresar Cantidad");
+        } else {
+        $("#agregaritem").submit();
+        }
+});
 
 
-        })
-
+</script>
+<script>
+    $('#mimodalejemplo').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var comentario = button.data('comentario')
+        var curso = button.data('idcurso')
+        //var cod_articulo = button.data('cod_articulo')
+        var colegio = button.data('id_colegio')
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #comentario').val(comentario);
+        //modal.find('.modal-body #cod_articulo').val(cod_articulo);
+        modal.find('.modal-body #idcurso').val(curso);
+        modal.find('.modal-body #id_colegio').val(colegio);
+})
 </script>
 
 @endsection

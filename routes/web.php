@@ -339,6 +339,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Reportes','ListaEscolarController@Reportes')->name('reportes');
 
     Route::put('/EditarProducto','ConvenioMarcoController@EditarProducto')->name('EditarProducto');
+    Route::put('/editarcantidadp','ListaEscolarController@editarcantidadp')->name('editarcantidadp');
 
     Route::post('/CargarCotizacion', 'ListaEscolarController@CargarCotizacion')->name('CargarCotizacion');
     Route::post('/CargarCotizacion', 'ConvenioMarcoController@CargarCotizacion')->name('CargarCotizacion');
