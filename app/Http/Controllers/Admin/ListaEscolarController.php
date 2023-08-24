@@ -527,8 +527,8 @@ class ListaEscolarController extends Controller
 
     public function editarcantidadp(Request $request){
 
-        DB::table('listaescolar_detalle')
-        ->where('listaescolar_detalle.id', $request->get("id"))
+        DB::table('ListaEscolar_detalle')
+        ->where('ListaEscolar_detalle.id', $request->get("id"))
         ->update(
           [
               'cantidad'=> $request->cantidad,
