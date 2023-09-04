@@ -150,6 +150,8 @@ class SincronizacionProductosWebController extends Controller
             }
         }
 
+        return redirect()->route('index.jumpsellerWeb');
+
     }
 
     public function actualizarProductoWeb(){
