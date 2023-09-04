@@ -44,7 +44,7 @@ Colegios
                          class="btn btn-warning">Temporada 2022-2023</a> --}}
 
                     </div>
-
+                    @if (request()->url() !== route('colegios.temporada2022'))
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end col-6">
 
                     <div class="row">
@@ -86,6 +86,8 @@ Colegios
                     </div>
                     @endif
                 </form>
+                @endif
+
             </div>
         </div>
             <hr>

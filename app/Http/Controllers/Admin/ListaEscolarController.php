@@ -161,29 +161,31 @@ class ListaEscolarController extends Controller
     return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos'));
 }
     //
-
     public function AgregarColegio(Request $request){
-    // Validar los datos ingresados por el usuario
-    $validatedData = $request->validate([
-        'nombrec' => ['required', 'string', 'max:255', Rule::unique('colegio', 'nombre')->where(function ($query) use ($request) {
-            return $query->where('id_comuna', $request->comunas);
-        })],
-        'comunas' => 'required|integer',
-    ], [
-        'nombrec.unique' => 'El colegio ya existe en esta comuna',
-    ]);
-    // Insertar un nuevo colegio en la base de datos
-    $elcurso = DB::table('colegio')->insert([
-        [
-            "nombre" => $validatedData['nombrec'],
-            "id_comuna" => $validatedData['comunas'],
-            "temporada" => "2023-2024",
-        ]
-    ]);
 
-    return redirect()->route('ListaEscolar')->with('success', 'El colegio se agregó correctamente.');
-}
-    //
+        $validatedData = $request->validate([
+            'nombrec' => ['required','string','max:40',
+                Rule::unique('colegio', 'nombre')->where(function ($query) use ($request) {
+                    return $query->where('id_comuna', $request->comunas)
+                        ->where('temporada', '2023-2024');
+                }),
+            ],
+            'comunas' => 'required|integer',
+        ], [
+            'nombrec.unique' => 'El colegio ya existe en esta comuna y temporada',
+        ]);
+
+        // Insertar un nuevo colegio en la base de datos
+        $elcurso = DB::table('colegio')->insert([
+            [
+                "nombre" => $validatedData['nombrec'],
+                "id_comuna" => $validatedData['comunas'],
+                "temporada" => "2023-2024",
+            ]
+        ]);
+
+        return redirect()->route('ListaEscolar')->with('success', 'El colegio se agregó correctamente.');
+    }
 
 
     public function AgregarItem(Request $request){

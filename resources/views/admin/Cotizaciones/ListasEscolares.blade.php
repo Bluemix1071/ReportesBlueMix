@@ -458,6 +458,9 @@ Lista Escolar
 
 <script>
     $(document).ready(function() {
+        minDate = $('#min');
+            maxDate = $('#max');
+
       $('#Listas').DataTable( {
           dom: 'Bfrtip',
           buttons: [
