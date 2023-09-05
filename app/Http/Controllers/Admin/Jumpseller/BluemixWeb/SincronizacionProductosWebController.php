@@ -150,7 +150,7 @@ class SincronizacionProductosWebController extends Controller
             }
         }
 
-        return redirect()->route('index.jumpsellerWeb');
+        return redirect()->route('index.jumpsellerWeb')->with('success', 'Productos Descargados Correctamente');
 
     }
 

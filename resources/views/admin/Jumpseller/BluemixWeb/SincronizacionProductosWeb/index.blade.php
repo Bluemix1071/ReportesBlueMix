@@ -15,23 +15,27 @@ Actualizar Productos Web
 
     <h5 class="display-4">Actualizar Productos Web</h5>
 
-    <div class="progress">
+    <!-- <div class="progress">
         <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
-      </div>
+      </div> -->
 
       <div class="row">
           <div class="col-md-12">
 
             <div class="card text-center">
                 <div class="card-header">
-                    Productos Bluemix.CL
+                    Descargar Productos Bluemix.CL
                 </div>
                 <div class="card-body">
 
-                  <p class="card-text">Se recomienda esperar a que la barra llegue al 100% antes de volver a actualizar </p>
+                  <!-- <p class="card-text">Se recomienda esperar a que la barra llegue al 100% antes de volver a actualizar </p> -->
+                  <p class="card-text">Se recomienda esperar a que el spinner se detenga antes de volver a actualizar </p>
 
                   <form action="{{route('sincronizarWeb')}}" method="get">
-                      <button id="btn_sync" class="btn btn-primary" type="submit" ><i class="fas fa-arrow-down"></i> </button>
+                      <button id="btn_sync" class="btn btn-primary" type="submit">
+                        <i class="fas fa-arrow-down" id="baja"></i>
+                        <div class="spinner-border spinner-border-sm" hidden role="status" id="spinner_baja"></div>
+                      </button>
                   </form>
                 </div>
                 <div class="card-footer text-muted">
@@ -84,6 +88,14 @@ $('#btn_sync2').click(function(){
   $('#sube').prop('hidden', true);
   $('#spinner').prop('hidden', false);
   $('#btn_sync').prop('disabled', true);
+  $('#btn_sync2').prop('disabled', true);
+});
+
+$('#btn_sync').click(function(){
+  $('#baja').prop('hidden', true);
+  $('#spinner_baja').prop('hidden', false);
+  $('#btn_sync').prop('disabled', true);
+  $('#btn_sync2').prop('disabled', true);
 });
 
 // function desactivar(){
