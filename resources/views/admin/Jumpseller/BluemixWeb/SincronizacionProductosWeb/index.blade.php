@@ -31,8 +31,8 @@ Actualizar Productos Web
                   <!-- <p class="card-text">Se recomienda esperar a que la barra llegue al 100% antes de volver a actualizar </p> -->
                   <p class="card-text">Se recomienda esperar a que el spinner se detenga antes de volver a actualizar </p>
 
-                  <form action="{{route('sincronizarWeb')}}" method="get">
-                      <button id="btn_sync" class="btn btn-primary" type="submit">
+                  <form action="{{route('sincronizarWeb')}}" method="get" id="form">
+                      <button id="btn_sync" class="btn btn-primary">
                         <i class="fas fa-arrow-down" id="baja"></i>
                         <div class="spinner-border spinner-border-sm" hidden role="status" id="spinner_baja"></div>
                       </button>
@@ -56,8 +56,8 @@ Actualizar Productos Web
                 <div class="card-body">
                   <p class="card-text">Se recomienda esperar a que el spinner se detenga antes de volver a actualizar </p>
 
-                  <form action="{{route('updateProductoWeb')}}" method="get">
-                      <button id="btn_sync2" class="btn btn-primary" type="submit" >
+                  <form action="{{route('updateProductoWeb')}}" method="get" id="form2">
+                      <button id="btn_sync2" class="btn btn-primary" >
                         <i class="fas fa-arrow-up" id="sube"></i>
                         <div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div>
                     </button>
@@ -87,6 +87,7 @@ Actualizar Productos Web
 $('#btn_sync2').click(function(){
   $('#sube').prop('hidden', true);
   $('#spinner').prop('hidden', false);
+  $('#form2').submit();
   $('#btn_sync').prop('disabled', true);
   $('#btn_sync2').prop('disabled', true);
 });
@@ -94,6 +95,7 @@ $('#btn_sync2').click(function(){
 $('#btn_sync').click(function(){
   $('#baja').prop('hidden', true);
   $('#spinner_baja').prop('hidden', false);
+  $('#form').submit();
   $('#btn_sync').prop('disabled', true);
   $('#btn_sync2').prop('disabled', true);
 });
