@@ -337,6 +337,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::post('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::get('/Reportes','ListaEscolarController@Reportes')->name('reportes');
+    Route::get('/Reportes2022','ListaEscolarController@Reportes2022')->name('reportes2022');
 
     Route::put('/EditarProducto','ConvenioMarcoController@EditarProducto')->name('EditarProducto');
     Route::put('/editarcantidadp','ListaEscolarController@editarcantidadp')->name('editarcantidadp');

@@ -40,7 +40,8 @@ class ListaEscolarController extends Controller
         $reporte=DB::select("
         select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
         left join colegio on curso.id_colegio = colegio.id
-        left join comunas on colegio.id_comuna = comunas.id");
+        left join comunas on colegio.id_comuna = comunas.id
+        where colegio.temporada='2023-2024'");
 
         return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
 
@@ -59,7 +60,9 @@ class ListaEscolarController extends Controller
         $reporte=DB::select("
         select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
         left join colegio on curso.id_colegio = colegio.id
-        left join comunas on colegio.id_comuna = comunas.id");
+        left join comunas on colegio.id_comuna = comunas.id
+        where colegio.temporada='2022-2023'");
+
 
         return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
     }
@@ -500,7 +503,7 @@ class ListaEscolarController extends Controller
         left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
         left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
-        where Suma_Bodega.cantidad <= 50 or isnull(Suma_Bodega.cantidad) and ListaEscolar_detalle.cod_articulo != 2516800
+        where Suma_Bodega.cantidad <= 50 or isnull(Suma_Bodega.cantidad) and ListaEscolar_detalle.cod_articulo != 2516800 and colegio.temporada='2023-2024'
         group by ListaEscolar_detalle.cod_articulo");
         // dd($critico[0]);
 
@@ -514,6 +517,32 @@ class ListaEscolarController extends Controller
         return view('admin.Cotizaciones.ReportesListas', compact('critico'));
 
     }
+
+    public function Reportes2022(Request $request){
+
+        $critico=DB::select("select
+        ListaEscolar_detalle.id,
+        ListaEscolar_detalle.id_curso,
+        colegio.id as id_colegio,
+        ListaEscolar_detalle.cod_articulo,
+        producto.ARDESC as descripcion,
+        producto.ARMARCA as marca,
+        sum(ListaEscolar_detalle.cantidad) as cantidad,
+        Suma_Bodega.cantidad AS stock_bodega
+        from ListaEscolar_detalle
+        left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+        left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+        left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+        left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+        left join curso on ListaEscolar_detalle.id_curso = curso.id
+        left join colegio on curso.id_colegio = colegio.id
+        where Suma_Bodega.cantidad <= 50 or isnull(Suma_Bodega.cantidad) and ListaEscolar_detalle.cod_articulo != 2516800 and colegio.temporada='2022-2023'
+        group by ListaEscolar_detalle.cod_articulo");
+
+        return view('admin.Cotizaciones.ReportesListas', compact('critico'));
+
+    }
+
 
     public function ColegiosXCodigo($codigo){
 

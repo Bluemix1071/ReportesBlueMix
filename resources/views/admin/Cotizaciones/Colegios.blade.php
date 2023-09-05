@@ -25,9 +25,15 @@ Colegios
                 <div class="row">
                     <div class="col" style="text-algin:right">
 
+                        @if (request()->url() == route('colegios.temporada2022'))
+                        <a href="{{ route('reportes2022') }}" class="" target="_blank" title="Stock Critico">
+                            <button type="button" class="btn btn-danger">Stock Critico</button>
+                        </a>
+                        @else
                         <a href="{{ route('reportes') }}" class="" target="_blank" title="Stock Critico">
                             <button type="button" class="btn btn-danger">Stock Critico</button>
                         </a>
+                        @endif
 
                         <a href="" title="Cargar reporte" data-toggle="modal" data-target="#modalreporte"
                         class="btn btn-success"
