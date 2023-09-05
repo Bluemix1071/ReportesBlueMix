@@ -14,11 +14,11 @@ Sincronización de productos
 <div class="container">
 
     <h5 class="display-4">Sincronización de productos Empresas</h5>
-
+<!-- 
     <div class="progress">
         <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
       </div>
-
+ -->
       <div class="row">
           <div class="col-md-12">
 
@@ -28,12 +28,15 @@ Sincronización de productos
                 </div>
                 <div class="card-body">
 
-                  <p class="card-text">La actualización de descarga se realiza en segundo plano, puede seguir realizando otras actividades </p>
-                  <hr>
-                  <p class="card-text">Se recomienda esperar a que la barra llegue al 100% antes de volver a actualizar </p>
+                  <!-- <p class="card-text">La actualización de descarga se realiza en segundo plano, puede seguir realizando otras actividades </p>
+                  <hr> -->
+                  <p class="card-text">Se recomienda esperar a que el spinner se detenga antes de volver a actualizar </p>
 
-                  <form action="{{route('sincronizar')}}" method="get">
-                      <button id="btn_sync" class="btn btn-primary" type="submit" ><i class="fas fa-arrow-down"></i></button>
+                  <form action="{{route('sincronizar')}}" method="get" id="form">
+                      <button id="btn_sync" class="btn btn-primary">
+                        <i class="fas fa-arrow-down" id="baja"></i>
+                        <div class="spinner-border spinner-border-sm" hidden role="status" id="spinner_baja"></div>
+                      </button>
                   </form>
                 </div>
                 <div class="card-footer text-muted">
@@ -58,8 +61,8 @@ Sincronización de productos
 
                   <p class="card-text">Se recomienda esperar a que el spinner se detenga antes de volver a actualizar </p>
 
-                  <form action="{{route('updateProducto')}}" method="get">
-                      <button id="btn_sync2" class="btn btn-primary" type="submit" >
+                  <form action="{{route('updateProducto')}}" method="get" id="form2">
+                      <button id="btn_sync2" class="btn btn-primary" >
                         <i class="fas fa-arrow-up" id="sube"></i>
                         <div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div>
                     </button>
@@ -92,7 +95,17 @@ Sincronización de productos
 $('#btn_sync2').click(function(){
   $('#sube').prop('hidden', true);
   $('#spinner').prop('hidden', false);
+  $('#form2').submit();
   $('#btn_sync').prop('disabled', true);
+  $('#btn_sync2').prop('disabled', true);
+});
+
+$('#btn_sync').click(function(){
+  $('#baja').prop('hidden', true);
+  $('#spinner_baja').prop('hidden', false);
+  $('#form').submit();
+  $('#btn_sync').prop('disabled', true);
+  $('#btn_sync2').prop('disabled', true);
 });
 
 // function desactivar(){

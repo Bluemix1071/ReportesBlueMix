@@ -24,7 +24,7 @@ class SincronizacionProductosController extends Controller
         return view('admin.Jumpseller.BluemixEmpresas.SincronizacionProductos.index');
     }
 
-    public function sincronizarProductos()
+    /* public function sincronizarProductos()
     {
 
         dispatch(function () {
@@ -95,9 +95,57 @@ class SincronizacionProductosController extends Controller
 
         logger('no paso nada');
 
-          return redirect()->route('index.jumpsellerEmpresas');
+          return redirect()->route('index.jumpsellerEmpresas')->with('success', 'Productos Descargados Correctamente');
 
         // return response()->json($products);
+
+    } */
+
+    public function sincronizarProductos() {
+        $count = $this->apiJumpseller->get("products/count", []);
+        $cantidadDePaginas = ceil($count['count'] / 100);
+        DB::table('productosjumpseller')->delete();
+
+        for ($i = 1; $i <= $cantidadDePaginas; $i++) {
+
+            $params = [
+                'page' => $i,
+                'limit' => 100
+            ];
+
+            $products = $this->apiJumpseller->get("products", $params);
+
+            foreach ($products as $key => $product) {
+                //ingreso de productos padre
+                $insert = $this->productosJumps::create([
+                    'id' => $product['product']['id'],
+                    'name' => $product['product']['name'],
+                    'sku' => $product['product']['sku'],
+                    'stock' => $product['product']['stock'],
+                    'price' => $product['product']['price'],
+                ]);
+
+                //validar si tiene variantes
+                if (!empty($product['product']['variants'])) {
+
+                    foreach ($product['product']['variants'] as $key => $variant) {
+                        //insertar variantes
+                        $variantInsert = $this->productosJumps::create([
+                            'id' => $variant['id'],
+                            'name' => $variant['options'][0]['value'],
+                            'sku' => $variant['sku'],
+                            'stock' => $variant['stock'],
+                            'price' => $variant['price'],
+                            'parent_id' => $insert->id_ai,
+                            'parent_id_jp' => $product['product']['id'],
+                        ]);
+                    }
+                }
+            }
+            //logger('100 procesados'.$i);
+        }
+
+        return redirect()->route('index.jumpsellerEmpresas')->with('success', 'Productos Descargados Correctamente');
 
     }
 
@@ -165,7 +213,7 @@ class SincronizacionProductosController extends Controller
 
         error_log(print_r("termino...", true));
 
-        return redirect()->route('index.jumpsellerEmpresas');
+        return redirect()->route('index.jumpsellerEmpresas')->with('success', 'Productos Actualizados Correctamente');
 
         //$product = $this->apiJumpseller->put(10967214,$body);
         /* $body = '{ "product" : {"name": "ACCESORIO ARGOLLA  Nº11", "price": 7,  "stock": 1} }';  */

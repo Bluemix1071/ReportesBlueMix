@@ -221,7 +221,7 @@ class SincronizacionProductosWebController extends Controller
 
         error_log(print_r("termino...", true));
 
-        return redirect()->route('index.jumpsellerWeb');
+        return redirect()->route('index.jumpsellerWeb')->with('success', 'Productos Actualizados Correctamente');
 
         //$product = $this->apiJumpseller->put(10967214,$body);
         /* $body = '{ "product" : {"name": "ACCESORIO ARGOLLA  Nº11", "price": 7,  "stock": 1} }';  */
