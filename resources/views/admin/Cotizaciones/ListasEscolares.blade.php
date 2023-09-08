@@ -95,6 +95,7 @@ Lista Escolar
                         <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
+                                    <th hidden></th>
                                     <th scope="col" style="text-align:left">Codigo Producto</th>
                                     <th scope="col" style="text-align:left">Detalle</th>
                                     <th scope="col" style="text-align:left">Marca</th>
@@ -104,7 +105,6 @@ Lista Escolar
                                     <th scope="col" style="text-align:left">Costo C/U</th>
                                     <th scope="col" style="text-align:left">Costo Total</th>
                                     <th scope="col" style="text-align:left">Acciones</th>
-                                    <th style="visibility:collapse; display:none;"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,7 +117,7 @@ Lista Escolar
 
                                     @foreach ($listas as $item)
                                 <tr>
-                                    <td style="visibility:collapse; display:none;">{{ $item->id}}</td>
+                                    <td hidden>{{ $item->id}}</td>
                                     <td scope="col" style="text-align:left"><a href="https://www.libreriabluemix.cl/search?q={{ $item->cod_articulo }}" target="_blank">{{ $item->cod_articulo }}</a></td>
                                     <td style="text-align:left">{{ $item->descripcion }}</td>
                                     <td style="text-align:left">{{ $item->marca }}</td>
@@ -458,10 +458,8 @@ Lista Escolar
 
 <script>
     $(document).ready(function() {
-        minDate = $('#min');
-            maxDate = $('#max');
 
-      $('#Listas').DataTable( {
+        var table = $('#Listas').DataTable({
           dom: 'Bfrtip',
           buttons: [
                           'copy', 'pdf',
@@ -509,6 +507,28 @@ Lista Escolar
         "infoFiltered": ""
         }
       } );
+      minDate = $('#min');
+      maxDate = $('#max');
+
+        $('#Listas thead tr').clone(false).appendTo( '#Listas thead' );
+        $('#Listas thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+            $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎" />' );
+
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( table.column(i).search() !== this.value ) {
+                    table
+                    .column(i)
+                    .search( this.value )
+                    .draw();
+                }
+            } );
+        } );
+
+        $('#min, #max').on('change', function () {
+            table.draw();
+
+        });
     } );
 
     </script>
@@ -516,7 +536,7 @@ Lista Escolar
 
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
   <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
   <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
