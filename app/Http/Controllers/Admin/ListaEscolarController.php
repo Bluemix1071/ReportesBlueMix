@@ -228,6 +228,7 @@ class ListaEscolarController extends Controller
 
             $listas=DB::select('select
             ListaEscolar_detalle.id,
+            ListaEscolar_detalle.comentario,
             ListaEscolar_detalle.id_curso,
             ListaEscolar_detalle.cod_articulo,
             producto.ARDESC as descripcion,
@@ -243,7 +244,6 @@ class ListaEscolarController extends Controller
             left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
             left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
             where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
-
 
             $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
             inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("id_colegio").'')[0];
@@ -471,9 +471,7 @@ class ListaEscolarController extends Controller
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
         where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
-
-
-
+        // dd($listas);
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("idcolegio").'')[0];
 
@@ -489,6 +487,7 @@ class ListaEscolarController extends Controller
 
         $critico=DB::select("select
         ListaEscolar_detalle.id,
+        ListaEscolar_detalle.comentario,
         ListaEscolar_detalle.id_curso,
         colegio.id as id_colegio,
         ListaEscolar_detalle.cod_articulo,
@@ -522,6 +521,7 @@ class ListaEscolarController extends Controller
 
         $critico=DB::select("select
         ListaEscolar_detalle.id,
+        ListaEscolar_detalle.comentario,
         ListaEscolar_detalle.id_curso,
         colegio.id as id_colegio,
         ListaEscolar_detalle.cod_articulo,
@@ -569,6 +569,7 @@ class ListaEscolarController extends Controller
 
           $listas=DB::select('select
           ListaEscolar_detalle.id,
+          ListaEscolar_detalle.comentario,
           ListaEscolar_detalle.comentario,
           ListaEscolar_detalle.id_curso,
           ListaEscolar_detalle.cod_articulo,

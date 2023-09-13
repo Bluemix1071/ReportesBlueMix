@@ -159,7 +159,7 @@ Lista Escolar
                                     <!-- boton comentar-->
                                     <div class="col-4" style="text-algin:right">
                                     @if($item->comentario != "")
-                                        <a href="" title="Agregar Comentario" data-toggle="modal" data-target="#mimodalejemplo"
+                                        <a href="" title="comentario" data-toggle="modal" data-target="#mimodalejemplo"
                                         class="btn btn-info bg-success"
                                         data-id='{{ $item->id }}'
                                         data-comentario='{{ $item->comentario }}'
@@ -168,7 +168,7 @@ Lista Escolar
                                         data-colegio='{{  $colegio->id }}'
                                         ><i class="fas fa-comment-dots"></i></a>
                                     @else
-                                        <a href="" title="Agregar Comentario" data-toggle="modal" data-target="#mimodalejemplo"
+                                        <a href="" title="comentario" data-toggle="modal" data-target="#mimodalejemplo"
                                         class="btn btn-info"
                                         data-id='{{ $item->id }}'
                                         data-comentario='{{ $item->comentario }}'
@@ -221,7 +221,7 @@ Lista Escolar
           </div>
     </div>
         </div>
-<!-- Modal -->
+<!-- Modal agregar comentario-->
 <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
    <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -239,7 +239,8 @@ Lista Escolar
                     class="col-md-4 col-form-label text-md-right">{{ __('Comentario') }}</label>
 
                     <div class="col-md-6">
-                        <textarea id="comentario" maxlength="65" class="form-control form-control-sm" placeholder="Comentario" name="comentario" rows="3">
+                        <textarea id="comentario" type="text" maxlength="65" class="form-control form-control-sm" placeholder="Comentario" name="comentario" rows="3"
+                        value="{{  old('comentario')}}"  autocomplete="comentario">
 
                         </textarea>
                         <input type="text" value="" name="id" id="id" hidden>
@@ -264,11 +265,11 @@ Lista Escolar
 </div>
 <!-- FIN Modal -->
 <!-- INICIO MODAL EDITAR PRODUCTO-->
-<div class="modal fade" id="modaleditarp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="modaleditarp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Editar Cantidad Producto</h4>
+                <h4 class="modal-title" id="myModalLabel2">Editar Cantidad Producto</h4>
             </div>
             <div class="modal-body">
                 <div class="card-body">
@@ -420,6 +421,23 @@ Lista Escolar
 @endsection
 
 @section('script')
+
+<script>
+    $('#mimodalejemplo').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var comentario = button.data('comentario')
+        var curso = button.data('idcurso')
+        //var cod_articulo = button.data('cod_articulo')
+        var colegio = button.data('id_colegio')
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #comentario').val(comentario);
+        //modal.find('.modal-body #cod_articulo').val(cod_articulo);
+        modal.find('.modal-body #idcurso').val(curso);
+        modal.find('.modal-body #id_colegio').val(colegio);
+})
+</script>
 
   <script>
     $('#modaleditarp').on('show.bs.modal', function (event) {
@@ -602,21 +620,6 @@ Lista Escolar
 
 
 </script>
-<script>
-    $('#mimodalejemplo').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var comentario = button.data('comentario')
-        var curso = button.data('idcurso')
-        //var cod_articulo = button.data('cod_articulo')
-        var colegio = button.data('id_colegio')
-        var modal = $(this)
-        modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #comentario').val(comentario);
-        //modal.find('.modal-body #cod_articulo').val(cod_articulo);
-        modal.find('.modal-body #idcurso').val(curso);
-        modal.find('.modal-body #id_colegio').val(colegio);
-})
-</script>
+
 
 @endsection
