@@ -59,6 +59,7 @@
                             <option value="SALA">SALA</option>
                             <option value="BODEGA">BODEGA</option>
                             <option value="MATERIA PRIMA">MATERIA PRIMA</option>
+                            <option value="DISEÑO">DISEÑO</option>
                           </select></div>
             <div class="col">
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
@@ -324,6 +325,7 @@
                                         <option value="SALA">SALA</option>
                                         <option value="BODEGA">BODEGA</option>
                                         <option value="MATERIA PRIMA">MATERIA PRIMA</option>
+                                        <option value="DISEÑO">DISEÑO</option>
                                     </select>
                                     </div>
                                 </div>
@@ -634,6 +636,7 @@
                                             <option value="SALA">SALA</option>
                                             <option value="BODEGA">BODEGA</option>
                                             <option value="MATERIA PRIMA">MATERIA PRIMA</option>
+                                            <option value="DISEÑO">DISEÑO</option>
                                         </select>
                                     @else
                                     <input id="departamento" type="text"
