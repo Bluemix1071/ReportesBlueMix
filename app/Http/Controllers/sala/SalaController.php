@@ -878,7 +878,7 @@ class SalaController extends Controller
     left join producto on dvales.vaarti = producto.ARCODI
     left join Suma_Bodega on dvales.vaarti = Suma_Bodega.inarti
     left join bodeprod on dvales.vaarti = bodeprod.bpprod
-    where vanmro = '.$request->n_vale.'");
+    where vanmro = '".$request->n_vale."'");
 
     if(count($vale) == 0){
       return redirect()->route('RequerimientoCompra')->with('warning','El vale ingresado no existe');
