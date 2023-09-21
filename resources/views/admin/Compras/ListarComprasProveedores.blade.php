@@ -83,7 +83,7 @@
                                 <td>{{  number_format(($item->iva), 0, ',', '.') }}</td>
                                 <td>{{  number_format(($item->total), 0, ',', '.') }}</td>
                                 <td class="row">
-                                    <form action="{{ route('EditarCompra', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data" target="_blank">
+                                    <form action="{{ route('EditarCompraNew', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data" target="_blank">
                                     @csrf
                                         <button type="submit" class="btn btn-primary px-2"><i class="fas fa-edit"></i></button>
                                     </form>

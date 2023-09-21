@@ -170,7 +170,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/ComprasProveedores','Compras\ComprasProveedoresController@insert')->name('AgregarCompras');
     Route::get('/ListarComprasProveedores','Compras\ComprasProveedoresController@list')->name('ListarCompras');
     Route::get('/ListarComprasProveedoresFecha','Compras\ComprasProveedoresController@listFecha')->name('ListarComprasFecha');
-    Route::post('/EditarCompraProveedores','Compras\ComprasProveedoresController@editar')->name('EditarCompra');
+    Route::post('/EditarCompraProveedoresNew','Compras\ComprasProveedoresController@editar')->name('EditarCompraNew');
     Route::put('/EditarCompraProveedores','Compras\ComprasProveedoresController@update')->name('UpdateCompra');
     Route::post('/DINCompraProveedores','Compras\ComprasProveedoresController@insertDIN')->name('AgregarDIN');
 
