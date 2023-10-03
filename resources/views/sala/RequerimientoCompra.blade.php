@@ -60,6 +60,7 @@
                             <option value="BODEGA">BODEGA</option>
                             <option value="MATERIA PRIMA">MATERIA PRIMA</option>
                             <option value="DISEÑO">DISEÑO</option>
+                            <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
                           </select></div>
             <div class="col">
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
@@ -126,7 +127,7 @@
                   <th scope="col" style="width: 3%;"></th>
                   <th scope="col" style="width: 5%; display:none;">ID</th>
                   <th scope="col">Codigo</th>
-                  <th scope="col" class="col-3">Descipción</th>
+                  <th scope="col" class="col-3">Descripción</th>
                   <th scope="col">Marca</th>
                   <th scope="col">Cantidad</th>
                   @if(session()->get('email') == "adquisiciones@bluemix.cl")
@@ -326,6 +327,7 @@
                                         <option value="BODEGA">BODEGA</option>
                                         <option value="MATERIA PRIMA">MATERIA PRIMA</option>
                                         <option value="DISEÑO">DISEÑO</option>
+                                        <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
                                     </select>
                                     </div>
                                 </div>
@@ -637,6 +639,7 @@
                                             <option value="BODEGA">BODEGA</option>
                                             <option value="MATERIA PRIMA">MATERIA PRIMA</option>
                                             <option value="DISEÑO">DISEÑO</option>
+                                            <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
                                         </select>
                                     @else
                                     <input id="departamento" type="text"

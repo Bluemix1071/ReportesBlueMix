@@ -63,6 +63,29 @@ return [
             ]),
         ],
 
+        'DB2' => [
+            'driver' => 'mysql',
+            'host' => env('DB2_HOST', '192.168.0.77'),
+            'port' => env('DB2_PORT', '3306'),
+            'database' => env('DB2_DATABASE', 'db_bluemix'),
+            'username' => env('DB2_USERNAME', 'cflores'),
+            'password' => env('DB2_PASSWORD', 'bmiX_2021'),
+            'unix_socket' => env('DB2_SOCKET', ''),
+            //'charset' => 'utf8mb4',
+            //'collation' => 'utf8mb4_unicode_ci',
+            //'charset' => 'latin1',
+            //'collation' => 'latin1_bin',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => false,
+            'engine' => null,
+            'options' => array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]),
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

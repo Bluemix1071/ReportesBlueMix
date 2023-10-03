@@ -493,6 +493,7 @@ class SalaController extends Controller
     public function RequerimientoCompra(Request $request){
 
       //$requerimiento_compra = DB::table('requerimiento_compra')->get();
+      //$requerimiento_compra = DB::connection('DB2')->table('requerimiento_compra')->get();
 
       $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
       left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti');
@@ -503,6 +504,7 @@ class SalaController extends Controller
 
       $productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
 
+      //$productos = DB::connection('DB2')->table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
       $fecha1 = date("Y-m-d",strtotime(date("Y-m-d")."- 1 month"));
 
       //dd($depto[5]['depto']);

@@ -113,12 +113,27 @@
         <h5 class="display-5">Conteo Inventario Sala</h5>
         <section class="content">
             <div class="card">
-                <div class="card-header">
-                                <button type="button" class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modalingresarconteo">Agregar <i class="fas fa-plus"></i></button>
-                                <input type="text" hidden placeholder="id_ingreso" id="id_ingreso" class="form-control col-2" />
+                <div class="card-header row">
+                                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar conteo" class="form-control col-7">
+                                <input type="text" class="form-control col-2" style="visibility: hidden">
+                                <button type="button" class="btn btn-success btn-sm float-right col-3" data-toggle="modal" data-target="#modalingresarconteo">Agregar <i class="fas fa-plus"></i></button>
+                                <input type="text" hidden placeholder="id_ingreso" id="id_ingreso" class="form-control" />
                     </div>
                     <div class="card-body">
-                    <div class="table-responsive-xl">
+                    <div class="table-responsive-xl" id="myDiv">
+
+                    <!-- <ul id="myUL">
+                        <li><a href="#">Adele</a></li>
+                        <li><a href="#">Agnes</a></li>
+
+                        <li><a href="#">Billy</a></li>
+                        <li><a href="#">Bob</a></li>
+
+                        <li><a href="#">Calvin</a></li>
+                        <li><a href="#">Christina</a></li>
+                        <li><a href="#">Cindy</a></li>
+                    </ul> -->
+
                     @foreach($conteo_inventario as $item)
                         <div class="card">
                             <div class="card-body row">
@@ -162,6 +177,26 @@
         <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
         <script>
+            function myFunction() {
+            // Declare variables
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById('myInput');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myDiv");
+            li = ul.getElementsByTagName('h4');
+
+            // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("b")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+                } else {
+                li[i].style.display = "none";
+                }
+            }
+            }
+
             $(document).ready(function() {
                 var table = $('#users').DataTable({
                     order: [[ 3, "desc" ]],
