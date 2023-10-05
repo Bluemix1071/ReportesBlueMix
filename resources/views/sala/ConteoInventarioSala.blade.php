@@ -135,14 +135,14 @@
                     </ul> -->
 
                     @foreach($conteo_inventario as $item)
-                        <div class="card">
+                        <div class="card myDiv2">
                             <div class="card-body row">
                                 <div class="col-10">
-                                    <h4 class="card-title"><b>Modulo</b>: {{ $item->modulo }}</h4>
+                                    <h4 class="card-title"><b>Modulo</b>: <i class="classi">{{ $item->modulo }}</i></h4>
                                     <br>
-                                    <h4 class="card-title"><b>Encargado</b>: {{ $item->encargado }}</h4>
+                                    <h4 class="card-title"><b>Encargado</b>: <i class="classib">{{ $item->encargado }}</i></h4>
                                     <br>
-                                    <h4 class="card-title"><b>Fecha:</b> {{ $item->fecha }}</h4>
+                                    <h4 class="card-title"><b>Fecha:</b> <i class="classic">{{ $item->fecha }}</i></h4>
                                 </div>
                                 <div class="col-1">
                                     <form action="{{ route('ConteoInventarioDetalleSala', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
@@ -179,17 +179,21 @@
         <script>
             function myFunction() {
             // Declare variables
-            var input, filter, ul, li, a, i, txtValue;
+            var input, filter, ul, li, a, i, txtValue, b, txtValueb, c, txtValuec;
             input = document.getElementById('myInput');
             filter = input.value.toUpperCase();
             ul = document.getElementById("myDiv");
-            li = ul.getElementsByTagName('h4');
+            li = ul.getElementsByClassName('myDiv2');
 
             // Loop through all list items, and hide those who don't match the search query
             for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("b")[0];
+                a = li[i].getElementsByClassName("classi")[0];
+                b = li[i].getElementsByClassName("classib")[0];
+                c = li[i].getElementsByClassName("classic")[0];
                 txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                txtValueb = b.textContent || b.innerText;
+                txtValuec = c.textContent || c.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValueb.toUpperCase().indexOf(filter) > -1 || txtValuec.toUpperCase().indexOf(filter) > -1) {
                 li[i].style.display = "";
                 } else {
                 li[i].style.display = "none";
