@@ -785,7 +785,7 @@ class SalaController extends Controller
           DB::table('conteo_inventario_detalle')->insert($item);
       }
 
-      $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $id_conteo)->orderBy('posicion', 'asc')->get();
+      $detalles = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', '=', $id_conteo)->orderBy('posicion', 'desc')->get();
 
       $conteo = DB::table('conteo_inventario')->where('id', $id_conteo)->get()[0];
 

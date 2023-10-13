@@ -453,6 +453,7 @@
                     descripcion = null;
                     marca = null;
                     cantidad = null;
+                    $('#basic-form').submit();
                     }else{
                         alert("La cantidad no puede ser menor o igual 0");
                     }
@@ -500,6 +501,7 @@
                         descripcion = null;
                         marca = null;
                         cantidad = null;
+                        $('#basic-form').submit();
                     }else{
                         alert("La cantidad no puede ser menor o igual 0");
                     }
@@ -515,6 +517,7 @@
                 $(wrapper).on("click","#remove_field", function(e){ //user click on remove text
                     e.preventDefault(); $(this).parent('div').remove(); x--;
                     console.log(x-1);
+                    $('#basic-form').submit();
                 })
 
                 var table = $('#users').DataTable({

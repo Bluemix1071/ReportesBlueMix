@@ -65,6 +65,9 @@ Route::get('/getProducto/{codigo}','Api\ProductosController@getProducto')->name(
 Route::get('/getConteosSala','Api\ConteosController@getConteosSala')->name('getConteosSala');
 Route::get('/getConteoSala/{id}','Api\ConteosController@getConteoSala')->name('getConteoSala');
 Route::delete('/deleteItem/{id}','Api\ConteosController@deleteItem')->name('deleteItem');
+Route::put('/updateCantItem/{id}','Api\ConteosController@updateCantItem')->name('updateCantItem');
+Route::get('/buscarProducto/{codigo}','Api\ConteosController@buscarProducto')->name('buscarProducto');
+Route::post('/agregarProducto/{id_conteo}','Api\ConteosController@agregarProducto')->name('agregarProducto');
 
 
 
