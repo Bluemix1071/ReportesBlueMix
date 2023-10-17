@@ -186,6 +186,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/GuardarConteoInventarioDetalleBodega', 'Bodega\ConteoInventarioBodegaController@GuardarConteoDetalle')->name('GuardarConteoDetalleBodega');
     Route::get('/BuscarProducto/{codigo}','Bodega\ConteoInventarioBodegaController@BuscarProducto')->name('BuscarProducto');
     Route::get('/ConsolidacionInventarioBodega', 'Bodega\ConteoInventarioBodegaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioBodega');
+    Route::post('/ActualizarInventarioSala', 'Bodega\ConteoInventarioBodegaController@ActualizarInventarioSala')->name('ActualizarInventarioSala');
     Route::post('/CargarValeConteoBodega', 'Bodega\ConteoInventarioBodegaController@CargarValeConteoBodega')->name('CargarValeConteoBodega');
     Route::post('/TerminarConteoBodega', 'Bodega\ConteoInventarioBodegaController@TerminarConteoBodega')->name('TerminarConteoBodega');
 
