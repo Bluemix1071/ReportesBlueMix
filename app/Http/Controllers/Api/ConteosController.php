@@ -11,7 +11,7 @@ class ConteosController extends Controller
     //
     public function getConteosSala(){
         
-        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Sala")->get();
+        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Sala")->orderBy('fecha', 'desc')->get();
 
         return response()->json($conteos);
     }
@@ -19,6 +19,14 @@ class ConteosController extends Controller
     public function getConteoSala($id){
         //error_log(print_r($id, true));
         $conteo = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id)->orderBy('posicion', 'desc')->get();
+
+        return response()->json($conteo);
+    }
+
+    public function getHeadConteoSala($id){
+        $conteo = DB::table('conteo_inventario')->where('id', $id)->first();
+
+        error_log(print_r($conteo, true));
 
         return response()->json($conteo);
     }
@@ -81,5 +89,12 @@ class ConteosController extends Controller
         }
 
         return response()->json(["status" => "Agregado Correctamente"]);
+    }
+
+    public function terminarConteo(Request $request, $id){
+
+        DB::table('conteo_inventario')->where('id', $id)->update(['estado' => $request->get('estado')]);
+
+        return response()->json(["status" => "Terminado correctamente"]);
     }
 }
