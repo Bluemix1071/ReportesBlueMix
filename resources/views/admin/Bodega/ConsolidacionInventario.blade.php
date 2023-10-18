@@ -57,7 +57,7 @@
             <form action="" enctype="multipart/form-data">
                 {{-- Si el usuario es uno de los descritos aqui puede acceder al boton
                 de lo contrario se mostrara el boton deshabilitado --}}
-                @if(session()->get('email') == "ignaciobarrera4@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl")
+                @if(session()->get('email') == "ignaciobarrera4@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
                 <a href="" title="confirmacion" data-toggle="modal" data-target="#modalconfirmacion"
                 class="btn btn-success btn-xl btn-rectificar"
                 ><i class="fas fa-exchange-alt"></i></a>
