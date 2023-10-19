@@ -52,13 +52,9 @@ class ConteosController extends Controller
 
     public function buscarProducto($codigo){
 
-        error_log(print_r($codigo, true));
+        $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->orWhere(\DB::raw('substr(ARCBAR, 1, 3)'), '=' , $codigo)->get(); //\DB::raw('substr(ARCBAR, 1, 3)'), '=' , $codigo
 
-        //$producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', 'like', '%'.$codigo.'%')->get();
-
-        //$producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere(\DB::raw('substr(ARCBAR, 2)'), '=' , 511)->get();
-
-        $producto =DB::select('select * from producto where ARCODI = "'.$codigo.'" or ARCBAR like concat("%",substr("'.$codigo.'", 2),"%");');
+        //error_log(print_r($producto, true));
 
         if($producto->count() == 0){
             return response()->json([]);
