@@ -70,6 +70,7 @@ Route::put('/updateCantItem/{id}','Api\ConteosController@updateCantItem')->name(
 Route::get('/buscarProducto/{codigo}','Api\ConteosController@buscarProducto')->name('buscarProducto');
 Route::post('/agregarProducto/{id_conteo}','Api\ConteosController@agregarProducto')->name('agregarProducto');
 Route::put('/terminarConteo/{id}','Api\ConteosController@terminarConteo')->name('terminarConteo');
+Route::post('/nuevoConteo','Api\ConteosController@nuevoConteo')->name('nuevoConteo');
 
 
 

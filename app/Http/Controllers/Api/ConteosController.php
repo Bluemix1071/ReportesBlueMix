@@ -26,7 +26,7 @@ class ConteosController extends Controller
     public function getHeadConteoSala($id){
         $conteo = DB::table('conteo_inventario')->where('id', $id)->first();
 
-        error_log(print_r($conteo, true));
+        //error_log(print_r($conteo, true));
 
         return response()->json($conteo);
     }
@@ -68,12 +68,19 @@ class ConteosController extends Controller
 
         // error_log(print_r($request->get('form')['cantidad'], true));
         // error_log(print_r($id_conteo, true));
+        $posicion = 1;
+
         $existe = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id_conteo)->where('codigo', $request->get('form')['codigo'])->get();
         //error_log(print_r($existe, true));
         if($existe->count() != 0){
             DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id_conteo)->where('codigo', $request->get('form')['codigo'])->update(['cantidad' => ($request->get('form')['cantidad'] + $existe[0]->cantidad)]);
         }else{
+
             $conteo = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id_conteo)->orderBy('posicion', 'desc')->get('posicion')->take(1);
+
+            if($conteo->count() != 0){
+                $posicion = $conteo[0]->posicion + 1;
+            }
     
             DB::table('conteo_inventario_detalle')->insert(
                 ['codigo' => $request->get('form')['codigo'],
@@ -83,7 +90,7 @@ class ConteosController extends Controller
                  'costo' => 0,
                  'precio' => 0,
                  'estado' => 'exeptuado',
-                 'posicion' => ($conteo[0]->posicion + 1),
+                 'posicion' => $posicion,
                  'id_conteo_inventario' => $id_conteo]
             );
         }
@@ -96,5 +103,21 @@ class ConteosController extends Controller
         DB::table('conteo_inventario')->where('id', $id)->update(['estado' => $request->get('estado')]);
 
         return response()->json(["status" => "Terminado correctamente"]);
+    }
+
+    public function nuevoConteo(Request $request){
+
+        /* error_log(print_r($request->get('modulo'), true));
+        error_log(print_r($request->get('encargado'), true)); */
+
+        $nuevo = ['ubicacion' => 'Sala',
+          'modulo' => $request->get('modulo'),
+          'encargado' => $request->get('encargado'),
+          'estado' => "Ingresado"
+        ];
+
+      DB::table('conteo_inventario')->insert($nuevo);
+
+      return response()->json(["status" => "Ingresado correctamente"]);
     }
 }
