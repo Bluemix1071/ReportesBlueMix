@@ -52,7 +52,7 @@ class ConteosController extends Controller
 
     public function buscarProducto($codigo){
 
-        $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
+        $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', 'like', '%'.$codigo.'%')->get();
 
         //error_log(print_r($producto, true));
 
