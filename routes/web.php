@@ -201,6 +201,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     /*  Mantenedor Clientes Credito */
     Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
     Route::post('/MantencionClientesCreditoDetalle', 'MantencionClientesCreditoController@DetalleCliente')->name('MantencionClientesCreditoDetalle');
+    Route::get('/buscacliente', 'MantencionClientesCreditoController@buscacliente')->name('buscacliente');
+
+    Route::post('/buscacliente', 'MantencionClientesCreditoController@buscacliente')->name('buscacliente');
 
     Route::get('/ConsultaDocumentos','Compras\ConsultaDocumentosController@index')->name('ConsultaDocumentos');
     Route::post('/ConsultaDocumentosFiltro','Compras\ConsultaDocumentosController@ConsultaDocumentosFiltro')->name('ConsultaDocumentosFiltro');
@@ -422,6 +425,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/RectificacionGuiaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverGuiaDetalle')->name('RectificacionGuiaDetalle');
     Route::get('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@RectificacionInsumoMerma')->name('RectificacionInsumoMerma');
     Route::post('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@GuardarRectificacionInsumoMerma')->name('GuardarRectificacionInsumoMerma');
+    Route::get('/StockSala','Rectificacion\RectificacionInventarioSalaController@StockSala')->name('StockSala');
+    Route::put('/NStockSala','Rectificacion\RectificacionInventarioSalaController@NStockSala')->name('NStockSala');
     Route::post('/RectificacionInsumoMermaCargarVale','Rectificacion\RectificacionInventarioSalaController@CargarValeInsimoMerma')->name('CargarValeInsimoMerma');
     /* fin */
 

@@ -215,7 +215,7 @@ class ListaEscolarController extends Controller
                          ]
                      ]);
 
-            $request->session()->flash('success', 'Curso agregado correctamente.');
+            $request->session()->flash('success', 'Producto agregado correctamente.');
         }
 
         // $lalista = DB::table('ListaEscolar_detalle')->insert([
