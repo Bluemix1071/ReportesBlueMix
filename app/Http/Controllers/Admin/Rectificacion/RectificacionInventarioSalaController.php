@@ -12,7 +12,7 @@ class RectificacionInventarioSalaController extends Controller
     public function RectificacionNotasCredito(Request $request){
 
         $nc=DB::table('nota_credito')->leftJoin('detalle_devolucion', 'nota_credito.id', '=', 'detalle_devolucion.folio')->where('nota_credito.fecha', '>=', '2022-11-02')->select('nota_credito.id','nota_credito.folio', 'nota_credito.fecha as fecha_nc', 'rut', 'nro_doc_refe', 'monto', 'glosa', 'detalle_devolucion.estado', 't_doc')->orderBy('fecha_nc', 'DESC')->get();
-        
+
         return view('admin.Rectificacion.RectificacionNotasCredito',compact('nc'));
     }
 
@@ -31,7 +31,7 @@ class RectificacionInventarioSalaController extends Controller
 
     public function RectificacionCotizacionesSalida(Request $request){
         $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2023-06-01')->orderBy('CZ_FECHA', 'DESC')->get();
-        
+
         return view('admin.Rectificacion.RectificacionCotizacionesSalida',compact('cotiz'));
     }
 
@@ -65,7 +65,7 @@ class RectificacionInventarioSalaController extends Controller
 
     public function RectificacionCotizacionesEntrada(Request $request){
         $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2023-06-01')->orderBy('CZ_FECHA', 'DESC')->get();
-        
+
         return view('admin.Rectificacion.RectificacionCotizacionesEntrada',compact('cotiz'));
     }
 
@@ -101,7 +101,7 @@ class RectificacionInventarioSalaController extends Controller
         //$guias = DB::table('cargos')->where('cafeco', '>=', '2022-11-02')->where('catipo', 3)->get();
 
         $guias=DB::table('cargos')->leftjoin('detalle_devolucion', 'cargos.canmro', '=', 'detalle_devolucion.folio')->where('cargos.cafeco', '>=', '2022-11-02')->where('catipo', 3)->orderBy('canmro', 'DESC')->get();
-        
+
         return view('admin.Rectificacion.RectificacionGuia', compact('guias'));
     }
 
@@ -114,7 +114,7 @@ class RectificacionInventarioSalaController extends Controller
                 return redirect()->route('RectificacionGuia')->with('warning','Existe Mercadería que esta en negativo o quedará en negativo, rectifique stock');
             }
         }
-    
+
         foreach($entra as $item){
             DB::table('bodeprod')->where('bpprod', $item->DECODI)->update(['bpsrea' => $item->CANT]);
             DB::table('solicitud_ajuste')->insert(['codprod' => $item->DECODI, 'producto' => $item->Detalle, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => $request->get('solicita'), 'observacion' => 'Devolucion Mercadería Guia N: '.$request->get('folio').'' ]);
@@ -131,7 +131,7 @@ class RectificacionInventarioSalaController extends Controller
 
         $productos = DB::select('select dcargos.*, producto.ARMARCA, bodeprod.bpsrea as sala, sum(bodeprod.bpsrea + dcargos.DECANT) as CANT from dcargos left join bodeprod on dcargos.DECODI = bodeprod.bpprod left join producto on dcargos.DECODI = producto.ARCODI where DENMRO = "'.$request->get('folio').'" and dcargos.DETIPO = 3 group by DECODI;');
         $dv = $this->dv($guia[0]->CARUTC);
-        
+
         return view('admin.Rectificacion.RectificacionGuiaDetalle', compact('productos', 'guia', 'dv'));
     }
 
@@ -145,7 +145,7 @@ class RectificacionInventarioSalaController extends Controller
     public function RectificacionInsumoMerma(Request $request){
 
         $insumos = DB::table('insumos_mermas')->get();
-    
+
         return view('admin.Rectificacion.RectificacionInsumoMerma', compact('insumos'));
     }
 
@@ -192,7 +192,7 @@ class RectificacionInventarioSalaController extends Controller
                 'cantidad' => $item['cantidad'],
                 'area' => $item['area']
             ];
-            
+
             DB::table('insumos_mermas')->insert($insumo);
 
             //DB::table('bodeprod')->where('bpprod', $item['codigo'])->update(['bpsrea' => (intval($item['sala'])-intval($item['cantidad']))]);
@@ -204,7 +204,7 @@ class RectificacionInventarioSalaController extends Controller
     public function CargarValeInsimoMerma(Request $request){
 
         $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant, bodeprod.bpsrea, precios.PCCOSTO, (bodeprod.bpsrea-dvales.vacant) as CANT from dvales left join producto on dvales.vaarti = producto.ARCODI left join bodeprod on dvales.vaarti = bodeprod.bpprod left join precios on substr(dvales.vaarti,1, 5) = precios.PCCODI where vanmro = '.$request->get('n_vale').'');
-        
+
         if(!empty($vale)){
 
             foreach($vale as $item){
@@ -237,5 +237,23 @@ class RectificacionInventarioSalaController extends Controller
         }
 
         return redirect()->route('RectificacionInsumoMerma')->with('success','Vale cargado Correctamente');
+    }
+
+    public function StockSala (Request $request){
+
+        $solicitudaj =  DB::table('solicitud_ajuste')
+        ->whereBetween('fecha', ['2023-10-01', '2023-10-19'])
+        ->where('solicita', 'inventario')
+        ->get();
+
+        return view('admin.Rectificacion.StockSala',compact('solicitudaj'));
+
+    }
+
+    public function NStockSala (Request $request){
+        $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$request->get('cod_articulo').'');
+        dd($request);
+
+        return back();
     }
 }
