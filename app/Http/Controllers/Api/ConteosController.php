@@ -120,4 +120,123 @@ class ConteosController extends Controller
 
       return response()->json(["status" => "Ingresado correctamente"]);
     }
+
+    public function cargarVale(Request $request, $id){
+
+        //$this->agregarProducto($request, $id);
+
+        /* error_log(print_r($request->get('vale'), true));
+        error_log(print_r($id, true)); */
+
+        $posicion = 1;
+
+        //error_log(print_r($productos->take(1), true));
+        //error_log(print_r(count($productos), true));
+
+        $productos = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id)->orderBy('posicion', 'desc')->get();
+
+        $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant from dvales left join producto on dvales.vaarti = producto.ARCODI where vanmro = '.$request->get('vale').'');
+        
+        if(count($vale) == 0){
+            return response()->json(["status" => "Vale No encontrado"]);
+        }
+        
+        if(count($productos) == 0){
+            foreach($vale as $elvale){
+                //error_log(print_r("agrega", true));
+                DB::table('conteo_inventario_detalle')->insert(
+                    ['codigo' => $elvale->vaarti,
+                    'detalle' => $elvale->ARDESC,
+                    'marca' => $elvale->ARMARCA,
+                    'cantidad' => $elvale->vacant,
+                    'costo' => 0,
+                    'precio' => 0,
+                    'estado' => 'exeptuado',
+                    'posicion' => $posicion++,
+                    'id_conteo_inventario' => $id]
+                );
+            }
+            return response()->json(["status" => "Se cargó el vale"]);
+        }else{
+        
+        //error_log(print_r(count($vale), true));
+
+        $estan = DB::select('select codigo, detalle, marca, (cantidad+vacant) as cantidad from conteo_inventario_detalle 
+        left join dvales on conteo_inventario_detalle.codigo = dvales.vaarti
+        where id_conteo_inventario = "'.$id.'" and dvales.vanmro = "'.$request->get('vale').'"');
+        
+        $noestan = DB::select('select codigo, detalle, marca, cantidad
+        from (
+            select codigo, detalle, marca , cantidad
+            from conteo_inventario_detalle where id_conteo_inventario = "'.$id.'"
+            union all
+            select arcodi, ardesc, armarca,vacant from dvales
+            left join producto on dvales.vaarti = producto.ARCODI
+            where vanmro = "'.$request->get('vale').'"
+            )
+            temp
+            group by codigo, detalle, marca
+            having count(*)=1');
+            //error_log(print_r($noestan, true));
+
+        foreach($estan as $existe){
+            DB::table('conteo_inventario_detalle')->where('codigo', $existe->codigo)->where('id_conteo_inventario', $id)->update(['cantidad' => $existe->cantidad]);
+        }
+
+        $posicion = ($productos->take(1)[0]->posicion+1);
+
+        foreach($noestan as $noexiste){
+            DB::table('conteo_inventario_detalle')->insert(
+                ['codigo' => $noexiste->codigo,
+                 'detalle' => $noexiste->detalle,
+                 'marca' => $noexiste->marca,
+                 'cantidad' => $noexiste->cantidad,
+                 'costo' => 0,
+                 'precio' => 0,
+                 'estado' => 'exeptuado',
+                 'posicion' => $posicion++,
+                 'id_conteo_inventario' => $id]
+            );
+        }
+        
+        /* foreach($productos as $producto){
+            foreach($vale as $elvale){
+                if($producto->codigo == $elvale->vaarti){
+                    //error_log(print_r("updatea", true));
+                    DB::table('conteo_inventario_detalle')->where('id', $producto->id)->update(['cantidad' => ($producto->cantidad+$elvale->vacant)]);
+                }else{
+                    //error_log(print_r("agrega", true));
+                    DB::table('conteo_inventario_detalle')->insert(
+                        ['codigo' => $elvale->vaarti,
+                         'detalle' => $elvale->ARDESC,
+                         'marca' => $elvale->ARMARCA,
+                         'cantidad' => $elvale->vacant,
+                         'costo' => 0,
+                         'precio' => 0,
+                         'estado' => 'exeptuado',
+                         'posicion' => $posicion++,
+                         'id_conteo_inventario' => $id]
+                    );
+                }
+            }
+        } */
+
+        return response()->json(["status" => "Se cargó el vale"]);
+        }
+
+        /* foreach($vale as $elvale){
+            //error_log(print_r($elvale->vaarti, true));
+            foreach($productos as $producto){
+                //error_log(print_r($producto->codigo, true));
+                if($producto->codigo == $elvale->vaarti){
+                    error_log(print_r("existe", true));
+                }else{
+                    error_log(print_r("no existe", true));
+                }
+            }
+        } */
+
+        //error_log(print_r($productos, true));
+
+    }
 }
