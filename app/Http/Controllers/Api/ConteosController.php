@@ -123,8 +123,6 @@ class ConteosController extends Controller
 
     public function cargarVale(Request $request, $id){
 
-        //$this->agregarProducto($request, $id);
-
         /* error_log(print_r($request->get('vale'), true));
         error_log(print_r($id, true)); */
 
@@ -133,14 +131,20 @@ class ConteosController extends Controller
         //error_log(print_r($productos->take(1), true));
         //error_log(print_r(count($productos), true));
 
-        $productos = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id)->orderBy('posicion', 'desc')->get();
-
         $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant from dvales left join producto on dvales.vaarti = producto.ARCODI where vanmro = '.$request->get('vale').'');
         
         if(count($vale) == 0){
-            return response()->json(["status" => "Vale No encontrado"]);
+            return response()->json(["status" => "Vale No encontrado", "color" => 'warning']);
         }
-        
+
+        $valecargado = DB::table('vales')->where('vanmro', $request->get('vale'))->where('vaesta', 1)->get();
+
+        if(count($valecargado) != 0){
+            return response()->json(["status" => "Vale ya Cargado", "color" => 'warning']);
+        }
+
+        $productos = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id)->orderBy('posicion', 'desc')->get();
+
         if(count($productos) == 0){
             foreach($vale as $elvale){
                 //error_log(print_r("agrega", true));
@@ -156,7 +160,8 @@ class ConteosController extends Controller
                     'id_conteo_inventario' => $id]
                 );
             }
-            return response()->json(["status" => "Se cargó el vale"]);
+            DB::table('vales')->where('vanmro', $request->get('vale'))->update(['vaesta' => 1]);
+            return response()->json(["status" => "Se cargó el vale" , "color" => 'success']);
         }else{
         
         //error_log(print_r(count($vale), true));
@@ -220,8 +225,8 @@ class ConteosController extends Controller
                 }
             }
         } */
-
-        return response()->json(["status" => "Se cargó el vale"]);
+        DB::table('vales')->where('vanmro', $request->get('vale'))->update(['vaesta' => 1]);
+        return response()->json(["status" => "Se cargó el vale" , "color" => 'success']);
         }
 
         /* foreach($vale as $elvale){
