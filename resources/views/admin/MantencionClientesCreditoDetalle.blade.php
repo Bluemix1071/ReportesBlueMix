@@ -284,7 +284,7 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <td colspan="3"><strong>Total</strong> </td>
+                                                        <td colspan="4"><strong>Total</strong> </td>
                                                             <td  style="text-align:center"><span
                                                                     class="price text-success">${{ number_format($total_valordoc_x_pagar, 0, ',', '.') }}</span>
                                                             </td>
@@ -328,7 +328,7 @@
                 <h4 class="modal-title" id="myModalLabel">Ayuda</h4>
             </div>
             <div class="modal-body">
-                <p>La fecha de filtrado es correspondiente a la columna número dos <b>'F. COMPRA'</b>.</p>
+                <p>La fecha de filtrado es correspondiente a la columna número dos <b>'F. VENCI'</b>.</p>
                 <P>Los colores de las filas representan el estado de morosidad del documento:</P>
                 <p><b>BLANCO</b>: Documento al día.</p>
                 <p><b>NARANJA</b>: Documento vencido con no más de 7 días.</p>
