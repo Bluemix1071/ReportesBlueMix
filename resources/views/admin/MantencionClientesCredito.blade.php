@@ -97,12 +97,14 @@
         </script>
 
         <script>
-            document.getElementById('rutcli').addEventListener('input', function (e) {
-        var value = e.target.value.replace(/\D/g, '');
-        if (value.length > 1) {
-            value = value.substring(0, value.length - 1) + '-' + value.charAt(value.length - 1);
-        }
-        e.target.value = value;
+        document.getElementById('rutcli').addEventListener('input', function (e) {
+            var value = e.target.value.replace(/\-/g, '');
+
+            if (value.length > 1) {
+                value = value.substring(0, value.length - 1) + '-' + value.charAt(value.length - 1);
+            }
+
+            e.target.value = value;
         });
 
         </script>
