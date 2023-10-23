@@ -170,7 +170,7 @@ class ConteosController extends Controller
         left join dvales on conteo_inventario_detalle.codigo = dvales.vaarti
         where id_conteo_inventario = "'.$id.'" and dvales.vanmro = "'.$request->get('vale').'"');
         
-        $noestan = DB::select('select codigo, detalle, marca, cantidad
+        /* $noestan = DB::select('select codigo, detalle, marca, cantidad
         from (
             select codigo, detalle, marca , cantidad
             from conteo_inventario_detalle where id_conteo_inventario = "'.$id.'"
@@ -181,21 +181,24 @@ class ConteosController extends Controller
             )
             temp
             group by codigo, detalle, marca
-            having count(*)=1');
-            //error_log(print_r($noestan, true));
-
-        foreach($estan as $existe){
-            DB::table('conteo_inventario_detalle')->where('codigo', $existe->codigo)->where('id_conteo_inventario', $id)->update(['cantidad' => $existe->cantidad]);
-        }
+            having count(*)=1'); */
+            
+            foreach($estan as $existe){
+                DB::table('conteo_inventario_detalle')->where('codigo', $existe->codigo)->where('id_conteo_inventario', $id)->update(['cantidad' => $existe->cantidad]);
+            }
+            
+            $noestan = DB::select('select vaarti, ARDESC, ARMARCA, vacant from dvales
+            left join producto on dvales.vaarti = producto.ARCODI
+            where vaarti not in (select codigo from conteo_inventario_detalle where id_conteo_inventario = "'.$id.'") and vanmro = "'.$request->get('vale').'"');
 
         $posicion = ($productos->take(1)[0]->posicion+1);
 
         foreach($noestan as $noexiste){
             DB::table('conteo_inventario_detalle')->insert(
-                ['codigo' => $noexiste->codigo,
-                 'detalle' => $noexiste->detalle,
-                 'marca' => $noexiste->marca,
-                 'cantidad' => $noexiste->cantidad,
+                ['codigo' => $noexiste->vaarti,
+                 'detalle' => $noexiste->ARDESC,
+                 'marca' => $noexiste->ARMARCA,
+                 'cantidad' => $noexiste->vacant,
                  'costo' => 0,
                  'precio' => 0,
                  'estado' => 'exeptuado',
