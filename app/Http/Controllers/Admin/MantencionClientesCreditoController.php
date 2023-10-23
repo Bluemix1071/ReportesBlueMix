@@ -108,20 +108,16 @@ class MantencionClientesCreditoController extends Controller
       `ccorclie_ccpclien`.`CCPFECHAHO`,`ccorclie_ccpclien`.`CCPFECHAP1`,`ccorclie_ccpclien`.`CCPFECHAP2`,
       `ccorclie_ccpclien`.`CCPFECHAP3`,`ccorclie_ccpclien`.`CCPFECHAP4`,`ccorclie_ccpclien`.`CCPVALORFA`,
       `ccorclie_ccpclien`.`CCPNOTACRE`,`ccorclie_ccpclien`.`CCPNUMNOTA`,`ccorclie_ccpclien`.`CCPFECHANO`,
-      `ccorclie_ccpclien`.`CCPSALDODO`,`ccorclie_ccpclien`.`CCPESTADOD`,`ccorclie_ccpclien`.`ABONO1`,
       `ccorclie_ccpclien`.`TIPDOCABO1`,`ccorclie_ccpclien`.`TIPOBANCO1`,`ccorclie_ccpclien`.`FECHACHEQ1`,
-      `ccorclie_ccpclien`.`NUDOCUABO1`,`ccorclie_ccpclien`.`FECHAPABO1`,`ccorclie_ccpclien`.`ABONO2`,
       `ccorclie_ccpclien`.`TIPDOCABO2`,`ccorclie_ccpclien`.`TIPOBANCO2`,`ccorclie_ccpclien`.`FECHACHEQ2`,
-      `ccorclie_ccpclien`.`NUDOCUABO2`,`ccorclie_ccpclien`.`FECHAPABO2`,`ccorclie_ccpclien`.`ABONO3`,
       `ccorclie_ccpclien`.`TIPDOCABO3`,`ccorclie_ccpclien`.`TIPOBANCO3`,`ccorclie_ccpclien`.`FECHACHEQ3`,
-      `ccorclie_ccpclien`.`NUDOCUABO3`,`ccorclie_ccpclien`.`FECHAPABO3`,`ccorclie_ccpclien`.`ABONO4`,
       `ccorclie_ccpclien`.`TIPDOCABO4`,`ccorclie_ccpclien`.`TIPOBANCO4`,`ccorclie_ccpclien`.`FECHACHEQ4`,
       `ccorclie_ccpclien`.`NUDOCUABO4`,`ccorclie_ccpclien`.`FECHAPABO4`,`ccorclie_ccpclien`.`TOTAABONOS`,
       `ccorclie_ccpclien`.`SALDODOCUM`,`ccorclie_ccpclien`.`CCPCAJEROS`,`ccorclie_ccpclien`.`CCPVENDEDO`,
       `ccorclie_ccpclien`.`CCPUSUARIO`,`ccorclie_ccpclien`.`CCPCATIMES`,`ccorclie_ccpclien`.`CCPFOLRECV`,
       `ccorclie_ccpclien`.`estado_morosidad`,
-      (`ccorclie_ccpclien`.`ABONO1` + `ccorclie_ccpclien`.`ABONO2` + `ccorclie_ccpclien`.`ABONO3` + `ccorclie_ccpclien`.`ABONO4`) as `saldo`,
-      `cargos`.`CAVALO`
+      (`ccorclie_ccpclien`.`ABONO1` + `ccorclie_ccpclien`.`ABONO2` + `ccorclie_ccpclien`.`ABONO3` + `ccorclie_ccpclien`.`ABONO4`) as `Total`,
+      `cargos`.`CAVALO`,cargos.nro_oc as OC
       FROM `ccorclie_ccpclien`
       LEFT JOIN `cargos` on `ccorclie_ccpclien`.`CCPDOCUMEN` = `cargos`.`CANMRO`
       WHERE `ccorclie_ccpclien`.`CCPRUTCLIE` = ".$request->get('rut')."

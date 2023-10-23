@@ -255,14 +255,11 @@
                                             <thead style="text-align:center">
                                                 <tr>
                                                     <th scope="col">N° DOC</th>
+                                                    <th scope="Col">Orden de Compra</th>
                                                     <th scope="col">F. COMPRA</th>
                                                     <th scope="col">F. VENCI</th>
                                                     <th scope="col">VALOR DOC.</th>
-                                                    <th scope="col">1° ABONO</th>
-                                                    <th scope="col">2° ABONO</th>
-                                                    <th scope="col">3° ABONO</th>
-                                                    <th scope="col">4° ABONO</th>
-                                                    <th scope="col">SALDO</th>
+                                                    <th scope="col">Total Abonos</th>
                                                 </tr>
                                             </thead>
                                                 <tbody style="text-align:center">
@@ -276,14 +273,11 @@
                                                     <tr>
                                                     @endif
                                                         <td style="text-align:center">{{ $item->CCPDOCUMEN }}</td>
+                                                        <td style="text-align:center">{{ $item->OC }}</td>
                                                         <td style="text-align:center">{{ $item->CCPFECHAHO }}</td>
                                                         <td style="text-align:center">{{ $item->CCPFECHAP1 }}</td>
                                                         <td style="text-align:center">{{ number_format(($item->CAVALO), 0, ',', '.') }}</td>
-                                                        <td style="text-align:center">{{ $item->ABONO1 }}</td>
-                                                        <td style="text-align:center">{{ $item->ABONO2 }}</td>
-                                                        <td style="text-align:center">{{ $item->ABONO3 }}</td>
-                                                        <td style="text-align:center">{{ $item->ABONO4 }}</td>
-                                                        <td style="text-align:center">{{ number_format(($item->saldo), 0, ',', '.') }}</td>
+                                                        <td style="text-align:center">{{ number_format(($item->Total), 0, ',', '.') }}</td>
                                                     </td>
                                                     @php($total_valordoc_x_pagar += $item->CAVALO)
                                                 @endforeach
@@ -412,7 +406,7 @@
             }
             var min = minDateDeuda.val();
             var max = maxDateDeuda.val();
-            var date = data[2];
+            var date = data[3];
 
             if (
                 ( min === null && max === null ) ||
