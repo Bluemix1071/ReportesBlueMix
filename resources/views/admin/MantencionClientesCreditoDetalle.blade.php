@@ -412,7 +412,7 @@
             }
             var min = minDateDeuda.val();
             var max = maxDateDeuda.val();
-            var date = data[1];
+            var date = data[2];
 
             if (
                 ( min === null && max === null ) ||
