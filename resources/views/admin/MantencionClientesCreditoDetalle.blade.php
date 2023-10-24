@@ -255,10 +255,10 @@
                                             <thead style="text-align:center">
                                                 <tr>
                                                     <th scope="col">N° DOC</th>
-                                                    <th scope="Col">Orden de Compra</th>
                                                     <th scope="col">F. COMPRA</th>
                                                     <th scope="col">F. VENCI</th>
                                                     <th scope="col">VALOR DOC.</th>
+                                                    <th scope="Col">Orden de Compra</th>
                                                     <th scope="col">Total Abonos</th>
                                                 </tr>
                                             </thead>
@@ -273,10 +273,10 @@
                                                     <tr>
                                                     @endif
                                                         <td style="text-align:center">{{ $item->CCPDOCUMEN }}</td>
-                                                        <td style="text-align:center">{{ $item->OC }}</td>
                                                         <td style="text-align:center">{{ $item->CCPFECHAHO }}</td>
                                                         <td style="text-align:center">{{ $item->CCPFECHAP1 }}</td>
                                                         <td style="text-align:center">{{ number_format(($item->CAVALO), 0, ',', '.') }}</td>
+                                                        <td style="text-align:center">{{ $item->OC }}</td>
                                                         <td style="text-align:center">{{ number_format(($item->Total), 0, ',', '.') }}</td>
                                                     </td>
                                                     @php($total_valordoc_x_pagar += $item->CAVALO)
@@ -284,7 +284,7 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <td colspan="4"><strong>Total</strong> </td>
+                                                        <td colspan="3"><strong>Total</strong> </td>
                                                             <td  style="text-align:center"><span
                                                                     class="price text-success">${{ number_format($total_valordoc_x_pagar, 0, ',', '.') }}</span>
                                                             </td>
@@ -406,7 +406,7 @@
             }
             var min = minDateDeuda.val();
             var max = maxDateDeuda.val();
-            var date = data[3];
+            var date = data[2];
 
             if (
                 ( min === null && max === null ) ||
