@@ -11,7 +11,7 @@ class ConteosController extends Controller
     //
     public function getConteosSala(){
         
-        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Sala")->orderBy('fecha', 'desc')->get();
+        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Sala")->where('fecha', '>', '2023-10-25')->orderBy('fecha', 'desc')->get();
 
         return response()->json($conteos);
     }
