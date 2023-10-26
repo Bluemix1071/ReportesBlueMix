@@ -24,14 +24,16 @@ Ajuste Stock Sala
                 <form method="post" action="{{ route('NStockSala') }}" id="AgregarItemp">
 
                     <div class="row">
-                        <div class="col-md-2"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo"></div>
+                        <div class="col-md-2"><input type="text" class="form-control" placeholder="Codigo" name="codigo" required id="codigo" maxlength="7"></div>
                         <div class="col-md-4"><input type="text" class="form-control" placeholder="Descripcion" name="buscar_detalle" required id="buscar_detalle" readonly></div>
                         <div class="col-md-2"><input type="text" class="form-control" placeholder="Marca" name="buscar_marca" required id="buscar_marca" readonly></div>
                         <div class="col-md-2"><input type="number" class="form-control" placeholder="Cantidad" name="buscar_cantidad" required id="buscar_cantidad" readonly></div>
                         <div class="col-md-2"><input type="number" class="form-control" placeholder="NuevaCantidad" name="nueva_cantidad" required id="nueva_cantidad"></div>
                     </div>
                 </form>
-                <div class="col-md-2"><button id="add_field_button" type="submit" class="btn btn-success">Agregar</button></div>
+                <div class="col-md-2">
+                    <button id="add_field_button" type="submit" class="btn btn-success"><i class="fas fa-upload" style="color: #ffffff;"></i></button>
+                </div>
                 </div>
             <hr>
             <br>
@@ -180,10 +182,7 @@ Ajuste Stock Sala
     e.preventDefault();
 
     var codigo = $('#codigo').val();
-    var cantidad = $('#buscar_cantidad').val();
-    var rut = $('#rut_auto').val();
-    var depto = $('#depto').val();
-    var factura = $('#factura').val();
+    var cantidad = $('#nueva_cantidad').val();
 
     if (codigo == '') {
         window.alert("¡Debe ingresar un código!");

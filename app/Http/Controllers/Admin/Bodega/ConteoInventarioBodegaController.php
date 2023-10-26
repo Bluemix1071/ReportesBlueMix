@@ -119,7 +119,7 @@ class ConteoInventarioBodegaController extends Controller
 
         $consolidacion = DB::select("select conteo_inventario_detalle.*, sum(cantidad) as total , conteo_inventario.modulo, conteo_inventario.ubicacion,conteo_inventario.fecha
         from conteo_inventario_detalle left join conteo_inventario on conteo_inventario_detalle.id_conteo_inventario = conteo_inventario.id where ubicacion='Bodega'
-        AND conteo_inventario.fecha BETWEEN '2022-10-29 00:00:00' AND '2022-10-31 23:59:59' group by codigo, modulo");
+        AND conteo_inventario.fecha BETWEEN '2023-10-27 00:00:00' AND '2023-10-28 23:59:59' group by codigo, modulo");
 
         // $consolidacionSala = DB::select("select conteo_inventario_detalle.*, sum(cantidad) as total , conteo_inventario.modulo, conteo_inventario.ubicacion
         // from conteo_inventario_detalle
@@ -131,7 +131,7 @@ class ConteoInventarioBodegaController extends Controller
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->where('conteo_inventario.ubicacion', 'Sala')
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
-        ->whereBetween('conteo_inventario.fecha', ['2022-10-29 00:00:00', '2022-10-31 23:59:59'])
+        ->whereBetween('conteo_inventario.fecha', ['2023-10-27 00:00:00', '2022-10-28 23:59:59'])
         ->groupBy('codigo', 'modulo')
         ->get();
         // dd($consolidacionSala);
@@ -149,6 +149,7 @@ class ConteoInventarioBodegaController extends Controller
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->leftJoin ('bodeprod', 'conteo_inventario_detalle.codigo', '=', 'bodeprod.bpprod')
         ->where('conteo_inventario.ubicacion', 'Sala')
+        ->whereBetween('conteo_inventario.fecha', ['2023-10-27 00:00:00', '2022-10-28 23:59:59'])
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
         ->groupBy('codigo')
         ->orderBy('id')

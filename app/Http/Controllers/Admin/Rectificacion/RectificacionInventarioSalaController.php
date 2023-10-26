@@ -251,8 +251,10 @@ class RectificacionInventarioSalaController extends Controller
     }
 
     public function NStockSala (Request $request){
+        $codigo = $request->input('codigo');
+        $buscar_detalle = $request->input('buscar_detalle');
+        dd($buscar_detalle);
         $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$request->get('cod_articulo').'');
-        dd($request);
 
         return back();
     }
