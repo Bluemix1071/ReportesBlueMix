@@ -131,7 +131,7 @@ class ConteoInventarioBodegaController extends Controller
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->where('conteo_inventario.ubicacion', 'Sala')
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
-        ->whereBetween('conteo_inventario.fecha', ['2023-10-27 00:00:00', '2022-10-28 23:59:59'])
+        ->whereBetween('conteo_inventario.fecha', ['2023-10-26 00:00:00', '2022-10-28 23:59:59'])
         ->groupBy('codigo', 'modulo')
         ->get();
         // dd($consolidacionSala);
@@ -149,7 +149,7 @@ class ConteoInventarioBodegaController extends Controller
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->leftJoin ('bodeprod', 'conteo_inventario_detalle.codigo', '=', 'bodeprod.bpprod')
         ->where('conteo_inventario.ubicacion', 'Sala')
-        ->whereBetween('conteo_inventario.fecha', ['2023-10-27 00:00:00', '2022-10-28 23:59:59'])
+        ->whereBetween('conteo_inventario.fecha', ['2023-10-26 00:00:00', '2022-10-28 23:59:59'])
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
         ->groupBy('codigo')
         ->orderBy('id')
