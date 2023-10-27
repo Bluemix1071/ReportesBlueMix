@@ -1099,6 +1099,15 @@
                             </li>
                             @endcan
 
+                            @can('Sala')
+                            <li class="nav-item">
+                                <a href="https://192.168.0.73/www" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Cont. Inv. Sala (Ionic)</p>
+                                </a>
+                            </li>
+                            @endcan
+
                             {{-- @can('Sala')
                             <li class="nav-item">
                                 <a href="{{ route('Precios') }}" class="nav-link {{ setActive('Precios') }}">
