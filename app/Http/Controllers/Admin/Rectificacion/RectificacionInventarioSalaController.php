@@ -240,22 +240,57 @@ class RectificacionInventarioSalaController extends Controller
     }
 
     public function StockSala (Request $request){
+        $fechai = DB::select('select curdate() as fechai');
+        $fechades = DB::select('select DATE_SUB(curdate(), INTERVAL 30 DAY) as fechades');
 
         $solicitudaj =  DB::table('solicitud_ajuste')
-        ->whereBetween('fecha', ['2023-10-01', '2023-10-19'])
+        ->whereBetween('fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
         ->where('solicita', 'inventario')
+        ->orderBy('folio', 'DESC')
         ->get();
-
         return view('admin.Rectificacion.StockSala',compact('solicitudaj'));
 
     }
 
-    public function NStockSala (Request $request){
-        $codigo = $request->input('codigo');
-        $buscar_detalle = $request->input('buscar_detalle');
-        dd($buscar_detalle);
-        $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$request->get('cod_articulo').'');
+    public function NStockSala(Request $request)
+    {
+    $codigo = $request->input('codigo');
+    $buscar_detalle = $request->input('buscar_detalle');
+    $buscar_marca = $request->input('buscar_marca');
+    $buscar_cantidad = $request->input('buscar_cantidad');
+    $nueva_cantidad = $request->input('nueva_cantidad');
 
-        return back();
+    $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$codigo);
+    $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo='.$codigo);
+    $fechai = DB::select('select curdate() as fechai');
+
+    // Inicio registro de cambios
+    $registro = DB::table('solicitud_ajuste')->insert([
+        [
+            "codprod" => $codigo,
+            "producto" => $buscar_detalle,
+            "fecha" => $fechai[0]->fechai,
+            "stock_anterior" => $buscar_cantidad,
+            "nuevo_stock" => $nueva_cantidad,
+            "autoriza" => 'Diego Carrasco',
+            "solicita" => 'Inventario',
+            "observacion" => 'Inventario Sala',
+        ]
+            ]);
+    // Fin registro de cambios
+
+    // Inicio cambio stock sala
+        DB::table('bodeprod')
+        ->where('bpprod', $codigo)
+        ->update([
+            'bpsrea' => $nueva_cantidad
+        ]);
+    //fin cambio stock sala
+
+    // dd($request->all());
+    return back()->with('success', '¡Stock sala actualizado correctamente!');
+
+    // return back()->with('success', 'Inventario actualizado correctamente!');
     }
+
 }

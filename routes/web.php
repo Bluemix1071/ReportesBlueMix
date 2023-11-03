@@ -426,7 +426,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@RectificacionInsumoMerma')->name('RectificacionInsumoMerma');
     Route::post('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@GuardarRectificacionInsumoMerma')->name('GuardarRectificacionInsumoMerma');
     Route::get('/StockSala','Rectificacion\RectificacionInventarioSalaController@StockSala')->name('StockSala');
-    Route::put('/NStockSala','Rectificacion\RectificacionInventarioSalaController@NStockSala')->name('NStockSala');
+    Route::post('/NStockSala','Rectificacion\RectificacionInventarioSalaController@NStockSala')->name('NStockSala');
     Route::post('/RectificacionInsumoMermaCargarVale','Rectificacion\RectificacionInventarioSalaController@CargarValeInsimoMerma')->name('CargarValeInsimoMerma');
     /* fin */
 
