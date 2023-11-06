@@ -87,7 +87,7 @@ class ProductosPendientesController extends Controller
     public function EditarProd(Request $request){
 
         $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$request->get('cod_articulo').'');
-        $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo='.$request->get('cod_articulo').'');
+        $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo='.$request->get('cod_articulo').''.' and prod_pendientes.id='.$request->get('id').'');
         $fechai = DB::select('select curdate() as fechai');
         $descripcionprod = DB::select('select producto.ARDESC as descripcion from producto where producto.ARCODI= ' .$request->get('cod_articulo').'');
         // dd($descripcionprod[0]->descripcion);
