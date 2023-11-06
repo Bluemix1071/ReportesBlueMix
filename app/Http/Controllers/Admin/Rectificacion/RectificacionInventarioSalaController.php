@@ -263,6 +263,7 @@ class RectificacionInventarioSalaController extends Controller
     $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$codigo);
     $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo='.$codigo);
     $fechai = DB::select('select curdate() as fechai');
+    $anio = DB::select('select year(curdate()) as anio');
 
     // Inicio registro de cambios
     $registro = DB::table('solicitud_ajuste')->insert([
@@ -274,7 +275,7 @@ class RectificacionInventarioSalaController extends Controller
             "nuevo_stock" => $nueva_cantidad,
             "autoriza" => 'Diego Carrasco',
             "solicita" => 'Inventario',
-            "observacion" => 'Inventario Sala',
+            "observacion" => 'Inventario Sala '.$anio[0]->anio,
         ]
             ]);
     // Fin registro de cambios
@@ -286,8 +287,8 @@ class RectificacionInventarioSalaController extends Controller
             'bpsrea' => $nueva_cantidad
         ]);
     //fin cambio stock sala
-
     // dd($request->all());
+
     return back()->with('success', '¡Stock sala actualizado correctamente!');
 
     // return back()->with('success', 'Inventario actualizado correctamente!');
