@@ -106,7 +106,7 @@ Stock Sala
                                     // '<h6><b>Fecha Impresion:</b> '+$('#fecha').val()+'</h6>'+
                                 '</div>'+
                             '</div>',
-                            title: '<h5>Convenio Marco</h5>',
+                            title: 'Ajustes inventario sala',
                             messageBottom:
                             '<div class="row">'+
                                 '<div class="col">'+
