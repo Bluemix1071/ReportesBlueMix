@@ -23,7 +23,7 @@ Stock Sala
                                             &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col" value=""/>
                                             &nbsp;<input type="text" id="buscar_detalle" name="buscar_detalle" placeholder="Detalle" readonly class="form-control col-4" value=""/>
                                             &nbsp;<input type="text" id="buscar_marca" name="buscar_marca" placeholder="Marca" readonly class="form-control col-sm-1" value=""/>
-                                            &nbsp;<input type="text" id="buscar_cantidad" name="buscar_cantidad" placeholder="Stock Anterior" readonly class="form-control col-sm" value=""/>
+                                            &nbsp;<input type="text" id="buscar_cantidad" name="buscar_cantidad" placeholder="Stock Anterior Sala" readonly class="form-control col-sm" value=""/>
                                             &nbsp;<input type="number" id="nueva_cantidad" name="nueva_cantidad" placeholder="Nuevo Stock" class="form-control col-sm" value="" required/>
                                         </div>
                                          </form>
@@ -46,6 +46,7 @@ Stock Sala
                                     <th scope="col" style="text-align:left">Stock anterior</th>
                                     <th scope="col" style="text-align:left">Stock nuevo</th>
                                     <th scope="col" style="text-align:left">Fecha</th>
+                                    <th scope="col" style="text-algin:left">Observación</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,6 +58,7 @@ Stock Sala
                                     <td style="text-align:left">{{ $item->stock_anterior }}</td>
                                     <td style="text-align:left">{{ $item->nuevo_stock }}</td>
                                     <td style="text-align:left">{{$item->fecha }}</td>
+                                    <td style="text-algin:left">{{ $item->observacion }}</td>
                                     </tr>
                                     @endforeach
                                     </tbody>

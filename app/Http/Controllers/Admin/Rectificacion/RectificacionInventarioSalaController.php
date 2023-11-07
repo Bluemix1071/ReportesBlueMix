@@ -241,7 +241,7 @@ class RectificacionInventarioSalaController extends Controller
 
     public function StockSala (Request $request){
         $fechai = DB::select('select curdate() as fechai');
-        $fechades = DB::select('select DATE_SUB(curdate(), INTERVAL 30 DAY) as fechades');
+        $fechades = DB::select('select DATE_SUB(curdate(), INTERVAL 15 DAY) as fechades');
 
         $solicitudaj =  DB::table('solicitud_ajuste')
         ->whereBetween('fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
@@ -291,7 +291,6 @@ class RectificacionInventarioSalaController extends Controller
 
     return back()->with('success', '¡Stock sala actualizado correctamente!');
 
-    // return back()->with('success', 'Inventario actualizado correctamente!');
     }
 
 }
