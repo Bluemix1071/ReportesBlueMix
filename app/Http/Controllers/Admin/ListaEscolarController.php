@@ -356,7 +356,7 @@ class ListaEscolarController extends Controller
       //fin agregar cotizacion
 
 
-    public function eliminar(Request $request)
+    public function eliminar(Request $request)//Eliminar Curso
     {
 
 
@@ -406,7 +406,6 @@ class ListaEscolarController extends Controller
     public function eliminaritem(Request $request)
     {
         $update = DB::table('ListaEscolar_detalle')
-
         ->where('cod_articulo' , $request->get('cod_articulo'))
         ->where('id_curso' , $request->get('idcurso'))
         ->take(5)
@@ -414,7 +413,7 @@ class ListaEscolarController extends Controller
 
 
         //$update=DB::select('Delete FROM ListaEscolar_detalle WHERE cod_articulo='.$request->get("cod_articulo").' and id_curso='.$request->get("idcurso").' limit 15');
-
+        dd($request);
 
         $listas=DB::select('select
         ListaEscolar_detalle.id,
