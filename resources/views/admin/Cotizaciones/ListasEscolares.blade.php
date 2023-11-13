@@ -95,7 +95,7 @@ Lista Escolar
                         <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
-                                    <th hidden></th>
+                                    <th hidden>id</th>
                                     <th scope="col" style="text-align:left">Codigo Producto</th>
                                     <th scope="col" style="text-align:left">Detalle</th>
                                     <th scope="col" style="text-align:left">Marca</th>
@@ -160,7 +160,7 @@ Lista Escolar
                                     <div class="col-4" style="text-algin:right">
                                     @if($item->comentario != "")
                                         <a href="" title="comentario" data-toggle="modal" data-target="#mimodalejemplo"
-                                        class="btn btn-info bg-success"
+                                        class="btn btn-primary"
                                         data-id='{{ $item->id }}'
                                         data-comentario='{{ $item->comentario }}'
 
@@ -344,6 +344,7 @@ Lista Escolar
                                 <input id="stock_bodega" type="number"
                                     class="form-control @error('stock_bodega') is-invalid @enderror" name="stock_bodega"
                                     value="{{ old('stock_bodega') }}" required autocomplete="stock_bodega" readonly min="0" max="99999999">
+
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -523,7 +524,7 @@ Lista Escolar
         "zeroRecords": "no hay coincidencias",
         "infoEmpty": "",
         "infoFiltered": ""
-        }
+        },order: [[0, 'desc']]
       } );
       minDate = $('#min');
       maxDate = $('#max');
@@ -547,7 +548,7 @@ Lista Escolar
             table.draw();
 
         });
-    } );
+    });
 
     </script>
 
@@ -608,11 +609,14 @@ Lista Escolar
         $(add_button).click(function(e){
         var codigo = $('#codigo').val();
         var cantidad = $('#cantidad').val();
+        var descripcion = $('#buscar_detalle').val();
 
         if (codigo === '') {
         window.alert("Debe ingresar Codigo");
         } else if (cantidad === '') {
         window.alert("Debe ingresar Cantidad");
+        } else if (descripcion === ''){
+        window.alert("Debe presionar \"ENTER\" al ingresar el código");
         } else {
         $("#agregaritem").submit();
         }

@@ -260,8 +260,9 @@ class RectificacionInventarioSalaController extends Controller
     $buscar_cantidad = $request->input('buscar_cantidad');
     $nueva_cantidad = $request->input('nueva_cantidad');
 
-    $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$codigo);
-    $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo='.$codigo);
+    $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= "'.$codigo.'"');
+    $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo="'.$codigo.'"');
+    // dd($prod_pendiente);
     $fechai = DB::select('select curdate() as fechai');
     $anio = DB::select('select year(curdate()) as anio');
 

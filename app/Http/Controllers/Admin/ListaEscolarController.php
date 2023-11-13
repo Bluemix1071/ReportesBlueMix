@@ -413,7 +413,6 @@ class ListaEscolarController extends Controller
 
 
         //$update=DB::select('Delete FROM ListaEscolar_detalle WHERE cod_articulo='.$request->get("cod_articulo").' and id_curso='.$request->get("idcurso").' limit 15');
-        dd($request);
 
         $listas=DB::select('select
         ListaEscolar_detalle.id,
@@ -470,7 +469,7 @@ class ListaEscolarController extends Controller
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
         where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
-        // dd($listas);
+
         $colegio=DB::select('select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
         inner join comunas on colegio.id_comuna = comunas.id where colegio.id='.$request->get("idcolegio").'')[0];
 

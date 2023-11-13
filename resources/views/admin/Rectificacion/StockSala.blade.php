@@ -200,14 +200,18 @@ Stock Sala
         $(add_button).click(function(e){
         var codigo = $('#codigo').val();
         var nueva_cantidad = $('#nueva_cantidad').val();
+        var descripcion = $('#buscar_detalle').val();
 
         if (codigo === '') {
         window.alert("Debe ingresar Codigo");
         } else if (nueva_cantidad === '') {
         window.alert("Debe ingresar nueva cantidad");
+        } else if (descripcion === ''){
+        window.alert("Debe presionar \"ENTER\" al ingresar el código");
         } else {
         $("#agregaritem").submit();
         }
+
 });
 
         </script>
