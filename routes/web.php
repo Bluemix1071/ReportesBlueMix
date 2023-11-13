@@ -70,6 +70,10 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/GuardarConteoInventarioDetalleSala', 'SalaController@GuardarConteoDetalle')->name('GuardarConteoDetalleSala');
     //Cargar descripcion segun codigo
     Route::get('/BuscarProducto/{codigo}','SalaController@BuscarProducto')->name('BuscarProducto');
+    Route::get('/BuscarProducto_en_solicitud/{codigo}','SalaController@BuscarProducto_en_solicitud')->name('BuscarProducto_en_solicitud');
+    Route::get('/BuscarProducto_en_pendiente/{codigo}', 'SalaController@BuscarProducto_en_pendiente')->name('BuscarProducto_en_pendiente');
+    // routes/web.php
+
     //
     Route::get('/ConsolidacionInventarioBodega', 'SalaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioSala');
     Route::post('/CargarValeConteoSala', 'SalaController@CargarValeConteoSala')->name('CargarValeConteoSala');

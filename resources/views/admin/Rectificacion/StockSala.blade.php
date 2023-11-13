@@ -92,6 +92,7 @@ Stock Sala
 <script>
 
   $(document).ready(function() {
+    $("#codigo").focus();
     $('#Listas').DataTable( {
 
 
@@ -157,7 +158,7 @@ Stock Sala
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
 
-  <script>
+  {{-- <script>
     var max_fields      = 9999; //maximum input boxes allowed
     var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
     var add_button      = $("#add_field_button"); //Add button ID
@@ -191,11 +192,15 @@ Stock Sala
             });
         });
         $('#codigo').keyup(function(e){
+
             if(e.keyCode == 13)
             {
                 $(this).trigger("enterKey");
             }
+
         });
+        //
+        //
 
         $(add_button).click(function(e){
         var codigo = $('#codigo').val();
@@ -214,7 +219,94 @@ Stock Sala
 
 });
 
-        </script>
+</script> --}}
+{{-- --}}
+<script>
+    var max_fields = 9999; // Máximo de campos permitidos
+    var wrapper = $("#input_fields_wrap"); // Contenedor de campos
+    var add_button = $("#add_field_button"); // ID del botón de agregar
+    var conteo = $("#conteo").val();
+
+    var codigo = null;
+    var descripcion = null;
+    var marca = null;
+    var area = null;
+    var cantidad = null;
+    var sala = null;
+    var costo = null;
+    var nueva_cantiad = null;
+
+    $('#codigo').bind("enterKey", function (e) {
+        // Búsqueda de producto
+        $.ajax({
+            url: '../admin/BuscarProducto/' + $('#codigo').val(),
+            type: 'GET',
+            success: function (result) {
+                console.log(result);
+                $('#buscar_detalle').val(result[0].ARDESC);
+                $('#buscar_marca').val(result[0].ARMARCA);
+                $("#buscar_cantidad").val(result[0].bpsrea);
+                $("#nueva_cantidad").focus();
+                codigo = result[0].ARCODI;
+                descripcion = result[0].ARDESC;
+                marca = result[0].ARMARCA;
+                costo = result[0].PCCOSTO;
+                sala = result[0].bpsrea;
+            }
+        });
+
+        // Búsqueda en productos pendientes
+        $.ajax({
+            url: '{{ route('BuscarProducto_en_pendiente', ['codigo' => '']) }}/' + $('#codigo').val(),
+            type: 'GET',
+            success: function (result) {
+                console.log(result);
+                if (result.producto_pendiente_existe) {
+                    window.alert("¡El producto está en la lista de productos pendientes!");
+                }
+                // Maneja el resultado de la búsqueda en productos pendientes según tus necesidades
+            }
+        });
+
+        // Búsqueda en solicitudes de bodega pendientes
+        $.ajax({
+            // url: '{{ route('BuscarProducto_en_solicitud', ['codigo' => 'valor_codigo']) }}',
+            url: '{{ route('BuscarProducto_en_solicitud', ['codigo' => '']) }}/' + $('#codigo').val(),
+            type: 'GET',
+            success: function (result) {
+                console.log(result);
+                if (result.producto_soli_existe) {
+                    window.alert("¡El producto está en la lista de solicitudes de bodega pendientes!");
+                }
+                // Maneja el resultado de la búsqueda en solicitudes de bodega pendientes según tus necesidades
+            }
+        });
+    });
+
+    $('#codigo').keyup(function (e) {
+        if (e.keyCode == 13) {
+            $(this).trigger("enterKey");
+        }
+    });
+
+    $(add_button).click(function (e) {
+        var codigo = $('#codigo').val();
+        var nueva_cantidad = $('#nueva_cantidad').val();
+        var descripcion = $('#buscar_detalle').val();
+
+        if (codigo === '') {
+            window.alert("Debe ingresar Codigo");
+        } else if (nueva_cantidad === '') {
+            window.alert("Debe ingresar nueva cantidad");
+        } else if (descripcion === '') {
+            window.alert("Debe presionar \"ENTER\" al ingresar el código");
+        } else {
+            $("#agregaritem").submit();
+        }
+    });
+</script>
+
+{{-- --}}
 
 <script type="text/javascript">
     $( "#precio_venta" ).keyup(function() {

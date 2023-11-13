@@ -262,10 +262,41 @@ class RectificacionInventarioSalaController extends Controller
 
     $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= "'.$codigo.'"');
     $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo="'.$codigo.'"');
-    // dd($prod_pendiente);
     $fechai = DB::select('select curdate() as fechai');
     $anio = DB::select('select year(curdate()) as anio');
 
+    // Existe codigo en prod pendiente
+    $producto_pendiente_existe = DB::table('prod_pendientes')
+    ->where('cod_articulo', $codigo)
+    ->exists();
+    //
+    // Existe en solicitud a bodega pendiente
+    $producto_soli_existe = DB::table('dsalida_bodega')
+    ->leftJoin('salida_de_bodega', 'dsalida_bodega.id', '=', 'salida_de_bodega.nro')
+    ->where('dsalida_bodega.articulo', $codigo)
+    ->where('salida_de_bodega.estado', 'K')
+    ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
+    ->select('dsalida_bodega.*', 'salida_de_bodega.*')
+    ->exists();
+    //
+
+    // Verificar si al menos uno de los productos existe
+    if ($producto_pendiente_existe || $producto_soli_existe) {
+    if ($producto_pendiente_existe && $producto_soli_existe) {
+        // Ambos existen, mostrar mensaje para ambos
+        echo "El producto existe en solicitud a bodega pendiente y en producto pendiente.";
+    } elseif ($producto_pendiente_existe) {
+        // Solo existe en solicitud a bodega pendiente
+        echo "El producto existe en solicitud a bodega pendiente.";
+    } elseif ($producto_soli_existe) {
+        // Solo existe en producto pendiente
+        echo "El producto existe en producto pendiente.";
+    }
+    } else {
+    // No existe en ninguno de los dos
+    echo "El producto no existe en solicitud a bodega pendiente ni en producto pendiente.";
+    }
+    //
     // Inicio registro de cambios
     $registro = DB::table('solicitud_ajuste')->insert([
         [

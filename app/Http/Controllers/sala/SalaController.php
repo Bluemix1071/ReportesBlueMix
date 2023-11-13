@@ -750,6 +750,37 @@ class SalaController extends Controller
       return response()->json($producto);
     }
 
+    // Función encontrar producto en pendientes
+    public function BuscarProducto_en_pendiente($codigo)
+    {
+        // error_log('Código a buscar: ' . $codigo);
+        $producto_pendiente_existe = DB::table('prod_pendientes')
+            ->where('cod_articulo', $codigo)
+            ->where('estado','1')
+            ->exists();
+
+        // error_log('Resultado de la búsqueda: ' . ($producto_pendiente_existe ? 'true' : 'false'));
+        return response()->json(['producto_pendiente_existe' => $producto_pendiente_existe]);
+    }
+    //
+
+    // Funcion encontrar producto en solicitudes a Bodega pendientes
+    public function BuscarProducto_en_solicitud($codigo)
+    {
+        $fechai = DB::select('select curdate() as fechai');
+
+        $producto_soli_existe = DB::table('dsalida_bodega')
+        ->leftJoin('salida_de_bodega', 'dsalida_bodega.id', '=', 'salida_de_bodega.nro')
+        ->where('dsalida_bodega.articulo', $codigo)
+        ->where('salida_de_bodega.estado', 'K')
+        ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
+        ->select('dsalida_bodega.*', 'salida_de_bodega.*')
+        ->exists();
+
+        return response()->json(['producto_soli_existe' => $producto_soli_existe]);
+    }
+    //
+
     public function GuardarConteoDetalle(Request $request){
       //stristr($email, 'e');
       $id_conteo = $request->get('id_conteo');
