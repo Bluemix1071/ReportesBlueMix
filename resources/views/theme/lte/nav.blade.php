@@ -725,6 +725,13 @@
                                                     </p>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a href="{{ route('HistorialRectificacionBodega') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Stock Bodega
+                                                    </p>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 @endcan

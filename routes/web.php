@@ -430,7 +430,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/RectificacionInsumoMermaCargarVale','Rectificacion\RectificacionInventarioSalaController@CargarValeInsimoMerma')->name('CargarValeInsimoMerma');
     /* fin */
 
-
+    /*  Mantenedor CRUD rectificacion inventario bodega */
+    Route::get('/StockBodega', 'Rectificacion\RectificacionInventarioBodegaController@HistorialRectificacionBodega')->name('HistorialRectificacionBodega');
+    Route::post('/StockBodega', 'Rectificacion\RectificacionInventarioBodegaController@BuscarHistorialProducto')->name('BuscarHistorialProducto');
+    Route::post('/GuardarStockBodega', 'Rectificacion\RectificacionInventarioBodegaController@GuardarStockBodega')->name('GuardarStockBodega');
+    Route::post('/AgregarRack', 'Rectificacion\RectificacionInventarioBodegaController@AgregarRack')->name('AgregarRack');
+    /* fin */
 
     //---------------------Exportaciones----------------------------------------------//
 
