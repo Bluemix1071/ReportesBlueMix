@@ -264,7 +264,6 @@ Stock Sala
                 if (result.producto_pendiente_existe) {
                     window.alert("¡El producto está en la lista de productos pendientes!");
                 }
-                // Maneja el resultado de la búsqueda en productos pendientes según tus necesidades
             }
         });
 
@@ -278,7 +277,6 @@ Stock Sala
                 if (result.producto_soli_existe) {
                     window.alert("¡El producto está en la lista de solicitudes de bodega pendientes!");
                 }
-                // Maneja el resultado de la búsqueda en solicitudes de bodega pendientes según tus necesidades
             }
         });
     });
