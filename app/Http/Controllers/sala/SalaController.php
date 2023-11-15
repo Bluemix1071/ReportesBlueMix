@@ -768,12 +768,14 @@ class SalaController extends Controller
     public function BuscarProducto_en_solicitud($codigo)
     {
         $fechai = DB::select('select curdate() as fechai');
+        $fechades = DB::select('select DATE_SUB(curdate(), INTERVAL 7 DAY) as fechades');
 
         $producto_soli_existe = DB::table('dsalida_bodega')
         ->leftJoin('salida_de_bodega', 'dsalida_bodega.id', '=', 'salida_de_bodega.nro')
         ->where('dsalida_bodega.articulo', $codigo)
         ->where('salida_de_bodega.estado', 'K')
-        ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
+        // ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
+        ->whereBetween('salida_de_bodega.fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
         ->select('dsalida_bodega.*', 'salida_de_bodega.*')
         ->exists();
 
