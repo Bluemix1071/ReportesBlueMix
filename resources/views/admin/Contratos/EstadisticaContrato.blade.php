@@ -166,7 +166,7 @@
                                     <th scope="col">Giro</th>
                                     <th scope="col">Depto</th>
                                     <th scope="col">Cod Depto</th>
-                                    <th scope="col">Total</th>
+                                    <th scope="col">Total-NC</th>
                                     <th scope="col">Accion</th>
                                 </tr>
                             </thead>
