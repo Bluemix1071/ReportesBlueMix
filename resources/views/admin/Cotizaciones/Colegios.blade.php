@@ -104,6 +104,7 @@ Colegios
                         <table id="colegios" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
+                                    <th scope="col" style="text-align:left" hidden>id</th>
                                     <th scope="col" style="text-align:left">Colegio</th>
                                     <th scope="col" style="text-align:left">Comuna</th>
                                     <th scope="col" style="text-algin:left">Temporada</th>
@@ -114,6 +115,7 @@ Colegios
                     </div>
                                     @foreach ($colegios as $item)
                                         <tr>
+                                            <td scope="col" style="text-align:left" hidden>{{ $item->id }}</td>
                                             <td scope="col" style="text-align:left">{{ $item->colegio }}</td>
                                             <td style="text-align:left">{{ $item->comuna }}</td>
                                             <td style="text-align:left">{{ $item->temporada }}</td>
@@ -285,7 +287,8 @@ Colegios
       "zeroRecords": "no hay coincidencias",
       "infoEmpty": "",
       "infoFiltered": ""
-      }
+      },
+      order: [[0, 'desc']]
     } );
   } );
 

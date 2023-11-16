@@ -20,7 +20,7 @@ Stock Sala
                                     <div class="form-group row">
                                         <form action="{{ route('NStockSala') }}" method="post" enctype="multipart/form-data" id="agregaritem">
                                         <div class="form-group row">
-                                            &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col" value=""/>
+                                            &nbsp;<input type="text" id="codigo" minlength="7" maxlength="13" name="codigo" placeholder="Codigo" required class="form-control col" value=""/>
                                             &nbsp;<input type="text" id="buscar_detalle" name="buscar_detalle" placeholder="Detalle" readonly class="form-control col-4" value=""/>
                                             &nbsp;<input type="text" id="buscar_marca" name="buscar_marca" placeholder="Marca" readonly class="form-control col-sm-1" value=""/>
                                             &nbsp;<input type="text" id="buscar_cantidad" name="buscar_cantidad" placeholder="Stock Anterior Sala" readonly class="form-control col-sm" value=""/>
@@ -251,7 +251,9 @@ Stock Sala
                 descripcion = result[0].ARDESC;
                 marca = result[0].ARMARCA;
                 costo = result[0].PCCOSTO;
-                sala = result[0].bpsrea;
+                sala = result[0].bpsrea;3
+
+                $('#codigo').val(codigo);
             }
         });
 
