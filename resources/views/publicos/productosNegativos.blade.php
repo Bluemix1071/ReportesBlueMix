@@ -32,18 +32,26 @@
                                       <th scope="col">Marca</th>
                                       <th scope="col">Cantidad</th>
                                       <th scope="col">Familia</th>
+                                      <th scope="col" hidden>Estado</th>
                                     </tr>
                                   </thead>
                                   <tbody id="res">
                                   @foreach($productos as $item)
-                                    <tr>
-                                      <th>{{ $item->bpprod }}</th>
-                                      <td>{{ $item->ARDESC }}</td>
-                                      <td>{{ $item->ARMARCA }}</td>
-                                      <td>{{ $item->bpsrea }}</td>
-                                      <td>{{ $item->TAGLOS }}</td>
-                                    </tr>
-                                    @endforeach
+                                    
+                                      @if($item->estado == 2)
+                                        <tr style="background-color: #17a2b8">
+                                      @else
+                                        <tr>
+                                      @endif
+                                          <th>{{ $item->bpprod }}</th>
+                                          <td>{{ $item->ARDESC }}</td>
+                                          <td>{{ $item->ARMARCA }}</td>
+                                          <td>{{ $item->bpsrea }}</td>
+                                          <td>{{ $item->TAGLOS }}</td>
+                                          <td hidden>{{ $item->estado }}</td>
+                                        </tr>
+                                  
+                                  @endforeach
                                   </tbody>
                                 </table>
                       </div>

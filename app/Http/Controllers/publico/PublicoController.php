@@ -51,14 +51,37 @@ class PublicoController extends Controller
 
     public function filtarProductosNegativos(Request  $request){
 
-      $productos = DB::table('bodeprod')
+      $max = date('Y-m-d');
+
+      $min = date("Y-m-d",strtotime($max."- 15 days"));
+
+      /* $productos = DB::table('bodeprod')
       ->leftjoin('producto', 'bodeprod.bpprod', '=' ,'producto.ARCODI')
       ->leftjoin('tablas', 'producto.ARGRPO2', '=', 'tablas.TAREFE')
       ->where('bpsrea', '<', 0)
-      ->where('tablas.TACODI', 22)->get();
+      ->where('tablas.TACODI', 22)->get(); */
       //select bodeprod.*, `producto`.`ARDESC`, `producto`.`ARMARCA` from `bodeprod` left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` where `bodeprod`.`bpsrea` < 0;
       //$cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2022-11-02')->orderBy('CZ_FECHA', 'DESC')->get();
       //$productos=DB::table('productos_negativos')->get();
+      $productos = DB::select('select *, count(1) as estado from (
+        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod` 
+        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` 
+        left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
+        left join prod_pendientes on bodeprod.bpprod = prod_pendientes.cod_articulo
+        where `bpsrea` < 0 and `tablas`.`TACODI` = 22 and prod_pendientes.estado = 1 group by bpprod
+        union all
+        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod` 
+        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` 
+        left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
+        where `bpsrea` < 0 and `tablas`.`TACODI` = 22
+        ) t group by bpprod having count(1) >= 1');
+
+        /* $en_solicitud = DB::select('select ARCODI, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod` 
+        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` 
+        left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
+        left join dsalida_bodega on bodeprod.bpprod = dsalida_bodega.articulo
+        LEFT JOIN salida_de_bodega on dsalida_bodega.id = salida_de_bodega.nro
+        where `bpsrea` < 0 and `tablas`.`TACODI` = 22 and salida_de_bodega.estado = "K" and fecha between "'.$min.'" and "'.$max.'" group by bpprod'); */
 
       return view('publicos.productosNegativos',compact('productos'));
 
