@@ -754,10 +754,23 @@ class SalaController extends Controller
     public function BuscarProducto_en_pendiente($codigo)
     {
         // error_log('Código a buscar: ' . $codigo);
+        // $producto_pendiente_existe = DB::table('prod_pendientes')
+        //     ->where('cod_articulo', $codigo)
+        //     ->where('estado','1')
+        //     ->exists();
+
         $producto_pendiente_existe = DB::table('prod_pendientes')
-            ->where('cod_articulo', $codigo)
-            ->where('estado','1')
-            ->exists();
+        ->where(function($query) use ($codigo) {
+            $query->where('cod_articulo', $codigo)
+                  ->orWhere('cod_articulo', function($subquery) use ($codigo) {
+                      $subquery->from('producto')
+                               ->where('producto.ARCBAR', $codigo)
+                               ->select('producto.arcodi')
+                               ->limit(1);
+                  });
+        })
+        ->where('estado', '1')
+        ->exists();
 
         // error_log('Resultado de la búsqueda: ' . ($producto_pendiente_existe ? 'true' : 'false'));
         return response()->json(['producto_pendiente_existe' => $producto_pendiente_existe]);
@@ -770,14 +783,35 @@ class SalaController extends Controller
         $fechai = DB::select('select curdate() as fechai');
         $fechades = DB::select('select DATE_SUB(curdate(), INTERVAL 7 DAY) as fechades');
 
+
+        $producto_producto = DB::table('producto')
+        ->where('producto.ARCODI',$codigo)
+        ->orWhere('producto.ARCBAR',$codigo)
+        ->select('producto.arcodi')
+        ->limit(1);
+
+        if ($producto_producto->exists()) {
+        $arcodi = $producto_producto->value('arcodi');
+
         $producto_soli_existe = DB::table('dsalida_bodega')
         ->leftJoin('salida_de_bodega', 'dsalida_bodega.id', '=', 'salida_de_bodega.nro')
-        ->where('dsalida_bodega.articulo', $codigo)
+        ->where('dsalida_bodega.articulo', $arcodi)
         ->where('salida_de_bodega.estado', 'K')
         // ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
         ->whereBetween('salida_de_bodega.fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
         ->select('dsalida_bodega.*', 'salida_de_bodega.*')
         ->exists();
+
+        } else {
+          $producto_soli_existe = DB::table('dsalida_bodega')
+          ->leftJoin('salida_de_bodega', 'dsalida_bodega.id', '=', 'salida_de_bodega.nro')
+          ->where('dsalida_bodega.articulo', $codigo)
+          ->where('salida_de_bodega.estado', 'K')
+          // ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
+          ->whereBetween('salida_de_bodega.fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
+          ->select('dsalida_bodega.*', 'salida_de_bodega.*')
+          ->exists();
+        }
 
         return response()->json(['producto_soli_existe' => $producto_soli_existe]);
     }
