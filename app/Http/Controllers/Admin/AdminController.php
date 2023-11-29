@@ -1803,7 +1803,7 @@ public function stocktiemporeal (Request $request){
             $data = file_get_contents($path);
             $type = pathinfo($path, PATHINFO_EXTENSION);
             $base64 = base64_encode($data);
-    
+
             $img = 'data:image/' . $type . ';base64,' . $base64;
           }else{
             $img = null;
@@ -1814,7 +1814,7 @@ public function stocktiemporeal (Request $request){
           $data = file_get_contents($path);
           $type = pathinfo($path, PATHINFO_EXTENSION);
           $base64 = base64_encode($data);
-  
+
           $img = 'data:image/' . $type . ';base64,' . $base64;
         }
 
@@ -2548,7 +2548,7 @@ public function stocktiemporeal (Request $request){
             `db_bluemix`.`productosjumpsellerweb`) `list`
     GROUP BY `list`.`codigo`
     HAVING `total` = 1) as list1
-    where list1.stock_sala > 0;');
+    where list1.stock_sala >= 0;');
 
       return view('admin.ProductosFaltantesWeb',compact('consulta'));
 

@@ -92,6 +92,7 @@ Lista Escolar
                         @endif --}}
             <div class="row">
                     <div class="col-md-12">
+                    @if( $colegio->id != 676 )
                         <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
@@ -125,12 +126,12 @@ Lista Escolar
                                     @if (empty($item->stock_sala))
                                         <td style="text-align:left">{{ 0 }}</td>
                                     @else
-                                    <td style="text-align:left">{{ $item->stock_sala }}</td>
+                                        <td style="text-align:left">{{ $item->stock_sala }}</td>
                                     @endif
                                     @if (empty($item->stock_bodega))
                                         <td style="text-align:left">{{ 0 }}</td>
                                     @else
-                                        <td style="text-align:left">{{ $item->stock_bodega }}</td>
+                                    <td style="text-align:left">{{ $item->stock_bodega }}</td>
                                     @endif
                                     <td style="text-align:left">${{ number_format(($item->preciou), 0, ',', '.') }}</td>
                                     <td style="text-align:left">${{ number_format(($item->cantidad*$item->preciou), 0, ',', '.') }}</td>
@@ -214,8 +215,114 @@ Lista Escolar
                                     @endif
                                 </tr>
                             </tfoot>
-
                     </table>
+                @else
+                    <!-- TABLA VALENTIN -->
+                    <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
+                        <thead>
+                            <tr>
+                                <th hidden>id</th>
+                                <th scope="col" style="text-align:left">Codigo Producto</th>
+                                <th scope="col" style="text-align:left">Detalle</th>
+                                <th scope="col" style="text-align:left">Marca</th>
+                                <th scope="col" style="text-align:left">Cantidad</th>
+                                <th scope="col" style="text-align:left">Stock Total</th>
+                                <th scope="col" style="text-align:left">Queda <i class="fas fa-percentage"></i></th>
+                                <th scope="col" style="text-align:left">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (empty($listas))
+
+                            @else
+                            <div style="display: none">
+                                {{-- variable suma --}}
+                                {{ $total = 0 }}
+
+                                @foreach ($listas as $item)
+                            <tr>
+                                <td hidden>{{ $item->id}}</td>
+                                <td scope="col" style="text-align:left"><a href="https://www.libreriabluemix.cl/search?q={{ $item->cod_articulo }}" target="_blank">{{ $item->cod_articulo }}</a></td>
+                                <td style="text-align:left">{{ $item->descripcion }}</td>
+                                <td style="text-align:left">{{ $item->marca }}</td>
+                                <td style="text-align:left">{{ $item->cantidad }}</td>
+                                @if (empty($item->stock_total))
+                                <td style="text-align: left">0</td>
+                                @else
+                                <td style="text-align: left">{{ $item->stock_total }}</td>
+                                @endif
+                                <td style="text-align: left">{{ number_format((($item->stock_total*100)/$item->cantidad), 0, ',', '.') }}%</td>
+                                <div style="display: none">{{ $total += $item->precio_detalle }}</div>
+                                <td>
+                                <div class="container">
+                                    <div class="row">
+
+                                <div class="col-3">
+                                    <form action="{{ route('EliminarItem')}}" method="post" enctype="multipart/form-data">
+
+                                        <input type="text" value="{{$item->cod_articulo}}" name="cod_articulo" hidden>
+                                        <input type="text" value="{{$item->id}}" name="id" hidden>
+                                        <input type="text" value="{{ $curso->id }}" name="idcurso" hidden>
+                                        <input type="text" value="{{ $colegio->id }}" name="id_colegio" hidden>
+
+                                        <button class="btn btn-danger" type="submit" style="margin-left: -50%;" title="Eliminar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                                &nbsp;
+                                <!-- boton comentar-->
+                                <div class="col-4" style="text-algin:right">
+                                @if($item->comentario != "")
+                                    <a href="" title="comentario" data-toggle="modal" data-target="#mimodalejemplo"
+                                    class="btn btn-primary"
+                                    data-id='{{ $item->id }}'
+                                    data-comentario='{{ $item->comentario }}'
+
+                                    data-curso='{{ $curso->id }}'
+                                    data-colegio='{{  $colegio->id }}'
+                                    ><i class="fas fa-comment-dots"></i></a>
+                                @else
+                                    <a href="" title="comentario" data-toggle="modal" data-target="#mimodalejemplo"
+                                    class="btn btn-info"
+                                    data-id='{{ $item->id }}'
+                                    data-comentario='{{ $item->comentario }}'
+
+                                    data-curso='{{ $curso->id }}'
+                                    data-colegio='{{  $colegio->id }}'
+                                    ><i class="fas fa-comment-dots"></i></a>
+                                @endif
+                                </div>
+                                <!-- boton comentar-->
+                                &nbsp;
+                                <div class="col-1" style="text-algin:right">
+                                        <a href="" title="editarp" data-toggle="modal" data-target="#modaleditarp"
+                                        class="btn btn-info bg-success"
+                                        data-id='{{ $item->id }}'
+                                        data-comentario='{{ $item->comentario }}'
+                                        data-curso='{{ $curso->id }}'
+                                        data-colegio='{{  $colegio->id }}'
+                                        data-cod_articulo='{{ $item->cod_articulo }}'
+                                        data-descripcion='{{ $item->descripcion }}'
+                                        data-marca='{{ $item->marca }}'
+                                        data-cantidad='{{ $item->cantidad }}'
+                                        data-stock_sala='{{ $item->stock_sala }}'
+                                        data-stock_bodega='{{ $item->stock_bodega }}'
+                                        ><i class="fas fa-edit"></i></a>
+                                </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endif
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                </table>
+                    <!-- -->
+                    @endif
                 </div>
             </div>
           </div>
