@@ -246,12 +246,9 @@ Lista Escolar
                                 <td style="text-align:left">{{ $item->descripcion }}</td>
                                 <td style="text-align:left">{{ $item->marca }}</td>
                                 <td style="text-align:left">{{ $item->cantidad }}</td>
-                                @if (empty($item->stock_total))
-                                <td style="text-align: left">0</td>
-                                @else
-                                <td style="text-align: left">{{ $item->stock_total }}</td>
-                                @endif
-                                <td style="text-align: left">{{ number_format((($item->stock_total*100)/$item->cantidad), 0, ',', '.') }}%</td>
+                                <td style="text-align: left">{{ (($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega)) }}</td>
+                                {{-- <td style="text-align: left">{{ number_format((($item->stock_total*100)/$item->cantidad), 0, ',', '.') }}%</td> --}}
+                                <td style="text-align: left">{{ number_format((((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega)) * 100) / $item->cantidad), 0, ',', '.') }}%</td>
                                 <div style="display: none">{{ $total += $item->precio_detalle }}</div>
                                 <td>
                                 <div class="container">
