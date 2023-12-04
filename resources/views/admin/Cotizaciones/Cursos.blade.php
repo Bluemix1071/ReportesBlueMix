@@ -64,9 +64,10 @@ Lista Escolar
 
             <div class="row">
                     <div class="col-md-12">
-                        <table id="cursos" class="table table-bordered table-hover dataTable table-sm">
+                        <table id="cursos" name="cursos" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
+                                    <th scope="cpñ" style="text-align:left" hidden>id</th>
                                     <th scope="col" style="text-align:left">Nombre</th>
                                     <th scope="col" style="text-align:left">Sub Curso</th>
                                     <th scope="col" style="text-align:left">Acciones</th>
@@ -76,6 +77,7 @@ Lista Escolar
                                     @foreach ($cursos as $item)
 
                                         <tr>
+                                            <td scope="col" style="text-align:left" hidden>{{ $item->id }}</td>
                                             <td scope="col" style="text-align:left">{{ $item->nombre_curso }}</td>
                                             <td style="text-align:left">{{ $item->letra }}</td>
                                             <td>
@@ -167,67 +169,74 @@ Lista Escolar
 </script>
 
 <script>
-    .felim { text-align: right; }
-    .felim { width: 60%; }
+        $(document).ready(function() {
 
-    /* function guardar(){
-        if ( $('#basic-form')[0].checkValidity() ) {
-            $('#basic-form').submit();
-            $.ajax({
-                url: '../admin/AgregarCurso/',
-                type: 'POST',
-                data: {'id_colegio': $('#id_colegio').val(), 'nombre': $('#nombre').val(), 'subcurso': $('#subcurso').val()},
-                success: function(result) {
-                    console.log(result);
-                    location.reload();
-                }
-            });
-        }else{
-            console.log("formulario no es valido");
+var table = $('#cursos').DataTable({
+  dom: 'Bfrtip',
+  buttons: [
+                  'copy', 'pdf',
+                  {
+                      extend: 'print',
+                      messageTop:
+                      '<div class="row">'+
+                          '<div class="col">'+
+                          '</div>'+
+                          '<div class="col">'+
+                          '</div>'+
+                      '</div>',
+                      title: 'Cursos',
+                      messageBottom:
+                      '<div class="row">'+
+                          '<div class="col">'+
+                          '</div>'+
+                          '<div class="col">'+
+                          '</div>'+
+                          '<div class="col">'+
+                          '</div>'+
+                      '</div>',
+                  }
+              ],
+    "language":{
+  "info": "_TOTAL_ registros",
+  "search":  "Buscar",
+  "paginate":{
+    "next": "Siguiente",
+    "previous": "Anterior",
+
+},
+"loadingRecords": "cargando",
+"processing": "procesando",
+"emptyTable": "no hay resultados",
+"zeroRecords": "no hay coincidencias",
+"infoEmpty": "",
+"infoFiltered": ""
+},order: [[0, 'desc']]
+} );
+minDate = $('#min');
+maxDate = $('#max');
+
+$('#cursos thead tr').clone(false).appendTo( '#cursos thead' );
+$('#cursos thead tr:eq(1) th').each( function (i) {
+    var title = $(this).text();
+    $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎" />' );
+
+    $( 'input', this ).on( 'keyup change', function () {
+        if ( table.column(i).search() !== this.value ) {
+            table
+            .column(i)
+            .search( this.value )
+            .draw();
         }
-    } */
-
-    /*function eliminar(id){
-        var opcion = confirm("¿Desea eliminar Curso?");
-        if (opcion == true) {
-            $.ajax({
-            url: '../admin/EliminarCurso/'+id,
-            type: 'DELETE',
-            success: function(result) {
-
-            }
-            });
-            location.reload();
-            } else {
-
-            }
-    }*/
-
-  $(document).ready(function() {
-    $('#cursos').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-
-        ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
-
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
     } );
-  } );
-  </script>
+} );
+
+$('#min, #max').on('change', function () {
+    table.draw();
+
+});
+});
+</script>
+
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
   <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
