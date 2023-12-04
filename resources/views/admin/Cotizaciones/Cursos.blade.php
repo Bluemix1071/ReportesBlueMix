@@ -85,7 +85,7 @@ Lista Escolar
                                         <div class="container">
                                         <div class="row">
 
-                                        <div class="col-2" style="text-algin:right">
+                                        <div class="col-3" style="text-algin:right">
                                             <form action="{{ route('listas', ['idcolegio' => $colegio->id ,'idcurso' => $item->id]) }}" method="post" enctype="multipart/form-data">
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="fas fa-eye"></i>
