@@ -93,7 +93,7 @@ Lista Escolar
                                             </form>
                                         </div>
 
-                                        <div class="col-2" style="text-algin:right">
+                                        <div class="col-3" style="text-algin:right">
                                             <a href="" title="Eliminar Curso" data-toggle="modal" data-target="#modaleliminarcurso"
                                             class="btn btn-danger"
                                             data-id='{{ $item->id }}'
