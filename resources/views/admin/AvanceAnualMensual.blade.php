@@ -36,6 +36,7 @@
                             <h3>Venta Diaria: $ 0</h3>
                         @else
                             <h3>Venta Diaria: ${{ number_format($totalventaxdia, 0, ',', '.') }}</h3>
+                            {{-- <h3>Venta Diaria: $ {{ number_format($mensual2023[0]->año2023-$destucanm23[0]->destucanm23-$desnenem23[0]->desnenem23, 0, ',', '.') }}</h3> --}}
                         @endif
                     </div>
                 </div>

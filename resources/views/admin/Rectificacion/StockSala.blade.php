@@ -43,6 +43,7 @@ Stock Sala
                                     <th scope="col" style="text-align:left" hidden>Folio</th>
                                     <th scope="col" style="text-align:left">Codigo Producto</th>
                                     <th scope="col" style="text-align:left">Detalle</th>
+                                    <th scope="col" style="text-align:left">Marca</th>
                                     <th scope="col" style="text-align:left">Stock anterior</th>
                                     <th scope="col" style="text-align:left">Stock nuevo</th>
                                     <th scope="col" style="text-align:left">Fecha</th>
@@ -55,6 +56,7 @@ Stock Sala
                                     <td  style="text-align:left" hidden>{{ $item->folio }}</td>
                                     <td scope="col" style="text-align:left"><a href="https://www.libreriabluemix.cl/search?q={{ $item->codprod }}" target="_blank">{{ $item->codprod }}</a></td>
                                     <td style="text-align:left">{{ $item->producto }}</td>
+                                    <td style="text-align:left">{{ $item->ARMARCA }}</td>
                                     <td style="text-align:left">{{ $item->stock_anterior }}</td>
                                     <td style="text-align:left">{{ $item->nuevo_stock }}</td>
                                     <td style="text-align:left">{{$item->fecha }}</td>

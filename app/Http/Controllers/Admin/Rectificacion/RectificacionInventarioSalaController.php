@@ -244,10 +244,13 @@ class RectificacionInventarioSalaController extends Controller
         $fechades = DB::select('select DATE_SUB(curdate(), INTERVAL 15 DAY) as fechades');
 
         $solicitudaj =  DB::table('solicitud_ajuste')
+        ->leftJoin('producto', 'solicitud_ajuste.codprod', '=', 'producto.ARCODI')
         ->whereBetween('fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
         ->where('solicita', 'inventario')
         ->orderBy('folio', 'DESC')
         ->get();
+
+
         return view('admin.Rectificacion.StockSala',compact('solicitudaj'));
 
     }
