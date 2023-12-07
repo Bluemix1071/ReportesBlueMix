@@ -2548,7 +2548,7 @@ public function stocktiemporeal (Request $request){
             `db_bluemix`.`productosjumpsellerweb`) `list`
     GROUP BY `list`.`codigo`
     HAVING `total` = 1) as list1
-    where list1.stock_sala >= 0;');
+    where list1.stock_sala > 0;');
 
       return view('admin.ProductosFaltantesWeb',compact('consulta'));
 

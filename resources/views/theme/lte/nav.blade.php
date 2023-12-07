@@ -675,6 +675,51 @@
                                     </a>
                                 </li>
 
+                                <li class="nav-item">
+                                    <a href="" class="nav-link ">
+                                        <i class="nav-icon fas fa-circle"></i>
+                                        <p>Stock Critico
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <!-- <li class="nav-item">
+                                                <a href="{{ route('RectificacionNotasCredito') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Notas Crédito</p>
+                                                </a>
+                                            </li> -->
+                                        <li class="nav-item">
+                                            <a href="{{ route('StockDesaparecido') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Stock Desaparecido
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('StockNecesario') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Stock Necesario
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('StockGuardado') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Stock Guardado
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('ProductosProveedor') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>OC Proveedor 
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 @can('Costos')
                                     <li class="nav-item">
                                         <a href="" class="nav-link ">

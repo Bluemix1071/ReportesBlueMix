@@ -441,6 +441,17 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/AgregarRack', 'Rectificacion\RectificacionInventarioBodegaController@AgregarRack')->name('AgregarRack');
     /* fin */
 
+    // Modulos de Stock critico 
+    Route::get('/StockDesaparecido','StockCritico\StockCriticoController@StockDesaparecido')->name('StockDesaparecido');
+    Route::get('/StockNecesario','StockCritico\StockCriticoController@StockNecesario')->name('StockNecesario');
+    Route::get('/StockGuardado','StockCritico\StockCriticoController@StockGuardado')->name('StockGuardado');
+    Route::get('/Proveedores','ProductosProveedor\ProductosProveedorController@ProductosProveedor')->name('ProductosProveedor');
+    Route::get('/Detalles_proveedor/{id}','ProductosProveedor\ProductosProveedorController@Detalles_Proveedor')->name('Detalles_proveedor');
+    Route::get('/obtenerProducto/{codigoProducto}','ProductosProveedor\ProductosProveedorController@obtenerProducto')->name('obtenerProducto');
+    Route::post('/agregar-producto','ProductosProveedor\ProductosProveedorController@agregarProducto')->name('agregarProducto');
+    Route::post('/eliminar-producto/{id}','ProductosProveedor\ProductosProveedorController@eliminarProducto')->name('eliminarProducto');
+    Route::post('actualizarCantidadProducto/{id}','ProductosProveedor\ProductosProveedorController@actualizarCantidadProducto')->name('actualizarCantidadProducto');
+
     //---------------------Exportaciones----------------------------------------------//
 
     Route::get('/pdf/{NroOrden?}','exports\ExportsController@exportpdf')->name('pdf.orden');
