@@ -2757,14 +2757,16 @@ public function stocktiemporeal (Request $request){
         $ventasala101=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=101 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
         $ventasala102=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=102 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
         $ventasala103=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=103 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala104=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=104 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
 
 
-        $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma;
+        $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma+$ventasala104[0]->suma;
 
 
         $factuasxnc=$factuasxnca[0]->sumaa+$factuasxncb[0]->sumab;
         $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc;
         $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
+
         $totalventaxdia=$ventasala+$facturasmenosnc;
 
 
