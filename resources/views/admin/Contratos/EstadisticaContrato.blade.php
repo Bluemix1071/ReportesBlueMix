@@ -166,7 +166,8 @@
                                     <th scope="col">Giro</th>
                                     <th scope="col">Depto</th>
                                     <th scope="col">Cod Depto</th>
-                                    <th scope="col">Total-NC</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Total NC</th>
                                     <th scope="col">Accion</th>
                                 </tr>
                             </thead>
@@ -175,10 +176,11 @@
                                     <tr>
                                         <td>{{ $item->CARUTC }}</td>
                                         <td>{{ $item->razon }}</td>
-                                        <td>{{ $item->giro_cliente }}</td>
+                                        <td >{{ $item->giro_cliente }}</td>
                                         <td>{{ $item->depto }}</td>
                                         <td>{{ $item->cod_depto }}</td>
                                         <td>{{ number_format(intval($item->total ), 0, ',', '.') }}</td>
+                                        <td>{{ number_format(intval($item->total_nc ), 0, ',', '.') }}</td>
                                         <td>
                                             <form action="{{ route('EstadisticaEntidadDetalle', ['rut' => $item->CARUTC, 'depto' => $item->depto, 'cod_depto' => $item->cod_depto]) }}"  method="post" style="display: inherit" target="_blank">
                                                 <button type="submit" class="btn btn-success">Ver</button>

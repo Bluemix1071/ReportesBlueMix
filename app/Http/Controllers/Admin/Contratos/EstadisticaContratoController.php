@@ -40,11 +40,14 @@ class EstadisticaContratoController extends Controller
         
         //select contrato_detalle.codigo_producto, producto.ARCOPV, producto.ARDESC, producto.ARMARCA from contrato_detalle left join producto on contrato_detalle.codigo_producto = producto.ARCODI group by codigo_producto;
 
-        $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto, if(isnull(total_nc), cargos.CAVALO, (sum(cargos.CAVALO)-total_nc)) AS total, nro_doc_refe, total_nc from cargos 
+        /* $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto, if(isnull(total_nc), cargos.CAVALO, (sum(cargos.CAVALO)-total_nc)) AS total, nro_doc_refe, total_nc from cargos 
         left join nota_credito on cargos.CANMRO = nota_credito.nro_doc_refe
-        where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by cod_depto, CARUTC');
+        where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by cod_depto, CARUTC'); */
 
-        //dd($contratos_historicos);
+        $contratos_historicos = DB::select('select CARUTC,razon,giro_cliente,depto,SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto,sum(cavalo) as total,sum(total_nc) as total_nc
+        from cargos 
+        left join nota_credito on cargos.CANMRO = nota_credito.nro_doc_refe
+        where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by CARUTC, depto;');
 
         return view('admin.Contratos.EstadisticaContrato', compact('productos_contratos', 'productos_historicos_contratos', 'productos_contratos_sin_venta', 'contratos_historicos', 'fecha1', 'fecha2'));
     }
@@ -162,9 +165,14 @@ class EstadisticaContratoController extends Controller
         left join producto on dcargos.DECODI = producto.ARCODI
         WHERE cargos.nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and dcargos.DEFECO between "'.$fecha1.'" and "'.$fecha2.'" and DETIPO = 8 group by DECODI');
 
-        $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto, if(isnull(total_nc), cargos.CAVALO, (sum(cargos.CAVALO)-total_nc)) AS total, nro_doc_refe, total_nc from cargos 
+        /* $contratos_historicos = DB::select('select CARUTC, razon, giro_cliente, depto, SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto, if(isnull(total_nc), cargos.CAVALO, (sum(cargos.CAVALO)-total_nc)) AS total, nro_doc_refe, total_nc from cargos 
         left join nota_credito on cargos.CANMRO = nota_credito.nro_doc_refe
-        where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by cod_depto, CARUTC');
+        where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by cod_depto, CARUTC'); */
+
+        $contratos_historicos = DB::select('select CARUTC,razon,giro_cliente,depto,SUBSTRING_INDEX(SUBSTRING_INDEX(cargos.nro_oc, "-", 1), ".", 1) as cod_depto,sum(cavalo) as total,sum(total_nc) as total_nc
+       from cargos 
+       left join nota_credito on cargos.CANMRO = nota_credito.nro_doc_refe
+       where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by CARUTC, depto;');
 
         return view('admin.Contratos.EstadisticaContrato', compact('productos_contratos', 'productos_historicos_contratos', 'productos_contratos_sin_venta', 'contratos_historicos', 'fecha1', 'fecha2'));
     }
