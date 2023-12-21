@@ -12,10 +12,10 @@ class ProductosProveedorController extends Controller
     {
         // Obtiene productos relacionados con proveedores
         $productos = DB::table('productos_fecha')
-            ->join('ordendecompra', 'ordendecompra.NombreProveedor', '=', 'productos_fecha.PVNOMB')
+            ->join('OrdenDeCompra', 'OrdenDeCompra.NombreProveedor', '=', 'productos_fecha.PVNOMB')
             ->join ("stock_critico_2", 'stock_critico_2.Detalle', '=', 'productos_fecha.ARDESC')
             ->where ("media_de_ventas", '>=', "Bodega")
-            ->select('productos_fecha.*', 'ordendecompra.*', 'stock_critico_2.*')
+            ->select('productos_fecha.*', 'OrdenDeCompra.*', 'stock_critico_2.*')
             ->orderBy('NombreProveedor')
             ->groupBy('RutProveedor')
             ->get();
