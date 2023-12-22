@@ -328,4 +328,97 @@ class RectificacionInventarioSalaController extends Controller
 
     }
 
+    public function SumarVale(Request $request)
+    {
+        $valemas = $request->input('valemas');
+
+        $newstockmas = DB::select('
+            SELECT dvales.vaarti,producto.ardesc,dvales.vacant as "cant_vale",bodeprod.bpsrea as "stock_actual",(dvales.vacant + bodeprod.bpsrea) as "new_stock"
+            FROM dvales
+            LEFT JOIN bodeprod ON dvales.vaarti = bodeprod.bpprod
+            left join producto on dvales.vaarti = producto.ARCODI
+            WHERE dvales.vanmro = ? GROUP BY dvales.vaarti', [$valemas]);
+
+        // dd($newstockmas);
+
+        $fechai = DB::select('select curdate() as fechai');
+        $anio = DB::select('select year(curdate()) as anio');
+
+        // Inicio registro de cambios
+        foreach ($newstockmas as $result) {
+            $registrovalemas = DB::table('solicitud_ajuste')->insert([
+            [
+              "codprod" => $result->vaarti,
+              "producto" => $result->ardesc,
+              "fecha" => $fechai[0]->fechai,
+              "stock_anterior" => $result->stock_actual,
+              "nuevo_stock" => $result->new_stock,
+              "autoriza" => 'Diego Carrasco',
+              "solicita" => 'Inventario',
+              "observacion" => 'Inventario Sala ' . $anio[0]->anio . ' custodia entra',
+            ]
+         ]);
+        }
+        // Fin registro de cambios
+
+        // Inicio cambio stock sala
+        foreach ($newstockmas as $result) {
+            DB::table('bodeprod')
+                ->where('bpprod', $result->vaarti)
+                ->update([
+                    'bpsrea' => $result->new_stock
+                ]);
+        }
+        //fin cambio stock sala
+
+        return back()->with('success', '¡Stock sala sumado actualizado correctamente!');
+    }
+
+    public function RestarVale(Request $request)
+    {
+        $valemenos = $request->input('valemenos');
+
+        $newstockmenos = DB::select('
+            SELECT dvales.vaarti,producto.ardesc,dvales.vacant as "cant_vale",bodeprod.bpsrea as "stock_actual",(bodeprod.bpsrea - dvales.vacant) as "new_stock"
+            FROM dvales
+            LEFT JOIN bodeprod ON dvales.vaarti = bodeprod.bpprod
+            left join producto on dvales.vaarti = producto.ARCODI
+            WHERE dvales.vanmro = ? GROUP BY dvales.vaarti', [$valemenos]);
+
+        // dd($newstockmas);
+
+        $fechai = DB::select('select curdate() as fechai');
+        $anio = DB::select('select year(curdate()) as anio');
+
+        // Inicio registro de cambios
+        foreach ($newstockmenos as $result) {
+            $registrovalemenos = DB::table('solicitud_ajuste')->insert([
+            [
+              "codprod" => $result->vaarti,
+              "producto" => $result->ardesc,
+              "fecha" => $fechai[0]->fechai,
+              "stock_anterior" => $result->stock_actual,
+              "nuevo_stock" => $result->new_stock,
+              "autoriza" => 'Diego Carrasco',
+              "solicita" => 'Inventario',
+              "observacion" => 'Inventario Sala ' . $anio[0]->anio . ' Custodia Sale',
+            ]
+         ]);
+        }
+        // Fin registro de cambios
+
+        // Inicio cambio stock sala
+        foreach ($newstockmenos as $result) {
+            DB::table('bodeprod')
+                ->where('bpprod', $result->vaarti)
+                ->update([
+                    'bpsrea' => $result->new_stock
+                ]);
+        }
+        //fin cambio stock sala
+
+        return back()->with('success', '¡Stock sala descontado actualizado correctamente!');
+    }
+
+
 }
