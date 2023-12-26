@@ -816,6 +816,33 @@ class SalaController extends Controller
         return response()->json(['producto_soli_existe' => $producto_soli_existe]);
     }
     //
+    // Buscar un vale para sumar stock
+    public function Stockvalemas(Request $request)
+    {
+        $valemas = $request->input('valemas');
+
+        $newstockmas = DB::select('
+            SELECT dvales.vaarti, dvales.vacant as "cant_vale", bodeprod.bpsrea as "stock_actual", (dvales.vacant + bodeprod.bpsrea) as "new_stock"
+            FROM dvales
+            LEFT JOIN bodeprod ON dvales.vaarti = bodeprod.bpprod
+            WHERE dvales.vanmro = ? GROUP BY dvales.vaarti', [$valemas]);
+
+        return response()->json(['newstockmas' => $newstockmas]);
+    }
+
+    // Buscar un vale para restar stock
+    public function Stockvalemenos(Request $request)
+    {
+        $valemenos = $request->input('valemenos');
+
+        $newstockmenos = DB::select('
+            SELECT dvales.vaarti, dvales.vacant as "cant_vale", bodeprod.bpsrea as "stock_actual", (bodeprod.bpsrea - dvales.vacant) as "new_stock"
+            FROM dvales
+            LEFT JOIN bodeprod ON dvales.vaarti = bodeprod.bpprod
+            WHERE dvales.vanmro = ? GROUP BY dvales.vaarti', [$valemenos]);
+
+        return response()->json(['newstockmenos' => $newstockmenos]);
+    }
 
     public function GuardarConteoDetalle(Request $request){
       //stristr($email, 'e');

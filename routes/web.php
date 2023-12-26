@@ -72,6 +72,8 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/BuscarProducto/{codigo}','SalaController@BuscarProducto')->name('BuscarProducto');
     Route::get('/BuscarProducto_en_solicitud/{codigo}','SalaController@BuscarProducto_en_solicitud')->name('BuscarProducto_en_solicitud');
     Route::get('/BuscarProducto_en_pendiente/{codigo}', 'SalaController@BuscarProducto_en_pendiente')->name('BuscarProducto_en_pendiente');
+    Route::get('/Stockvalemas/{valemas}', 'SalaController@Stockvalemas')->name('Stockvalemas');
+    Route::get('/Stockvalemenos/{valemenos}', 'SalaController@Stockvalemenos')->name('Stockvalemenos');
     // routes/web.php
 
     //
@@ -431,6 +433,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@GuardarRectificacionInsumoMerma')->name('GuardarRectificacionInsumoMerma');
     Route::get('/StockSala','Rectificacion\RectificacionInventarioSalaController@StockSala')->name('StockSala');
     Route::post('/NStockSala','Rectificacion\RectificacionInventarioSalaController@NStockSala')->name('NStockSala');
+    Route::get('/SumarVale','Rectificacion\RectificacionInventarioSalaController@SumarVale')->name('SumarVale');
+    Route::get('/RestarVale','Rectificacion\RectificacionInventarioSalaController@RestarVale')->name('RestarVale');
+    Route::get('/buscar-stock', 'TuControlador@BuscarStock')->name('buscar.stock');
     Route::post('/RectificacionInsumoMermaCargarVale','Rectificacion\RectificacionInventarioSalaController@CargarValeInsimoMerma')->name('CargarValeInsimoMerma');
     /* fin */
 
@@ -441,7 +446,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/AgregarRack', 'Rectificacion\RectificacionInventarioBodegaController@AgregarRack')->name('AgregarRack');
     /* fin */
 
-    // Modulos de Stock critico 
+    // Modulos de Stock critico
     Route::get('/StockDesaparecido','StockCritico\StockCriticoController@StockDesaparecido')->name('StockDesaparecido');
     Route::get('/StockNecesario','StockCritico\StockCriticoController@StockNecesario')->name('StockNecesario');
     Route::get('/StockGuardado','StockCritico\StockCriticoController@StockGuardado')->name('StockGuardado');

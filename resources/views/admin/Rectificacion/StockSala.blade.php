@@ -25,12 +25,42 @@ Stock Sala
                                             &nbsp;<input type="text" id="buscar_marca" name="buscar_marca" placeholder="Marca" readonly class="form-control col-sm-1" value=""/>
                                             &nbsp;<input type="text" id="buscar_cantidad" name="buscar_cantidad" placeholder="Stock Anterior Sala" readonly class="form-control col-sm" value=""/>
                                             &nbsp;<input type="number" id="nueva_cantidad" name="nueva_cantidad" placeholder="Nuevo Stock" class="form-control col-sm" value="" required/>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{--Espacio entre input y botones --}}
                                         </div>
                                          </form>
                                          @if(session()->get('email') == "ignaciobarrera4@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
-                                         <div class="col-md-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success"><i class="fas fa-upload" style="color: #ffffff;"></i></button></div>
+                                         {{-- <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success"><i class="fas fa-upload" style="color: #ffffff;"></i></button></div>
+                                         <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success">+</button></div>
+                                         <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success">-</button></div> --}}
+                                         <div class="row">
+                                            <div class="col-4">
+                                                <button type="submit" id="add_field_button" class="btn btn-success"><i class="fas fa-upload" style="color: #ffffff;"></i></button>
+                                            </div>
+                                            <div class="col-3">
+                                                {{-- <button type="submit" id="vale_mas" class="btn btn-success">+</button> --}}
+                                                <a href="" title="sumarvale" data-toggle="modal" data-target="#modalvalemas"
+                                                class="btn btn-info bg-success">+</a>
+                                            </div>
+                                            <div class="col-3">
+                                                {{-- <button type="submit" id="vale_menos" class="btn btn-success">-</button> --}}
+                                                <a href="" title="restarvale" data-toggle="modal" data-target="#modalvalemenos"
+                                                class="btn btn-info bg-success">-</a>
+                                            </div>
+                                        </div>
+
                                          @else
-                                         <div class="col-md-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success"disabled><i class="fas fa-upload" style="color: #ffffff;"></i></button></div>
+                                         {{-- <div class="col-md-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success"disabled><i class="fas fa-upload" style="color: #ffffff;"></i></button></div> --}}
+                                         <div class="row">
+                                            <div class="col-4">
+                                                <button type="submit" id="add_field_button" class="btn btn-success" disabled><i class="fas fa-upload" style="color: #ffffff;"></i></button>
+                                            </div>
+                                            <div class="col-3">
+                                                <button type="submit" id="vale_mas" class="btn btn-success" disabled>+</button>
+                                            </div>
+                                            <div class="col-3">
+                                                <button type="submit" id="vale_menos" class="btn btn-success" disabled>-</button>
+                                            </div>
+                                        </div>
                                          @endif
                                 </div>
                                 </div>
@@ -74,8 +104,160 @@ Stock Sala
           </div>
         </div>
 </div>
-<!-- Modal Editar -->
-<!-- FIN Modal Editar -->
+<!-- Modal sumar vale -->
+<div class="modal fade" id="modalvalemas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel2">Sumar stock Vale</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <form method="GET" action="{{ route('SumarVale')}}" id="sumarValeForm">
+                        {{ method_field('GET') }}
+                        {{ csrf_field() }}
+                        @csrf
+                        <div class="form-group row">
+                            <label for="valemas" class="col-md-4 col-form-label text-md-right">{{ __('N° Vale') }}</label>
+                            <div class="col-md-6">
+                                <input id="valemas" type="text" class="form-control" name="valemas" required autocomplete="valemas" autofocus>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="buscarBtn"><i class="fas fa-search"></i></button>
+                        </div>
+                        <!-- -->
+                        <div class="col-md-12">
+                            @if(empty($newstockmas))
+                            <table id="valemore" class="table table-bordered table-hover dataTable table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align:left">Codigo</th>
+                                        <th scope="col" style="text-align:left">cant vale</th>
+                                        <th scope="col" style="text-align:left">Stock actual</th>
+                                        <th scope="col" style="text-align:left">Nuevo Stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tfoot>
+
+                        </table>
+                            @else
+                                {{-- <p>No hay información disponible.</p> --}}
+                                <table id="valemore" class="table table-bordered table-hover dataTable table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align:left">Codigo</th>
+                                            <th scope="col" style="text-align:left">cant vale</th>
+                                            <th scope="col" style="text-align:left">Stock actual</th>
+                                            <th scope="col" style="text-align:left">Nuevo Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            @foreach ($newstockmas as $i)
+                                            <tr>
+                                            <td scope="col" style="text-align:left">{{ $i->vaarti }}</td>
+                                            <td style="text-align:left">{{ $i->cant_vale }}</td>
+                                            <td style="text-align:left">{{ $i->stock_actual }}</td>
+                                            <td style="text-align:left">{{ $i->New_stock }}</td>
+                                            </tr>
+                                            @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                    </tfoot>
+
+                            </table>
+                            @endif
+                        </div>
+                        <!-- -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="sumarValeBtn">Sumar</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN sumar vale -->
+
+<!-- Modal restar vale -->
+<div class="modal fade" id="modalvalemenos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel2">Restar stock Vale</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <form method="GET" action="{{ route('RestarVale')}}" id="restarValeForm">
+                        {{ method_field('GET') }}
+                        {{ csrf_field() }}
+                        @csrf
+                        <div class="form-group row">
+                            <label for="valemenos" class="col-md-4 col-form-label text-md-right">{{ __('N° Vale') }}</label>
+                            <div class="col-md-6">
+                                <input id="valemenos" type="text" class="form-control" name="valemenos" required autocomplete="valemenos" autofocus>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="buscarBtnless"><i class="fas fa-search"></i></button>
+                        </div>
+                        <!-- -->
+                        <div class="col-md-12">
+                            @if(empty($newstockmas))
+                            <table id="valeless" class="table table-bordered table-hover dataTable table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align:left">Codigo</th>
+                                        <th scope="col" style="text-align:left">cant vale</th>
+                                        <th scope="col" style="text-align:left">Stock actual</th>
+                                        <th scope="col" style="text-align:left">Nuevo Stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tfoot>
+
+                        </table>
+                            @else
+                                <table id="valeless" class="table table-bordered table-hover dataTable table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align:left">Codigo</th>
+                                            <th scope="col" style="text-align:left">cant vale</th>
+                                            <th scope="col" style="text-align:left">Stock actual</th>
+                                            <th scope="col" style="text-align:left">Nuevo Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            @foreach ($newstockmenos as $i)
+                                            <tr>
+                                            <td scope="col" style="text-align:left">{{ $i->vaarti }}</td>
+                                            <td style="text-align:left">{{ $i->cant_vale }}</td>
+                                            <td style="text-align:left">{{ $i->stock_actual }}</td>
+                                            <td style="text-align:left">{{ $i->New_stock }}</td>
+                                            </tr>
+                                            @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                    </tfoot>
+
+                            </table>
+                            @endif
+                        </div>
+                        <!-- -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="restarValeBtn">Restar</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN restar vale -->
 @endsection
 
 @section('script')
@@ -146,6 +328,114 @@ Stock Sala
   } );
   </script>
 
+<script>
+
+    $(document).ready(function() {
+      $('#valemore').DataTable( {
+
+
+          dom: 'Bfrtip',
+          buttons: [
+                          'copy', 'pdf',
+                          {
+                              extend: 'print',
+                              messageTop:
+                              '<div class="row">'+
+                                  '<div class="col">'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      // '<h6><b>Fecha Impresion:</b> '+$('#fecha').val()+'</h6>'+
+                                  '</div>'+
+                              '</div>',
+                              title: 'Ajustes inventario sala',
+                              messageBottom:
+                              '<div class="row">'+
+                                  '<div class="col">'+
+                                      // '<h6><b>Total Items:</b> '+$('#total').val()+'</h6>'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      // '<h6><b>Sub Total:</b> '+$('#montosubtotal').val()+'</h6>'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      // '<h6><b>Total(-10%):</b> '+$('#montototal').val()+'</h6>'+
+                                  '</div>'+
+                              '</div>',
+                          }
+                      ],
+            "language":{
+          "info": "_TOTAL_ registros",
+          "search":  "Buscar",
+          "paginate":{
+            "next": "Siguiente",
+            "previous": "Anterior",
+
+        },
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        },
+        order: [[0, 'desc']]
+      } );
+    } );
+    </script>
+
+<script>
+
+    $(document).ready(function() {
+      $('#valeless').DataTable( {
+
+
+          dom: 'Bfrtip',
+          buttons: [
+                          'copy', 'pdf',
+                          {
+                              extend: 'print',
+                              messageTop:
+                              '<div class="row">'+
+                                  '<div class="col">'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      // '<h6><b>Fecha Impresion:</b> '+$('#fecha').val()+'</h6>'+
+                                  '</div>'+
+                              '</div>',
+                              title: 'Ajustes inventario sala',
+                              messageBottom:
+                              '<div class="row">'+
+                                  '<div class="col">'+
+                                      // '<h6><b>Total Items:</b> '+$('#total').val()+'</h6>'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      // '<h6><b>Sub Total:</b> '+$('#montosubtotal').val()+'</h6>'+
+                                  '</div>'+
+                                  '<div class="col">'+
+                                      // '<h6><b>Total(-10%):</b> '+$('#montototal').val()+'</h6>'+
+                                  '</div>'+
+                              '</div>',
+                          }
+                      ],
+            "language":{
+          "info": "_TOTAL_ registros",
+          "search":  "Buscar",
+          "paginate":{
+            "next": "Siguiente",
+            "previous": "Anterior",
+
+        },
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        },
+        order: [[0, 'desc']]
+      } );
+    } );
+    </script>
+
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
@@ -159,6 +449,81 @@ Stock Sala
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
   <script src="{{asset("js/ajaxproductospormarca.js")}}"></script>
+
+<script>
+    $('#buscarBtn').on('click', function () {
+    var valemasValue = $('#valemas').val();
+
+    $.ajax({
+        type: 'GET',
+        url: '{{ route('Stockvalemas', ['valemas' => '']) }}/' + $('#valemas').val(),
+        data: { 'valemas': valemasValue },
+        success: function (data) {
+            // Limpiar la tabla antes de agregar nuevos datos
+            $('#valemore tbody').empty();
+
+            // Verificar si hay datos en la respuesta JSON
+            if (data.hasOwnProperty('newstockmas') && data.newstockmas.length > 0) {
+                // Iterar sobre los datos y agregarlos a la tabla
+                data.newstockmas.forEach(function (item) {
+                    var row = '<tr>' +
+                        '<td scope="col" style="text-align:left">' + item.vaarti + '</td>' +
+                        '<td style="text-align:left">' + item.cant_vale + '</td>' +
+                        '<td style="text-align:left">' + item.stock_actual + '</td>' +
+                        '<td style="text-align:left">' + item.new_stock + '</td>' +
+                        '</tr>';
+                    $('#valemore tbody').append(row);
+                });
+            } else {
+                // Si no hay datos, mostrar un mensaje
+                var emptyRow = '<tr><td colspan="4">No hay información disponible.</td></tr>';
+                $('#valemore tbody').append(emptyRow);
+            }
+        },
+        error: function (error) {
+            console.error('Error en la solicitud AJAX:', error);
+        }
+    });
+});
+</script>
+
+<script>
+    $('#buscarBtnless').on('click', function () {
+    var valemenosValue = $('#valemenos').val();
+
+    $.ajax({
+        type: 'GET',
+        url: '{{ route('Stockvalemenos', ['valemenos' => '']) }}/' + $('#valemenos').val(),
+        data: { 'valemenos': valemenosValue },
+        success: function (data) {
+            // Limpiar la tabla antes de agregar nuevos datos
+            $('#valeless tbody').empty();
+
+            // Verificar si hay datos en la respuesta JSON
+            if (data.hasOwnProperty('newstockmenos') && data.newstockmenos.length > 0) {
+                // Iterar sobre los datos y agregarlos a la tabla
+                data.newstockmenos.forEach(function (item) {
+                    var row = '<tr>' +
+                        '<td scope="col" style="text-align:left">' + item.vaarti + '</td>' +
+                        '<td style="text-align:left">' + item.cant_vale + '</td>' +
+                        '<td style="text-align:left">' + item.stock_actual + '</td>' +
+                        '<td style="text-align:left">' + item.new_stock + '</td>' +
+                        '</tr>';
+                    $('#valeless tbody').append(row);
+                });
+            } else {
+                // Si no hay datos, mostrar un mensaje
+                var emptyRow = '<tr><td colspan="4">No hay información disponible.</td></tr>';
+                $('#valeless tbody').append(emptyRow);
+            }
+        },
+        error: function (error) {
+            console.error('Error en la solicitud AJAX:', error);
+        }
+    });
+});
+</script>
+
 
   {{-- <script>
     var max_fields      = 9999; //maximum input boxes allowed
@@ -321,6 +686,7 @@ Stock Sala
       }
     });
 </script>
+
 
 
 @endsection
