@@ -16,7 +16,7 @@
         <hr>
         <div class="container">
             <div class="col-md-12">
-                <form action="{{ route('GuardarOrdenesDeDiseño') }}" enctype="multipart/form-data" method="post" id="desvForm" >
+                <form action="{{ route('GuardarOrdenesDeDiseño') }}" enctype="multipart/form-data" method="post" id="form-form">
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title"> Datos del Cliente</h3>
@@ -67,13 +67,14 @@
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Comentarios</label>
-                            <div class="table-responsive-xl">
-                            <div class="col-sm-10">
-                                <textarea name="comentario" placeholder="Agregar Comentarios..." id="" cols="95"
-                                    rows="7"></textarea>
+                            
+                            <div class="col-12">
+                                <!-- <textarea name="comentario" placeholder="Agregar Comentarios..." id="" cols="95"
+                                    rows="7"></textarea> -->
+                                    <textarea class="form-control" id="summary-ckeditor" name="comentario"></textarea>
                             </div>
                         </div>
-                        </div>
+                       
                         <div class="form-group row">
 
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Vendedor</label>
@@ -113,12 +114,13 @@
                         </div>
 
                         <div class="form-group row">
-                                <input type="file" name="archivo" class="form-control" accept="image/*">
+                                <input type="file" name="archivo" class="form-control" accept="image/*,.pdf,.docx,.doc">
                         </div>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Ingresar Orden</button>
+            <!-- <button type="submit" class="btn btn-primary">Ingresar Orden</button> -->
+            <button type="button" class="btn btn-primary row" onclick="validar()" id="agregar"><div id="text_add">Ingresar Orden</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
             </form>
         </div>
 
@@ -126,6 +128,14 @@
 @endsection
 
 @section('script')
+
+    <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
+
+    <script>
+        CKEDITOR.replace( 'summary-ckeditor' );
+        CKEDITOR.config.height = '15em';
+    </script>
+
     <script>
         $(document).ready(function() {
             $('#productos').DataTable({
@@ -184,6 +194,17 @@
         }
 
     }
+
+    function validar(){
+            if ( $('#form-form')[0].checkValidity() ) {
+                $("#text_add").prop("hidden", true);
+                $('#spinner').prop('hidden', false);
+                $("#agregar").prop("disabled", true);
+                $('#form-form').submit();
+            }else{
+                console.log("formulario no es valido");
+            }
+        }
 </script>
 
 @endsection

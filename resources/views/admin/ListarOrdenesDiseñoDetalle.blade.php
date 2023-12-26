@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="row invoice-info">
-                            <div class="col-sm-4 invoice-col">
+                            <div class="col-sm-12 invoice-col">
                                 <hr>
                             <strong>Tipo Trabajo:</strong> {{ $ordenesdiseño[0]->trabajo }}
                                 <address>
@@ -57,15 +57,17 @@
                             <strong>Vendedor:</strong> {{ strtoupper($ordenesdiseño[0]->vendedor) }}
                                 </address>
                             </div>
-                            <div class="col-sm-4 invoice-col">
+                            <div class="col-sm-12 invoice-col">
                                 <strong>Comentarios:</strong>
                                 <hr>
-                                <div class="col-sm-10">
-                                    <textarea name="comentario" disabled placeholder="{{ $ordenesdiseño[0]->comentario }}" id="" cols="50"
-                                        rows="5"></textarea>
+                                <div class="col-12">
+                                    <!-- <textarea name="comentario" disabled placeholder="{{ $ordenesdiseño[0]->comentario }}" id="" cols="50"
+                                        rows="5"></textarea> -->
+
+                                        <textarea disabled class="form-control" id="summary-ckeditor" name="comentario">{{ $ordenesdiseño[0]->comentario }}</textarea>
                                 </div>
                             </div>
-                            <div class="col-sm-4 invoice-col">
+                            <div class="col-sm-12 invoice-col">
                                 <b>Fecha Solicitud:</b> {{ $ordenesdiseño[0]->fecha_solicitud }}<br>
                                 <b>Fecha Entrega:</b> {{ $ordenesdiseño[0]->fecha_entrega }}<br>
                                 <b>Estado:</b> {{ $ordenesdiseño[0]->estado }}
@@ -142,6 +144,12 @@
 
 @endsection
 @section('script')
+<script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
+
+    <script>
+        CKEDITOR.replace( 'summary-ckeditor' );
+        CKEDITOR.config.height = '15em'; 
+    </script>
 
     <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
     <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
