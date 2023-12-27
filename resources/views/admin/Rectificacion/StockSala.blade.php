@@ -46,6 +46,10 @@ Stock Sala
                                                 <a href="" title="restarvale" data-toggle="modal" data-target="#modalvalemenos"
                                                 class="btn btn-info bg-success">-</a>
                                             </div>
+                                            {{-- <div class="col-2">
+                                                <a href="" title="remvale" data-toggle="modal" data-target="#modalremvale"
+                                                class="btn btn-info bg-success"><i class="fas fa-sync-alt"></i></a>
+                                            </div> --}}
                                         </div>
 
                                          @else
@@ -120,7 +124,7 @@ Stock Sala
                         <div class="form-group row">
                             <label for="valemas" class="col-md-4 col-form-label text-md-right">{{ __('N° Vale') }}</label>
                             <div class="col-md-6">
-                                <input id="valemas" type="text" class="form-control" name="valemas" required autocomplete="valemas" autofocus>
+                                <input id="valemas" type="text" class="form-control" name="valemas" required autocomplete="valemas" autofocus maxlength="7">
                             </div>
                             <button type="button" class="btn btn-primary" id="buscarBtn"><i class="fas fa-search"></i></button>
                         </div>
@@ -198,7 +202,7 @@ Stock Sala
                         <div class="form-group row">
                             <label for="valemenos" class="col-md-4 col-form-label text-md-right">{{ __('N° Vale') }}</label>
                             <div class="col-md-6">
-                                <input id="valemenos" type="text" class="form-control" name="valemenos" required autocomplete="valemenos" autofocus>
+                                <input id="valemenos" type="text" class="form-control" name="valemenos" required autocomplete="valemenos" autofocus maxlength="7">
                             </div>
                             <button type="button" class="btn btn-primary" id="buscarBtnless"><i class="fas fa-search"></i></button>
                         </div>
@@ -258,6 +262,8 @@ Stock Sala
     </div>
 </div>
 <!-- FIN restar vale -->
+<!-- Inicio Modal reemplazo vale -->
+<!-- Fin modal reemplazo vale -->
 @endsection
 
 @section('script')
@@ -464,21 +470,29 @@ Stock Sala
 
             // Verificar si hay datos en la respuesta JSON
             if (data.hasOwnProperty('newstockmas') && data.newstockmas.length > 0) {
-                // Iterar sobre los datos y agregarlos a la tabla
-                data.newstockmas.forEach(function (item) {
-                    var row = '<tr>' +
-                        '<td scope="col" style="text-align:left">' + item.vaarti + '</td>' +
-                        '<td style="text-align:left">' + item.cant_vale + '</td>' +
-                        '<td style="text-align:left">' + item.stock_actual + '</td>' +
-                        '<td style="text-align:left">' + item.new_stock + '</td>' +
-                        '</tr>';
-                    $('#valemore tbody').append(row);
-                });
-            } else {
-                // Si no hay datos, mostrar un mensaje
-                var emptyRow = '<tr><td colspan="4">No hay información disponible.</td></tr>';
-                $('#valemore tbody').append(emptyRow);
-            }
+            // Iterar sobre los datos y agregarlos a la tabla
+            data.newstockmas.forEach(function (item) {
+            // Establecer la clase condicional para cambiar el fondo
+            var backgroundClass = item.new_stock < 0 ? 'bg-danger' : '';
+
+            // Construir la fila de la tabla con la clase condicional
+            var row = '<tr>' +
+                '<td scope="col" style="text-align:left">' + item.vaarti + '</td>' +
+                '<td style="text-align:left">' + item.cant_vale + '</td>' +
+                '<td style="text-align:left">' + item.stock_actual + '</td>' +
+                '<td style="text-align:left" class="' + backgroundClass + '">' + item.new_stock + '</td>' +
+                '</tr>';
+
+        // Agregar la fila a la tabla
+            $('#valemore tbody').append(row);
+        });
+    } else {
+     // Si no hay datos, mostrar un mensaje
+        var emptyRow = '<tr><td colspan="4">No hay información disponible.</td></tr>';
+     $('#valemore tbody').append(emptyRow);
+}
+
+
         },
         error: function (error) {
             console.error('Error en la solicitud AJAX:', error);
@@ -501,21 +515,27 @@ Stock Sala
 
             // Verificar si hay datos en la respuesta JSON
             if (data.hasOwnProperty('newstockmenos') && data.newstockmenos.length > 0) {
-                // Iterar sobre los datos y agregarlos a la tabla
-                data.newstockmenos.forEach(function (item) {
-                    var row = '<tr>' +
-                        '<td scope="col" style="text-align:left">' + item.vaarti + '</td>' +
-                        '<td style="text-align:left">' + item.cant_vale + '</td>' +
-                        '<td style="text-align:left">' + item.stock_actual + '</td>' +
-                        '<td style="text-align:left">' + item.new_stock + '</td>' +
-                        '</tr>';
-                    $('#valeless tbody').append(row);
-                });
-            } else {
-                // Si no hay datos, mostrar un mensaje
-                var emptyRow = '<tr><td colspan="4">No hay información disponible.</td></tr>';
-                $('#valeless tbody').append(emptyRow);
-            }
+            // Iterar sobre los datos y agregarlos a la tabla
+            data.newstockmenos.forEach(function (item) {
+            // Establecer la clase condicional para cambiar el fondo
+            var backgroundClass = item.new_stock < 0 ? 'bg-danger' : '';
+
+            // Construir la fila de la tabla con la clase condicional
+            var row = '<tr>' +
+                '<td scope="col" style="text-align:left">' + item.vaarti + '</td>' +
+                '<td style="text-align:left">' + item.cant_vale + '</td>' +
+                '<td style="text-align:left">' + item.stock_actual + '</td>' +
+                '<td style="text-align:left" class="' + backgroundClass + '">' + item.new_stock + '</td>' +
+                '</tr>';
+
+        // Agregar la fila a la tabla
+            $('#valeless tbody').append(row);
+        });
+    } else {
+     // Si no hay datos, mostrar un mensaje
+        var emptyRow = '<tr><td colspan="4">No hay información disponible.</td></tr>';
+     $('#valeless tbody').append(emptyRow);
+    }
         },
         error: function (error) {
             console.error('Error en la solicitud AJAX:', error);
@@ -686,7 +706,34 @@ Stock Sala
       }
     });
 </script>
+<script>
+    document.getElementById('buscarBtn').addEventListener('click', function () {
+        var valemasInput = document.getElementById('valemas');
+        var valemasValue = valemasInput.value.trim();
 
+        if (valemasValue === '') {
+            alert('Debe ingresar N° de vale');
+            return;
+        }
 
+        // // Si el campo no está vacío, continúa con el envío del formulario
+        // document.getElementById('sumarValeForm').submit();
+    });
+</script>
+
+<script>
+    document.getElementById('buscarBtnless').addEventListener('click', function () {
+        var valemasInput = document.getElementById('valemenos');
+        var valemasValue = valemasInput.value.trim();
+
+        if (valemasValue === '') {
+            alert('Debe ingresar N° de vale');
+            return;
+        }
+
+        // // Si el campo no está vacío, continúa con el envío del formulario
+        // document.getElementById('sumarValeForm').submit();
+    });
+</script>
 
 @endsection
