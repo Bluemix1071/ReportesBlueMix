@@ -175,7 +175,7 @@ Stock Sala
                         </div>
                         <!-- -->
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="sumarValeBtn">Sumar</button>
+                            <button type="submit" class="btn btn-primary" id="sumarValeBtn" disabled>Sumar</button>
                             <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
                         </div>
                     </form>
@@ -252,7 +252,7 @@ Stock Sala
                         </div>
                         <!-- -->
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="restarValeBtn">Restar</button>
+                            <button type="submit" class="btn btn-primary" id="restarValeBtn" disabled>Restar</button>
                             <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
                         </div>
                     </form>
@@ -465,6 +465,13 @@ Stock Sala
         url: '{{ route('Stockvalemas', ['valemas' => '']) }}/' + $('#valemas').val(),
         data: { 'valemas': valemasValue },
         success: function (data) {
+
+            if (data.length != 0){
+                $('#sumarValeBtn').prop('disabled',false);
+            }else if(data.length = 0) {
+                $('#sumarValeBtn').prop('disabled',true);
+            }
+            // console.log(data);
             // Limpiar la tabla antes de agregar nuevos datos
             $('#valemore tbody').empty();
 
@@ -490,6 +497,7 @@ Stock Sala
      // Si no hay datos, mostrar un mensaje
         var emptyRow = '<tr><td colspan="4">No hay información disponible.</td></tr>';
      $('#valemore tbody').append(emptyRow);
+
 }
 
 
@@ -510,6 +518,13 @@ Stock Sala
         url: '{{ route('Stockvalemenos', ['valemenos' => '']) }}/' + $('#valemenos').val(),
         data: { 'valemenos': valemenosValue },
         success: function (data) {
+
+            if (data.length != 0){
+                $('#restarValeBtn').prop('disabled',false);
+            }else if(data.length = 0) {
+                $('#restarValeBtn').prop('disabled',true);
+            }
+
             // Limpiar la tabla antes de agregar nuevos datos
             $('#valeless tbody').empty();
 
