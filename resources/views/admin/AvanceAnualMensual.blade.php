@@ -199,7 +199,7 @@
                                     <input type="text" class="form-control" id="2024mensual" readonly value="0"
                                         required>
                                 @else
-                                    <input type="text" class="form-control" id="2023mensual" readonly
+                                    <input type="text" class="form-control" id="2024mensual" readonly
                                         value="{{ number_format($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24, 0, ',', '.') }}" required>
                                 @endif
                             </div>
@@ -337,10 +337,10 @@
                             </div>
                             <div class="col-md-6 mb-6">
                                 @if (empty($anual2024[0]->anualaño2024))
-                                    <input type="text" class="form-control" id="2023anual" readonly value="0"
+                                    <input type="text" class="form-control" id="2024anual" readonly value="0"
                                         required>
                                 @else
-                                    <input type="text" class="form-control" id="2023anual" readonly
+                                    <input type="text" class="form-control" id="2024anual" readonly
                                         value="{{ number_format(($anual2024[0]->anualaño2024-$destucan24[0]->destucan24), 0, ',', '.') }}" required>
                                 @endif
                             </div>
