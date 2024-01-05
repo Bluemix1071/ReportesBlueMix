@@ -37,7 +37,10 @@ Pendientes de envio
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Observacion" name="observacion" required id="observacion"></div>
                     </div>
                 </form>
-                <div class="col-md-1"><button id="add_field_button" type="submit" class="btn btn-success">Agregar</button></div>
+                {{-- <div class="col-md-1"><button id="add_field_button" type="submit" class="btn btn-success">Agregar</button></div>
+                <div class="col-md-3"><button id="factura_button" type="submit" class="btn btn-success">F</button></div> --}}
+                <div class="col-xs-1"><button id="add_field_button" type="submit" class="btn btn-success">Agregar</button></div>
+                <div class="col-md-1"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal" disabled><i class="far fa-file"></i></button></div>
                 </div>
             <hr>
             <br>
@@ -197,6 +200,56 @@ Pendientes de envio
      </div>
    </div>
  </div>
+ <!-- Modal factura -->
+ <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="miModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="miModalLabel">Pendientes X Factura</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-3">
+              <input type="text" class="form-control" placeholder="N° Factura" />
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-secondary"><i class="fas fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Codigo</th>
+                  <th scope="col">Detalle</th>
+                  <th scope="col">Marca</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Cantidad Pendiente</th>
+                  <th scope="col">Accion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1212000</td>
+                  <td>(40%)CALCULADORA ESCRIT</td>
+                  <td>DIGICALC</td>
+                  <td>25</td>
+                  <td>5</td>
+                  <td>btn_eliminar</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ <!-- Fin Modal Factura -->
 <!-- Inicio Modal eliminar item -->
 <div class="modal fade" id="modaleliminaritem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
