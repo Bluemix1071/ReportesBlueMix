@@ -35,7 +35,7 @@ class MantencionClientesCreditoController extends Controller
             $clientescreditob = DB::select('
                 SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI
                 FROM cliente
-                LEFT JOIN tablas ON cliente.CLCIUF = tablas.TAREFE
+                LEFT JOIN tablas ON cliente.CLGIRO = tablas.TAREFE
                 AND tablas.TACODI = 8
                 WHERE cliente.CLRUTC = :rut AND cliente.CLRUTD = :dv',
                 ['rut' => $rut, 'dv' => $dv]
