@@ -58,7 +58,8 @@
                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                             <option value="SALA">SALA</option>
                             <option value="BODEGA">BODEGA</option>
-                            <option value="MATERIA PRIMA">MATERIA PRIMA</option>
+                            <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
+                            <option value="CONVENIO MARCO">CONVENIO MARCO</option>
                             <option value="DISEÑO">DISEÑO</option>
                             <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
                           </select></div>
@@ -325,7 +326,8 @@
                                         <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                                         <option value="SALA">SALA</option>
                                         <option value="BODEGA">BODEGA</option>
-                                        <option value="MATERIA PRIMA">MATERIA PRIMA</option>
+                                        <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
+                                        <option value="CONVENIO MARCO">CONVENIO MARCO</option>
                                         <option value="DISEÑO">DISEÑO</option>
                                         <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
                                     </select>
@@ -637,7 +639,8 @@
                                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                                             <option value="SALA">SALA</option>
                                             <option value="BODEGA">BODEGA</option>
-                                            <option value="MATERIA PRIMA">MATERIA PRIMA</option>
+                                            <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
+                                            <option value="CONVENIO MARCO">CONVENIO MARCO</option>
                                             <option value="DISEÑO">DISEÑO</option>
                                             <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
                                         </select>
