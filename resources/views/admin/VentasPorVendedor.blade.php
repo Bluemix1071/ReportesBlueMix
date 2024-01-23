@@ -34,6 +34,8 @@
                     placeholder="Vendedor...">
                 <datalist id="vendedor">
                     @foreach ($vendedor as $item)
+                        <option>TODOS
+                        </option>
                         <option value="{{ $item->TAREFE }}">{{ $item->TAGLOS }}</option>
                     @endforeach
                 </datalist>

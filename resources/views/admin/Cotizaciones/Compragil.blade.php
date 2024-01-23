@@ -71,9 +71,11 @@ Compra Agil
                                         &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
                                         &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
                                         &nbsp;<input type="number" id="cantidad" minlength="1" maxlength="4" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
+                                        &nbsp;<input type="number" id="margen" minlength="1" maxlength="4" placeholder="margen" required name="margen" class="form-control col" value="" min="1" max="99999999"/>
+                                        &nbsp;<input type="number" id="buscar_costo" placeholder="Neto" required name="buscar_costo" readonly class="form-control col" value="" min="1" max="99999999"/>
                                     </div>
                                      </form>
-                                     <div class="col">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success" >Agregar Item</button>
+                                     <div class="col">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success" >+</button>
                                     </div>
 
                             </div>
