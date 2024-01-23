@@ -816,6 +816,41 @@ class SalaController extends Controller
         return response()->json(['producto_soli_existe' => $producto_soli_existe]);
     }
     //
+    // Inicio ingresar pendiente con factura
+    public function facturapendiente($nfactura)
+    {
+        $resultado = DB::table('dcargos')
+        ->select(
+            'dcargos.DECODI',
+            'dcargos.Detalle',
+            'producto.ARMARCA',
+            'dcargos.DECANT',
+            DB::raw("CONCAT(cargos.CARUTC, '-', cliente.CLRUTD) as RUT"),
+            'cargos.razon',
+            'cargos.ciudad',
+            'cargos.comuna',
+            'cargos.giro_cliente',
+            'cargos.CANMRO',
+            DB::raw("'observacion' as observacion"),
+            DB::raw("'estado' as estado"),
+            DB::raw("'fechai' as fechai"),
+            DB::raw("'fechae' as fechae")
+        )
+        ->leftJoin('cargos', 'dcargos.DENMRO', '=', 'cargos.CANMRO')
+        ->leftJoin('cliente', 'cargos.carutc', '=', 'cliente.clrutc')
+        ->leftJoin('producto', 'dcargos.DECODI', '=', 'producto.ARCODI')
+        ->where('dcargos.DENMRO', $nfactura)
+        ->where('dcargos.DETIPO', 8)
+        ->groupBy('producto.ARCODI') // Agregamos la agrupación por producto.ARCODI
+        ->get();
+
+
+        // return response()->json($resultado);
+        return response()->json(['resultado' => $resultado]);
+    }
+
+    // Fin ingresar pendiente con factura
+
     // Buscar un vale para sumar stock
     public function Stockvalemas(Request $request)
     {
@@ -859,7 +894,7 @@ class SalaController extends Controller
           if (!array_key_exists($key, $groups)) {
               $groups[$key] = array(
                   'posicion' => $i++,
-                  'codigo' => $item['codigo'],
+                  'codigo' => $item['DECODI'],
                   'detalle' => $item['detalle'],
                   'marca' => $item['marca'],
                   'costo' => 0,

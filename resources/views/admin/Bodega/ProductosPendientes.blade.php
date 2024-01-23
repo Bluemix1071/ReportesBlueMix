@@ -40,7 +40,7 @@ Pendientes de envio
                 {{-- <div class="col-md-1"><button id="add_field_button" type="submit" class="btn btn-success">Agregar</button></div>
                 <div class="col-md-3"><button id="factura_button" type="submit" class="btn btn-success">F</button></div> --}}
                 <div class="col-xs-1"><button id="add_field_button" type="submit" class="btn btn-success">Agregar</button></div>
-                <div class="col-md-1"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal" disabled><i class="far fa-file"></i></button></div>
+                <div class="col-md-1"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal"><i class="far fa-file"></i></button></div>
                 </div>
             <hr>
             <br>
@@ -203,52 +203,64 @@ Pendientes de envio
  <!-- Modal factura -->
  <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="miModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="miModalLabel">Pendientes X Factura</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-3">
-              <input type="text" class="form-control" placeholder="N° Factura" />
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="miModalLabel">Pendientes X Factura</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="col-auto">
-              <button type="button" class="btn btn-secondary"><i class="fas fa-search"></i></button>
+            <div class="modal-body">
+                <!-- Agrega el formulario aquí -->
+                <form id="miFormulario">
+                    <div class="row">
+                        <div class="col-3">
+                            <input type="text" id="nfactura" name="nfactura" class="form-control" placeholder="N° Factura" required/>
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" id="buscafactura" name="buscafactura" class="btn btn-secondary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="callout callout-success row">
+                        <div class="col-sm-6 col-md-6 invoice-col col">
+                            <strong>Rut: </strong><label id="rutLabel"></label>
+                            <strong>Razon social: </strong><label id="razonLabel"></label><br>
+                            <strong>Ciudad: </strong><label id="ciudadLabel"></label>
+                            <strong>Giro: </strong><label id="giroLabel"></label><br>
+                        </div>
+                    </div>
+                </form>
+                <!-- Agrega el contenido de la tabla aquí -->
+                <div class="table-container">
+                    <table class="table table-bordered table-hover dataTable table-sm responsive-table" id="miTabla" name="miTabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Detalle</th>
+                                <th scope="col">Marca</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-          </div>
+            <div class="modal-footer">
+                <!-- Modifica el botón "Agregar" para que ejecute la función al hacer clic -->
+                <button type="button" class="btn btn-primary" id="agregarDatos">Agregar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <div class="table-container">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Codigo</th>
-                  <th scope="col">Detalle</th>
-                  <th scope="col">Marca</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Cantidad Pendiente</th>
-                  <th scope="col">Accion</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1212000</td>
-                  <td>(40%)CALCULADORA ESCRIT</td>
-                  <td>DIGICALC</td>
-                  <td>25</td>
-                  <td>5</td>
-                  <td>btn_eliminar</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
  <!-- Fin Modal Factura -->
 <!-- Inicio Modal eliminar item -->
 <div class="modal fade" id="modaleliminaritem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -455,6 +467,38 @@ Pendientes de envio
       } );
     </script>
 
+
+<script>
+  $(document).ready(function() {
+    $('#miTabla').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+    'copy', 'pdf', {
+        extend: 'print',
+        title: '<h5>miTabla</h5>',
+    }
+    ],
+          "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
+      },
+      order: [[0, 'desc']]
+    } );
+  } );
+
+  </script>
+
 <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
 <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
@@ -542,5 +586,125 @@ Pendientes de envio
     }
 });
 
-        </script>
+</script>
+
+<!-- Agrega estas líneas para incluir las bibliotecas necesarias -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Tu modal y tabla -->
+
+<script>
+$(document).ready(function () {
+    var datosTabla = [];
+
+    $('#agregarDatos').click(function () {
+        console.log('Datos a enviar:', datosTabla);
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('AgregarItempf') }}',
+            data: { datos: datosTabla },
+            success: function (response) {
+                console.log('Datos enviados con éxito:', response);
+                $('#miTabla tbody').empty();
+                // Recargar la página después de enviar los datos
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Error al enviar datos:', error);
+            }
+        });
+    });
+
+    $('#miTabla').on('click', '.btn-danger', function () {
+        var rowIndex = $(this).closest('tr').index();
+        datosTabla.splice(rowIndex, 1);
+        $(this).closest('tr').remove();
+    });
+
+    $('#buscafactura').click(function () {
+        var numeroFactura = $('#nfactura').val();
+
+        if (numeroFactura === '') {
+            window.alert("¡Debe ingresar un número de factura!");
+            return;
+        }
+
+        console.log('Número de factura ingresado:', numeroFactura);
+
+        $.ajax({
+            type: 'GET',
+            url: '{{ route('facturapendiente', ['nfactura' => '']) }}/' + numeroFactura,
+            success: function (data) {
+                console.log('Datos recibidos:', data);
+                $('#miTabla tbody').empty();
+
+                // Verificar si el resultado está vacío
+                if (data.length === 0) {
+                    window.alert("No hay datos para la factura ingresada.");
+                    return;
+                }
+
+                var rut, razon, ciudad, giro;
+
+                $.each(data, function (index, resultado) {
+                    if (Array.isArray(resultado)) {
+                        $.each(resultado, function (i, elemento) {
+                            var row = '<tr>' +
+                                '<td>' + elemento.DECODI + '</td>' +
+                                '<td>' + elemento.Detalle + '</td>' +
+                                '<td>' + elemento.ARMARCA + '</td>' +
+                                '<td>' + elemento.DECANT + '</td>' +
+                                '<td><button class="btn-danger" data-id="' + elemento.DECODI + '"><i class="fas fa-trash-alt"></i></button></td>' +
+                                '</tr>';
+
+                            $('#miTabla tbody').append(row);
+
+                            rut = elemento.RUT;
+                            razon = elemento.razon;
+                            ciudad = elemento.ciudad;
+                            giro = elemento.giro_cliente;
+
+                            var nuevoDato = {
+                                codigo: elemento.DECODI,
+                                buscar_cantidad: elemento.DECANT,
+                                rut_auto: elemento.RUT,
+                                rsocial: elemento.razon,
+                                ciudad: elemento.ciudad,
+                                region: elemento.comuna,
+                                depto: elemento.giro_cliente,
+                                factura: elemento.CANMRO,
+                                observacion: ''
+                            };
+
+                            datosTabla.push(nuevoDato);
+                        });
+
+                        $('#rutLabel').text(rut);
+                        $('#razonLabel').text(razon);
+                        $('#ciudadLabel').text(ciudad);
+                        $('#giroLabel').text(giro);
+                    } else {
+                        console.error('El elemento en el índice ' + index + ' no es un arreglo.');
+                    }
+                });
+            },
+            error: function (error) {
+                console.error('Error en la solicitud Ajax:', error);
+            }
+        });
+    });
+});
+
+
+</script>
+
+
 @endsection

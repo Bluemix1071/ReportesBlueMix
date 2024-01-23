@@ -72,6 +72,7 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/BuscarProducto/{codigo}','SalaController@BuscarProducto')->name('BuscarProducto');
     Route::get('/BuscarProducto_en_solicitud/{codigo}','SalaController@BuscarProducto_en_solicitud')->name('BuscarProducto_en_solicitud');
     Route::get('/BuscarProducto_en_pendiente/{codigo}', 'SalaController@BuscarProducto_en_pendiente')->name('BuscarProducto_en_pendiente');
+    Route::get('/facturapendiente/{nfactura}', 'SalaController@facturapendiente')->name('facturapendiente');;
     Route::get('/Stockvalemas/{valemas}', 'SalaController@Stockvalemas')->name('Stockvalemas');
     Route::get('/Stockvalemenos/{valemenos}', 'SalaController@Stockvalemenos')->name('Stockvalemenos');
     // routes/web.php
@@ -199,6 +200,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     /* Modulo Productos pendientes*/
     Route::get('/ListarProductosPendientes', 'Bodega\ProductosPendientesController@ListarProductosPendientes')->name('ListarProductosPendientes');
     Route::post('/AgregarItemp','Bodega\ProductosPendientesController@AgregarItemp')->name('AgregarItemp');
+    Route::post('/AgregarItempf','Bodega\ProductosPendientesController@AgregarItempf')->name('AgregarItempf');
     Route::put('/EditarProd','Bodega\ProductosPendientesController@EditarProd')->name('EditarProd');
     Route::post('/Eliminaritemp','Bodega\ProductosPendientesController@Eliminaritemp')->name('Eliminaritemp');
     Route::put('/AgregarObservacion','Bodega\ProductosPendientesController@AgregarObservacion')->name('AgregarObservacion');

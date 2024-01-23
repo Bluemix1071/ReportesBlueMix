@@ -163,4 +163,31 @@ class ProductosPendientesController extends Controller
               return back()->with('success','Producto Eliminado Correctamente');
           }
 
+          public function AgregarItempf(Request $request)
+          {
+              $inputs = $request->all();
+              $fechaingreso = DB::select('SELECT CURDATE() as fechaingreso');
+
+              foreach ($inputs['datos'] as $dato) {
+                  $iitemc = DB::table('prod_pendientes')->insert([
+                      "cod_articulo" => $dato['codigo'],
+                      "cantidad" => $dato['buscar_cantidad'],
+                      "rut" => $dato['rut_auto'],
+                      "r_social" => $dato['rsocial'],
+                      "ciudad" => $dato['ciudad'],
+                      "region" => $dato['region'],
+                      "depto" => $dato['depto'],
+                      "nro_factura" => $dato['factura'],
+                      "observacion" => $dato['observacion'],
+                      "estado" => "1",
+                      "fechai" => $fechaingreso[0]->fechaingreso,
+                  ]);
+              }
+
+              return back()->with('success', 'Productos Agregados Correctamente');
+          }
+
+
+
+
 }
