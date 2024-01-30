@@ -65,6 +65,7 @@ Compras Agiles
 
                         {{-- <div class="col-md-1"><input type="text" class="form-control" placeholder="OC" name="oc" required id="oc"></div> --}}
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Observacion" name="observacion" required id="observacion"></div>
+                        <div class="col-md-1"><input type="number" class="form-control" placeholder="Cod.Vendedor" name="codvende" required id="codende" max="999" pattern="\d{1,3}"></div>
                         <div class="col-md-1"><button type="submit" class="btn btn-success">Agregar</button></div>
                     </div>
                 </form>
@@ -87,6 +88,7 @@ Compras Agiles
                                     <th scope="col" style="text-align:left">Region</th>
                                     <th scope="col" style="text-align:left">OC</th>
                                     <th scope="col" style="text-align:left">Observación</th>
+                                    <th scope="col" style="text-align: left">Vendedor</th>
                                     <th scope="col" style="text-align:left">Fecha Ingreso</th>
                                     <th scope="col" style="text-align:left">Fecha Termino</th>
                                     <th scope="col" style="width: 11%">Acciones</th>
@@ -118,6 +120,7 @@ Compras Agiles
                                         <td style="text-align: left">{{ $item->oc }}</td>
                                         @endif
                                         <td style="text-align:left">{{ $item->observacion }}</td>
+                                        <td style="text-align: left">{{ $item->vender }}</td>
                                         <td style="text-align: left">{{ $item->fecha_i}}</td>
                                         @if (($item->fecha_t == ""))
                                             <td style="text-align:left">No establecida</td>

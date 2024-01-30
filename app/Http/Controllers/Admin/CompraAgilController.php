@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class CompraAgilController extends Controller
 {
@@ -14,8 +15,14 @@ class CompraAgilController extends Controller
 
     public function ListarCompraAgil(Request $request){
 
-        // $lcompra=DB::select("select * from compragil");
-        $lcompra = DB::table('compragil')->orderby('id','DESC')->get();
+        // $lcompra = DB::table('compragil')->orderby('id','DESC')->get();
+        $lcompra = DB::table('compragil')
+        ->select('compragil.*', 'tablas.taglos as vender')
+        ->leftJoin('tablas', 'compragil.vendedor', '=', 'tablas.tarefe')
+        ->where('tablas.tacodi', '=', 24)
+        ->orderBy('compragil.id', 'desc')
+        ->get();
+
         // $user = DB::table('users')->where('name', 'John')->first();
 
         $clientes=DB::table('cliente')
@@ -32,38 +39,88 @@ class CompraAgilController extends Controller
 
     public function CompraAgilDetalle(Request $request){
 
-
         // dd($request);
 
         $compragild=DB::select('select
         compragil_detalle.id,
         compragil_detalle.cod_articulo,
         compragil_detalle.id_compragil,
+        compragil_detalle.margen,
+        compragil_detalle.valor_margen,
         producto.ARDESC as descripcion,
         producto.ARMARCA as marca,
         compragil_detalle.cantidad,
         if(isnull(bodeprod.bpsrea),0,bodeprod.bpsrea) AS stock_sala,
         if(isnull(Suma_Bodega.cantidad),0,Suma_Bodega.cantidad) AS stock_bodega,
-        (sum(compragil_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
-        precios.PCPVDET as preciou
+        (sum(compragil_detalle.cantidad) * compragil_detalle.valor_margen) as precio_detalle,
+        (precios.PCCOSTO)/1.19 as preciou
         from compragil_detalle
         left join precios on SUBSTRING(compragil_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on compragil_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on compragil_detalle.cod_articulo = bodeprod.bpprod
         left join Suma_Bodega on compragil_detalle.cod_articulo = Suma_Bodega.inarti
         where compragil_detalle.id_compragil= '.$request->get("id"). ' group by compragil_detalle.cod_articulo order by compragil_detalle.id desc');
-
+        // dd($compragild);
 
         return view('admin.Cotizaciones.Compragil',compact('compragild'),['id' =>$request->get("id")]);
         // return view('nombre.vista', ['id' => $id]);
     }
 
+    public function exportagilpdf($id){
+
+
+        $compragilpdf=DB::select('select
+		tablas.taglos as vendedor,
+		compragil.rut,
+        compragil.id_compra,
+        compragil.razon_social,
+        compragil.fecha_i,
+        compragil_detalle.id,
+        compragil_detalle.cod_articulo,
+        compragil_detalle.id_compragil,
+        compragil_detalle.margen,
+        compragil_detalle.valor_margen,
+        producto.ARDESC as descripcion,
+        producto.ARMARCA as marca,
+        compragil_detalle.cantidad,
+        if(isnull(bodeprod.bpsrea),0,bodeprod.bpsrea) AS stock_sala,
+        if(isnull(Suma_Bodega.cantidad),0,Suma_Bodega.cantidad) AS stock_bodega,
+        (compragil_detalle.cantidad * compragil_detalle.valor_margen) as precio_detalle,
+        (precios.PCCOSTO)/1.19 as preciou
+        from compragil_detalle
+        left join precios on SUBSTRING(compragil_detalle.cod_articulo,1,5)  = precios.PCCODI
+        left join producto on compragil_detalle.cod_articulo = producto.ARCODI
+        left join bodeprod on compragil_detalle.cod_articulo = bodeprod.bpprod
+        left join Suma_Bodega on compragil_detalle.cod_articulo = Suma_Bodega.inarti
+        left join compragil on compragil_detalle.id_compragil = compragil.id
+        left join tablas on compragil.vendedor = tablas.tarefe
+        where compragil_detalle.id_compragil='.$id.' and tablas.TACODI=24 group by compragil_detalle.cod_articulo order by compragil_detalle.id desc');
+        // dd($compragilpdf);
+        $clientepdf=DB::select('select cliente.CLRSOC as r_social,cliente.CLDIRF as direccion,compragil.rut,vv_tablas8.taglos as giro,
+        cliente.CLFONO as fono,compragil.id_compra,compragil.ciudad,tablas.taglos as vendedor,curdate() as fecha,curtime() as hora
+        from compragil
+        left join cliente on SUBSTRING(compragil.rut, 1, LENGTH(compragil.rut) - 2) = cliente.CLRUTC
+        left join tablas on compragil.vendedor = tablas.tarefe
+        left join vv_tablas8 on cliente.CLGIRO = vv_tablas8.tarefe
+        where compragil.id='.$id.' and compragil.depto = cliente.DEPARTAMENTO and tablas.tacodi=24');
+
+        // dd($clientepdf);
+
+        $pdf =PDF::loadView('exports.compra_agil', compact('compragilpdf','clientepdf'));
+
+        return $pdf->stream('Orden De Compra.pdf');
+      }
+
     public function AgregarItemc(Request $request){
         $inputs = request()->all();
+
+        // dd($request);
 
         $codigo = $request->input('codigo');
         $cantidadingresada = $request->input('cantidad');
         $idcompra = $request->get('id');
+        $margen = $request->get('margen');
+        $label_pmargen = $request->get('label_pmargen');
         // dd($idcompra);
 
         $codigof = DB::table('compragil_detalle')
@@ -90,6 +147,8 @@ class CompraAgilController extends Controller
                     "cod_articulo" => $request->get('codigo'),
                     "cantidad" => $request->get('cantidad'),
                     "id_compragil" => $idcompra,
+                    "margen" => $margen,
+                    "valor_margen"=> $label_pmargen,
                     ]
                     ]);
 
@@ -142,6 +201,7 @@ class CompraAgilController extends Controller
                 "oc" => $request->get('oc'),
                 "fecha_i" => $date2,
                 "observacion" => $request->get('observacion'),
+                "vendedor" => $request->get('codvende'),
                 ]
             ]);
 
@@ -165,6 +225,7 @@ class CompraAgilController extends Controller
         // Primera consulta
         $consulta1 = DB::select('select dcotiz.DZ_CODIART from dcotiz where dcotiz.DZ_NUMERO = '.$request->get('nro_cotiz').'');
 
+
         // Segunda consulta
          $consulta2 = DB::select('select cod_articulo from compragil_detalle where id_compragil='.$idcompra);
 
@@ -183,14 +244,27 @@ class CompraAgilController extends Controller
         if ($encontrado) {
             return back()->with('error','Uno o Mas Productos Ya Existen!');
         } else {
-            $cotizacion = DB::select('select dcotiz.DZ_CODIART,dcotiz.DZ_CANT from dcotiz where dcotiz.DZ_NUMERO = '.$request->get('nro_cotiz').'');
+            $cotizacion = DB::select('select dcotiz.DZ_CODIART,dcotiz.DZ_CANT,(precios.PCCOSTO)/1.19 as DZ_PRECIO
+            from dcotiz
+            left join precios on SUBSTRING(dcotiz.DZ_CODIART,1,5)  = precios.PCCODI
+            where dcotiz.DZ_NUMERO = '.$request->get('nro_cotiz').'');
             if(!empty($cotizacion)){
                 foreach($cotizacion as $item){
 
+                        $cantidad = $item->DZ_CANT;
+                        $neto = $item->DZ_PRECIO; // Asegúrate de reemplazar esto con la lógica real para obtener el valor neto
+                        // Calcula el margen utilizando la fórmula que proporcionaste
+                        $margenFactor = $request->margen / 100;
+                        $precioConMargen = ($cantidad * $neto) * (1 + $margenFactor);
+                        $valorcmargen = $precioConMargen/$cantidad;
+                        // dd($valorcmargen*43);
                     $nuevo = [
                         'id_compragil' => $idcompra,
                         'cod_articulo' => $item->DZ_CODIART,
                         'cantidad' => $item->DZ_CANT,
+                        'margen' => $request->margen,
+                        'valor_margen' => $valorcmargen,
+                        //  $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(2));
                     ];
 
 
