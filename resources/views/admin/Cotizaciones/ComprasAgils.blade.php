@@ -64,7 +64,7 @@ Compras Agiles
                         </div>
 
                         {{-- <div class="col-md-1"><input type="text" class="form-control" placeholder="OC" name="oc" required id="oc"></div> --}}
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Observacion" name="observacion" required id="observacion"></div>
+                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Contacto" name="observacion" required id="observacion"></div>{{-- Contacto de la compra ágil --}}
                         <div class="col-md-1"><input type="number" class="form-control" placeholder="Cod.Vendedor" name="codvende" required id="codende" max="999" pattern="\d{1,3}"></div>
                         <div class="col-md-1"><button type="submit" class="btn btn-success">Agregar</button></div>
                     </div>

@@ -27,6 +27,14 @@
 
 }
 
+.contacto{
+    position: absolute;
+    font: 70%;
+    top:100 px;
+    left:555 px;
+
+}
+
 .ciudad{
     position: absolute;
     font: 70%;

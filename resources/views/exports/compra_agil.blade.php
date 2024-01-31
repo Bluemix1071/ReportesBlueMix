@@ -21,6 +21,7 @@
     <h6 class="fono">Fono :{{ $clientepdf[0]->fono }}</h6>
     <h6 class="ciudad">Ciudad :{{ $clientepdf[0]->ciudad }}</h6>
     <h6 class="hora">Hora :{{ $clientepdf[0]->hora }}</h6>
+    <h6 class="contacto">Contacto : {{ $clientepdf[0]->observacion }}</h6>
   </div>
 
   <div class="lineas">
