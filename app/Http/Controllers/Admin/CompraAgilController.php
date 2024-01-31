@@ -96,7 +96,7 @@ class CompraAgilController extends Controller
         left join tablas on compragil.vendedor = tablas.tarefe
         where compragil_detalle.id_compragil='.$id.' and tablas.TACODI=24 group by compragil_detalle.cod_articulo order by compragil_detalle.id desc');
         // dd($compragilpdf);
-        $clientepdf=DB::select('select cliente.CLRSOC as r_social,cliente.CLDIRF as direccion,compragil.rut,vv_tablas8.taglos as giro,compragil.observacion,
+        $clientepdf=DB::select('select cliente.CLRSOC as r_social,cliente.CLDIRF as direccion,compragil.rut,vv_tablas8.giro as giro,compragil.observacion,
         cliente.CLFONO as fono,compragil.id_compra,compragil.ciudad,tablas.taglos as vendedor,curdate() as fecha,curtime() as hora
         from compragil
         left join cliente on SUBSTRING(compragil.rut, 1, LENGTH(compragil.rut) - 2) = cliente.CLRUTC

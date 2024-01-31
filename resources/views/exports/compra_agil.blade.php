@@ -20,7 +20,8 @@
     <h6 class="giro">Giro :{{ $clientepdf[0]->giro }}</h6>
     <h6 class="fono">Fono :{{ $clientepdf[0]->fono }}</h6>
     <h6 class="ciudad">Ciudad :{{ $clientepdf[0]->ciudad }}</h6>
-    <h6 class="hora">Hora :{{ $clientepdf[0]->hora }}</h6>
+    {{-- <h6 class="hora">Hora :{{ $clientepdf[0]->hora }}</h6> --}}
+     <h6 class="hora">Hora: {{ date('H:i', strtotime($clientepdf[0]->hora)) }}</h6> {{-- mostrar solo hora y minutos --}}
     <h6 class="contacto">Contacto : {{ $clientepdf[0]->observacion }}</h6>
   </div>
 
