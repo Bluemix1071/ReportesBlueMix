@@ -25,11 +25,12 @@ class CompraAgilController extends Controller
 
         // $user = DB::table('users')->where('name', 'John')->first();
 
-        $clientes=DB::table('cliente')
+        $clientes = DB::table('cliente')
         ->leftjoin('tablas', 'CLCIUF', '=', 'tarefe')
         ->where('TACODI', 2)
+        ->whereNotNull('regiones.nombre')
         ->leftjoin('regiones', 'cliente.region', '=', 'regiones.id')
-        ->get(['CLRUTC','CLRUTD','DEPARTAMENTO','CLRSOC','TAGLOS AS CIUDAD','regiones.nombre AS REGION']);
+        ->get(['CLRUTC', 'CLRUTD', 'DEPARTAMENTO', 'CLRSOC', 'TAGLOS AS CIUDAD', 'regiones.nombre AS REGION']);
 
 
         return view('admin.Cotizaciones.ComprasAgils',compact('lcompra','clientes'));

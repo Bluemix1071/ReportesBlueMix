@@ -512,6 +512,17 @@ Pendientes de envio
 <script src="{{asset("js/vfs_fonts.js")}}"></script>
 <script src="{{asset("js/buttons.html5.min.js")}}"></script>
 <script src="{{asset("js/buttons.print.min.js")}}"></script>
+<!-- Agrega estas líneas para incluir las bibliotecas necesarias -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Tu modal y tabla -->
 
 <script>
     var max_fields      = 9999; //maximum input boxes allowed
@@ -588,18 +599,6 @@ Pendientes de envio
 
 </script>
 
-<!-- Agrega estas líneas para incluir las bibliotecas necesarias -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-
-<!-- Bootstrap -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<!-- Tu modal y tabla -->
-
 <script>
 $(document).ready(function () {
     var datosTabla = [];
@@ -627,6 +626,12 @@ $(document).ready(function () {
         var rowIndex = $(this).closest('tr').index();
         datosTabla.splice(rowIndex, 1);
         $(this).closest('tr').remove();
+    });
+
+    $('#miTabla').on('change', '.cantidadInput', function () {
+        var rowIndex = $(this).closest('tr').index();
+        var nuevaCantidad = $(this).val();
+        datosTabla[rowIndex].buscar_cantidad = nuevaCantidad;
     });
 
     $('#buscafactura').click(function () {
@@ -661,7 +666,7 @@ $(document).ready(function () {
                                 '<td>' + elemento.DECODI + '</td>' +
                                 '<td>' + elemento.Detalle + '</td>' +
                                 '<td>' + elemento.ARMARCA + '</td>' +
-                                '<td>' + elemento.DECANT + '</td>' +
+                                '<td><input type="number" class="form-control cantidadInput" value="' + elemento.DECANT + '"></td>' +
                                 '<td><button class="btn-danger" data-id="' + elemento.DECODI + '"><i class="fas fa-trash-alt"></i></button></td>' +
                                 '</tr>';
 
@@ -686,15 +691,15 @@ $(document).ready(function () {
 
                             datosTabla.push(nuevoDato);
                         });
-
-                        $('#rutLabel').text(rut);
-                        $('#razonLabel').text(razon);
-                        $('#ciudadLabel').text(ciudad);
-                        $('#giroLabel').text(giro);
                     } else {
                         console.error('El elemento en el índice ' + index + ' no es un arreglo.');
                     }
                 });
+
+                $('#rutLabel').text(rut);
+                $('#razonLabel').text(razon);
+                $('#ciudadLabel').text(ciudad);
+                $('#giroLabel').text(giro);
             },
             error: function (error) {
                 console.error('Error en la solicitud Ajax:', error);
@@ -702,7 +707,6 @@ $(document).ready(function () {
         });
     });
 });
-
 
 </script>
 

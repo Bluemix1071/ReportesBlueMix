@@ -444,12 +444,12 @@ function alerta(id){
 	}
 }
 
-function selectcliente(rut,dv,rzoc,depto,ciudad,region){
+function selectcliente(rut,dv,rzoc,ciudad,region){
   $('#rsocial').val(rzoc);
   $('#rut_auto').val((rut+"-"+dv));
-  $('#depto').val(depto);
   $('#ciudad').val(ciudad);
   $('#region').val(region);
+
 }
 
   $(document).ready(function() {
@@ -489,10 +489,12 @@ function selectcliente(rut,dv,rzoc,depto,ciudad,region){
       }
     } );
   } );
+
 </script>
 
 <script>
   $(document).ready(function() {
+
   $('#compras').DataTable( {
     dom: 'Bfrtip',
     buttons: [
