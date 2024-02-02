@@ -603,6 +603,8 @@ Pendientes de envio
 $(document).ready(function () {
     var datosTabla = [];
 
+    $('#nfactura').focus();
+
     $('#agregarDatos').click(function () {
         console.log('Datos a enviar:', datosTabla);
 
@@ -632,6 +634,14 @@ $(document).ready(function () {
         var rowIndex = $(this).closest('tr').index();
         var nuevaCantidad = $(this).val();
         datosTabla[rowIndex].buscar_cantidad = nuevaCantidad;
+    });
+
+    // Agregar evento para la tecla "Enter" en el campo nfactura
+    $('#nfactura').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Evitar el envío del formulario
+            buscarFactura(); // Llamar a la función de búsqueda
+        }
     });
 
     $('#buscafactura').click(function () {

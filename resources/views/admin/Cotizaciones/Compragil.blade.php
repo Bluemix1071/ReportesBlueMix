@@ -424,8 +424,8 @@ Compra Agil
                     $('#buscar_marca').val(result[0].ARMARCA);
                     $( "#cantidad" ).focus();
                     $( "#buscar_cantidad" ).val(null);
-                    // $( "#buscar_costo").val((Math.round(result[0].PCCOSTO)))
-                    $("#buscar_costo").val((Math.round(result[0].PCCOSTO / 1.19 * 100) / 100).toFixed(2));
+                    $( "#buscar_costo").val((Math.round(result[0].PCCOSTO / 1.19)))
+                    // $("#buscar_costo").val((Math.round(result[0].PCCOSTO / 1.19 * 100) / 100).toFixed(2));
                     codigo = result[0].ARCODI;
                     descripcion = result[0].ARDESC;
                     marca = result[0].ARMARCA;
@@ -480,7 +480,10 @@ Compra Agil
         var margenFactor = (margenPorcentaje / 100);
 
         if (margenFactor !== 0) {
-            $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(2));
+            // $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(2));
+            $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(0)); //sin decimales
+            // $('#label_pmargen').val(Math.floor((cantidad * neto) * (1 + margenFactor))); aproxima hacia abajo
+            //$('#label_pmargen').val(Math.ceil((cantidad * neto) * (1 + margenFactor))); aproxima hacia arriba
         } else {
             $('#label_pmargen').val('0');
         }
