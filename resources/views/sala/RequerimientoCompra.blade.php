@@ -21,21 +21,21 @@
         </div>
       </div> -->
 
-      <!-- <div class="card text-white bg-warning mb-3">
+      <div class="card text-white bg-warning mb-3">
                     <div class="card-header">
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="remove">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
-                            <h3 class="card-title">Logs de Cambios (29-03-2023):</h3>
+                            <h3 class="card-title">Logs de Cambios (06-02-2024):</h3>
                             <br>
                             <hr>
-                                *Ahora solo se ingresarán requerimientos con ingresos a bodega depués del 01-11-2021.
+                                *Ahora se puede filtar requeriminetos por rangos de fecha fijos.
                                  <br>
-                                * Ahora es posible editar Estados, OC y Observaciones Internas de forma masiva (SOLO ALISON).
+                                *Ahora la busqueda de productos se hace mediante busqueda sensitiva (Codigo, Detalle, Marca).
                         </div>
-                </div> -->
+                </div>
 
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>
@@ -51,6 +51,7 @@
             <div class="col"><input type="text" class="form-control form-control-sm" placeholder="Marca" name="marca" required id="marca"></div>
             <div class="col"><input type="number" class="form-control form-control-sm" placeholder="Cantidad" name="cantidad" required min="1" max="99999999"></div>
             <div class="col"><select class="form-control form-control-sm" aria-label="Default select example" name="depto" required>
+                            <option value="ADQUISICIONES">ADQUISICIONES</option>
                             <option value="LICITACIONES">LICITACIONES</option>
                             <option value="VENTAS WEB">VENTAS WEB</option>
                             <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
@@ -85,7 +86,7 @@
             @else
                 <div class="col"><input type="number" class="form-control form-control-sm" placeholder="Orden Compra" name="oc" readonly></textarea></div>
             @endif
-            <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Obs. Eje: Encargado" name="observacion" rows="1" required></textarea></div>
+            <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Obs.: Encargado" name="observacion" rows="1" required></textarea></div>
             @if(session()->get('email') == "adquisiciones@bluemix.cl")
                 <div class="col"><textarea maxlength="250" class="form-control form-control-sm" placeholder="Observacion Interna" name="observacion_interna" rows="1"></textarea></div>
             @else
@@ -97,24 +98,30 @@
           <hr>
           <div class="card-header">
           <div style="text-align:center">
-                                <tr>
-                                    <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#cargarvale">Cargar Vale</button></td>
-                                </tr>
-                                &nbsp;&nbsp;&nbsp;
-                                <tr>
-                                    <td>Desde:</td>
-                                    <td><input type="date" id="min" name="min" value="{{ $fecha1 }}"></td>
-                                </tr>
-                                <tr>
-                                    <td>Hasta:</td>
-                                    <td><input type="date" id="max" name="max" value="{{ date('Y-m-d') }}"></td>
-                                </tr>
-                                @if(session()->get('email') == "adquisiciones@bluemix.cl")
-                                &nbsp;&nbsp;&nbsp;
-                                <tr>
-                                    <td><input type="checkbox" name="prioridades" id="soloPrioridades" style="accent-color: #343a40;">Mostar solo Prioridades</td>
-                                </tr>
-                                @endif
+            <form method="post" action="{{ route('BuscarRequerimientoFecha') }}">
+                                    <tr>
+                                        <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#cargarvale">Cargar Vale</button></td>
+                                    </tr>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <tr>
+                                        <td>Desde:</td>
+                                        <td><input type="date" id="min" name="min" value="{{ $fecha1 }}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hasta:</td>
+                                        <td><input type="date" id="max" name="max" value="{{ $fecha2 }}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="submit" class="btn btn-info" id="buscar_fecha">Buscar</button></td>
+                                    </tr>
+                                    @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                    &nbsp;&nbsp;&nbsp;
+                                    <tr>
+                                        <td><input type="checkbox" name="prioridades" id="soloPrioridades" style="accent-color: #343a40;">Mostar solo Prioridades</td>
+                                    </tr>
+                                    @endif
+                                </form>
+
                                 <!-- &nbsp &nbsp &nbsp
                                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#mimodalinfo1">
                                 ?
@@ -319,6 +326,7 @@
                                     <div class="col-md-6">
 
                                     <select name="depto" id="buscar_area" class="form-control col">
+                                        <option value="ADQUISICIONES">ADQUISICIONES</option>    
                                         <option value="LICITACIONES">LICITACIONES</option>
                                         <option value="VENTAS WEB">VENTAS WEB</option>
                                         <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
@@ -511,7 +519,10 @@
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Buscar un Producto</h4>
+                        <h4 class="modal-title col-3" id="myModalLabel">Buscar un Producto</h4>
+                        <input type="text" name="" id="buscar_codigo" placeholder="Codigo" class="form-control" onkeyup="processChange()">
+                        <input type="text" name="" id="buscar_detalle" placeholder="Detalle" class="form-control" onkeyup="processChange()">
+                        <input type="text" name="" id="buscar_marca" placeholder="Marca" class="form-control" onkeyup="processChange()">
                     </div>
                     <div class="modal-body">
                     <table id="productos" class="table">
@@ -524,14 +535,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach($productos as $producto)
+                        {{-- @foreach($productos as $producto)
                         <tr>
                             <td>{{ $producto->codigo }}</td>
                             <td>{{ $producto->descripcion }}</td>
                             <td>{{ $producto->marca }}</td>
                             <td><button type="button" onclick="selectproducto('{{ $producto->codigo }}', '{{ $producto->descripcion }}', '{{ $producto->marca }}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button></td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                       </tbody>
                     </table>
                     </div>
@@ -632,6 +643,7 @@
                                     <div class="col-md-6">
                                     @if(session()->get('email') == "adquisiciones@bluemix.cl")
                                         <select id="departamento" list="departamento" class="form-control" name="departamento" value="" required>
+                                            <option value="ADQUISICIONES">ADQUISICIONES</option>    
                                             <option value="LICITACIONES">LICITACIONES</option>
                                             <option value="VENTAS WEB">VENTAS WEB</option>
                                             <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
@@ -1096,7 +1108,24 @@ function( settings, data, dataIndex ) {
       fixedHeader: true
     });
 
-    $('#productos').DataTable({
+    /* $('#min, #max').on('change', function () {
+    table.draw();
+    //table.columns(2).search( '2021-10-25' ).draw();
+    }); */
+
+    $('#soloPrioridades').on('click', function(){
+        var miCheckbox = document.getElementById('soloPrioridades');
+        if(miCheckbox.checked) {
+            table.columns(8).search("(^"+"INGRESADO"+"$)",true,false).draw();
+            table.columns(13).search("(^1$)",true,false).draw();
+        } else {
+            table.columns(8).search("",true,false).draw();
+            table.columns(13).search("",true,false).draw();
+        }
+    })
+} );
+
+var productos = $('#productos').DataTable({
         orderCellsTop: true,
           "language":{
         "info": "_TOTAL_ registros",
@@ -1114,23 +1143,6 @@ function( settings, data, dataIndex ) {
       "infoFiltered": ""
       },
     });
-
-    $('#min, #max').on('change', function () {
-    table.draw();
-    //table.columns(2).search( '2021-10-25' ).draw();
-    });
-
-    $('#soloPrioridades').on('click', function(){
-        var miCheckbox = document.getElementById('soloPrioridades');
-        if(miCheckbox.checked) {
-            table.columns(8).search("(^"+"INGRESADO"+"$)",true,false).draw();
-            table.columns(13).search("(^1$)",true,false).draw();
-        } else {
-            table.columns(8).search("",true,false).draw();
-            table.columns(13).search("",true,false).draw();
-        }
-    })
-} );
 
 function cargarid(id){
   //alert(id);
@@ -1243,6 +1255,46 @@ function contador(monto, id){
             console.log("formulario no es valido");
         }
     }
+
+    function buscar_productos(){
+            productos.clear().draw();
+
+            var codigo = $('#buscar_codigo').val();
+            var detalle = $('#buscar_detalle').val();
+            var marca = $('#buscar_marca').val();
+            
+            if(codigo == "" && detalle == "" && marca == ""){
+                productos.clear().draw();
+            }else{
+                $.ajax({
+                    url: '../Sala/BuscarProductosRequerimiento',
+                    type: 'POST',
+                    data: {codigo, detalle, marca},
+                    success: function(result) {
+                        console.log(result);
+
+                        if(result.length >= 1000){
+                            alert("Existen más de 1000 resultados, por favor ser más especifico.");
+                        }else{
+                            result.forEach(items => {
+                                productos.rows.add([[items.ARCODI,items.ARDESC,items.ARMARCA,'<button type="button" onclick=selectproducto("'+items.ARCODI+'","'+items.ARDESC.replace(/ /g, '&nbsp;')+'","'+items.ARMARCA.replace(/ /g, '&nbsp;')+'") class="btn btn-success" data-dismiss="modal">Seleccionar</button>']]).draw();
+                            })
+                        }
+                        
+                    }
+                });
+            }
+    }
+
+    function debounce(func, timeout = 1000){
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    const processChange = debounce(() => buscar_productos());
 
 </script>
 

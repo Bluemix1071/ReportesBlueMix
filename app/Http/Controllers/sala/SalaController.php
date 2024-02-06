@@ -494,22 +494,21 @@ class SalaController extends Controller
 
       //$requerimiento_compra = DB::table('requerimiento_compra')->get();
       //$requerimiento_compra = DB::connection('DB2')->table('requerimiento_compra')->get();
+      $fecha1 = date("Y-m-d",strtotime(date("Y-m-d")."- 1 month"));
+      $fecha2 = date("Y-m-d");
 
       $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha >= "2024-01-01"');
+      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()');
 
       $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
 
       //$productos = DB::table('producto')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
 
-      $productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
+      //$productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
 
       //$productos = DB::connection('DB2')->table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
-      $fecha1 = date("Y-m-d",strtotime(date("Y-m-d")."- 1 month"));
 
-      //dd($depto[5]['depto']);
-
-      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'productos', 'fecha1'));
+      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
     }
 
     public function AgregarRequerimientoCompra(Request $request){
@@ -703,6 +702,34 @@ class SalaController extends Controller
         }
         return redirect()->route('RequerimientoCompra')->with('success','Requerimientos Priorizados Correctamente');
       }
+    }
+
+    public function BuscarRequerimientoFecha(Request $request){
+
+      $fecha1 = $request->get('min');
+      $fecha2 = $request->get('max');
+
+      $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
+      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$request->get('min').'" and "'.$request->get('max').' 23:59:59"');
+
+      $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
+
+
+      //$productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
+
+      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
+
+    }
+
+    public function BuscarProductosRequerimiento(Request $request){
+
+      $codigo = $request->get('codigo');
+      $detalle = $request->get('detalle');
+      $marca = $request->get('marca');
+
+      $productos = DB::table('producto')->where('ARCODI', 'like', '%'.$codigo.'%')->where('ARDESC', 'like', '%'.$detalle.'%')->where('ARMARCA', 'like', '%'.$marca.'%')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+
+      return response()->json($productos);    
     }
 
     public function ConteoInventarioSala(){

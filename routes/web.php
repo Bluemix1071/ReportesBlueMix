@@ -60,6 +60,8 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::get('/ResumenProducto/{codigo}','SalaController@ResumenProducto')->name('ResumenProducto');
     Route::get('/DetalleVale/{n_vale}','SalaController@DetalleVale')->name('DetalleVale');
     Route::post('/AgregarValeRequerimiento','SalaController@AgregarValeRequerimiento')->name('AgregarValeRequerimiento');
+    Route::post('/BuscarRequerimientoFecha','SalaController@BuscarRequerimientoFecha')->name('BuscarRequerimientoFecha');
+    Route::post('/BuscarProductosRequerimiento','SalaController@BuscarProductosRequerimiento')->name('BuscarProductosRequerimiento');
     /* fin */
 
     //cambio
