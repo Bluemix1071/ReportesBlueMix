@@ -187,7 +187,19 @@ class ProductosPendientesController extends Controller
               return back()->with('success', 'Productos Agregados Correctamente');
           }
 
+          public function cambiaritem(Request $request){
 
+                  DB::table('prod_pendientes')
+                  ->where('prod_pendientes.id', $request->get("id"))
+                  ->update(
+                    [
+                        'cod_articulo'=> $request->cod_articulo,]
+
+                    );
+
+                    // return redirect()->route('ListarConvenio')->with('success','Producto Editado Correctamente');
+                    return back()->with('success','Producto Editado Correctamente');
+              }
 
 
 }

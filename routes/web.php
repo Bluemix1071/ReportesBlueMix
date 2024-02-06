@@ -206,6 +206,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::put('/EditarProd','Bodega\ProductosPendientesController@EditarProd')->name('EditarProd');
     Route::post('/Eliminaritemp','Bodega\ProductosPendientesController@Eliminaritemp')->name('Eliminaritemp');
     Route::put('/AgregarObservacion','Bodega\ProductosPendientesController@AgregarObservacion')->name('AgregarObservacion');
+    Route::put('/cambiaritem','Bodega\ProductosPendientesController@cambiaritem')->name('cambiaritem');
 
 
     /*  Mantenedor Clientes Credito */

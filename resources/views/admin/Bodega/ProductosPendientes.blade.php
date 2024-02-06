@@ -140,7 +140,19 @@ Pendientes de envio
                                             ><i class="fas fa-comments"></i></a>
                                         @endif
 
-                                    </div>
+                                        </div>
+                                        <div class="col-2" style="text-algin:left">
+                                            <a href="" title="cambioprod" data-toggle="modal" data-target="#modalcambioprod"
+                                            class="btn btn-primary btn-xs"
+                                            data-id='{{ $item->id }}'
+                                                    data-cod_articulo='{{$item->cod_articulo}}'
+                                                    data-descripcion='{{$item->descripcion}}'
+                                                    data-marca='{{$item->marca}}'
+                                                    data-cantidad='{{$item->cantidad}}'
+                                                    data-stock_sala='{{$item->stock_sala}}'
+                                                    data-stock_bodega='{{$item->stock_bodega}}'
+                                            ><i class="fas fa-sync-alt"></i></a>
+                                        </div>
 
                                   </div>
                                     {{-- --}}
@@ -260,8 +272,98 @@ Pendientes de envio
         </div>
     </div>
 </div>
-
  <!-- Fin Modal Factura -->
+ <!-- Modal cambio producto -->
+<div class="modal fade" id="modalcambioprod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Cambio Producto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('cambiaritem')}}">
+                        {{ method_field('put') }}
+                        {{ csrf_field() }}
+                        @csrf
+                        <input type="hidden" name="id" id="id" value="">
+
+                        <div class="form-group row">
+                            <label for="cod_articulo"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Codigo Producto') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="cod_articulo" type="text"
+                                    class="form-control @error('cod_articulo') is-invalid @enderror" name="cod_articulo"
+                                    value="{{ old('cod_articulo') }}" required autocomplete="cod_articulo" maxlength="7">
+                            </div>
+                        </div>
+                        <!-- Detalle -->
+                        <div class="form-group row">
+                            <label for="descripcion"
+                                class="col-md-4 col-form-label text-md-right">{{ __('descripcion') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="descripcion" type="descripcion"
+                                    class="form-control @error('descripcion') is-invalid @enderror" name="descripcion"
+                                    value="{{ old('descripcion') }}" required autocomplete="descripcion" readonly>
+                            </div>
+                        </div>
+                         <!-- Marca -->
+                         <div class="form-group row">
+                            <label for="marca"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Marca') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="marca" type="marca"
+                                    class="form-control @error('marca') is-invalid @enderror" name="marca"
+                                    value="{{ old('marca') }}" required autocomplete="marca" readonly>
+                            </div>
+                        </div>
+                        <!-- Cantidad -->
+                        <div class="form-group row">
+                            <label for="cantidad"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Cantidad') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="cantidad" type="number"
+                                    class="form-control @error('cantidad') is-invalid @enderror" name="cantidad"
+                                    value="{{ old('cantidad') }}" required autocomplete="cantidad" min="0" max="9999" maxlength="4" readonly autofocus>
+                            </div>
+                        </div>
+                        <!-- Stock Sala -->
+                        <div class="form-group row">
+                            <label for="stock_sala"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Stock Sala') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="stock_sala" type="number"
+                                    class="form-control @error('stock_sala') is-invalid @enderror" name="stock_sala"
+                                    value="{{ old('stock_sala') }}" required autocomplete="stock_sala" min="0" max="99999999" readonly>
+                            </div>
+                        </div>
+                        <!-- Stock Bodega -->
+                        <div class="form-group row">
+                            <label for="stock_bodega"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Stock Bodega') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="stock_bodega" type="number"
+                                    class="form-control @error('stock_bodega') is-invalid @enderror" name="stock_bodega"
+                                    value="{{ old('stock_bodega') }}" required autocomplete="stock_bodega" min="0" max="99999999" readonly>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Cambiar</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN Modal cambio producto -->
 <!-- Inicio Modal eliminar item -->
 <div class="modal fade" id="modaleliminaritem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -342,6 +444,28 @@ Pendientes de envio
 
 
 @section('script')
+
+<script>
+    $('#modalcambioprod').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var cod_articulo = button.data('cod_articulo')
+        var descripcion = button.data('descripcion')
+        var marca = button.data('marca')
+        var cantidad = button.data('cantidad')
+        var stock_sala = button.data('stock_sala')
+        var stock_bodega = button.data('stock_bodega')
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #cod_articulo').val(cod_articulo);
+        modal.find('.modal-body #descripcion').val(descripcion);
+        modal.find('.modal-body #marca').val(marca);
+        modal.find('.modal-body #cantidad').val(cantidad);
+        modal.find('.modal-body #stock_sala').val(stock_sala);
+        modal.find('.modal-body #stock_bodega').val(stock_bodega);
+        modal.find('.modal-body #cantidad').focus();
+    })
+</script>
 
 <script>
     $('#modalcomentaritem').on('show.bs.modal', function (event) {
@@ -597,6 +721,54 @@ Pendientes de envio
     }
 });
 
+</script>
+<script>
+
+var max_fields      = 9999; //maximum input boxes allowed
+    var wrapper   		= $("#input_fields_wrap"); //Fields wrapper
+    var conteo      = $("#conteo").val();
+
+    var codigo = null;
+    var descripcion = null;
+    var marca = null;
+    var area = null;
+    var cantidad = null;
+    var sala = null;
+    var costo = null;
+    var precio_venta = null;
+
+var typingTimer; // Timer identifier
+var doneTypingInterval = 500; // Tiempo de espera en milisegundos (por ejemplo, 500 milisegundos o medio segundo)
+
+// Se activa cuando el usuario deja de escribir
+$('#cod_articulo').keyup(function() {
+    clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se presiona una tecla
+    if ($('#cod_articulo').val()) { // Verificar si el campo no está vacío
+        typingTimer = setTimeout(doneTyping, doneTypingInterval); // Configurar el temporizador para esperar un breve período de inactividad
+    }
+});
+
+// Función que se ejecuta después de que el usuario ha dejado de escribir durante el tiempo especificado
+function doneTyping() {
+    // Realizar la búsqueda del producto aquí
+    $.ajax({
+        url: '../admin/BuscarProducto/' + $('#cod_articulo').val(),
+        type: 'GET',
+        success: function(result) {
+            console.log(result);
+            $('#descripcion').val(result[0].ARDESC);
+            $('#marca').val(result[0].ARMARCA);
+            $("#cod_articulo").focus();
+            $("#stock_sala").val(result[0].bpsrea);
+            $("#buscar_costo").val(Math.trunc(result[0].PCCOSTO / 1.19));
+            codigo = result[0].ARCODI;
+            descripcion = result[0].ARDESC;
+            marca = result[0].ARMARCA;
+            costo = result[0].PCCOSTO;
+            sala = result[0].bpsrea;
+        }
+    });
+}
 </script>
 
 <script>
