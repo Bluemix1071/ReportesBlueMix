@@ -54,7 +54,7 @@
                             <option value="ADQUISICIONES">ADQUISICIONES</option>
                             <option value="LICITACIONES">LICITACIONES</option>
                             <option value="VENTAS WEB">VENTAS WEB</option>
-                            <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
+                            <!-- <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option> -->
                             <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                             <option value="SALA">SALA</option>
@@ -62,7 +62,7 @@
                             <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
                             <option value="CONVENIO MARCO">CONVENIO MARCO</option>
                             <option value="DISEÑO">DISEÑO</option>
-                            <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
+                            <!-- <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option> -->
                           </select></div>
             <div class="col">
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
@@ -329,7 +329,7 @@
                                         <option value="ADQUISICIONES">ADQUISICIONES</option>    
                                         <option value="LICITACIONES">LICITACIONES</option>
                                         <option value="VENTAS WEB">VENTAS WEB</option>
-                                        <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
+                                        <!-- <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option> -->
                                         <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
                                         <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                                         <option value="SALA">SALA</option>
@@ -337,7 +337,7 @@
                                         <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
                                         <option value="CONVENIO MARCO">CONVENIO MARCO</option>
                                         <option value="DISEÑO">DISEÑO</option>
-                                        <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
+                                        <!-- <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option> -->
                                     </select>
                                     </div>
                                 </div>
@@ -646,7 +646,7 @@
                                             <option value="ADQUISICIONES">ADQUISICIONES</option>    
                                             <option value="LICITACIONES">LICITACIONES</option>
                                             <option value="VENTAS WEB">VENTAS WEB</option>
-                                            <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option>
+                                            <!-- <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option> -->
                                             <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
                                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                                             <option value="SALA">SALA</option>
@@ -654,7 +654,7 @@
                                             <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
                                             <option value="CONVENIO MARCO">CONVENIO MARCO</option>
                                             <option value="DISEÑO">DISEÑO</option>
-                                            <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option>
+                                            <!-- <option value="TEMPORADA ESCOLAR">TEMPORADA ESCOLAR</option> -->
                                         </select>
                                     @else
                                     <input id="departamento" type="text"
