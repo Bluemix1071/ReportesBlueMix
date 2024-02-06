@@ -468,7 +468,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/pdfprov/{NroOrden?}','exports\ExportsController@exportpdfprov')->name('pdf.ordenprov');
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
     Route::post('/ExcelDesv','exports\ExportsController@exportExcelDesviacion')->name('excelDesviacion');
-
+    Route::get('/pdf/{NroOrden?}','exports\ExportsController@exportpdf')->name('pdf.orden');//CompraAgiles
+    Route::get('/exportagilpdf/{id}','CompraAgilController@exportagilpdf')->name('exportagilpdf');
     //---------------------Exportaciones ----------------------//
 
     Route::get('/export', 'exports\MyController@export')->name('export');

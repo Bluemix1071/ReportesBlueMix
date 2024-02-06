@@ -10,79 +10,50 @@ Compra Agil
 
 @section('contenido')
 
-    <div class="container">
+    <div class="container-fluid">
         <h3 class="display-4">Compra Agil</h3>
-        <div class="row">
+
           <div class="col-md-12">
             <hr>
-            <div class="card card-primary">
-                            {{-- <div class="card-header">
-                                <h2 class="card-title">Detalles del Curso</h2>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                    <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
-                                    <!--  <i class="fas fa-times"></i> -->
-                                    </button>
-                                </div>
-                                <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" >Agregar <i class="fas fa-plus"></i></button> -->
-                            </div> --}}
+            <div class="row">
+                <div class="col-md-1" style="text-align: left">
+                    <a href="{{ route('ListarCompraAgil') }}" class="btn btn-success d-flex justify-content-start">Volver</a>
+                </div>
 
-                            <div class="card-body collapse hide">
+                <div class="col-md-1 col-12" style="text-align: right">
+                    <input type="text" value="{{ $id }}" name="id" id="id" hidden>
+                    <a href="" title="Cargar Cotizacion" data-toggle="modal" data-target="#modalcotizacion" class="btn btn-info">(+)Cotización</a>
+                </div>
 
-                            {{-- <div class="callout callout-success row">
+                <div class="col-md-10 col-12" style="text-align: left">
+                    <input type="text" value="{{ $id }}" name="id" id="id" hidden>
+                    <a href="{{ route('exportagilpdf', ['id' => $id]) }}" target="_blank" title="pdf" class="btn btn-info"><i class="fas fa-file"></i></a>
+                </div>
+            </div>
 
-                                <div class="col-sm-6 col-md-6 invoice-col col">
-                                    <strong>Colegio:</strong> {{ $colegio->colegio}} <br>
-                                    <input type="text" value="{{ $colegio->colegio}}" id="colegio" hidden>
-                                    <strong>Curso:</strong> {{ $curso->nombre_curso }} <br>
-                                    <input type="text" value="{{ $curso->nombre_curso }}" id="curso" hidden>
-                                    <strong>Subcurso:</strong> {{ $curso->letra }} <br>
-                                    <input type="text" value="{{ $curso->letra }}" id="subcurso" hidden>
-                                    <input type="text" value="{{ date('d-m-Y') }}" id="fecha" hidden>
-                                    <input type="text" value="{{ count($listas) }}" id="total" hidden>
-                                </div>
+            <hr>
+            <div class="col-md-12">
+                <div class="row">
+                    <form action="{{ route('AgregarItemc') }}" method="post" enctype="multipart/form-data" id="agregaritem" class="d-flex align-items-center">
+                        &nbsp;<input type="text" value="{{ $id }}" name="id" id="id" hidden>
+                        &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col" value=""/>
+                        &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
+                        &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
+                        &nbsp;<input type="number" id="cantidad" minlength="1" maxlength="4" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
+                        &nbsp;<input type="number" id="margen" minlength="1" maxlength="4" placeholder="Margen" required name="margen" class="form-control col" value="" min="1" max="99999999"/>
+                        &nbsp;<input type="number" id="buscar_costo" placeholder="Neto" required name="buscar_costo" readonly class="form-control col" value="" min="1" max="99999999"/>
+                        &nbsp;<input type="text" id="label_pmargen" required name="label_pmargen" placeholder="Margen" readonly class="form-control col" value="0" min="1" max="99999999"/>
+                    </form>
+                    <div class="col">
+                        <button type="submit" id="add_field_button" class="btn btn-success">+</button>
+                    </div>
+                </div>
+            </div>
 
-                            </div> --}}
 
-                            </div>
-                        </div>
-                            <div class="container">
-
-                                    <div class="form-group row">
-                                        <div class="col-1" style="text-algin:left">
-                                        <a href="{{ route('ListarCompraAgil') }}" class="btn btn-success d-flex justify-content-start">Volver</a>
-                                        </div>
-
-                                        <div class="col-md-5" style="text-algin:right">
-                                            <input type="text" value="{{ $id }}" name="id" id="id" hidden>
-                                            <a href="" title="Cargar Cotizacion" data-toggle="modal" data-target="#modalcotizacion"
-                                            class="btn btn-info">(+)Cotización</a>
-                                        </div>
-                                    </div>
-
-                                    <hr>
-                                <div class="form-group row">
-                                    <form action="{{ route('AgregarItemc') }}" method="post" enctype="multipart/form-data" id="agregaritem">
-                                    <div class="row">
-                                        <input type="text" value="{{ $id }}" name="id" id="id" hidden>
-                                        &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col-2" value=""/>
-                                        &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
-                                        &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
-                                        &nbsp;<input type="number" id="cantidad" minlength="1" maxlength="4" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
-                                        &nbsp;<input type="number" id="margen" minlength="1" maxlength="4" placeholder="margen" required name="margen" class="form-control col" value="" min="1" max="99999999"/>
-                                        &nbsp;<input type="number" id="buscar_costo" placeholder="Neto" required name="buscar_costo" readonly class="form-control col" value="" min="1" max="99999999"/>
-                                    </div>
-                                     </form>
-                                     <div class="col">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success" >+</button>
-                                    </div>
-
-                            </div>
-                                </div>
-                                    <hr>
-                                    <br>
-                            </div>
+                    <hr>
+                    <br>
+        </div>
 
                         <br>
             <div class="row">
@@ -92,14 +63,16 @@ Compra Agil
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>id</th>
                                     <th scope="col" style="text-align:left">Codigo Producto</th>
-                                    <th scope="col" style="width: 29%">Detalle</th>
-                                    <th scope="col" style="width: 9%">Marca</th>
+                                    <th scope="col" style="text-align:left">Detalle</th>
+                                    <th scope="col" style="text-align:left">Marca</th>
                                     <th scope="col" style="text-align:left">Cantidad</th>
                                     <th scope="col" style="text-align:left">Stock Sala</th>
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
                                     <th scope="col" style="text-align:left">Costo C/U</th>
+                                    <th scope="col" style="text-align:left">Margen</th>
+                                    <th scope="col" style="text-align: left">Valor c/Margen</th>
                                     <th scope="col" style="text-align:left">Costo Total</th>
-                                    <th scope="col" style="width: 11%">Acciones</th>
+                                    <th scope="col" style="text-align:left">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -116,7 +89,10 @@ Compra Agil
                                     <td style="text-align:left">{{ $item->stock_sala }}</td>
                                     <td style="text-align:left">{{ $item->stock_bodega }}</td>
                                     <td style="text-align:left">${{ number_format ($item->preciou, 0,',','.')}}</td>
+                                    <td style="text-align: left">{{ $item->margen }}%</td>
+                                    <td style="text-align:left">${{ number_format ($item->valor_margen, 0,',','.') }}</td>
                                     <td style="text-align:left">${{ number_format ($item->precio_detalle, 0,',','.') }}</td>
+                                    {{-- <td style="text-align: left">{{ $item->valor_margen }}</td> --}}
                                     <div style="display: none">{{ $total += $item->precio_detalle }}</div>
                                     <td style="text-align:left">
                                         <div class="container">
@@ -150,7 +126,7 @@ Compra Agil
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="8"><strong>Total</strong> </td>
+                                    <td colspan="10"><strong>Total</strong> </td>
                                     @if (empty($total))
                                         <td><span class="price text-success">$</span></td>
                                     @else
@@ -166,7 +142,7 @@ Compra Agil
                     </table>
                 </div>
             </div>
-          </div>
+
         </div>
 </div>
 <!-- Inicio Modal eliminar item -->
@@ -289,32 +265,37 @@ Compra Agil
 </div>
 <!-- FIN Modal Editar -->
     <!-- Modal cargar cotizacion-->
-    <div class="modal fade" id="modalcotizacion" tabindex="-1" role="dialog"
-            aria-labelledby="eliminarproductocontrato" aria-hidden="true">
-            <div class="modal-dialog" role="document" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Cargar Cotización</h5>
-                    </div>
-                    <div class="modal-body">
-                        <form method="post" action="{{ route('AgregarCotizacion') }}" id="desvForm" >
-                            <div class="card card-primary">
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label">N° Cotización</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" placeholder="N° Cotización" required class="form-control col-lg-5" name="nro_cotiz" min="1" max="99999999"/>
-                                            <input type="text" value="{{ $id }}" name="id" id="id" hidden>
-                                        </div>
+    <div class="modal fade" id="modalcotizacion" tabindex="-1" role="dialog" aria-labelledby="eliminarproductocontrato" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Cargar Cotización</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{ route('AgregarCotizacion') }}" id="desvForm">
+                        <div class="card card-primary">
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputEmail3">N° Cotización</label>
+                                        <input type="number" placeholder="N° Cotización" required class="form-control" name="nro_cotiz" min="1" max="99999999" />
+                                        <input type="text" value="{{ $id }}" name="id" id="id" hidden>
                                     </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputmargen">Margen</label>
+                                        <input type="number" placeholder="Margen" required class="form-control" name="margen" min="1" max="99999999" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <button type="submit" class="btn btn-success">Cargar Cotización</button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 <!-- FIN MODAL COTIZACION -->
 @endsection
 
@@ -354,39 +335,53 @@ Compra Agil
 
 <script>
     $(document).ready(function() {
-      $('#articulos').DataTable( {
-          dom: 'Bfrtip',
-          buttons: [
-              'copy', 'pdf', {
-          extend: 'print',
-                              title: '<h5>Compra Ágil</h5>',
-                              messageBottom:
-                            '<div class="row">'+
-                                '<div class="col">'+
-                                    '<h6><b>Total:</b> '+$('#montototal').val()+'</h6>'+
-                                '</div>'+
-                            '</div>',
-      }
-
-          ],
-            "language":{
-          "info": "_TOTAL_ registros",
-          "search":  "Buscar",
-          "paginate":{
-            "next": "Siguiente",
-            "previous": "Anterior",
-
-        },
-        "loadingRecords": "cargando",
-        "processing": "procesando",
-        "emptyTable": "no hay resultados",
-        "zeroRecords": "no hay coincidencias",
-        "infoEmpty": "",
-        "infoFiltered": ""
+    $('#articulos').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 9, 10] // Índices de las columnas que deseas incluir
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 9, 10]
+                }
+            },
+            {
+                extend: 'print',
+                title: '<h5>Compra Ágil</h5>',
+                messageBottom:
+                    '<div class="row">'+
+                        '<div class="col">'+
+                            '<h6><b>Total:</b> '+$('#montototal').val()+'</h6>'+
+                        '</div>'+
+                    '</div>',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 9, 10]
+                }
+            }
+        ],
+        language: {
+            "info": "_TOTAL_ registros",
+            "search": "Buscar",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior",
+            },
+            "loadingRecords": "cargando",
+            "processing": "procesando",
+            "emptyTable": "no hay resultados",
+            "zeroRecords": "no hay coincidencias",
+            "infoEmpty": "",
+            "infoFiltered": ""
         },
         order: [[0, 'desc']]
-      } );
-    } );
+    });
+});
+
 
     </script>
 
@@ -429,7 +424,8 @@ Compra Agil
                     $('#buscar_marca').val(result[0].ARMARCA);
                     $( "#cantidad" ).focus();
                     $( "#buscar_cantidad" ).val(null);
-                    $( "#buscar_costo").val((Math.trunc(result[0].PCCOSTO/1.19)))
+                    $( "#buscar_costo").val((Math.round(result[0].PCCOSTO / 1.19)))
+                    // $("#buscar_costo").val((Math.round(result[0].PCCOSTO / 1.19 * 100) / 100).toFixed(2));
                     codigo = result[0].ARCODI;
                     descripcion = result[0].ARDESC;
                     marca = result[0].ARMARCA;
@@ -474,5 +470,24 @@ Compra Agil
 
         </script>
 
-  @endsection
+<script type="text/javascript">
+    $("#margen").keyup(function () {
+        var neto = parseFloat($("#buscar_costo").val()) || 0;
+        var margenPorcentaje = parseFloat($("#margen").val()) || 0;
+        var cantidad = parseInt($('#cantidad').val()) || 0;
+
+        // Convertir el margen a un factor de porcentaje (ej. 33 se convierte a 1.33)
+        var margenFactor = (margenPorcentaje / 100);
+
+        if (margenFactor !== 0) {
+            // $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(2));
+            $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(0)); //sin decimales
+            // $('#label_pmargen').val(Math.floor((cantidad * neto) * (1 + margenFactor))); aproxima hacia abajo
+            //$('#label_pmargen').val(Math.ceil((cantidad * neto) * (1 + margenFactor))); aproxima hacia arriba
+        } else {
+            $('#label_pmargen').val('0');
+        }
+    });
+</script>
+@endsection
 
