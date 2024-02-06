@@ -146,7 +146,7 @@
                   <th scope="col">Departamento</th>
                   <th scope="col">Estado</th>
                   <th scope="col">OC</th>
-                  {{-- <th scope="col">Observación</th> --}}
+                  <th scope="col" style="display:none">Observación</th>
                   <th scope="col" class="col-1" style="display:none">Fecha Ingreso</th>
                   <th scope="col" class="col-1">Observacion Interna</th>
                   <th scope="col">Acciones</th>
@@ -193,7 +193,7 @@
                         @endif
                         </td>
                       <td><a href="{{route('pdf.orden', $item->oc)}}" target="_blank">{{ $item->oc }}</a></td>
-                      {{-- <td>{{ $item->observacion }}</td> --}}
+                      <td style="display:none">{{ $item->observacion }}</td>
                       <td style="display:none">{{ $item->fecha }}</td>
                         @if($item->estado == "RECHAZADO")
                             <td><p class="text-danger">{{ $item->observacion_interna }}</p></td>
@@ -1034,7 +1034,7 @@ $(window).on('load', function () {
             $("#maindiv").css({"pointer-events": "all", "opacity": "1"});
         }) 
 
-var minDate, maxDate = null;
+/* var minDate, maxDate = null;
 
 $.fn.dataTable.ext.search.push(
 function( settings, data, dataIndex ) {
@@ -1043,7 +1043,7 @@ function( settings, data, dataIndex ) {
     }
     var min = minDate.val();
     var max = maxDate.val();
-    var date = data[10].substring(0, 10);
+    var date = data[11].substring(0, 10);
     //alert(date.substring(0, 10));
 
     if (
@@ -1057,7 +1057,7 @@ function( settings, data, dataIndex ) {
     return false;
 }
 ); 
-
+ */
   $(document).ready( function () {
 
     if(window.screen.height <= 768){
@@ -1085,9 +1085,9 @@ function( settings, data, dataIndex ) {
     var table = $('#users').DataTable({
         orderCellsTop: true,
         dom: 'Bfrtip',
-        order: [[ 10, "desc" ]],
+        order: [[ 11, "desc" ]],
         buttons: [
-            'copy', 'pdf', 'print'
+            'copy', 'pdf', 'print', 'excel'
 
         ],
           "language":{
