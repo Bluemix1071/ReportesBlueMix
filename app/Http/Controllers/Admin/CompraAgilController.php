@@ -124,8 +124,12 @@ class CompraAgilController extends Controller
         $label_pmargen = $request->get('label_pmargen');
         // dd($idcompra);
 
+
         $codigof = DB::table('compragil_detalle')
-        -> where('cod_articulo', $codigo)->first();
+        ->where('cod_articulo', $codigo)
+        ->where('id_compragil', $idcompra)
+        ->first();
+
 
 
         if ($codigof) {
@@ -245,17 +249,19 @@ class CompraAgilController extends Controller
         if ($encontrado) {
             return back()->with('error','Uno o Mas Productos Ya Existen!');
         } else {
-            $cotizacion = DB::select('select dcotiz.DZ_CODIART,dcotiz.DZ_CANT,(precios.PCCOSTO)/1.19 as DZ_PRECIO
+            $cotizacion = DB::select('select dcotiz.DZ_CODIART,dcotiz.DZ_CANT,round(precios.PCCOSTO/1.19) as DZ_PRECIO
             from dcotiz
             left join precios on SUBSTRING(dcotiz.DZ_CODIART,1,5)  = precios.PCCODI
             where dcotiz.DZ_NUMERO = '.$request->get('nro_cotiz').'');
+
             if(!empty($cotizacion)){
                 foreach($cotizacion as $item){
 
-                        $cantidad = $item->DZ_CANT;
-                        $neto = $item->DZ_PRECIO; // Asegúrate de reemplazar esto con la lógica real para obtener el valor neto
-                        // Calcula el margen utilizando la fórmula que proporcionaste
-                        $margenFactor = $request->margen / 100;
+                    $cantidad = $item->DZ_CANT;
+                    $neto = $item->DZ_PRECIO; // Asegúrate de reemplazar esto con la lógica real para obtener el valor neto
+                    // Calcula el margen utilizando la fórmula que proporcionaste
+                    $margenFactor = $request->margen / 100;
+                    // dd($margenFactor+1);
                         $precioConMargen = ($cantidad * $neto) * (1 + $margenFactor);
                         $valorcmargen = $precioConMargen/$cantidad;
                         // dd($valorcmargen*43);
@@ -264,7 +270,7 @@ class CompraAgilController extends Controller
                         'cod_articulo' => $item->DZ_CODIART,
                         'cantidad' => $item->DZ_CANT,
                         'margen' => $request->margen,
-                        'valor_margen' => $valorcmargen,
+                        'valor_margen' => round($valorcmargen),
                         //  $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(2));
                     ];
 
