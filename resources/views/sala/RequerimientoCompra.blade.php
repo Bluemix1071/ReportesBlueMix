@@ -31,7 +31,7 @@
                             <h3 class="card-title">Logs de Cambios (06-02-2024):</h3>
                             <br>
                             <hr>
-                                *Ahora se puede filtar requeriminetos por rangos de fecha fijos.
+                                *Ahora se puede filtar requerimientos por rangos de fecha fijos.
                                  <br>
                                 *Ahora la busqueda de productos se hace mediante busqueda sensitiva (Codigo, Detalle, Marca).
                         </div>
