@@ -143,7 +143,7 @@ Pendientes de envio
                                         </div>
                                         <div class="col-2" style="text-algin:left">
                                             <a href="" title="cambioprod" data-toggle="modal" data-target="#modalcambioprod"
-                                            class="btn btn-primary btn-xs"
+                                            class="btn btn-warning btn-xs"
                                             data-id='{{ $item->id }}'
                                                     data-cod_articulo='{{$item->cod_articulo}}'
                                                     data-descripcion='{{$item->descripcion}}'
