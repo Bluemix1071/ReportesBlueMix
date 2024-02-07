@@ -119,10 +119,9 @@ class ProductosPendientesController extends Controller
                         "fecha" => $fechai[0]->fechai,//pendiente
                         "stock_anterior" => $bodeprod[0]->bpsrea,
                         "nuevo_stock" => $restabp,
-                        "autoriza" => 'Ignacio Barrera',
-                        "solicita" => 'Despacho',
-                        "observacion" => 'Envio de Pendiente' . $request->get('factura'),
-
+                        "autoriza" => 'Rosa Miranda',
+                        "solicita" => 'inventario',
+                        "observacion" => 'Envio de Pendiente Factura: ' . $request->get('nro_factura'),
                         ]
                         ]);
                 // Fin registro de cambios

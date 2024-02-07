@@ -109,7 +109,7 @@ Pendientes de envio
                                     <div class="row">
                                       @if(($item->estado == "1"))
                                       <div class="col-3">
-                                          <form action="{{ route('EditarProd', ['id' => $item->id,'cantidad'=>$item->cantidad,'cod_articulo'=>$item->cod_articulo]) }}" method="POST" enctype="multipart/form-data">
+                                          <form action="{{ route('EditarProd', ['id' => $item->id,'cantidad'=>$item->cantidad,'cod_articulo'=>$item->cod_articulo,'nro_factura'=>$item->nro_factura]) }}" method="POST" enctype="multipart/form-data">
                                             {{ method_field('put') }}
                                             {{ csrf_field() }}
                                               <button type="submit" class="btn btn-info btn-xs"><i class="fas fa-paper-plane"></i></button>
