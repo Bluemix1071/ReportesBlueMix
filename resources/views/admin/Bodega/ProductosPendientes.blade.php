@@ -112,19 +112,20 @@ Pendientes de envio
                                           <form action="{{ route('EditarProd', ['id' => $item->id,'cantidad'=>$item->cantidad,'cod_articulo'=>$item->cod_articulo]) }}" method="POST" enctype="multipart/form-data">
                                             {{ method_field('put') }}
                                             {{ csrf_field() }}
-                                              <button type="submit" class="btn btn-primary btn-xs"><i class="fas fa-paper-plane"></i></button>
+                                              <button type="submit" class="btn btn-info btn-xs"><i class="fas fa-paper-plane"></i></button>
                                           </form>
                                       </div>
                                       @else
                                       @endif
-
+                                      @if(session()->get('email') == "ignaciobarrera4@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl" || session()->get('email') == 'rmiranda@bluemix.cl')
                                       <div class="col-3" style="text-algin:left">
                                           <a href="" title="Eliminar Item" data-toggle="modal" data-target="#modaleliminaritem"
                                           class="btn btn-danger btn-xs"
                                           data-id='{{ $item->id }}'
                                           ><i class="fas fa-trash"></i></a>
                                       </div>
-
+                                      @else
+                                      @endif
                                       <div class="col-2" style="text-algin:left">
                                         @if ($item->observacion == "")
                                             <a href="" title="Comentar" data-toggle="modal" data-target="#modalcomentaritem"
@@ -761,6 +762,11 @@ function doneTyping() {
             $("#cod_articulo").focus();
             $("#stock_sala").val(result[0].bpsrea);
             $("#buscar_costo").val(Math.trunc(result[0].PCCOSTO / 1.19));
+            if (result[0].cantidad == null){
+                $("#stock_bodega").val('0');
+            }else{
+                $("#stock_bodega").val(result[0].cantidad);
+            }
             codigo = result[0].ARCODI;
             descripcion = result[0].ARDESC;
             marca = result[0].ARMARCA;

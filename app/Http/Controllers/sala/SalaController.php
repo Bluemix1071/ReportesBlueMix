@@ -729,7 +729,7 @@ class SalaController extends Controller
 
       $productos = DB::table('producto')->where('ARCODI', 'like', '%'.$codigo.'%')->where('ARDESC', 'like', '%'.$detalle.'%')->where('ARMARCA', 'like', '%'.$marca.'%')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
 
-      return response()->json($productos);    
+      return response()->json($productos);
     }
 
     public function ConteoInventarioSala(){
@@ -769,10 +769,10 @@ class SalaController extends Controller
     }
 
     public function BuscarProducto($codigo){
+        // error_log(print_r($codigo, true));
 
-      //error_log(print_r($codigo, true));
 
-      $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
+        $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
 
       return response()->json($producto);
     }

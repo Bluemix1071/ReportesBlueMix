@@ -48,9 +48,12 @@ class ConteoInventarioBodegaController extends Controller
         //error_log(print_r($codigo, true));
 
         $producto = DB::table('producto')
-        ->leftjoin('precios', \DB::raw('substr(producto.ARCODI, 1, 5)'), '=', 'precios.PCCODI')
-        ->leftjoin('bodeprod', 'producto.ARCODI', '=', 'bodeprod.bpprod')
-        ->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
+        ->leftJoin('precios', \DB::raw('substr(producto.ARCODI, 1, 5)'), '=', 'precios.PCCODI')
+        ->leftJoin('bodeprod', 'producto.ARCODI', '=', 'bodeprod.bpprod')
+        ->leftJoin('Suma_Bodega', 'producto.ARCODI', '=', 'Suma_Bodega.inarti')//Se agrego para mostrar el stock de bodega representado como "cantidad"
+        ->where('ARCODI', $codigo)
+        ->orWhere('ARCBAR', $codigo)
+        ->get();
 
         return response()->json($producto);
     }

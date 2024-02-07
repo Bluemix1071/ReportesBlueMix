@@ -501,7 +501,7 @@ class ListaEscolarController extends Controller
         producto.ARMARCA as marca,
         sum(ListaEscolar_detalle.cantidad) as cantidad,
         Suma_Bodega.cantidad AS stock_bodega,
-        (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
+        (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
@@ -509,7 +509,7 @@ class ListaEscolarController extends Controller
         left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
         left join curso on ListaEscolar_detalle.id_curso = curso.id
         left join colegio on curso.id_colegio = colegio.id
-        where Suma_Bodega.cantidad <= 50 or isnull(Suma_Bodega.cantidad) and ListaEscolar_detalle.cod_articulo != 2516800 and colegio.temporada='2023-2024'
+        where Suma_Bodega.cantidad <= 50 or isnull(Suma_Bodega.cantidad) and ListaEscolar_detalle.cod_articulo != 2516800 and colegio.temporada='2024-2025'
         group by ListaEscolar_detalle.cod_articulo");
         // dd($critico[0]);
 
@@ -536,7 +536,7 @@ class ListaEscolarController extends Controller
         producto.ARMARCA as marca,
         sum(ListaEscolar_detalle.cantidad) as cantidad,
         Suma_Bodega.cantidad AS stock_bodega,
-        (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
+        (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
