@@ -75,29 +75,13 @@
             $(document).ready(function() {
 
                 var table = $('#productos').DataTable({
-                    order: [[ 0, "desc" ]],
                     orderCellsTop: true,
                     dom: 'Bfrtip',
                     buttons: [
-                        'copy', 'pdf',
+                        'copy', 'pdf', 'excel',
                         {
                             extend: 'print',
-                            messageTop: 
-                            '<div class="row">'+
-                                '<div class="col">'+
-                                    '<h6><b>Rut:</b> '+$('#rut').val()+'</h6>'+
-                                    '<h6><b>Razon:</b> '+$('#rs').val()+'</h6>'+
-                                    '<h6><b>Giro:</b> '+$('#giro').val()+'</h6>'+
-                                    '<h6><b>Direccion:</b> '+$('#direccion').val()+'</h6>'+
-                                '</div>'+
-                                '<div class="col">'+
-                                    '<h6><b>Ciudad:</b> '+$('#ciudad').val()+'</h6>'+
-                                    '<h6><b>Region:</b> '+$('#region').val()+'</h6>'+
-                                    '<h6><b>Depto:</b> '+$('#depto').val()+'</h6>'+
-                                    '<h6><b>Cod. Depto:</b> '+$('#cod_depto').val()+'</h6>'+
-                                '</div>'+
-                            '</div>',
-                            title: '<h5>Estadisticas de Entidad</h5>'
+                            title: '<h5>Sincronización Productos</h5>'
                         }
                     ],
                     "language":{
