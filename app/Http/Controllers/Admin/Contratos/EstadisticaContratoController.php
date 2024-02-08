@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\Contratos;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+use App\Imports\sincproductoImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EstadisticaContratoController extends Controller
 {
@@ -175,5 +177,28 @@ class EstadisticaContratoController extends Controller
        where nro_oc like "%SE%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO = 8 group by CARUTC, depto;');
 
         return view('admin.Contratos.EstadisticaContrato', compact('productos_contratos', 'productos_historicos_contratos', 'productos_contratos_sin_venta', 'contratos_historicos', 'fecha1', 'fecha2'));
+    }
+
+    public function SincronizacionProductos(){
+
+        $productos = [];
+
+        return view('admin.Contratos.SincronizacionProductos', compact('productos'));
+    }
+
+    public function SincronizacionProductosExcel(){
+
+        if(empty(request()->file('listado'))){
+            return back()->with('warning', 'No se seleccionó ningún archivo');
+        }else{
+            DB::table('sync_prod')->delete();
+
+            Excel::import(new sincproductoImport,request()->file('listado'));
+
+            $productos = DB::table('sync_prod')->get();
+            //dd($productos);
+            return view('admin.Contratos.SincronizacionProductos', compact('productos'));
+        }
+
     }
 }

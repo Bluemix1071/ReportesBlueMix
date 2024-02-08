@@ -82,5 +82,10 @@ class MyController extends Controller
         return response()->download(public_path('../public/assets/lte/descargas/Plantilla Listado Proveedor.xlsx'));
     }
 
+    public function descargaPlantillaSincProductos()
+    {
+        return response()->download(public_path('../public/assets/lte/descargas/Plantilla Sincronizacion Productos.xlsx'));
+    }
+
 
 }

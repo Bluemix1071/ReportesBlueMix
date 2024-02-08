@@ -306,6 +306,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/EstadisticaEntidadFecha','Contratos\EstadisticaContratoController@EstadisticaEntidadDetalleFecha')->name('EstadisticaEntidadDetalleFecha');
     Route::post('/EstadisticaContratoFecha','Contratos\EstadisticaContratoController@EstadisticaContratoFecha')->name('EstadisticaContratoFecha');
     Route::get('/ResumenProducto/{codigo_producto}','AdminController@ResumenProducto')->name('ResumenProducto');
+    Route::get('/SincronizacionProductos','Contratos\EstadisticaContratoController@SincronizacionProductos')->name('SincronizacionProductos');
+    Route::post('/SincronizacionProductosExcel','Contratos\EstadisticaContratoController@SincronizacionProductosExcel')->name('SincronizacionProductosExcel');
+    Route::get('/descargaPlantillaSincProductos', 'exports\MyController@descargaPlantillaSincProductos')->name('descargaPlantillaSincProductos');
 
     Route::get('/MantenedorProducto','AdminController@MantenedorProducto')->name('MantenedorProducto');
     Route::post('/MantenedorProductoFiltro','AdminController@MantenedorProductoFiltro')->name('MantenedorProductoFiltro');
