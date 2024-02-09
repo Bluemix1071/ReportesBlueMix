@@ -29,7 +29,7 @@ class sincproductoImport implements ToCollection
 
                     if(count($producto) == 0){
                         DB::table('sync_prod')->insert([
-                            "codigo" => "000000",
+                            "codigo" => strtoupper($row[0]),
                             "detalle" => "NO ENCONTRADO",
                             "marca" => "NO ENCONTRADO",
                             "t_uni" => "N/A",
