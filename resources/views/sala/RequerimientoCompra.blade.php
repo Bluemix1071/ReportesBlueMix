@@ -52,7 +52,11 @@
             <div class="col"><input type="number" class="form-control form-control-sm" placeholder="Cantidad" name="cantidad" required min="1" max="99999999"></div>
             <div class="col"><select class="form-control form-control-sm" aria-label="Default select example" name="depto" required>
                             <option value="ADQUISICIONES">ADQUISICIONES</option>
-                            <option value="LICITACIONES">LICITACIONES</option>
+                            @if(session()->get('email') == "ventas@bluemix.cl")
+                                <option value="LICITACIONES" selected>LICITACIONES</option>
+                            @else
+                                <option value="LICITACIONES">LICITACIONES</option>
+                            @endif
                             <option value="VENTAS WEB">VENTAS WEB</option>
                             <!-- <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option> -->
                             <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
