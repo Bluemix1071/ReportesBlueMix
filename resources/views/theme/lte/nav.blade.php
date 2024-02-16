@@ -448,6 +448,14 @@
                                 @endcan
 
                                 <li class="nav-item">
+                                    <a href="{{ route('VentasPorArea') }}"
+                                        class="nav-link {{ setActive('VentasPorArea') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Ventas Por Área</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
                                     <a href="{{ route('VentasPorRut') }}"
                                         class="nav-link {{ setActive('VentasPorRut') }}">
                                         <i class="far fa-circle nav-icon"></i>

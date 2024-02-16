@@ -530,6 +530,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ReporteGastosInternosDiseño','GastosDiseno@ReporteGastosInternosDiseño')->name('ReporteGastosInternosDiseño');
     Route::post('/ReporteGastosInternosDiseñoFiltro','GastosDiseno@ReporteGastosInternosDiseñoFiltro')->name('ReporteGastosInternosDiseñoFiltro');
 
+    Route::get('/VentasPorArea','VentasPorAreaController@index')->name('VentasPorArea');
 
 
 

@@ -1281,7 +1281,7 @@ function contador(monto, id){
                             alert("Existen más de 1000 resultados, por favor ser más especifico.");
                         }else{
                             result.forEach(items => {
-                                productos.rows.add([[items.ARCODI,items.ARDESC,items.ARMARCA,'<button type="button" onclick=selectproducto("'+items.ARCODI+'","'+items.ARDESC.replace(/ /g, '&nbsp;')+'","'+items.ARMARCA.replace(/ /g, '&nbsp;')+'") class="btn btn-success" data-dismiss="modal">Seleccionar</button>']]).draw();
+                                productos.rows.add([[items.ARCODI,items.ARDESC,items.ARMARCA,'<button type="button" onclick=selectproducto("'+items.ARCODI+'","'+items.ARDESC.replace(/"/g, "¨").replace(/ /g, '&nbsp;')+'","'+items.ARMARCA.replace(/ /g, '&nbsp;')+'") class="btn btn-success" data-dismiss="modal">Seleccionar</button>']]).draw();
                             })
                         }
                         
