@@ -118,8 +118,9 @@ ventas Categoria
                             <tr>
                                 <th scope="col" style="text-align:left">ID Categoria</th>
                                 <th scope="col" style="text-align:left">Categoria</th>
-                                <th scope="col" style="text-align:right">Valor</th>
+                                <th scope="col" style="text-align:right">Valor Total</th>
                                 <th scope="col" style="text-align:right">Porcentaje Participacion</th>
+                                <th scope="col" style="text-align:right">Valor C/Descuentos</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -130,6 +131,7 @@ ventas Categoria
                                     {{-- variable suma --}}
                                     {{ $totalparticipacion = 0 }}
                                     {{ $totalcategorias = 0 }}
+                                    {{ $totaldescuentos = 0 }}
                                 </div>
                                 @foreach ($todo as $item)
                                     <tr id="tabla">
@@ -137,8 +139,10 @@ ventas Categoria
                                             <td style="text-align:left">{{ $item->taglos }}</td>
                                             <td style="text-align:right">{{ number_format($item->valor, 0, ',', '.') }}</td>
                                             <td style="text-align:right">{{round((($item->valor / $suma) * 100),2)}}%</td>
+                                            <td style="text-align:right">{{ number_format($item->valor-($desc->descuentos*(($item->valor / $suma)/1)),0, ',' , '.') }}</td>
                                             <div style="display: none">{{ $totalparticipacion += round((($item->valor / $suma) * 100),2) }}</div>
                                             <div style="display: none">{{ $totalcategorias += $item->valor }}</div>
+                                            <div style="display: none">{{ $totaldescuentos += $item->valor-($desc->descuentos*(($item->valor / $suma)/1)) }}</div>
                                     </tr>
                                 @endforeach
                             @endif
@@ -155,6 +159,9 @@ ventas Categoria
                                 </td>
                                     <td style="text-align:right"><span
                                             class="price text-success">{{ number_format($totalparticipacion, 0, ',', '.') }}%</span>
+                                    </td>
+                                    <td style="text-align:right"><span
+                                            class="price text-success">{{ number_format($totaldescuentos, 0, ',', '.') }}</span>
                                     </td>
                                 @endif
                             </tr>

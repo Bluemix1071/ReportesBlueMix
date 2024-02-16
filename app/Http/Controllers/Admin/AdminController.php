@@ -2104,6 +2104,12 @@ public function stocktiemporeal (Request $request){
                       and c.CATIPO = dc.DETIPO
                       and dc.DEFECO between ? and ? group by ARGRPO2 WITH ROLLUP', [$fecha1,$fecha2]);
 
+                $desc = DB::select('select(
+                (select sum(casuto-cavalo) as resta from cargos where CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CAPODE != 0)+
+                (select sum(total_nc) from nota_credito where fecha between "'.$fecha1.'" and "'.$fecha2.'")) as descuentos')[0];
+
+                //dd($desc->descuentos);
+
               $cosa=end($todo2);
 
              $suma=$cosa->valor;
@@ -2113,7 +2119,7 @@ public function stocktiemporeal (Request $request){
 
 
 
-        return view('admin.ventasCategoria',compact('diseno','categorias','todo','suma','fecha1','fecha2','contrato'));
+        return view('admin.ventasCategoria',compact('diseno','categorias','todo','suma','fecha1','fecha2','contrato', 'desc'));
 
     }
 
