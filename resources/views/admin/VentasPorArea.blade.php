@@ -12,20 +12,26 @@ ventas Categoria
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Ventas Por Area</h3>
+        <h3 class="display-3">Ventas Por Area (ALPHA)</h3>
         <div class="row">
             <div class="col-md-12">
-                <form action="" method="post" id="desvForm" class="form-inline">
+                <form action="{{ route('VentasPorAreaFiltro') }}" method="post" id="desvForm" class="form-inline">
                     @csrf
                     <div class="form-group mb-2">
-                        
-                            <label for="staticEmail2" class="sr-only">Fecha 1</label>
-                            <input type="date" id="fecha1" class="form-control" name="fecha1">
+                        <label for="" class="sr-only">Fecha 1</label>
+                        @if(empty($fecha1))
+                            <input type="date" id="fecha1" class="form-control" name="fecha1" required>
+                        @else
+                            <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}">
+                        @endif
                     </div>
                     <div class="form-group mx-sm-3 mb-2">
-
-                            <label for="inputPassword2" class="sr-only">Fecha 2</label>
-                            <input type="date" id="fecha2" name="fecha2" class="form-control">
+                        <label for="" class="sr-only">Fecha 2</label>
+                        @if(empty($fecha2))
+                            <input type="date" id="fecha2" name="fecha2" class="form-control" required>
+                        @else
+                            <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{ $fecha2 }}">
+                        @endif
                     </div>
                     <div class="form-group mx-sm-3 mb-2">
                         <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
@@ -37,34 +43,103 @@ ventas Categoria
                             <tr>
                                 <th scope="col" style="text-align:left">Area</th>
                                 <th scope="col" style="text-align:left">Total</th>
+                                <th scope="col" style="text-align:left">% Participacion</th>
+                                <th scope="col" style="text-align:left">Total C/Descuentos</th>
                             </tr>
                         </thead>
+                        @if(empty($sala))
                         <tbody>
                            <tr>
                                 <td>Sala Ventas</td>
-                                <td>b</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
                            </tr>
                            <tr>
                                 <td>Licitaciones</td>
-                                <td>b</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
                            </tr>
                            <tr>
                                 <td>Compra Ágil</td>
-                                <td>b</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
                            </tr>
                            <tr>
                                 <td>Convenio Marco</td>
-                                <td>b</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
                            </tr>
                            <tr>
                                 <td>Empresas (Sala)</td>
-                                <td>b</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
                            </tr>
                            <tr>
                                 <td>Ventas Web</td>
-                                <td>b</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
                            </tr>
                         </tbody>
+                        @else
+                        <tbody>
+                            {{ $total = $sala->total+$licitaciones->total+$compra_agil->total+$convenio_marco->total+$empresas_sala->total+$ventas_web->total }}
+                           <tr>
+                                <td>Sala Ventas</td>
+                                <td>{{ number_format($sala->total, 0, ',', '.') }}</td>
+                                <td>{{ number_format(($sala->total*100)/$total, 2, ',' , '.') }}</td>
+                                <td>{{ number_format($sala->total-($nc->total*($sala->total/$total)), 0, ',' , '.') }}</td>
+                           </tr>
+                           <tr>
+                                <td>Licitaciones</td>
+                                <td>{{ number_format($licitaciones->total, 0, ',', '.') }}</td>
+                                <td>{{ number_format(($licitaciones->total*100)/$total, 2, ',' , '.') }}</td>
+                                <td>{{ number_format($licitaciones->total-($nc->total*($licitaciones->total/$total)), 0, ',' , '.') }}</td>
+                               
+                           </tr>
+                           <tr>
+                                <td>Compra Ágil</td>
+                                <td>{{ number_format($compra_agil->total, 0, ',', '.') }}</td>
+                                <td>{{ number_format(($compra_agil->total*100)/$total, 2, ',' , '.') }}</td>
+                                <td>{{ number_format($compra_agil->total-($nc->total*($compra_agil->total/$total)), 0, ',' , '.') }}</td>
+                           </tr>
+                           <tr>
+                                <td>Convenio Marco</td>
+                                <td>{{ number_format($convenio_marco->total, 0, ',', '.') }}</td>
+                                <td>{{ number_format(($convenio_marco->total*100)/$total, 2, ',' , '.') }}</td>
+                                <td>{{ number_format($convenio_marco->total-($nc->total*($convenio_marco->total/$total)), 0, ',' , '.') }}</td>
+                           </tr>
+                           <tr>
+                                <td>Empresas (Sala)</td>
+                                <td>{{ number_format($empresas_sala->total, 0, ',', '.') }}</td>
+                                <td>{{ number_format(($empresas_sala->total*100)/$total, 2, ',' , '.') }}</td>
+                                <td>{{ number_format($empresas_sala->total-($nc->total*($empresas_sala->total/$total)), 0, ',' , '.') }}</td>
+                           </tr>
+                           <tr>
+                                <td>Ventas Web</td>
+                                <td>{{ number_format($ventas_web->total , 0, ',', '.') }}</td>
+                                <td>{{ number_format(($ventas_web->total*100)/$total, 2, ',' , '.') }}</td>
+                                <td>{{ number_format($ventas_web->total-($nc->total*($ventas_web->total/$total)), 0, ',' , '.') }}</td>
+                           </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><strong>Total</strong> </td>
+                               
+                                    <td style="text-align:left"><span
+                                            class="price text-success">${{ number_format($total, 0, ',', '.') }}</span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                               
+                            </tr>
+                        </tfoot>
+                        @endif
                     </table>
                 </div>
                 <br>
@@ -116,6 +191,5 @@ ventas Categoria
     <script src="{{ asset('js/vfs_fonts.js') }}"></script>
     <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-
 
 @endsection

@@ -15,7 +15,7 @@
         <h3 class="display-3">Venta Productos</h3>
         <div class="row">
             <div class="col-md-12">
-                <form action="{{ route('ventaProdFiltro') }}" method="post" id="desvForm" class="form-inline">
+                <form action="{{ route('ventaProdFiltro') }}" method="post" class="form-inline" id="form">
                     @csrf
                     <div class="col-md-1 mb-3">
                         <div class="form-row">
@@ -78,7 +78,11 @@
                     </div>
                     <div class="col-md-2 mb-3">
 
-                        <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                        <!-- <button type="submit" class="btn btn-primary mb-2">Filtrar</button> -->
+                        <button id="btn_sync" class="btn btn-primary">
+                            <div id="baja">Filtrar</div>
+                            <div class="spinner-border spinner-border-sm" hidden role="status" id="spinner_baja"></div>
+                        </button>
 
                     </div>
 
@@ -91,7 +95,7 @@
                                 <th scope="col" style="text-align:left">Tipo Documento</th>
                                 <th scope="col" style="text-align:left">N° Documento</th>
                                 <th scope="col" style="text-align:left">Fecha Venta</th>
-                                <th scope="col" style="text-align:left">Rut Prov</th>
+                                <th scope="col" style="text-align:left">Caja</th>
                                 <th scope="col" style="text-align:left">Codigo</th>
                                 <th scope="col" style="text-align:left">Marca</th>
                                 <th scope="col" style="text-align:left">Descripción</th>
@@ -117,7 +121,7 @@
                                     @endif
                                         <td style="text-align:left">{{ $item->DENMRO}}</td>
                                         <td style="text-align:left">{{ $item->DEFECO}}</td>
-                                        <td style="text-align:left">{{ $item->ARRUTPROV2}}</td>
+                                        <td style="text-align:left">{{ $item->CACOCA}}</td>
                                         <td style="text-align:left">{{ $item->DECODI}}</td>
                                         <td style="text-align:left">{{ $item->ARMARCA}}</td>
                                         <td style="text-align:left">{{ $item->Detalle}}</td>
@@ -215,12 +219,21 @@
 }
     </script>
     <script>
+
+        $('#btn_sync').click(function(){
+            $('#baja').prop('hidden', true);
+            $('#spinner_baja').prop('hidden', false);
+            $('#form').submit();
+            $('#btn_sync').prop('disabled', true);
+            $('#btn_sync2').prop('disabled', true);
+        });
+
         $(document).ready(function() {
             $('#productos').DataTable({
-                "order": [[ 9, "desc" ]],
+                "order": [[ 2, "asc" ]],
                 dom: 'Bfrtip',
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'copy', 'pdf', 'print'
 
                 ],
                 "language": {

@@ -2778,21 +2778,26 @@ public function stocktiemporeal (Request $request){
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
         WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
 
+        $ncboletas=DB::select('select sum(nota_credito.total_nc) as sumac FROM nota_credito
+        left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=7', [$fecha1])[0];
 
         $ventasala101=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=101 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
         $ventasala102=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=102 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
         $ventasala103=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=103 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
         $ventasala104=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=104 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala105=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=105 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala106=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=106 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala17=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=17 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala108=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=108 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala109=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=109 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
 
+        $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma+$ventasala104[0]->suma+$ventasala105[0]->suma+$ventasala106[0]->suma+$ventasala17[0]->suma+$ventasala108[0]->suma+$ventasala109[0]->suma;
 
-        $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma+$ventasala104[0]->suma;
-
-
-        $factuasxnc=$factuasxnca[0]->sumaa+$factuasxncb[0]->sumab;
+        $factuasxnc=$factuasxnca24[0]->sumaa+$factuasxncb24[0]->sumab;
         $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc;
         $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
 
-        $totalventaxdia=$ventasala+$facturasmenosnc;
+        $totalventaxdia=$ventasala+$facturasmenosnc-$ncboletas->sumac;
 
 
         // dd($facturasmenosnc+$ventasala);
@@ -2851,7 +2856,7 @@ public function stocktiemporeal (Request $request){
         return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019',
         'mensual2020','mensual2021','mensual2022','mensual2023','mensual2024','anual2018','anual2019','anual2020','anual2021','anual2022',
         'anual2023','anual2024','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem','destucan23','destucanm24','desnenem24','destucan24','desnene24',
-        'desnene23','destucanm23','desnenem23','totalventaxdia'));
+        'desnene23','destucanm23','desnenem23','totalventaxdia','ncboletas'));
 
 
     }
