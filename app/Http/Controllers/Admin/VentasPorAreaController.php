@@ -33,6 +33,36 @@ class VentasPorAreaController extends Controller
 
         $nc = DB::select('select sum(total_nc) as total from nota_credito where fecha between "'.$fecha1.'" and "'.$fecha2.'"')[0];
 
-        return view('admin.VentasPorArea', compact('fecha1', 'fecha2', 'sala', 'licitaciones', 'compra_agil', 'convenio_marco', 'empresas_sala', 'ventas_web', 'nc'));
+        $detalle_sala = DB::select('select dcargos.DECODI, dcargos.Detalle, producto.ARMARCA, sum(decant) as cantidad, sum(precio_ref*DECANT) as total from dcargos
+        left join cargos on dcargos.DENMRO = cargos.CANMRO
+        left join producto on dcargos.DECODI =  producto.ARCODI
+        where DEFECO and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and nro_oc = "" and CACOCA in ("101", "102", "103") and DETIPO <> 3 group by DECODI');
+
+        $detalle_licitaciones = DB::select('select dcargos.DECODI, dcargos.Detalle, producto.ARMARCA, sum(decant) as cantidad, sum(precio_ref*DECANT) as total from dcargos
+        left join cargos on dcargos.DENMRO = cargos.CANMRO
+        left join producto on dcargos.DECODI =  producto.ARCODI
+        where DEFECO and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and nro_oc not like "%AG%" AND nro_oc NOT LIKE "%CM2%" AND CACOCA in ("17", "108") and DETIPO <> 3 group by DECODI');
+
+        $detalle_compra_agil = DB::select('select dcargos.DECODI, dcargos.Detalle, producto.ARMARCA, sum(decant) as cantidad, sum(precio_ref*DECANT) as total from dcargos
+        left join cargos on dcargos.DENMRO = cargos.CANMRO
+        left join producto on dcargos.DECODI =  producto.ARCODI
+        where DEFECO and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and nro_oc like "%AG%" and DETIPO <> 3 group by DECODI');
+
+        $detalle_convenio_marco = DB::select('select dcargos.DECODI, dcargos.Detalle, producto.ARMARCA, sum(decant) as cantidad, sum(precio_ref*DECANT) as total from dcargos
+        left join cargos on dcargos.DENMRO = cargos.CANMRO
+        left join producto on dcargos.DECODI =  producto.ARCODI
+        where DEFECO and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and nro_oc like "%CM2%" and DETIPO <> 3 group by DECODI;');
+
+        $detalle_empresas_sala = DB::select('select dcargos.DECODI, dcargos.Detalle, producto.ARMARCA, sum(decant) as cantidad, sum(precio_ref*DECANT) as total from dcargos
+        left join cargos on dcargos.DENMRO = cargos.CANMRO
+        left join producto on dcargos.DECODI =  producto.ARCODI
+        where DEFECO and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and nro_oc <> "" and CACOCA in ("101", "102", "103") and DETIPO <> 3 group by DECODI');
+
+        $detalle_ventas_web = DB::select('select dcargos.DECODI, dcargos.Detalle, producto.ARMARCA, sum(decant) as cantidad, sum(precio_ref*DECANT) as total from dcargos
+        left join cargos on dcargos.DENMRO = cargos.CANMRO
+        left join producto on dcargos.DECODI =  producto.ARCODI
+        where DEFECO and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CARUTC <> "76926330" and CACOCA in ("104", "105", "106") and DETIPO <> 3 group by DECODI');
+
+        return view('admin.VentasPorArea', compact('fecha1', 'fecha2', 'sala', 'licitaciones', 'compra_agil', 'convenio_marco', 'empresas_sala', 'ventas_web', 'nc', 'detalle_sala', 'detalle_licitaciones', 'detalle_compra_agil', 'detalle_convenio_marco', 'detalle_empresas_sala', 'detalle_ventas_web'));
     }
 }
