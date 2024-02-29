@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Informatica;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use DB;
 use Storage;
+use Milon\Barcode\DNS1D;
+use Milon\Barcode\DNS2D;
 
 class FirmaDocumentosController extends Controller
 {
@@ -216,6 +219,80 @@ class FirmaDocumentosController extends Controller
             dd($result);
 
             return back();
+    }
+
+    public function FirmarFactura(Request $request ){
+
+      dd('<img src="data:image/png;base64,' . DNS2D::getBarcodePNG('<TED version="1.0"><DD><RE>76071816-5</RE><TD>33</TD><F>17961</F><FE>2024-01-29</FE><RR>77283950-2</RR><RSR>BLUE MIX SPA.</RSR><MNT>284286</MNT><IT1>E2102</IT1><CAF version="1.0"><DA><RE>76071816-5</RE><RS>SOCIEDAD COMERCIAL KINDER MIX LIMITADA</RS><TD>33</TD><RNG><D>17707</D><H>17970</H></RNG><FA>2023-09-04</FA><RSAPK><M>s90bNxV1pduxkAFKMo8oDrvKZPo9PB8C4r9OR27/48a6rMFyPnloUQ7EubNfM2Y9EdN+BWxlAnFdFJAOm5b0mQ==</M><E>Aw==</E></RSAPK><IDK>300</IDK></DA><FRMA algoritmo="SHA1withRSA">WoCimjMhDmw2vLFacd33uYVxX+GjO3JOUWKEeXY8oVZ0ijGA8Lu05tEJQFdNgEQC/LxsiDL4/YdgroV7v3uJJg==</FRMA></CAF><TSTED>2024-01-29T14:55:00</TSTED></DD><FRMT algoritmo="SHA1withRSA">YWyBOSmNftL0+aVavX5/TBZUueLOpiFV0CN7kqpZEuHy0rVwM2Ced+ipyzsvxcA177r1MMbe7vns8Q2kc3HJrA==</FRMT></TED>', 'PDF417') . '" alt="barcode"/>');
+
+      $xw = xmlwriter_open_memory();
+      xmlwriter_set_indent($xw, 1);
+      $res = xmlwriter_set_indent_string($xw, ' ');
+      
+      xmlwriter_start_document($xw, '1.0', 'ISO-8859-1');
+      
+      // A first element tag DTE
+      xmlwriter_start_element($xw, 'EnvioDTE');
+      
+      // Attribute 'att1' for element atributos de tag DTE
+      xmlwriter_start_attribute($xw, 'version');
+      xmlwriter_text($xw, '1.0');
+      xmlwriter_end_attribute($xw);
+
+      xmlwriter_start_attribute($xw, 'xmlns');
+      xmlwriter_text($xw, 'http://www.sii.cl/SiiDte');
+      xmlwriter_end_attribute($xw);
+
+      xmlwriter_start_attribute($xw, 'xmlns:xsi');
+      xmlwriter_text($xw, 'http://www.w3.org/2001/XMLSchema-instance');
+      xmlwriter_end_attribute($xw);
+
+      xmlwriter_start_attribute($xw, 'xsi:schemaLocation');
+      xmlwriter_text($xw, 'http://www.sii.cl/SiiDte EnvioDTE_v10.xsd');
+      xmlwriter_end_attribute($xw);
+      
+      //xmlwriter_write_comment($xw, 'this is a comment.');
+      
+      // Start a child element
+      xmlwriter_start_element($xw, 'SetDTE');
+      xmlwriter_text($xw, 'This is a sample text, ä');
+      xmlwriter_end_element($xw); // tag11
+
+      xmlwriter_start_attribute($xw, 'ID');
+      xmlwriter_text($xw, 'IDFACNYTIP');
+      xmlwriter_end_attribute($xw);
+      
+      xmlwriter_end_element($xw); // tag1
+      
+      
+      // CDATA
+      xmlwriter_start_element($xw, 'testc');
+      xmlwriter_write_cdata($xw, "This is cdata content");
+      xmlwriter_end_element($xw); // testc
+      
+      xmlwriter_start_element($xw, 'testc');
+      xmlwriter_start_cdata($xw);
+      xmlwriter_text($xw, "test cdata2");
+      xmlwriter_end_cdata($xw);
+      xmlwriter_end_element($xw); // testc
+      
+      // A processing instruction
+      /* xmlwriter_start_pi($xw, 'php');
+      xmlwriter_text($xw, '$foo=2;echo $foo;');
+      xmlwriter_end_pi($xw); */
+      
+      xmlwriter_end_document($xw);
+
+      dd(xmlwriter_output_memory($xw));
+
+      $response = Response::create(xmlwriter_output_memory($xw), 200);
+      $response->header('Content-Type', 'text/xml');
+      $response->header('Cache-Control', 'public');
+      $response->header('Content-Description', 'File Transfer');
+      $response->header('Content-Disposition', 'attachment; filename="TEST.xml"');
+      $response->header('Content-Transfer-Encoding', 'binary');
+
+      return $response;
     }
 
 }

@@ -139,6 +139,7 @@ Route::prefix('Informatica')->middleware('auth', 'SuperAdmin')->group(function()
     Route::get('/FirmaFacturas','Informatica\FirmaDocumentosController@FirmaFacturas')->name('FirmaFacturas');
     Route::get('/FirmaFacturasFiltro','Informatica\FirmaDocumentosController@FirmaFacturasFiltro')->name('FirmarFacturasFiltro');
     Route::post('/FirmaFacturas','Informatica\FirmaDocumentosController@FirmarFacturasDia')->name('FirmarFacturasDia');
+    Route::post('/FirmaFactura','Informatica\FirmaDocumentosController@FirmarFactura')->name('FirmarFactura');
     Route::get('/CreateFacturaJson','Informatica\FirmaDocumentosController@CreateFacturaJson')->name('CreateFacturaJson');
 
 });
