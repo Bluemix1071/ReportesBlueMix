@@ -168,11 +168,11 @@ class RectificacionInventarioSalaController extends Controller
             }
         }
 
-        foreach($groups as $item){
+       /*  foreach($groups as $item){
             if((intval($item['sala'])-intval($item['cantidad'])) < 0){
                 return redirect()->route('RectificacionInsumoMerma')->with('error', 'El articulo '.$item['codigo'].' quedará en negativo. Rectificar stock');
             }
-        }
+        } */
 
         foreach($groups as $item){
             DB::table('bodeprod')->where('bpprod', $item['codigo'])->update(['bpsrea' => (intval($item['sala'])-intval($item['cantidad']))]);
@@ -207,11 +207,11 @@ class RectificacionInventarioSalaController extends Controller
 
         if(!empty($vale)){
 
-            foreach($vale as $item){
+            /* foreach($vale as $item){
                 if($item->CANT < 0){
                     return redirect()->route('RectificacionInsumoMerma')->with('error', 'El articulo '.$item->vaarti.' quedará en negativo. Rectificar stock');
                 }
-            }
+            } */
 
             foreach($vale as $item){
                 $insumo = ['codigo' => $item->vaarti,

@@ -99,6 +99,17 @@ public function exportpdfprov($numero_de_orden_de_compra){
   return $pdf->stream('Orden De Compraprov.pdf');
 }
 
+public function exportpdfDocProv($folio, $rut){
+
+  $documento = DB::table('compras')->where('folio', $folio)->where('rut', strtoupper($rut))->first();
+
+  //dd($documento);
+
+  $pdf =PDF::loadView('exports.documentoProveedores', compact('documento'));
+
+  return $pdf->stream(''.$folio.'_'.strtoupper($rut).'.pdf');
+}
+
 
 
 

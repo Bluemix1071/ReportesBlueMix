@@ -469,6 +469,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     //---------------------Exportaciones----------------------------------------------//
 
     Route::get('/pdf/{NroOrden?}','exports\ExportsController@exportpdf')->name('pdf.orden');
+    Route::get('/pdfDocProv/{folio},{rut}','exports\ExportsController@exportpdfDocProv')->name('pdf.docProv');
     Route::get('/ExcelOC/{NroOrden?}','exports\ExportsController@exportExelOrdenDeCompra')->name('ordenExcel');
     Route::get('/pdfprov/{NroOrden?}','exports\ExportsController@exportpdfprov')->name('pdf.ordenprov');
     Route::post('/excelproductospormarca','exports\ExportsController@exportExcelproductospormarca')->name('excelproductopormarca');
