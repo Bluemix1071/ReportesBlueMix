@@ -16,6 +16,7 @@
     .td-table1 { background-color:#c0c0c0;text-align:right; font-weight: bold;}
 
     #table1 tbody tr td{ border: rgb(2, 2, 2) 2px solid;}
+    
 </style>
 
 <table>
