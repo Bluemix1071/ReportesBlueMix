@@ -193,7 +193,7 @@ Lista Escolar
                     <div class="modal-body">
                         <h6>Las Guías devueltas "Según Documento" no tienen efecto al stock en sala de los productos de la misma ya que se justificó con el documento refrenciado.</h6>
                         <form method="post" action="{{ route('DevolverGuiaSegunDocumento') }}" id="desvForm">
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                     <label for="name"
                                         class="col-md-4 col-form-label text-md-right">Solicita:</label>
 
@@ -208,7 +208,7 @@ Lista Escolar
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> -->
                                 <input name="folio" id="id" value="{{ $guia[0]->CANMRO }}" hidden>
                                 <button type="submit" class="btn btn-success">Devolver Según Documento</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
