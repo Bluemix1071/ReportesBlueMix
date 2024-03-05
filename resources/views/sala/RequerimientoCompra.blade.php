@@ -21,7 +21,7 @@
         </div>
       </div> -->
 
-      <div class="card text-white bg-warning mb-3">
+      <!-- <div class="card text-white bg-warning mb-3">
                     <div class="card-header">
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="remove">
@@ -35,7 +35,7 @@
                                  <br>
                                 *Ahora la busqueda de productos se hace mediante busqueda sensitiva (Codigo, Detalle, Marca).
                         </div>
-                </div>
+                </div> -->
 
       <!-- <hr>
       <button data-toggle="modal" data-target="#confirmacion" type="button" class="btn btn-success">Agregar Requerimiento</button>

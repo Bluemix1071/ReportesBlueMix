@@ -125,6 +125,13 @@ class RectificacionInventarioSalaController extends Controller
         return redirect()->route('RectificacionGuia')->with('success','Mercadería Devuelta Correctamente');
     }
 
+    public function DevolverGuiaSegunDocumento(Request $request){
+
+        $devolucion = DB::table('detalle_devolucion')->insert(['folio' => $request->get('folio'), 't_doc' => 'Guia', 'estado' => 'Entrada Según Documento']);
+
+        return redirect()->route('RectificacionGuia')->with('success','Mercadería Devuelta Correctamente');
+    }
+
     public function DevolverGuiaDetalle(Request $request){
         $guia=DB::table('cargos')->leftjoin('detalle_devolucion', 'cargos.CANMRO', '=', 'detalle_devolucion.folio')->where('cargos.CANMRO', $request->get('folio'))->get();
         //dd($cotiz[0]);

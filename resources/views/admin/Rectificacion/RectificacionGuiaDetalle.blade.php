@@ -130,8 +130,12 @@ Lista Escolar
             <br>
             @if($guia[0]->t_doc != "Guia")
                 <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='1'>Devolver Mercadería</button>
+                <br>
+                <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolversegundoc" data-id='1'>Devolver Mercadería Según Documento</button>
             @else
                 <button type="button" class="btn btn-primary btn-sm col" disabled>Devolver Mercadería</button>
+                <br>
+                <button type="button" class="btn btn-primary btn-sm col" disabled>Devolver Mercadería Según Documento</button>
             @endif
           </div>
         </div>
@@ -166,6 +170,47 @@ Lista Escolar
                                 </div>
                                 <input name="folio" id="id" value="{{ $guia[0]->CANMRO }}" hidden>
                                 <button type="submit" class="btn btn-success">Devolver Mercadería</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+    <!-- Modal oconfirmacion de devolucion-->
+    <div class="modal fade" id="modalidevolversegundoc" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">¿Seguro de Devolver la Mercadería Según Documento?</h5>
+                        <hr>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                    </div>
+                    <div class="modal-body">
+                        <h6>Las Guías devueltas "Según Documento" no tienen efecto al stock en sala de los productos de la misma ya que se justificó con el documento refrenciado.</h6>
+                        <form method="post" action="{{ route('DevolverGuiaSegunDocumento') }}" id="desvForm">
+                                <div class="form-group row">
+                                    <label for="name"
+                                        class="col-md-4 col-form-label text-md-right">Solicita:</label>
+
+                                    <div class="col-md-6">
+                                        <input id="name" type="text"
+                                            class="form-control @error('name') is-invalid @enderror" name="solicita"
+                                            value="" required max="50" min="5" autocomplete="name" autofocus>
+
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <input name="folio" id="id" value="{{ $guia[0]->CANMRO }}" hidden>
+                                <button type="submit" class="btn btn-success">Devolver Según Documento</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </form>
                     </div>

@@ -27,7 +27,7 @@
                                     <th scope="col">Giro</th>
                                     <th scope="col">O.C</th>
                                     <th scope="col">Ref.</th>
-                                    <th scope="col">Acción</th>
+                                    <th scope="col">Estado/Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,12 +42,18 @@
                                      <td>{{ $item->referenciaOC}}</td>
                                      <td class="row">
                                      @if($item->t_doc != "Guia")
-                                        <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='{{ $item->CANMRO }}'>Devolver Mercadería</button>
-                                    @else
-                                        <button type="button" class="btn btn-primary btn-sm col" disabled>Sacar Mercadería</button>
+                                        <!-- <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='{{ $item->CANMRO }}'>Devolver Mercadería</button> -->
+                                        <form action="">
+                                            <span class="badge badge-warning">Pendiente</span>
+                                        </form>
+                                        @else
+                                        <!-- <button type="button" class="btn btn-primary btn-sm col" disabled>Sacar Mercadería</button> -->
+                                        <form action="">
+                                            <span class="badge badge-success">Justificada</span>
+                                        </form>
                                     @endif
                                         <form method="post" action="{{ route('RectificacionGuiaDetalle', ['folio' => $item->CANMRO]) }}" target="_blank">
-                                            &nbsp<button type="submit" class="btn btn-success btn-sm">Ver</button>
+                                            &nbsp<button type="submit" class="btn btn-info btn-sm">Ver</button>
                                         </form>
                                     </td>
                                 </tr>
