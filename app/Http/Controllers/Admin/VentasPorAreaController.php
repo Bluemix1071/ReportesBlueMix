@@ -19,7 +19,7 @@ class VentasPorAreaController extends Controller
         $fecha1 = $request->get('fecha1');
         $fecha2 = $request->get('fecha2');
 
-        $sala = DB::select('select sum(CAVALO) as total from cargos where CACOCA in ("101", "102", "103") and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" AND nro_oc = ""')[0];
+       /*  $sala = DB::select('select sum(CAVALO) as total from cargos where CACOCA in ("101", "102", "103") and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" AND nro_oc = ""')[0];
 
         $licitaciones = DB::select('select sum(CAVALO) as total from cargos where CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO <> 3 and nro_oc not like "%AG%" AND nro_oc NOT LIKE "%CM2%" AND CACOCA in ("17", "108")')[0];
     
@@ -63,6 +63,14 @@ class VentasPorAreaController extends Controller
         left join producto on dcargos.DECODI =  producto.ARCODI
         where DEFECO and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CARUTC <> "76926330" and CACOCA in ("104", "105", "106") and DETIPO <> 3 group by DECODI');
 
-        return view('admin.VentasPorArea', compact('fecha1', 'fecha2', 'sala', 'licitaciones', 'compra_agil', 'convenio_marco', 'empresas_sala', 'ventas_web', 'nc', 'detalle_sala', 'detalle_licitaciones', 'detalle_compra_agil', 'detalle_convenio_marco', 'detalle_empresas_sala', 'detalle_ventas_web'));
+        return view('admin.VentasPorArea', compact('fecha1', 'fecha2', 'sala', 'licitaciones', 'compra_agil', 'convenio_marco', 'empresas_sala', 'ventas_web', 'nc', 'detalle_sala', 'detalle_licitaciones', 'detalle_compra_agil', 'detalle_convenio_marco', 'detalle_empresas_sala', 'detalle_ventas_web')); */
+        
+        $resumen = DB::select('select CATIPO, CANMRO, CACOCA, CAVALO, nota_credito.folio, nota_credito.total_nc from cargos
+        left join nota_credito on cargos.CANMRO = nota_credito.nro_doc_refe and cargos.CATIPO = nota_credito.tipo_doc_refe and nota_credito.fecha between "'.$fecha1.'" and "'.$fecha2.'"
+        where CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CATIPO <> 3');
+
+        /* dd($resumen); */
+        
+        return view('admin.VentasPorArea', compact('resumen'));
     }
 }

@@ -40,7 +40,77 @@ Ventas por Area
                         </button>
                     </div>
                 </form>
-                <h5>Resumen Ventas por Área</h5>
+                <h5>Resumen Ventas</h5>
+                <div class="table-responsive-xl">
+                    <table id="areas" class="table table-bordered table-hover dataTable table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="text-align:left">Tipo Documento</th>
+                                <th scope="col" style="text-align:left">Folio</th>
+                                <th scope="col" style="text-align:left">Caja</th>
+                                <th scope="col" style="text-align:left">Total</th>
+                                <th scope="col" style="text-align:left">Folio NC</th>
+                                <th scope="col" style="text-align:left">Total NC</th>
+                                <th scope="col" style="text-align:left">Diferencia NC</th>
+                                <!-- <th scope="col" style="text-align:left">Total C/Descuentos</th> -->
+                            </tr>
+                        </thead>
+                        @if(empty($resumen))
+                        <tbody>
+                        </tbody>
+                        @else
+                        <tbody>
+                            <div style="display:none">
+                                {{ $total = 0 }}
+                                {{ $totalnc = 0 }}
+                                {{ $totaldif = 0 }}
+                            </div>
+                            @foreach($resumen as $item)
+                           <tr>
+                                @if($item->CATIPO == 7)
+                                    <td>Boleta</td>
+                                @elseif($item->CATIPO == 8)
+                                    <td>Factura</td>
+                                @endif
+                                <td>{{ $item->CANMRO }}</td>
+                                <td>{{ $item->CACOCA }}</td>
+                                <td>{{ number_format($item->CAVALO, 0, ',', '.') }} <div style="display:none">{{ $total += $item->CAVALO }}</div></td>
+                                <td>{{ $item->folio }}</td>
+                                @if(is_null($item->total_nc))
+                                    <td>0</td>
+                                @else
+                                    <td>{{ number_format($item->total_nc, 0, ',', '.') }} <div style="display:none">{{ $totalnc += $item->total_nc }}</div></td>
+                                @endif
+                                <td>{{ number_format(($item->CAVALO-$item->total_nc), 0, ',', '.') }} <div style="display:none">{{ $totaldif += ($item->CAVALO-$item->total_nc) }}</div></td>
+                           </tr>
+                           @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                               
+                                    <td style="text-align:left">
+                                    </td>
+                                    <td style="text-align:left">
+                                    </td>
+                                    <td style="text-align:left">
+                                        {{ number_format($total, 0, ',', '.') }}
+                                    </td>
+                                    <td style="text-align:left">
+                                    </td>
+                                    <td style="text-align:left">
+                                        {{ number_format($totalnc, 0, ',', '.') }}
+                                    </td>
+                                    <td style="text-align:left">
+                                        {{ number_format($totaldif, 0, ',', '.') }}
+                                    </td>
+                
+                            </tr>
+                        </tfoot>
+                        @endif
+                    </table>
+
+                {{-- <h5>Resumen Ventas por Área</h5>
                 <div class="table-responsive-xl">
                     <table id="areas" class="table table-bordered table-hover dataTable table-sm">
                         <thead>
@@ -317,7 +387,7 @@ Ventas por Area
                         </tbody>
                     </table>
                 </div>
-                @endif
+                @endif --}}
             </div>  
         </div>
 
@@ -329,9 +399,27 @@ Ventas por Area
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
 
     <script>
+        
         $(document).ready(function() {
-            $('#areas').DataTable({
+
+            $('#areas thead tr').clone(true).appendTo( '#areas thead' );
+                $('#areas thead tr:eq(1) th').each( function (i) {
+                var title = $(this).text();
+                $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
+    
+                $( 'input', this ).on( 'keyup change', function () {
+                    if ( areas.column(i).search() !== this.value ) {
+                        areas
+                            .column(i)
+                            .search( this.value )
+                            .draw();
+                    }
+                    });
+                });
+                
+            var areas = $('#areas').DataTable({
                 dom: 'Bfrtip',
+                orderCellsTop: true,
                 buttons: [
                     'copy', 'pdf', 'print'
 

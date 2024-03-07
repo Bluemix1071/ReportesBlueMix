@@ -103,9 +103,13 @@ public function exportpdfDocProv($folio, $rut){
 
   $documento = DB::table('compras')->where('folio', $folio)->where('rut', strtoupper($rut))->first();
 
+  $detalle = DB::table('compras_detalles')->where('id_compras', $documento->id)->get();
+
+  //dd($detalle);
+
   //dd($documento);
 
-  $pdf =PDF::loadView('exports.documentoProveedores', compact('documento'));
+  $pdf =PDF::loadView('exports.documentoProveedores', compact('documento', 'detalle'));
 
   return $pdf->stream(''.$folio.'_'.strtoupper($rut).'.pdf');
 }
