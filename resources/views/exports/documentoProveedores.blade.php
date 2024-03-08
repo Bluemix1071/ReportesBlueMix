@@ -37,11 +37,21 @@
 
     #table4 tbody tr td{ border: rgb(2, 2, 2) 2px solid;}
 
-    #table5 { border-collapse:collapse; border-spacing:0; border: rgb(2, 2, 2) 2px solid; font-size: 12px;}
+    #table5 { border-collapse:collapse; border-spacing:0; border: rgb(2, 2, 2) 2px solid; font-size: 12px; margin-left: 150px}
 
-    .td-table5 { background-color:#c0c0c0; text-align:right; font-weight: bold; border-bottom: rgb(2, 2, 2) 2px solid; border-right: rgb(2, 2, 2) 2px solid;}
+    #table5 thead tr th{ text-align:left; border: rgb(2, 2, 2) 2px solid; }
 
-    #table5 tr { border: rgb(2, 2, 2) 2px solid !important; }
+    .td-table5 { background-color:#c0c0c0;text-align:right; font-weight: bold; }
+
+    #table5 tbody tr td{ border: rgb(2, 2, 2) 2px solid;}
+
+    #table6 { width: 100%; }
+
+    #table7 { width: 100%; border-collapse:collapse; border-spacing:0; border: rgb(2, 2, 2) 2px solid; font-size: 12px; }
+
+    .td-table7 { background-color:#c0c0c0;text-align:right; font-weight: bold; }
+
+    #table7 tbody tr td{ border: rgb(2, 2, 2) 2px solid;}
 </style>
 
 <table>
@@ -154,19 +164,39 @@
     </table>
     </td>
     <td>
-    <table>
-      <thead id="table5">
-        <tr style="margin-left: 5%;">
+    <table id="table5">
+      <thead style="border-bottom: rgb(2, 2, 2) 2px solid !important; margin-top: -74px;">
+        <tr>
           <th class="td-table5">Forma de Pago</th>
-          <th style="border-bottom: rgb (2,2,2,) 2px solid;">Contado</th>
+          @if($documento->tpo_pago == 1)
+              <th>Contado</th>
+          @elseif($documento->tpo_pago == 2)
+              <th>Credito</th>
+          @endif
         </tr>
         <tr>
           <th class="td-table5">Fecha Emisíon</th>
-          <th style="border-bottom: rgb (2,2,2,) 2px solid;">00-00-0000</th>
+          <th>{{ $documento->fecha_emision }}</th>
         </tr>
         <tr>
           <th class="td-table5">Fecha Vencimiento</th>
-          <th style="border-bottom: rgb (2,2,2,) 2px solid;">00-00-0000</th>
+          <th>{{ $documento->fecha_venc }}</th>
+        </tr>
+        <tr style="visibility: hidden;">
+          <th class="td-table5">Fecha Vencimiento</th>
+          <th>00-00-0000</th>
+        </tr>
+        <tr style="visibility: hidden;">
+          <th class="td-table5">Fecha Vencimiento</th>
+          <th>00-00-0000</th>
+        </tr>
+        <tr style="visibility: hidden;">
+          <th class="td-table5">Fecha Vencimiento</th>
+          <th>00-00-0000</th>
+        </tr>
+        <tr style="visibility: hidden;">
+          <th class="td-table5">Fecha Vencimiento</th>
+          <th>00-00-0000</th>
         </tr>
       </thead>
       <!-- <tbody>
@@ -210,12 +240,49 @@
     <td>{{ $item->descripcion }}</td>
     <td>{{ number_format(($item->cantidad) , 0, ',', '.') }}</td>
     <td>{{ $item->tpo_uni }}</td>
-    <td>{{ number_format(($item->precio), 0, ',' ,'.') }}</td>
-    <td>{{ number_format(($item->precio*1.19), 0, ',', '.')}}</td>
-    <td>{{ number_format(($item->total_neto), 0, ',' ,'.') }}</td>
+    <td>${{ number_format(($item->precio), 0, ',' ,'.') }}</td>
+    <td>${{ number_format(($item->precio*1.19), 0, ',', '.')}}</td>
+    <td>${{ number_format(($item->total_neto), 0, ',' ,'.') }}</td>
   </tr>
   @endforeach
 </tbody>
 </table>
+<br>
+<footer>
+  <table id="table6">
+    <thead>
+      <tr>
+        <th style="width: 49%;">
+          <img src="data:image/png;base64, {{ $timbre }}" alt="barcode" width="350px" height="93px"/>
+        </th>
+        <th>
+        <table id="table7">
+          <tbody>
+            <tr>
+              <td class="td-table7">Monto Neto</td>
+              <td>${{ number_format(($documento->neto) , 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+              <td class="td-table7">IVA(19%)</td>
+              <td>${{ number_format(($documento->iva) , 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+              <td class="td-table7">Monto Exento</td>
+              <td>${{ number_format(($documento->mnto_exento) , 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+              <td class="td-table7">Total</td>
+              <td>${{ number_format(($documento->total) , 0, ',', '.')}}</td>
+            </tr>
+            <tr>
+              <td colspan="2" style="font-size: 9px; font-weight: normal;"><b>SON:</b> {{ strtoupper($son) }}</td>
+            </tr>
+          </tbody>
+          </table>
+        </th>
+      </tr>
+    </thead>
+  </table>
+</footer>
 </body>
 </html>
