@@ -52,6 +52,12 @@
     .td-table7 { background-color:#c0c0c0;text-align:right; font-weight: bold; }
 
     #table7 tbody tr td{ border: rgb(2, 2, 2) 2px solid;}
+
+    #table8 { border-collapse:collapse; border-spacing:0; border: rgb(2, 2, 2) 2px solid; font-size: 14px; margin-left: 2%; width: 100%}
+
+    #table8 thead tr th{ background-color:#c0c0c0;text-align:left; border: rgb(2, 2, 2) 2px solid; }
+
+    #table8 tbody tr td{ border: rgb(2, 2, 2) 2px solid;}
 </style>
 
 <table>
@@ -101,7 +107,7 @@
         </tr>
         <tr>
           <th colspan="1">Tipo:</th>
-          <th colspan="1">Factura Electronica</th>
+          <th colspan="1">Factura Electrónica</th>
         </tr>
         <tr>
           <th colspan="1">N°:</th>
@@ -171,7 +177,7 @@
           @if($documento->tpo_pago == 1)
               <th>Contado</th>
           @elseif($documento->tpo_pago == 2)
-              <th>Credito</th>
+              <th>Crédito</th>
           @endif
         </tr>
         <tr>
@@ -248,16 +254,113 @@
 </tbody>
 </table>
 <br>
+@if(count($referencia) != 0 )
+<table id="table8">
+<thead>
+  <tr>
+    <th>Referencia</th>
+    <th>Folio</th>
+    <th>Fecha</th>
+  </tr>
+</thead>
+<tbody>
+  @foreach($referencia as $item)
+  <tr class="tr-referencia">
+      <!-- {{ $item->tpo_doc_ref }} -->
+      @switch($item->tpo_doc_ref)
+      @case(801)
+        <td>Orden de Compra</td>
+      @break
+
+      @case(802)
+        <td>Nota de Pedido</td>
+      @break
+
+      @case(803)
+        <td>Contrato</td>
+      @break
+
+      @case(804)
+        <td>Resolución</td>
+      @break
+
+      @case(805)
+        <td>Proceso Chile Compra</td>
+      @break
+
+      @case(806)
+        <td>Ficha Chile Compra</td>
+      @break
+
+      @case(807)
+        <td>DUS</td>
+      @break
+
+      @case(808)
+        <td>B/L</td>
+      @break
+
+      @case(809)
+        <td>AWS</td>
+      @break
+
+      @case(810)
+        <td>MIC/DTA</td>
+      @break
+
+      @case(811)
+        <td>Carta de Porte</td>
+      @break
+
+      @case(812)
+        <td>Res. SNA</td>
+      @break
+
+      @case(813)
+        <td>Pasaporte</td>
+      @break
+
+      @case(NV)
+        <td>Nota de Vale</td>
+      @break
+
+      @case(HES)
+        <td>Hoja estado Servicios</td>
+      @break
+
+      @default
+        <td>{{ $item->tpo_doc_ref }}</td>
+      @endswitch
+    <td>{{ $item->folio }}</td>
+    <td>{{ $item->fecha_ref }}</td>
+  </tr>
+  @endforeach
+</tbody>
+</table>
+@endif
+<br>
 <footer>
   <table id="table6">
     <thead>
       <tr>
         <th style="width: 49%;">
-          <img src="data:image/png;base64, {{ $timbre }}" alt="barcode" width="350px" height="93px"/>
+          <img src="data:image/png;base64, {{ $timbre }}" alt="barcode" width="350px" height="92px"/>
         </th>
         <th>
         <table id="table7">
           <tbody>
+            @if($impuestoTpo != null)
+            <tr>
+              <td class="td-table7">Impuesto({{ $impuestoTpo }})</td>
+              <td>${{ number_format(($impuestoValor) , 0, ',', '.') }}</td>
+            </tr>
+            @endif
+            @if($dectoTpo != null)
+            <tr>
+              <td class="td-table7">Descuento({{ $dectoTpo }})</td>
+              <td> {{ number_format(($dectoValor) , 0, ',', '.') }}</td>
+            </tr>
+            @endif
             <tr>
               <td class="td-table7">Monto Neto</td>
               <td>${{ number_format(($documento->neto) , 0, ',', '.') }}</td>

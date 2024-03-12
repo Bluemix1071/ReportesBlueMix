@@ -109,6 +109,10 @@ public function exportpdfDocProv($folio, $rut){
 
   $detalle = DB::table('compras_detalles')->where('id_compras', $documento->id)->get();
 
+  $referencia = DB::table('referencias')->where('id_compra', $documento->id)->get();
+
+  //dd($referencia);
+
   //dd($detalle);
 
   //dd($documento);
@@ -119,10 +123,29 @@ public function exportpdfDocProv($folio, $rut){
 
   $datated = json_decode(json_encode($xmlfile->SetDTE->DTE->Documento->TED));
 
-  //dd($datated->FRMT);
+  $desgrl = json_decode(json_encode($xmlfile->SetDTE->DTE->Documento->DscRcgGlobal));
+
+  $imp = json_decode(json_encode($xmlfile->SetDTE->DTE->Documento->Encabezado->Totales->ImptoReten));
+
+  if(empty($imp->MontoImp)){
+    $impuestoTpo = null;
+    $impuestoValor = null;
+  }else{
+    $impuestoTpo = $imp->TipoImp;
+    $impuestoValor = $imp->MontoImp;
+  }
+
+  if(empty($desgrl->TpoValor)){
+    $dectoTpo = null;
+    $dectoValor = null;
+  }else{
+    $dectoTpo = $desgrl->TpoValor;
+    $dectoValor = $desgrl->ValorDR;
+  }
+
   $timbre = DNS2D::getBarcodePNG($this->makeTEDstring($datated), 'PDF417');
   
-  $pdf =PDF::loadView('exports.documentoProveedores', compact('documento', 'detalle', 'son', 'timbre'));
+  $pdf =PDF::loadView('exports.documentoProveedores', compact('documento', 'detalle', 'son', 'timbre', 'referencia', 'dectoTpo', 'dectoValor', 'impuestoTpo' , 'impuestoValor'));
 
   return $pdf->stream(''.$folio.'_'.strtoupper($rut).'.pdf');
 }
