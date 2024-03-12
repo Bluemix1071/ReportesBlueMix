@@ -320,11 +320,11 @@
         <td>Pasaporte</td>
       @break
 
-      @case(NV)
+      @case('NV')
         <td>Nota de Vale</td>
       @break
 
-      @case(HES)
+      @case('HES')
         <td>Hoja estado Servicios</td>
       @break
 
