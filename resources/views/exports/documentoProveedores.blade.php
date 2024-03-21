@@ -320,6 +320,14 @@
         <td>Pasaporte</td>
       @break
 
+      @case(50)
+        <td>Guia de Despacho</td>
+      @break
+
+      @case(52)
+        <td>Guia de Despacho Electrónica</td>
+      @break
+
       @case('NV')
         <td>Nota de Vale</td>
       @break

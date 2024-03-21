@@ -94,13 +94,26 @@ class NotasCreditoProveedoresController extends Controller
         $folio_factura = "";
 
         if(!is_array($referencia)){
-            if(!empty($referencia->RazonRef)){
-                $observacion = $referencia->RazonRef;
+            if($referencia->TpoDocRef != "39"){
+                if(!empty($referencia->RazonRef)){
+                    $observacion = $referencia->RazonRef;
+                }else{
+                    $observacion = null;
+                }
+            }else{
+                $observacion = null;
             }
             $folio_factura = $referencia->FolioRef;
         }else{
             foreach($referencia as $item){
                 if($item->TpoDocRef == "33"){
+                    if(empty($item->RazonRef)){
+                        $observacion = null;
+                    }else{
+                        $observacion = $item->RazonRef;
+                    }
+                    $folio_factura = $item->FolioRef;
+                }elseif($item->TpoDocRef == "39"){
                     if(empty($item->RazonRef)){
                         $observacion = null;
                     }else{

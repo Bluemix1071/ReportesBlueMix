@@ -151,7 +151,7 @@ Lista Escolar
                         </button> -->
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="{{ route('RectificacionGuia') }}" id="desvForm">
+                        <form method="post" action="{{ route('DevolverGuia') }}" id="desvForm">
                                 <div class="form-group row">
                                     <label for="name"
                                         class="col-md-4 col-form-label text-md-right">Solicita:</label>

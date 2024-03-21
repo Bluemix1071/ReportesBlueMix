@@ -25,6 +25,9 @@ use App\Modelos\InventarioTemporal;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Carbon\Carbon as CarbonAlias;
+use DateTime;
+use DatePeriod;
+use DateInterval;
 
 
 class AdminController extends Controller
@@ -2852,11 +2855,27 @@ public function stocktiemporeal (Request $request){
 
         $destucanm24=DB::select('select sum(cavalo) as destucanm24 from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2024
         $desnenem24=DB::select('select sum(cavalo) as desnenem24 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2024
+        
+        $mescursado = date("m", strtotime($fecha1));
+        $anocursado = date("Y", strtotime($fecha1));
+
+        $diasquedan = $this->daysWeek(date($fecha1),date(''.$anocursado.'-'.$mescursado.'-t'));
+        $diasvan = $this->daysWeek(date("Y-m-01"),$fecha1);
+
+        $sabadosvan = $this->countsaturday(date(''.$anocursado.'-'.$mescursado.'-01'), date($fecha1));
+        $sabadosquedan = $this->countsaturday(date($fecha1), date(''.$anocursado.'-'.$mescursado.'-t'));
+
+        $mensualcursado2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'") as año2023 from cargos where catipo != 3  and cafeco between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'"')[0];
+        $desnenetucan2023cursado2023=DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'"')[0];
+
+        $totalmescursado2023 = $mensualcursado2023->año2023-$desnenetucan2023cursado2023->descuento;
+
+        $ipc = $this->ipc($anocursado,$mescursado);
 
         return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019',
         'mensual2020','mensual2021','mensual2022','mensual2023','mensual2024','anual2018','anual2019','anual2020','anual2021','anual2022',
         'anual2023','anual2024','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem','destucan23','destucanm24','desnenem24','destucan24','desnene24',
-        'desnene23','destucanm23','desnenem23','totalventaxdia','ncboletas'));
+        'desnene23','destucanm23','desnenem23','totalventaxdia','ncboletas','diasvan','diasquedan','totalmescursado2023','ipc'));
 
 
     }
@@ -3287,12 +3306,88 @@ public function stocktiemporeal (Request $request){
 
     }
 
+    public function daysWeek($inicio, $fin){
+      
+      $start = new DateTime($inicio);
+      $end = new DateTime($fin);
 
+      $interval = $end->diff($start);
 
+      //de lo contrario, se excluye la fecha de finalización (¿error?)
+      $end->modify('+1 day');
 
+      // total dias
+      $days = $interval->days;
+      // crea un período de fecha iterable (P1D equivale a 1 día)
+      $period = new DatePeriod($start, new DateInterval('P1D'), $end);
 
+      // almacenado como matriz, por lo que puede agregar más de una fecha feriada
+      $holidays = ['2024-03-29', '2024-03-30', '2024-05-01', '2024-05-21', '2024-20-06', '2024-06-29', '2024-07-16', '2024-08-15', '2024-08-20', '2024-09-18', '2024-09-20', '2024-10-12', '2024-10-31', '2024-11-01', '2024-12-25'];
+    
+      $sabados = 0;
 
+      foreach($period as $dt) {
+        $curr = $dt->format('D');
+        // obtiene si es Sábado y no feriado y suma
+        if($curr == 'Sat' && !in_array($dt->format('Y-m-d'), $holidays)){
+          $sabados++;
+        }
+        // obtiene si es Domingo
+        if(/* $curr == 'Sat' || */ $curr == 'Sun') {
+            $days--;
+        }elseif (in_array($dt->format('Y-m-d'), $holidays)) {
+            $days--;
+        }
+      }
 
+      /* error_log(print_r("total kedan ".$days, true));
+      error_log(print_r("domingos ".$domingos, true));
+      error_log(print_r("sabados ".$sabados, true));
+      error_log(print_r("feriados ".$feriados, true)); */
+      
+      //dd($days-($sabados/2));
 
+      return ($days-$sabados);
+    }
+
+    public function countsaturday($inicio, $fin){
+
+      $starDate = new DateTime($inicio);
+      $endDate = new DateTime($fin);
+      
+      $days = 0;
+
+      while( $starDate <= $endDate){
+          if($starDate->format('l')== 'Saturday'){
+                          //error_log(print_r($starDate->format('Y-m-d (D)'), true));
+                          $days++;
+          }
+          $starDate->modify("+1 days");
+
+      }
+
+      return $days;
+
+    }
+
+    public function ipc($anocursado,$mescursado){
+
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json'); 
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+      curl_setopt($ch, CURLOPT_HEADER, 0); 
+      $data = curl_exec($ch); 
+      curl_close($ch);
+
+      $data = json_decode($data);
+
+      $ipc = 0;
+
+      foreach($data->IPCs as $item){
+        //error_log(print_r((float)str_replace(",", ".", $item->Valor), true));
+        $ipc += (float)str_replace(",", ".", $item->Valor);
+      }
+
+      return $ipc;
+    }
 }
-
