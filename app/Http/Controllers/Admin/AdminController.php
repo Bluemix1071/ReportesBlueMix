@@ -2859,8 +2859,8 @@ public function stocktiemporeal (Request $request){
         $mescursado = date("m", strtotime($fecha1));
         $anocursado = date("Y", strtotime($fecha1));
 
-        $diasquedan = $this->daysWeek(date($fecha1),date(''.$anocursado.'-'.$mescursado.'-t'));
         $diasvan = $this->daysWeek(date("Y-m-01"),$fecha1);
+        $diasquedan = $this->daysWeek(date($fecha1),date(''.$anocursado.'-'.$mescursado.'-t'));
 
         $sabadosvan = $this->countsaturday(date(''.$anocursado.'-'.$mescursado.'-01'), date($fecha1));
         $sabadosquedan = $this->countsaturday(date($fecha1), date(''.$anocursado.'-'.$mescursado.'-t'));
@@ -3329,11 +3329,12 @@ public function stocktiemporeal (Request $request){
       foreach($period as $dt) {
         $curr = $dt->format('D');
         // obtiene si es Sábado y no feriado y suma
-        if($curr == 'Sat' && !in_array($dt->format('Y-m-d'), $holidays)){
+        if($curr == 'Sat'){
           $sabados++;
+          error_log(print_r($dt->format('Y-m-d'), true));
         }
         // obtiene si es Domingo
-        if(/* $curr == 'Sat' || */ $curr == 'Sun') {
+        if(/* $curr == 'Sat' || */  $curr == 'Sun') {
             $days--;
         }elseif (in_array($dt->format('Y-m-d'), $holidays)) {
             $days--;
@@ -3345,7 +3346,7 @@ public function stocktiemporeal (Request $request){
       error_log(print_r("sabados ".$sabados, true));
       error_log(print_r("feriados ".$feriados, true)); */
       
-      //dd($days-($sabados/2));
+      //dd($sabados);
 
       return ($days-$sabados);
     }

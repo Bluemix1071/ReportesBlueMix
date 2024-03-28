@@ -512,7 +512,13 @@
                                 </tr>
                                 <tr>
                                     <th>X̅ para Meta</th>
-                                    <td>${{ number_format(($totalmescursado2023*($ipc/100+1))/($diasquedan),0,',','.') }}</td>
+                                    <td>
+                                        @if($diasquedan == 0)
+                                            ${{ number_format(($totalmescursado2023*($ipc/100+1)),0,',','.') }}
+                                        @else
+                                            ${{ number_format(($totalmescursado2023*($ipc/100+1))/($diasquedan),0,',','.') }}
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>kedan {{ $diasquedan }}</th>
