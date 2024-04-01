@@ -496,7 +496,14 @@
                                 </tr>
                                 <tr>
                                     <th>X̅ diario Acumulado</th>
-                                    <td>${{ number_format(($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)/($diasvan), 0, ',','.') }}</td>
+                                    <td>
+                                        @if($diasvan == 0)
+                                            ${{ number_format(($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24), 0, ',','.') }}
+                                        @else
+                                            ${{ number_format(($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)/($diasvan), 0, ',','.') }}
+                                        @endif
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Meta del Mes</th>
