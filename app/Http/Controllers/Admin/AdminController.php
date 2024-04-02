@@ -3348,7 +3348,7 @@ public function stocktiemporeal (Request $request){
       
       //dd($sabados);
 
-      return ($days-$sabados);
+      return ($days-($sabados/2));
     }
 
     public function countsaturday($inicio, $fin){
