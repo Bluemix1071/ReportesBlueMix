@@ -33,7 +33,7 @@ Convenio Marco
                                             &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-4" value=""/>
                                             &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col-sm-1" value=""/>
                                             &nbsp;<input type="number" id="precio_venta" placeholder="Precio Venta" required name="precio_venta" class="form-control col-sm" value="" min="1" max="999999"/>
-                                            &nbsp;<input type="number" id="buscar_costo" placeholder="Neto" required name="buscar_costo" readonly class="form-control col" value="" min="1" max="99999999"/>
+                                            &nbsp;<input type="number" id="buscar_costo" placeholder="Neto" required name="buscar_costo" class="form-control col" value="" min="1" max="99999999"/>
                                             &nbsp;<input type="text" id="idconvenio" placeholder="ID Convenio" required name="idconvenio" class="form-control col" value="" min="1" max="99999999"/>
                                             &nbsp;<input type="text" id="label_bara" required name="label_bara" placeholder="Margen" readonly class="form-control col" value="0%" min="1" max="99999999"/>
                                         </div>
@@ -200,7 +200,7 @@ Convenio Marco
                         <!-- Detalle -->
                         <div class="form-group row">
                             <label for="descripcion"
-                                class="col-md-4 col-form-label text-md-right">{{ __('descripcion') }}</label>
+                                class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
 
                             <div class="col-md-6">
                                 <input id="descripcion" type="descripcion"
@@ -238,7 +238,7 @@ Convenio Marco
                             <div class="col-md-6">
                                 <input id="neto" type="number"
                                     class="form-control @error('neto') is-invalid @enderror" name="neto"
-                                    value="{{ old('neto') }}" required autocomplete="neto" readonly min="0" max="99999999">
+                                    value="{{ old('neto') }}" required autocomplete="neto" min="0" max="99999999">
                             </div>
                         </div>
                         <!-- Precio Venta -->
@@ -374,10 +374,20 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
       if(total != ""){
         // document.getElementById('label_bara').innerHTML = (Math.round((total/(neto*1.19)-1)*100)+'%');
         // document.getElementById('label_bara').innerHTML = (Math.round((total/(neto)-1)*100)+'%');
-        $('#margen').val((Math.round((total/(neto)-1)*100)+'%'));
+        $('#margen').val((Math.round(((neto/total)-1)*100)+'%'));
       }else{
         $('#margen').val('0%');
         // document.getElementById('label_bara').innerHTML = ('0%');
+      }
+    });
+
+    $( "#neto" ).keyup(function() {
+      var neto = $( "#neto" ).val();
+      var total = $( "#precio_venta2" ).val();
+      if(total != ""){
+        $('#margen').val((Math.round(((neto/total)-1)*100)+'%'));
+      }else{
+        $('#margen').val('0%');
       }
     });
 
@@ -512,7 +522,17 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
       var neto = $( "#buscar_costo" ).val();
       var total = $( "#precio_venta" ).val();
       if(total != ""){
-        $('#label_bara').val((Math.round((total/(neto)-1)*100)+'%'));
+        $('#label_bara').val((Math.round(((neto/total)-1)*100)+'%'));
+      }else{
+        $('#label_bara').val('0%');
+      }
+    });
+
+    $( "#buscar_costo" ).keyup(function() {
+      var neto = $( "#buscar_costo" ).val();
+      var total = $( "#precio_venta" ).val();
+      if(total != ""){
+        $('#label_bara').val((Math.round(((neto/total)-1)*100)+'%'));
       }else{
         $('#label_bara').val('0%');
       }
