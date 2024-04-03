@@ -374,7 +374,7 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
       if(total != ""){
         // document.getElementById('label_bara').innerHTML = (Math.round((total/(neto*1.19)-1)*100)+'%');
         // document.getElementById('label_bara').innerHTML = (Math.round((total/(neto)-1)*100)+'%');
-        $('#margen').val((Math.round((total/neto)+'%')));
+        $('#margen').val(Math.round(((total/neto)-1)*100)+'%');
       }else{
         $('#margen').val('0%');
         // document.getElementById('label_bara').innerHTML = ('0%');
@@ -385,7 +385,7 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
       var neto = $( "#neto" ).val();
       var total = $( "#precio_venta2" ).val();
       if(total != ""){
-        $('#margen').val((Math.round((total/neto))+'%'));
+        $('#margen').val(Math.round(((total/neto)-1)*100)+'%');
       }else{
         $('#margen').val('0%');
       }
@@ -522,7 +522,7 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
       var neto = $( "#buscar_costo" ).val();
       var total = $( "#precio_venta" ).val();
       if(total != ""){
-        $('#label_bara').val((Math.round(total/neto))+'%');
+        $('#label_bara').val(Math.round(((total/neto)-1)*100)+'%');
       }else{
         $('#label_bara').val('0%');
       }
@@ -532,7 +532,7 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
       var neto = $( "#buscar_costo" ).val();
       var total = $( "#precio_venta" ).val();
       if(total != ""){
-        $('#label_bara').val((Math.round(total/neto)+'%'));
+        $('#label_bara').val(Math.round(((total/neto)-1)*100)+'%');
       }else{
         $('#label_bara').val('0%');
       }
