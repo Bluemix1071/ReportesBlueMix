@@ -19,6 +19,8 @@
                 @else
                     <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}">
                 @endif
+                <input type="number" name="van" value="{{ null }}" hidden>
+                <input type="number" name="quedan" value="{{ null }}" hidden>
             </div>
             <div class="col-md-2 ">
 
@@ -473,7 +475,25 @@
                 </div>
                 @if (!empty($fecha1))
                 <hr>
-                <h6 class="display-4">Resumen Venta Diario</h6>
+                <div class="row">
+                    <h6 class="display-4 col">Resumen Venta Diario</h6>
+                    <div class="col">
+                        <form action="{{ route('AvanceAnualMensualFiltro') }}" id="form-facturas" method="post" class="form-inline">
+                        @csrf
+                                    <tr>
+                                        <td>Van:</td>
+                                        <td><input type="number" id="min" name="van" value="{{ $diasvan }}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quedan:</td>
+                                        <td><input type="number" id="max" name="quedan" value="{{ $diasquedan }}"></td>
+                                    </tr>
+                                    &nbsp &nbsp &nbsp
+                                    <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}" hidden>
+                                    <button class="btn btn-success" type="submit">Corregir</button>
+                        </form>
+                    </div>
+                </div>
                 <table id="areas" class="table table-bordered table-hover dataTable">
                         <thead>
                             <tr>
@@ -527,17 +547,12 @@
                                         @endif
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>kedan {{ $diasquedan }}</th>
-                                    <td>van {{ $diasvan }}</td>
-                                </tr>
                         </tbody>
                     </table>
                 @endif
             </div>
         </div>
         <hr>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
 @endsection
 

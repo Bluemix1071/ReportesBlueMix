@@ -2859,11 +2859,16 @@ public function stocktiemporeal (Request $request){
         $mescursado = date("m", strtotime($fecha1));
         $anocursado = date("Y", strtotime($fecha1));
 
-        $diasvan = $this->daysWeek(date("Y-m-01"),$fecha1);
-        $diasquedan = $this->daysWeek(date($fecha1),date(''.$anocursado.'-'.$mescursado.'-t'));
+        if($request->van == null && $request->quedan == null){
+          error_log(print_r("no trae dias", true));
+          $diasvan = $this->daysWeek(date("Y-m-01"),$fecha1);
+          $diasquedan = $this->daysWeek(date($fecha1),date(''.$anocursado.'-'.$mescursado.'-t'));
+        }else{
+          error_log(print_r("tiene dias", true));
+          $diasvan = $request->van;
+          $diasquedan = $request->quedan;
+        }
 
-        $sabadosvan = $this->countsaturday(date(''.$anocursado.'-'.$mescursado.'-01'), date($fecha1));
-        $sabadosquedan = $this->countsaturday(date($fecha1), date(''.$anocursado.'-'.$mescursado.'-t'));
 
         $mensualcursado2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'") as año2023 from cargos where catipo != 3  and cafeco between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'"')[0];
         $desnenetucan2023cursado2023=DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'"')[0];
@@ -3331,7 +3336,7 @@ public function stocktiemporeal (Request $request){
         // obtiene si es Sábado y no feriado y suma
         if($curr == 'Sat'){
           $sabados++;
-          error_log(print_r($dt->format('Y-m-d'), true));
+          //error_log(print_r($dt->format('Y-m-d'), true));
         }
         // obtiene si es Domingo
         if(/* $curr == 'Sat' || */  $curr == 'Sun') {
