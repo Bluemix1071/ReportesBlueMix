@@ -559,7 +559,7 @@
         <br>
         <br>
         <br>
-        <div class="row" style="font-size: 75px">
+        <div class="row" style="font-size: 500%">
             <div class="col">
                 <div class="row">Dolar: $<div id="dolar"></div></div>
             </div>
