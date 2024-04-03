@@ -531,7 +531,7 @@
                                 </tr>
                                 <tr>
                                     <th>Avance %</th>
-                                    <td>{{ number_format(((($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)/($totalmescursado2023*($ipc/100+1)))*100), 0, ',', '.') }}%</td>
+                                    <td>{{ number_format(((($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)/($totalmescursado2023*($ipc/100+1)))*100), 1, ',', '.') }}%</td>
                                 </tr>
                                 <tr>
                                     <th>Falta para Meta</th>
@@ -553,10 +553,53 @@
             </div>
         </div>
         <hr>
+        @if (!empty($fecha1))
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="row" style="font-size: 75px">
+            <div class="col">
+                <div class="row">Dolar: $<div id="dolar"></div></div>
+            </div>
+            <div class="col">
+                <div class="row">Euro: €<div id="euro"></div></div>
+            </div>
+            <div class="col">
+                <div class="row">IPC: {{ $ipc }}%</div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        @endif
     </div>
 @endsection
 
 @section('script')
+    <script>
+        $.ajax({
+            url: "https://api.sbif.cl/api-sbifv3/recursos_api/dolar?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json",
+            type: 'GET',
+            success: function(res) {
+                console.log(res.Dolares[0].Valor);
+                $("#dolar").text(res.Dolares[0].Valor);
+            }
+        });
+
+        $.ajax({
+            url: "https://api.sbif.cl/api-sbifv3/recursos_api/euro?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json",
+            type: 'GET',
+            success: function(res) {
+                console.log(res.Euros[0].Valor);
+                $("#euro").text(res.Euros[0].Valor);
+            }
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
 
     <script>
