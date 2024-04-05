@@ -251,6 +251,13 @@ class ComprasProveedoresController extends Controller
         }else{
             $encabezado->Totales->MntExe = null;
         }
+
+        if(empty($encabezado->Totales->MntNeto)){
+            $encabezado->Totales->MntNeto = $encabezado->Totales->MontoNF;
+            $encabezado->Totales->IVA = 0;
+            $encabezado->Totales->MntExe = $encabezado->Totales->MontoNF;
+            $encabezado->Totales->MntTotal = $encabezado->Totales->MontoNF;
+        }
         
         $i = 0;
         $o = 0;
@@ -271,6 +278,8 @@ class ComprasProveedoresController extends Controller
                     'iva' => $encabezado->Totales->IVA,
                     'total' => $encabezado->Totales->MntTotal
             ];
+
+            //dd($compra);
 
             /* if($request->hasFile('myfile')){
                 $file = $request->file('myfile')->store('dte');
