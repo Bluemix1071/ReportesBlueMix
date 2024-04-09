@@ -86,21 +86,23 @@ class ProductosPendientesController extends Controller
 
     public function EditarProd(Request $request){
 
-        $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$request->get('cod_articulo').'');
-        $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo='.$request->get('cod_articulo').''.' and prod_pendientes.id='.$request->get('id').'');
+        //dd($request);
+
+        //$bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= '.$request->get('cod_articulo').'');
+        //$prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo='.$request->get('cod_articulo').''.' and prod_pendientes.id='.$request->get('id').'');
         $fechai = DB::select('select curdate() as fechai');
-        $descripcionprod = DB::select('select producto.ARDESC as descripcion from producto where producto.ARCODI= ' .$request->get('cod_articulo').'');
+        //$descripcionprod = DB::select('select producto.ARDESC as descripcion from producto where producto.ARCODI= ' .$request->get('cod_articulo').'');
         // dd($descripcionprod[0]->descripcion);
-        $restabp = (($bodeprod[0]->bpsrea)-($prod_pendiente[0]->cantidad));
+        //$restabp = (($bodeprod[0]->bpsrea)-($prod_pendiente[0]->cantidad));
 
-        if ($bodeprod[0]->bpsrea >= $restabp) {
-            if ($restabp >= 0) {
+        // if ($bodeprod[0]->bpsrea >= $restabp) {
+            //if ($restabp >= 0) {
 
-                DB::table('bodeprod')
+                /* DB::table('bodeprod')
                     ->where('bpprod', $request->get("cod_articulo"))
                     ->update([
                         'bpsrea' => $restabp
-                    ]);
+                    ]); */
 
                 DB::table('prod_pendientes')
                    ->where('prod_pendientes.id', $request->get("id"))
@@ -112,7 +114,7 @@ class ProductosPendientesController extends Controller
                             );
 
                 // Inicio registro de cambios
-                $registro = DB::table('solicitud_ajuste')->insert([
+                /* $registro = DB::table('solicitud_ajuste')->insert([
                     [
                         "codprod" => $request->get('cod_articulo'),
                         "producto" => $descripcionprod[0]->descripcion,//Pendiente
@@ -123,17 +125,17 @@ class ProductosPendientesController extends Controller
                         "solicita" => 'inventario',
                         "observacion" => 'Envio de Pendiente Factura: ' . $request->get('nro_factura'),
                         ]
-                        ]);
+                        ]); */
                 // Fin registro de cambios
 
                 return back()->with('success', 'Producto Enviado Correctamente');
 
-            } else {
+            /* } else {
                 return back()->with('error', 'El stock será inferior a 0');
             }
         } else {
             return back()->with('error', 'El stock actual es inferior a la cantidad');
-        }
+        } */
 
 
           }
@@ -200,5 +202,17 @@ class ProductosPendientesController extends Controller
                     return back()->with('success','Producto Editado Correctamente');
               }
 
+        public function detalleitem($codigo){
+
+            $pendientes = DB::select('select nro, cantidad, fecha, hora ,usuario, if(salida_de_bodega.estado = "T" or salida_de_bodega.tipo = "E", "Terminado", "Pendiente") as estado from dsalida_bodega
+            left join salida_de_bodega on dsalida_bodega.id = salida_de_bodega.nro
+            where dsalida_bodega.articulo = "'.$codigo.'" and fecha >= DATE_SUB(curdate(), INTERVAL 2 MONTH) group by nro order by nro desc');
+
+            $odenescompra = DB::select('select NroOC, Fecha, RutProveedor, NombreProveedor from OrdenDeCompraDetalle
+            left join OrdenDeCompra on OrdenDeCompraDetalle.NroOC = OrdenDeCompra.NroOrden
+            where codigo = "'.$codigo.'" and fecha >= DATE_SUB(curdate(), INTERVAL 6 MONTH) order by NroOC desc');
+
+            return response()->json([$pendientes, $odenescompra]);
+        }
 
 }

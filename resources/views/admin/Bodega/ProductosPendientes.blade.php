@@ -79,7 +79,9 @@ Pendientes de envio
                     <tr style="text-align:left;font-weight:bold;color: #ff0000">
                     @endif
                     <td style="text-align:left" hidden>{{ $item->id }}</td>
-                        <td style="text-align:left" data-label="Codigo">{{ $item->cod_articulo }}</td>
+                        <td>
+                            <a style="text-align:left" data-label="Codigo" data-toggle="modal" data-target="#modaldetalleitem" data-codigo='{{ $item->cod_articulo }}' data-detalle='{{ $item->descripcion }}' data-marca='{{ $item->marca }}' href="">{{ $item->cod_articulo }}</a>
+                        </td>
                         <td style="text-align:left" data-label="Detalle">{{ $item->descripcion }}</td>
                         <td style="text-align:left" data-label="Marca">{{ $item->marca}}</td>
                         <td style="text-align:left" data-label="Cantidad">{{ $item->cantidad }}</td>
@@ -439,7 +441,60 @@ Pendientes de envio
     </div>
   </div>
 <!-- FIN Modal -->
-
+<!-- modal detalle producto -->
+<div class="modal fade bd-example-modal-lg" id="modaldetalleitem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title row" id="myModalLabel">&nbsp;&nbsp;&nbsp;<div id="codigo"></div></h5>
+           </div>
+            <div class="modal-body">
+                    <h5 class="row">&nbsp;&nbsp;&nbsp;Solicitudes a Bodega&nbsp;&nbsp;<p title="Las Solicitudes a Bodega se buscan hasta 2 meses posteriores a la fecha actual">?</p></h5>
+                    <table id="tablesolicitudes" class="table">
+                        <thead>
+                            <tr>
+                                <th>Nro</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Solicita</th>
+                                <th>Cantidad</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5 class="row">&nbsp;&nbsp;&nbsp;Ordenes de Compra&nbsp;&nbsp;<p title="La Ordenes de Compra se buscan hasta 6 meses posteriores a la fecha actual">?</p></h5>
+                    <table id="tablesordenescompra" class="table">
+                        <thead>
+                            <tr>
+                                <th>Nro</th>
+                                <th>Rut</th>
+                                <th>RS</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+     </div>
+   </div>
+ </div>
 
 @endsection
 
@@ -487,6 +542,84 @@ Pendientes de envio
         var modal = $(this)
         modal.find('.modal-body #id').val(id);
 })
+</script>
+<script>
+    $(document).ready(function() {
+
+        $('#modaldetalleitem').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var codigo = button.data('codigo')
+            var detalle = button.data('detalle')
+            var marca = button.data('marca')
+            var modal = $(this)
+            modal.find('.modal-header #codigo').text(codigo+"-"+detalle+"-"+marca);
+
+            solicitudes.clear().draw();
+            ordenescompra.clear().draw();
+    
+            $.ajax({
+                    url: '../admin/detalleitem/'+codigo,
+                    type: 'GET',
+                    success: function(result) {
+
+                        result[0].forEach(items => {
+                            solicitudes.rows.add([['<td>'+items.nro+'</td>','<td>'+items.fecha+'</td>','<td>'+items.hora+'</td>','<td>'+items.usuario+'</td>','<td>'+items.cantidad+'</td>','<td>'+items.estado+'</td>']]).draw();
+                        })
+
+                        result[1].forEach(items => {
+                            ordenescompra.rows.add([['<td><a href="pdf/'+items.NroOC+'" target=_blank >'+items.NroOC+'</a></td>','<td>'+items.RutProveedor+'</td>','<td>'+items.NombreProveedor+'</td>','<td>'+items.Fecha+'</td>']]).draw();
+                        })
+                    }
+            });
+        })
+
+    var solicitudes = $('#tablesolicitudes').DataTable({
+                order: [[ 0, "desc" ]],
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                searching: false,
+                paging: false,
+        "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+        "next": "Siguiente",
+        "previous": "Anterior",
+
+        },
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        }
+    });
+
+    var ordenescompra = $('#tablesordenescompra').DataTable({
+                order: [[ 0, "desc" ]],
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                searching: false,
+                paging: false,
+        "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+        "next": "Siguiente",
+        "previous": "Anterior",
+
+        },
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        }
+    });
+
+    });
 </script>
 <script>
     $(document).ready(function() {
