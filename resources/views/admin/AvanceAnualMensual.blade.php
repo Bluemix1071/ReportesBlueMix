@@ -482,11 +482,11 @@
                         @csrf
                                     <tr>
                                         <td>Van:</td>
-                                        <td><input type="number" id="min" name="van" value="{{ $diasvan }}"></td>
+                                        <td><input type="number" step="any" id="min" name="van" value="{{ $diasvan }}"></td>
                                     </tr>
                                     <tr>
                                         <td>Quedan:</td>
-                                        <td><input type="number" id="max" name="quedan" value="{{ $diasquedan }}"></td>
+                                        <td><input type="number" step="any" id="max" name="quedan" value="{{ $diasquedan }}"></td>
                                     </tr>
                                     &nbsp &nbsp &nbsp
                                     <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}" hidden>
