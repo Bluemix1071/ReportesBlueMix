@@ -543,7 +543,7 @@
                                         @if($diasquedan == 0)
                                             ${{ number_format(($totalmescursado2023*($ipc/100+1)),0,',','.') }}
                                         @else
-                                            ${{ number_format(($totalmescursado2023*($ipc/100+1))/($diasquedan),0,',','.') }}
+                                            ${{ number_format(($totalmescursado2023*($ipc/100+1)/$diasquedan),0,',','.') }}
                                         @endif
                                     </td>
                                 </tr>

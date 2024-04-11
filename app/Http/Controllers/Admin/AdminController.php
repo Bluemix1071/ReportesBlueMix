@@ -2201,7 +2201,7 @@ public function stocktiemporeal (Request $request){
               $elcontrato->id_depto = "987654321";
             }
 
-            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
+            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
             LEFT join producto on ARCODI = codigo_producto
             LEFT join contratos on id_contratos = fk_contrato
@@ -2229,7 +2229,7 @@ public function stocktiemporeal (Request $request){
             // ->where('ARCODI', $request->codigo)
             // ->get();
 
-            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.cantidad_contrato,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
+            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
             LEFT join producto on ARCODI = codigo_producto
             LEFT join contratos on id_contratos = fk_contrato

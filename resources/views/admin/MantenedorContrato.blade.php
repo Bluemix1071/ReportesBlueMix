@@ -71,7 +71,7 @@
                                     <th scope="col">Descripción</th>
                                     <th scope="col">Marca</th>
                                     {{-- <th scope="col">Contrato</th> --}}
-                                    <th scope="col">Cantidad Contrato</th>
+                                    <th scope="col">Precio (Neto)</th>
                                     <th scope="col">Stock Sala</th>
                                     <th scope="col">Stock Bodega</th>
                                     <th scope="col">Cantidad Vendida</th>
@@ -99,7 +99,7 @@
                                             @endif
                                             {{-- <td style="text-align:left">{{ $item->nombre_contrato }}</td> --}}
                                             <td style="text-align:center">
-                                                {{ number_format($item->cantidad_contrato, 0, ',', '.') }}</td>
+                                                {{ number_format($item->precio, 0, ',', '.') }}</td>
                                             @if (empty($item->bpsrea))
                                                 <td style="text-align:left">{{ 0 }}</td>
                                             @else
