@@ -535,15 +535,15 @@
                                 </tr>
                                 <tr>
                                     <th>Falta para Meta</th>
-                                    <td>${{ number_format(($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24), 0, ',' , '.') }}</td>
+                                    <td>${{ number_format((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)), 0, ',' , '.') }}</td>
                                 </tr>
                                 <tr>
                                     <th>X̅ para Meta</th>
                                     <td>
                                         @if($diasquedan == 0)
-                                            ${{ number_format(($totalmescursado2023*($ipc/100+1)),0,',','.') }}
+                                            ${{ number_format((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)),0,',','.') }}
                                         @else
-                                            ${{ number_format(($totalmescursado2023*($ipc/100+1)/$diasquedan),0,',','.') }}
+                                            ${{ number_format(((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24))/$diasquedan),0,',','.') }}
                                         @endif
                                     </td>
                                 </tr>
