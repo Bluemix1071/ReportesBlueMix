@@ -119,7 +119,7 @@ class EstadisticaContratoController extends Controller
         $productos_contrato = DB::select('select DECODI, ARCOPV, ARDESC, ARMARCA, sum(DECANT) as cantidad, sum(DECANT*DEPREC) as total from dcargos
         left join cargos on dcargos.DENMRO = cargos.canmro
         left join producto on dcargos.DECODI = producto.ARCODI
-        where nro_oc like "'.$request->get('cod_depto').'%" and CAFECO >= "2020-01-01" and CARUTC = "'.$request->get('rut').'" and CATIPO = 8 and DECODI not like "V%" group by decodi;');
+        where nro_oc like "'.$request->get('cod_depto').'%" and CAFECO >= "'.$fecha1.'" and CARUTC = "'.$request->get('rut').'" and CATIPO = 8 and DECODI not like "V%" group by decodi;');
 
         return view('admin.Contratos.EstadisticaEntidadDetalle', compact('productos_contrato', 'fecha1', 'fecha2', 'entidad', 'cod_depto'));
     }
