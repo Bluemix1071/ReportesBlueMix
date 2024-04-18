@@ -50,7 +50,7 @@ Pendientes de envio
                       <table id="pendientes" class="table table-bordered table-hover dataTable table-sm responsive-table" style="font-size: small">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align:left" hidden>ID</th>
+                                    <th scope="col" style="text-align:left; width: 20px"></th>
                                     <th scope="col" style="text-align:left">Codigo</th>
                                     <th scope="col" style="text-align:left">Detalle</th> {{-- <th scope="col" style="width: 80%">Detalle</th> --}}
                                     <th scope="col" style="text-align:left">Marca</th>
@@ -75,10 +75,11 @@ Pendientes de envio
                     @foreach ($lcompra as $item)
                     @if (($item->estado != "1"))
                         <tr style="text-align:left;font-weight:bold;color: #00ff00">
+                        <td><input type="checkbox" name="" id="" disabled></td>
                     @else
-                    <tr style="text-align:left;font-weight:bold;color: #ff0000">
+                        <tr style="text-align:left;font-weight:bold;color: #ff0000">
+                        <td style="text-align:left"><input type="checkbox" id="id_{{ $item->id }}" class="case" name="case[]" value="{{ $item->id }}" onclick="contador({{ $item->id }})"></td>
                     @endif
-                    <td style="text-align:left" hidden>{{ $item->id }}</td>
                         <td>
                             <a style="text-align:left" data-label="Codigo" data-toggle="modal" data-target="#modaldetalleitem" data-codigo='{{ $item->cod_articulo }}' data-detalle='{{ $item->descripcion }}' data-marca='{{ $item->marca }}' href="">{{ $item->cod_articulo }}</a>
                         </td>
@@ -167,9 +168,15 @@ Pendientes de envio
                     @endforeach
                             </tbody>
                     </table>
+                    <br>
                 </div>
+                <form action="{{ route('EnviarProductosMultiple') }}" method="POST" class="col-12">
+                    <input type="number" name="" id="contador" value="0" hidden>
+                    <div id="selects" hidden></div>
+                    <input type="submit" value="Enviar Masivo" class="btn btn-info col-12" id="boton_masivo" disabled>
+                </form>
             </div>
-
+            <br>
           </div>
         </div>
 </div>
@@ -1028,6 +1035,38 @@ $(document).ready(function () {
         });
     });
 });
+
+function contador(id){
+
+        var max_fields = 999;
+        var wrapper = $("#selects");
+        var x = $('#contador').val();
+        var input = document.getElementById('input_'+id+'');
+
+        //console.log($('input[class="case"]:checked'));
+        console.log(x);
+
+        if ($('#id_'+id).is(":checked")) {
+            if(x < max_fields){
+                x++;
+                $('#contador').val(x);
+                $(wrapper).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+id+'" name="case[]" value='+id+'>'
+                );
+            } 
+        } else {
+            input.remove();
+            x--;
+            $('#contador').val(x);
+        }
+
+        if(x > 0){
+            $('#boton_masivo').prop('disabled', false)
+        }else{
+            $('#boton_masivo').prop('disabled', true)
+        }
+
+    }
 
 </script>
 

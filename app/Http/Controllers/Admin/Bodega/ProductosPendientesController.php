@@ -215,4 +215,22 @@ class ProductosPendientesController extends Controller
             return response()->json([$pendientes, $odenescompra]);
         }
 
+        public function EnviarProductosMultiple(Request $request){
+            $fechai = DB::select('select curdate() as fechai');
+            
+            foreach($request->case as $id){
+                //error_log(print_r($item, true));
+                DB::table('prod_pendientes')
+                ->where('prod_pendientes.id', $id)
+                ->update(
+                    [
+                    'estado'=> "0",
+                    'fechae'=>$fechai[0]->fechai,
+                    ]
+                );
+            }
+            
+            //dd($request->case);
+            return back()->with('success', 'Productos Enviados Correctamente');
+        }
 }
