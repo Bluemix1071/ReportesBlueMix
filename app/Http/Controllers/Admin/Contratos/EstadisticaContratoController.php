@@ -113,8 +113,8 @@ class EstadisticaContratoController extends Controller
         left join tablas on cliente.CLGIRO = tablas.TANMRO
         where CLRUTC = "'.$request->get('rut').'" and DEPARTAMENTO = '.$request->get('depto').' and tablas.tacodi = 8')[0];
 
-        $fecha1 = "2020-01-01";
         $fecha2 = date('Y-m-d');
+        $fecha1 = date("Y-m-d",strtotime($fecha2."- 1 month"));
 
         $productos_contrato = DB::select('select DECODI, ARCOPV, ARDESC, ARMARCA, sum(DECANT) as cantidad, sum(DECANT*DEPREC) as total from dcargos
         left join cargos on dcargos.DENMRO = cargos.canmro

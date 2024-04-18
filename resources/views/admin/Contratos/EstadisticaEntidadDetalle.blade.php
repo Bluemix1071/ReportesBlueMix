@@ -71,7 +71,7 @@
                                     <td><input type="date" id="max1" value="{{ $fecha2 }}" name="fecha2"></td>
                                 </tr>
                                 &nbsp &nbsp &nbsp
-                                <!-- <button type="submit" class="btn btn-success btn-sm row">Buscar</button> -->
+                                <button type="submit" class="btn btn-success btn-sm row">Buscar</button>
                         </form>
                     </div>
                     </div>
@@ -240,10 +240,10 @@
                 }
                 });
 
-                $('#min1, #max1').on('change', function () {
+               /*  $('#min1, #max1').on('change', function () {
                     //alert("cambiaste fecha");
                     $( "#form-h-ventas" ).submit();
-                });
+                }); */
             });
 
         </script>
