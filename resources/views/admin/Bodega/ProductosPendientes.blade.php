@@ -111,7 +111,7 @@ Pendientes de envio
                                 <div class="container">
                                     <div class="row">
                                       @if(($item->estado == "1"))
-                                      <div class="col-3">
+                                      <div>
                                           <form action="{{ route('EditarProd', ['id' => $item->id,'cantidad'=>$item->cantidad,'cod_articulo'=>$item->cod_articulo,'nro_factura'=>$item->nro_factura]) }}" method="POST" enctype="multipart/form-data">
                                             {{ method_field('put') }}
                                             {{ csrf_field() }}
@@ -121,7 +121,7 @@ Pendientes de envio
                                       @else
                                       @endif
                                       @if(session()->get('email') == "ignaciobarrera4@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl" || session()->get('email') == 'rmiranda@bluemix.cl')
-                                      <div class="col-3" style="text-algin:left">
+                                      <div style="text-algin:left">
                                           <a href="" title="Eliminar Item" data-toggle="modal" data-target="#modaleliminaritem"
                                           class="btn btn-danger btn-xs"
                                           data-id='{{ $item->id }}'
@@ -129,7 +129,7 @@ Pendientes de envio
                                       </div>
                                       @else
                                       @endif
-                                      <div class="col-2" style="text-algin:left">
+                                      <div style="text-algin:left">
                                         @if ($item->observacion == "")
                                             <a href="" title="Comentar" data-toggle="modal" data-target="#modalcomentaritem"
                                             class="btn btn-primary btn-xs"
@@ -145,7 +145,7 @@ Pendientes de envio
                                         @endif
 
                                         </div>
-                                        <div class="col-2" style="text-algin:left">
+                                        <div style="text-algin:left">
                                             <a href="" title="cambioprod" data-toggle="modal" data-target="#modalcambioprod"
                                             class="btn btn-warning btn-xs"
                                             data-id='{{ $item->id }}'
