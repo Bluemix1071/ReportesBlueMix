@@ -522,6 +522,16 @@
 
                                 @endcan
 
+                                <li class="nav-item">
+                                    <a href="{{ route('ProductosExpiracion') }}"
+                                        class="nav-link {{ setActive('ProductosExpiracion') }}">
+                                        <i  class="far fa-circle nav-icon"></i>
+                                        <p>Productos Perecibles
+
+                                        </p>
+                                    </a>
+                                </li>
+
                                 {{-- @can('ProyeccionCompra')
 
                                     <li class="nav-item">
@@ -721,7 +731,7 @@
                                         <li class="nav-item">
                                             <a href="{{ route('ProductosProveedor') }}" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
-                                                <p>OC Proveedor 
+                                                <p>OC Proveedor
                                                 </p>
                                             </a>
                                         </li>
