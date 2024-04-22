@@ -2257,12 +2257,12 @@ public function stocktiemporeal (Request $request){
 
 
         $validacion=DB::table('producto')
-        ->where('ARCODI', $request->ccodigo)
+        ->where('ARCODI', $request->codigo)
         ->get();
 
         $validacion2=DB::table('contrato_detalle')
-        ->where('codigo_producto', $request->ccodigo)
-        ->where('fk_contrato', $request->contrato)
+        ->where('codigo_producto', $request->codigo)
+        ->where('fk_contrato', $request->id_contrato)
         ->get();
 
 
@@ -2291,9 +2291,10 @@ public function stocktiemporeal (Request $request){
                 //dd($request);
                 DB::table('contrato_detalle')->insert([
                     [
-                        "codigo_producto" => $request->ccodigo,
-                        "cantidad_contrato" => $request->cantidad,
-                        "fk_contrato" => $request->contrato,
+                        "codigo_producto" => $request->codigo,
+                        "cantidad_contrato" => 0,
+                        "precio" => $request->precio,
+                        "fk_contrato" => $request->id_contrato,
                         ]
                     ]);
 

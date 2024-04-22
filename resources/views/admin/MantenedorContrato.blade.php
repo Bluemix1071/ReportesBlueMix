@@ -135,29 +135,60 @@
                     </div>
                     <div class="container">
                         <br>
+                        @if(!empty($elcontrato->id_contratos))
                         <div class="form-group">
                                 <form action="{{ route('MantenedorContratoAgregarProducto') }}" method="post" enctype="multipart/form-data" class="form-inline" id="agregaritem">
 
                                 <div class="col-11">
-                                <input type="text" id="ccodigo" minlength="7" maxlength="7" name="ccodigo" placeholder="Codigo" required class="form-control" size="8" value=""/>
+                                <div><input type="text" class="form-control" minlength="7" maxlength="7" placeholder="Codigo" size="8" name="codigo" id="ccodigo" required><span><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalproductos"><i class="fa fa-search"></i></button></span>
+                                <!-- <input type="text" id="ccodigo" minlength="7" maxlength="7" name="ccodigo" placeholder="Codigo" required class="form-control" size="8" value=""/> -->
                                 <input type="text" id="buscar_detalle"  placeholder="Detalle" readonly class="form-control" size="45" value=""/>
                                 <input type="text" id="buscar_marca"  placeholder="Marca" readonly class="form-control" size="9" value=""/>
-                                    <select class="form-control" name="contrato" id="contrato" required>
-                                        <option value="">Seleccione Un Contrato</option>
-                                        @foreach ($contratosagregar as $item)
-                                            <option value="{{ $item->id_contratos }}">{{ $item->nombre_contrato }}</option>
-                                        @endforeach
-                                    </select>
-                                <input type="number" id="cantidad" placeholder="Cant" required name="cantidad" class="form-control" value="" min="0" max="99999999" style="width: 8%"/>
+                                <input type="text" name="id_contrato" id="" value="{{ $elcontrato->id_contratos }}" hidden>
+                                <input type="number" id="precio" placeholder="Precio" required name="precio" class="form-control" value="" min="0" max="99999999" style="width: 10%"/>
+                                </div>
                                 </div>
                                 <!-- <button type="button" id="add_field_button" class="btn btn-success btn-sm col" >+</button> -->
                                 <a class="btn btn-success col" href="#" role="button" id="add_field_button">Agregar</a>
                             </form>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
 
+        <!-- modal de buscar productos-->
+        <div class="modal fade" id="modalproductos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title col-3" id="myModalLabel">Buscar un Producto</h4>
+                        <input type="text" name="" id="buscar_codigo_modal" placeholder="Codigo" class="form-control" onkeyup="processChange()">
+                        <input type="text" name="" id="buscar_detalle_modal" placeholder="Detalle" class="form-control" onkeyup="processChange()">
+                        <input type="text" name="" id="buscar_marca_modal" placeholder="Marca" class="form-control" onkeyup="processChange()">
+                    </div>
+                    <div class="modal-body">
+                    <table id="productos" class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Codigo</th>
+                          <th scope="col">Descipción</th>
+                          <th scope="col">Marca</th>
+                          <th scope="col">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                    </div>
+                    <!-- <div class="modal-body"> -->
+                        <!-- <div class="card-body"> -->
+                            
+                       <!--  </div> -->
+                   <!--  </div> -->
+                </div>
+            </div>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="eliminarproductocontrato" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -430,7 +461,7 @@ $.ajax({
                             console.log(result);
                             $('#buscar_detalle').val(result[0].ARDESC);
                             $('#buscar_marca').val(result[0].ARMARCA);
-                            $( "#cantidad" ).focus();
+                            $( "#precio" ).focus();
                             $( "#buscar_cantidad" ).val(null);
                             codigo = result[0].ARCODI;
                             descripcion = result[0].ARDESC;
@@ -476,6 +507,73 @@ $.ajax({
             console.log("formulario no es valido");
         }
     }
+
+    
+var productos = $('#productos').DataTable({
+        orderCellsTop: true,
+          "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "paginate":{
+          "next": "Siguiente",
+          "previous": "Anterior",
+
+      },
+      "loadingRecords": "cargando",
+      "processing": "procesando",
+      "emptyTable": "no hay resultados",
+      "zeroRecords": "no hay coincidencias",
+      "infoEmpty": "",
+      "infoFiltered": ""
+      },
+    });
+
+function buscar_productos(){
+            productos.clear().draw();
+
+            var codigo = $('#buscar_codigo_modal').val();
+            var detalle = $('#buscar_detalle_modal').val();
+            var marca = $('#buscar_marca_modal').val();
+            
+            if(codigo == "" && detalle == "" && marca == ""){
+                productos.clear().draw();
+            }else{
+                $.ajax({
+                    url: '../Sala/BuscarProductosRequerimiento',
+                    type: 'POST',
+                    data: {codigo, detalle, marca},
+                    success: function(result) {
+                        console.log(result);
+
+                        if(result.length >= 1000){
+                            alert("Existen más de 1000 resultados, por favor ser más especifico.");
+                        }else{
+                            result.forEach(items => {
+                                productos.rows.add([[items.ARCODI,items.ARDESC,items.ARMARCA,'<button type="button" onclick=selectproducto("'+items.ARCODI+'","'+items.ARDESC.replace(/"/g, "¨").replace(/ /g, '&nbsp;')+'","'+items.ARMARCA.replace(/ /g, '&nbsp;')+'") class="btn btn-success" data-dismiss="modal">Seleccionar</button>']]).draw();
+                            })
+                        }
+                        
+                    }
+                });
+            }
+    }
+
+    function selectproducto(codigo,descripcion,marca){
+        $('#ccodigo').val(codigo);
+        $('#buscar_detalle').val(descripcion);
+        $('#buscar_marca').val(marca);
+        $( "#precio" ).focus();
+    }
+
+    function debounce(func, timeout = 1000){
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    const processChange = debounce(() => buscar_productos());
 
         </script>
 
