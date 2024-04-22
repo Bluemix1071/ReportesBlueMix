@@ -235,6 +235,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/VerificacionDocumentosAutorizarTodo','Compras\ConsultaDocumentosController@VerificacionDocumentosAutorizarTodo')->name('VerificacionDocumentosAutorizarTodo');
 
     // fin
+    Route::get('/ProductosExpiracion', 'Productos\ProductosPereciblesController@ProductosExpiracion')->name('ProductosExpiracion');
+    Route::post('/guardarproductoperecible', 'Productos\ProductosPereciblesController@guardarproductoperecible')->name('guardarproductoperecible');
+    Route::put('/editarproductoperecible', 'Productos\ProductosPereciblesController@editarproductoperecible')->name('editarproductoperecible');
+    Route::delete('/borrarproductoperecible', 'Productos\ProductosPereciblesController@borrarproductoperecible')->name('borrarproductoperecible');
+
     /*  Mantenedor CRUD Notas Credito Proveedores */
     Route::get('/NotasCreditoProveedores','Compras\NotasCreditoProveedoresController@index')->name('NotasCreditoProveedores');
     Route::post('/NotasCreditoProveedores','Compras\NotasCreditoProveedoresController@insert')->name('AgregarNC');
