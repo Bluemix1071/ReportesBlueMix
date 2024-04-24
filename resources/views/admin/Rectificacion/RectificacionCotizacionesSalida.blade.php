@@ -41,9 +41,13 @@
                                         <td>${{ number_format(intval($item->CZ_MONTO), 0, ',', '.') }}</td>
                                         <td class="row">
                                         @if($item->t_doc != "Cotizacion Salida")
-                                            <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='{{ $item->CZ_NRO }}'>Sacar Mercadería</button>
+                                        <form action="">
+                                            <span class="badge badge-warning">No Justificada</span>
+                                        </form>
                                         @else
-                                            <button type="button" class="btn btn-primary btn-sm col" disabled>Sacar Mercadería</button>
+                                        <form action="">
+                                            <span class="badge badge-success">Justificada</span>
+                                        </form>
                                         @endif
                                             <form method="post" action="{{ route('RectificacionCotizacionesSalidaDetalle', ['n_cotiz' => $item->CZ_NRO]) }}" target="_blank">
                                                 &nbsp<button type="submit" class="btn btn-success btn-sm">Ver</button>

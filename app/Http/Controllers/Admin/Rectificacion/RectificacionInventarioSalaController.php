@@ -30,7 +30,7 @@ class RectificacionInventarioSalaController extends Controller
     }
 
     public function RectificacionCotizacionesSalida(Request $request){
-        $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2023-06-01')->orderBy('CZ_FECHA', 'DESC')->get();
+        $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', date("Y-m-d",strtotime(date('Y-m-d')."- 6 month")))->orderBy('CZ_FECHA', 'DESC')->get();
 
         return view('admin.Rectificacion.RectificacionCotizacionesSalida',compact('cotiz'));
     }
@@ -65,7 +65,7 @@ class RectificacionInventarioSalaController extends Controller
     }
 
     public function RectificacionCotizacionesEntrada(Request $request){
-        $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2023-06-01')->orderBy('CZ_FECHA', 'DESC')->get();
+        $cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', date("Y-m-d",strtotime(date('Y-m-d')."- 6 month")))->orderBy('CZ_FECHA', 'DESC')->get();
 
         return view('admin.Rectificacion.RectificacionCotizacionesEntrada',compact('cotiz'));
     }
