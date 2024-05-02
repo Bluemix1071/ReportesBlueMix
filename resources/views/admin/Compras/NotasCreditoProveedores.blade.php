@@ -72,17 +72,7 @@
                                     <td>
 
                                         @if($item->folio_factura != 0)
-                                        <form action="{{ route('EditarCompra', ['rut' => $item->rut, 'folio' => $item->folio_factura]) }}" method="post" enctype="multipart/form-data" target="_blank">
-                                        @csrf
-                                            <button type="submit" style="background: none!important;
-                                            border: none;
-                                            padding: 0!important;
-                                            /*optional*/
-                                            font-family: arial, sans-serif;
-                                            /*input has OS specific font-family*/
-                                            color: #007bff;
-                                            cursor: pointer;">{{ $item->folio_factura }}</i></button>
-                                        </form>
+                                        <a href="{{route('pdf.docProv', [ 'folio' => $item->folio_factura , 'rut' => $item->rut])}}" target="_blank">{{ $item->folio_factura }}</a>
                                         @else
                                         <p> </p>
                                         @endif
@@ -111,12 +101,15 @@
                                         @csrf
                                             &nbsp;<button type="submit" class="btn btn-success px-2" title="Descargar XML"><i class="fas fa-download" title="Descargar XML"></i></button>
                                         </form>
+                                        <a class="col-2" href="{{route('pdf.docProvNc', [ 'folio' => $item->folio , 'rut' => $item->rut])}}" style="font-size: 8px; font-weight: bolder;" target="_blank" title="Ver PDF">
+                                            <button type="button" class="btn btn-danger px-2" ><i class="fas fa-file-pdf"></i></button>
+                                        </a>
                                         @else
                                         <form>
+                                        @csrf
                                             &nbsp;<button type="button" class="btn btn-default px-2" ><i class="fas fa-download"></i></button>
                                         </form>
                                         @endif
-                                        <a class="col-2" href="https://dte.azurewebsites.net/" style="font-size: 8px; font-weight: bolder;" target="_blank">PDF</a>
                                         </td>
                                 </tr>
                             @endforeach

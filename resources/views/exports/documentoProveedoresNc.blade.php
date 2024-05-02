@@ -73,27 +73,27 @@
       <tbody>
         <tr>
           <td class="td-table1">RUT</td>
-          <td> {{ $documento->rut }}</td>
+          <td>{{ $documento->rut }}</td>
         </tr>
         <tr>
           <td class="td-table1">Razón Social</td>
-          <td> {{ $documento->razon_social }}</td>
+          <td>{{ strtoupper($documento->razon_social) }}</td>
         </tr>
         <tr>
           <td class="td-table1">Giro</td>
-          <td> {{ $documento->giro }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->GiroEmis) }}</td>
         </tr>
         <tr>
           <td class="td-table1">Dirección</td>
-          <td> {{ $documento->direccion }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->DirOrigen) }}</td>
         </tr>
         <tr>
           <td class="td-table1">Comuna</td>
-          <td> {{ $documento->comuna }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->CmnaOrigen) }}</td>
         </tr>
         <tr>
           <td class="td-table1">Ciudad</td>
-          <td> {{ $documento->ciudad }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->CiudadOrigen) }}</td>
         </tr>
       </tbody>
       </table>
@@ -107,7 +107,7 @@
         </tr>
         <tr>
           <th colspan="1">Tipo:</th>
-          <th colspan="1">Factura Electrónica</th>
+          <th colspan="1">Nota Crédito Electrónica</th>
         </tr>
         <tr>
           <th colspan="1">N°:</th>
@@ -117,12 +117,8 @@
     </table>
     <div>
       <div class="sii-ciudad">
-        @if($documento->ciudad == "")
-        <div colspan="2">S.I.I - {{ $documento->comuna }}</div>
-        @else
-        <div colspan="2">S.I.I - {{ $documento->ciudad }}</div>
-        @endif
-</div>
+        <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CiudadOrigen) }}</div>
+    </div>
 </div>
     </td>
   </tr>
@@ -172,13 +168,9 @@
     <td>
     <table id="table5">
       <thead style="border-bottom: rgb(2, 2, 2) 2px solid !important; margin-top: -74px;">
-        <tr>
+        <tr style="visibility: hidden;">
           <th class="td-table5">Forma de Pago</th>
-          @if($documento->tpo_pago == 1)
-              <th>Contado</th>
-          @elseif($documento->tpo_pago == 2)
-              <th>Crédito</th>
-          @endif
+          <th></th>
         </tr>
         <tr>
           <th class="td-table5">Fecha Emisíon</th>
@@ -186,7 +178,7 @@
         </tr>
         <tr>
           <th class="td-table5">Fecha Vencimiento</th>
-          <th>{{ $documento->fecha_venc }}</th>
+          <th>{{ $documento->fecha_emision }}</th>
         </tr>
         <tr style="visibility: hidden;">
           <th class="td-table5">Fecha Vencimiento</th>
@@ -240,112 +232,254 @@
   </tr>
 </thead>
 <tbody>
-  @foreach($detalle as $item)
+@if(is_array($detalle))
+ @foreach($detalle as $item)
   <tr class="tr-detalle">
-    <td>{{ $item->codigo }}</td>
-    <td>{{ $item->descripcion }}</td>
-    <td>{{ number_format(($item->cantidad) , 0, ',', '.') }}</td>
-    <td>{{ $item->tpo_uni }}</td>
-    <td>${{ number_format(($item->precio), 0, ',' ,'.') }}</td>
-    <td>${{ number_format(($item->precio*1.19), 0, ',', '.')}}</td>
-    <td>${{ number_format(($item->total_neto), 0, ',' ,'.') }}</td>
+    @if(!empty($item->CdgItem))
+      @if(is_array($item->CdgItem))
+        <td>{{ $item->CdgItem[0]->VlrCodigo }}</td>
+      @else
+        <td>{{ $item->CdgItem->VlrCodigo }}</td>
+      @endif
+    @else
+    <td>-</td>
+    @endif
+    <td>{{ strtoupper($item->NmbItem) }}</td>
+    <td>{{ number_format(($item->QtyItem ), 0, ',', '.') }}</td>
+    @if(!empty($item->UnmdItem))
+      <td>{{ $item->UnmdItem }}</td>
+    @else
+      <td>C/U</td>
+    @endif
+    <td>{{ number_format(($item->PrcItem), 0, ',', '.') }}</td>
+    <td>{{ number_format(($item->PrcItem*1.19), 0, ',', '.') }}</td>
+    <td>{{ number_format(($item->MontoItem), 0, ',', '.') }}</td>
   </tr>
   @endforeach
+@else
+<tr class="tr-detalle">
+    @if(!empty($detalle->CdgItem))
+    @if(is_array($detalle->CdgItem))
+        <td>{{ $detalle->CdgItem[0]->VlrCodigo }}</td>
+      @else
+        <td>{{ $detalle->CdgItem->VlrCodigo }}</td>
+      @endif
+    @else
+    <td>-</td>
+    @endif
+    <td>{{ strtoupper($detalle->NmbItem) }}</td>
+    <td>{{ $detalle->QtyItem }}</td>
+    @if(!empty($detalle->UnmdItem))
+      <td>{{ $detalle->UnmdItem }}</td>
+    @else
+      <td>C/U</td>
+    @endif
+    <td>{{ number_format(($detalle->PrcItem), 0, ',', '.') }}</td>
+    <td>{{ number_format(($detalle->PrcItem*1.19), 0, ',', '.') }}</td>
+    <td>{{ number_format(($detalle->MontoItem), 0, ',', '.') }}</td>
+  </tr>
+@endif
 </tbody>
 </table>
 <br>
-@if(count($referencia) != 0 )
 <table id="table8">
-<thead>
-  <tr>
-    <th>Referencia</th>
-    <th>Folio</th>
-    <th>Fecha</th>
-  </tr>
-</thead>
-<tbody>
-  @foreach($referencia as $item)
+  <thead>
+    <tr>
+      <th>Referencia</th>
+      <th>Folio</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+  @if(is_array($referencia))
+    @foreach($referencia as $item)
+    <tr class="tr-referencia">
+        @switch($item->TpoDocRef)
+        @case(801)
+          <td>Orden de Compra</td>
+        @break
+
+        @case(802)
+          <td>Nota de Pedido</td>
+        @break
+
+        @case(803)
+          <td>Contrato</td>
+        @break
+
+        @case(804)
+          <td>Resolución</td>
+        @break
+
+        @case(805)
+          <td>Proceso Chile Compra</td>
+        @break
+
+        @case(806)
+          <td>Ficha Chile Compra</td>
+        @break
+
+        @case(807)
+          <td>DUS</td>
+        @break
+
+        @case(808)
+          <td>B/L</td>
+        @break
+
+        @case(809)
+          <td>AWS</td>
+        @break
+
+        @case(810)
+          <td>MIC/DTA</td>
+        @break
+
+        @case(811)
+          <td>Carta de Porte</td>
+        @break
+
+        @case(812)
+          <td>Res. SNA</td>
+        @break
+
+        @case(813)
+          <td>Pasaporte</td>
+        @break
+
+        @case(50)
+          <td>Guia de Despacho</td>
+        @break
+
+        @case(52)
+          <td>Guia de Despacho Electrónica</td>
+        @break
+
+        @case('NV')
+          <td>Nota de Vale</td>
+        @break
+
+        @case('HES')
+          <td>Hoja estado Servicios</td>
+        @break
+
+        @case(33)
+          <td>Factura</td>
+        @break
+
+        @case(34)
+          <td>Factura Exenta</td>
+        @break
+
+        @case(820)
+          <td>Código de Inscripción en el
+          Registro de Acuerdos con Plazo de
+          Pago Excepcional
+          </td>
+        @break
+
+        @default
+          <td>{{ $item->TpoDocRef }}</td>
+        @endswitch
+      <td>{{ $item->FolioRef }}</td>
+      <td>{{ $item->FchRef }}</td>
+    </tr>
+    @endforeach
+  @else
   <tr class="tr-referencia">
-      <!-- {{ $item->tpo_doc_ref }} -->
-      @switch($item->tpo_doc_ref)
-      @case(801)
-        <td>Orden de Compra</td>
-      @break
+        @switch($referencia->TpoDocRef)
+        @case(801)
+          <td>Orden de Compra</td>
+        @break
 
-      @case(802)
-        <td>Nota de Pedido</td>
-      @break
+        @case(802)
+          <td>Nota de Pedido</td>
+        @break
 
-      @case(803)
-        <td>Contrato</td>
-      @break
+        @case(803)
+          <td>Contrato</td>
+        @break
 
-      @case(804)
-        <td>Resolución</td>
-      @break
+        @case(804)
+          <td>Resolución</td>
+        @break
 
-      @case(805)
-        <td>Proceso Chile Compra</td>
-      @break
+        @case(805)
+          <td>Proceso Chile Compra</td>
+        @break
 
-      @case(806)
-        <td>Ficha Chile Compra</td>
-      @break
+        @case(806)
+          <td>Ficha Chile Compra</td>
+        @break
 
-      @case(807)
-        <td>DUS</td>
-      @break
+        @case(807)
+          <td>DUS</td>
+        @break
 
-      @case(808)
-        <td>B/L</td>
-      @break
+        @case(808)
+          <td>B/L</td>
+        @break
 
-      @case(809)
-        <td>AWS</td>
-      @break
+        @case(809)
+          <td>AWS</td>
+        @break
 
-      @case(810)
-        <td>MIC/DTA</td>
-      @break
+        @case(810)
+          <td>MIC/DTA</td>
+        @break
 
-      @case(811)
-        <td>Carta de Porte</td>
-      @break
+        @case(811)
+          <td>Carta de Porte</td>
+        @break
 
-      @case(812)
-        <td>Res. SNA</td>
-      @break
+        @case(812)
+          <td>Res. SNA</td>
+        @break
 
-      @case(813)
-        <td>Pasaporte</td>
-      @break
+        @case(813)
+          <td>Pasaporte</td>
+        @break
 
-      @case(50)
-        <td>Guia de Despacho</td>
-      @break
+        @case(50)
+          <td>Guia de Despacho</td>
+        @break
 
-      @case(52)
-        <td>Guia de Despacho Electrónica</td>
-      @break
+        @case(52)
+          <td>Guia de Despacho Electrónica</td>
+        @break
 
-      @case('NV')
-        <td>Nota de Vale</td>
-      @break
+        @case('NV')
+          <td>Nota de Vale</td>
+        @break
 
-      @case('HES')
-        <td>Hoja estado Servicios</td>
-      @break
+        @case('HES')
+          <td>Hoja estado Servicios</td>
+        @break
 
-      @default
-        <td>{{ $item->tpo_doc_ref }}</td>
-      @endswitch
-    <td>{{ $item->folio }}</td>
-    <td>{{ $item->fecha_ref }}</td>
-  </tr>
-  @endforeach
+        @case(33)
+          <td>Factura</td>
+        @break
+
+        @case(34)
+          <td>Factura Exenta</td>
+        @break
+
+        @case(820)
+          <td>Código de Inscripción en el
+          Registro de Acuerdos con Plazo de
+          Pago Excepcional
+          </td>
+        @break
+
+        @default
+          <td>{{ $referencia->TpoDocRef }}</td>
+        @endswitch
+      <td>{{ $referencia->FolioRef }}</td>
+      <td>{{ $referencia->FchRef }}</td>
+    </tr>
+  @endif
 </tbody>
 </table>
-@endif
 <br>
 <footer>
   <table id="table6">
@@ -357,18 +491,6 @@
         <th>
         <table id="table7">
           <tbody>
-            @if($impuestoTpo != null)
-            <tr>
-              <td class="td-table7">Impuesto({{ $impuestoTpo }})</td>
-              <td>${{ number_format(($impuestoValor) , 0, ',', '.') }}</td>
-            </tr>
-            @endif
-            @if($dectoTpo != null)
-            <tr>
-              <td class="td-table7">Descuento({{ $dectoTpo }})</td>
-              <td> {{ number_format(($dectoValor) , 0, ',', '.') }}</td>
-            </tr>
-            @endif
             <tr>
               <td class="td-table7">Monto Neto</td>
               <td>${{ number_format(($documento->neto) , 0, ',', '.') }}</td>
@@ -379,7 +501,7 @@
             </tr>
             <tr>
               <td class="td-table7">Monto Exento</td>
-              <td>${{ number_format(($documento->mnto_exento) , 0, ',', '.') }}</td>
+              <td>${{ number_format((0) , 0, ',', '.') }}</td>
             </tr>
             <tr>
               <td class="td-table7">Total</td>
