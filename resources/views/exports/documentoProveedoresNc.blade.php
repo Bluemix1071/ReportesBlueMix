@@ -268,7 +268,7 @@
     <td>-</td>
     @endif
     <td>{{ strtoupper($detalle->NmbItem) }}</td>
-    <td>{{ $detalle->QtyItem }}</td>
+    <td>{{ number_format(($detalle->QtyItem ), 0, ',', '.') }}</td>
     @if(!empty($detalle->UnmdItem))
       <td>{{ $detalle->UnmdItem }}</td>
     @else
