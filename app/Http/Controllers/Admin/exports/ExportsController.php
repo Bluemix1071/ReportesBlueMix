@@ -106,12 +106,9 @@ public function exportpdfDocProv($folio, $rut){
 
   $documento = DB::table('compras')->where('folio', $folio)->where('rut', strtoupper($rut))->first();
 
-  try{
-    $formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
-    $son = $formatterES->format($documento->total);
-  }catch(Exception $e){
-    $son = "PROXIMAMENTE...";
-  }
+  //$formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+  
+  $son = $this->son($documento->total);
 
   $detalle = DB::table('compras_detalles')->where('id_compras', $documento->id)->get();
 
@@ -155,10 +152,12 @@ public function exportpdfDocProv($folio, $rut){
 }
 
 public function exportpdfDocProvNc($folio, $rut){
-  $formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+  //$formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
 
   $documento = DB::table('nc_proveedor')->where('folio', $folio)->where('rut', strtoupper($rut))->first();
   //dd($documento);
+  $son = $this->son($documento->total);
+
   $xmlfile = simplexml_load_file(storage_path("app/" .$documento->xml));
 
   $xml = json_decode(json_encode($xmlfile));
@@ -173,7 +172,7 @@ public function exportpdfDocProvNc($folio, $rut){
   $referencia = $xml->SetDTE->DTE->Documento->Referencia;
   //dd($referencia);
 
-  $son = $formatterES->format($documento->total);
+  //$son = $formatterES->format($documento->total);
 
   $datated = $xml->SetDTE->DTE->Documento->TED;
   
@@ -222,6 +221,17 @@ public function makeTEDstring($datated){
   '</TED>';
 
   return $makeTEDstring;
+}
+
+public function son($son){
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, 'https://nal.azurewebsites.net/api/NAL?num='.$son.''); 
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+  curl_setopt($ch, CURLOPT_HEADER, 0); 
+  $data = curl_exec($ch); 
+  curl_close($ch);
+  $letras = json_decode($data);
+  return $letras->letras;
 }
 
 }
