@@ -103,9 +103,15 @@ public function exportpdfprov($numero_de_orden_de_compra){
 }
 
 public function exportpdfDocProv($folio, $rut){
-  $formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
 
   $documento = DB::table('compras')->where('folio', $folio)->where('rut', strtoupper($rut))->first();
+
+  try{
+    $formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+    $son = $formatterES->format($documento->total);
+  }catch(Exception $e){
+    $son = "PROXIMAMENTE...";
+  }
 
   $detalle = DB::table('compras_detalles')->where('id_compras', $documento->id)->get();
 
@@ -116,8 +122,6 @@ public function exportpdfDocProv($folio, $rut){
   //dd($detalle);
 
   //dd($documento);
-
-  $son = $formatterES->format($documento->total);
 
   $xmlfile = simplexml_load_file(storage_path("app/" .$documento->xml));
 
