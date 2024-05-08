@@ -74,7 +74,9 @@ class PublicoController extends Controller
         left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` 
         left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
         where `bpsrea` < 0 and `tablas`.`TACODI` = 22
-        ) t group by bpprod having count(1) >= 1');
+        ) t
+        left join negativos_historico on t.bpprod = negativos_historico.codigo and negativos_historico.stock_anterior >= 0
+        group by bpprod having count(1) >= 1');
 
         /* $en_solicitud = DB::select('select ARCODI, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod` 
         left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` 

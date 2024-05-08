@@ -32,6 +32,7 @@
                                       <th scope="col">Marca</th>
                                       <th scope="col">Cantidad</th>
                                       <th scope="col">Familia</th>
+                                      <th scope="col">Negativo Desde:</th>
                                       <th scope="col" hidden>Estado</th>
                                     </tr>
                                   </thead>
@@ -48,6 +49,7 @@
                                           <td>{{ $item->ARMARCA }}</td>
                                           <td>{{ $item->bpsrea }}</td>
                                           <td>{{ $item->TAGLOS }}</td>
+                                          <td>{{ $item->fecha_modificacion }}</td>
                                           <td hidden>{{ $item->estado }}</td>
                                         </tr>
                                   
@@ -63,6 +65,27 @@
 <script>
   $(document).ready(function() {
     $('#productos').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "language":{
+      "info": "_TOTAL_ registros",
+      "paginate":{
+        "next": "Siguiente",
+        "previous": "Anterior",
+
+    },
+    "loadingRecords": "cargando",
+    "processing": "procesando",
+    "emptyTable": "no hay resultados",
+    "zeroRecords": "no hay coincidencias",
+    "infoEmpty": "",
+    "infoFiltered": ""
+    }
+    });
+
+    $('#productos_historicos').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
