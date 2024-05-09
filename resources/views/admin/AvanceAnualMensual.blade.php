@@ -499,7 +499,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">Item</th>
-                                <th scope="col">Valor</th>
+                                <th scope="col" class="text-right">Valor</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -561,14 +561,31 @@
                 <div class="row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dolar: <div id="dolar"></div></div>
             </div>
             <div class="col">
-                <div class="row">Euro: <div id="euro"></div></div>
+                <div class="row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Euro: <div id="euro"></div></div>
             </div>
             <div class="col">
-                <div class="row">IPC: {{ $ipc }}%</div>
+                <div class="row">IPC: {{ $ipc }}% <button type="button" class="btn btn-info btn-sm" style="height: 30px; margin-top: 22px;" data-toggle="modal" data-target="#mimodalinfo1">?</button></div>
             </div>
         </div>
         @endif
     </div>
+
+    <!-- Modal AYUDA TABLAS POR PAGAR-->
+    <div class="modal fade" id="mimodalinfo1" tabindex="-1" role="dialog" aria-hidden="true" data-target=".bd-example-modal-lg">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content col-md-12" style="margin-left: 25%">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Ayuda</h4>
+            </div>
+            <div class="modal-body">
+                <p>El calculo del IPC se basa en el acumulativo (puede ser positivo o negativo) de los últimos 12 meses a contar desde el último IPC del mes disponible, cabe recalcar que esta información se actualiza habitualmente los primeros días de cada mes y en estos puede no haber un acumulativo de los últimos 12 meses sino 11 ya que aún no esta disponible el mes cursante.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info" id="savedatetime" data-dismiss="modal">Salir</a>
+            </div>
+            </div>
+        </div>
+        </div>
 @endsection
 
 @section('script')
