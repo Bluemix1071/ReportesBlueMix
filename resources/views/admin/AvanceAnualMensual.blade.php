@@ -494,7 +494,8 @@
                         </form>
                     </div>
                 </div>
-                <table id="areas" class="table table-bordered table-hover dataTable">
+                <b>
+                <table id="areas" class="table table-bordered table-hover dataTable" style="font-size: 150%">
                         <thead>
                             <tr>
                                 <th scope="col">Item</th>
@@ -504,30 +505,30 @@
                         <tbody>
                                 <tr>
                                     <th>Venta del día</th>
-                                    <td>${{ number_format($totalventaxdia, 0, ',', '.') }}</td>
+                                    <td>{{ number_format($totalventaxdia, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Acumulado Actual</th>
-                                    <td>${{ number_format($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24, 0, ',', '.') }}</td>
+                                    <td>{{ number_format($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Acumulado 2023</th>
-                                    <td>${{ number_format($mensual2023[0]->año2023-$destucanm23[0]->destucanm23-$desnenem23[0]->desnenem23, 0, ',', '.') }}</td>
+                                    <td>{{ number_format($mensual2023[0]->año2023-$destucanm23[0]->destucanm23-$desnenem23[0]->desnenem23, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <th>X̅ diario Acumulado</th>
                                     <td>
                                         @if($diasvan == 0)
-                                            ${{ number_format(($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24), 0, ',','.') }}
+                                            {{ number_format(($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24), 0, ',','.') }}
                                         @else
-                                            ${{ number_format(($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)/($diasvan), 0, ',','.') }}
+                                            {{ number_format(($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)/($diasvan), 0, ',','.') }}
                                         @endif
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Meta del Mes</th>
-                                    <td>${{ number_format(($totalmescursado2023*($ipc/100+1)), 0, ',','.' ) }}</td>
+                                    <td>{{ number_format(($totalmescursado2023*($ipc/100+1)), 0, ',','.' ) }}</td>
                                 </tr>
                                 <tr>
                                     <th>Avance %</th>
@@ -535,20 +536,21 @@
                                 </tr>
                                 <tr>
                                     <th>Falta para Meta</th>
-                                    <td>${{ number_format((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)), 0, ',' , '.') }}</td>
+                                    <td>{{ number_format((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)), 0, ',' , '.') }}</td>
                                 </tr>
                                 <tr>
                                     <th>X̅ para Meta</th>
                                     <td>
                                         @if($diasquedan == 0)
-                                            ${{ number_format((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)),0,',','.') }}
+                                            {{ number_format((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24)),0,',','.') }}
                                         @else
-                                            ${{ number_format(((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24))/$diasquedan),0,',','.') }}
+                                            {{ number_format(((($totalmescursado2023*($ipc/100+1))-($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24))/$diasquedan),0,',','.') }}
                                         @endif
                                     </td>
                                 </tr>
                         </tbody>
                     </table>
+                    </b>
                 @endif
             </div>
         </div>
@@ -558,19 +560,17 @@
         <br>
         <br>
         <br>
-        <br>
-        <div class="row" style="font-size: 400%">
+        <div class="row" style="font-size: 300%">
             <div class="col">
-                <div class="row">Dolar: $<div id="dolar"></div></div>
+                <div class="row">Dolar: <div id="dolar"></div></div>
             </div>
             <div class="col">
-                <div class="row">Euro: €<div id="euro"></div></div>
+                <div class="row">Euro: <div id="euro"></div></div>
             </div>
             <div class="col">
                 <div class="row">IPC: {{ $ipc }}%</div>
             </div>
         </div>
-        <br>
         <br>
         <br>
         <br>
