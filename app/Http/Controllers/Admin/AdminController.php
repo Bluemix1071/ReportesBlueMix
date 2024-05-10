@@ -2133,7 +2133,7 @@ public function stocktiemporeal (Request $request){
         $fecha1 = date("Y-m-d",strtotime($fecha2."- 1 month"));
         $contratof="";
 
-        $contratos=DB::table('contratos')
+        $contratos=DB::table('contratos')->orderBy('estado', 'desc')
         ->get();
 
         $contratosagregar=DB::table('contratos')
@@ -2192,7 +2192,7 @@ public function stocktiemporeal (Request $request){
             $fecha1=$request->fecha1;
             $fecha2=$request->fecha2;
 
-            $contratos=DB::table('contratos')
+            $contratos=DB::table('contratos')->orderBy('estado', 'desc')
             ->get();
 
             $elcontrato = DB::table('contratos')->where('id_contratos', $contratof)->get()[0];
