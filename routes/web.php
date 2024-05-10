@@ -235,10 +235,16 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/VerificacionDocumentosAutorizarTodo','Compras\ConsultaDocumentosController@VerificacionDocumentosAutorizarTodo')->name('VerificacionDocumentosAutorizarTodo');
 
     // fin
+    //Productos Perecibles
     Route::get('/ProductosExpiracion', 'Productos\ProductosPereciblesController@ProductosExpiracion')->name('ProductosExpiracion');
     Route::post('/guardarproductoperecible', 'Productos\ProductosPereciblesController@guardarproductoperecible')->name('guardarproductoperecible');
     Route::put('/editarproductoperecible', 'Productos\ProductosPereciblesController@editarproductoperecible')->name('editarproductoperecible');
     Route::delete('/borrarproductoperecible', 'Productos\ProductosPereciblesController@borrarproductoperecible')->name('borrarproductoperecible');
+    Route::get('/BuscarRacks/{codigo}','Productos\ProductosPereciblesController@BuscarRacks')->name('BuscarRacks');
+    Route::get('/EditarRack/{id}','Productos\ProductosPereciblesController@EditarRack')->name('EditarRack');
+    //Fin
+    // Mercaderia Bodega
+    Route::get('/Mercaderialistadabodega', 'Mercaderiabodega\MercaderiabodegaController@Mercaderialistadabodega')->name('Mercaderialistadabodega');
 
     /*  Mantenedor CRUD Notas Credito Proveedores */
     Route::get('/NotasCreditoProveedores','Compras\NotasCreditoProveedoresController@index')->name('NotasCreditoProveedores');

@@ -15,32 +15,30 @@
         <div class="row">
             <div class="col-md-12">
                 <hr>
-                <form action="{{ route('guardarproductoperecible') }}" method="post" id="desvForm" class="form-inline">
+                <form action="{{ route('guardarproductoperecible') }}" method="post" id="idform" class="form-inline">
                     @csrf
 
-                    <div class="form-group mx-sm-3 mb-2">
+                    <div class="mx-sm-3 mb-2">
 
                         <label for="inputPassword2" class="sr-only"></label>
-                        <input type="text" autocomplete="off" name="searchText" class="form-control" placeholder="Codigo"
+                        <input type="text" name="searchText" id='codigoo' class="form-control" placeholder="Codigo"
                             required>
+                        <input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control"
+                            size="45" value="" />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <select name="racks" id='selectrack' class="form-control" required>
+                            <option value="" disabled selected>Seleccionar Racks</option>
+                        </select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <h9>Fecha Vencimiento</h9>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="date" autocomplete="off" name="busquedaText" class="form-control"
-                            placeholder="Fecha" required>
+                        &nbsp;&nbsp;&nbsp;
+                        <input type="date" name="busquedaText" class="form-control" placeholder="Fecha" required>
+                        <input type="text" name="prueba" id='prueba' class="form-control" placeholder="rack seleccionado" hidden>
+                        <input type="text" name="prueba2" id='prueba2' class="form-control" placeholder="cantidad en rack" hidden>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="number" autocomplete="off" name="busqueda1Text" class="form-control"
-                            placeholder="Cantidad" pattern="[0-9]*" required>
-
-                    </div>
-                    <div class="col-md-2 ">
-                        <button type="submit" class="btn btn-primary mb-2">Guardar</button>
-
-                    </div>
-                    <div class="col-md-2 col-md offset-">
-
                         <a href="" data-toggle="modal" data-target="#mimodalejemplo" class="btn btn-info">Info.</a>
                     </div>
+                    <button class="btn btn-primary mb-2" type="submit">Guardar</button>
                 </form>
                 <hr>
             </div>
@@ -55,9 +53,10 @@
                             <th scope="col" style="text-align:left">codigo</th>
                             <th scope="col" style="text-align:left">Detalle</th>
                             <th scope="col" style="text-align:left">Marca</th>
+                            <th scope="col" style="text-align:left">Rack</th>
+                            <th scope="col" style="text-align:left">Cantidad</th>
                             <th scope="col" style="text-align:left">Fecha Registro</th>
                             <th scope="col" style="text-align:left">Fecha de Caducidad</th>
-                            <th scope="col" style="text-align:right">Cantidad</th>
                             <th scope="col" style="text-align:right">Acciones</th>
 
 
@@ -73,37 +72,37 @@
                                     <td style="text-align:left">{{ $item->codigo }}</td>
                                     <td style="text-align:left">{{ $item->ARDESC }}</td>
                                     <td style="text-align:left">{{ $item->ARMARCA }}</td>
+                                    <td style="text-align:left">{{ $item->modulo }}</td>
+                                    <td style="text-align:left">{{ $item->incant }}</td>
                                     <td style="text-align:left">{{ $item->fechaingreso }}</td>
                                     <td
                                         style="text-align:left;
                                         @php
-                        $fechaVencimiento = new DateTime($item->fechavencimiento);
+$fechaVencimiento = new DateTime($item->fechavencimiento);
                         $fechaActual = new DateTime();
                         $diferencia = $fechaActual->diff($fechaVencimiento);
                         $meses = $diferencia->m + ($diferencia->y * 12); // Total de meses de diferencia
 
                         if ($fechaVencimiento < $fechaActual) {
-                            echo 'background-color: red;'; // Morado si el producto está caducado
+                            echo 'background-color: red;';
                         } elseif ($meses <= 7) {
-                            echo 'background-color: purple;'; // Rojo si quedan 6 meses o menos
-                        } elseif ($meses <= 12) {
-                            echo 'background-color: yellow;'; // Amarillo si quedan 8 meses o menos
+                            echo 'background-color: purple;';
+                        } elseif ($meses < 12) {
+                            echo 'background-color: yellow;';
                         } elseif ($meses >= 12) {
-                            echo 'background-color: green;'; // verde si quedan 12 meses o mas
+                            echo 'background-color: green;';
                         } else {
-                            echo 'background-color: transparent;'; // Sin resaltado si no cumple ninguna condición
-                        }
-                    @endphp
+                            echo 'background-color: transparent;';
+                        } @endphp
                                     ">
                                         {{ $item->fechavencimiento }}
                                     </td>
                                     <!-- Fin del resaltado de la fecha de vencimiento -->
-                                    <td style="text-align:right">{{ number_format($item->Cantidad, 0, ',', '.') }}</td>
                                     <td>
                                         <a href="" data-toggle="modal" data-target="#editar"
-                                            data-id="{{ $item->id }}"
+                                            data-id="{{ $item->id }}" data-codigo="{{ $item->codigo }}"
                                             data-fechavencimiento="{{ $item->fechavencimiento }}"
-                                            data-Cantidad="{{ number_format($item->Cantidad, 0, ',', '.') }}"
+                                            data-numodulo="{{ $item->numodulo }}"
                                             class="btn btn-warning btn-sm">Editar</a>
                                         <a href="" data-toggle="modal" data-target="#eliminar"
                                             data-id="{{ $item->id }}" class="btn btn-danger btn-sm">Eliminar</a>
@@ -113,13 +112,9 @@
                         @endif
                     </tbody>
                 </table>
-
-
             </div>
         </div>
-
     </div>
-
     {{-- -Eliminar Columna --}}
     <div class="modal fade" id="eliminar" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -158,15 +153,16 @@
                     <div class="modal-body">
                         <div class="card-body">
                             <input type="number" name="id_update" id="id_update" hidden>
+                            <input type="text" name="codigo_update" id="codigo_update" hidden>
+                            <input type="text" name="num_update" id="num_update" hidden>
+                            <input type="text" name="rack_update" id="rack_update" hidden>
                             <div class="form-group row">
                                 <label for="fecha_caducidad" class="col-md-4 col-form-label text-md-right">Fecha
                                     Caducidad</label>
-
                                 <div class="col-md-6">
                                     <input id="fecha_caducidad" type="date"
                                         class="form-control @error('pass') is-invalid @enderror" name="fecha_caducidad"
                                         value="{{ old('fecha_caducidad') }}" autocomplete="fecha_caducidad">
-
                                     @error('fecha_caducidad')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -175,29 +171,29 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="cantidad" class="col-md-4 col-form-label text-md-right">Cantidad</label>
-
-                                <div class="col-md-6">
-                                    <input id="cantidad" type="number"
-                                        class="form-control @error('pass') is-invalid @enderror" name="cantidad"
-                                        value="{{ old('cantidad') }}" autocomplete="cantidad">
-
-                                    @error('cantidad')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <label for="selectrackedit" class="col-md-4 col-form-label text-md-right">Racks:</label>
+                                <div class="col-md-6" style="display: flex; align-items: center;">
+                                    <select name="racksedit" id="selectrackedit" class="form-control"
+                                        style="width: 200px;" required>
+                                        <option value="" disabled selected>Seleccionar Racks</option>
+                                    </select>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Editar</button>
+                        &nbsp;
                         <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
                     </div>
                 </form>
             </div>
         </div>
+    </div>
+    </form>
+    </div>
+    </div>
     </div>
 
     <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -212,7 +208,7 @@
                         garantizar un registro preciso y completo de los productos.</div>
                     <div class="card-body">Si el producto le queda mas de 1 año de vencimiento estara en color verde</div>
                     <div class="card-body">Si el producto esta a menos de 1 año de expirar estara en color amarillo</div>
-                    <div class="card-body">Si el producto esta a 7 meses o menos de expirar estara en color morado</div>
+                    <div class="card-body">Si el producto esta a 8 meses o menos de expirar estara en color morado</div>
                     <div class="card-body">Si el producto ya expiro estara en color Rojo</div>
                 </div>
                 <div class="modal-footer">
@@ -226,16 +222,49 @@
 
 @section('script')
     <script>
-        $('#guardarproductoeditado').click(function() {
-            var fecha = $('#fecha').val();
-            var hora = $('#hora').val();
-            //var inputType = input.getAttribute('type');
-            //console.log(fecha,hora);
-            var datetime = (fecha + " " + hora);
-            $('#fechahora').val(datetime);
-
-        });
         $(document).ready(function() {
+            $("#idform").keypress(function(e) {
+                if (e.which == 13) {
+                    return false;
+                }
+            });
+
+            $('#codigoo').bind("enterKey", function(e) {
+                $.ajax({
+                    url: '../admin/BuscarRacks/' + $('#codigoo').val(),
+                    type: 'GET',
+                    success: function(result) {
+                        $('#selectrack').empty();
+                        $('#selectrack').append('<option value="" disabled selected>Seleccionar Rack</option>');
+                        $('#buscar_detalle').val(result[1][0].ARDESC);
+                        $.each(result[0], function(i, item) {
+                            $('#selectrack').append($('<option>', {
+                                value: item.inmodu,
+                                'data-taglos': item
+                                    .taglos,
+                                'data-incant': item
+                                    .incant,
+                                text: item.taglos + " (" + item.incant +")"
+                            }));
+                        });
+                    }
+                });
+            });
+
+
+            $('#selectrack').on('change', function() {
+                var seleccionado = $("#selectrack option:selected").val();
+                var taglos = $("#selectrack option:selected").data('taglos');
+                var incant = $("#selectrack option:selected").data('incant');
+                $('#prueba').val(taglos);
+                $('#prueba2').val(incant);
+            });
+
+            $('#codigoo').keyup(function(e) {
+                if (e.keyCode == 13) {
+                    $(this).trigger("enterKey");
+                }
+            });
             $('#productos').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
@@ -263,12 +292,50 @@
 
             var button = $(event.relatedTarget)
             var id = button.data('id')
+            var codigo = button.data('codigo')
             var fechaproducto = button.data('fechavencimiento')
-            var cantidadproducto = button.data('cantidad')
+            var numodulo = button.data('numodulo');
+            $.ajax({
+                    url: '../admin/BuscarRacks/'+ codigo,
+                    type: 'GET',
+                    success: function(result) {
+                        $('#selectrackedit').empty();
+                            $.each(result[0], function(i, item) {
+                            if(numodulo == item.inmodu){
+                                $('#selectrackedit').append($('<option>', {
+                                    value: item.inmodu,
+                                    'data-taglos': item
+                                        .taglos,
+                                    'data-incant': item
+                                        .incant,
+                                    text: item.taglos + " (" + item.incant + ")",
+                                    selected: true,
+                                }));
+                            }else{
+                                $('#selectrackedit').append($('<option>', {
+                                    value: item.inmodu,
+                                    'data-taglos': item
+                                        .taglos,
+                                    'data-incant': item
+                                        .incant,
+                                    text: item.taglos + " (" + item.incant + ")"
+                                }));
+                            }
+                        });
+                    }
+                });
+                $('#selectrackedit').on('change', function() {
+                    var seleceditado = $("#selectrackedit option:selected").val();
+                    var taglosedit = $("#selectrackedit option:selected").data('taglos');
+                    var incantedit = $("#selectrackedit option:selected").data('incant');
+                    $('#rack_update').val(taglosedit);
+                    $('#num_update').val(seleceditado);
+            });
 
             var modal = $(this)
+
             modal.find('.modal-content #fecha_caducidad').val(fechaproducto);
-            modal.find('.modal-content #cantidad').val(cantidadproducto);
+            modal.find('.modal-content #codigo_update').val(codigo);
             modal.find('.modal-content #id_update').val(id);
 
         })
