@@ -522,15 +522,6 @@
 
                                 @endcan
 
-                                <li class="nav-item">
-                                    <a href="{{ route('ProductosExpiracion') }}"
-                                        class="nav-link {{ setActive('ProductosExpiracion') }}">
-                                        <i  class="far fa-circle nav-icon"></i>
-                                        <p>Productos Perecibles
-
-                                        </p>
-                                    </a>
-                                </li>
 
                                 <li class="nav-item">
                                     <a href="{{ route('Mercaderialistadabodega') }}"
@@ -1344,6 +1335,15 @@
                                 <a href="{{ route('ListarProductosPendientes') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Productos Pendientes</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('ProductosExpiracion') }}"
+                                    class="nav-link {{ setActive('ProductosExpiracion') }}">
+                                    <i  class="far fa-circle nav-icon"></i>
+                                    <p>Productos Perecibles
+
+                                    </p>
                                 </a>
                             </li>
                             <li class="nav-item">
