@@ -425,3 +425,6 @@
 
     @endsection
     <script src="{{ asset('js/validarRUT.js') }}"></script>
+    <style>
+    .dataTables_filter, .dataTables_info { display: none; }
+    </style>
