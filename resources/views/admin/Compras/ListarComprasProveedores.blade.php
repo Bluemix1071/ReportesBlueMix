@@ -106,6 +106,15 @@
                             </tr>
                             @endforeach
                             </tbody>
+                            <tfoot>
+                            <tr>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td id="total_neto">Total Neto</td>
+                                <td id="total_iva">Total IVA</td>
+                                <td id="total">Total</td>
+                                <td></td>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -285,6 +294,52 @@
             $(document).ready(function() {
                 minDate = $('#min');
                 maxDate = $('#max');
+
+                $('#users thead tr').clone(true).appendTo( '#users thead' );
+                $('#users thead tr:eq(1) th').each( function (i) {
+                var title = $(this).text();
+                $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
+
+                $( 'input', this ).on( 'keyup change', function () {
+                    if ( table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search( this.value )
+                            .draw();
+                        }
+                        var total = 0;
+                        var total_neto = 0;
+                        var total_iva = 0;
+
+                        $('#users tbody tr').each(function() {
+                            var rowTotal = $(this).find('td:eq(10)').text();
+                            var rowTotal_IVA = $(this).find('td:eq(9)').text();
+                            var rowTotal_Neto = $(this).find('td:eq(8)').text();
+                            total += isNaN(parseInt((rowTotal.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal.replace(".", "")).replace(".", ""));
+                            total_neto += isNaN(parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""));
+                            total_iva += isNaN(parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""));
+                        });
+                        $("#total").text(Number((total).toFixed(1)).toLocaleString());
+                        $("#total_iva").text(Number((total_iva).toFixed(1)).toLocaleString());
+                        $("#total_neto").text(Number((total_neto).toFixed(1)).toLocaleString());
+                    });
+                });
+
+                var total = 0;
+                var total_neto = 0;
+                var total_iva = 0;
+                $('#users tbody tr').each(function() {
+                    var rowTotal = $(this).find('td:eq(10)').text();
+                    var rowTotal_IVA = $(this).find('td:eq(9)').text();
+                    var rowTotal_Neto = $(this).find('td:eq(8)').text();
+                    total += isNaN(parseInt((rowTotal.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal.replace(".", "")).replace(".", ""));
+                    total_neto += isNaN(parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""));
+                    total_iva += isNaN(parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""));
+                });
+                $("#total").text(Number((total).toFixed(1)).toLocaleString());
+                $("#total_iva").text(Number((total_iva).toFixed(1)).toLocaleString());
+                $("#total_neto").text(Number((total_neto).toFixed(1)).toLocaleString());
+
                 var table = $('#users').DataTable({
                     orderCellsTop: true,
                     dom: 'Bfrtip',
@@ -308,7 +363,49 @@
                 "infoEmpty": "",
                 "infoFiltered": ""
                 }
-                });
+                })/* .on('search.dt', function() {
+                    var total = 0;
+                    $('#users tbody tr').each(function() {
+                        var rowTotal = $(this).find('td:eq(10)').text();
+                        total += isNaN(parseInt((rowTotal.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal.replace(".", "")).replace(".", ""));
+                    });
+                    $("#total").text(total);
+                    console.log("llega aki");
+                }) */;
+
+                /* $('.dataTables_filter input').unbind().keyup(function() {
+                    var value = $(this).val();
+                    var total = 0;
+                    var total_neto = 0;
+                    var total_iva = 0;
+                    if (value.length>0) {
+                        $('#users tbody tr').each(function() {
+                            var rowTotal = $(this).find('td:eq(10)').text();
+                            var rowTotal_IVA = $(this).find('td:eq(9)').text();
+                            var rowTotal_Neto = $(this).find('td:eq(8)').text();
+                            total += isNaN(parseInt((rowTotal.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal.replace(".", "")).replace(".", ""));
+                            total_neto += isNaN(parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""));
+                            total_iva += isNaN(parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""));
+                        });
+                        $("#total").text(Number((total).toFixed(1)).toLocaleString());
+                        $("#total_iva").text(Number((total_iva).toFixed(1)).toLocaleString());
+                        $("#total_neto").text(Number((total_neto).toFixed(1)).toLocaleString());
+                        table.search(value).draw();
+                    }else {
+                        $('#users tbody tr').each(function() {
+                            var rowTotal = $(this).find('td:eq(10)').text();
+                            var rowTotal_IVA = $(this).find('td:eq(9)').text();
+                            var rowTotal_Neto = $(this).find('td:eq(8)').text();
+                            total += isNaN(parseInt((rowTotal.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal.replace(".", "")).replace(".", ""));
+                            total_neto += isNaN(parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""));
+                            total_iva += isNaN(parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""));
+                        });
+                        $("#total").text(Number((total).toFixed(1)).toLocaleString());
+                        $("#total_iva").text(Number((total_iva).toFixed(1)).toLocaleString());
+                        $("#total_neto").text(Number((total_neto).toFixed(1)).toLocaleString());
+                        table.search('').draw();
+                    }
+                }); */
                 
                /*  $('#min, #max').on('change', function () {
                 //table.draw();
