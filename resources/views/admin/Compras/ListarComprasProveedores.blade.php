@@ -298,7 +298,7 @@
                 $('#users thead tr').clone(true).appendTo( '#users thead' );
                 $('#users thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
-                $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
+                $(this).html( '<input type="text" class="form-control input-lg" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;" placeholder="'+title+'" />' );
 
                 $( 'input', this ).on( 'keyup change', function () {
                     if ( table.column(i).search() !== this.value ) {

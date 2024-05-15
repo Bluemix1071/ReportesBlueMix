@@ -106,7 +106,11 @@
         </tr>
         <tr>
           <th colspan="1">Tipo:</th>
-          <th colspan="1">Factura Electrónica</th>
+          @if($documento->tipo_dte == 33)
+            <th colspan="1">Factura Electrónica</th>
+          @else
+            <th colspan="1">Factura Exenta Electrónica</th>
+          @endif
         </tr>
         <tr>
           <th colspan="1">N°:</th>
@@ -246,7 +250,11 @@
     <td>{{ number_format(($item->cantidad) , 0, ',', '.') }}</td>
     <td>{{ $item->tpo_uni }}</td>
     <td>${{ number_format(($item->precio), 0, ',' ,'.') }}</td>
-    <td>${{ number_format(($item->precio*1.19), 0, ',', '.')}}</td>
+    @if($documento->tipo_dte == 33)
+      <td>${{ number_format(($item->precio*1.19), 0, ',', '.')}}</td>
+    @else
+      <td>${{ number_format(($item->precio), 0, ',', '.')}}</td>
+    @endif
     <td>${{ number_format(($item->total_neto), 0, ',' ,'.') }}</td>
   </tr>
   @endforeach

@@ -8,7 +8,7 @@
 
 @endsection
 @section('contenido')
-    <div class="container my-4">
+    <div class="container-fluid">
         <h1 class="display-4">Notas Crédito de Proveedores</h1>
         <hr>
         <div class="row">
@@ -46,7 +46,7 @@
                             ?
                             </button>
                         </div>
-                        <table id="users" class="table table-sm table-hover">
+                        <table id="users" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">Folio</th>
@@ -250,6 +250,17 @@
 
         <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
         <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
+        <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
+        <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">
+        <script src="{{asset("js/jquery-3.3.1.js")}}"></script>
+        <script src="{{asset("js/jquery.dataTables.min.js")}}"></script>
+        <script src="{{asset("js/dataTables.buttons.min.js")}}"></script>
+        <script src="{{asset("js/buttons.flash.min.js")}}"></script>
+        <script src="{{asset("js/jszip.min.js")}}"></script>
+        <script src="{{asset("js/pdfmake.min.js")}}"></script>
+        <script src="{{asset("js/vfs_fonts.js")}}"></script>
+        <script src="{{asset("js/buttons.html5.min.js")}}"></script>
+        <script src="{{asset("js/buttons.print.min.js")}}"></script>
 
         <script type="text/javascript">
 
@@ -295,10 +306,65 @@
             $(document).ready(function() {
                 minDate = $('#min');
                 maxDate = $('#max');
-                var table = $('#users').DataTable();
-                $('#min, #max').on('change', function () {
-                table.draw();
+
+                $('#users thead tr').clone(true).appendTo( '#users thead' );
+                $('#users thead tr:eq(1) th').each( function (i) {
+                var title = $(this).text();
+                $(this).html( '<input type="text" class="form-control input-lg" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;" placeholder="'+title+'" />' );
+
+                $( 'input', this ).on( 'keyup change', function () {
+                    if ( table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search( this.value )
+                            .draw();
+                        }
+                        /* var total = 0;
+                        var total_neto = 0;
+                        var total_iva = 0;
+
+                        $('#users tbody tr').each(function() {
+                            var rowTotal = $(this).find('td:eq(10)').text();
+                            var rowTotal_IVA = $(this).find('td:eq(9)').text();
+                            var rowTotal_Neto = $(this).find('td:eq(8)').text();
+                            total += isNaN(parseInt((rowTotal.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal.replace(".", "")).replace(".", ""));
+                            total_neto += isNaN(parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_Neto.replace(".", "")).replace(".", ""));
+                            total_iva += isNaN(parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""))) ? 0 : parseInt((rowTotal_IVA.replace(".", "")).replace(".", ""));
+                        });
+                        $("#total").text(Number((total).toFixed(1)).toLocaleString());
+                        $("#total_iva").text(Number((total_iva).toFixed(1)).toLocaleString());
+                        $("#total_neto").text(Number((total_neto).toFixed(1)).toLocaleString()); */
+                    });
+                });
+
+                var table = $('#users').DataTable({
+                    orderCellsTop: true,
+                    dom: 'Bfrtip',
+                    order: [[ 4, "desc" ]],
+                    buttons: [
+                        'copy', 'pdf', 'print'
+
+                    ],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
+
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
+                });
             });
+
+            $('#min, #max').on('change', function () {
+                table.draw();
             });
 
              $("#neto_nc").keyup(function(e){
