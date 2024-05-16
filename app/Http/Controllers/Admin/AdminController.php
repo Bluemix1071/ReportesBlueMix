@@ -2128,7 +2128,6 @@ public function stocktiemporeal (Request $request){
 
 
     public function MantenedorContrato(Request $request){
-
         $fecha2=date("Y-m-d");
         $fecha1 = date("Y-m-d",strtotime($fecha2."- 1 month"));
         $contratof="";
@@ -2142,6 +2141,21 @@ public function stocktiemporeal (Request $request){
         $elcontrato = null;
 
         return view('admin.MantenedorContrato',compact('contratof','fecha1','fecha2','contratos','contratosagregar','elcontrato'));
+
+    }
+
+    public function EditarPrecio(Request $request){
+
+        $cambioprecio = DB::table('contrato_detalle')->where('id_contrato_detalle', $request->get('idcontratodetalle'))->first();
+
+        if($cambioprecio != null){
+            $precioeditado = [
+                'precio' => $request->botonidcontrato];
+                DB::table('contrato_detalle')->where('id_contrato_detalle', $request->get('idcontratodetalle'))->update($precioeditado);
+                return redirect()->route('MantenedorContrato')->with('success','Precio actualizado correctamente');
+        }else{
+            return redirect()->route('MantenedorContrato')->with('error','Precio no encontrado');
+        }
 
     }
 
@@ -2185,7 +2199,6 @@ public function stocktiemporeal (Request $request){
 
     public function MantenedorContratoFiltro(Request $request){
 
-
         if($request->codigo == null){
 
             $contratof=$request->get('contrato');
@@ -2201,7 +2214,7 @@ public function stocktiemporeal (Request $request){
               $elcontrato->id_depto = "987654321";
             }
 
-            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
+            $contrato=DB::select('select contrato_detalle.id_contrato_detalle,contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
             LEFT join producto on ARCODI = codigo_producto
             LEFT join contratos on id_contratos = fk_contrato
@@ -2213,7 +2226,7 @@ public function stocktiemporeal (Request $request){
             $contratosagregar=DB::table('contratos')
             ->get();
 
-            // dd($contrato);
+            //dd($contrato);
 
             return view('admin.MantenedorContrato',compact('fecha1','fecha2','contratof','contrato', 'contratos','contratosagregar','elcontrato'));
 
@@ -2229,7 +2242,7 @@ public function stocktiemporeal (Request $request){
             // ->where('ARCODI', $request->codigo)
             // ->get();
 
-            $contrato=DB::select('select contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
+            $contrato=DB::select('select contrato_detalle.id_contrato_detalle,contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
             LEFT join producto on ARCODI = codigo_producto
             LEFT join contratos on id_contratos = fk_contrato
@@ -2244,7 +2257,7 @@ public function stocktiemporeal (Request $request){
             $contratosagregar=DB::table('contratos')
             ->get();
 
-            // dd($contrato);
+            //dd($contrato);
 
             return view('admin.MantenedorContrato',compact('fecha1','fecha2','contrato', 'contratos','contratosagregar'));
 
@@ -2856,7 +2869,7 @@ public function stocktiemporeal (Request $request){
 
         $destucanm24=DB::select('select sum(cavalo) as destucanm24 from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2024
         $desnenem24=DB::select('select sum(cavalo) as desnenem24 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2024
-        
+
         $mescursado = date("m", strtotime($fecha1));
         $anocursado = date("Y", strtotime($fecha1));
 
@@ -3313,7 +3326,7 @@ public function stocktiemporeal (Request $request){
     }
 
     public function daysWeek($inicio, $fin){
-      
+
       $start = new DateTime($inicio);
       $end = new DateTime($fin);
 
@@ -3329,7 +3342,7 @@ public function stocktiemporeal (Request $request){
 
       // almacenado como matriz, por lo que puede agregar más de una fecha feriada
       $holidays = ['2024-03-29', '2024-03-30', '2024-05-01', '2024-05-21', '2024-20-06', '2024-06-29', '2024-07-16', '2024-08-15', '2024-08-20', '2024-09-18', '2024-09-20', '2024-10-12', '2024-10-31', '2024-11-01', '2024-12-25'];
-    
+
       $sabados = 0;
 
       foreach($period as $dt) {
@@ -3351,7 +3364,7 @@ public function stocktiemporeal (Request $request){
       error_log(print_r("domingos ".$domingos, true));
       error_log(print_r("sabados ".$sabados, true));
       error_log(print_r("feriados ".$feriados, true)); */
-      
+
       //dd($sabados);
 
       return ($days-($sabados/2));
@@ -3361,7 +3374,7 @@ public function stocktiemporeal (Request $request){
 
       $starDate = new DateTime($inicio);
       $endDate = new DateTime($fin);
-      
+
       $days = 0;
 
       while( $starDate <= $endDate){
@@ -3380,10 +3393,10 @@ public function stocktiemporeal (Request $request){
     public function ipc($anocursado,$mescursado){
 
       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json'); 
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-      curl_setopt($ch, CURLOPT_HEADER, 0); 
-      $data = curl_exec($ch); 
+      curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_HEADER, 0);
+      $data = curl_exec($ch);
       curl_close($ch);
 
       $data = json_decode($data);

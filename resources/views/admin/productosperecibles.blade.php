@@ -78,7 +78,7 @@
                                     <td
                                         style="text-align:left;
                                         @php
-$fechaVencimiento = new DateTime($item->fechavencimiento);
+                        $fechaVencimiento = new DateTime($item->fechavencimiento);
                         $fechaActual = new DateTime();
                         $diferencia = $fechaActual->diff($fechaVencimiento);
                         $meses = $diferencia->m + ($diferencia->y * 12); // Total de meses de diferencia
@@ -191,11 +191,6 @@ $fechaVencimiento = new DateTime($item->fechavencimiento);
             </div>
         </div>
     </div>
-    </form>
-    </div>
-    </div>
-    </div>
-
     <div class="modal fade" id="mimodalejemplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

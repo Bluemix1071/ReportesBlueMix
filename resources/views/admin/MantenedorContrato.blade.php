@@ -125,6 +125,10 @@
                                                     <form action="{{ route('EstadisticaContratoDetalle', ['codigo' => $item->codigo_producto]) }}" method="post" style="display: inherit" target="_blank" class="form-inline">
                                                         <button type="submit" class="btn btn-primary"><i class="far fa-eye"></i></button>
                                                     </form>
+                                                    <a href="" data-toggle="modal" data-target="#editarprecio"
+                                                     data-codigo="{{ $item->id_contrato_detalle }}"
+                                            data-precio="{{ $item->precio }}"
+                                            class="btn btn-primary"><i class="fas fa-pen"></i></a>
                                                 </a>
                                             </td>
                                         </tr>
@@ -183,9 +187,47 @@
                     </div>
                     <!-- <div class="modal-body"> -->
                         <!-- <div class="card-body"> -->
-                            
+
                        <!--  </div> -->
                    <!--  </div> -->
+                </div>
+            </div>
+        </div>
+        {{-- --editar- --}}
+        <div class="modal fade" id="editarprecio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Editar</h4>
+                    </div>
+                    <form action="{{ route('EditarPrecio') }}" method="post">
+                        {{ method_field('put') }}
+                        {{ csrf_field() }}
+                        @csrf
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <input type="text" name="idcontratodetalle" id="idcontratodetalle" hidden>
+                                <div class="form-group row">
+                                    <label for="fecha_caducidad" class="col-md-4 col-form-label text-md-right">Precio</label>
+                                    <div class="col-md-6">
+                                        <input id="botonidcontrato" type="number"
+                                            class="form-control @error('pass') is-invalid @enderror" name="botonidcontrato"
+                                            value="{{ old('precio') }}">
+                                        @error('precio')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Editar</button>
+                            &nbsp;
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -317,6 +359,17 @@
     @section('script')
 
     <script>
+$('#editarprecio').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);
+    var codigo = button.data('codigo');
+    var precio = button.data('precio');
+
+    var modal = $(this)
+
+            modal.find('.modal-content #idcontratodetalle').val(codigo);
+            modal.find('.modal-content #botonidcontrato').val(precio);
+
+})
 
         $(document).ready(function() {
 
@@ -508,7 +561,7 @@ $.ajax({
         }
     }
 
-    
+
 var productos = $('#productos').DataTable({
         orderCellsTop: true,
           "language":{
@@ -534,7 +587,7 @@ function buscar_productos(){
             var codigo = $('#buscar_codigo_modal').val();
             var detalle = $('#buscar_detalle_modal').val();
             var marca = $('#buscar_marca_modal').val();
-            
+
             if(codigo == "" && detalle == "" && marca == ""){
                 productos.clear().draw();
             }else{
@@ -552,7 +605,7 @@ function buscar_productos(){
                                 productos.rows.add([[items.ARCODI,items.ARDESC,items.ARMARCA,'<button type="button" onclick=selectproducto("'+items.ARCODI+'","'+items.ARDESC.replace(/"/g, "¨").replace(/ /g, '&nbsp;')+'","'+items.ARMARCA.replace(/ /g, '&nbsp;')+'") class="btn btn-success" data-dismiss="modal">Seleccionar</button>']]).draw();
                             })
                         }
-                        
+
                     }
                 });
             }
