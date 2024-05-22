@@ -313,7 +313,6 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/MantenedorContratoAgregarContrato','AdminController@MantenedorContratoAgregarContrato')->name('MantenedorContratoAgregarContrato');
     Route::get('/ListadoContratos','AdminController@ListadoContratos')->name('ListadoContratos');
     Route::post('/UpdateContrato','AdminController@UpdateContrato')->name('UpdateContrato');
-    Route::put('/EditarPrecio','AdminController@EditarPrecio')->name('EditarPrecio');
     Route::get('/EstadisticaContrato','Contratos\EstadisticaContratoController@EstadisticaContrato')->name('EstadisticaContrato');
     Route::post('/EstadisticaContrato','Contratos\EstadisticaContratoController@EstadisticaContratoDetalle')->name('EstadisticaContratoDetalle');
     Route::get('/VentaProdXContrato/{codigo},{fecha_in},{fecha_ter}','Contratos\EstadisticaContratoController@VentaProdXContrato')->name('VentaProdXContrato');
@@ -469,6 +468,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/GuardarStockBodega', 'Rectificacion\RectificacionInventarioBodegaController@GuardarStockBodega')->name('GuardarStockBodega');
     Route::post('/AgregarRack', 'Rectificacion\RectificacionInventarioBodegaController@AgregarRack')->name('AgregarRack');
     /* fin */
+
+    // MODULO DE MOVIMIENTO DE PRODUCTO
+    Route::get('/MovimientoProducto', 'Productos\MovimientoProductoController@MovimientoProducto')->name('MovimientoProducto');
+    Route::get('/MovimientoProductoFiltro', 'Productos\MovimientoProductoController@MovimientoProductoFiltro')->name('MovimientoProductoFiltro');
 
     // Modulos de Stock critico
     Route::get('/StockDesaparecido','StockCritico\StockCriticoController@StockDesaparecido')->name('StockDesaparecido');
