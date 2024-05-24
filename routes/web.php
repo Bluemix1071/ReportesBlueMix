@@ -63,7 +63,6 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
     Route::post('/BuscarRequerimientoFecha','SalaController@BuscarRequerimientoFecha')->name('BuscarRequerimientoFecha');
     Route::post('/BuscarProductosRequerimiento','SalaController@BuscarProductosRequerimiento')->name('BuscarProductosRequerimiento');
 
-    Route::put('/EditarPrecio','AdminController@EditarPrecio')->name('EditarPrecio');
     /* fin */
 
     //cambio
