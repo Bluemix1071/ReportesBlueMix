@@ -13,13 +13,19 @@
         <section class="content">
             <hr>
             <div class="row">
-                <form method="GET" action="{{ route('MovimientoProductoFiltro') }}" id="buscacodigo">
+                <form method="GET" action="{{ route('MovimientoProductoFiltro') }}" id="buscacodigo" class="form-group">
                     {{ csrf_field() }}
                     @if(!empty($codigo))
                         <div class="row">
-                        &nbsp;&nbsp;
-                            <div class="col">
-                                <input type="text" class="form-control" placeholder="Código" name="codigo" required id="codigo" maxlength="7" value="{{ $codigo }}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="row">
+                                <!-- <input type="text" class="form-control" placeholder="Código" name="codigo" required id="codigo" maxlength="7" value="{{ $codigo }}"> -->
+                                <input value="{{ $codigo }}" type="text" class="form-control col" minlength="7" maxlength="7" placeholder="Codigo" size="8" name="codigo" id="codigo" required>
+                                <span class="col">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalproductos">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
                             </div>
                             <div class="col">
                                 <input type="date" class="form-control" placeholder="Fecha Inicio" name="f_inicio" required id="f_inicio" value="{{ $f_inicio }}">
@@ -33,9 +39,16 @@
                         </div>
                     @else
                     <div class="row">
-                        &nbsp;&nbsp;
-                            <div class="col">
-                                <input type="text" class="form-control" placeholder="Código" name="codigo" required id="codigo" maxlength="7">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="row">
+                                <!-- <input type="text" class="form-control" placeholder="Código" name="codigo" required id="codigo" maxlength="7"> -->
+                                    <input type="text" class="form-control col" minlength="7" maxlength="7" placeholder="Codigo" size="8" name="codigo" id="codigo" required>
+                                    <span class="col">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalproductos">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+
                             </div>
                             <div class="col">
                                 <input type="date" class="form-control" placeholder="Fecha Inicio" name="f_inicio" required id="f_inicio">
@@ -379,6 +392,39 @@
             @endif
         </section>
 
+        <!-- modal de buscar productos-->
+        <div class="modal fade" id="modalproductos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title col-3" id="myModalLabel">Buscar un Producto</h4>
+                        <input type="text" name="" id="buscar_codigo_modal" placeholder="Codigo" class="form-control" onkeyup="processChange()">
+                        <input type="text" name="" id="buscar_detalle_modal" placeholder="Detalle" class="form-control" onkeyup="processChange()">
+                        <input type="text" name="" id="buscar_marca_modal" placeholder="Marca" class="form-control" onkeyup="processChange()">
+                    </div>
+                    <div class="modal-body">
+                    <table id="productos" class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Codigo</th>
+                          <th scope="col">Descipción</th>
+                          <th scope="col">Marca</th>
+                          <th scope="col">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                    </div>
+                    <!-- <div class="modal-body"> -->
+                        <!-- <div class="card-body"> -->
+
+                       <!--  </div> -->
+                   <!--  </div> -->
+                </div>
+            </div>
+        </div>
+
 
     @endsection
     @section('script')
@@ -577,6 +623,69 @@
                 }
                 });
             });
+
+            var productos = $('#productos').DataTable({
+                orderCellsTop: true,
+                "language":{
+                "info": "_TOTAL_ registros",
+                "search":  "Buscar",
+                "paginate":{
+                "next": "Siguiente",
+                "previous": "Anterior",
+
+            },
+            "loadingRecords": "cargando",
+            "processing": "procesando",
+            "emptyTable": "no hay resultados",
+            "zeroRecords": "no hay coincidencias",
+            "infoEmpty": "",
+            "infoFiltered": ""
+            },
+            });
+
+        function buscar_productos(){
+            productos.clear().draw();
+
+            var codigo = $('#buscar_codigo_modal').val();
+            var detalle = $('#buscar_detalle_modal').val();
+            var marca = $('#buscar_marca_modal').val();
+
+            if(codigo == "" && detalle == "" && marca == ""){
+                productos.clear().draw();
+            }else{
+                $.ajax({
+                    url: '../Sala/BuscarProductosRequerimiento',
+                    type: 'POST',
+                    data: {codigo, detalle, marca},
+                    success: function(result) {
+                        console.log(result);
+
+                        if(result.length >= 1000){
+                            alert("Existen más de 1000 resultados, por favor ser más especifico.");
+                        }else{
+                            result.forEach(items => {
+                                productos.rows.add([[items.ARCODI,items.ARDESC,items.ARMARCA,'<button type="button" onclick=selectproducto("'+items.ARCODI+'") class="btn btn-success" data-dismiss="modal">Seleccionar</button>']]).draw();
+                            })
+                        }
+
+                    }
+                });
+            }
+        }
+
+        function selectproducto(codigo,descripcion,marca){
+            $('#codigo').val(codigo);
+        }
+
+        function debounce(func, timeout = 1000){
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+
+        const processChange = debounce(() => buscar_productos());
 
         </script>
     @endsection
