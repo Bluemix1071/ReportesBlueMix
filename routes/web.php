@@ -313,6 +313,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/MantenedorContratoAgregar','AdminController@MantenedorContratoAgregar')->name('MantenedorContratoAgregar');
     Route::post('/MantenedorContratoAgregarContrato','AdminController@MantenedorContratoAgregarContrato')->name('MantenedorContratoAgregarContrato');
     Route::get('/ListadoContratos','AdminController@ListadoContratos')->name('ListadoContratos');
+    Route::put('/EditarPrecio','AdminController@EditarPrecio')->name('EditarPrecio');
     Route::post('/UpdateContrato','AdminController@UpdateContrato')->name('UpdateContrato');
     Route::get('/EstadisticaContrato','Contratos\EstadisticaContratoController@EstadisticaContrato')->name('EstadisticaContrato');
     Route::post('/EstadisticaContrato','Contratos\EstadisticaContratoController@EstadisticaContratoDetalle')->name('EstadisticaContratoDetalle');
