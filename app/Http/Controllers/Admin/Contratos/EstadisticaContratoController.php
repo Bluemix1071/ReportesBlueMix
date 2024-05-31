@@ -63,8 +63,7 @@ class EstadisticaContratoController extends Controller
         if(count($existe) == 1){
             $producto = DB::table('Vista_Productos')->where('interno', $request->get('codigo'))->get()[0];
     
-            $contratos_presentes = DB::table('contratos')->leftjoin('contrato_detalle', 'id_contratos', '=', 'contrato_detalle.fk_contrato')->where('codigo_producto', $request->get('codigo'))->get();
-            
+            $contratos_presentes = DB::table('contratos')->leftjoin('contrato_detalle', 'id_contratos', '=', 'contrato_detalle.fk_contrato')->where('codigo_producto', $request->get('codigo'))->groupBy('id_contratos')->get();
             /* $venta_producto_x_contrato = DB::select('select DENMRO, DEFECO, DECANT, PrecioCosto, CARUTC, depto,razon, giro_cliente, nro_oc from dcargos
             left join cargos on dcargos.DENMRO = cargos.CANMRO
             where cargos.nro_oc like "%SE%" AND dcargos.DECODI = "'.$request->get('codigo').'" and DETIPO = 8 and DEFECO >= "2020-01-01"'); */

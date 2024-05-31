@@ -88,6 +88,7 @@
                                     <td><input type="date" id="max1" value="{{ date('Y-m-d') }}"></td>
                                 </tr>
                                 &nbsp &nbsp &nbsp
+                                <button type="button" class="btn btn-success btn-sm row" id="buscar">Buscar</button>
                     </div>
                     </div>
                     <div class="card-body">
@@ -372,7 +373,7 @@
                     table.draw();
                 }); */
 
-                $('#min1, #max1').on('change', function () {
+                $('#buscar').on('click', function () {
                     table.clear().draw();
                     $.ajax({
                         url: '../admin/VentaProdXContrato/'+$('#codigo_producto').val()+','+$('#min1').val()+','+$('#max1').val(),
