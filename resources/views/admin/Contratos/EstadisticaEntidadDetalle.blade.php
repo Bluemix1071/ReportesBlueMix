@@ -57,7 +57,7 @@
                             </div>
                         </div>
 
-            <h4>Historial de Ventas</h4>
+            <h4>Historial de Salidas Mercaderia</h4>
             <div class="card">
                 <div class="card-header">
                     <div style="text-align:center">
@@ -80,6 +80,7 @@
                         <table id="historialventas" class="table table-sm table-hover">
                         <thead>
                             <tr>
+                                <th>T. Doc</th>
                                 <th>Codigo</th>
                                 <th>Cod Prov</th>
                                 <th>Detalle</th>
@@ -91,6 +92,13 @@
                         </thead>
                             @foreach($productos_contrato as $item)
                                 <tr>
+                                    <td>
+                                        @if($item->DETIPO == 8)
+                                            Factura
+                                        @elseif($item->DETIPO == 3)
+                                            Guía
+                                        @endif
+                                    </td>
                                     <td>{{ $item->DECODI }}</td>
                                     <td>{{ $item->ARCOPV }}</td>
                                     <td>{{ $item->ARDESC }}</td>

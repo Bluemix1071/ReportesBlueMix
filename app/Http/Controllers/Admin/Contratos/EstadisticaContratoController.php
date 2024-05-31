@@ -69,11 +69,11 @@ class EstadisticaContratoController extends Controller
             left join cargos on dcargos.DENMRO = cargos.CANMRO
             where cargos.nro_oc like "%SE%" AND dcargos.DECODI = "'.$request->get('codigo').'" and DETIPO = 8 and DEFECO >= "2020-01-01"'); */
     
-            $venta_producto_x_contrato = DB::select('select CARUTC, sum(DECANT) as total, CARUTC, depto,razon, giro_cliente, nro_oc from dcargos
+            $venta_producto_x_contrato = DB::select('select if(CATIPO = 8, "Factura", "Guía") as CATIPO ,CARUTC, sum(DECANT) as total, CARUTC, depto,razon, giro_cliente, nro_oc from dcargos
             left join cargos on dcargos.DENMRO = cargos.CANMRO 
             where nro_oc like "%SE%" and DECODI = "'.$request->get('codigo').'" 
-            AND DEFECO between "2020-01-01" AND "2023-01-17" 
-            AND DETIPO = 8 group by CARUTC');
+            AND DEFECO between "2020-01-01" AND curdate() 
+            AND DETIPO <> 7 group by CARUTC');
             
             $ingresos = DB::select('select DMVPROD, proveed.PVNOMB, DMVCANT, DMVUNID, CMVFECG, PrecioCosto from dmovim
             left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI
@@ -94,11 +94,11 @@ class EstadisticaContratoController extends Controller
 
     public function VentaProdXContrato($codigo, $fecha_in, $fecha_ter){
 
-        $venta_producto_x_contrato = DB::select('select CARUTC, sum(DECANT) as total, sum(dcargos.DEPREC*DECANT) as monto_total, depto,razon, giro_cliente, nro_oc from dcargos
-        left join cargos on dcargos.DENMRO = cargos.CANMRO 
-        where nro_oc like "%SE%" and DECODI = "'.$codigo.'" 
-        AND DEFECO between "'.$fecha_in.'" AND "'.$fecha_ter.'" 
-        AND DETIPO = 8 group by CARUTC');
+        $venta_producto_x_contrato = DB::select('select if(CATIPO = 8, "Factura", "Guía") as CATIPO, CARUTC, sum(DECANT) as total, sum(dcargos.DEPREC*DECANT) as monto_total, depto,razon, giro_cliente, nro_oc from dcargos
+        left join cargos on dcargos.DENMRO = cargos.CANMRO
+        where nro_oc like "%SE%" and DECODI = "'.$codigo.'"
+        AND DEFECO between "'.$fecha_in.'" AND "'.$fecha_ter.'"
+        AND DETIPO <> 7 group by CARUTC');
 
         return response()->json($venta_producto_x_contrato);
     }
@@ -116,10 +116,10 @@ class EstadisticaContratoController extends Controller
         $fecha2 = date('Y-m-d');
         $fecha1 = date("Y-m-d",strtotime($fecha2."- 1 month"));
 
-        $productos_contrato = DB::select('select DECODI, ARCOPV, ARDESC, ARMARCA, sum(DECANT) as cantidad, sum(DECANT*DEPREC) as total from dcargos
+        $productos_contrato = DB::select('select DETIPO, DECODI, ARCOPV, ARDESC, ARMARCA, sum(DECANT) as cantidad, sum(DECANT*DEPREC) as total from dcargos
         left join cargos on dcargos.DENMRO = cargos.canmro
         left join producto on dcargos.DECODI = producto.ARCODI
-        where nro_oc like "'.$request->get('cod_depto').'%" and CAFECO >= "'.$fecha1.'" and CARUTC = "'.$request->get('rut').'" and CATIPO = 8 and DECODI not like "V%" group by decodi;');
+        where nro_oc like "'.$request->get('cod_depto').'%" and CAFECO and DEFECO >= "'.$fecha1.'" and CARUTC = "'.$request->get('rut').'" and DETIPO <> 7 and DECODI not like "V%" group by decodi;');
 
         return view('admin.Contratos.EstadisticaEntidadDetalle', compact('productos_contrato', 'fecha1', 'fecha2', 'entidad', 'cod_depto'));
     }
@@ -137,10 +137,10 @@ class EstadisticaContratoController extends Controller
         $fecha1 = $request->get('fecha1');
         $fecha2 = $request->get('fecha2');
 
-        $productos_contrato = DB::select('select DECODI, ARCOPV, ARDESC, ARMARCA, sum(DECANT) as cantidad, sum(DECANT*DEPREC) as total from dcargos
+        $productos_contrato = DB::select('select DETIPO, DECODI, ARCOPV, ARDESC, ARMARCA, sum(DECANT) as cantidad, sum(DECANT*DEPREC) as total from dcargos
         left join cargos on dcargos.DENMRO = cargos.canmro
         left join producto on dcargos.DECODI = producto.ARCODI
-        where nro_oc like "'.$request->get('cod_depto').'%" and CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CARUTC = "'.$request->get('rut').'" and CATIPO = 8 and DECODI not like "V%" group by decodi;');
+        where nro_oc like "'.$request->get('cod_depto').'%" and CAFECO and DEFECO between "'.$fecha1.'" and "'.$fecha2.'" and CARUTC = "'.$request->get('rut').'" and DETIPO <> 7 and DECODI not like "V%" group by decodi;');
 
         return view('admin.Contratos.EstadisticaEntidadDetalle', compact('productos_contrato', 'fecha1', 'fecha2', 'entidad', 'cod_depto'));
     }

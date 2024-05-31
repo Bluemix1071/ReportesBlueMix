@@ -39,7 +39,7 @@ class MovimientoProductoController extends Controller
         and cmovim.CMVCPRV = proveed.PVRUTP');
         //dd($ingresos);
 
-        $costos_historicos = DB::select('select costo, fecha_modificacion from costos_historico where codigo_producto = SUBSTRING('.$request->get('codigo').', 1, 5) and fecha_modificacion between "'.$request->get('f_inicio').'" and "'.$request->get('f_termino').'"');
+        $costos_historicos = DB::select('select costo, fecha_modificacion from costos_historico where codigo_producto = SUBSTRING("'.$request->get('codigo').'", 1, 5) and fecha_modificacion between "'.$request->get('f_inicio').'" and "'.$request->get('f_termino').'"');
         //dd($costos_historicos);
 
         $negativos_historicos = DB::select('select negativos_historico.*,(stock_nuevo-stock_anterior) as diferencia from negativos_historico
