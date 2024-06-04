@@ -2497,7 +2497,9 @@ public function stocktiemporeal (Request $request){
                 'plazo_entrega' => $request->plazo_entrega,
                 'contado_desde' => $request->contado_desde,
                 'plazo_aceptar_oc' => $request->plazo_aceptar_oc,
-                'multa' => $request->multa]);
+                'multa' => $request->multa,
+                'estado' => $request->estado,
+                'id_depto' => $request->id_depto]);
 
 
         return redirect()->route('ListadoContratos')->with('success','Datos Actualizados');

@@ -77,6 +77,8 @@
                                                     data-plazo_aceptar_oc='{{ $item->plazo_aceptar_oc }}'
                                                     data-multa='{{ $item->multa }}'
                                                     data-id_contratos='{{ $item->id_contratos }}'
+                                                    data-id_depto='{{ $item->id_depto }}'
+                                                    data-estado='{{ $item->estado }}'
                                                     class="btn btn-primary btm-sm">Editar</a>
                                             </td>
                                             {{-- <td><a href="" data-toggle="modal" data-target="#eliminarproductocontrato"
@@ -142,6 +144,22 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-12 col-form-label">Estado</label>
+                                        <div class="col-sm-12">
+                                            <select name="estado" id="estado" class="form-control">
+                                                <option value="VIGENTE">VIGENTE</option>
+                                                <option value="VENCIDO">VENCIDO</option>
+                                                <option value="VIGENTE C/COTIZ">VIGENTE C/COTIZ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail5" class="col-sm-12 col-form-label">ID Departamento</label>
+                                        <div class="col-sm-12">
+                                            <input type="number" class="form-control" id="id_depto" name="id_depto">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Multa</label>
                                         <div class="table-responsive-xl">
                                         <div class="col-sm-10">
@@ -176,5 +194,29 @@
             });
         </script>
 
+        <script> $('#modaleditarcontrato').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id_contratos_licitacion = button.data('id_contratos_licitacion')
+            var nombre_contrato = button.data('nombre_contrato')
+            var plazo_entrega = button.data('plazo_entrega')
+            var contado_desde = button.data('contado_desde')
+            var plazo_aceptar_oc = button.data('plazo_aceptar_oc')
+            var multa = button.data('multa')
+            var id_contratos = button.data('id_contratos')
+            var estado = button.data('estado')
+            var id_depto = button.data('id_depto')
+
+            var modal = $(this)
+            modal.find('.modal-body #id_contratos_licitacion').val(id_contratos_licitacion);
+            modal.find('.modal-body #nombre_contrato').val(nombre_contrato);
+            modal.find('.modal-body #plazo_entrega').val(plazo_entrega);
+            modal.find('.modal-body #contado_desde').val(contado_desde);
+            modal.find('.modal-body #plazo_aceptar_oc').val(plazo_aceptar_oc);
+            modal.find('.modal-body #multa').val(multa);
+            modal.find('.modal-body #id_contratos').val(id_contratos);
+            modal.find('.modal-body #estado').val(estado);
+            modal.find('.modal-body #id_depto').val(id_depto);
+
+        })</script>
 
     @endsection
