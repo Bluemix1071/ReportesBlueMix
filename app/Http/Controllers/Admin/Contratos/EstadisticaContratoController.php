@@ -68,8 +68,9 @@ class EstadisticaContratoController extends Controller
             left join cargos on dcargos.DENMRO = cargos.CANMRO
             where cargos.nro_oc like "%SE%" AND dcargos.DECODI = "'.$request->get('codigo').'" and DETIPO = 8 and DEFECO >= "2020-01-01"'); */
     
-            $venta_producto_x_contrato = DB::select('select if(CATIPO = 8, "Factura", "Guía") as CATIPO ,CARUTC, sum(DECANT) as total, CARUTC, depto,razon, giro_cliente, nro_oc from dcargos
-            left join cargos on dcargos.DENMRO = cargos.CANMRO 
+            $venta_producto_x_contrato = DB::select('select if(CATIPO = 8, "Factura", "Guía") as CATIPO ,CARUTC, sum(DECANT) as total, CARUTC, depto,razon, giro_cliente, nro_oc, estado from dcargos
+            left join cargos on dcargos.DENMRO = cargos.CANMRO
+            left join contratos on SUBSTRING_INDEX(cargos.nro_oc, "-", 1) = contratos.id_depto
             where nro_oc like "%SE%" and DECODI = "'.$request->get('codigo').'" 
             AND DEFECO between "2020-01-01" AND curdate() 
             AND DETIPO <> 7 group by CARUTC');
@@ -93,11 +94,12 @@ class EstadisticaContratoController extends Controller
 
     public function VentaProdXContrato($codigo, $fecha_in, $fecha_ter){
 
-        $venta_producto_x_contrato = DB::select('select if(CATIPO = 8, "Factura", "Guía") as CATIPO, CARUTC, sum(DECANT) as total, sum(dcargos.DEPREC*DECANT) as monto_total, depto,razon, giro_cliente, nro_oc from dcargos
+        $venta_producto_x_contrato = DB::select('select if(CATIPO = 8, "Factura", "Guía") as CATIPO, CARUTC, sum(DECANT) as total, sum(dcargos.DEPREC*DECANT) as monto_total, depto,razon, giro_cliente, nro_oc, estado from dcargos
         left join cargos on dcargos.DENMRO = cargos.CANMRO
+        left join contratos on SUBSTRING_INDEX(cargos.nro_oc, "-", 1) = contratos.id_depto
         where nro_oc like "%SE%" and DECODI = "'.$codigo.'"
         AND DEFECO between "'.$fecha_in.'" AND "'.$fecha_ter.'"
-        AND DETIPO <> 7 group by CARUTC');
+        AND DETIPO <> 7 group by CARUTC'); 
 
         return response()->json($venta_producto_x_contrato);
     }

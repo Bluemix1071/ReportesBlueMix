@@ -103,6 +103,7 @@
                                 <th>Razon</th>
                                 <th>Giro</th>
                                 <th>Cod. Dpto</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
 
@@ -342,7 +343,7 @@
                             //console.log(result[0].items.nro_oc.split('-'));
                             result.forEach(items => {
                                 //console.log(items.CARUTC);
-                                table.rows.add([[items.CATIPO, items.CARUTC, items.total, new Intl.NumberFormat('de-DE', { maximumSignificantDigits: 4 }).format(items.monto_total), items.razon, items.giro_cliente, items.nro_oc.split('-')[0]]]).draw();
+                                table.rows.add([[items.CATIPO, items.CARUTC, items.total, new Intl.NumberFormat('de-DE', { maximumSignificantDigits: 4 }).format(items.monto_total), items.razon, items.giro_cliente, items.nro_oc.split('-')[0], items.estado]]).draw();
                             })
                             //table.clear().draw();
                             //table.rows.add([[result[0].CARUTC, result[0].total, result[0].depto, result[0].razon, result[0].giro_cliente, result[0].nro_oc]]).draw();
@@ -381,7 +382,7 @@
                         success: function(result) {
                             //console.log(result[0].nro_oc.split('-')[0]);
                             result.forEach(items => {
-                                table.rows.add([[items.CATIPO ,items.CARUTC, items.total, new Intl.NumberFormat('de-DE', { maximumSignificantDigits: 4 }).format(items.monto_total), items.razon, items.giro_cliente, items.nro_oc.split('-')[0]]]).draw();
+                                table.rows.add([[items.CATIPO ,items.CARUTC, items.total, new Intl.NumberFormat('de-DE', { maximumSignificantDigits: 4 }).format(items.monto_total), items.razon, items.giro_cliente, items.nro_oc.split('-')[0], items.estado]]).draw();
                             })
                         }
                 });
