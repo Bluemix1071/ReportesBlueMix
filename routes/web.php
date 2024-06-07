@@ -333,6 +333,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ProductosFaltantesWeb','AdminController@ProductosFaltantesWeb')->name('ProductosFaltantesWeb');/*AQUI!!*/
     //Ruta para mostrar los productos no subidos en "Index"
 
+    // Editar Folio Boleta Tarjeta Credito
+    Route::get('/verboleta','EditarBoletaController@verboleta')->name('verboleta');
+    Route::put('/editardetalleboleta','EditarBoletaController@editardetalleboleta')->name('editardetalleboleta');
+
 
     /* Cotizaciones */
     Route::get('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
