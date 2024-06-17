@@ -129,6 +129,66 @@ Control De Folios
       </section>
       <br>
 
+      <hr>
+      <h4>Guias</h4>
+      <hr>
+      <section class="content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Guias</h3>
+            <div class="table-responsive-xl">
+            <table id="users3" class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align:left">Caja</th>
+                        <th scope="col" style="text-align:right">Desde</th>
+                        <th scope="col" style="text-align:right">Hasta</th>
+                        <th scope="col" style="text-align:right">Ultima Guia</th>
+                        <th scope="col" style="text-align:right">Restantes</th>
+                        <th scope="col" style="text-align:right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (empty($guias))
+
+                    @else
+                        @foreach ($guias as $item)
+                        @if($item->hasta == $ultima_guia->USGDHA)
+                            <tr style="background: #17a2b8">
+                        @else
+                            <tr>
+                        @endif
+                                <td style="text-align:left">{{ $item->USCODI}}</td>
+                                <td style="text-align:right">{{ number_format($item->desde, 0, ',', '.') }}</td>
+                                <td style="text-align:right">{{ number_format($item->hasta, 0, ',', '.') }}</td>
+                                <td style="text-align:right">{{ number_format($item->ultima_guia, 0, ',', '.') }}</td>
+                                @if ($item->restantes < 0)
+                                <td style="text-align:right; color: #dc3545">0</td>
+                                @else
+                                <td style="text-align:right">{{ number_format($item->restantes, 0, ',', '.') }}</td>
+                                @endif
+                                <td style="text-align:center"><a href="" data-toggle="modal" data-target="#modaleditarguia"
+                                                data-id='{{ $item->USCODI }}'
+                                                data-caja='{{ $item->USCODI }}'
+                                                data-desde='{{ $item->desde }}'
+                                                data-hasta='{{ $item->hasta }}'
+                                                data-ultima='{{ $ultima_guia->USGDHA }}'
+                                         class="btn btn-primary btm-sm">Editar</a></td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+             </div>
+          </div>
+          <div class="card-body">
+            <div id="jsGrid1"></div>
+
+          </div>
+        </div>
+      </section>
+      <br>
+
        <!-- Modal editar folios factura-->
        <div class="modal fade" id="modaleditarfactura" tabindex="-1" role="dialog"
             aria-labelledby="eliminarproductocontrato" aria-hidden="true">
@@ -170,7 +230,7 @@ Control De Folios
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Asignar folios</label>
-                                        <div class="col-sm-10"> 
+                                        <div class="col-sm-10">
                                         <input type="number" list="folios" name="folios" class="form-control" required>
                                         <datalist id="folios">
                                             <option value="0"></option>
@@ -235,7 +295,7 @@ Control De Folios
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Asignar folios</label>
-                                        <div class="col-sm-10"> 
+                                        <div class="col-sm-10">
                                         <input type="number" list="foliosb" name="folios" class="form-control" required>
                                         <datalist id="foliosb">
                                             <option value="0"></option>
@@ -259,6 +319,70 @@ Control De Folios
 
         <!-- FIN Modall -->
 
+         <!-- Modal editar folios boleta-->
+       <div class="modal fade" id="modaleditarguia" tabindex="-1" role="dialog"
+       aria-labelledby="eliminarproductocontrato" aria-hidden="true">
+       <div class="modal-dialog" role="document" >
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" >Editar Folios Guias caja <input type="text" id="n_caja" value="" style="border: none; display: inline;font-family: inherit; font-size: inherit; padding: none; width: auto;"></h5>
+                   <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button> -->
+               </div>
+               <div class="modal-body">
+                   <form action="{{ route('EditarFoliosGuias') }}" method="post" id="desvForm" >
+                       <div class="card card-primary">
+                           <div class="card-body">
+                               <div class="form-group row" hidden>
+                                   <label for="inputEmail3" class="col-sm-2 col-form-label">Caja</label>
+                                   <div class="col-sm-10">
+                                       <input type="text" id="caja" class="form-control" required name="caja">
+                                   </div>
+                               </div>
+                               <div class="form-group row">
+                                   <label for="inputEmail3" class="col-sm-2 col-form-label">Ultimo Folio</label>
+                                   <div class="col-sm-10">
+                                       <input type="number" id="ultimo" class="form-control" readonly required name="ultimo" placeholder="Ultimo" value="{{ $ultima_guia->USGDHA }}">
+                                   </div>
+                               </div>
+                               <div class="form-group row">
+                                   <label for="inputEmail3" class="col-sm-2 col-form-label">Desde</label>
+                                   <div class="col-sm-10">
+                                       <input type="number" id="desde" class="form-control" required name="desde" placeholder="Desde">
+                                   </div>
+                               </div>
+                               <div class="form-group row">
+                                   <label for="inputEmail3" class="col-sm-2 col-form-label">Hasta</label>
+                                   <div class="col-sm-10">
+                                       <input type="number" id="hasta" class="form-control" required name="hasta" placeholder="Hasta">
+                                   </div>
+                               </div>
+                               <div class="form-group row">
+                                   <label for="inputEmail3" class="col-sm-2 col-form-label">Asignar folios</label>
+                                   <div class="col-sm-10">
+                                   <input type="number" list="foliosb" name="folios" class="form-control" required>
+                                   <datalist id="foliosb">
+                                       <option value="0"></option>
+                                       <option value="50"></option>
+                                       <option value="100"></option>
+                                       <option value="150"></option>
+                                       <option value="200"></option>
+                                       <option value="250"></option>
+                                       <option value="300"></option>
+                                   </datalist>
+                                   </div>
+                               </div>
+                               <button type="submit" class="btn btn-success">Editar Folios</button>
+                           </div>
+                       </div>
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   <!-- FIN Modall -->
         </div>
 
 @endsection
@@ -301,6 +425,23 @@ $('#modaleditarfactura').on('show.bs.modal', function (event) {
         modal.find('.modal-body #ultima').val(ultima);
   })
 
+  $('#modaleditarguia').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var caja = button.data('caja');
+        var desde = button.data('desde');
+        var hasta = button.data('hasta');
+        var ultima = button.data('ultima');
+        var modal = $(this);
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-header #n_caja').val(caja);
+        modal.find('.modal-body #caja').val(caja);
+        modal.find('.modal-body #desde').val(desde);
+        modal.find('.modal-body #hasta').val(hasta);
+        modal.find('.modal-body #ultima').val(ultima);
+  })
+
+
 
   $(document).ready( function () {
     $('#users').DataTable({
@@ -313,6 +454,12 @@ $('#modaleditarfactura').on('show.bs.modal', function (event) {
 <script>
   $(document).ready( function () {
     $('#users2').DataTable({
+        "order": [[ 2, "desc" ]]
+    } );
+} );
+
+  $(document).ready( function () {
+    $('#users3').DataTable({
         "order": [[ 2, "desc" ]]
     } );
 } );

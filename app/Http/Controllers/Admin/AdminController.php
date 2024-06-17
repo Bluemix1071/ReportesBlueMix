@@ -3210,15 +3210,22 @@ public function stocktiemporeal (Request $request){
 
         $boletas=DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and forma_pago != "T" group by USCODI');
 
+        $guias=DB::select('select USCODI, USGDDE as desde, USGDHA as hasta, max(CANMRO) as ultima_guia, (USGDHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 3 group by USCODI');
+
         $ultima_factura = DB::select('SELECT * FROM usuario order by USFAHA desc limit 1')[0];
 
         $ultima_boleta = DB::select('SELECT * FROM usuario order by USBOHA desc limit 1')[0];
 
-        return view('admin.ControlDeFolios',compact('facturas','boletas','ultima_factura','ultima_boleta'));
+        $ultima_guia = DB::select('SELECT * FROM usuario order by USGDHA desc limit 1')[0];
+
+        //dd($ultima_boleta);
+
+        return view('admin.ControlDeFolios',compact('facturas','boletas', 'guias','ultima_factura','ultima_boleta', 'ultima_guia'));
 
     }
 
     public function EditarFolios(Request $request){
+        //dd($request);
 
       $primer_folio = $request->get("ultimo")+1;
       $asignados = $request->get("folios");
@@ -3261,6 +3268,29 @@ public function stocktiemporeal (Request $request){
       }
 
     }
+
+    public function EditarFoliosGuias(Request $request){
+
+        $primer_folio = $request->get("ultimo")+1;
+        $asignados = $request->get("folios");
+        $caja = $request->get("caja");
+        dd($primer_folio);
+
+        if($asignados > 0 ){
+          DB::table('usuario')
+          ->where('USCODI' , $caja)
+          ->update(['USGDDE' => $primer_folio,
+                    'USGDHA' => ($primer_folio+$asignados)]);
+        return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
+        }elseif($asignados == 0){
+          DB::table('usuario')
+          ->where('USCODI' , $caja)
+          ->update(['USGDDE' => $request->get("desde"),
+                    'USGDHA' => $request->get("hasta")]);
+        return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
+        }
+
+      }
 
 
 

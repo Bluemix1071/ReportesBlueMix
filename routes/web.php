@@ -424,6 +424,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ControlDeFolios', 'AdminController@ControlDeFolios')->name('ControlDeFolios');
     Route::post('/ControlDeFolios', 'AdminController@EditarFolios')->name('EditarFolios');
     Route::post('/ControlDeFoliosBoletas', 'AdminController@EditarFoliosBoletas')->name('EditarFoliosBoletas');
+    Route::post('/ControlDeFoliosGuias', 'AdminController@EditarFoliosGuias')->name('EditarFoliosGuias');
 
     Route::get('/InformeUtilidades','AdminController@InformeUtilidades')->name('InformeUtilidades');
     Route::post('/InformeUtilidadesFiltro','AdminController@InformeUtilidadesFiltro')->name('InformeUtilidadesFiltro');
