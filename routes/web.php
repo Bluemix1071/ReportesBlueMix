@@ -336,6 +336,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     // Editar Folio Boleta Tarjeta Credito
     Route::get('/verboleta','EditarBoletaController@verboleta')->name('verboleta');
     Route::put('/editardetalleboleta','EditarBoletaController@editardetalleboleta')->name('editardetalleboleta');
+    Route::get('/UltimaBoleta/{caja}','EditarBoletaController@UltimaBoleta')->name('UltimaBoleta');
 
 
     /* Cotizaciones */

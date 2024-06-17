@@ -537,16 +537,6 @@
                                 @endcan
 
 
-                                <li class="nav-item">
-                                    <a href="{{ route('Mercaderialistadabodega') }}"
-                                        class="nav-link {{ setActive('Mercaderialistadabodega') }}">
-                                        <i  class="far fa-circle nav-icon"></i>
-                                        <p>Bodega no Sala
-
-                                        </p>
-                                    </a>
-                                </li>
-
                                 {{-- @can('ProyeccionCompra')
 
                                     <li class="nav-item">
@@ -1126,6 +1116,14 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+
+                                <li class="nav-item">
+                                    <a href="{{ route('Mercaderialistadabodega') }}"
+                                        class="nav-link {{ setActive('Mercaderialistadabodega') }}">
+                                        <i  class="far fa-circle nav-icon"></i>
+                                        <p>Bodega no Sala</p>
+                                    </a>
+                                </li>
 
                             @can('VentaGiftCard')
 

@@ -14,8 +14,7 @@ class EditarBoletaController extends Controller  {
         $fechaHoy = now()->toDateString();
 
 
-        $cargos = DB::table('cargos')->join('usuario', 'usuario.USCODI', '=', 'cargos.CACOCA')->where('CATIPO', 7)->where('CANMRO', 0)->whereDate('CAFECO', $fechaHoy)->simplePaginate(1000);
-
+        $cargos = DB::table('cargos')->join('usuario', 'usuario.USCODI', '=', 'cargos.CACOCA')->where('CATIPO', 7)->where('CANMRO', 0)->get();
 
         //$cargos = DB::table('cargos')->where('CATIPO', 7)->where('CANMRO', 0)->whereDate('CAFECO', $fechaHoy)->simplePaginate(1000);
 
@@ -39,8 +38,6 @@ class EditarBoletaController extends Controller  {
         $capturass = DB::table('tarjeta_credito')->whereDate('fecha', $fechaHoy)->where('monto', $request->get('montoboleta'))->get();
         $ultimaboleta = DB::table('cargos')->where('CACOCA', $request->get('numerocaja'))->whereDate('CAFECO', '>', '2023-01-01' )->max('CANMRO')+1;
 
-
-        //dd($request->monto_boleta);
 
         if ($capturas != null) {
             $editar_folio = [
@@ -70,13 +67,11 @@ class EditarBoletaController extends Controller  {
     }
    }
 
-   public function correccionboleta(Request $request){
+   public function UltimaBoleta($caja){
 
-    $boletas=DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and forma_pago != "T" group by USCODI');
+    $ultimaboleta = DB::select('select max(CANMRO)+1 as ultima from cargos where cacoca = '.$caja.' and CAFECO >= "2022-01-01" and forma_pago = "T"');
 
-    $ultima_boleta = DB::select('SELECT * FROM usuario order by USBOHA desc limit 1')[0];
-
-    dd($ultima_boleta);
+    return response()->json($ultimaboleta);
 
    }
 }

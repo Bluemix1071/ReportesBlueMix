@@ -10,9 +10,9 @@
                 <thead>
                     <tr>
                         <th scope="col">Folio</th>
-                        <th scope="col">boleta</th>
-                        <th scope="col">Nro Caja</th>
                         <th scope="col">Id</th>
+                        <th scope="col">Nro Caja</th>
+                        <th scope="col">Monto</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -22,9 +22,9 @@
                         @foreach ($cargos as $item)
                             <tr>
                                 <td style="text-align:left">{{ $item->CANMRO }}</td>
-                                <td style="text-align:left">{{ $item->CATIPO }}</td>
-                                <td style="text-align:left">{{ $item->CACOCA }}</td>
                                 <td style="text-align:left">{{ $item->id}}</td>
+                                <td style="text-align:left">{{ $item->CACOCA }}</td>
+                                <td style="text-align:left">{{ $item->CAVALO }}</td>
                                 <td>
                                     <a href="" data-toggle="modal" data-target="#editarboleta"
                                     data-id="{{ $item->id }}" data-canmro="{{ $item->CANMRO }}"
@@ -58,7 +58,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Editar Boleta</h4>
+                    <h4 class="modal-title" id="myModalLabel">Desea corregir Este Folio?</h4>
                 </div>
                 <form action="{{ route('editardetalleboleta') }}" method="POST">
                     {{ method_field('put') }}
@@ -66,9 +66,9 @@
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">
-                            <label for="folio_boleta" class="col-md-4 col-form-label text-md-center">Desea corregir Este Folio?</label>
+                            <label for="folio_boleta" class="col-md-4 col-form-label text-md-center">Nuevo folio designado:</label>
                             <input type="text" name="id_boleta" id="id_boleta" hidden>
-                            <input type="text" name="folioboleta" id="folio_boleta" hidden>
+                            <input type="text" name="folioboleta" id="folio_boleta" readonly style="border: none; display: inline; font-family: inherit; font-size: inherit; padding: none; width: auto;">
                             <input type="text" name="montoboleta" id="monto_boleta" hidden>
                             <input type="text" name="numerocaja" id="numerocaja" hidden>
                         </div>
@@ -116,11 +116,18 @@
             var canmro = button.data('canmro')
             var casuto = button.data('casuto')
             var cacoca = button.data('cacoca')
-            console.log(cacoca);
+            var ultima = '';
+            
+            $.ajax({
+                url: '../admin/UltimaBoleta/'+cacoca,
+                type: 'GET',
+                success: function(result) {
+                    modal.find('.modal-content #folio_boleta').val(result[0].ultima);
+                }
+            });
 
             var modal = $(this)
             modal.find('.modal-content #id_boleta').val(id);
-            modal.find('.modal-content #folio_boleta').val(canmro);
             modal.find('.modal-content #monto_boleta').val(casuto);
             modal.find('.modal-content #numerocaja').val(cacoca);
 

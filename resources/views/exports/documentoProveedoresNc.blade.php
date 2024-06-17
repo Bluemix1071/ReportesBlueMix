@@ -92,7 +92,13 @@
         </tr>
         <tr>
           <td class="td-table1">Ciudad</td>
-          <td>{{ strtoupper($encabezado->Emisor->CiudadOrigen) }}</td>
+          <td>
+          @if(!empty($encabezado->Emisor->CiudadOrigen))
+            {{ strtoupper($encabezado->Emisor->CiudadOrigen) }}
+          @else
+            {{ strtoupper($encabezado->Emisor->CmnaOrigen) }}
+          @endif
+          </td>
         </tr>
       </tbody>
       </table>
@@ -116,7 +122,11 @@
     </table>
     <div>
       <div class="sii-ciudad">
-        <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CiudadOrigen) }}</div>
+        @if(!empty($encabezado->Emisor->CiudadOrigen))
+          <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CiudadOrigen) }}</div>
+        @else
+          <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CmnaOrigen) }}</div>
+        @endif
     </div>
 </div>
     </td>
