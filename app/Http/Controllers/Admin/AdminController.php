@@ -3274,8 +3274,6 @@ public function stocktiemporeal (Request $request){
         $primer_folio = $request->get("ultimo")+1;
         $asignados = $request->get("folios");
         $caja = $request->get("caja");
-        dd($primer_folio);
-
         if($asignados > 0 ){
           DB::table('usuario')
           ->where('USCODI' , $caja)
