@@ -3420,24 +3420,43 @@ public function stocktiemporeal (Request $request){
 
     }
 
-    public function ipc($anocursado,$mescursado){
+    public function ipc($anocursado, $mescursado) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $data = curl_exec($ch);
 
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($ch, CURLOPT_HEADER, 0);
-      $data = curl_exec($ch);
-      curl_close($ch);
+        // Verificar errores en la solicitud cURL
+        if ($data === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            error_log('Error en la solicitud cURL: ' . $error);
+            return 0; // Devolver 0 en caso de error
+        }
 
-      $data = json_decode($data);
+        curl_close($ch);
 
-      $ipc = 0;
+        // Decodificar el JSON
+        $data = json_decode($data);
 
-      /* foreach($data->IPCs as $item){
-        //error_log(print_r((float)str_replace(",", ".", $item->Valor), true));
-        $ipc += (float)str_replace(",", ".", $item->Valor);
-      } */
+        // Verificar errores en la decodificación JSON
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log('Error al decodificar JSON: ' . json_last_error_msg());
+            return 0; // Devolver 0 en caso de error
+        }
 
-      return $ipc;
+        // Verificar si se recibió un objeto válido y contiene la propiedad IPCs
+        if (is_object($data) && property_exists($data, 'IPCs')) {
+            $ipc = 0;
+            foreach ($data->IPCs as $item) {
+                // Sumar los valores, convirtiendo la coma a punto y luego a float
+                $ipc += (float) str_replace(",", ".", $item->Valor);
+            }
+            return $ipc;
+        } else {
+            // El objeto $data no tiene la propiedad IPCs válida
+            return 0; // Devolver 0 en caso de que no se encuentre la propiedad IPCs
+        }
     }
 }
