@@ -3433,10 +3433,10 @@ public function stocktiemporeal (Request $request){
 
       $ipc = 0;
 
-      foreach($data->IPCs as $item){
+      /* foreach($data->IPCs as $item){
         //error_log(print_r((float)str_replace(",", ".", $item->Valor), true));
         $ipc += (float)str_replace(",", ".", $item->Valor);
-      }
+      } */
 
       return $ipc;
     }
