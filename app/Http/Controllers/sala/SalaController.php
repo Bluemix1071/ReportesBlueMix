@@ -1014,7 +1014,7 @@ class SalaController extends Controller
     left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI
     left join dcargos on dmovim.DMVPROD = dcargos.DECODI
     left join proveed on cmovim.CMVCPRV = proveed.PVRUTP
-    where CMVFECG >= "2020-01-01" and DMVPROD = "'.$codigo.'" and DEFECO >= "2020-01-01" group by CMVFECG');
+    where CMVFECG >= "2020-01-01" and DMVPROD = "'.$codigo.'" and DEFECO >= "2020-01-01" group by CMVFECG, DMVCANT');
 
     $costos = DB::select('select DEFECO, PrecioCosto, DEPREC from dcargos where DECODI = "'.$codigo.'" and DETIPO != 3 and DEFECO >= "2020-01-01" AND PrecioCosto != 100 group by PrecioCosto order by DEFECO asc');
 
