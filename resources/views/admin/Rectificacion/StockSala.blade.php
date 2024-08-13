@@ -23,7 +23,8 @@ Stock Sala
                                             &nbsp;<input type="text" id="codigo" minlength="7" maxlength="13" name="codigo" placeholder="Codigo" required class="form-control col" value=""/>
                                             &nbsp;<input type="text" id="buscar_detalle" name="buscar_detalle" placeholder="Detalle" readonly class="form-control col-4" value=""/>
                                             &nbsp;<input type="text" id="buscar_marca" name="buscar_marca" placeholder="Marca" readonly class="form-control col-sm-1" value=""/>
-                                            &nbsp;<input type="text" id="buscar_cantidad" name="buscar_cantidad" placeholder="Stock Anterior Sala" readonly class="form-control col-sm" value=""/>
+                                            &nbsp;<input type="text" id="buscar_cantidad" name="buscar_cantidad" placeholder="Stock Sala" readonly class="form-control col-sm-1" value=""/>
+                                            &nbsp;<input type="text" id="buscar_cantidad_bodega" name="buscar_cantidad_bodega" placeholder="Stock Bodega" readonly class="form-control col-sm-1" value=""/>
                                             &nbsp;<input type="number" id="nueva_cantidad" name="nueva_cantidad" placeholder="Nuevo Stock" class="form-control col-sm" value="" required/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{--Espacio entre input y botones --}}
                                         </div>
@@ -583,13 +584,14 @@ Stock Sala
                     console.log(result);
                     $('#buscar_detalle').val(result[0].ARDESC);
                     $('#buscar_marca').val(result[0].ARMARCA);
-                    $( "#buscar_cantidad" ).val(result[0].bpsrea);
+                    $("#buscar_cantidad").val(result[0].bpsrea);
                     $("#nueva_cantidad").focus();
                     codigo = result[0].ARCODI;
                     descripcion = result[0].ARDESC;
                     marca = result[0].ARMARCA;
                     costo = result[0].PCCOSTO;
                     sala = result[0].bpsrea;
+                    bodega = result[0].cantidad
                 }
             });
         });
@@ -648,12 +650,13 @@ Stock Sala
                 $('#buscar_detalle').val(result[0].ARDESC);
                 $('#buscar_marca').val(result[0].ARMARCA);
                 $("#buscar_cantidad").val(result[0].bpsrea);
+                $("#buscar_cantidad_bodega").val(result[0].cantidad);
                 $("#nueva_cantidad").focus();
                 codigo = result[0].ARCODI;
                 descripcion = result[0].ARDESC;
                 marca = result[0].ARMARCA;
                 costo = result[0].PCCOSTO;
-                sala = result[0].bpsrea;3
+                sala = result[0].bpsrea;
 
                 $('#codigo').val(codigo);
             }
