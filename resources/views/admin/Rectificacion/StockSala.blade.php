@@ -650,7 +650,12 @@ Stock Sala
                 $('#buscar_detalle').val(result[0].ARDESC);
                 $('#buscar_marca').val(result[0].ARMARCA);
                 $("#buscar_cantidad").val(result[0].bpsrea);
-                $("#buscar_cantidad_bodega").val(result[0].cantidad);
+                if(result[0].cantidad == null){
+                    $("#buscar_cantidad_bodega").val(0);
+                }else{
+                    $("#buscar_cantidad_bodega").val(result[0].cantidad);
+                }
+                    
                 $("#nueva_cantidad").focus();
                 codigo = result[0].ARCODI;
                 descripcion = result[0].ARDESC;
