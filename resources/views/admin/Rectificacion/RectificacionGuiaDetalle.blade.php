@@ -133,9 +133,11 @@ Lista Escolar
                 <br>
                 <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolversegundoc" data-id='1'>Devolver Mercadería Según Documento</button>
             @else
-                <button type="button" class="btn btn-primary btn-sm col" disabled>Devolver Mercadería</button>
-                <br>
-                <button type="button" class="btn btn-primary btn-sm col" disabled>Devolver Mercadería Según Documento</button>
+                @if(strpos($guia[0]->estado, "Entrada Según") !== FALSE)
+                    <button type="button" class="btn btn-primary btn-sm col" disabled>Devolver Mercadería Según Documento ({{$guia[0]->estado}})</button>
+                @else
+                    <button type="button" class="btn btn-primary btn-sm col" disabled>Devolver Mercadería</button>
+                @endif
             @endif
           </div>
         </div>
@@ -193,14 +195,28 @@ Lista Escolar
                     <div class="modal-body">
                         <h6>Las Guías devueltas "Según Documento" no tienen efecto al stock en sala de los productos de la misma ya que se justificó con el documento refrenciado.</h6>
                         <form method="post" action="{{ route('DevolverGuiaSegunDocumento') }}" id="desvForm">
-                                <!-- <div class="form-group row">
+                                <div class="form-group row">
+
+                                <label for="name"
+                                class="col-md-4 col-form-label text-md-right">Tpo. Doc:</label>
+
+                                <div class="col-md-6">
+                                    <select class="form-control" id="exampleFormControlSelect1" name="t_doc" required>
+                                        <option>Factura</option>
+                                        <option>Cotización</option>
+                                        <option>Boleta</option>
+                                        <option>Guía</option>
+                                    </select>
+                                </div>
+                                <br><br>
                                     <label for="name"
-                                        class="col-md-4 col-form-label text-md-right">Solicita:</label>
+                                        class="col-md-4 col-form-label text-md-right">Doc Referencia:</label>
 
                                     <div class="col-md-6">
                                         <input id="name" type="text"
-                                            class="form-control @error('name') is-invalid @enderror" name="solicita"
+                                            class="form-control @error('name') is-invalid @enderror" name="ref"
                                             value="" required max="50" min="5" autocomplete="name" autofocus>
+
 
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -208,7 +224,7 @@ Lista Escolar
                                             </span>
                                         @enderror
                                     </div>
-                                </div> -->
+                                </div>
                                 <input name="folio" id="id" value="{{ $guia[0]->CANMRO }}" hidden>
                                 <button type="submit" class="btn btn-success">Devolver Según Documento</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

@@ -883,6 +883,12 @@
                                                     </p>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                    <a href="{{ route('Rutas') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Rutas</p>
+                                                    </a>
+                                                </li>
                                         </ul>
                                     </li>
                                 @endcan

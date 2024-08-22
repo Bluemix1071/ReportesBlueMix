@@ -331,6 +331,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/ProductosFaltantes','AdminController@ProductosFaltantes')->name('ProductosFaltantes');
     Route::get('/ProductosFaltantesWeb','AdminController@ProductosFaltantesWeb')->name('ProductosFaltantesWeb');/*AQUI!!*/
+
+    //modulo rutas
+    Route::get('/Rutas','Contratos\RutasController@Rutas')->name('Rutas');
     //Ruta para mostrar los productos no subidos en "Index"
 
     // Editar Folio Boleta Tarjeta Credito

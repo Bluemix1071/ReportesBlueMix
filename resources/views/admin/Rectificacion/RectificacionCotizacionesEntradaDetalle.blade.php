@@ -120,6 +120,22 @@ Lista Escolar
                                             </span>
                                         @enderror
                                     </div>
+                                    <br>
+                                    <br>
+                                    <label for="name"
+                                        class="col-md-4 col-form-label text-md-right">Cotización Ref(Opc):</label>
+
+                                    <div class="col-md-6">
+                                        <input id="name" type="text"
+                                            class="form-control @error('name') is-invalid @enderror" name="cotiz_ref"
+                                            value="" max="50" min="5" autocomplete="name" autofocus>
+
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <input hidden name="id_cotiz" id="id" value="">
                                 <button type="submit" class="btn btn-success">Entrar Mercadería</button>
