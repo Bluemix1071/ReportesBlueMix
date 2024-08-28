@@ -29,6 +29,10 @@ Colegios
                         <a href="{{ route('reportes2022') }}" class="" target="_blank" title="Stock Critico">
                             <button type="button" class="btn btn-danger">Stock Critico</button>
                         </a>
+                        @elseif(request()->url() == route('colegios.temporada2023'))
+                        <a href="{{ route('reportes2023') }}" class="" target="_blank" title="Stock Critico">
+                            <button type="button" class="btn btn-danger">Stock Critico</button>
+                        </a>
                         @else
                         <a href="{{ route('reportes') }}" class="" target="_blank" title="Stock Critico">
                             <button type="button" class="btn btn-danger">Stock Critico</button>
@@ -41,16 +45,15 @@ Colegios
 
 
                         @if (request()->url() !== route('colegios.temporada2022'))
-                            <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023" target="_blank" class="btn btn-warning">Temporada 2022-2023</a>
+                            <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023" target="_blank" class="btn btn-warning">T. 2022-2023</a>
                         @endif
-                        {{-- <a href="{{ route('colegios.temporada2022') }}" title="Temporada 2022-2023" target="_blank"
-                        class="btn btn-warning">Temporada 2022-2023</a> --}}
 
-                        {{-- <a href="{{ route('colegios.temporada2022') }}" id="cambiarTemporadaBtn" title="Temporada 2022-2023"
-                         class="btn btn-warning">Temporada 2022-2023</a> --}}
+                        @if (request()->url() !== route('colegios.temporada2023'))
+                            <a href="{{ route('colegios.temporada2023') }}" title="Temporada 2022-2023" target="_blank" class="btn btn-warning">T. 2023-2024</a>
+                        @endif
 
                     </div>
-                    @if (request()->url() !== route('colegios.temporada2022'))
+                    @if (request()->url() == route('ListaEscolar'))
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end col-6">
 
                     <div class="row">
@@ -71,18 +74,6 @@ Colegios
                             </select>
 
                         </div>
-                        {{-- <div class="col">
-
-                            <select id="temporada" name="temporada" class="form-control" required>
-                                <option value="" selected>Seleccione temporada</option>
-
-                                <option value="">2022-2023</option>
-                                <option value="">2023-2024</option>
-
-
-                            </select>
-
-                        </div> --}}
                         <div class="col"><button type="submit" class="btn btn-success">Agregar</button></div>
 
                     </div>

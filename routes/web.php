@@ -334,6 +334,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     //modulo rutas
     Route::get('/Rutas','Contratos\RutasController@Rutas')->name('Rutas');
+    Route::post('/Rutas','Contratos\RutasController@AgregarRutas')->name('AgregarRutas');
     //Ruta para mostrar los productos no subidos en "Index"
 
     // Editar Folio Boleta Tarjeta Credito
@@ -346,6 +347,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
     Route::post('/ListaEscolar','ListaEscolarController@ListaEscolar')->name('ListaEscolar');
     Route::get('/colegios-temporada-2022', 'ListaEscolarController@colegiosTemporada2022')->name('colegios.temporada2022');
+    Route::get('/colegios-temporada-2023', 'ListaEscolarController@colegiosTemporada2023')->name('colegios.temporada2023');
 
 
     Route::get('/ListarConvenio','ConvenioMarcoController@ListarConvenio')->name('ListarConvenio');
@@ -380,6 +382,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/Listas','ListaEscolarController@Listas')->name('listas');
     Route::get('/Reportes','ListaEscolarController@Reportes')->name('reportes');
     Route::get('/Reportes2022','ListaEscolarController@Reportes2022')->name('reportes2022');
+    Route::get('/Reportes2023','ListaEscolarController@Reportes2023')->name('reportes2023');
 
     Route::put('/EditarProducto','ConvenioMarcoController@EditarProducto')->name('EditarProducto');
     Route::put('/editarcantidadp','ListaEscolarController@editarcantidadp')->name('editarcantidadp');

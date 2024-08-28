@@ -13,6 +13,7 @@
     <div class="container my-4">
         <h1 class="display-4">Rutas</h1>
             <div class="card">
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalruta">Agregar</button>
                     <div class="card-body">
                     <div class="table-responsive-xl">
                         <table id="rutas" class="table table-sm table-hover">
@@ -36,7 +37,10 @@
                                  <td>{{ $item->patente }}</td>
                                  <td>{{ $item->marca }}</td>
                                  <td>{{ $item->modelo }}</td>
-                                 <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#modaldetalle" onclick="detalles({{ $item->id }})">Ver</button></td>
+                                 <td>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modaldetalle" onclick="detalles({{ $item->id }})">Ver</button>
+                                    <button type="button" class="btn btn-tertiary" data-toggle="modal" data-target="#modaldetalle" onclick="detalles({{ $item->id }})">Detalle</button>
+                                </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -44,8 +48,6 @@
                     </div>
                 </div>
             </div>
-
-      
             <div class="container my-4">
 
     </section>
@@ -88,6 +90,52 @@
                                 </table>
                                 </div>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalruta" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Agregar Ruta</h5>
+                    </div>
+                    <div class="modal-body">
+                               <form action="{{ route('AgregarRutas') }}" method="post">
+                                <div class="form-group row">
+                                    <label for="codigo"
+                                        class="col-md-4 col-form-label text-md-right">Fecha</label>
+
+                                    <div class="col-md-6">
+                                        <input id="fecha" type="date" class="form-control" name="fecha" value="{{ date('Y-m-d') }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="codigo"
+                                        class="col-md-4 col-form-label text-md-right">Estado</label>
+
+                                    <div class="col-md-6">
+                                        <input id="estado" type="text" readonly class="form-control" name="estado" value="INICIADA">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="vehiculo"
+                                        class="col-md-4 col-form-label text-md-right">Vehiculo</label>
+
+                                    <div class="col-md-6">
+                                    <select class="custom-select" name="vehiculo">
+                                        @foreach($vehiculos as $item)
+                                        <option value="{{ $item->id }}">{{ $item->patente }}|{{ $item->marca }}|{{ $item->modelo }}</option>
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Agregar</button>
+                            </form>
                     </div>
                 </div>
             </div>
