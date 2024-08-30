@@ -884,11 +884,18 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item">
+                                                <a href="{{ route('MercadoPublico') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Mercado Público
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <!-- <li class="nav-item">
                                                     <a href="{{ route('Rutas') }}" class="nav-link">
                                                         <i class="far fa-circle nav-icon"></i>
                                                         <p>Rutas</p>
                                                     </a>
-                                                </li>
+                                                </li> -->
                                         </ul>
                                     </li>
                                 @endcan
