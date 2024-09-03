@@ -187,6 +187,65 @@
             </div>
             <div class="card">
                 <div class="card-header">
+                    <h3 class="card-title">Ingresos Mercadería por Notas de Crédito</h3>
+                    <div class="table-responsive-xl">
+                        <table id="ingresos_mercaderia_nc" class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Folio NC</th>
+                                    <th scope="col">Cant.</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Tdoc</th>
+                                    <th scope="col">Doc. Refe</th>
+                                    <th scope="col">Rut</th>
+                                    <th scope="col">Razon Social</th>
+                                    <th hidden>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div hidden>
+                                    {{ $total_sacar_mercaderia_nc = 0 }}
+                                </div>
+                                @foreach($ingresos_nc as $item)
+                                <tr>
+                                    <td>{{ $item->folio }}</td>
+                                    <td>{{ $item->cantidad }}</td>
+                                    <td>{{ $item->fecha }}</td>
+                                    <td><!-- {{ $item->tipo_doc_refe }} -->
+                                        @switch($item->tipo_doc_refe)
+                                            @case(8)
+                                                <p>Factura</p>
+                                            @break
+                                            @case(7)
+                                                <p>Boleta</p>
+                                            @break
+                                            @default
+                                        @endswitch
+                                    </td>
+                                    <td>{{ $item->nro_doc_refe }}</td>
+                                    <td>{{ $item->rut }}</td>
+                                    <td>{{ $item->nombre }}</td>
+                                    <td hidden>{{ $total_sacar_mercaderia_nc += $item->cantidad }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>Total</td>
+                                    <td>{{ $total_sacar_mercaderia_nc }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
                     <h3 class="card-title">Costos Historicos</h3>
                     <div class="table-responsive-xl">
                         <table id="costos_historicos" class="table table-sm table-hover">
@@ -474,6 +533,31 @@
                 });
 
                 $('#ingresos_mercaderia').DataTable({
+                    orderCellsTop: true,
+                    dom: 'Bfrtip',
+                    order: [[ 2, "desc" ]],
+                    buttons: [
+                        'copy', 'pdf', 'print'
+
+                    ],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
+
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
+                });
+
+                $('#ingresos_mercaderia_nc').DataTable({
                     orderCellsTop: true,
                     dom: 'Bfrtip',
                     order: [[ 2, "desc" ]],

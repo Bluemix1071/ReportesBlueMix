@@ -39,6 +39,11 @@ class MovimientoProductoController extends Controller
         and cmovim.CMVCPRV = proveed.PVRUTP');
         //dd($ingresos);
 
+        $ingresos_nc = DB::select('select * from nota_credito_detalle 
+        left join nota_credito on nota_credito_detalle.id_nota_cred = nota_credito.id
+        where codigo = "'.$request->get('codigo').'" and nota_credito.fecha between "'.$request->get('f_inicio').'" and "'.$request->get('f_termino').'" and nota_credito.tipo_nc = 3');
+        //dd($salidas_nc);
+        
         $costos_historicos = DB::select('select costo, fecha_modificacion from costos_historico where codigo_producto = SUBSTRING("'.$request->get('codigo').'", 1, 5) and fecha_modificacion between "'.$request->get('f_inicio').'" and "'.$request->get('f_termino').'"');
         //dd($costos_historicos);
 
@@ -62,6 +67,6 @@ class MovimientoProductoController extends Controller
         $f_inicio = $request->get('f_inicio');
         $f_termino = $request->get('f_termino');
 
-        return view('admin.MovimientoProducto', compact('codigo', 'f_inicio', 'f_termino', 'producto', 'salidas', 'ingresos', 'costos_historicos', 'negativos_historicos', 'rectificacion_historicos', 'solicitudes_historicos', 'pendientes_despacho'));
+        return view('admin.MovimientoProducto', compact('codigo', 'f_inicio', 'f_termino', 'producto', 'salidas', 'ingresos', 'ingresos_nc', 'costos_historicos', 'negativos_historicos', 'rectificacion_historicos', 'solicitudes_historicos', 'pendientes_despacho'));
     }
 }
