@@ -30,28 +30,39 @@ class EditarBoletaController extends Controller  {
     }
 
     public function editardetalleboleta(Request $request){
-        //dd($request);
 
         $fechaHoy = now()->toDateString();
+
+        if($fechaHoy != $request->get('fecha')){
+            return redirect()->route('verboleta')->with('warning', 'La fecha del documento no es de hoy');
+        }
+        
         $captura = DB::table('cargos')->where('id', $request->get('id_boleta'))->get();
         $capturas = DB::table('dcargos')->where('id_cargos', $request->get('id_boleta'))->get();
-        $capturass = DB::table('tarjeta_credito')->whereDate('fecha', $fechaHoy)->where('monto', $request->get('montoboleta'))->get();
+        $capturass = DB::table('tarjeta_credito')->whereDate('fecha', $fechaHoy)->where('monto', $request->get('montoboleta'))->where('nro_doc', 0)->get();
         $ultimaboleta = DB::table('cargos')->where('CACOCA', $request->get('numerocaja'))->whereDate('CAFECO', '>', '2023-01-01' )->max('CANMRO')+1;
-
 
         if ($capturas != null) {
             $editar_folio = [
                 'DENMRO' => $ultimaboleta,
             ];
-            //dd($editar_folio);
+        }else{
+            return redirect()->route('verboleta')->with('error', 'Documento no Coincide con datos ingresados');
+        }
         if ($captura != null) {
             $editar_folio_boleta = [
                 'CANMRO' => $ultimaboleta,
             ];
+        }else{
+            return redirect()->route('verboleta')->with('error', 'Documento no Coincide con datos ingresados');
+        }
         if ($capturass != null) {
             $editar_foliotarjeta = [
                  'nro_doc' => $ultimaboleta,
             ];
+        }else{
+            return redirect()->route('verboleta')->with('error', 'Documento no Coincide con datos ingresados');
+        }
             //dd($ultimaboleta);
 
             DB::table('dcargos')->where('id_cargos', $request->id_boleta)->update($editar_folio);
@@ -59,13 +70,7 @@ class EditarBoletaController extends Controller  {
             DB::table('tarjeta_credito')->where('monto', $request->get('montoboleta'))->where('fecha', $fechaHoy)->update($editar_foliotarjeta);
 
             return redirect()->route('verboleta')->with('success', 'Folio actualizado correctamente');
-        } else {
-            return redirect()->route('verboleta')->with('error', 'Folio no encontrado');
-        }
-
       }
-    }
-   }
 
    public function UltimaBoleta($caja){
 

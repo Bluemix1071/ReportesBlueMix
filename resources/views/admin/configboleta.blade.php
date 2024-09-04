@@ -28,7 +28,7 @@
                                 <td>
                                     <a href="" data-toggle="modal" data-target="#editarboleta"
                                     data-id="{{ $item->id }}" data-canmro="{{ $item->CANMRO }}"
-                                    data-casuto="{{ $item->CASUTO }}" data-cacoca="{{ $item->CACOCA }}"
+                                    data-cavalo="{{ $item->CAVALO }}" data-cacoca="{{ $item->CACOCA }}" data-cafeco="{{ $item->CAFECO }}"
                                     class="btn btn-warning btn-sm">Editar</a>
                                 </td>
                             </tr>
@@ -71,6 +71,7 @@
                             <input type="text" name="folioboleta" id="folio_boleta" readonly style="border: none; display: inline; font-family: inherit; font-size: inherit; padding: none; width: auto;">
                             <input type="text" name="montoboleta" id="monto_boleta" hidden>
                             <input type="text" name="numerocaja" id="numerocaja" hidden>
+                            <input type="date" name="fecha" id="fecha" hidden>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -114,8 +115,9 @@
             var button = $(event.relatedTarget)
             var id = button.data('id')
             var canmro = button.data('canmro')
-            var casuto = button.data('casuto')
+            var cavalo = button.data('cavalo')
             var cacoca = button.data('cacoca')
+            var cafeco = button.data('cafeco')
             var ultima = '';
             
             $.ajax({
@@ -128,8 +130,9 @@
 
             var modal = $(this)
             modal.find('.modal-content #id_boleta').val(id);
-            modal.find('.modal-content #monto_boleta').val(casuto);
+            modal.find('.modal-content #monto_boleta').val(cavalo);
             modal.find('.modal-content #numerocaja').val(cacoca);
+            modal.find('.modal-content #fecha').val(cafeco);
 
         })
     </script>

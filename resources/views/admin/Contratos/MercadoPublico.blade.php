@@ -166,7 +166,7 @@
                                 <h6><b>Fechas</b></h6>
                                 <div class="form-group row">
                                     <label for="name"
-                                        class="col-md-4 col-form-label text-md-right">Fecha Creació:</label>
+                                        class="col-md-4 col-form-label text-md-right">Fecha Creación:</label>
 
                                     <div class="col-md-6">
                                         <input id="f_creacion" type="text"
@@ -182,7 +182,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="name"
-                                        class="col-md-4 col-form-label text-md-right">Fecha Envio:</label>
+                                        class="col-md-4 col-form-label text-md-right">Fecha Envío:</label>
 
                                     <div class="col-md-6">
                                         <input id="f_envio" type="text"
