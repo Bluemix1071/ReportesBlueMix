@@ -92,7 +92,12 @@
                                             <span>No ay nada mas que decir :C</span>
                                     @endswitch
                                     </td>
-                                    <td><button class="btn btn-primary" data-toggle="modal" data-target="#modaldetalleoc" onclick="detalleOC('{{ $item->Codigo }}')">Detalle OC</button></td>
+                                    <td>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#modaldetalleoc" onclick="detalleOC('{{ $item->Codigo }}')"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                        @if($item->Adjuntos == true)
+                                            <button class="btn btn-success" data-toggle="modal" data-target="#modaldetalleadjuntos" onclick="adjuntos('{{ $item->Codigo }}')"><i class="fas fa-file-alt"></i></button>
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -263,6 +268,36 @@
             </div>
         </div>
 
+         <!-- Modal detalle compra-->
+         <div class="modal fade" id="modaldetalleadjuntos" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- <b><h5 class="modal-title" id="exampleModalLongTitle">Detalle OC: <input type="text" id="oc" value="CARGANDO..." style="border: none;display: inline;font-family: inherit;font-size: inherit;padding: none;width: auto;" readonly></h5></b> -->
+                    </div>
+                    <div class="modal-body">
+                                <h6><b>Documentos</b></h6>
+                                <table id="items_adjuntos" class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">T. Doc</th>
+                                        <th scope="col">Folio</th>
+                                        <th scope="col">Rut</th>
+                                        <th scope="col">R.S</th>
+                                        <th scope="col">Giro</th>
+                                        <th scope="col">Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {{-- se carga por js --}}
+                                </tbody>
+                        </table>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     @endsection
     @section('script')
@@ -298,6 +333,30 @@
         <script>
 
                 var tableItems = $('#items').DataTable({
+                    order: [[ 0, "desc" ]],
+                    orderCellsTop: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'pdf', 'print'
+                    ],
+                    "language":{
+                    "info": "_TOTAL_ registros",
+                    "search":  "Buscar",
+                    "paginate":{
+                    "next": "Siguiente",
+                    "previous": "Anterior",
+
+                },
+                "loadingRecords": "cargando",
+                "processing": "procesando",
+                "emptyTable": "no hay resultados",
+                "zeroRecords": "no hay coincidencias",
+                "infoEmpty": "",
+                "infoFiltered": ""
+                }
+                });
+
+                var tableItemsAdjuntos = $('#items_adjuntos').DataTable({
                     order: [[ 0, "desc" ]],
                     orderCellsTop: true,
                     dom: 'Bfrtip',
@@ -361,6 +420,30 @@
                             result.Listado[0].Items.Listado.forEach(items => {
                                 //console.log(items);
                                 tableItems.rows.add([[items.CodigoProducto,items.Producto,items.Cantidad,items.EspecificacionComprador,items.EspecificacionProveedor,items.PrecioNeto,items.Total]]).draw();
+                            })
+                        }
+                });
+            }
+
+            function adjuntos(oc){
+                tableItemsAdjuntos.clear().draw();
+
+                $.ajax({
+                        url: '../admin/Adjuntos/'+oc,
+                        type: 'GET',
+                        success: function(result) {
+                            //console.log(result);
+                            result[0].forEach(items => {
+                                //console.log(items);
+                                switch(items.CATIPO){
+                                    case '8':
+                                        tableItemsAdjuntos.rows.add([['Factura',items.CANMRO,items.CARUTC,items.razon,items.giro_cliente,items.CAFECO]]).draw();
+                                    break;
+                                    case '3':
+                                        tableItemsAdjuntos.rows.add([['Guía',items.CANMRO,items.CARUTC,items.razon,items.giro_cliente,items.CAFECO]]).draw();
+                                    break;
+                                default:
+                                }
                             })
                         }
                 });

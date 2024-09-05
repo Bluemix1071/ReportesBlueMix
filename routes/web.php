@@ -328,6 +328,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/MercadoPublico','Contratos\MercadoPublicoController@MercadoPublico')->name('MercadoPublico');
     Route::post('/MercadoPublicoDia','Contratos\MercadoPublicoController@MercadoPublicoDia')->name('MercadoPublicoDia');
+    Route::get('/Adjuntos/{oc}','Contratos\MercadoPublicoController@Adjuntos')->name('Adjuntos');
 
     Route::get('/MantenedorProducto','AdminController@MantenedorProducto')->name('MantenedorProducto');
     Route::post('/MantenedorProductoFiltro','AdminController@MantenedorProductoFiltro')->name('MantenedorProductoFiltro');

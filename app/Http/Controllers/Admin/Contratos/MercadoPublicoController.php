@@ -20,7 +20,23 @@ class MercadoPublicoController extends Controller
         $data = curl_exec($ch);
         curl_close($ch);
 
-        $compras = json_decode($data)->Listado;
+        $compras_mc = json_decode($data)->Listado;
+
+        $compras = [];
+
+        foreach($compras_mc as $item){
+            //error_log(print_r($item->Codigo, true));
+            //array_push($compras, (object)['Codigo' => $item->Codigo, 'Nombre' => $item->Nombre, 'CodigoEstado' => $item->CodigoEstado, 'Adjuntos' => true]);
+            $tiene_docs = DB::table('cargos')->where('nro_oc', 'like', '%'.$item->Codigo.'%')->get();
+            //error_log(print_r(count($tiene_docs)));
+            if(count($tiene_docs) != 0){
+                //error_log(print_r("tiene algo", true));
+                array_push($compras, (object)['Codigo' => $item->Codigo, 'Nombre' => $item->Nombre, 'CodigoEstado' => $item->CodigoEstado, 'Adjuntos' => true]);
+            }else{
+                //error_log(print_r("no tiene nada", true));
+                array_push($compras, (object)['Codigo' => $item->Codigo, 'Nombre' => $item->Nombre, 'CodigoEstado' => $item->CodigoEstado, 'Adjuntos' => false]);
+            }
+        }
 
         $dateRes = date('Y-m-d');
 
@@ -39,7 +55,23 @@ class MercadoPublicoController extends Controller
         $data = curl_exec($ch); 
         curl_close($ch);
 
-        $compras = json_decode($data)->Listado;
+        $compras_mc = json_decode($data)->Listado;
+
+        $compras = [];
+
+        foreach($compras_mc as $item){
+            //error_log(print_r($item->Codigo, true));
+            //array_push($compras, (object)['Codigo' => $item->Codigo, 'Nombre' => $item->Nombre, 'CodigoEstado' => $item->CodigoEstado, 'Adjuntos' => true]);
+            $tiene_docs = DB::table('cargos')->where('nro_oc', 'like', '%'.$item->Codigo.'%')->get();
+            //error_log(print_r(count($tiene_docs)));
+            if(count($tiene_docs) != 0){
+                //error_log(print_r("tiene algo", true));
+                array_push($compras, (object)['Codigo' => $item->Codigo, 'Nombre' => $item->Nombre, 'CodigoEstado' => $item->CodigoEstado, 'Adjuntos' => true]);
+            }else{
+                //error_log(print_r("no tiene nada", true));
+                array_push($compras, (object)['Codigo' => $item->Codigo, 'Nombre' => $item->Nombre, 'CodigoEstado' => $item->CodigoEstado, 'Adjuntos' => false]);
+            }
+        }
 
         $dateRes = $request->get('fecha');
 
@@ -47,7 +79,10 @@ class MercadoPublicoController extends Controller
 
     }
 
-    public function DetalleOC(Request $request){
-        dd($request);
+    public function Adjuntos($oc){
+        error_log(print_r($oc, true));
+        $adjuntos = DB::table('cargos')->where('nro_oc', 'like', '%'.$oc.'%')->get();
+        return response()->json([$adjuntos]);
     }
+
 }
