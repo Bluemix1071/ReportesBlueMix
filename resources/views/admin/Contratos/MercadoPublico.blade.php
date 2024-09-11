@@ -24,11 +24,11 @@
                             </tr> -->
                             <tr>
                                 <!-- <td>Hasta:</td> -->
-                                <td><input type="date" id="max1" value="{{ $dateRes }}" name="fecha"></td>
+                                <td><input type="date" id="max1" value="{{ $dateRes }}" name="fecha" max="{{ date('Y-m-d') }}" class="form-control"></td>
                             </tr>
                             &nbsp &nbsp &nbsp
                             <!-- <button type="submit" class="btn btn-success btn-sm row">Buscar</button> -->
-                            <button type="submit" class="btn btn-success btn-sm row" id="agregar"><div id="text_add">Buscar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
+                            <button type="button" class="btn btn-success btn-sm row" id="agregar" onclick="send()"><div id="text_add">Buscar</div><div class="spinner-border spinner-border-sm" hidden role="status" id="spinner"></div></button>
                     </form>
                 </div>
                 <!-- <div class="col-1">
@@ -503,6 +503,17 @@
 
                 //table.columns(2).search( '2021-10-25' ).draw();
             });
+
+            function send(){
+            if ( $('#form-fecha')[0].checkValidity() ) {
+                $("#text_add").prop("hidden", true);
+                $('#spinner').prop('hidden', false);
+                $("#agregar").prop("disabled", true);
+                $('#form-fecha').submit();
+            }else{
+                console.log("formulario no es valido");
+            }
+            }
 
 
         </script>
