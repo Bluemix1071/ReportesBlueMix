@@ -12,6 +12,24 @@ Espacio Publico Bluemix
 
 @section('contenido')
 <br>
+<div class="card text-white bg-danger mb-3">
+  <div class="card-header">
+      <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="remove">
+              <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+      </div>
+          <h3 class="card-title">Aviso de mantenimiento!!</h3>
+          <br>
+          <hr>
+              -El dia viernes 18 de Octubre se realizará mantención al Servidor de <b>carpetas compartidas</b>, esto quiere decir que ninguno de estos recursos estará disponibre:
+            <br>*Contratos
+            <br>*Finanzas
+            <br>*Diseño
+            <br>*Rosita
+            <br>-Se recomienda trabajar al margen de este recurso, el servicio se mantendrá suspendido hasta nuevo aviso.
+      </div>
+</div>
 <section class="content">
     <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
