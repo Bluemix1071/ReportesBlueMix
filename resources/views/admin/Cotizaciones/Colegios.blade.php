@@ -52,6 +52,11 @@ Colegios
                             <a href="{{ route('colegios.temporada2023') }}" title="Temporada 2022-2023" target="_blank" class="btn btn-warning">T. 2023-2024</a>
                         @endif
 
+                        @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                            <button type="submit" class="btn btn-primary" onclick="submit()">BTS</button>
+                        @endif
+                        
+                        <form action="{{ route('Cursos', ['id' => 676]) }}" method="post" enctype="multipart/form-data" id="formBTS"></form>
                     </div>
                     @if (request()->url() == route('ListaEscolar'))
                 <form method="post" action="{{ route('AgregarColegio') }}" id="basic-form" class="d-flex justify-content-end col-6">
@@ -372,6 +377,10 @@ $('#min, #max').on('change', function () {
 
 });
 });
+
+function submit(){
+    $('#formBTS').submit();
+}
 
 
 </script>
