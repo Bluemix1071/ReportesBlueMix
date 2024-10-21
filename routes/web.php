@@ -325,6 +325,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/SincronizacionProductos','Contratos\EstadisticaContratoController@SincronizacionProductos')->name('SincronizacionProductos');
     Route::post('/SincronizacionProductosExcel','Contratos\EstadisticaContratoController@SincronizacionProductosExcel')->name('SincronizacionProductosExcel');
     Route::get('/descargaPlantillaSincProductos', 'exports\MyController@descargaPlantillaSincProductos')->name('descargaPlantillaSincProductos');
+    Route::get('/StockCategorias', 'Contratos\StockCategoriasController@StockCategorias')->name('StockCategorias');
+    Route::get('/DetalleCategoria/{id}', 'Contratos\StockCategoriasController@DetalleCategoria')->name('DetalleCategoria');
 
     Route::get('/MercadoPublico','Contratos\MercadoPublicoController@MercadoPublico')->name('MercadoPublico');
     Route::post('/MercadoPublicoDia','Contratos\MercadoPublicoController@MercadoPublicoDia')->name('MercadoPublicoDia');
@@ -339,6 +341,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     //modulo rutas
     Route::get('/Rutas','Contratos\RutasController@Rutas')->name('Rutas');
     Route::post('/Rutas','Contratos\RutasController@AgregarRutas')->name('AgregarRutas');
+    Route::post('/RutaDetalle','Contratos\RutasController@RutaDetalle')->name('RutaDetalle');
     //Ruta para mostrar los productos no subidos en "Index"
 
     // Editar Folio Boleta Tarjeta Credito
