@@ -16,6 +16,13 @@ class ConteosController extends Controller
         return response()->json($conteos);
     }
 
+    public function getConteosBodega(){
+        
+        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Bodega")->where('fecha', '>', '2024-10-01')->orderBy('fecha', 'desc')->get();
+
+        return response()->json($conteos);
+    }
+
     public function getConteoSala($id){
         //error_log(print_r($id, true));
         $conteo = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id)->orderBy('posicion', 'desc')->get();
@@ -23,7 +30,22 @@ class ConteosController extends Controller
         return response()->json($conteo);
     }
 
+    public function getConteoBodega($id){
+        //error_log(print_r($id, true));
+        $conteo = DB::table('conteo_inventario_detalle')->where('id_conteo_inventario', $id)->orderBy('posicion', 'desc')->get();
+
+        return response()->json($conteo);
+    }
+
     public function getHeadConteoSala($id){
+        $conteo = DB::table('conteo_inventario')->where('id', $id)->first();
+
+        //error_log(print_r($conteo, true));
+
+        return response()->json($conteo);
+    }
+
+    public function getHeadConteoBodega($id){
         $conteo = DB::table('conteo_inventario')->where('id', $id)->first();
 
         //error_log(print_r($conteo, true));
@@ -52,14 +74,21 @@ class ConteosController extends Controller
 
     public function buscarProducto($codigo){
 
-        $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->orWhere(\DB::raw('substr(ARCBAR, 1, 3)'), '=' , $codigo)->get(); //\DB::raw('substr(ARCBAR, 1, 3)'), '=' , $codigo
+        if(ctype_digit($codigo)){
+            //error_log(print_r("solo numeros", true));
+            $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', (int)$codigo)->orWhere(\DB::raw('substr(ARCBAR, 1, 12)'), '=' , (int)$codigo)->get();
+        }else{
+            //error_log(print_r("texto y numeros", true));
+            $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->orWhere(\DB::raw('substr(ARCBAR, 1, 12)'), '=' , $codigo)->get();
+        }
 
-        //error_log(print_r($producto, true));
+        //$producto2 = DB::select('select * from producto where ARCODI = '.0614143790324.' or ARCBAR = 0614143790324 or substr(ARCBAR, 1, 12) = 0614143790324');
+        //error_log(print_r($producto2, true));
 
         if($producto->count() == 0){
             return response()->json([]);
         }else{
-            return response()->json($producto);
+            return response()->json($producto); 
         }
 
     }
@@ -111,6 +140,22 @@ class ConteosController extends Controller
         error_log(print_r($request->get('encargado'), true)); */
 
         $nuevo = ['ubicacion' => 'Sala',
+          'modulo' => $request->get('modulo'),
+          'encargado' => $request->get('encargado'),
+          'estado' => "Ingresado"
+        ];
+
+      DB::table('conteo_inventario')->insert($nuevo);
+
+      return response()->json(["status" => "Ingresado correctamente"]);
+    }
+
+    public function nuevoConteoBodega(Request $request){
+
+        /* error_log(print_r($request->get('modulo'), true));
+        error_log(print_r($request->get('encargado'), true)); */
+
+        $nuevo = ['ubicacion' => 'Bodega',
           'modulo' => $request->get('modulo'),
           'encargado' => $request->get('encargado'),
           'estado' => "Ingresado"
@@ -245,6 +290,14 @@ class ConteosController extends Controller
         } */
 
         //error_log(print_r($productos, true));
+
+    }
+
+    public function getRacks(Request $request) {
+
+        $racks = DB::table('vv_tablas25')->get();
+
+        return response()->json($racks);
 
     }
 }

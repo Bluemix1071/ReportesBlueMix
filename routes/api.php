@@ -61,17 +61,24 @@ Route::get('/ProductosFaltantes/{id}','Admin\Jumpseller\BluemixEmpresas\GenerarC
 //endpoints productos
 Route::get('/getProducto/{codigo}','Api\ProductosController@getProducto')->name('getProducto');
 
-//enpoints conteos
+//enpoints conteos sala
 Route::get('/getConteosSala','Api\ConteosController@getConteosSala')->name('getConteosSala');
 Route::get('/getConteoSala/{id}','Api\ConteosController@getConteoSala')->name('getConteoSala');
 Route::get('/getHeadConteoSala/{id}','Api\ConteosController@getHeadConteoSala')->name('getHeadConteoSala');
+Route::post('/nuevoConteo','Api\ConteosController@nuevoConteo')->name('nuevoConteo');
+//endpoints utility
 Route::delete('/deleteItem/{id}','Api\ConteosController@deleteItem')->name('deleteItem');
 Route::put('/updateCantItem/{id}','Api\ConteosController@updateCantItem')->name('updateCantItem');
 Route::get('/buscarProducto/{codigo}','Api\ConteosController@buscarProducto')->name('buscarProducto');
 Route::post('/agregarProducto/{id_conteo}','Api\ConteosController@agregarProducto')->name('agregarProducto');
 Route::put('/terminarConteo/{id}','Api\ConteosController@terminarConteo')->name('terminarConteo');
-Route::post('/nuevoConteo','Api\ConteosController@nuevoConteo')->name('nuevoConteo');
 Route::post('/cargarVale/{id_conteo}','Api\ConteosController@cargarVale')->name('cargarVale');
+//endpoints conteo bodega
+Route::get('/getConteosBodega','Api\ConteosController@getConteosBodega')->name('getConteosBodega');
+Route::get('/getConteoBodega/{id}','Api\ConteosController@getConteoBodega')->name('getConteoBodega');
+Route::get('/getHeadConteoBodega/{id}','Api\ConteosController@getHeadConteoBodega')->name('getHeadConteoBodega');
+Route::post('/nuevoConteoBodega','Api\ConteosController@nuevoConteoBodega')->name('nuevoConteoBodega');
+Route::get('/getRacks','Api\ConteosController@getRacks')->name('getRacks');
 
 
 
