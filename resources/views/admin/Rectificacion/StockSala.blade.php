@@ -28,6 +28,11 @@ Stock Sala
                                             &nbsp;<input type="number" id="nueva_cantidad" name="nueva_cantidad" placeholder="Nuevo Stock" class="form-control col-sm" value="" required/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{--Espacio entre input y botones --}}
                                         </div>
+                                        <div class="form-group row">
+                                            <input type="text" id="solicita" name="solicita" placeholder="Quien Solicita"  class="form-control col-4" value="" required/>
+                                            &nbsp;
+                                            <input type="text" id="motivo" name="motivo" placeholder="Motivo"  class="form-control col-4" value="" required/>
+                                        </div>
                                          </form>
                                          @if(session()->get('email') == "ignaciobarrera4@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
                                          {{-- <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success"><i class="fas fa-upload" style="color: #ffffff;"></i></button></div>
@@ -655,7 +660,7 @@ Stock Sala
                 }else{
                     $("#buscar_cantidad_bodega").val(result[0].cantidad);
                 }
-                    
+
                 $("#nueva_cantidad").focus();
                 codigo = result[0].ARCODI;
                 descripcion = result[0].ARDESC;
