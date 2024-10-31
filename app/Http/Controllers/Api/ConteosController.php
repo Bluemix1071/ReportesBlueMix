@@ -74,13 +74,15 @@ class ConteosController extends Controller
 
     public function buscarProducto($codigo){
 
-        if(ctype_digit($codigo)){
+        /* if(ctype_digit($codigo)){
             //error_log(print_r("solo numeros", true));
-            $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', (int)$codigo)->orWhere(\DB::raw('substr(ARCBAR, 1, 12)'), '=' , (int)$codigo)->get();
+            $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', (int)$codigo)->get();
         }else{
             //error_log(print_r("texto y numeros", true));
-            $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->orWhere(\DB::raw('substr(ARCBAR, 1, 12)'), '=' , $codigo)->get();
-        }
+            $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
+        } */
+
+        $producto = DB::table('producto')->where('ARCODI', $codigo)->orWhere('ARCBAR', $codigo)->get();
 
         //$producto2 = DB::select('select * from producto where ARCODI = '.0614143790324.' or ARCBAR = 0614143790324 or substr(ARCBAR, 1, 12) = 0614143790324');
         //error_log(print_r($producto2, true));
