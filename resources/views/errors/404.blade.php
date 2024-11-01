@@ -7,6 +7,6 @@
     <title>404</title>
 </head>
 <body>
-<img src="https://www.acceseo.com/wp-content/uploads/2020/11/guia-errores-404.svg">
+<img src="https://www.acceseo.com/wp-content/uploads/2020/11/guia-errores-404.svg" onclick="(window.location.href = 'https://192.168.0.73/www')">
 </body>
 </html>
