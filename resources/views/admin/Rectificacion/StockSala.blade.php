@@ -86,6 +86,7 @@ Stock Sala
                                     <th scope="col" style="text-align:left">Stock anterior</th>
                                     <th scope="col" style="text-align:left">Stock nuevo</th>
                                     <th scope="col" style="text-align:left">Fecha</th>
+                                    <th scope="col" style="text-align:left">Solicitante</th>
                                     <th scope="col" style="text-algin:left">Observación</th>
                                 </tr>
                             </thead>
@@ -99,6 +100,7 @@ Stock Sala
                                     <td style="text-align:left">{{ $item->stock_anterior }}</td>
                                     <td style="text-align:left">{{ $item->nuevo_stock }}</td>
                                     <td style="text-align:left">{{$item->fecha }}</td>
+                                    <td style="text-algin:left">{{ $item->solicita }}</td>
                                     <td style="text-algin:left">{{ $item->observacion }}</td>
                                     </tr>
                                     @endforeach
