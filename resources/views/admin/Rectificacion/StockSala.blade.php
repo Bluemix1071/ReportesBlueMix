@@ -289,10 +289,26 @@ Stock Sala
 <script>
 
   $(document).ready(function() {
+
+    $('#Listas thead tr').clone(true).appendTo( '#Listas thead' );
+            $('#Listas thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+            $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
+
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( table.column(i).search() !== this.value ) {
+                    table
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                }
+                });
+            });
+
     $("#codigo").focus();
-    $('#Listas').DataTable( {
+    var table = $('#Listas').DataTable( {
 
-
+        orderCellsTop: true,
         dom: 'Bfrtip',
         buttons: [
                         'copy', 'pdf',
