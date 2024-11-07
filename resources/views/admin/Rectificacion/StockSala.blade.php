@@ -33,7 +33,7 @@ Stock Sala
 
 
                                          </form>
-                                         @if(session()->get('email') == "ignaciobarrera4@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
+                                         @if(session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
                                          {{-- <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success"><i class="fas fa-upload" style="color: #ffffff;"></i></button></div>
                                          <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success">+</button></div>
                                          <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success">-</button></div> --}}

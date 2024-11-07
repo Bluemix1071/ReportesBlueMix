@@ -88,7 +88,7 @@ Stock Bodega
                                 </div>
                                 @endif
 
-                                @if(session()->get('email') == "ignaciobarrera4@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
+                                @if(session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
                                     @if(!empty($producto))
                                         <button type="button" class="btn btn-success" onclick="cargarForm()">Guardar</button>
                                         <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalagregar">Agregar Rack</button>
