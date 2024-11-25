@@ -144,7 +144,7 @@
 
 @endsection
 @section('script')
-<script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
 
     <script>
         CKEDITOR.replace( 'summary-ckeditor' );
