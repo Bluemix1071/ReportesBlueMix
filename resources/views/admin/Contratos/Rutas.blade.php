@@ -25,7 +25,7 @@
                                     <th scope="col">Patente Veh</th>
                                     <th scope="col">Marca Veh</th>
                                     <th scope="col">Modelo Veh</th>
-                                    <th scope="col">Detalles</th>
+                                    <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,9 +37,13 @@
                                  <td>{{ $item->patente }}</td>
                                  <td>{{ $item->marca }}</td>
                                  <td>{{ $item->modelo }}</td>
-                                 <td>
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modaldetalle" onclick="detalles({{ $item->id }})">Ver</button>
-                                    <button type="button" class="btn btn-tertiary" data-toggle="modal" data-target="#modaldetalle" onclick="detalles({{ $item->id }})">Detalle</button>
+                                 <td class="row">
+                                    <form>
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modaldetalle" onclick="detalles({{ $item->id }})"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                    </form>
+                                    <form action="{{ route('RutaDetalle', ['id_ruta' => $item->id]) }}" method="post" enctype="multipart/form-data">
+                                        &nbsp<button type="submit" class="btn btn-primary"><i class="fa fa-file" aria-hidden="true"></i></button>
+                                    </form>
                                 </td>
                                 </tr>
                                 @endforeach

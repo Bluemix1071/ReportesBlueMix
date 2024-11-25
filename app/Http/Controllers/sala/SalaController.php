@@ -358,7 +358,9 @@ class SalaController extends Controller
 
         $vendedores = DB::select('SELECT vendedor FROM db_bluemix.ordenesdiseño where vendedor is not NULL and vendedor != "Null" group by vendedor');
 
-        return view('sala.OrdenesDeDiseño', compact('vendedores'));
+        $config = DB::table('tablas')->where('TACODI', 62)->get();
+
+        return view('sala.OrdenesDeDiseño', compact('vendedores', 'config'));
 
       }
 
@@ -488,6 +490,21 @@ class SalaController extends Controller
         //  dd($ordenesdiseño);
 
         return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenesdiseño', 'img'));
+    }
+
+    public function GuardarConfigDiseno(Request $request){
+
+      DB::table('tablas')
+      ->where('TACODI', 62)
+      ->where('TAREFE' , 0)
+      ->update(['TAGLOS' => $request->get('fecha_sala')]);
+
+      DB::table('tablas')
+      ->where('TACODI', 62)
+      ->where('TAREFE' , 1)
+      ->update(['TAGLOS' => $request->get('fecha_contratos')]);
+
+      return back()->with('success','Configuración Guardada');
     }
 
     public function RequerimientoCompra(Request $request){

@@ -49,6 +49,9 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function(){
 
     Route::get('/ListarOrdenesDiseño','SalaController@ListarOrdenesDiseño')->name('ListarOrdenesDiseñoSala');
     Route::get('/ListarOrdenesDisenoDetalle/{idOrdenesDiseno}','SalaController@ListarOrdenesDisenoDetalle')->name('ListarOrdenesDisenoDetalleSala');
+
+    Route::post('/GuardarConfigDiseno','SalaController@GuardarConfigDiseno')->name('GuardarConfigDiseno');
+
     /*  Mantenedor CRUD requerimientos de compra */
     Route::get('/RequerimientoCompra','SalaController@RequerimientoCompra')->name('RequerimientoCompra');
     Route::post('/AgregarRequerimientoCompra','SalaController@AgregarRequerimientoCompra')->name('AgregarRequerimientoCompra');

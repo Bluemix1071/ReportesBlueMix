@@ -35,6 +35,13 @@ class RutasController extends Controller
             'estado' => $request->get('estado'),
             'vehiculo' => $request->get('vehiculo')
         ]);
-        return redirect()->route('Rutas')->with('success', 'Ruta Agregada Correctaamente');
+        return redirect()->route('Rutas')->with('success', 'Ruta Agregada Correctamente');
+    }
+
+    public function RutaDetalle(Request $request){
+
+        $destinos = DB::table('destinos')->where('id_ruta', $request->get('id_ruta'))->get();
+
+        return view('admin.Contratos.RutaDetalle', compact('destinos'));
     }
 }

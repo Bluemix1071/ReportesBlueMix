@@ -12,7 +12,13 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h1>Ordenes De Trabajo Diseño</h1>
+        <div class="row">
+            <h1>Ordenes De Trabajo Diseño</h1>
+            <div class="col"></div>
+            @if(session()->get('email') == 'disenobmix@gmail.com')
+                <button class="btn btn-primary float-right" data-toggle="modal" data-target="#modaltools"><i class="fa fa-cog" aria-hidden="true"></i></button>
+            @endif
+        </div>
         <hr>
         <div class="container">
             <div class="col-md-12">
@@ -91,7 +97,13 @@
 
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Fecha De Entrega</label>
                             <div class="col-sm-3">
-                                <input type="date" class="form-control" id="fecha_id" name="fechaentrega" onchange="ValidarFecha(this)">
+                                @if(session()->get('tipo_usuario') == 'sala')
+                                    <input type="date" class="form-control" id="fecha_id" name="fechaentrega" min="{{ $config[0]->TAGLOS }}">
+                                @elseif(session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard')
+                                    <input type="date" class="form-control" id="fecha_id" name="fechaentrega" min="{{ $config[1]->TAGLOS }}">
+                                @elseif(session()->get('tipo_usuario') == 'admin' && session()->get('email') == 'disenobmix@gmail.com')
+                                    <input type="date" class="form-control" id="fecha_id" name="fechaentrega" min="{{ date('Y-m-d') }}">
+                                @endif
                             </div>
                         </div>
                         <div class="form-group row">
@@ -125,11 +137,49 @@
         </div>
 
     </div>
+
+    <div class="modal fade" id="modaltools" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Configurar Fechas de Entrega</h5>
+                    </div>
+                    <div class="modal-body">
+                            <form action="{{ route('GuardarConfigDiseno') }}" method="post">
+                                
+                                <div class="form-group row">
+                                    <label for="fecha_sala"
+                                        class="col-md-4 col-form-label text-md-right">Sala</label>
+
+                                    <div class="col-md-6">
+
+                                    <input type="date" class="form-control" id="" name="fecha_sala" value="{{ $config[0]->TAGLOS }}" min="{{ date('Y-m-d') }}">
+                                    
+                                </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="fecha_contratos"
+                                        class="col-md-4 col-form-label text-md-right">Contratos</label>
+
+                                    <div class="col-md-6">
+                                        <input type="date" class="form-control" id="" name="fecha_contratos" value="{{ $config[1]->TAGLOS }}" min="{{ date('Y-m-d') }}">
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 @endsection
 
 @section('script')
 
-    <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
+    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
 
     <script>
         CKEDITOR.replace( 'summary-ckeditor' );
