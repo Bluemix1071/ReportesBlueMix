@@ -523,6 +523,14 @@
                                         </a>
                                     </li>
 
+                                    <li class="nav-item">
+                                        <a href="{{ route('VentasPorColegio') }}" class="nav-link {{ setActive('VentasPorColegio') }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Ventas Por Colegio
+                                            </p>
+                                        </a>
+                                    </li>
+
                                 @can('CompraProductos')
                                     <li class="nav-item">
                                         <a href="{{ route('compraProd') }}"

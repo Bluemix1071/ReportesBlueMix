@@ -340,6 +340,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
 
     Route::get('/ProductosFaltantes','AdminController@ProductosFaltantes')->name('ProductosFaltantes');
     Route::get('/ProductosFaltantesWeb','AdminController@ProductosFaltantesWeb')->name('ProductosFaltantesWeb');/*AQUI!!*/
+    //crud de ventas por colegio
+    Route::get('/VentasPorColegio','VentasPorColegioController@VentasPorColegio')->name('VentasPorColegio');
+    Route::post('/VentasPorColegioDetalle','VentasPorColegioController@VentasPorColegioDetalle')->name('VentasPorColegioDetalle');
 
     //modulo rutas
     Route::get('/Rutas','Contratos\RutasController@Rutas')->name('Rutas');
