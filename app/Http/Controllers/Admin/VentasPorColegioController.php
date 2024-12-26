@@ -15,6 +15,10 @@ class VentasPorColegioController extends Controller
                                 left join tablas on cargos.CANCON = tablas.TAREFE and tablas.TACODI = 46
                                 where CAFECO >= "2024-11-01" and !isnull(tacodi) GROUP BY tarefe HAVING COUNT(*) >= 1');
 
+        $cajas = DB::select('select cacoca, tarefe, count(*) as ventas, sum(cavalo) as total from cargos
+                                left join tablas on cargos.CANCON = tablas.TAREFE and tablas.TACODI = 46
+                                where CAFECO >= "2024-11-01" and !isnull(tacodi) GROUP BY CACOCA HAVING COUNT(*) >= 1');
+
         $total = DB::select('select sum(cavalo) as total from cargos
                                 left join tablas on cargos.CANCON = tablas.TAREFE and tablas.TACODI = 46
                                 where CAFECO >= "2024-11-01" and !isnull(tacodi) HAVING COUNT(*) >= 1')[0];
@@ -25,7 +29,7 @@ class VentasPorColegioController extends Controller
 
         //dd($total_documentos->ventas);
 
-        return view('admin.VentasPorColegio', compact('colegios', 'total', 'total_documentos'));
+        return view('admin.VentasPorColegio', compact('colegios', 'total', 'total_documentos', 'cajas'));
     }
 
     public function VentasPorColegioDetalle(Request $request){

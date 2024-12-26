@@ -12,7 +12,7 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Ventas Por Colegio</h3>
+        <h3 class="display-3">Ventas Por Colegio Temporada 2024-2025</h3>
         <div class="row">
             <div class="col-md-12">
                 <table id="colegios" class="table table-striped table-bordered">
@@ -50,14 +50,49 @@
                             <td></td>
                             <td class="price text-success">{{ $total_documentos->ventas }}</td>
                             <td class="price text-success">{{number_format($total->total,0,',','.')}}</td>
-                            <td></td>
+                            <td class="price text-success">100%</td>
                             <td></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
+    </div>
 
+    <div class="container-fluid">
+        <h3 class="display-3">Ventas Por Caja</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <table id="cajas" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Caja</th>
+                            <th scope="col">Cant. Docs</th>
+                            <th scope="col">Venta Total</th>
+                            <th scope="col">Participación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($cajas as $item)
+                            <tr>
+                                <td>{{ $item->cacoca }}</td>
+                                <td>{{ $item->ventas }}</td>
+                                <td>{{ number_format($item->total,0,',','.') }}</td>
+                                <td>{{number_format((($item->total/$total->total)*100),1,',','.')}} %</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td class="price text-success">{{ $total_documentos->ventas }}</td>
+                            <td class="price text-success">{{number_format($total->total,0,',','.')}}</td>
+                            <td class="price text-success">100%</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -69,6 +104,30 @@
 
         $(document).ready(function() {
             $('#colegios').DataTable({
+                "order": [[ 0, "asc" ]],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'pdf', 'print'
+
+                ],
+                "language": {
+                    "info": "_TOTAL_ registros",
+                    "search": "Buscar",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+
+                    },
+                    "loadingRecords": "cargando",
+                    "processing": "procesando",
+                    "emptyTable": "no hay resultados",
+                    "zeroRecords": "no hay coincidencias",
+                    "infoEmpty": "",
+                    "infoFiltered": ""
+                }
+            });
+
+            $('#cajas').DataTable({
                 "order": [[ 0, "asc" ]],
                 dom: 'Bfrtip',
                 buttons: [
