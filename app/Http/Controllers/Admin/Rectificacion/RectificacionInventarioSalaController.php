@@ -151,6 +151,27 @@ class RectificacionInventarioSalaController extends Controller
         return chr($s?$s+47:75);
    }
 
+   public function RectificacionFactura(){
+
+    $factura = DB::table('cargos')->where('CATIPO', 8)->where('cargos.cafeco', '>=', '2024-12-01')->orderBy('CANMRO', 'desc')->get();
+
+    return view('admin.RectificacionFacturas', compact('factura'));
+   }
+
+   public function DetalleFactura(Request $request){
+    $folio = DB::table('cargos')
+    ->leftJoin('dcargos', 'cargos.CANMRO', '=', 'dcargos.DENMRO')
+    ->where('cargos.CANMRO', $request->get('folio'))
+    ->where('cargos.CATIPO', 8)
+    ->select('cargos.*', 'dcargos.*',
+        DB::raw('ROUND(dcargos.DEPREC * 0.84, 2) as neto')  // Redondeamos a 2 decimales
+    )
+    ->get();
+     /* dd($folio); */
+
+    return view('admin.FacturaDetalle', compact('folio'));
+   }
+
     public function RectificacionInsumoMerma(Request $request){
 
         $insumos = DB::table('insumos_mermas')->get();

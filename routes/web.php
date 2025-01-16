@@ -350,6 +350,9 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/RutaDetalle','Contratos\RutasController@RutaDetalle')->name('RutaDetalle');
     //Ruta para mostrar los productos no subidos en "Index"
 
+    Route::get('/BuscarDoc','buscardocController@BuscarDoc')->name('BuscarDoc');
+    Route::get('/buscardocumento','buscardocController@buscardocumento')->name('buscardocumento');
+    Route::get('/Docencontrados','buscardocController@Docencontrados')->name('Docencontrados');
     // Editar Folio Boleta Tarjeta Credito
     Route::get('/verboleta','EditarBoletaController@verboleta')->name('verboleta');
     Route::put('/editardetalleboleta','EditarBoletaController@editardetalleboleta')->name('editardetalleboleta');
@@ -479,6 +482,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/RectificacionGuia','Rectificacion\RectificacionInventarioSalaController@DevolverGuia')->name('DevolverGuia');
     Route::post('/RectificacionGuiaSegunDocumento','Rectificacion\RectificacionInventarioSalaController@DevolverGuiaSegunDocumento')->name('DevolverGuiaSegunDocumento');
     Route::post('/RectificacionGuiaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverGuiaDetalle')->name('RectificacionGuiaDetalle');
+    Route::get('/RectificacionFactura','Rectificacion\RectificacionInventarioSalaController@RectificacionFactura')->name('RectificacionFactura');
+    Route::get('/DetalleFactura','Rectificacion\RectificacionInventarioSalaController@DetalleFactura')->name('DetalleFactura');
     Route::get('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@RectificacionInsumoMerma')->name('RectificacionInsumoMerma');
     Route::post('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@GuardarRectificacionInsumoMerma')->name('GuardarRectificacionInsumoMerma');
     Route::get('/StockSala','Rectificacion\RectificacionInventarioSalaController@StockSala')->name('StockSala');
