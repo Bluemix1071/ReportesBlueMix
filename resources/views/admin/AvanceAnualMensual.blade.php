@@ -125,7 +125,7 @@
                                 @endif
                             </div>
                         </div> --}}
-                        <br>
+                        {{-- <br>
                         <div class="form-row">
                             <div class="col-md-6 mb-6">
                                 <input type="text" class="form-control" style="font-weight: bold;"
@@ -141,7 +141,7 @@
                                 @endif
                             </div>
                         </div>
-                        <br>
+                        <br> --}}
                         <div class="form-row">
                             <div class="col-md-6 mb-6">
                                 <input type="text" class="form-control" style="font-weight: bold;"
@@ -282,7 +282,7 @@
                                 @endif
                             </div>
                         </div> --}}
-                        <br>
+                        {{-- <br>
                         <div class="form-row">
                             <div class="col-md-6 mb-6">
                                 <input type="text" class="form-control" style="font-weight: bold;"
@@ -298,7 +298,7 @@
                                 @endif
                             </div>
                         </div>
-                        <br>
+                        <br> --}}
                         <div class="form-row">
                             <div class="col-md-6 mb-6">
                                 <input type="text" class="form-control" style="font-weight: bold;"
@@ -359,7 +359,7 @@
                                         required>
                                 @else
                                     <input type="text" class="form-control" id="2024anual" readonly
-                                        value="{{ number_format(($anual2024[0]->anualaño2024-$destucan24[0]->destucan24), 0, ',', '.') }}" required>
+                                        value="{{ number_format(($anual2024[0]->anualaño2024-$destucan24[0]->destucan24-$desnene24[0]->desnene24), 0, ',', '.') }}" required>
                                 @endif
                             </div>
                         </div>
@@ -375,7 +375,7 @@
                                         required>
                                 @else
                                     <input type="text" class="form-control" id="2025anual" readonly
-                                        value="{{ number_format(($anual2025[0]->anualaño2025-$destucan25[0]->destucan25), 0, ',', '.') }}" required>
+                                        value="{{ number_format(($anual2025[0]->anualaño2025-$destucan25[0]->destucan25-$desnene25[0]->desnene25), 0, ',', '.') }}" required>
                                 @endif
                             </div>
                         </div>
@@ -658,16 +658,18 @@
 
         // let mensual2018 = $("#2018mensual").val().replace(/\./g, '');
         // let mensual2019 = $("#2019mensual").val().replace(/\./g, '');
-        let mensual2020 = $("#2020mensual").val().replace(/\./g, '');
-        let mensual2021 = $("#2021mensual").val().replace(/\./g, '');
+        // let mensual2020 = $("#2020mensual").val().replace(/\./g, '');
+        // let mensual2021 = $("#2021mensual").val().replace(/\./g, '');
         let mensual2022 = $("#2022mensual").val().replace(/\./g, '');
         let mensual2023 = $("#2023mensual").val().replace(/\./g, '');
         let mensual2024 = $("#2024mensual").val().replace(/\./g, '');
         let mensual2025 = $("#2025mensual").val().replace(/\./g, '');
 
 
-        var categorias = [  '2020', '2021', '2022','2023','2024','2025'];
-        var valor = [ mensual2020, mensual2021, mensual2022,mensual2023,mensual2024,mensual2025];
+        //var categorias = [  '2020', '2021', '2022','2023','2024','2025'];
+        //var valor = [ mensual2020, mensual2021, mensual2022,mensual2023,mensual2024,mensual2025];
+        var categorias = ['2022','2023','2024','2025'];
+        var valor = [mensual2022,mensual2023,mensual2024,mensual2025];
 
 
         const ctx = document.getElementById('myChart').getContext('2d');
@@ -713,16 +715,18 @@
 
         // let anual2018 = $("#2018anual").val().replace(/\./g, '');
         // let anual2019 = $("#2019anual").val().replace(/\./g, '');
-        let anual2020 = $("#2020anual").val().replace(/\./g, '');
-        let anual2021 = $("#2021anual").val().replace(/\./g, '');
+        // let anual2020 = $("#2020anual").val().replace(/\./g, '');
+        // let anual2021 = $("#2021anual").val().replace(/\./g, '');
         let anual2022 = $("#2022anual").val().replace(/\./g, '');
         let anual2023 = $("#2023anual").val().replace(/\./g, '');
         let anual2024 = $("#2024anual").val().replace(/\./g, '');
         let anual2025 = $("#2025anual").val().replace(/\./g, '');
 
 
-        var categorias2 = [ '2020', '2021', '2022','2023','2024','2025'];
-        var valor2 = [ anual2020, anual2021, anual2022, anual2023,anual2024,anual2025];
+        //var categorias2 = [ '2020', '2021', '2022','2023','2024','2025'];
+        //var valor2 = [ anual2020, anual2021, anual2022, anual2023,anual2024,anual2025];
+        var categorias2 = ['2022','2023','2024','2025'];
+        var valor2 = [anual2022, anual2023,anual2024,anual2025];
 
         const ctx2 = document.getElementById('myChart2').getContext('2d');
         const myChart2 = new Chart(ctx2, {
