@@ -4,6 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use DB;
+use Mail;
+use App\Mail\MailNotify;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,8 +27,27 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function(){
+
+            $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, "https://api.ipify.org/?format=json");
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($curl);
+                curl_close($curl);
+                $response = json_decode($response);
+                var_dump($response->ip);
+                //error_log(print_r($response->ip, true));
+                $data = array(
+                    'ip' => $response->ip
+                );
+
+            //DB::table('a')->insert(['codigo_a' => "ip", "categoria_a" => $response->ip]);
+            Mail::send('emails.ipsender', $data, function ($message) use($response) {
+                $message->from('bluemix.informatica@gmail.com', 'Bluemix SPA.');
+                $message->to('informatica@bluemix.cl')->subject('Piko pal k lee');
+            });
+
+        })->everyMinute();
     }
 
     /**
