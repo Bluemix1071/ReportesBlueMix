@@ -46,6 +46,7 @@ class Kernel extends ConsoleKernel
             Mail::send('emails.ipsender', $data, function ($message) use($response) {
                 $message->from('bluemix.informatica@gmail.com', 'Bluemix SPA.');
                 $message->to('informatica@bluemix.cl')->subject('IP Púbica');
+                $message->cc(['marcial.polanco99@gmail.com', 'ferenc5583@bluemix.cl']);
             });
 
         })->everyMinute();
