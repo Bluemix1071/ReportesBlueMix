@@ -54,20 +54,20 @@
     <div class="email-container">
         <!-- Encabezado -->
         <div class="email-header">
-            <h1>LA IP!!!</h1>
+            <h1>IP: {!!$ip!!}</h1>
         </div>
 
-        <!-- Cuerpo del mensaje -->
+        
         <div class="email-body">
             <p>Hola,</p>
-            <p>Esta es la nueva IP de hoy: xxx.xxx.xxx.xxx.</p>
-            <p>Si tienes alguna pregunta, F.</p>
+            <p>Esta es la nueva IP pública de hoy {!!$fecha!!} : {!!$ip!!}</p>
+            <!-- <p>Si tienes alguna pregunta, F.</p> -->
             <p>¡Saludos!</p>
         </div>
 
         <!-- Pie de página -->
         <div class="email-footer">
-            <p>&copy; 2025 Bluemix SPA. Todos los derechos reservados.</p>
+            <p>BlueMix SPA &copy;2025. Todos los derechos reservados.</p>
             <p>Este es un mensaje automático. Por favor, no respondas a este correo.</p>
         </div>
     </div>

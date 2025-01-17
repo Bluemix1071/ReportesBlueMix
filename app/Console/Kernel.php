@@ -38,13 +38,14 @@ class Kernel extends ConsoleKernel
                 var_dump($response->ip);
                 //error_log(print_r($response->ip, true));
                 $data = array(
-                    'ip' => $response->ip
+                    'ip' => $response->ip,
+                    'fecha' => date('Y-m-d H:i:s')
                 );
 
             //DB::table('a')->insert(['codigo_a' => "ip", "categoria_a" => $response->ip]);
             Mail::send('emails.ipsender', $data, function ($message) use($response) {
                 $message->from('bluemix.informatica@gmail.com', 'Bluemix SPA.');
-                $message->to('informatica@bluemix.cl')->subject('Piko pal k lee');
+                $message->to('informatica@bluemix.cl')->subject('IP Púbica');
             });
 
         })->everyMinute();
