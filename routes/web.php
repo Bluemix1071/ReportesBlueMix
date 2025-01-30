@@ -120,6 +120,9 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::get('/ConsultaSaldoenvio','publico\PublicoController@ConsultaSaldo')->name('ConsultaSaldo');
     Route::post('/ConsultaSaldoenvio', 'publico\PublicoController@ConsultaSaldoenvio')->name('ConsultaSaldoenvio');
 
+    Route::get('/Estacionamiento','publico\PublicoController@Estacionamiento')->name('Estacionamiento');
+    Route::post('/GenerarTicket','publico\PublicoController@GenerarTicket')->name('GenerarTicket');
+    Route::post('/GenerarTicketSalida','publico\PublicoController@GenerarTicketSalida')->name('GenerarTicketSalida');
 
     // Route::get('/ConsultaPrecio','publico\PublicoController@ConsultaPrecio')->name('ConsultaPrecio');
     // Route::post('/ConsultaPrecioFiltro', 'publico\PublicoController@ConsultaPrecioFiltro')->name('ConsultaPrecioFiltro');

@@ -1136,6 +1136,14 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('Estacionamiento') }}"
+                                class="nav-link {{ setActive('Estacionamiento') }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Estacionamiento</p>
+                            </a>
+                        </li>
+
                         @can('SistemaNuevo')
                             <li class="nav-item">
                                 <a href="{{ route('apiReact') }}" class="nav-link {{ setActive('apiReact') }}">

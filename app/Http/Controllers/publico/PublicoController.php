@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 use App\mensajes;
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 class PublicoController extends Controller
@@ -156,6 +157,61 @@ class PublicoController extends Controller
       }
      }
 
+    public function Estacionamiento() {
 
+      $tickets = DB::table('estacionamiento')->get();
+
+      return view('publicos.Estacionamiento', compact('tickets'));
+
+    }
+
+    public function GenerarTicket(Request $request) {
+
+      
+      $hora_in = DB::select('select curtime() as hora')[0]->hora;
+      
+      $id = DB::table('estacionamiento')->insertGetId([
+        "hora_in" => $hora_in,
+        "patente" => strtoupper($request->get('patente')),
+        "detalle" => strtoupper($request->get('detalle')),
+      ]);
+      
+      $ticket = DB::table('estacionamiento')->where('id', $id)->get()[0];
+
+      //dd($ticket);
+
+      return view('exports.ticket_in', compact('ticket'));
+
+    }
+
+    public function GenerarTicketSalida(Request $request) {
+
+
+      $update = [];
+      if(!empty($request->get('descuento'))){
+        $update = [
+          "minutos" => ($request->get('minutos')-60),
+          "hora_out" => $request->get('hora_out'),
+          "descuento" => "1",
+          "estado" => "TERMINADO"
+        ];
+      }else{
+        $update = [
+          "minutos" => $request->get('minutos'),
+          "hora_out" => $request->get('hora_out'),
+          "descuento" => "0",
+          "estado" => "TERMINADO"
+        ];
+      }
+
+      //dd($update);
+
+      DB::table('estacionamiento')->where('id', $request->get('id'))->update($update);
+
+      $ticket_out = DB::table('estacionamiento')->where('id', $request->get('id'))->get()[0];
+
+      return view('exports.ticket_out', compact('ticket_out'));
+
+    }
 
 }
