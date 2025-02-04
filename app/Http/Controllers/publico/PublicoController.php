@@ -198,15 +198,23 @@ class PublicoController extends Controller
 
     public function GenerarTicketSalida(Request $request) {
 
-
       $update = [];
       if(!empty($request->get('descuento'))){
-        $update = [
-          "minutos" => ($request->get('minutos')-60),
-          "hora_out" => $request->get('hora_out'),
-          "descuento" => "1",
-          "estado" => "TERMINADO"
-        ];
+        if($request->get('minutos') <= 60){
+          $update = [
+            "minutos" => 0,
+            "hora_out" => $request->get('hora_out'),
+            "descuento" => "1",
+            "estado" => "TERMINADO"
+          ];
+        }else{
+          $update = [
+            "minutos" => ($request->get('minutos')-60),
+            "hora_out" => $request->get('hora_out'),
+            "descuento" => "1",
+            "estado" => "TERMINADO"
+          ];
+        }
       }else{
         $update = [
           "minutos" => $request->get('minutos'),
