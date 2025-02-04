@@ -159,9 +159,21 @@ class PublicoController extends Controller
 
     public function Estacionamiento() {
 
-      $tickets = DB::table('estacionamiento')->get();
+      $tickets = DB::table('estacionamiento')->where('creacion', ">=", ''.date('Y-m-d').' 00:00:00')->get();
 
-      return view('publicos.Estacionamiento', compact('tickets'));
+      $fecha = date('Y-m-d');
+
+      return view('publicos.Estacionamiento', compact('tickets', 'fecha'));
+
+    }
+
+    public function EstacionamientoFiltro(Request $request) {
+
+      $tickets = DB::table('estacionamiento')->whereBetween('creacion', [''.$request->get('fecha').' 00:00:00', ''.$request->get('fecha').' 23:59:59'])->get();
+
+      $fecha = $request->get('fecha');
+
+      return view('publicos.Estacionamiento', compact('tickets', 'fecha'));
 
     }
 
@@ -171,7 +183,7 @@ class PublicoController extends Controller
       $hora_in = DB::select('select curtime() as hora')[0]->hora;
       
       $id = DB::table('estacionamiento')->insertGetId([
-        "hora_in" => $hora_in,
+        "hora_in" => substr($hora_in, 0, 8),
         "patente" => strtoupper($request->get('patente')),
         "detalle" => strtoupper($request->get('detalle')),
       ]);

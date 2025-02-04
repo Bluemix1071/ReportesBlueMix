@@ -21,7 +21,19 @@
             --:--:--
           </div>
         </div>
-
+        
+        <form action="{{ route('EstacionamientoFiltro') }}" method="post" class="form-inline col">
+                <tr>
+                    <td>Fecha:</td>
+                    <td>
+                      <input type="date" value="{{ $fecha }}" name="fecha">
+                    </td>
+                </tr>
+                &nbsp &nbsp &nbsp
+                <!-- <button type="submit" class="btn btn-success btn-sm row">Buscar</button> -->
+                <button type="submit" class="btn btn-success btn-sm row">Buscar</button>
+        </form>
+        
       </div>
         <div class="row">
           <div class="col-md-12">
@@ -282,15 +294,15 @@
               currency: 'CLP',
             }));
 
-            if(Math.round(mts) <= 60){
+            /* if(Math.round(mts) <= 60){
               $('#descuento').prop('disabled', true);
-              /* modal.find('.modal-body #total').val((0).toLocaleString('es-CL', {
+              modal.find('.modal-body #total').val((0).toLocaleString('es-CL', {
                 style: 'currency',
                 currency: 'CLP',
-              })); */
+              }));
             }else{
               $('#descuento').prop('disabled', false);
-            }
+            } */
         })
 
         /* function diferenciaEnMinutos(hora_in) {
@@ -335,12 +347,19 @@
         checkbox.addEventListener("change", () => {
           const minutos = $('#minutos').val();
           if (checkbox.checked) {
-            //console.log(minutos-60+" con descuento");
-            $('#total').val(((minutos-60)*23).toLocaleString('es-CL', {
-              style: 'currency',
-              currency: 'CLP',
-            }));
-            $('#minutos_ver').val(minutos-60);
+            if(minutos <= 60){
+              $('#total').val((0).toLocaleString('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+              }));
+              $('#minutos_ver').val(0);
+            }else{
+              $('#total').val(((minutos-60)*23).toLocaleString('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+              }));
+              $('#minutos_ver').val(minutos-60);
+            }
           } else {
             $('#total').val((minutos*23).toLocaleString('es-CL', {
               style: 'currency',
