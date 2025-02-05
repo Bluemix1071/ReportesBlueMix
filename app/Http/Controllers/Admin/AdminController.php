@@ -3459,7 +3459,7 @@ public function stocktiemporeal (Request $request){
 
     public function ipc($anocursado, $mescursado) {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/01?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
+        curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
         //curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -3469,7 +3469,7 @@ public function stocktiemporeal (Request $request){
         if ($data === false) {
             $error = curl_error($ch);
             curl_close($ch);
-            error_log('Error en la solicitud cURL: ' . $error);
+            //error_log('Error en la solicitud cURL: ' . $error);
             return 0; // Devolver 0 en caso de error
         }
 
@@ -3480,7 +3480,7 @@ public function stocktiemporeal (Request $request){
 
         // Verificar errores en la decodificación JSON
         if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log('Error al decodificar JSON: ' . json_last_error_msg());
+            //error_log('Error al decodificar JSON: ' . json_last_error_msg());
             return 0; // Devolver 0 en caso de error
         }
 
@@ -3490,12 +3490,12 @@ public function stocktiemporeal (Request $request){
             foreach ($data->IPCs as $item) {
               // Sumar los valores, convirtiendo la coma a punto y luego a float
               $ipc += (float) str_replace(",", ".", $item->Valor);
-              error_log(print_r($ipc, true));
+              //error_log(print_r($ipc, true));
             }
             return $ipc;
         } else {
             // El objeto $data no tiene la propiedad IPCs válida
-            error_log(print_r(0));
+            //error_log(print_r(0));
             return 0; // Devolver 0 en caso de que no se encuentre la propiedad IPCs
         }
     }
