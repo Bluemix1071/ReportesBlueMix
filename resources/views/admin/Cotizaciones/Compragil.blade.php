@@ -543,7 +543,7 @@ $('#modaleditarprod').on('show.bs.modal', function (event) {
         </script>
 
 <script type="text/javascript">
-    $("#margen").on("input", function () {
+    function calcularMargen() {
         var neto = parseFloat($("#buscar_costo").val()) || 0;
         var margenPorcentaje = parseFloat($("#margen").val()) || 0;
         var cantidad = parseInt($('#cantidad').val()) || 0;
@@ -552,19 +552,21 @@ $('#modaleditarprod').on('show.bs.modal', function (event) {
 
         var totalPmargen = ((cantidad * neto) * (1 + margenFactor)).toFixed(0);
 
-
-
         if (margenFactor !== 0) {
             $('#label_pmargen').val(totalPmargen);
             $('#margenonly').val(((1 * neto) * (1 + margenFactor)).toFixed(0));
-            $('#total_pmargen').val(totalPmargen); // Asignar valor
+            $('#total_pmargen').val(totalPmargen);
         } else {
             $('#label_pmargen').val('0');
             $('#margenonly').val('0');
             $('#total_pmargen').val('0');
         }
-    });
+    }
+
+    // Detectar cambios en margen, cantidad y neto
+    $("#margen, #cantidad, #buscar_costo").on("input", calcularMargen);
 </script>
+
 
 <script type="text/javascript">
     function calcularMargenYNeto() {
