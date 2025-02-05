@@ -543,23 +543,29 @@ $('#modaleditarprod').on('show.bs.modal', function (event) {
         </script>
 
 <script type="text/javascript">
-    $("#margen").keyup(function () {
+    $("#margen").on("input", function () {
         var neto = parseFloat($("#buscar_costo").val()) || 0;
         var margenPorcentaje = parseFloat($("#margen").val()) || 0;
         var cantidad = parseInt($('#cantidad').val()) || 0;
 
-        // Convertir el margen a un factor de porcentaje (ej. 33 se convierte a 1.33)
         var margenFactor = (margenPorcentaje / 100);
 
+        var totalPmargen = ((cantidad * neto) * (1 + margenFactor)).toFixed(0);
+
+
+
         if (margenFactor !== 0) {
-            $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(0));
-            $('#margenonly').val(((1 * neto) * (1 + margenFactor)).toFixed(0)); // Corrige el selector aquí
+            $('#label_pmargen').val(totalPmargen);
+            $('#margenonly').val(((1 * neto) * (1 + margenFactor)).toFixed(0));
+            $('#total_pmargen').val(totalPmargen); // Asignar valor
         } else {
             $('#label_pmargen').val('0');
-            $('#margenonly').val('0'); // Asegurar que también se ponga en 0
+            $('#margenonly').val('0');
+            $('#total_pmargen').val('0');
         }
     });
 </script>
+
 <script type="text/javascript">
     function calcularMargenYNeto() {
         const cantidad = parseFloat($("#cantidad_modal").val()) || 0;
