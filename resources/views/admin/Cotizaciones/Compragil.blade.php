@@ -41,8 +41,10 @@ Compra Agil
                         &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
                         &nbsp;<input type="number" id="cantidad" minlength="1" maxlength="4" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
                         &nbsp;<input type="number" id="margen" minlength="1" maxlength="4" placeholder="Margen" required name="margen" class="form-control col" value="" min="1" max="99999999"/>
+                        &nbsp;<input type="number" id="costo" minlength="1" maxlength="4" readonly placeholder="Costo" required name="costo" class="form-control col" value="" min="1" max="99999999" style="color: red;"/>
                         &nbsp;<input type="number" id="buscar_costo" placeholder="Neto" required name="buscar_costo" readonly class="form-control col" value="" min="1" max="99999999"/>
-                        &nbsp;<input type="text" id="label_pmargen" required name="label_pmargen" placeholder="Margen" readonly class="form-control col" value="0" min="1" max="99999999"/>
+                        &nbsp;<input type="text" id="margenonly" required name="margenonly" placeholder="Margen only" readonly class="form-control col" value="Precio Margen" min="1" max="99999999"/>
+                        &nbsp;<input type="text" id="label_pmargen" required name="label_pmargen" placeholder="Margen" readonly class="form-control col" value="Total Margen" min="1" max="99999999"/>
                     </form>
                     <div class="col">
                         <button type="submit" id="add_field_button" class="btn btn-success">+</button>
@@ -68,7 +70,8 @@ Compra Agil
                                     <th scope="col" style="text-align:left">Cantidad</th>
                                     <th scope="col" style="text-align:left">Stock Sala</th>
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
-                                    <th scope="col" style="text-align:left">Costo C/U</th>
+                                    <th scope="col" style="text-align:left; color:red;">Precio Costo</th>
+                                    <th scope="col" style="text-align:left">Neto</th>
                                     <th scope="col" style="text-align:left">Margen</th>
                                     <th scope="col" style="text-align: left">Valor c/Margen</th>
                                     <th scope="col" style="text-align:left">Costo Total</th>
@@ -88,6 +91,7 @@ Compra Agil
                                     <td style="text-align:left">{{ $item->cantidad }}</td>
                                     <td style="text-align:left">{{ $item->stock_sala }}</td>
                                     <td style="text-align:left">{{ $item->stock_bodega }}</td>
+                                    <td style="text-align:left; color:red;">${{ number_format ($item->costoo)}}</td>
                                     <td style="text-align:left">${{ number_format ($item->preciou, 0,',','.')}}</td>
                                     <td style="text-align: left">{{ $item->margen }}%</td>
                                     <td style="text-align:left">${{ number_format ($item->valor_margen, 0,',','.') }}</td>
@@ -95,32 +99,37 @@ Compra Agil
                                     {{-- <td style="text-align: left">{{ $item->valor_margen }}</td> --}}
                                     <div style="display: none">{{ $total += $item->precio_detalle }}</div>
                                     <td style="text-align:left">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <a href="" class="btn btn-primary btm-sm" title="Editar Producto" data-toggle="modal" data-target="#modaleditarprod"
-                                                    data-id='{{ $item->id }}'
-                                                    data-cod_articulo='{{$item->cod_articulo}}'
-                                                    data-descripcion='{{$item->descripcion}}'
-                                                    data-marca='{{$item->marca}}'
-                                                    data-cantidad='{{$item->cantidad}}'
-                                                    data-stock_sala='{{$item->stock_sala}}'
-                                                    data-stock_bodega='{{$item->stock_bodega}}'
-                                                    ><i class="fas fa-edit"></i></a>
-                                                    {{-- <i class="fa fa-eye"></i> --}}
-                                                </div>
-                                                <div class="col-1" style="text-algin:right">
-                                                    <a href="" title="Eliminar Item" data-toggle="modal" data-target="#modaleliminarproducto"
-                                                    class="btn btn-danger"
-                                                    data-id='{{ $item->id }}'
-                                                    data-cod_articulo='{{$item->cod_articulo}}'
-                                                    data-descripcion='{{$item->descripcion}}'
-                                                    data-marca='{{$item->marca}}'
-                                                    >🗑</a>
-                                                </div>
-                                            </div>
-                                            </div>
-                                    </td>
+    <div class="row">
+        <div class="col-8">
+            <a href="javascript:void(0);" class="btn btn-primary" title="Editar Producto"
+               data-toggle="modal" data-target="#modaleditarprod"
+               data-id='{{ $item->id }}'
+               data-cod_articulo='{{$item->cod_articulo}}'
+               data-descripcion='{{$item->descripcion}}'
+               data-marca='{{$item->marca}}'
+               data-cantidad='{{$item->cantidad}}'
+               data-stock_sala='{{$item->stock_sala}}'
+               data-stock_bodega='{{$item->stock_bodega}}'
+               data-margen='{{$item->margen}}'
+               data-precio='{{$item->preciou}}'
+               data-costoo="{{$item->costoo}}"
+               data-valor_margen="{{$item->valor_margen}}">
+                <i class="fas fa-edit"></i>
+            </a>
+        </div>
+        <div class="col-4 d-flex justify-content-end">
+            <a href="javascript:void(0);" title="Eliminar Item" data-toggle="modal"
+   data-target="#modaleliminarproducto"
+   class="btn btn-danger"
+   data-id="{{ $item->id }}"
+   data-cod_articulo="{{ $item->cod_articulo }}">
+   🗑
+</a>
+
+        </div>
+    </div>
+</td>
+
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -142,9 +151,7 @@ Compra Agil
                     </table>
                 </div>
             </div>
-
         </div>
-</div>
 <!-- Inicio Modal eliminar item -->
 <div class="modal fade" id="modaleliminarproducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -182,7 +189,8 @@ Compra Agil
             </div>
             <div class="modal-body">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('EditarItem')}}">
+                    <form method="POST" action="{{ route('EditarItem')}}" novalidate>
+
                         {{ method_field('put') }}
                         {{ csrf_field() }}
                         @csrf
@@ -220,15 +228,65 @@ Compra Agil
                                     value="{{ old('marca') }}" required autocomplete="marca" readonly>
                             </div>
                         </div>
+                        <!-- Margen -->
+                        <div class="form-group row">
+                            <label for="margen"
+                                class="col-md-4 col-form-label text-md-right">{{ __('margen') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="margen_modal" type="number"
+                                    class="form-control @error('margen') is-invalid @enderror" name="margen"
+                                    value="{{ old('margen') }}" required autocomplete="margen" min="0" max="500">
+                            </div>
+                        </div>
                         <!-- Cantidad -->
                         <div class="form-group row">
                             <label for="cantidad"
                                 class="col-md-4 col-form-label text-md-right">{{ __('Cantidad') }}</label>
 
                             <div class="col-md-6">
-                                <input id="cantidad" type="number"
-                                    class="form-control @error('cantidad') is-invalid @enderror" name="cantidad"
-                                    value="{{ old('cantidad') }}" required autocomplete="cantidad" min="0" max="9999" maxlength="4" autofocus>
+                                <input id="cantidad_modal" type="number"
+                                    class="form-control @error('cantidad_modal') is-invalid @enderror" name="cantidad_modal"
+                                    value="{{ old('cantidad_modal') }}" required autocomplete="cantidad" min="0" max="9999" maxlength="4" autofocus>
+                            </div>
+                        </div>
+                        <!-- Neto -->
+                        <div class="form-group row">
+                            <label for="precio"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Neto') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="precio" type="number"
+                                    class="form-control @error('precio') is-invalid @enderror" name="precio"
+                                    value="{{ old('precio') }}" required autocomplete="Neto" readonly>
+                            </div>
+                        </div>
+                        <!-- Costo -->
+                        <div class="form-group row">
+                            <label for="Costo"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Costo') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="Costop" type="number" class="form-control @error('Costop') is-invalid @enderror" name="Costo" value="{{ old('Costop') }}" required autocomplete="Costo" readonly  style="color: red;">
+
+                            </div>
+                        </div>
+                        <!-- Total con margen -->
+                        <div class="form-group row">
+                            <label for="Total C/n Margen"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Precio Un. Con Margen') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="total_margen" type="number" class="form-control @error('total_margen') is-invalid @enderror" name="total_margen" value="{{ old('total_margen') }}" required autocomplete="total_margen" readonly>
+                            </div>
+                        </div>
+                        <!-- Total margen y cantidad -->
+                        <div class="form-group row">
+                            <label for="Total"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Total') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="total_todo" type="number" class="form-control @error('total_todo') is-invalid @enderror" name="total_todo" value="{{ old('total_todo') }}" required autocomplete="total_todo" readonly>
                             </div>
                         </div>
                         <!-- Stock Sala -->
@@ -300,38 +358,61 @@ Compra Agil
 @endsection
 
 @section('script')
-
 <script>
-    $('#modaleditarprod').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var cod_articulo = button.data('cod_articulo')
-        var descripcion = button.data('descripcion')
-        var marca = button.data('marca')
-        var cantidad = button.data('cantidad')
-        var stock_sala = button.data('stock_sala')
-        var stock_bodega = button.data('stock_bodega')
-        var modal = $(this)
-        modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #cod_articulo').val(cod_articulo);
-        modal.find('.modal-body #descripcion').val(descripcion);
-        modal.find('.modal-body #marca').val(marca);
-        modal.find('.modal-body #cantidad').val(cantidad);
-        modal.find('.modal-body #stock_sala').val(stock_sala);
-        modal.find('.modal-body #stock_bodega').val(stock_bodega);
-        modal.find('.modal-body #cantidad').focus();
-    })
+$('#modaleditarprod').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var id = button.data('id');
+    var cod_articulo = button.data('cod_articulo');
+    var descripcion = button.data('descripcion');
+    var marca = button.data('marca');
+    var margen = button.data('margen');
+    var cantidad = button.data('cantidad');
+    var precio = button.data('precio');
+    var costo = button.data('costoo');
+    var stock_sala = button.data('stock_sala');
+    var stock_bodega = button.data('stock_bodega');
+    var valor_margen = button.data('valor_margen');
+
+    // Guardar valores sin formato en variables ocultas (para cálculos)
+    var modal = $(this);
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #cod_articulo').val(cod_articulo);
+    modal.find('.modal-body #descripcion').val(descripcion);
+    modal.find('.modal-body #marca').val(marca);
+    modal.find('.modal-body #margen_modal').val(margen);
+    modal.find('.modal-body #cantidad_modal').val(cantidad);
+    modal.find('.modal-body #precio').val(precio);  // Sin formato para cálculos
+    modal.find('.modal-body #Costop').val(costo);   // Sin formato para cálculos
+    modal.find('.modal-body #stock_sala').val(stock_sala);
+    modal.find('.modal-body #stock_bodega').val(stock_bodega);
+    modal.find('.modal-body #total_margen').val(valor_margen);
+
+    // Mostrar valores con formato solo visualmente
+    modal.find('.modal-body #precio').attr('placeholder', precio.toLocaleString('es-CL'));
+    modal.find('.modal-body #Costop').attr('placeholder', costo.toLocaleString('es-CL'));
+    modal.find('.modal-body #total_margen').attr('placeholder', valor_margen.toLocaleString('es-CL'));
+
+    // Forzar actualización después de abrir el modal
+    setTimeout(function () {
+        $('#margen_modal, #cantidad, #precio').trigger('change');
+    }, 200);
+});
 </script>
 <script>
     $('#modaleliminarproducto').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var cod_articulo = button.data('cod_articulo')
-        var modal = $(this)
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var cod_articulo = button.data('cod_articulo');
+
+        console.log("ID:", id);
+        console.log("Código de Artículo:", cod_articulo);
+
+        var modal = $(this);
         modal.find('.modal-body #id').val(id);
         modal.find('.modal-body #cod_articulo').val(cod_articulo);
-})
+    });
 </script>
+
 
 <script>
     $(document).ready(function() {
@@ -423,9 +504,10 @@ Compra Agil
                     $('#buscar_detalle').val(result[0].ARDESC);
                     $('#buscar_marca').val(result[0].ARMARCA);
                     $( "#cantidad" ).focus();
+                    $( "#margen" ).focus();
                     $( "#buscar_cantidad" ).val(null);
                     $( "#buscar_costo").val((Math.round(result[0].PCCOSTO / 1.19)))
-                    // $("#buscar_costo").val((Math.round(result[0].PCCOSTO / 1.19 * 100) / 100).toFixed(2));
+                    $('#costo').val(result[0].PCCOSTO);
                     codigo = result[0].ARCODI;
                     descripcion = result[0].ARDESC;
                     marca = result[0].ARMARCA;
@@ -440,16 +522,6 @@ Compra Agil
                 $(this).trigger("enterKey");
             }
         });
-
-        // $(add_button).click(function(e){
-
-        //     if( codigo == null){
-        //         window.alert("Debe ingresar codigo de producto");
-        //     }
-        //     else{
-        //             $( "#agregaritem" ).submit();
-        //     }
-        // })
 
         $(add_button).click(function(e){
             e.preventDefault();
@@ -480,14 +552,35 @@ Compra Agil
         var margenFactor = (margenPorcentaje / 100);
 
         if (margenFactor !== 0) {
-            // $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(2));
-            $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(0)); //sin decimales
-            // $('#label_pmargen').val(Math.floor((cantidad * neto) * (1 + margenFactor))); aproxima hacia abajo
-            //$('#label_pmargen').val(Math.ceil((cantidad * neto) * (1 + margenFactor))); aproxima hacia arriba
+            $('#label_pmargen').val(((cantidad * neto) * (1 + margenFactor)).toFixed(0));
+            $('#margenonly').val(((1 * neto) * (1 + margenFactor)).toFixed(0)); // Corrige el selector aquí
         } else {
             $('#label_pmargen').val('0');
+            $('#margenonly').val('0'); // Asegurar que también se ponga en 0
         }
     });
 </script>
+<script type="text/javascript">
+    function calcularMargenYNeto() {
+        const cantidad = parseFloat($("#cantidad_modal").val()) || 0;
+        const margen = parseFloat($("#margen_modal").val()) || 0;
+        const neto = parseFloat($("#precio").val()) || 0;
+
+        // Cálculo del total del margen
+        const total_margen = neto * (1 + margen / 100);
+        $("#total_margen").val(Math.round(total_margen));
+
+        // Cálculo del total final multiplicado por la cantidad
+        const totalFinal = total_margen * cantidad;
+        $("#total_todo").val(Math.round(totalFinal)); // Ahora se llena automáticamente
+    }
+
+    // Ejecutar la función cuando cambien los valores
+    $("#margen_modal, #cantidad_modal, #precio").on("input change", calcularMargenYNeto);
+</script>
+
+
+
+
 @endsection
 

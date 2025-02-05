@@ -42,7 +42,8 @@ class CompraAgilController extends Controller
 
         // dd($request);
 
-        $compragild=DB::select('select
+        $compragild = DB::select('
+    SELECT
         compragil_detalle.id,
         compragil_detalle.cod_articulo,
         compragil_detalle.id_compragil,
@@ -51,16 +52,21 @@ class CompraAgilController extends Controller
         producto.ARDESC as descripcion,
         producto.ARMARCA as marca,
         compragil_detalle.cantidad,
-        if(isnull(bodeprod.bpsrea),0,bodeprod.bpsrea) AS stock_sala,
-        if(isnull(Suma_Bodega.cantidad),0,Suma_Bodega.cantidad) AS stock_bodega,
-        (sum(compragil_detalle.cantidad) * compragil_detalle.valor_margen) as precio_detalle,
-        (precios.PCCOSTO)/1.19 as preciou
-        from compragil_detalle
-        left join precios on SUBSTRING(compragil_detalle.cod_articulo,1,5)  = precios.PCCODI
-        left join producto on compragil_detalle.cod_articulo = producto.ARCODI
-        left join bodeprod on compragil_detalle.cod_articulo = bodeprod.bpprod
-        left join Suma_Bodega on compragil_detalle.cod_articulo = Suma_Bodega.inarti
-        where compragil_detalle.id_compragil= '.$request->get("id"). ' group by compragil_detalle.cod_articulo order by compragil_detalle.id desc');
+        IF(ISNULL(bodeprod.bpsrea), 0, bodeprod.bpsrea) AS stock_sala,
+        IF(ISNULL(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) AS stock_bodega,
+        (SUM(compragil_detalle.cantidad) * compragil_detalle.valor_margen) AS precio_detalle,
+        FLOOR((precios.PCCOSTO) / 1.19) AS preciou,
+        (precios.PCCOSTO) as costoo
+        FROM compragil_detalle
+    LEFT JOIN precios ON SUBSTRING(compragil_detalle.cod_articulo, 1, 5) = precios.PCCODI
+    LEFT JOIN producto ON compragil_detalle.cod_articulo = producto.ARCODI
+    LEFT JOIN bodeprod ON compragil_detalle.cod_articulo = bodeprod.bpprod
+    LEFT JOIN Suma_Bodega ON compragil_detalle.cod_articulo = Suma_Bodega.inarti
+    WHERE compragil_detalle.id_compragil = '.$request->get("id").'
+    GROUP BY compragil_detalle.cod_articulo
+    ORDER BY compragil_detalle.id DESC
+');
+
         // dd($compragild);
 
         return view('admin.Cotizaciones.Compragil',compact('compragild'),['id' =>$request->get("id")]);
@@ -121,7 +127,7 @@ class CompraAgilController extends Controller
         $cantidadingresada = $request->input('cantidad');
         $idcompra = $request->get('id');
         $margen = $request->get('margen');
-        $label_pmargen = $request->get('label_pmargen');
+        $label_pmargen = $request->get('margenonly');
         // dd($idcompra);
 
 
@@ -309,21 +315,39 @@ class CompraAgilController extends Controller
     // Fin Agregar Cotización
 
 
-    public function EditarItem(Request $request){
+    public function EditarItem(Request $request)
+    {
+        // Obtener el artículo que estás editando
+        $item = DB::table('compragil_detalle')
+            ->where('id', $request->get('id'))
+            ->first();
+
+        if (!$item) {
+            return back()->with('error', 'El producto no existe.');
+        }
+
+        // Obtener valores desde el request
+        $precio = $request->precio; // Precio recibido en la petición
+        $margen = $request->margen;
+
+        // Calcular el margen y el precio final
+        $margen_calculado = round($precio * $margen / 100); // Redondeamos el margen
+        $valor_margen = $precio + $margen_calculado; // Sumamos el margen al precio
+
+        // Actualizar los datos en la base de datos
+        DB::table('compragil_detalle')
+            ->where('id', $request->get('id'))
+            ->update([
+                'margen' => $margen,
+                'cantidad' => $request->cantidad_modal,
+                'valor_margen' => $valor_margen, // Guardamos solo el precio con margen
+            ]);
+
+        return back()->with('success', 'Producto Editado Correctamente');
+    }
 
 
-        // dd($request);
-              DB::table('compragil_detalle')
-              ->where('compragil_detalle.id', $request->get("id"))
-              ->update(
-                [
-                    'cantidad'=> $request->cantidad,]
 
-                );
-
-                // return redirect()->route('ListarConvenio')->with('success','Producto Editado Correctamente');
-                return back()->with('success','Producto Editado Correctamente');
-          }
 
 public function EditarCompra(Request $request){
     $datet = Carbon::now();

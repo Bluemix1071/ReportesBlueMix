@@ -65,7 +65,31 @@ Compras Agiles
 
                         {{-- <div class="col-md-1"><input type="text" class="form-control" placeholder="OC" name="oc" required id="oc"></div> --}}
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Contacto" name="observacion" required id="observacion"></div>{{-- Contacto de la compra ágil --}}
-                        <div class="col-md-1"><input type="number" class="form-control" placeholder="Cod.Vendedor" name="codvende" required id="codende" max="999" pattern="\d{1,3}"></div>
+                        <div class="col-md-1">
+                            <select class="form-control" name="codvende" id="codvende" required>
+                              <option value="" disabled selected>Seleccionar Vendedor</option>
+                              <option value="6">Mauricio</option>
+                              <option value="15">ADALICIA</option>
+                              <option value="10">ALAN</option>
+                              <option value="21">ANETTE</option>
+                              <option value="22">CAROLAYN</option>
+                              <option value="3">CATALINA</option>
+                              <option value="26">CATHERINE</option>
+                              <option value="37">DISEÑO</option>
+                              <option value="9">ESTEBAN</option>
+                              <option value="32">KEVIN</option>
+                              <option value="35">LISTAS ESCOLARES</option>
+                              <option value="28">MANUEL SOTO</option>
+                              <option value="4">MARJORIE</option>
+                              <option value="7">MICHAEL</option>
+                              <option value="27">NATALY</option>
+                              <option value="2">ROSITA</option>
+                              <option value="1">SALA DE VENTAS</option>
+                              <option value="36">SCARLETTE</option>
+                              <option value="11">VALENTIN</option>
+                            </select>
+                          </div>
+
                         <div class="col-md-1"><button type="submit" class="btn btn-success">Agregar</button></div>
                     </div>
                 </form>
