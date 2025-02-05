@@ -163,7 +163,9 @@ class PublicoController extends Controller
 
       $fecha = date('Y-m-d');
 
-      return view('publicos.Estacionamiento', compact('tickets', 'fecha'));
+      $precio = DB::table('precios')->where('PCCODI', '00001')->get('PCPVDET')[0]->PCPVDET;
+
+      return view('publicos.Estacionamiento', compact('tickets', 'fecha', 'precio'));
 
     }
 
@@ -173,7 +175,9 @@ class PublicoController extends Controller
 
       $fecha = $request->get('fecha');
 
-      return view('publicos.Estacionamiento', compact('tickets', 'fecha'));
+      $precio = 25;
+
+      return view('publicos.Estacionamiento', compact('tickets', 'fecha', 'precio'));
 
     }
 

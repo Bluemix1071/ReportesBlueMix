@@ -21,6 +21,8 @@
             --:--:--
           </div>
         </div>
+
+        <input type="text" id="precio" value="{{ $precio }}" name="0000100" hidden>
         
         <form action="{{ route('EstacionamientoFiltro') }}" method="post" class="form-inline col">
                 <tr>
@@ -168,7 +170,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="id" class="col-md col-form-label text-md-right">Total ($23 min):</label>
+                    <label for="id" class="col-md col-form-label text-md-right">Total (${{ $precio }}min):</label>
 
                     <div class="col-md-6">
                       <input id="total" type="text" readonly style="border: none;
@@ -204,6 +206,9 @@
 @section('script')
 
 <script>
+
+  const precio = $("#precio").val();
+
   $(document).ready(function() {
     $('#tickets').DataTable( {
         order: [0, 'desc'],
@@ -289,7 +294,7 @@
             modal.find('.modal-body #minutos').val(Math.round(mts));
             modal.find('.modal-body #minutos_ver').val(Math.round(mts));
 
-            modal.find('.modal-body #total').val((Math.round(mts)*23).toLocaleString('es-CL', {
+            modal.find('.modal-body #total').val((Math.round(mts)*precio).toLocaleString('es-CL', {
               style: 'currency',
               currency: 'CLP',
             }));
@@ -354,14 +359,14 @@
               }));
               $('#minutos_ver').val(0);
             }else{
-              $('#total').val(((minutos-60)*23).toLocaleString('es-CL', {
+              $('#total').val(((minutos-60)*precio).toLocaleString('es-CL', {
                 style: 'currency',
                 currency: 'CLP',
               }));
               $('#minutos_ver').val(minutos-60);
             }
           } else {
-            $('#total').val((minutos*23).toLocaleString('es-CL', {
+            $('#total').val((minutos*precio).toLocaleString('es-CL', {
               style: 'currency',
               currency: 'CLP',
             }));
