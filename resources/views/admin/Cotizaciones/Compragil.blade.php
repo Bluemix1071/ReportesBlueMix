@@ -572,15 +572,15 @@ $('#modaleditarprod').on('show.bs.modal', function (event) {
     function calcularMargenYNeto() {
         const cantidad = parseFloat($("#cantidad_modal").val()) || 0;
         const margen = parseFloat($("#margen_modal").val()) || 0;
-        const neto = parseFloat($("#precio").val()) || 0;
+        const valorMargen = parseFloat($("#precio").val()) || 0;
 
-        // Cálculo del total del margen
-        const total_margen = neto * (1 + margen / 100);
-        $("#total_margen").val(Math.round(total_margen));
+        // Cálculo del total del margen (precio con margen aplicado)
+        const totalMargen = Math.round(valorMargen * (1 + margen / 100));
+        $("#total_margen").val(totalMargen);
 
         // Cálculo del total final multiplicado por la cantidad
-        const totalFinal = total_margen * cantidad;
-        $("#total_todo").val(Math.round(totalFinal)); // Ahora se llena automáticamente
+        const totalFinal = Math.round(totalMargen * cantidad);
+        $("#total_todo").val(totalFinal);
     }
 
     // Ejecutar la función cuando cambien los valores
