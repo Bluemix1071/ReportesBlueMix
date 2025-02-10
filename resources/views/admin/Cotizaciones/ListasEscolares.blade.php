@@ -251,7 +251,7 @@ Lista Escolar
                                 {{-- <td style="text-align: left">{{ number_format((($item->stock_total*100)/$item->cantidad), 0, ',', '.') }}%</td> --}}
                                 <td style="text-align: left">{{ number_format((((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega)) * 100) / $item->cantidad), 0, ',', '.') }}%</td>
                                 <div style="display: none">{{ $total += $item->precio_detalle }}</div>
-                               <!--  <td>{{ round(((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega))/$item->avg_30)) }}</td> -->
+                                {{-- <td>{{ round(((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega))/$item->avg_30)) }}</td> --}}
                                 <td>
                                 <div class="container">
                                     <div class="row">
