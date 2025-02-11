@@ -240,7 +240,7 @@ class ListaEscolarController extends Controller
         //         ]
         //     ]);
 
-            $listas=DB::select('select
+            /* $listas=DB::select('select
             ListaEscolar_detalle.id,
             ListaEscolar_detalle.comentario,
             ListaEscolar_detalle.id_curso,
@@ -252,12 +252,36 @@ class ListaEscolarController extends Controller
             Suma_Bodega.cantidad AS stock_bodega,
             (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
             (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
-            precios.PCPVDET as preciou,ListaEscolar_detalle.comentario
+            precios.PCPVDET as preciou,
+            ListaEscolar_detalle.comentario
             from ListaEscolar_detalle
             left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
             left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
             left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
             left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+            where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo'); */
+
+            $listas=DB::select('select
+            ListaEscolar_detalle.id,
+            ListaEscolar_detalle.comentario,
+            ListaEscolar_detalle.id_curso,
+            ListaEscolar_detalle.cod_articulo,
+            producto.ARDESC as descripcion,
+            producto.ARMARCA as marca,
+            ListaEscolar_detalle.cantidad as cantidad,
+            bodeprod.bpsrea as stock_sala,
+            Suma_Bodega.cantidad AS stock_bodega,
+            (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
+            (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
+            precios.PCPVDET as preciou,
+            ListaEscolar_detalle.comentario,
+            (sum(DECANT)/30) as avg_30
+            from ListaEscolar_detalle
+            left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
+            left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
+            left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
+            left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+            left join dcargos on ListaEscolar_detalle.cod_articulo = dcargos.DECODI and DEFECO between (date(now()) - interval 30 day) and date(now())
             where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 
@@ -294,17 +318,20 @@ class ListaEscolarController extends Controller
             ListaEscolar_detalle.cod_articulo,
             producto.ARDESC as descripcion,
             producto.ARMARCA as marca,
-            sum(ListaEscolar_detalle.cantidad) as cantidad,
+            ListaEscolar_detalle.cantidad as cantidad,
             bodeprod.bpsrea as stock_sala,
             Suma_Bodega.cantidad AS stock_bodega,
             (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
             (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
-            precios.PCPVDET as preciou
+            precios.PCPVDET as preciou,
+            ListaEscolar_detalle.comentario,
+            (sum(DECANT)/30) as avg_30
             from ListaEscolar_detalle
             left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
             left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
             left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
             left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+            left join dcargos on ListaEscolar_detalle.cod_articulo = dcargos.DECODI and DEFECO between (date(now()) - interval 30 day) and date(now())
             where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 
@@ -346,17 +373,20 @@ class ListaEscolarController extends Controller
         ListaEscolar_detalle.cod_articulo,
         producto.ARDESC as descripcion,
         producto.ARMARCA as marca,
-        sum(ListaEscolar_detalle.cantidad) as cantidad,
+        ListaEscolar_detalle.cantidad as cantidad,
         bodeprod.bpsrea as stock_sala,
         Suma_Bodega.cantidad AS stock_bodega,
         (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
         (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
-        precios.PCPVDET as preciou
+        precios.PCPVDET as preciou,
+        ListaEscolar_detalle.comentario,
+        (sum(DECANT)/30) as avg_30
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+        left join dcargos on ListaEscolar_detalle.cod_articulo = dcargos.DECODI and DEFECO between (date(now()) - interval 30 day) and date(now())
         where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 
@@ -439,17 +469,20 @@ class ListaEscolarController extends Controller
         ListaEscolar_detalle.cod_articulo,
         producto.ARDESC as descripcion,
         producto.ARMARCA as marca,
-        sum(ListaEscolar_detalle.cantidad) as cantidad,
+        ListaEscolar_detalle.cantidad as cantidad,
         bodeprod.bpsrea as stock_sala,
         Suma_Bodega.cantidad AS stock_bodega,
         (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
         (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
-        precios.PCPVDET as preciou
+        precios.PCPVDET as preciou,
+        ListaEscolar_detalle.comentario,
+        (sum(DECANT)/30) as avg_30
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+        left join dcargos on ListaEscolar_detalle.cod_articulo = dcargos.DECODI and DEFECO between (date(now()) - interval 30 day) and date(now())
         where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 
@@ -477,17 +510,20 @@ class ListaEscolarController extends Controller
         ListaEscolar_detalle.cod_articulo,
         producto.ARDESC as descripcion,
         producto.ARMARCA as marca,
-        sum(ListaEscolar_detalle.cantidad) as cantidad,
+        ListaEscolar_detalle.cantidad as cantidad,
         bodeprod.bpsrea as stock_sala,
         Suma_Bodega.cantidad AS stock_bodega,
         (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
         (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
-        precios.PCPVDET as preciou
+        precios.PCPVDET as preciou,
+        ListaEscolar_detalle.comentario,
+        (sum(DECANT)/30) as avg_30
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
         left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
         left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+        left join dcargos on ListaEscolar_detalle.cod_articulo = dcargos.DECODI and DEFECO between (date(now()) - interval 30 day) and date(now())
         where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
         // dd($listas);
@@ -624,17 +660,20 @@ class ListaEscolarController extends Controller
           ListaEscolar_detalle.cod_articulo,
           producto.ARDESC as descripcion,
           producto.ARMARCA as marca,
-          sum(ListaEscolar_detalle.cantidad) as cantidad,
+          ListaEscolar_detalle.cantidad as cantidad,
           bodeprod.bpsrea as stock_sala,
           Suma_Bodega.cantidad AS stock_bodega,
           (bodeprod.bpsrea + Suma_Bodega.cantidad) as stock_total,
           (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
-          precios.PCPVDET as preciou
+          precios.PCPVDET as preciou,
+          ListaEscolar_detalle.comentario,
+          (sum(DECANT)/30) as avg_30
           from ListaEscolar_detalle
           left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
           left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
           left join bodeprod on ListaEscolar_detalle.cod_articulo = bodeprod.bpprod
           left join Suma_Bodega on ListaEscolar_detalle.cod_articulo = Suma_Bodega.inarti
+          left join dcargos on ListaEscolar_detalle.cod_articulo = dcargos.DECODI and DEFECO between (date(now()) - interval 30 day) and date(now())
           where ListaEscolar_detalle.id_curso='.$request->get("idcurso").' group by ListaEscolar_detalle.cod_articulo');
 
 

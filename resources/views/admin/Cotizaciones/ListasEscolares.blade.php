@@ -64,18 +64,33 @@ Lista Escolar
 
                                     <hr>
                                 <div class="form-group row">
+                                    @if($colegio->id != 676)
                                     <form action="{{ route('AgregarItem') }}" method="POST" enctype="multipart/form-data" id="agregaritem">
                                         <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="ID CURSO" name="idcurso" required id="idcurso" value="{{ $curso->id }}" style="display: none">
-                                        &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col-2" value=""/>
-                                        &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
-                                        &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
-                                        &nbsp;<input type="number" id="stock_sala" placeholder="Sala" readonly class="form-control col" value=""/>
-                                        &nbsp;<input type="number" id="cantidad" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
-                                    </div>
+                                            <div class="row">
+                                                <input type="text" class="form-control" placeholder="ID CURSO" name="idcurso" required id="idcurso" value="{{ $curso->id }}" style="display: none">
+                                                &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col-2" value=""/>
+                                                &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
+                                                &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
+                                                &nbsp;<input type="number" id="stock_sala" placeholder="Sala" readonly class="form-control col" value=""/>
+                                                &nbsp;<input type="number" id="cantidad" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
+                                            </div>
                                      </form>
                                      <div class="col">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success" >Agregar Item</button>
+                                     @else
+                                     <form action="{{ route('AgregarItem') }}" method="POST" enctype="multipart/form-data" id="agregaritem">
+                                        <input type="text" value="{{$colegio->id}}" name="id_colegio" hidden>
+                                            <div class="row">
+                                                <input type="text" class="form-control" placeholder="ID CURSO" name="idcurso" required id="idcurso" value="{{ $curso->id }}" style="display: none">
+                                                &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col-2" value=""/>
+                                                &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
+                                                &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
+                                                &nbsp;<input type="number" id="stock_sala" placeholder="Sala" readonly class="form-control col" value=""/>
+                                                &nbsp;<input type="number" id="cantidad" placeholder="Cantidad" required name="cantidad" class="form-control col" value="0" min="1" max="99999999" hidden/>
+                                            </div>
+                                     </form>
+                                     <div class="col">&nbsp;<button type="submit" id="add_field_button" class="btn btn-info" >Agregar Item</button>
+                                     @endif
                                     </div>
 
                             </div>
@@ -105,6 +120,7 @@ Lista Escolar
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
                                     <th scope="col" style="text-align:left">Costo C/U</th>
                                     <th scope="col" style="text-align:left">Costo Total</th>
+                                    <th scope="col" style="display: none">Comentario</th>
                                     <th scope="col" style="text-align:left">Acciones</th>
                                 </tr>
                             </thead>
@@ -135,7 +151,8 @@ Lista Escolar
                                     @endif
                                     <td style="text-align:left">${{ number_format(($item->preciou), 0, ',', '.') }}</td>
                                     <td style="text-align:left">${{ number_format(($item->cantidad*$item->preciou), 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $total += $item->precio_detalle }}</div>
+                                    <div style="display: none">{{ $total += $item->cantidad*$item->preciou }}</div>
+                                    <td style="display: none;">{{ $item->comentario }}</td>
                                     <td>
                                     <div class="container">
                                         <div class="row">
@@ -225,10 +242,10 @@ Lista Escolar
                                 <th scope="col" style="text-align:left">Codigo Producto</th>
                                 <th scope="col" style="text-align:left">Detalle</th>
                                 <th scope="col" style="text-align:left">Marca</th>
-                                <th scope="col" style="text-align:left">Cantidad</th>
+                                {{-- <th scope="col" style="text-align:left">Cantidad</th> --}}
                                 <th scope="col" style="text-align:left">Stock Total</th>
-                                <th scope="col" style="text-align:left">Queda <i class="fas fa-percentage"></i></th>
-                               <!--  <th scope="col" style="text-align:left">Días</th> -->
+                                {{-- <th scope="col" style="text-align:left">Queda <i class="fas fa-percentage"></i></th> --}}
+                                <th scope="col" style="text-align:left">Días</th>
                                 <th scope="col" style="text-align:left">Acciones</th>
                             </tr>
                         </thead>
@@ -246,12 +263,16 @@ Lista Escolar
                                 <td scope="col" style="text-align:left"><a href="https://www.libreriabluemix.cl/search?q={{ $item->cod_articulo }}" target="_blank">{{ $item->cod_articulo }}</a></td>
                                 <td style="text-align:left">{{ $item->descripcion }}</td>
                                 <td style="text-align:left">{{ $item->marca }}</td>
-                                <td style="text-align:left">{{ $item->cantidad }}</td>
+                                {{-- <td style="text-align:left">{{ $item->cantidad }}</td> --}}
                                 <td style="text-align: left">{{ (($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega)) }}</td>
                                 {{-- <td style="text-align: left">{{ number_format((($item->stock_total*100)/$item->cantidad), 0, ',', '.') }}%</td> --}}
-                                <td style="text-align: left">{{ number_format((((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega)) * 100) / $item->cantidad), 0, ',', '.') }}%</td>
+                                {{-- <td style="text-align: left">{{ number_format((((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega)) * 100) / $item->cantidad), 0, ',', '.') }}%</td> --}}
                                 <div style="display: none">{{ $total += $item->precio_detalle }}</div>
-                                {{-- <td>{{ round(((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega))/$item->avg_30)) }}</td> --}}
+                                @if(is_null($item->avg_30))
+                                    <td>N/A</td>
+                                @else
+                                    <td>{{ round(((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega))/$item->avg_30)) }}</td>
+                                @endif
                                 <td>
                                 <div class="container">
                                     <div class="row">
@@ -272,7 +293,7 @@ Lista Escolar
                                         </button>
                                     </form>
                                 </div>
-                                &nbsp;
+                                &nbsp; &nbsp;
                                 <!-- boton comentar-->
                                 <div class="col-4" style="text-algin:right">
                                 @if($item->comentario != "")
@@ -296,8 +317,7 @@ Lista Escolar
                                 @endif
                                 </div>
                                 <!-- boton comentar-->
-                                &nbsp;
-                                <div class="col-1" style="text-algin:right">
+                                {{-- <div class="col-1" style="text-algin:right">
                                         <a href="" title="editarp" data-toggle="modal" data-target="#modaleditarp"
                                         class="btn btn-info bg-success"
                                         data-id='{{ $item->id }}'
@@ -311,7 +331,7 @@ Lista Escolar
                                         data-stock_sala='{{ $item->stock_sala }}'
                                         data-stock_bodega='{{ $item->stock_bodega }}'
                                         ><i class="fas fa-edit"></i></a>
-                                </div>
+                                </div> --}}
                                 </td>
                             </tr>
                             @endforeach
@@ -614,6 +634,11 @@ Lista Escolar
                                       '<h6><b>Total(-10%):</b> '+$('#montototal').val()+'</h6>'+
                                   '</div>'+
                               '</div>',
+                            customize: function (win) {
+                                $(win.document.body).find('table thead th:eq(10), table tbody tr td:eq(10)').each(function () {
+                                    $(this).hide(); // Ocultamos la columna en encabezado y celdas
+                                });
+                            }
                           }
                       ],
             "language":{
