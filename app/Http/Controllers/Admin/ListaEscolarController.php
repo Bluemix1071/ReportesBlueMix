@@ -275,7 +275,7 @@ class ListaEscolarController extends Controller
             (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
             precios.PCPVDET as preciou,
             ListaEscolar_detalle.comentario,
-            (sum(DECANT)/30) as avg_30
+            sum(DECANT) as vta_30
             from ListaEscolar_detalle
             left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
             left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
@@ -325,7 +325,7 @@ class ListaEscolarController extends Controller
             (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
             precios.PCPVDET as preciou,
             ListaEscolar_detalle.comentario,
-            (sum(DECANT)/30) as avg_30
+            sum(DECANT) as vta_30
             from ListaEscolar_detalle
             left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
             left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
@@ -380,7 +380,7 @@ class ListaEscolarController extends Controller
         (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou,
         ListaEscolar_detalle.comentario,
-        (sum(DECANT)/30) as avg_30
+        sum(DECANT) as vta_30
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
@@ -476,7 +476,7 @@ class ListaEscolarController extends Controller
         (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou,
         ListaEscolar_detalle.comentario,
-        (sum(DECANT)/30) as avg_30
+        sum(DECANT) as vta_30
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
@@ -517,7 +517,7 @@ class ListaEscolarController extends Controller
         (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
         precios.PCPVDET as preciou,
         ListaEscolar_detalle.comentario,
-        (sum(DECANT)/30) as avg_30
+        sum(DECANT) as vta_30
         from ListaEscolar_detalle
         left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
         left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
@@ -667,7 +667,7 @@ class ListaEscolarController extends Controller
           (sum(ListaEscolar_detalle.cantidad) * precios.PCPVDET) as precio_detalle,
           precios.PCPVDET as preciou,
           ListaEscolar_detalle.comentario,
-          (sum(DECANT)/30) as avg_30
+          sum(DECANT) as vta_30
           from ListaEscolar_detalle
           left join precios on SUBSTRING(ListaEscolar_detalle.cod_articulo,1,5)  = precios.PCCODI
           left join producto on ListaEscolar_detalle.cod_articulo = producto.ARCODI
@@ -691,4 +691,33 @@ class ListaEscolarController extends Controller
         //   return redirect()->route('listas')->with('success','Producto Editado Correctamente');
     }
 
+    function diasATexto($dias) {
+        // Calcular los meses aproximados (promedio de días por mes)
+        $meses = floor($dias / 30.44);
+        $diasRestantes = $dias - ($meses * 30.44); // Restar los días de los meses completos
+    
+        // Calcular las semanas y los días restantes (después de restar los días de los meses)
+        $semanas = floor($diasRestantes / 7);
+        $diasFinales = $diasRestantes - ($semanas * 7); // Restar los días de las semanas completas
+    
+        // Crear el texto
+        $texto = '';
+    
+        if ($meses > 0) {
+            $texto .= $meses . ' mes' . ($meses > 1 ? 'es' : '');
+        }
+    
+        if ($semanas > 0) {
+            if ($texto) $texto .= ' y ';
+            $texto .= $semanas . ' semana' . ($semanas > 1 ? 's' : '');
+        }
+    
+        if ($diasFinales > 0) {
+            if ($texto) $texto .= ' y ';
+            $texto .= $diasFinales . ' día' . ($diasFinales > 1 ? 's' : '');
+        }
+    
+        return $texto ?: '0 días'; // Si no hay días, muestra '0 días'
+    }
+    
 }

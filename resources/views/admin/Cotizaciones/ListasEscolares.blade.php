@@ -245,7 +245,8 @@ Lista Escolar
                                 {{-- <th scope="col" style="text-align:left">Cantidad</th> --}}
                                 <th scope="col" style="text-align:left">Stock Total</th>
                                 {{-- <th scope="col" style="text-align:left">Queda <i class="fas fa-percentage"></i></th> --}}
-                                <th scope="col" style="text-align:left">Días</th>
+                                <th scope="col" style="text-align:left">Vta Ult 30d</th>
+                                <th scope="col" style="text-align:left">Dias Quedan</th>
                                 <th scope="col" style="text-align:left">Acciones</th>
                             </tr>
                         </thead>
@@ -268,10 +269,12 @@ Lista Escolar
                                 {{-- <td style="text-align: left">{{ number_format((($item->stock_total*100)/$item->cantidad), 0, ',', '.') }}%</td> --}}
                                 {{-- <td style="text-align: left">{{ number_format((((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega)) * 100) / $item->cantidad), 0, ',', '.') }}%</td> --}}
                                 <div style="display: none">{{ $total += $item->precio_detalle }}</div>
-                                @if(is_null($item->avg_30))
+                                @if(is_null($item->vta_30))
+                                    <td>N/A</td>
                                     <td>N/A</td>
                                 @else
-                                    <td>{{ round(((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega))/$item->avg_30)) }}</td>
+                                    <td>{{ $item->vta_30 }}</td>
+                                    <td>{{ round(((($item->stock_sala ?? 0) + ($item->stock_bodega === null ? 0 : $item->stock_bodega))/($item->vta_30/30))) }}</td>
                                 @endif
                                 <td>
                                 <div class="container">
