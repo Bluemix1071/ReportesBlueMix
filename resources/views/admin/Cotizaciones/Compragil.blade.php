@@ -13,48 +13,74 @@ Compra Agil
     <div class="container-fluid">
         <h3 class="display-4">Compra Agil</h3>
 
-          <div class="col-md-12">
+        <div class="col-md-12">
             <hr>
+
             <div class="row">
+                <!-- Botón Volver -->
                 <div class="col-md-1" style="text-align: left">
-                    <a href="{{ route('ListarCompraAgil') }}" class="btn btn-success d-flex justify-content-start">Volver</a>
+                    <a href="{{ route('ListarCompraAgil') }}" class="btn btn-success d-flex justify-content-start">
+                        Volver
+                    </a>
                 </div>
 
+                <!-- Botón Cargar Cotización -->
                 <div class="col-md-1 col-12" style="text-align: right">
-                    <input type="text" value="{{ $id }}" name="id" id="id" hidden>
-                    <a href="" title="Cargar Cotizacion" data-toggle="modal" data-target="#modalcotizacion" class="btn btn-info">(+)Cotización</a>
+                    <input type="hidden" value="{{ $id }}" name="id" id="id">
+                    <a href="#" title="Cargar Cotización" data-toggle="modal" data-target="#modalcotizacion" class="btn btn-info">
+                        (+) Cotización
+                    </a>
                 </div>
 
-                <div class="col-md-10 col-12" style="text-align: left">
-                    <input type="text" value="{{ $id }}" name="id" id="id" hidden>
-                    <a href="{{ route('exportagilpdf', ['id' => $id]) }}" target="_blank" title="pdf" class="btn btn-info"><i class="fas fa-file"></i></a>
+                <!-- Botón Exportar PDF -->
+                <div class="col-md-9 col-12" style="text-align: left">
+                    <input type="hidden" value="{{ $id }}" name="id" id="id">
+                    <a href="{{ route('exportagilpdf', ['id' => $id]) }}" target="_blank" title="PDF" class="btn btn-info">
+                        <i class="fas fa-file"></i>
+                    </a>
                 </div>
-            </div>
+
+                <!-- Botón Enviar a COMBO (Movido al lado derecho) -->
+                <div class="col-md-1 col-12" style="text-align: right">
+                    <form action="{{ route('envio_combo', ['id' => $id]) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="total" id="total_envio">
+                        <button type="submit" title="Enviar a COMBO" class="btn btn-primary">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    </form>
+                </div>
+
 
             <hr>
+
+            <!-- Formulario Agregar Item -->
             <div class="col-md-12">
                 <div class="row">
-                    <form action="{{ route('AgregarItemc') }}" method="post" enctype="multipart/form-data" id="agregaritem" class="d-flex align-items-center">
-                        &nbsp;<input type="text" value="{{ $id }}" name="id" id="id" hidden>
-                        &nbsp;<input type="text" id="codigo" minlength="7" maxlength="7" name="codigo" placeholder="Codigo" required class="form-control col" value=""/>
-                        &nbsp;<input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6" value=""/>
-                        &nbsp;<input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col" value=""/>
-                        &nbsp;<input type="number" id="cantidad" minlength="1" maxlength="4" placeholder="Cantidad" required name="cantidad" class="form-control col" value="" min="1" max="99999999"/>
-                        &nbsp;<input type="number" id="margen" minlength="1" maxlength="4" placeholder="Margen" required name="margen" class="form-control col" value="" min="1" max="99999999"/>
-                        &nbsp;<input type="number" id="costo" minlength="1" maxlength="4" readonly placeholder="Costo" required name="costo" class="form-control col" value="" min="1" max="99999999" style="color: red;"/>
-                        &nbsp;<input type="number" id="buscar_costo" placeholder="Neto" required name="buscar_costo" readonly class="form-control col" value="" min="1" max="99999999"/>
-                        &nbsp;<input type="text" id="margenonly" required name="margenonly" placeholder="Margen only" readonly class="form-control col" value="Precio Margen" min="1" max="99999999"/>
-                        &nbsp;<input type="text" id="label_pmargen" required name="label_pmargen" placeholder="Margen" readonly class="form-control col" value="Total Margen" min="1" max="99999999"/>
+                    <form action="{{ route('AgregarItemc') }}" method="POST" enctype="multipart/form-data" id="agregaritem" class="d-flex align-items-center">
+                        @csrf
+                        <input type="hidden" value="{{ $id }}" name="id" id="id">
+
+                        <input type="text" id="codigo" name="codigo" placeholder="Código" minlength="7" maxlength="7" required class="form-control col">
+                        <input type="text" id="buscar_detalle" placeholder="Detalle" readonly class="form-control col-6">
+                        <input type="text" id="buscar_marca" placeholder="Marca" readonly class="form-control col">
+                        <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad" required min="1" max="99999999" class="form-control col">
+                        <input type="number" id="margen" name="margen" placeholder="Margen" required min="1" max="99999999" class="form-control col">
+                        <input type="number" id="costo" name="costo" placeholder="Costo" readonly required min="1" max="99999999" class="form-control col" style="color: red;">
+                        <input type="number" id="buscar_costo" name="buscar_costo" placeholder="Neto" readonly required min="1" max="99999999" class="form-control col">
+                        <input type="text" id="margenonly" name="margenonly" placeholder="Margen only" readonly class="form-control col" value="Precio Margen">
+                        <input type="text" id="label_pmargen" name="label_pmargen" placeholder="Margen" readonly class="form-control col" value="Total Margen">
                     </form>
+
+                    <!-- Botón Agregar Campo -->
                     <div class="col">
                         <button type="submit" id="add_field_button" class="btn btn-success">+</button>
                     </div>
                 </div>
             </div>
 
-
-                    <hr>
-                    <br>
+            <hr>
+            <br>
         </div>
 
                         <br>
@@ -586,9 +612,63 @@ $('#modaleditarprod').on('show.bs.modal', function (event) {
     // Ejecutar la función cuando cambien los valores
     $("#margen_modal, #cantidad_modal, #precio").on("input change", calcularMargenYNeto);
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let totalInput = document.getElementById("montototal"); // Campo donde está el total original
+        let totalEnvioInput = document.getElementById("total_envio"); // Campo oculto del botón
 
+        if (totalInput && totalEnvioInput) {
+            totalEnvioInput.value = totalInput.value; // Copia el total al formulario del botón
+        }
+    });
+    </script>
+ @if(session('numero_cotizacion'))
+ <div id="success-message" class="alert alert-success" style="
+     position: fixed;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     background-color: #4CAF50;
+     color: white;
+     padding: 20px;
+     border-radius: 10px;
+     text-align: center;
+     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+     z-index: 9999;
+ ">
+     Número de cotización: <strong id="numCotiz">{{ session('numero_cotizacion') }}</strong>
 
+     <!-- Botón para copiar SOLO el número -->
+     <button onclick="copiarTexto()" style="
+         margin-top: 10px;
+         background: white;
+         color: black;
+         border: none;
+         padding: 10px 15px;
+         cursor: pointer;
+         font-weight: bold;
+         border-radius: 5px;
+     ">📋 Copiar</button>
+ </div>
 
+ <script>
+     // Función para copiar el número y ocultar el aviso
+     function copiarTexto() {
+         let numero = document.getElementById('numCotiz').innerText;
+         navigator.clipboard.writeText(numero).then(() => {
+             // Oculta el mensaje después de copiar
+             let mensaje = document.getElementById('success-message');
+             if (mensaje) mensaje.style.display = 'none';
+
+             // Opcional: Mostrar un mensaje breve de éxito
+             alert("Número de cotización copiado: " + numero);
+         }).catch(err => {
+             console.error("Error al copiar: ", err);
+         });
+     }
+ </script>
+@endif
 
 @endsection
+
 

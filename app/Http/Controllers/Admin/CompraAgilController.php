@@ -23,20 +23,52 @@ class CompraAgilController extends Controller
         ->orderBy('compragil.id', 'desc')
         ->get();
 
-        // $user = DB::table('users')->where('name', 'John')->first();
-
-        $clientes = DB::table('cliente')
-        ->leftjoin('tablas', 'CLCIUF', '=', 'tarefe')
-        ->where('TACODI', 2)
-        ->whereNotNull('regiones.nombre')
-        ->leftjoin('regiones', 'cliente.region', '=', 'regiones.id')
-        ->get(['CLRUTC', 'CLRUTD', 'DEPARTAMENTO', 'CLRSOC', 'TAGLOS AS CIUDAD', 'regiones.nombre AS REGION']);
-
-
-        return view('admin.Cotizaciones.ComprasAgils',compact('lcompra','clientes'));
+        return view('admin.Cotizaciones.ComprasAgils',compact('lcompra'));
 
 
     }
+
+    public function buscarClientes(Request $request)
+    {
+        $query = $request->input('q');
+
+        $clientes = DB::table('cliente')
+            ->select(
+                'CLRUTC',
+                'CLRUTD',
+                'CLRSOC',
+                'DEPARTAMENTO',
+                'CLGIRO',
+                'CLCIUF',
+                DB::raw("CASE
+                            WHEN tablas_c.TACODI = 2 AND tablas_c.TAREFE = cliente.CLCIUF THEN tablas_c.TAGLOS
+                            ELSE NULL
+                         END as ciudad"),
+                DB::raw("CASE
+                            WHEN tablas_g.TACODI = 8 AND tablas_g.TAREFE = cliente.CLGIRO THEN tablas_g.TAGLOS
+                            ELSE NULL
+                         END as giro")
+            )
+            ->leftJoin('tablas as tablas_c', function($join) {
+                $join->on('tablas_c.TAREFE', '=', 'cliente.CLCIUF')
+                     ->where('tablas_c.TACODI', '=', 2);
+            })
+            ->leftJoin('tablas as tablas_g', function($join) {
+                $join->on('tablas_g.TAREFE', '=', 'cliente.CLGIRO')
+                     ->where('tablas_g.TACODI', '=', 8);
+            })
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('CLRSOC', 'LIKE', "%{$query}%")
+                             ->orWhere('DEPARTAMENTO', 'LIKE', "%{$query}%");
+            })
+            ->limit(20)
+            ->get();
+
+        return response()->json($clientes);
+    }
+
+
+
 
     public function CompraAgilDetalle(Request $request){
 
@@ -118,6 +150,96 @@ class CompraAgilController extends Controller
         return $pdf->stream('Orden De Compra.pdf');
       }
 
+      public function envio_combo(Request $request)
+{
+    $idcotiz = $request->get("id");
+    $total = $request->input('total');
+
+    // Obtener el último número de cotización +1
+    $ultimacotiz = DB::select('select max(CZ_NRO)+1 as ultima from cotiz');
+    $ultimacotiz = $ultimacotiz[0]->ultima ?? 1; // Si no hay registros, inicia en 1
+
+    $fechahoy = now()->toDateString();
+    $horaActual = now()->format('Hi');
+    $cotizneto = 'COTIZNET';
+
+    // Obtener datos de la cotización
+    $compragil = DB::table('compragil')
+        ->leftJoin('cliente', DB::raw("CONCAT(cliente.CLRUTC, '-', cliente.CLRUTD)"), '=', 'compragil.rut')
+        ->leftJoin('tablas', function ($join) {
+            $join->on('compragil.vendedor', '=', 'tablas.tarefe')
+                 ->where('tablas.tacodi', 24);
+        })
+        ->select('compragil.*', 'cliente.*', 'tablas.*')
+        ->where('compragil.id', $idcotiz)
+        ->first();
+
+    // Validar si $compragil tiene datos
+    if (!$compragil) {
+        return back()->with('error', 'No se encontraron datos de la cotización.');
+    }
+
+    // Obtener detalle de la compra
+    $compragilDetalles = DB::table('compragil_detalle')
+        ->leftJoin('producto', 'compragil_detalle.cod_articulo', '=', 'producto.ARCODI')
+        ->select('compragil_detalle.*', 'producto.*')
+        ->where('compragil_detalle.id_compragil', $idcotiz)
+        ->get();
+
+    // Si no hay detalles, no tiene sentido continuar
+    if ($compragilDetalles->isEmpty()) {
+        return back()->with('error', 'No se encontraron detalles de la cotización.');
+    }
+
+    // Insertar en la tabla cotiz
+    DB::table('cotiz')->insert([
+        'CZ_NRO' => $ultimacotiz,
+        'CZ_NOMBRE' => $compragil->CLRSOC ?? 'Sin Nombre',
+        'CZ_CIUDAD' => $compragil->ciudad ?? 'Desconocida',
+        'CZ_RUT' => $compragil->rut ?? 'Desconocida',
+        'CZ_GIRO' => $compragil->giro ?? 'Sin giro',
+        'CZ_FONO' => $compragil->CLFONO ?? 'Sin Teléfono',
+        'CZ_VENDEDOR' => $compragil->TAGLOS ?? 'No asignado',
+        'CZ_FECHA' => $fechahoy,
+        'CZ_HORA' => $horaActual,
+        'CZ_CODVEND' => $compragil->vendedor ?? null,
+        'CZ_MONTO' => $total ?? 0,
+        'CZ_DIRECCION' => $compragil->CLDIRF ?? 'Sin dirección',
+        'CZ_TIPOCOT' => $cotizneto,
+        'id_cliente' => $compragil->id ?? null,
+        'id_vendedor' => $compragil->vendedor ?? null,
+        'atencion' => $compragil->id_compra ?? null,
+    ]);
+
+    // Insertar en dcotiz con número incremental en 'posicion'
+    $datosDcotiz = [];
+    $posicion = 0; // Inicializamos la posición en 0
+
+    foreach ($compragilDetalles as $compragilDetalle) {
+        $datosDcotiz[] = [
+            'DZ_NUMERO' => $ultimacotiz,
+            'DZ_CODIART' => $compragilDetalle->ARCODI ?? 'Sin Nombre',
+            'DZ_DESCARTI' => $compragilDetalle->ARDESC ?? 'Desconocida',
+            'DZ_MARCA' => $compragilDetalle->ARMARCA ?? 'Desconocida',
+            'DZ_UV' => $compragilDetalle->ARDVTA ?? 'Sin giro',
+            'DZ_CANT' => $compragilDetalle->cantidad ?? 'Sin Teléfono',
+            'DZ_PRECIO' => $compragilDetalle->valor_margen ?? 'No asignado',
+            'posicion' => $posicion, // Posición incremental
+        ];
+        $posicion++; // Incrementamos la posición
+    }
+
+    // Inserción masiva de detalles en la tabla dcotiz
+    DB::table('dcotiz')->insert($datosDcotiz);
+
+    return back()->with([
+        'success' => "Cotización enviada correctamente.",
+        'numero_cotizacion' => $ultimacotiz // Guardamos el número aparte
+    ]);
+
+}
+
+
     public function AgregarItemc(Request $request){
         $inputs = request()->all();
 
@@ -172,59 +294,47 @@ class CompraAgilController extends Controller
         // }
     }
 
-    public function AgregarCompraAgil(Request $request){
+    public function AgregarCompraAgil(Request $request)
+{
+    $date2 = Carbon::today()->toDateString();
+    $idCompra = $request->get('idcompra');
 
-        $date = Carbon::now();
-        $date2 = $date->format('Y-m-d');
-        $validacomprainser = $request->get('idcompra');
-        $validacompra = DB::table('compragil')->where('id_compra', $validacomprainser)->exists();
+    // Verificar si la compra ya existe
+    if (DB::table('compragil')->where('id_compra', $idCompra)->exists()) {
+        return back()->with('error', '¡Compra Ágil ya existe!');
+    }
 
-        if($validacompra == true){
-            return back()->with('error','Compra Agil Ya Existe!');
-        }else {
-        if($request->get("rsocial")==""){
-            return back()->with('error','Razón Social No Ingresada!');
-        }else {
-        if($request->get("ciudad")==""){
-            return back()->with('error','Ciudad No Ingresada!');
-        }
-        else{
-        if($request->get("region")==""){
-            return back()->with('error','Region No Ingresada!');
-        }
-        else{
-        if($request->get("depto")==""){
-            return back()->with('error','Departamento No Ingresado!');
-        }
-        else{
-        if($request->get("adjudicada")==""){
-            return back()->with('error','Seleccionar Adjudicación!');
-        }else{
-        $icompra = DB::table('compragil')->insert([
-            [
-                "id_compra" => $request->get('idcompra'),
-                "rut" => $request->get('rut_auto'),
-                "razon_social" => $request->get('rsocial'),
-                "ciudad" => $request->get('ciudad'),
-                "adjudicada" => $request->get("adjudicada"),
-                "depto" => $request->get('depto'),
-                "region" => $request->get('region'),
-                "oc" => $request->get('oc'),
-                "fecha_i" => $date2,
-                "observacion" => $request->get('observacion'),
-                "vendedor" => $request->get('codvende'),
-                ]
-            ]);
+    // Validaciones de campos requeridos
+    $fields = [
+        'rsocial' => 'Razón Social',
+        'ciudad' => 'Ciudad',
+        'depto' => 'Departamento',
+        'adjudicada' => 'Adjudicación'
+    ];
 
-
-        return redirect()->route('ListarCompraAgil')->with('success','Compra Agregada Correctamente');
-        }
-        }
-        }
-        }
-        }
+    foreach ($fields as $field => $label) {
+        if (!$request->filled($field)) {
+            return back()->with('error', "¡{$label} no ingresada!");
         }
     }
+
+    // Insertar en la base de datos
+    DB::table('compragil')->insert([
+        "id_compra" => $idCompra,
+        "rut" => $request->get('rut_auto'),
+        "razon_social" => $request->get('rsocial'),
+        "ciudad" => $request->get('ciudad'),
+        "adjudicada" => $request->get("adjudicada"),
+        "depto" => $request->get('depto'),
+        "giro" => $request->get('elgiro'),
+        "oc" => $request->get('oc'),
+        "fecha_i" => $date2,
+        "observacion" => $request->get('observacion'),
+        "vendedor" => $request->get('codvende'),
+    ]);
+
+    return redirect()->route('ListarCompraAgil')->with('success', '¡Compra agregada correctamente!');
+}
 
 
 

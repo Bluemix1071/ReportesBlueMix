@@ -52,8 +52,8 @@ Compras Agiles
                         <div class="col-md-1"><input type="text" id="rut_auto" data-toggle="modal" data-target="#mimodalselectcliente" class="form-control" placeholder="Rut" name="rut_auto" required oninput="checkRut(this)" maxlength="10"></div>
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Razon Social" name="rsocial" required id="rsocial" readonly></div>
                         <div class="col-md-1"><input type="text" class="form-control" placeholder="Ciudad" name="ciudad" required id="ciudad" readonly></div>
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Region" name="region" required id="region" readonly></div>
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Departamento" name="depto" required id="depto"></div>
+                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Giro" name="elgiro" required id="elgiro" readonly></div>
+                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Departamento" name="depto" required id="depto" readonly></div>
                         <div class="col-md-1">
                           {{-- <input type="text" class="form-control" placeholder="Adjudicada" name="adjudicada" required id="adjudicada"> --}}
                           <select class="form-control" aria-label="Default select example" name="adjudicada" id="adjudicada" list="adjudicada" required>
@@ -64,7 +64,7 @@ Compras Agiles
                         </div>
 
                         {{-- <div class="col-md-1"><input type="text" class="form-control" placeholder="OC" name="oc" required id="oc"></div> --}}
-                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Contacto" name="observacion" required id="observacion"></div>{{-- Contacto de la compra ágil --}}
+                        <div class="col-md-1"><input type="text" class="form-control" placeholder="Observacion" name="observacion" required id="observacion"></div>{{-- Contacto de la compra ágil --}}
                         <div class="col-md-1">
                             <select class="form-control" name="codvende" id="codvende" required>
                               <option value="" disabled selected>Seleccionar Vendedor</option>
@@ -109,7 +109,7 @@ Compras Agiles
                                     <th scope="col" style="text-align:left">Ciudad</th>
                                     <th scope="col" style="text-align:left">Adjudicada</th>
                                     <th scope="col" style="text-align:left">Departamento</th>
-                                    <th scope="col" style="text-align:left">Region</th>
+                                    <th scope="col" style="text-align:left">Giro</th>
                                     <th scope="col" style="text-align:left">OC</th>
                                     <th scope="col" style="text-align:left">Observación</th>
                                     <th scope="col" style="text-align: left">Vendedor</th>
@@ -137,7 +137,7 @@ Compras Agiles
                                             <td style="text-align:left">Si</td>
                                         @endif
                                         <td style="text-align:left">{{ $item->depto }}</td>
-                                        <td style="text-align:left">{{ $item->region }}</td>
+                                        <td style="text-align:left">{{ $item->giro }}</td>
                                         @if (($item->oc == ""))
                                         <td style="text-align: left">No asignada</td>
                                         @else
@@ -160,22 +160,6 @@ Compras Agiles
                                                           <form action="{{ route('CompraAgilDetalle', ['id' => $item->id]) }}" method="post" enctype="multipart/form-data">
                                                               <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
                                                           </form>
-                                                      </div>
-                                                      <div class="col-4" style="text-algin:left">
-
-                                                              <a href="" class="btn btn-primary btm-sm" title="Editar Producto" data-toggle="modal" data-target="#modaleditarcompra"
-                                                              data-id='{{ $item->id }}'
-                                                              data-id_compra='{{$item->id_compra}}'
-                                                              data-rut='{{$item->rut}}'
-                                                              data-razon_social='{{$item->razon_social}}'
-                                                              data-ciudad='{{$item->ciudad}}'
-                                                              data-adjudicada='{{$item->adjudicada}}'
-                                                              data-depto='{{$item->depto}}'
-                                                              data-region='{{$item->region}}'
-                                                              data-oc='{{$item->oc}}'
-                                                              data-observacion='{{$item->observacion}}'
-                                                              ><i class="fas fa-edit"></i></a>
-                                                              {{-- <i class="fa fa-eye"></i> --}}
                                                       </div>
 
                                                       <div class="col-3" style="text-algin:left">
@@ -211,48 +195,45 @@ Compras Agiles
         </div>
 </div>
 
-<!-- Modal SELECCION CLIENTE-->
+<!-- Modal SELECCIÓN CLIENTE -->
 <div class="modal fade" id="mimodalselectcliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-     <div class="modal-content" style="width: 200%; margin-left: -40%">
-       <div class="modal-header">
-         <h4 class="modal-title" id="myModalLabel">SELECCIÓN CLIENTE</h4>
-       </div>
-       <div class="modal-body">
-       <table id="selectclientes" class="table">
-       <thead style="text-align:center">
-         <tr>
-           <th scope="col">RUT</th>
-           <th scope="col">DEPTO</th>
-           <th scope="col">RAZÓN SOCIAL</th>
-           <th scope="col">CIUDAD</th>
-           <th scope="col">REGIÓN</th>
-           <th scope="col">ACCIÓN</th>
-         </tr>
-       </thead>
-       <tbody style="text-align:center">
-         @foreach ($clientes as $item)
-           <tr>
-           <td>{{ $item->CLRUTC }}-{{ $item->CLRUTD }}</td>
-           <td>{{ $item->DEPARTAMENTO }}</td>
-           <td>{{ $item->CLRSOC }}</td>
-           <td>{{ $item->CIUDAD }}</td>
-           <td>{{ $item->REGION }}</td>
-           <td>
-             @if(!empty($item->REGION))
-               <button type="button" onclick="selectcliente({{$item->CLRUTC}},'{{ $item->CLRUTD }}','{{$item->CLRSOC}}',{{$item->DEPARTAMENTO}},'{{$item->CIUDAD}}','{{$item->REGION}}')" class="btn btn-success" data-dismiss="modal">Seleccionar</button>
-             @else
-               <button type="button" disabled class="btn btn-success">Seleccionar</button>
-             @endif
-           </td>
-         </tr>
-         @endforeach
-       </tbody>
-     </table>
-       </div>
-     </div>
-   </div>
- </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 200%; margin-left: -40%">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">SELECCIÓN CLIENTE</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Contenedor del input y botón de búsqueda -->
+                <div class="form-group d-flex">
+                    <input type="text" id="searchCliente" class="form-control mr-2" placeholder="Buscar cliente..." onkeyup="checkEnter(event)">
+                    <button type="button" class="btn btn-primary" onclick="buscarCliente()">Buscar</button>
+                </div>
+
+                <!-- Tabla con los resultados -->
+                <table id="selectclientes" class="table text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">RUT</th>
+                            <th scope="col">DEPTO</th>
+                            <th scope="col">RAZÓN SOCIAL</th>
+                            <th scope="col">CIUDAD</th>
+                            <th scope="col">GIRO</th>
+                            <th scope="col">ACCIÓN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientesBody">
+                        <!-- Los resultados se llenarán dinámicamente con AJAX -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
   <!-- FIN Modal -->
   <!-- Inicio Modal eliminar compra -->
 <div class="modal fade" id="modaleliminarcompra" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -368,15 +349,15 @@ Compras Agiles
                                     value="{{ old('depto') }}" required autocomplete="depto" min="0" max="99999999" readonly>
                             </div>
                         </div>
-                        <!-- Region -->
+                        <!-- Giro -->
                         <div class="form-group row">
-                            <label for="region"
-                                class="col-md-4 col-form-label text-md-right">{{ __('Region') }}</label>
+                            <label for="giro"
+                                class="col-md-4 col-form-label text-md-right">{{ __('giro') }}</label>
 
                             <div class="col-md-6">
-                                <input id="region" type="text"
-                                    class="form-control @error('region') is-invalid @enderror" name="region"
-                                    value="{{ old('region') }}" required autocomplete="region" min="0" max="99999999" readonly>
+                                <input id="giro" type="text"
+                                    class="form-control @error('giro') is-invalid @enderror" name="giro"
+                                    value="{{ old('giro') }}" required autocomplete="Giro" readonly>
                             </div>
                         </div>
                         <!-- OC -->
@@ -426,7 +407,7 @@ Compras Agiles
         var ciudad = button.data('ciudad')
         var adjudicada = button.data('adjudicada')
         var depto = button.data('depto')
-        var region = button.data('region')
+        var giroo = button.data('giroo')
         var oc = button.data('oc')
         var observacion  = button.data('observacion')
         var modal = $(this)
@@ -437,7 +418,7 @@ Compras Agiles
         modal.find('.modal-body #ciudad').val(ciudad);
         modal.find('.modal-body #adjudicada').val(adjudicada);
         modal.find('.modal-body #depto').val(depto);
-        modal.find('.modal-body #region').val(region);
+        modal.find('.modal-body #giro').val(giroo);
         modal.find('.modal-body #oc').val(oc);
         modal.find('.modal-body #observacion').val(observacion);
     })
@@ -468,51 +449,7 @@ function alerta(id){
 	}
 }
 
-function selectcliente(rut,dv,rzoc,ciudad,region){
-  $('#rsocial').val(rzoc);
-  $('#rut_auto').val((rut+"-"+dv));
-  $('#ciudad').val(ciudad);
-  $('#region').val(region);
 
-}
-
-  $(document).ready(function() {
-
-    $('#head1 tr').clone(true).appendTo( '#head1' );
-    $('#head1 tr:eq(1) th').each( function (i) {
-        var title = $(this).text();
-        $(this).html( '<input type="text" class="form-control" style="font-size: 10px; height: 20px"/>' );
-
-        $( 'input', this ).on( 'keyup change', function () {
-            if ( table.column(i).search() !== this.value ) {
-                table
-                    .column(i)
-                    .search( this.value )
-                    .draw();
-            }
-        } );
-    } );
-
-      $('#selectclientes').DataTable( {
-        orderCellsTop: true,
-        order: [[ 0, "desc" ]],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
-
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
-    } );
-  } );
 
 </script>
 
@@ -561,5 +498,115 @@ function selectcliente(rut,dv,rzoc,ciudad,region){
 <script src="{{asset("js/vfs_fonts.js")}}"></script>
 <script src="{{asset("js/buttons.html5.min.js")}}"></script>
 <script src="{{asset("js/buttons.print.min.js")}}"></script>
+<script>
+    // Función de búsqueda
+    function buscarCliente() {
+        let query = document.getElementById('searchCliente').value;
+
+        if (query.trim() === "") return; // No realizar búsqueda si el input está vacío
+
+        $.ajax({
+            url: '../admin/buscarClientes',
+            type: 'GET',
+            data: { q: query },
+            success: function(result) {
+                let clientesBody = document.getElementById('clientesBody');
+                clientesBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
+
+                if (result.length === 0) {
+                    clientesBody.innerHTML = '<tr><td colspan="6">No se encontraron clientes</td></tr>';
+                    return;
+                }
+
+                result.forEach((cliente, index) => {
+                    let row = document.createElement('tr');
+                    row.dataset.index = index; // Guardar índice de la fila
+                    row.dataset.rut = cliente.CLRUTC + '-' + cliente.CLRUTD; // Guardar RUT del cliente
+
+                    row.innerHTML = `
+                        <td>${cliente.CLRUTC || 'N/A'}-${cliente.CLRUTD || ''}</td>
+                        <td>${(cliente.DEPARTAMENTO === 0 || cliente.DEPARTAMENTO) ? cliente.DEPARTAMENTO : 'aun no'}</td>
+                        <td>${cliente.CLRSOC || 'N/A'}</td>
+                        <td>${cliente.ciudad || 'N/A'}</td>
+                        <td>${cliente.giro || 'N/A'}</td>
+                        <td>
+                            <button class="btn btn-success" onclick="seleccionarCliente('${cliente.CLRUTC}-${cliente.CLRUTD}')">Seleccionar</button>
+                        </td>
+                    `;
+
+                    // Resaltar fila al pasar el mouse
+                    row.addEventListener("mouseenter", function () {
+                        document.querySelectorAll("#clientesBody tr").forEach(r => r.classList.remove("table-active"));
+                        this.classList.add("table-active");
+                        this.dataset.selected = "true"; // Marcar como seleccionada
+                    });
+
+                    clientesBody.appendChild(row);
+                });
+
+                // Mostrar el modal después de actualizar la tabla
+                $('#mimodalselectcliente').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+                console.log(xhr.responseText);
+            }
+        });
+    }
+
+    // Evento para detectar la tecla Enter
+    document.getElementById('searchCliente').addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            buscarCliente(); // Llamar a la función de búsqueda cuando se presiona Enter
+        }
+    });
+</script>
+<script>
+    // Función que se ejecuta al presionar el botón "Seleccionar"
+    function seleccionarCliente(rut) {
+    // Dividir el RUT en las dos partes: CLRUTC y CLRUTD
+    let partesRut = rut.split('-');
+    let rutBase = partesRut[0]; // CLRUTC
+    let rutDigito = partesRut[1]; // CLRUTD
+
+    // Buscar el cliente en los datos de la tabla (esto lo puedes ajustar si lo prefieres de otra forma)
+    let cliente = obtenerClientePorRut(rut);
+
+    if (!cliente) {
+        console.log("Cliente no encontrado.");
+        return;
+    }
+
+    // Llenar los campos con los datos del cliente
+    document.getElementById('rut_auto').value = rutBase + '-' + rutDigito;
+    document.getElementById('rsocial').value = cliente.CLRSOC || 'N/A';
+    document.getElementById('ciudad').value = cliente.ciudad || 'N/A';
+    document.getElementById('elgiro').value = cliente.giro || 'N/A';
+    document.getElementById('depto').value = cliente.DEPARTAMENTO || 'N/A';
+
+    // Cerrar el modal
+    $('#mimodalselectcliente').modal('hide');
+}
+
+
+    // Función auxiliar para obtener los datos del cliente por su RUT
+    function obtenerClientePorRut(rut) {
+        let clientes = document.querySelectorAll('#clientesBody tr');
+        for (let row of clientes) {
+            if (row.dataset.rut === rut) {
+                let cliente = {
+                    CLRUTC: row.cells[0].textContent.split('-')[0],  // RUT
+                    CLRUTD: row.cells[0].textContent.split('-')[1],  // RUT
+                    CLRSOC: row.cells[2].textContent,  // Razón Social
+                    ciudad: row.cells[3].textContent,  // Ciudad
+                    giro: row.cells[4].textContent,  // Giro
+                    DEPARTAMENTO: row.cells[1].textContent  // Departamento
+                };
+                return cliente;
+            }
+        }
+        return null;
+    }
+</script>
 
 @endsection
