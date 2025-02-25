@@ -14,7 +14,7 @@ class MovimientoProductoController extends Controller
 
     public function MovimientoProductoFiltro(Request $request){
         //dd($request);
-        
+
         $producto = DB::select('select * from producto
         left join vv_tablas22 on producto.ARGRPO2 = vv_tablas22.tarefe
         left join precios on SUBSTRING(producto.arcodi, 1, 5) = precios.PCCODI
@@ -39,11 +39,11 @@ class MovimientoProductoController extends Controller
         and cmovim.CMVCPRV = proveed.PVRUTP');
         //dd($ingresos);
 
-        $ingresos_nc = DB::select('select * from nota_credito_detalle 
+        $ingresos_nc = DB::select('select * from nota_credito_detalle
         left join nota_credito on nota_credito_detalle.id_nota_cred = nota_credito.id
         where codigo = "'.$request->get('codigo').'" and nota_credito.fecha between "'.$request->get('f_inicio').'" and "'.$request->get('f_termino').'" and nota_credito.tipo_nc = 3');
         //dd($salidas_nc);
-        
+
         $costos_historicos = DB::select('select costo, fecha_modificacion from costos_historico where codigo_producto = SUBSTRING("'.$request->get('codigo').'", 1, 5) and fecha_modificacion between "'.$request->get('f_inicio').'" and "'.$request->get('f_termino').'"');
         //dd($costos_historicos);
 

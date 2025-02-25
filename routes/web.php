@@ -3,6 +3,7 @@
 //use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\CompraAgilController;
 
 Route::get('detect-device', [FrontController::class, 'detuctDebice'])->name('detect-device');
 
@@ -436,6 +437,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/EliminarCompra','CompraAgilController@EliminarCompra')->name('EliminarCompra');
     Route::post('/CompraAgilDetalle','CompraAgilController@CompraAgilDetalle')->name('CompraAgilDetalle');
     Route::get('/CompraAgilDetalle','CompraAgilController@CompraAgilDetalle')->name('CompraAgilDetalle');
+    Route::post('/envio_combo','CompraAgilController@envio_combo')->name('envio_combo');
+    Route::get('/buscarClientes', 'CompraAgilController@buscarClientes')->name('buscarClientes');
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Route::get('/ResumenDeVenta','AdminController@ResumenDeVenta')->name('ResumenDeVenta');//

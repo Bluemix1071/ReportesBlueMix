@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-    Requerimiento de Compras    
+    Requerimiento de Compras
 @endsection
 @section('styles')
 
@@ -131,7 +131,7 @@
                                 ?
                                 </button> -->
                     </div>
-            
+
             <div>
             <table id="users" class="table table-bordered table-hover dataTable table-sm" style="text-align:center; font-size: 15px;">
               <thead>
@@ -159,14 +159,14 @@
               </thead>
               <tbody>
                 @foreach ($requerimiento_compra as $item)
-                
+
                     @if($item->prioridad == 1 && $item->estado == "INGRESADO" && session()->get('email') == "adquisiciones@bluemix.cl")
                         <tr class="bg-dark bg-gradient">
                     @else
                         <tr>
                     @endif
 
-                      <td><input type="checkbox" id="id_{{ $item->id }}" class="case" name="case[]" value="{{ $item->id }}" onclick="contador({{ $item->id }}, {{ $item->id }})"></td> 
+                      <td><input type="checkbox" id="id_{{ $item->id }}" class="case" name="case[]" value="{{ $item->id }}" onclick="contador({{ $item->id }}, {{ $item->id }})"></td>
                       <td style="display:none">{{ $item->id }}</td>
                       @if(session()->get('email') == "adquisiciones@bluemix.cl")
                         <td data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary('{{ $item->codigo }}')" class="text-primary">{{ $item->codigo }}</td>
@@ -183,7 +183,7 @@
                       @endif
                       <td>{{ $item->depto }}</td>
                       <td>
-                        
+
                         @if($item->estado == "INGRESADO")
                             <h4><span class="badge badge-secondary">{{ $item->estado }}</span></h4>
                         @elseif($item->estado == "ENVÍO OC")
@@ -191,7 +191,7 @@
                         @elseif($item->estado == "BODEGA")
                             <h4><span class="badge badge-success">{{ $item->estado }}</span></h4>
                         @elseif($item->estado == "RECHAZADO")
-                            <h4><span class="badge badge-warning">{{ $item->estado }}</span></h4>    
+                            <h4><span class="badge badge-warning">{{ $item->estado }}</span></h4>
                         @elseif($item->estado == "DESACTIVADO")
                             <h4><span class="badge badge-danger">{{ $item->estado }}</span></h4>
                         @endif
@@ -205,7 +205,7 @@
                             <td><p>{{ $item->observacion_interna }}</p></td>
                         @endif
                       <td>
-                     
+
                         {{-- <button type="button" class="btn btn-primary" target="_blank" title="Cambiar estado Requerimiento" data-toggle="modal" data-target="#cambiarestado" onclick="cargaridcambiar({{$item->id}}, $('#estado{{$item->id}} option:selected').text())"><i class="fa fa-save" aria-hidden="true"></i></button> --}}
                         {{-- <button type="button" class="btn btn-danger" target="_blank" title="Desactivar Requerimiento" data-toggle="modal" data-target="#desactivar" onclick="cargariddesactivar({{$item->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button> --}}
                         <a href="" class="btn btn-primary btm-sm" title="Editar Requerimiento" data-toggle="modal" data-target="#editarrequerimiento"
@@ -225,11 +225,11 @@
                             data-fecha_rechazado='{{ $item->fecha_rechazado }}'
                             data-fecha_desactivado='{{ $item->fecha_desactivado }}'
                         ><i class="fa fa-eye"></i></a>
-                    
+
                       {{-- <button type="button" class="btn btn-primary" title="Cambiar estado Requerimiento" disabled><i class="fa fa-save" aria-hidden="true"></i></button> --}}
                       {{-- <button type="button" class="btn btn-danger" title="Desactivar Requerimiento" disabled><i class="fa fa-trash" aria-hidden="true"></i></button> --}}
                       {{-- <button type="button" class="btn btn-primary" title="Editar Requerimiento" disabled><i class="fa fa-eye" aria-hidden="true"></i></button> --}}
-                    
+
                       </td>
                       <td style="display:none;">{{ $item->prioridad }}</td>
                     </tr>
@@ -262,7 +262,7 @@
                     <div class="card-body collapse hide">
                         <div id="selects">
                         </div>
-                        
+
                         <select class="form-control form-control-sm" aria-label="Default select example" name="estado_multiple" required style="margin-bottom: 1%; margin-top: 1%;">
                               <option value="INGRESADO">INGRESADO</option>
                               <option value="ENVÍO OC">ENVÍO OC</option>
@@ -315,7 +315,7 @@
                                         <input id="n_vale" type="number"
                                             class="form-control @error('name') is-invalid @enderror col" name="n_vale"
                                             value="" required max="99999999" min="10" autocomplete="name" autofocus>
-                                            
+
                                             @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -330,7 +330,7 @@
                                     <div class="col-md-6">
 
                                     <select name="depto" id="buscar_area" class="form-control col">
-                                        <option value="ADQUISICIONES">ADQUISICIONES</option>    
+                                        <option value="ADQUISICIONES">ADQUISICIONES</option>
                                         <option value="LICITACIONES">LICITACIONES</option>
                                         <option value="VENTAS WEB">VENTAS WEB</option>
                                         <!-- <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option> -->
@@ -352,7 +352,7 @@
                                     <div class="col-md-6">
 
                                         <textarea maxlength="250" class="form-control" placeholder="Obs. Eje: Encargado" name="observacion" rows="1" required></textarea>
-                                               
+
                                     </div>
                                 </div>
                                 <div class="table-responsive-sm">
@@ -367,7 +367,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+
                                     </tbody>
                                 </table>
                                 </div>
@@ -392,7 +392,7 @@
                       <!-- <div class="card-body"> -->
                       <div class="card card-primary">
                             <div class="card-header">
-                                <h2 class="card-title">Detalles Producto</h2>                         
+                                <h2 class="card-title">Detalles Producto</h2>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                         <i class="fas fa-minus"></i>
@@ -404,9 +404,9 @@
                                 <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button" >Agregar <i class="fas fa-plus"></i></button> -->
                             </div>
                             <div class="card-body hide">
-                                
+
                             <div class="callout-success row">
-                                
+
                                 <div class="col-sm-6 col-md-6 invoice-col col">
                                     <strong>Codigo: <i id="resumen_codigo">cargando...</i></strong><br>
                                     <strong>Barra: <i id="resumen_barra">cargando...</i></strong><br>
@@ -416,7 +416,7 @@
                                     <strong>Codigo Proveedor: <i id="resumen_codigo_proveedor">cargando...</i></strong><br>
                                     @endif
                                 </div>
-                                
+
                                 <div class="col-sm-6 col-md-6 invoice-col col">
                                     <strong>Marca: <i id="resumen_marca">cargando...</i></strong><br>
                                     <strong>Stock Sala: <i id="resumen_stock_sala">cargando...</i></strong><br>
@@ -426,7 +426,7 @@
                                     <strong>Ultimo Ingreso: <i id="resumen_ultimo_ingreso">cargando...</i></strong><br>
                                     <strong>Ult. Cant Ingresada: <i id="resumen_ultima_cantidad">cargando...</i></strong><br>
                                 </div>
-                            
+
                             </div>
 
                             </div>
@@ -442,7 +442,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                             </tbody>
                         </table>
                         <h5>Variación de Costos</h5>
@@ -455,7 +455,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               
+
                             </tbody>
                         </table>
                         @endif
@@ -552,7 +552,7 @@
                     </div>
                     <!-- <div class="modal-body"> -->
                         <!-- <div class="card-body"> -->
-                            
+
                        <!--  </div> -->
                    <!--  </div> -->
                 </div>
@@ -647,7 +647,7 @@
                                     <div class="col-md-6">
                                     @if(session()->get('email') == "adquisiciones@bluemix.cl")
                                         <select id="departamento" list="departamento" class="form-control" name="departamento" value="" required>
-                                            <option value="ADQUISICIONES">ADQUISICIONES</option>    
+                                            <option value="ADQUISICIONES">ADQUISICIONES</option>
                                             <option value="LICITACIONES">LICITACIONES</option>
                                             <option value="VENTAS WEB">VENTAS WEB</option>
                                             <!-- <option value="VENTAS EMPRESAS">VENTAS EMPRESAS</option> -->
@@ -747,7 +747,7 @@
                                     <div class="col-md-6">
                                     @if(session()->get('email') == "adquisiciones@bluemix.cl")
                                         <textarea id="observacion_interna" maxlength="250" class="form-control form-control-sm" placeholder="Observaciones Internas" name="observacion_interna" rows="3" id="observacion_interna"></textarea>
-                                        
+
                                     @else
                                         <textarea id="observacion_interna" maxlength="250" class="form-control form-control-sm" placeholder="Observaciones Internas" name="observacion_interna" rows="3" readonly></textarea>
                                     @endif
@@ -770,7 +770,7 @@
                                     <span class="badge badge-dark" onclick="observacion('Acuso Recibo')">Acuso Recibo</span>
                                     <span class="badge badge-danger" onclick="observacion(null)">X</span>
                                 @endif
-                               
+
                                 <p for="estados" class="text-md-center" ><b>Estados</b></p>
                                 <!-- <div class="col-md-6">
                                         <div><b>Ingresado:</b>2023-02-14</div>
@@ -885,7 +885,7 @@ var ingresos = $('#ingresos').DataTable({
       "infoFiltered": ""
       },
       fixedHeader: true
-    }); 
+    });
 
     var costos = $('#costos').DataTable({
         orderCellsTop: true,
@@ -1036,7 +1036,7 @@ function observacion_multiple(observacion){
 
 $(window).on('load', function () {
             $("#maindiv").css({"pointer-events": "all", "opacity": "1"});
-        }) 
+        })
 
 /* var minDate, maxDate = null;
 
@@ -1060,7 +1060,7 @@ function( settings, data, dataIndex ) {
     }
     return false;
 }
-); 
+);
  */
   $(document).ready( function () {
 
@@ -1075,14 +1075,14 @@ function( settings, data, dataIndex ) {
             $('#users thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
                 $(this).html( '<input type="text" class="form-control form-control-sm" placeholder="Buscar '+title+'" />' );
-        
+
                 $( 'input', this ).on( 'keyup change', function () {
                     if ( table.column(i).search() !== this.value ) {
                         table
                             .column(i)
                             .search( this.value )
                             .draw();
-             } 
+             }
             });
     } );
 
@@ -1266,7 +1266,7 @@ function contador(monto, id){
             var codigo = $('#buscar_codigo').val();
             var detalle = $('#buscar_detalle').val();
             var marca = $('#buscar_marca').val();
-            
+
             if(codigo == "" && detalle == "" && marca == ""){
                 productos.clear().draw();
             }else{
@@ -1284,7 +1284,7 @@ function contador(monto, id){
                                 productos.rows.add([[items.ARCODI,items.ARDESC,items.ARMARCA,'<button type="button" onclick=selectproducto("'+items.ARCODI+'","'+items.ARDESC.replace(/"/g, "¨").replace(/ /g, '&nbsp;')+'","'+items.ARMARCA.replace(/ /g, '&nbsp;')+'") class="btn btn-success" data-dismiss="modal">Seleccionar</button>']]).draw();
                             })
                         }
-                        
+
                     }
                 });
             }
