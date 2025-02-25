@@ -246,6 +246,15 @@
                                         </a>
                                         <ul class="nav nav-treeview">
                                             <li class="nav-item">
+                                                <a href="{{ route('Receptores') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Receptores
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
                                                 <a href="{{ route('FirmaFacturas') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Facturas
@@ -255,7 +264,7 @@
                                         </ul>
                                         <ul class="nav nav-treeview">
                                             <li class="nav-item">
-                                                <a href="{{ route('ListarConvenio') }}" class="nav-link">
+                                                <a href="{{ route('FirmaNC') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Nota Credito
                                                     </p>
@@ -273,7 +282,7 @@
                                         </ul>
                                         <ul class="nav nav-treeview">
                                             <li class="nav-item">
-                                                <a href="{{ route('ListarCompraAgil') }}" class="nav-link">
+                                                <a href="{{ route('FirmaBoletas') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Boletas
                                                     </p>

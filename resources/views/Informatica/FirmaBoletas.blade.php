@@ -12,21 +12,22 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <div class="row">
-              <h3 class="display-3 col-4">Exportar Facturas</h3>
-              <div class="col-3 row justify-content-center align-items-center">
-                <button id="export" class="btn btn-success">Exportar a Excel</button>
-              </div>
-              <div class="col-3 row justify-content-center align-items-center">
-                <input type="text" id="searchInput" placeholder="Buscar Folio" style="width: initial">
-              </div>
-              <form action="{{ route('FirmarFacturasFiltro') }}" method="get" class="col-2 row justify-content-center align-items-center">
-                  <input type="date" name="fecha" class="sm-form-control" value="{{ $fecha }}">
-                  &nbsp;
-                  <button type="submit" class="btn btn-primary">Buscar</button>
-                  &nbsp;
-              </form>
-        </div>
+        
+          <div class="row">
+                <h3 class="display-3 col-4">Exportar Boletas</h3>
+                <div class="col-3 row justify-content-center align-items-center">
+                  <button id="export" class="btn btn-success">Exportar a Excel</button>
+                </div>
+                <div class="col-3 row justify-content-center align-items-center">
+                  <input type="text" id="searchInput" placeholder="Buscar Folio" style="width: initial">
+                </div>
+                <form action="{{ route('FirmaBoletasFiltro') }}" method="get" class="col-2 row justify-content-center align-items-center">
+                    <input type="date" name="fecha" class="sm-form-control" value="{{ $fecha }}">
+                    &nbsp;
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    &nbsp;
+                </form>
+          </div>
 
         <div class="row">
           <div class="col-md-12">
@@ -64,7 +65,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach($facturas_dia as $item)
+                    @foreach($boletas_dia as $item)
                         <tr>
                             <td>{{ $item->documentoid }}</td>
                             <td>{{ $item->rutenvia }}</td>
@@ -100,7 +101,7 @@
           </div>
         </div>
 
-        <h3 class="display-3">Exportar Detalle Facturas</h3>
+        <h3 class="display-3">Exportar Detalle Boletas</h3>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
@@ -115,7 +116,7 @@
                             <th scope="col" style="text-align:left">codprod</th>
                             <th scope="col" style="text-align:left">descprod</th>
                             <th scope="col" style="text-align:left">unmditem</th>
-                            <th scope="col" style="text-align:left">DECANT</th>
+                            <th scope="col" style="text-align:left">cantidad</th>
                             <th scope="col" style="text-align:left">precio</th>
                             <th scope="col" style="text-align:left">porcdescuento</th>
                             <th scope="col" style="text-align:left">descuento</th>
@@ -126,7 +127,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach($detalle_facturas_dia as $item)
+                    @foreach($detalle_boletas_dia as $item)
                         <tr>
                             <td>{{ $item->documentoid }}</td>
                             <td>{{ $item->rutenvia }}</td>
@@ -135,7 +136,7 @@
                             <td>{{ $item->codprod }}</td>
                             <td>{{ $item->descprod }}</td>
                             <td>{{ $item->unmditem }}</td>
-                            <td>{{ $item->DECANT }}</td>
+                            <td>{{ $item->cantidad }}</td>
                             <td>{{ $item->precio }}</td>
                             <td>{{ $item->porcdescuento }}</td>
                             <td>{{ $item->descuento }}</td>
@@ -143,45 +144,6 @@
                             <td>{{ $item->tipoimpuesto }}</td>
                             <td>{{ strval("$item->periodo") }}</td>
                             <td>&nbsp;</td>
-                        </tr>
-                       @endforeach
-                    </tbody>
-                </table>
-            </div>
-          </div>
-        </div>
-
-        <h3 class="display-3">Exportar Referencia Facturas</h3>
-        <div class="row">
-          <div class="col-md-12">
-            {{-- BUSCADOR --}}
-            <div class="table-responsive-xl">
-                <table id="referencia" class="table table-bordered table-hover dataTable table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col" style="text-align:left">documentoid</th>
-                            <th scope="col" style="text-align:left">folioref</th>
-                            <th scope="col" style="text-align:left">rutenviaref</th>
-                            <th scope="col" style="text-align:left">numlinearef</th>
-                            <th scope="col" style="text-align:left">tipodocref</th>
-                            <th scope="col" style="text-align:left">codref</th>
-                            <th scope="col" style="text-align:left">razonref</th>
-                            <th scope="col" style="text-align:left">fecharef</th>
-                            <th scope="col" style="text-align:left">periodo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                       @foreach($referencia_facturas_dia as $item)
-                        <tr>
-                            <td>{{ $item->documentoid }}</td>
-                            <td>{{ $item->folioref }}</td>
-                            <td>{{ $item->rutenviaref }}</td>
-                            <td>{{ $item->numlinearef }}</td>
-                            <td>{{ $item->tipodocref }}</td>
-                            <td>{{ $item->codref }}</td>
-                            <td>{{ $item->razonref }}</td>
-                            <td>{{ $item->fecharef }}</td>
-                            <td>{{ strval("$item->periodo") }}</td>
                         </tr>
                        @endforeach
                     </tbody>
@@ -202,10 +164,10 @@
         buttons: [
             {
                 extend: 'excel',
-                filename: 'FacturaSII',
+                filename: 'BESII',
                 header: false,
                 title: '',
-                text: 'Exportar Encabezado Facturas',
+                text: 'Exportar Encabezado Boletas',
             }
 
         ],
@@ -231,39 +193,10 @@
         buttons: [
             {
                 extend: 'excel',
-                filename: 'FacturaSIIDet',
+                filename: 'BESIIDet',
                 header: false,
                 title: '',
-                text: 'Exportar Detalle Facturas',
-            }
-
-        ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
-
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "",
-      "zeroRecords": "",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      }
-    } );
-
-    var table3 = $('#referencia').DataTable( {
-        "paging": false,
-        buttons: [
-            {
-                extend: 'excel',
-                filename: 'FacturaSIIRef',
-                header: false,
-                title: '',
-                text: 'Exportar Referencia Facturas'
+                text: 'Exportar Detalle Boletas',
             }
 
         ],
@@ -288,7 +221,6 @@
       var searchTerm = $(this).val();
       table1.columns([0]).search(searchTerm).draw(); // Busca en la tabla 1
       table2.columns([0]).search(searchTerm).draw(); // Busca en la tabla 2
-      table3.columns([0]).search(searchTerm).draw(); // Busca en la tabla 3
     });
 
     $('#export').click(function () {
@@ -329,25 +261,6 @@
       }
       XLSX.utils.book_append_sheet(workbook, table2Data, "enviossiidet");
 
-      // Obtener datos de la tabla 3
-      const table3Data = XLSX.utils.table_to_sheet(document.getElementById('referencia'));
-      const rangeI = XLSX.utils.decode_range(table3Data['!ref']); // Obtener rango de celdas
-      for (let row = rangeI.s.r + 1; row <= rangeI.e.r; row++) { // Iterar desde la fila 2
-                const cellAddressI = `I${row + 1}`; // Construir dirección de la celda (B2, B3, ...)
-                if (table3Data[cellAddressI]) { // Si la celda existe
-
-                  const excelDate = table3Data[cellAddressI].v; // Ejemplo:
-                  const baseDate = new Date(Date.UTC(1900, 0, 1)); // Fecha base de Excel
-                  baseDate.setDate(baseDate.getDate() + excelDate);
-
-                  table3Data[cellAddressI].t = "s"; // Aplicar formato de fecha
-                  table3Data[cellAddressI].v = baseDate.toISOString().substring(0, 7);
-                }
-      }
-      XLSX.utils.book_append_sheet(workbook, table3Data, "enviossiidetref");
-
-      // Exportar el libro de trabajo
-      XLSX.writeFile(workbook, "DocSiiFa.xlsx");
     });
   });
   </script>

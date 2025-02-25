@@ -15,23 +15,298 @@ class FirmaDocumentosController extends Controller
     //
     public function FirmaFacturas(){
 
-        $facturas_dia = DB::table('cargos')->where('catipo', 8)->where('cafeco', date('Y-m-d'))->get();
-        
-        $fecha = date('Y-m-d');
+       $fecha_hoy = date('Y-m-d');
 
-        //dd($facturas_dia);
+       // Restar un día a la fecha
+       $fecha = date('Y-m-d', strtotime('-1 day', strtotime($fecha_hoy)));
 
-        return view('Informatica.FirmaFacturas', compact('facturas_dia', 'fecha'));
+        //$facturas_dia = DB::table('cargos')->where('catipo', 8)->where('cafeco', date('Y-m-d'))->get();
+        $facturas_dia = DB::select('select concat("FA",CANMRO,"T33") as documentoid,"9807942-4" as rutenvia,"77283950-2" as rutemisor,
+         concat(cargos.CARUTC,"-",upper(cliente.CLRUTD)) as rutreceptor,concat(cargos.CARUTC,"-",upper(cliente.CLRUTD)) as rutsolicita,cargos.CANMRO as numdoc,cargos.nro_oc as numref,"33" as tipodoc,
+         null as anula_modifica, null as tipooperacion, cargos.CANETO as valorneto,cargos.CAIVA as valoriva,
+         cargos.capode as valordescu,cargos.monto_exento as valorexento,cargos.CAVALO as valortotal,
+         curdate() as fechaenvio,"." as glosa,(if (cargos.forma_pago != "X",1,2)) as fmapago,cargos.CAFECO as fchcancel,
+         (if (isnull(ccorclie_ccpclien.CCPFECHAP1) ,cargos.cafeco,ccorclie_ccpclien.CCPFECHAP1)) as fchvenc,null as indtraslado,null as tipodespacho,
+         substr(cargos.cafeco,1,7) as periodo,null as enlibro,
+         "pendiente" as estado,cargos.depto as departamento
+         from cargos
+         left join ccorclie_ccpclien on cargos.CANMRO=ccorclie_ccpclien.CCPDOCUMEN and ccorclie_ccpclien.CCPTIPODOC=8
+         left join cliente on cargos.CARUTC like cliente.CLRUTC and cliente.DEPARTAMENTO=cargos.depto
+         where cargos.CAFECO="'.$fecha.'" and cargos.CATIPO=8');
+        //date('Y-m-d')
+
+        $detalle_facturas_dia = DB::select('select concat("FA",dcargos.DENMRO,"T33") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
+         "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID,1,4) as unmditem,
+         dcargos.DECANT,round(dcargos.DEPREC/1.19) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+         round(round(dcargos.DECANT*dcargos.DEPREC)/1.19) as netolinea,"IVA" as tipoimpuesto,substr(cargos.cafeco,1,7) as periodo," " as DscRcgGlobal
+         from dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO and CATIPO = "8"
+         where dcargos.DEFECO="'.$fecha.'" and cargos.CAFECO="'.$fecha.'" and cargos.CATIPO=8 and DETIPO = "8"');
+
+         $referencia_facturas_dia = DB::select('select concat("FA",CANMRO,"T33") as documentoid, cargos.nro_oc as folioref,"9807942-4" as rutenviaref,
+         "1" as numlinearef,"801" as tipodocref,"0" codref,cargos.referenciaOC as razonref,
+         cargos.CAFECO as fecharef,substr(cargos.cafeco,1,7) as periodo from cargos
+         where cargos.cafeco between "'.$fecha.'" and "'.$fecha.'" and cargos.CATIPO=8 and cargos.nro_oc != ""
+         and cargos.CATIPO=8');
+
+        return view('Informatica.FirmaFacturas', compact('facturas_dia', 'detalle_facturas_dia', 'referencia_facturas_dia', 'fecha'));
     }
     
     public function FirmaFacturasFiltro(Request $request){
 
-        $facturas_dia = DB::table('cargos')->where('catipo', 8)->where('cafeco', $request->get('fecha'))->get();
+        //$facturas_dia = DB::table('cargos')->where('catipo', 8)->where('cafeco', $request->get('fecha'))->get();
+        $facturas_dia = DB::select('select concat("FA",CANMRO,"T33") as documentoid,"9807942-4" as rutenvia,"77283950-2" as rutemisor,
+         concat(cargos.CARUTC,"-",upper(cliente.CLRUTD)) as rutreceptor,concat(cargos.CARUTC,"-",upper(cliente.CLRUTD)) as rutsolicita,cargos.CANMRO as numdoc,cargos.nro_oc as numref,"33" as tipodoc,
+         null as anula_modifica, null as tipooperacion, cargos.CANETO as valorneto,cargos.CAIVA as valoriva,
+         cargos.capode as valordescu,cargos.monto_exento as valorexento,cargos.CAVALO as valortotal,
+         curdate() as fechaenvio,"." as glosa,(if (cargos.forma_pago != "X",1,2)) as fmapago,cargos.CAFECO as fchcancel,
+         (if (isnull(ccorclie_ccpclien.CCPFECHAP1) ,cargos.cafeco,ccorclie_ccpclien.CCPFECHAP1)) as fchvenc,null as indtraslado,null as tipodespacho,
+         substr(cargos.cafeco,1,7) as periodo,null as enlibro,
+         "pendiente" as estado,cargos.depto as departamento
+         from cargos
+         left join ccorclie_ccpclien on cargos.CANMRO=ccorclie_ccpclien.CCPDOCUMEN and ccorclie_ccpclien.CCPTIPODOC=8
+         left join cliente on cargos.CARUTC like cliente.CLRUTC and cliente.DEPARTAMENTO=cargos.depto
+         where cargos.CAFECO="'.$request->get('fecha').'" and cargos.CATIPO=8');
         //date('Y-m-d')
+
+        $detalle_facturas_dia = DB::select('select concat("FA",dcargos.DENMRO,"T33") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
+         "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID,1,4) as unmditem,
+         dcargos.DECANT,round(dcargos.DEPREC/1.19) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+         round(round(dcargos.DECANT*dcargos.DEPREC)/1.19) as netolinea,"IVA" as tipoimpuesto,substr(cargos.cafeco,1,7) as periodo," " as DscRcgGlobal
+         from dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO and CATIPO = "8"
+         where dcargos.DEFECO="'.$request->get('fecha').'" and cargos.CAFECO="'.$request->get('fecha').'" and cargos.CATIPO=8 and DETIPO = "8"');
+
+         $referencia_facturas_dia = DB::select('select concat("FA",CANMRO,"T33") as documentoid, cargos.nro_oc as folioref,"9807942-4" as rutenviaref,
+         "1" as numlinearef,"801" as tipodocref,"0" codref,cargos.referenciaOC as razonref,
+         cargos.CAFECO as fecharef,substr(cargos.cafeco,1,7) as periodo from cargos
+         where cargos.cafeco between "'.$request->get('fecha').'" and "'.$request->get('fecha').'" and cargos.CATIPO=8 and cargos.nro_oc != ""
+         and cargos.CATIPO=8');
+
+         //dd($referencia_facturas_dia);
         $fecha = $request->get('fecha');
         //dd($request);
 
-        return view('Informatica.FirmaFacturas', compact('facturas_dia', 'fecha'));
+        return view('Informatica.FirmaFacturas', compact('facturas_dia', 'detalle_facturas_dia', 'referencia_facturas_dia', 'fecha'));
+    }
+
+    public function Receptores(Request $request){
+
+      $receptores = DB::select('select concat(cliente.CLRUTC,"-",upper(cliente.CLRUTD)) as "rutreceptor", cliente.DEPARTAMENTO as departamento, replace(substr(cliente.CLRSOC, 1 , 39), "&", "Y") as "razonsocialre",substr(tablas.TAGLOS, 1 , 39) as girorec,
+      cliente.CLDIRF as "dirrec",comunas.nombre as comunarec,comunas.nombre as ciudadrec,"A" as estado,null as contacto,null as telefonorec
+      from cliente
+      left join comunas on cliente.CLCOMF = comunas.id
+      left join tablas on cliente.CLGIRO = tablas.tarefe
+      where tablas.TACODI=8 and length(cliente.clrutc) >= 5 group by cliente.CLRUTC,DEPARTAMENTO');
+
+      //dd($receptores);
+
+      return view('Informatica.Receptores', compact('receptores'));
+    }
+
+    public function FirmaNC(Request $request){
+
+      $fecha_hoy = date('Y-m-d');
+
+       // Restar un día a la fecha
+      $fecha = date('Y-m-d', strtotime('-1 day', strtotime($fecha_hoy)));
+      
+      $nc_dia = DB::select('select
+      concat("NC",folio,"T61") as documentoid,
+      "9807942-4" as rutenvia,
+      "77283950-2" as rutemisor,
+      nota_credito.rut as rutreceptor,
+      nota_credito.rut as rutsolicita,
+      nota_credito.folio as numdoc,
+      nota_credito.nro_doc_refe as numref,
+      "61" as tipodoc,
+      null as anula_modifica,
+      null as tipooperacion,
+      nota_credito.neto as valorneto,
+      nota_credito.iva as valoriva,
+      round((nota_credito.decuento*100)/(nota_credito.total_nc+nota_credito.decuento)) as valordescu,
+      nota_credito.exento as valorexento,
+      nota_credito.total_nc as valortotal,
+      nota_credito.fecha as fechaenvio,
+      nota_credito.glosa as glosa,
+      3 as fmapago,
+      nota_credito.fecha as fchcancel,
+      nota_credito.fecha as fchvenc,
+      null as indtraslado,
+      null as tipodespacho,
+      substring(nota_credito.fecha, 1, 7) as periodo,
+      null as enlibro,
+      "pendiente" as estado,
+      cargos.depto as departamento
+      from nota_credito
+      left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO and cargos.CATIPO = nota_credito.tipo_doc_refe
+      where nota_credito.fecha = "'.$fecha.'"');
+
+        $detalle_nc_dia = DB::select('select
+         concat("NC",nota_credito.folio,"T61") as documentoid,
+         "9807942-4" as rutenvia,
+         (@row_number := CASE
+                                 WHEN @current_id = id_nota_cred THEN @row_number + 1
+                                 ELSE 1
+                           END) AS numlinea,
+         "INT1" as tipocod,
+         nota_credito_detalle.codigo as codprod,
+         nota_credito_detalle.descripcion as descprod,
+         "C/U" as unmditem,
+         nota_credito_detalle.cantidad AS cantidad,
+         round(nota_credito_detalle.precio/1.19) as precio,
+         nota_credito_detalle.porc_desc as porcdescuento,
+         nota_credito_detalle.porc_desc as descuento,
+         round(round(cantidad*precio)/1.19) as netolinea,
+         "IVA" as tipoimpuesto,
+         substring(nota_credito.fecha, 1, 7) as periodo,
+         " " as DscRcgGlobal,
+         (@current_id := id_nota_cred) AS dummy
+         from nota_credito_detalle
+         left join nota_credito on nota_credito_detalle.id_nota_cred = nota_credito.id
+         join (SELECT @row_number := 0, @current_id := "") AS vars
+         where nota_credito.fecha = "'.$fecha.'"
+         ORDER BY id_nota_cred');
+
+         $referencia_nc_dia = DB::select('select
+         concat("NC",folio,"T61") as documentoid,
+         nro_doc_refe as folioref,
+         "9807942-4" as rutenviaref,
+         1 as numlinearef,
+         (if(tipo_doc_refe = 8, "33" , "39")) as tipodocref,
+         tipo_nc as codref,
+         glosa as razonref,
+         fecha as fecharef,
+         substring(fecha, 1, 7) as periodo
+         from nota_credito where fecha = "'.$fecha.'"');
+      
+        return view('Informatica.FirmaNC',  compact('nc_dia', 'detalle_nc_dia', 'referencia_nc_dia', 'fecha'));
+    }
+
+    public function FirmaNCFiltro(Request $request){
+      
+      $nc_dia = DB::select('select
+      concat("NC",folio,"T61") as documentoid,
+      "9807942-4" as rutenvia,
+      "77283950-2" as rutemisor,
+      nota_credito.rut as rutreceptor,
+      nota_credito.rut as rutsolicita,
+      nota_credito.folio as numdoc,
+      nota_credito.nro_doc_refe as numref,
+      "61" as tipodoc,
+      null as anula_modifica,
+      null as tipooperacion,
+      nota_credito.neto as valorneto,
+      nota_credito.iva as valoriva,
+      round((nota_credito.decuento*100)/(nota_credito.total_nc+nota_credito.decuento)) as valordescu,
+      nota_credito.exento as valorexento,
+      nota_credito.total_nc as valortotal,
+      nota_credito.fecha as fechaenvio,
+      nota_credito.glosa as glosa,
+      3 as fmapago,
+      nota_credito.fecha as fchcancel,
+      nota_credito.fecha as fchvenc,
+      null as indtraslado,
+      null as tipodespacho,
+      substring(nota_credito.fecha, 1, 7) as periodo,
+      null as enlibro,
+      "pendiente" as estado,
+      cargos.depto as departamento
+      from nota_credito
+      left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO and cargos.CATIPO = nota_credito.tipo_doc_refe
+      where nota_credito.fecha = "'.$request->get('fecha').'"');
+
+        $detalle_nc_dia = DB::select('select
+         concat("NC",nota_credito.folio,"T61") as documentoid,
+         "9807942-4" as rutenvia,
+         (@row_number := CASE
+                                 WHEN @current_id = id_nota_cred THEN @row_number + 1
+                                 ELSE 1
+                           END) AS numlinea,
+         "INT1" as tipocod,
+         nota_credito_detalle.codigo as codprod,
+         nota_credito_detalle.descripcion as descprod,
+         "C/U" as unmditem,
+         nota_credito_detalle.cantidad AS cantidad,
+         round(nota_credito_detalle.precio/1.19) as precio,
+         nota_credito_detalle.porc_desc as porcdescuento,
+         nota_credito_detalle.porc_desc as descuento,
+         round(round(cantidad*precio)/1.19) as netolinea,
+         "IVA" as tipoimpuesto,
+         substring(nota_credito.fecha, 1, 7) as periodo,
+         " " as DscRcgGlobal,
+         (@current_id := id_nota_cred) AS dummy
+         from nota_credito_detalle
+         left join nota_credito on nota_credito_detalle.id_nota_cred = nota_credito.id
+         join (SELECT @row_number := 0, @current_id := "") AS vars
+         where nota_credito.fecha = "'.$request->get('fecha').'"
+         ORDER BY id_nota_cred');
+
+         $referencia_nc_dia = DB::select('select
+         concat("NC",folio,"T61") as documentoid,
+         nro_doc_refe as folioref,
+         "9807942-4" as rutenviaref,
+         1 as numlinearef,
+         (if(tipo_doc_refe = 8, "33" , "39")) as tipodocref,
+         tipo_nc as codref,
+         glosa as razonref,
+         fecha as fecharef,
+         substring(fecha, 1, 7) as periodo
+         from nota_credito where fecha = "'.$request->get('fecha').'"');
+
+         $fecha = $request->get('fecha');
+      
+        return view('Informatica.FirmaNC',  compact('nc_dia', 'detalle_nc_dia', 'referencia_nc_dia', 'fecha'));
+    }
+
+    public function FirmaBoletas(Request $request){
+      $fecha_hoy = date('Y-m-d');
+
+       // Restar un día a la fecha
+      $fecha = date('Y-m-d', strtotime('-1 day', strtotime($fecha_hoy)));
+
+      $boletas_dia = DB::select('select concat("BE",CANMRO,"T39") as documentoid,"9807942-4" as rutenevia,"77283950-2" as rutemisor,
+      "60803000-K" as rutreceptor,"60803000-K" as rutsolicita,cargos.CANMRO as numdoc,cargos.nro_oc as numref,"39" as tipodoc,
+      null as anula_modifica, null as tipooprecion, cargos.CANETO as valorneto,cargos.CAIVA as valoriva,
+      cargos.capode as valordescu,cargos.monto_exento as valorexento,cargos.CAVALO as valortotal,
+      CURDATE() as fechaenvio,"." as glosa,(if (cargos.forma_pago != "X",1,2)) as fmapago,cargos.CAFECO as fchcancel,
+      cargos.cafeco as fchvenc,null as indtraslado,null as tipodespacho,
+      substr(cargos.cafeco,1,7) as periodo,null as enlibro,
+      "pendiente" as estado,0 as departamento
+      from cargos
+      where cargos.CAFECO="'.$fecha.'" and cargos.CATIPO=7 and cargos.forma_pago != "T"');
+
+      $detalle_boletas_dia = DB::select('select concat("BE",dcargos.DENMRO,"T39") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
+      "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID,1,4) as unmditem,
+      dcargos.DECANT,round(dcargos.DEPREC) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+      round(round(dcargos.DECANT*dcargos.DEPREC)) as netolinea,"IVA" as tipoimpuesto,substr(dcargos.defeco,1,7) as periodo," " as DscRcgGlobal
+      from dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO
+      where dcargos.defeco = "'.$fecha.'" and dcargos.DETIPO=7 and cargos.forma_pago != "T" and cargos.cafeco="'.$fecha.'" and CATIPO = "7" and DETIPO = "7"');
+
+      return view('Informatica.FirmaBoletas',  compact('boletas_dia', 'detalle_boletas_dia', 'fecha'));
+    }
+
+    public function FirmaBoletasFiltro(Request $request){
+
+      $boletas_dia = DB::select('select concat("BE",CANMRO,"T39") as documentoid,"9807942-4" as rutenvia,"77283950-2" as rutemisor,
+      "60803000-K" as rutreceptor,"60803000-K" as rutsolicita,cargos.CANMRO as numdoc,cargos.nro_oc as numref,"39" as tipodoc,
+      null as anula_modifica, null as tipooperacion, cargos.CANETO as valorneto,cargos.CAIVA as valoriva,
+      cargos.capode as valordescu,cargos.monto_exento as valorexento,cargos.CAVALO as valortotal,
+      CURDATE() as fechaenvio,"." as glosa,(if (cargos.forma_pago != "X",1,2)) as fmapago,cargos.CAFECO as fchcancel,
+      cargos.cafeco as fchvenc,null as indtraslado,null as tipodespacho,
+      substr(cargos.cafeco,1,7) as periodo,null as enlibro,
+      "pendiente" as estado,0 as departamento
+      from cargos
+      where cargos.CAFECO="'.$request->get('fecha').'" and cargos.CATIPO=7 and cargos.forma_pago != "T"');
+
+      $detalle_boletas_dia = DB::select('select concat("BE",dcargos.DENMRO,"T39") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
+      "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID,1,4) as unmditem,
+      dcargos.DECANT as cantidad,round(dcargos.DEPREC) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+      round(round(dcargos.DECANT*dcargos.DEPREC)) as netolinea,"IVA" as tipoimpuesto,substr(dcargos.defeco,1,7) as periodo," " as DscRcgGlobal
+      from dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO
+      where dcargos.defeco = "'.$request->get('fecha').'" and dcargos.DETIPO=7 and cargos.forma_pago != "T" and cargos.cafeco="'.$request->get('fecha').'" and CATIPO = "7" and DETIPO = "7"');
+
+      $fecha = $request->get('fecha');
+      
+      return view('Informatica.FirmaBoletas',  compact('boletas_dia', 'detalle_boletas_dia', 'fecha'));
     }
 
     public function FirmarFacturasDia(Request $request){

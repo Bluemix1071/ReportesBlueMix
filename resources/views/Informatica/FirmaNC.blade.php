@@ -12,25 +12,24 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <div class="row">
-              <h3 class="display-3 col-4">Exportar Facturas</h3>
-              <div class="col-3 row justify-content-center align-items-center">
-                <button id="export" class="btn btn-success">Exportar a Excel</button>
-              </div>
-              <div class="col-3 row justify-content-center align-items-center">
-                <input type="text" id="searchInput" placeholder="Buscar Folio" style="width: initial">
-              </div>
-              <form action="{{ route('FirmarFacturasFiltro') }}" method="get" class="col-2 row justify-content-center align-items-center">
-                  <input type="date" name="fecha" class="sm-form-control" value="{{ $fecha }}">
-                  &nbsp;
-                  <button type="submit" class="btn btn-primary">Buscar</button>
-                  &nbsp;
-              </form>
-        </div>
-
-        <div class="row">
+          <div class="row">
+                <h3 class="display-3 col-4">Exportar NC</h3>
+                <div class="col-3 row justify-content-center align-items-center">
+                  <button id="export" class="btn btn-success">Exportar a Excel</button>
+                </div>
+                <div class="col-3 row justify-content-center align-items-center">
+                  <input type="text" id="searchInput" placeholder="Buscar Folio" style="width: initial">
+                </div>
+                <form action="{{ route('FirmaNCFiltro') }}" method="get" class="col-2 row justify-content-center align-items-center">
+                    <input type="date" name="fecha" class="sm-form-control" value="{{ $fecha }}">
+                    &nbsp;
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    &nbsp;
+                </form>
+          </div>
+          
+          <div class="row">
           <div class="col-md-12">
-
             <div class="table-responsive-xl">
                 <table id="cabeza" class="table table-bordered table-hover dataTable table-sm">
                     <thead>
@@ -64,7 +63,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach($facturas_dia as $item)
+                    @foreach($nc_dia as $item)
                         <tr>
                             <td>{{ $item->documentoid }}</td>
                             <td>{{ $item->rutenvia }}</td>
@@ -100,7 +99,7 @@
           </div>
         </div>
 
-        <h3 class="display-3">Exportar Detalle Facturas</h3>
+        <h3 class="display-3">Exportar Detalle NC</h3>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
@@ -115,7 +114,7 @@
                             <th scope="col" style="text-align:left">codprod</th>
                             <th scope="col" style="text-align:left">descprod</th>
                             <th scope="col" style="text-align:left">unmditem</th>
-                            <th scope="col" style="text-align:left">DECANT</th>
+                            <th scope="col" style="text-align:left">cantidad</th>
                             <th scope="col" style="text-align:left">precio</th>
                             <th scope="col" style="text-align:left">porcdescuento</th>
                             <th scope="col" style="text-align:left">descuento</th>
@@ -126,7 +125,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach($detalle_facturas_dia as $item)
+                    @foreach($detalle_nc_dia as $item)
                         <tr>
                             <td>{{ $item->documentoid }}</td>
                             <td>{{ $item->rutenvia }}</td>
@@ -135,7 +134,7 @@
                             <td>{{ $item->codprod }}</td>
                             <td>{{ $item->descprod }}</td>
                             <td>{{ $item->unmditem }}</td>
-                            <td>{{ $item->DECANT }}</td>
+                            <td>{{ $item->cantidad }}</td>
                             <td>{{ $item->precio }}</td>
                             <td>{{ $item->porcdescuento }}</td>
                             <td>{{ $item->descuento }}</td>
@@ -151,7 +150,7 @@
           </div>
         </div>
 
-        <h3 class="display-3">Exportar Referencia Facturas</h3>
+        <h3 class="display-3">Exportar Referencia NC</h3>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
@@ -171,7 +170,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach($referencia_facturas_dia as $item)
+                    @foreach($referencia_nc_dia as $item)
                         <tr>
                             <td>{{ $item->documentoid }}</td>
                             <td>{{ $item->folioref }}</td>
@@ -202,10 +201,10 @@
         buttons: [
             {
                 extend: 'excel',
-                filename: 'FacturaSII',
+                filename: 'NCSII',
                 header: false,
                 title: '',
-                text: 'Exportar Encabezado Facturas',
+                text: 'Exportar Encabezado NC',
             }
 
         ],
@@ -231,10 +230,10 @@
         buttons: [
             {
                 extend: 'excel',
-                filename: 'FacturaSIIDet',
+                filename: 'NCSIIDet',
                 header: false,
                 title: '',
-                text: 'Exportar Detalle Facturas',
+                text: 'Exportar Detalle NC',
             }
 
         ],
@@ -260,10 +259,10 @@
         buttons: [
             {
                 extend: 'excel',
-                filename: 'FacturaSIIRef',
+                filename: 'NCSIIRef',
                 header: false,
                 title: '',
-                text: 'Exportar Referencia Facturas'
+                text: 'Exportar Referencia NC'
             }
 
         ],
@@ -347,7 +346,7 @@
       XLSX.utils.book_append_sheet(workbook, table3Data, "enviossiidetref");
 
       // Exportar el libro de trabajo
-      XLSX.writeFile(workbook, "DocSiiFa.xlsx");
+      XLSX.writeFile(workbook, "DocSiiNC.xlsx");
     });
   });
   </script>
