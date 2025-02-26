@@ -261,6 +261,8 @@
       }
       XLSX.utils.book_append_sheet(workbook, table2Data, "enviossiidet");
 
+      // Exportar el libro de trabajo
+      XLSX.writeFile(workbook, "DocSiiBE.xlsx");
     });
   });
   </script>

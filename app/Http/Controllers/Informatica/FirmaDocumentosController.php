@@ -263,9 +263,9 @@ class FirmaDocumentosController extends Controller
        // Restar un día a la fecha
       $fecha = date('Y-m-d', strtotime('-1 day', strtotime($fecha_hoy)));
 
-      $boletas_dia = DB::select('select concat("BE",CANMRO,"T39") as documentoid,"9807942-4" as rutenevia,"77283950-2" as rutemisor,
+      $boletas_dia = DB::select('select concat("BE",CANMRO,"T39") as documentoid,"9807942-4" as rutenvia,"77283950-2" as rutemisor,
       "60803000-K" as rutreceptor,"60803000-K" as rutsolicita,cargos.CANMRO as numdoc,cargos.nro_oc as numref,"39" as tipodoc,
-      null as anula_modifica, null as tipooprecion, cargos.CANETO as valorneto,cargos.CAIVA as valoriva,
+      null as anula_modifica, null as tipooperacion, cargos.CANETO as valorneto,cargos.CAIVA as valoriva,
       cargos.capode as valordescu,cargos.monto_exento as valorexento,cargos.CAVALO as valortotal,
       CURDATE() as fechaenvio,"." as glosa,(if (cargos.forma_pago != "X",1,2)) as fmapago,cargos.CAFECO as fchcancel,
       cargos.cafeco as fchvenc,null as indtraslado,null as tipodespacho,
@@ -276,7 +276,7 @@ class FirmaDocumentosController extends Controller
 
       $detalle_boletas_dia = DB::select('select concat("BE",dcargos.DENMRO,"T39") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
       "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID,1,4) as unmditem,
-      dcargos.DECANT,round(dcargos.DEPREC) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+      dcargos.DECANT as cantidad,round(dcargos.DEPREC) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
       round(round(dcargos.DECANT*dcargos.DEPREC)) as netolinea,"IVA" as tipoimpuesto,substr(dcargos.defeco,1,7) as periodo," " as DscRcgGlobal
       from dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO
       where dcargos.defeco = "'.$fecha.'" and dcargos.DETIPO=7 and cargos.forma_pago != "T" and cargos.cafeco="'.$fecha.'" and CATIPO = "7" and DETIPO = "7"');
