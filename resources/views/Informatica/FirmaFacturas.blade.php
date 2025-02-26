@@ -309,6 +309,39 @@
                   table1Data[cellAddressW].t = "s";
                   table1Data[cellAddressW].v = baseDate.toISOString().substring(0, 7);
                 }
+
+                const cellAddressP = `P${row + 1}`; // Construir dirección de la celda (B2, B3, ...)
+                if (table1Data[cellAddressP]) { // Si la celda existe
+                  
+                  const excelDate = table1Data[cellAddressP].v; // Ejemplo:
+                  const baseDate = new Date(Date.UTC(1900, 0, 1)); // Fecha base de Excel
+                  baseDate.setDate(baseDate.getDate() + excelDate);
+
+                  table1Data[cellAddressP].t = "s";
+                  table1Data[cellAddressP].v = baseDate.toISOString().substring(0, 10);
+                }
+
+                const cellAddressS = `S${row + 1}`; // Construir dirección de la celda (B2, B3, ...)
+                if (table1Data[cellAddressS]) { // Si la celda existe
+                  
+                  const excelDate = table1Data[cellAddressS].v; // Ejemplo:
+                  const baseDate = new Date(Date.UTC(1900, 0, 1)); // Fecha base de Excel
+                  baseDate.setDate(baseDate.getDate() + excelDate);
+
+                  table1Data[cellAddressS].t = "s";
+                  table1Data[cellAddressS].v = baseDate.toISOString().substring(0, 10);
+                }
+
+                const cellAddressT = `T${row + 1}`; // Construir dirección de la celda (B2, B3, ...)
+                if (table1Data[cellAddressT]) { // Si la celda existe
+                  
+                  const excelDate = table1Data[cellAddressT].v; // Ejemplo:
+                  const baseDate = new Date(Date.UTC(1900, 0, 1)); // Fecha base de Excel
+                  baseDate.setDate(baseDate.getDate() + excelDate);
+
+                  table1Data[cellAddressT].t = "s";
+                  table1Data[cellAddressT].v = baseDate.toISOString().substring(0, 10);
+                }
       }
       XLSX.utils.book_append_sheet(workbook, table1Data, "enviossii");
 
