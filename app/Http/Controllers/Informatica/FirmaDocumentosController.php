@@ -37,7 +37,7 @@ class FirmaDocumentosController extends Controller
 
         $detalle_facturas_dia = DB::select('select concat("FA",dcargos.DENMRO,"T33") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
          "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID,1,4) as unmditem,
-         dcargos.DECANT,round(dcargos.DEPREC/1.19) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+         dcargos.DECANT as cantidad,round(dcargos.DEPREC/1.19) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
          round(round(dcargos.DECANT*dcargos.DEPREC)/1.19) as netolinea,"IVA" as tipoimpuesto,substr(cargos.cafeco,1,7) as periodo," " as DscRcgGlobal
          from dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO and CATIPO = "8"
          where dcargos.DEFECO="'.$fecha.'" and cargos.CAFECO="'.$fecha.'" and cargos.CATIPO=8 and DETIPO = "8"');
@@ -70,7 +70,7 @@ class FirmaDocumentosController extends Controller
 
         $detalle_facturas_dia = DB::select('select concat("FA",dcargos.DENMRO,"T33") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
          "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID,1,4) as unmditem,
-         dcargos.DECANT,round(dcargos.DEPREC/1.19) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+         dcargos.DECANT as cantidad,round(dcargos.DEPREC/1.19) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
          round(round(dcargos.DECANT*dcargos.DEPREC)/1.19) as netolinea,"IVA" as tipoimpuesto,substr(cargos.cafeco,1,7) as periodo," " as DscRcgGlobal
          from dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO and CATIPO = "8"
          where dcargos.DEFECO="'.$request->get('fecha').'" and cargos.CAFECO="'.$request->get('fecha').'" and cargos.CATIPO=8 and DETIPO = "8"');

@@ -115,7 +115,7 @@
                             <th scope="col" style="text-align:left">codprod</th>
                             <th scope="col" style="text-align:left">descprod</th>
                             <th scope="col" style="text-align:left">unmditem</th>
-                            <th scope="col" style="text-align:left">DECANT</th>
+                            <th scope="col" style="text-align:left">cantidad</th>
                             <th scope="col" style="text-align:left">precio</th>
                             <th scope="col" style="text-align:left">porcdescuento</th>
                             <th scope="col" style="text-align:left">descuento</th>
@@ -135,7 +135,7 @@
                             <td>{{ $item->codprod }}</td>
                             <td>{{ $item->descprod }}</td>
                             <td>{{ $item->unmditem }}</td>
-                            <td>{{ $item->DECANT }}</td>
+                            <td>{{ $item->cantidad }}</td>
                             <td>{{ $item->precio }}</td>
                             <td>{{ $item->porcdescuento }}</td>
                             <td>{{ $item->descuento }}</td>

@@ -31,8 +31,8 @@
         <div class="content-wrapper">
             <section class="content">
                 <div class="col-md-12">
-                    <h1 class="display-4" style="text-align:center">Consulta De Precio</h1>
-                    <hr>
+                    <!-- <h1 class="display-4" style="text-align:center">Consulta De Precio</h1>
+                    <hr> -->
 
                         <div class="container">
                             <div class="row justify-content-md-center">
@@ -77,7 +77,7 @@
 
                                 </div>
                             </div>
-                            <br>
+                            <!-- <br>
                             <br>
                             <br>
                             <br>
@@ -99,7 +99,7 @@
                                             src="{{ asset("assets/$theme/dist/img/logoantiguo.png") }}" width="200"
                                             height="100"></div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
         </div>
         <!-- /.inicio footer -->
