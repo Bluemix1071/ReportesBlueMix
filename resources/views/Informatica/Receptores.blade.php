@@ -14,13 +14,17 @@
     <div class="container-fluid">
         <div class="row">
               <h3 class="display-3">Exportar Receptores</h3>
+              <form action="{{ route('ReceptoresFiltro') }}" method="get" class="col-2 row justify-content-center align-items-center">
+                  <input type="date" name="fecha" class="sm-form-control" value="{{ $fecha }}">
+                  &nbsp;
+                  <button type="submit" class="btn btn-primary">Buscar</button>
+                  &nbsp;
+              </form>
             </div>
         <div class="row">
           <div class="col-md-12">
 
           <button id="export" class="btn btn-primary">Exportar a Excel</button>
-          <br>
-          <br>
 
             <div class="table-responsive-xl">
                 <table id="receptores" class="table table-bordered table-hover dataTable table-sm">

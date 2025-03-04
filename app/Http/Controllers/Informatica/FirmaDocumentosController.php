@@ -90,16 +90,55 @@ class FirmaDocumentosController extends Controller
 
     public function Receptores(Request $request){
 
-      $receptores = DB::select('select concat(cliente.CLRUTC,"-",upper(cliente.CLRUTD)) as "rutreceptor", cliente.DEPARTAMENTO as departamento, replace(substr(cliente.CLRSOC, 1 , 39), "&", "Y") as "razonsocialre",substr(tablas.TAGLOS, 1 , 39) as girorec,
-      cliente.CLDIRF as "dirrec",comunas.nombre as comunarec,comunas.nombre as ciudadrec,"A" as estado,null as contacto,null as telefonorec
-      from cliente
-      left join comunas on cliente.CLCOMF = comunas.id
+      $fecha_hoy = date('Y-m-d');
+
+       // Restar un día a la fecha
+      $fecha = date('Y-m-d', strtotime('-1 day', strtotime($fecha_hoy)));
+
+      $receptores = DB::select('select * from (
+      select concat(cliente.CLRUTC,"-",upper(cliente.CLRUTD)) as "rutreceptor", cliente.DEPARTAMENTO as departamento, replace(substr(cliente.CLRSOC, 1 , 39), "&", "Y") as "razonsocialre",substr(tablas.TAGLOS, 1 , 39) as girorec,
+      cliente.CLDIRF as "dirrec",comunas.nombre as comunarec,comunas.nombre as ciudadrec,"A" as estado,null as contacto,null as telefonorec 
+      from cargos
+      left join cliente on cargos.CARUTC = cliente.CLRUTC
       left join tablas on cliente.CLGIRO = tablas.tarefe
-      where tablas.TACODI=8 and length(cliente.clrutc) >= 5 group by cliente.CLRUTC,DEPARTAMENTO');
+      left join comunas on cliente.CLCOMF = comunas.id
+      where CAFECO = "'.$fecha.'" and CATIPO in ("8","3") and tablas.TACODI=8 group by cliente.CLRUTC,DEPARTAMENTO
+      union all
+      SELECT "60803000-K" as rutreceptor, "0" as departamento, "SERVICIOS DE IMPUESTOS INTERNOS DIRECCI" as razonsocialre, "SERVICIO PUBLICO" as girorec,"CARRERA 453" as dirrec,"CHILLAN" as comunarec,"CHILLAN" as ciudadrec,"A" as estado, null as contacto, null as telefonorec
+      union all
+      select concat(cliente.CLRUTC,"-",upper(cliente.CLRUTD)) as "rutreceptor", cliente.DEPARTAMENTO as departamento, replace(substr(cliente.CLRSOC, 1 , 39), "&", "Y") as "razonsocialre", substr(tablas.TAGLOS, 1 , 39) as girorec,
+      cliente.CLDIRF as "dirrec",comunas.nombre as comunarec,comunas.nombre as ciudadrec,"A" as estado,null as contacto,null as telefonorec  from nota_credito
+      left join cliente on LEFT(nota_credito.rut, LENGTH(nota_credito.rut) - 2) = cliente.CLRUTC
+      left join tablas on cliente.CLGIRO = tablas.tarefe
+      left join comunas on cliente.CLCOMF = comunas.id 
+      where fecha = "'.$fecha.'" group by rut) t group by rutreceptor, departamento');
 
-      //dd($receptores);
+      return view('Informatica.Receptores', compact('receptores', 'fecha'));
+    }
 
-      return view('Informatica.Receptores', compact('receptores'));
+    public function ReceptoresFiltro(Request $request){
+
+      $receptores = DB::select('select * from (
+      select concat(cliente.CLRUTC,"-",upper(cliente.CLRUTD)) as "rutreceptor", cliente.DEPARTAMENTO as departamento, replace(substr(cliente.CLRSOC, 1 , 39), "&", "Y") as "razonsocialre",substr(tablas.TAGLOS, 1 , 39) as girorec,
+      cliente.CLDIRF as "dirrec",comunas.nombre as comunarec,comunas.nombre as ciudadrec,"A" as estado,null as contacto,null as telefonorec 
+      from cargos
+      left join cliente on cargos.CARUTC = cliente.CLRUTC
+      left join tablas on cliente.CLGIRO = tablas.tarefe
+      left join comunas on cliente.CLCOMF = comunas.id
+      where CAFECO = "'.$request->get('fecha').'" and CATIPO in ("8","3") and tablas.TACODI=8 group by cliente.CLRUTC,DEPARTAMENTO
+      union all
+      SELECT "60803000-K" as rutreceptor, "0" as departamento, "SERVICIOS DE IMPUESTOS INTERNOS DIRECCI" as razonsocialre, "SERVICIO PUBLICO" as girorec,"CARRERA 453" as dirrec,"CHILLAN" as comunarec,"CHILLAN" as ciudadrec,"A" as estado, null as contacto, null as telefonorec
+      union all
+      select concat(cliente.CLRUTC,"-",upper(cliente.CLRUTD)) as "rutreceptor", cliente.DEPARTAMENTO as departamento, replace(substr(cliente.CLRSOC, 1 , 39), "&", "Y") as "razonsocialre", substr(tablas.TAGLOS, 1 , 39) as girorec,
+      cliente.CLDIRF as "dirrec",comunas.nombre as comunarec,comunas.nombre as ciudadrec,"A" as estado,null as contacto,null as telefonorec  from nota_credito
+      left join cliente on LEFT(nota_credito.rut, LENGTH(nota_credito.rut) - 2) = cliente.CLRUTC
+      left join tablas on cliente.CLGIRO = tablas.tarefe
+      left join comunas on cliente.CLCOMF = comunas.id 
+      where fecha = "'.$request->get('fecha').'" group by rut) t group by rutreceptor, departamento');
+
+      $fecha = $request->get('fecha');
+
+      return view('Informatica.Receptores', compact('receptores', 'fecha'));
     }
 
     public function FirmaNC(Request $request){
