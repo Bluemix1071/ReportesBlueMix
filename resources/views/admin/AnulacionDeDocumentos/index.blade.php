@@ -191,7 +191,7 @@
         }
 
 
-        function ValidarFecha(e) {
+        /* function ValidarFecha(e) {
 
             var fecha_item = document.getElementById('fecha_id')
             var fecha = moment(fecha_item.value).format('DD/MM/YYYY')
@@ -207,7 +207,7 @@
                 fecha_item.className = 'form-control is-valid'
             }
 
-        }
+        } */
 
     </script>
 @endsection

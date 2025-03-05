@@ -976,13 +976,13 @@ public function filtrarconsultafacturaboleta(Request $request){
       $boletacount=DB::table('cargos')
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',7)
-      ->where('CANMRO' ,'<', 1100000001)
+      ->where('CANMRO' ,'<', 1000000001)
       ->count('CANMRO');
 
       $boletatransbankcount=DB::table('cargos')  /////transbank
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->where('catipo',7)
-      ->where('CANMRO' ,'>', 1100000001)
+      ->where('CANMRO' ,'>', 1000000001)
       ->count('CANMRO');
 
 
@@ -1010,37 +1010,37 @@ public function filtrarconsultafacturaboleta(Request $request){
 
       $totalboletasumaneto=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO','<',1100000001)  //boleta
+      ->where('CANMRO','<',1000000001)  //boleta
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CANETO');
 
       $boletatransbanksumaneto=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO','>',1100000001)  //transbank
+      ->where('CANMRO','>',1000000001)  //transbank
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CANETO');
 
       $totalboletasumaiva=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO','<', 1100000001)  //boleta
+      ->where('CANMRO','<', 1000000001)  //boleta
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAIVA');
 
       $boletatransbanksumaiva=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO','>', 1100000001)  //transbank
+      ->where('CANMRO','>', 1000000001)  //transbank
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAIVA');
 
       $totalboletasuma=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO' ,'<', 1100000001)   //boleta
+      ->where('CANMRO' ,'<', 1000000001)   //boleta
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAVALO');
 
       $boletatransbanktotal=DB::table('cargos')
       ->where('CATIPO',7)
-      ->where('CANMRO' ,'>', 1100000001)   //transbank
+      ->where('CANMRO' ,'>', 1000000001)   //transbank
       ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
       ->sum('CAVALO');
 

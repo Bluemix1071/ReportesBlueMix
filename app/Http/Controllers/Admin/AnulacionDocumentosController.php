@@ -155,7 +155,8 @@ class AnulacionDocumentosController extends Controller
             ->where('defeco', $request->fecha)
             ->delete();
 
-        $cargos->delete();
+        //$cargos->delete();
+        DB::table('cargos')->where('id', $cargos->id)->where('CANMRO', $cargos->CANMRO)->where('CATIPO', $cargos->CATIPO)->delete();
 
         if (!empty($pago_efectivo)) {
             $pago_efectivo->delete();
