@@ -128,7 +128,7 @@
                             fecha.getDate().toString().padStart(2, '0');
 
       // Exportar el libro de trabajo
-      XLSX.writeFile(workbook, "Receptores_"+fechaFormateada+".xlsx");
+      XLSX.writeFile(workbook, "Receptores_{{ $fecha }}.xlsx");
     });
   });
   </script>

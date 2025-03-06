@@ -376,6 +376,14 @@
                   table3Data[cellAddressI].t = "s"; // Aplicar formato de fecha
                   table3Data[cellAddressI].v = baseDate.toISOString().substring(0, 7);
                 }
+
+                const cellAddressB = `B${row + 1}`; // Construir dirección de la celda (B2, B3, ...)
+                if (table3Data[cellAddressB]) { // Si la celda existe
+                  
+                  const excelDate = table3Data[cellAddressB].v; // Ejemplo:
+
+                  table3Data[cellAddressB].t = "s";
+                }
       }
       XLSX.utils.book_append_sheet(workbook, table3Data, "enviossiidetref");
 
