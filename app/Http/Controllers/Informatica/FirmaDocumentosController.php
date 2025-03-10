@@ -348,6 +348,109 @@ class FirmaDocumentosController extends Controller
       return view('Informatica.FirmaBoletas',  compact('boletas_dia', 'detalle_boletas_dia', 'fecha'));
     }
 
+    public function FirmaGuias(){
+
+      $fecha_hoy = date('Y-m-d');
+
+      // Restar un día a la fecha
+      $fecha = date('Y-m-d', strtotime('-1 day', strtotime($fecha_hoy)));
+
+       //$facturas_dia = DB::table('cargos')->where('catipo', 8)->where('cafeco', date('Y-m-d'))->get();
+       $guias_dia = DB::select('select concat("GD",CANMRO,"T52") as documentoid,
+         "9807942-4" as rutenvia,
+         "77283950-2" as rutemisor,
+         concat(cargos.CARUTC,"-",upper(cliente.CLRUTD)) as rutreceptor,
+         concat(cargos.CARUTC,"-",upper(cliente.CLRUTD)) as rutsolicita,
+         CANMRO as numdoc,
+         cargos.nro_oc as numref,
+         "52" as tipodoc,
+         null as anula_modifica,
+         null as tipooperacion,
+         cargos.CANETO as valorneto,
+         cargos.CAIVA as valoriva,
+         cargos.capode as valordescu,
+         cargos.monto_exento as valorexento,
+         cargos.CAVALO as valortotal,
+         cargos.cafeco as fechaenvio,
+         "." as glosa,
+         0 as fmapago,
+         cargos.CAFECO as fchcancel,
+         cargos.cafeco as fchvenc,
+         cargos.TIPOTRASLADO as indtraslado,
+         cargos.TIPODESPACHO as tipodespacho,
+         substr(cafeco, 1, 7) as periodo,
+         null as enlibro,
+         "pendiente" as estado,
+         cargos.depto as departamento
+         from cargos
+         left join cliente on cargos.CARUTC like cliente.CLRUTC and cliente.DEPARTAMENTO = cargos.depto
+         where cargos.CAFECO = "'.$fecha.'" and cargos.CATIPO=3');
+       //date('Y-m-d')
+
+       $detalle_guias_dia = DB::select('select concat("GD",dcargos.DENMRO,"T52") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
+         "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID, 1 ,4) as unmditem,
+         dcargos.DECANT as cantidad,round(dcargos.DEPREC/1.19) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+         round(round(DECANT*DEPREC)/1.19) as netolinea,"IVA" as tipoimpuesto, substr(defeco, 1, 7) as periodo, " " as DscRcgGlobal
+         from dcargos
+         where dcargos.DEFECO = "'.$fecha.'" and dcargos.DETIPO=3 and DETIPO = "3" and DETIPO = "3"');
+
+        $referencia_guias_dia = DB::select('select concat("GD",CANMRO,"T52") as documentoid, cargos.nro_oc as folioref,"9807942-4" as rutenviaref,"1" as numlinearef,"801" as tipodocref,"0" codref,cargos.referenciaOC as razonref,
+         cargos.CAFECO as fecharef,substr(cargos.cafeco,1,7) as periodo from cargos where cargos.cafeco = "'.$fecha.'" and cargos.CATIPO=3 and cargos.nro_oc != ""');
+
+       return view('Informatica.FirmaGuias', compact('guias_dia', 'detalle_guias_dia', 'referencia_guias_dia', 'fecha'));
+   }
+   
+   public function FirmaGuiasFiltro(Request $request){
+
+       //$facturas_dia = DB::table('cargos')->where('catipo', 8)->where('cafeco', $request->get('fecha'))->get();
+       $guias_dia = DB::select('select concat("GD",CANMRO,"T52") as documentoid,
+         "9807942-4" as rutenvia,
+         "77283950-2" as rutemisor,
+         concat(cargos.CARUTC,"-",upper(cliente.CLRUTD)) as rutreceptor,
+         concat(cargos.CARUTC,"-",upper(cliente.CLRUTD)) as rutsolicita,
+         CANMRO as numdoc,
+         cargos.nro_oc as numref,
+         "52" as tipodoc,
+         null as anula_modifica,
+         null as tipooperacion,
+         cargos.CANETO as valorneto,
+         cargos.CAIVA as valoriva,
+         cargos.capode as valordescu,
+         cargos.monto_exento as valorexento,
+         cargos.CAVALO as valortotal,
+         cargos.cafeco as fechaenvio,
+         "." as glosa,
+         0 as fmapago,
+         cargos.CAFECO as fchcancel,
+         cargos.cafeco as fchvenc,
+         cargos.TIPOTRASLADO as indtraslado,
+         cargos.TIPODESPACHO as tipodespacho,
+         substr(cafeco, 1, 7) as periodo,
+         null as enlibro,
+         "pendiente" as estado,
+         cargos.depto as departamento
+         from cargos
+         left join cliente on cargos.CARUTC like cliente.CLRUTC and cliente.DEPARTAMENTO = cargos.depto
+         where cargos.CAFECO = "'.$request->get('fecha').'" and cargos.CATIPO=3');
+       //date('Y-m-d')
+
+       $detalle_guias_dia = DB::select('select concat("GD",dcargos.DENMRO,"T52") as documentoid,"9807942-4" as rutenvia,(dcargos.POSICION)+1 as numlinea,
+         "INT1" as tipocod, dcargos.DECODI as codprod,dcargos.detalle as descprod,substr(dcargos.DEUNID, 1 ,4) as unmditem,
+         dcargos.DECANT as cantidad,round(dcargos.DEPREC/1.19) as precio,round(dcargos.porc_desc) as porcdescuento,round(dcargos.porc_desc) as descuento,
+         round(round(DECANT*DEPREC)/1.19) as netolinea,"IVA" as tipoimpuesto, substr(defeco, 1, 7) as periodo, " " as DscRcgGlobal
+         from dcargos
+         where dcargos.DEFECO = "'.$request->get('fecha').'" and dcargos.DETIPO=3 and DETIPO = "3" and DETIPO = "3"');
+
+        $referencia_guias_dia = DB::select('select concat("GD",CANMRO,"T52") as documentoid, cargos.nro_oc as folioref,"9807942-4" as rutenviaref,"1" as numlinearef,"801" as tipodocref,"0" codref,cargos.referenciaOC as razonref,
+         cargos.CAFECO as fecharef,substr(cargos.cafeco,1,7) as periodo from cargos where cargos.cafeco = "'.$request->get('fecha').'" and cargos.CATIPO=3 and cargos.nro_oc != ""');
+
+        //dd($referencia_facturas_dia);
+       $fecha = $request->get('fecha');
+       //dd($request);
+
+       return view('Informatica.FirmaGuias', compact('guias_dia', 'detalle_guias_dia', 'referencia_guias_dia', 'fecha'));
+   }
+
     public function FirmarFacturasDia(Request $request){
 
             $headers = array(

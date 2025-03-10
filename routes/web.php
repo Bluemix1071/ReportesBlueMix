@@ -153,6 +153,8 @@ Route::prefix('Informatica')->middleware('auth', 'SuperAdmin')->group(function()
     Route::get('/FirmaNCFiltro','Informatica\FirmaDocumentosController@FirmaNCFiltro')->name('FirmaNCFiltro');
     Route::get('/FirmaBoletas','Informatica\FirmaDocumentosController@FirmaBoletas')->name('FirmaBoletas');
     Route::get('/FirmaBoletasFiltro','Informatica\FirmaDocumentosController@FirmaBoletasFiltro')->name('FirmaBoletasFiltro');
+    Route::get('/FirmaGuias','Informatica\FirmaDocumentosController@FirmaGuias')->name('FirmaGuias');
+    Route::get('/FirmaGuiasFiltro','Informatica\FirmaDocumentosController@FirmaGuiasFiltro')->name('FirmaGuiasFiltro');
     
     Route::post('/FirmaFacturas','Informatica\FirmaDocumentosController@FirmarFacturasDia')->name('FirmarFacturasDia');
     Route::post('/FirmaFactura','Informatica\FirmaDocumentosController@FirmarFactura')->name('FirmarFactura');
