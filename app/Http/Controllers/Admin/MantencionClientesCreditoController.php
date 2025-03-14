@@ -59,7 +59,6 @@ class MantencionClientesCreditoController extends Controller
         ->where('DEPARTAMENTO', $depto)
         ->first();
 
-        //dd($cliente);
 
         $ciudad=DB::table('tablas')
         ->join('cliente', 'CLCIUF', '=', 'tarefe')
@@ -104,20 +103,47 @@ class MantencionClientesCreditoController extends Controller
       $regiones=DB::table('regiones')->get();
 
       $deuda = DB::select("SELECT DISTINCT
-      `ccorclie_ccpclien`.`CCPRUTCLIE`,`ccorclie_ccpclien`.`CCPDOCUMEN`,`ccorclie_ccpclien`.`CCPTIPODOC`,
-      `ccorclie_ccpclien`.`CCPFECHAHO`,`ccorclie_ccpclien`.`CCPFECHAP1`,`ccorclie_ccpclien`.`CCPFECHAP2`,
-      `ccorclie_ccpclien`.`CCPFECHAP3`,`ccorclie_ccpclien`.`CCPFECHAP4`,`ccorclie_ccpclien`.`CCPVALORFA`,
-      `ccorclie_ccpclien`.`CCPNOTACRE`,`ccorclie_ccpclien`.`CCPNUMNOTA`,`ccorclie_ccpclien`.`CCPFECHANO`,
-      `ccorclie_ccpclien`.`TIPDOCABO1`,`ccorclie_ccpclien`.`TIPOBANCO1`,`ccorclie_ccpclien`.`FECHACHEQ1`,
-      `ccorclie_ccpclien`.`TIPDOCABO2`,`ccorclie_ccpclien`.`TIPOBANCO2`,`ccorclie_ccpclien`.`FECHACHEQ2`,
-      `ccorclie_ccpclien`.`TIPDOCABO3`,`ccorclie_ccpclien`.`TIPOBANCO3`,`ccorclie_ccpclien`.`FECHACHEQ3`,
-      `ccorclie_ccpclien`.`TIPDOCABO4`,`ccorclie_ccpclien`.`TIPOBANCO4`,`ccorclie_ccpclien`.`FECHACHEQ4`,
-      `ccorclie_ccpclien`.`NUDOCUABO4`,`ccorclie_ccpclien`.`FECHAPABO4`,`ccorclie_ccpclien`.`TOTAABONOS`,
-      `ccorclie_ccpclien`.`SALDODOCUM`,`ccorclie_ccpclien`.`CCPCAJEROS`,`ccorclie_ccpclien`.`CCPVENDEDO`,
-      `ccorclie_ccpclien`.`CCPUSUARIO`,`ccorclie_ccpclien`.`CCPCATIMES`,`ccorclie_ccpclien`.`CCPFOLRECV`,
+      `ccorclie_ccpclien`.`CCPRUTCLIE`,
+      `ccorclie_ccpclien`.`CCPDOCUMEN`,
+      `ccorclie_ccpclien`.`CCPTIPODOC`,
+      `ccorclie_ccpclien`.`CCPFECHAHO`,
+      `ccorclie_ccpclien`.`CCPFECHAP1`,
+      `ccorclie_ccpclien`.`CCPFECHAP2`,
+      `ccorclie_ccpclien`.`CCPFECHAP3`,
+      `ccorclie_ccpclien`.`CCPFECHAP4`,
+      `ccorclie_ccpclien`.`CCPVALORFA`,
+      `ccorclie_ccpclien`.`CCPNOTACRE`,
+      `ccorclie_ccpclien`.`CCPNUMNOTA`,
+      `ccorclie_ccpclien`.`CCPFECHANO`,
+      `ccorclie_ccpclien`.`TIPDOCABO1`,
+      `ccorclie_ccpclien`.`TIPOBANCO1`,
+      `ccorclie_ccpclien`.`FECHACHEQ1`,
+      `ccorclie_ccpclien`.`TIPDOCABO2`,
+      `ccorclie_ccpclien`.`TIPOBANCO2`,
+      `ccorclie_ccpclien`.`FECHACHEQ2`,
+      `ccorclie_ccpclien`.`TIPDOCABO3`,
+      `ccorclie_ccpclien`.`TIPOBANCO3`,
+      `ccorclie_ccpclien`.`FECHACHEQ3`,
+      `ccorclie_ccpclien`.`TIPDOCABO4`,
+      `ccorclie_ccpclien`.`TIPOBANCO4`,
+      `ccorclie_ccpclien`.`FECHACHEQ4`,
+      `ccorclie_ccpclien`.`NUDOCUABO4`,
+      `ccorclie_ccpclien`.`FECHAPABO4`,
+      `ccorclie_ccpclien`.`TOTAABONOS`,
+      `ccorclie_ccpclien`.`SALDODOCUM`,
+      `ccorclie_ccpclien`.`CCPCAJEROS`,
+      `ccorclie_ccpclien`.`CCPVENDEDO`,
+      `ccorclie_ccpclien`.`CCPUSUARIO`,
+      `ccorclie_ccpclien`.`CCPCATIMES`,
+      `ccorclie_ccpclien`.`CCPFOLRECV`,
       `ccorclie_ccpclien`.`estado_morosidad`,
+      `ccorclie_ccpclien`.`ABONO1`,
+      `ccorclie_ccpclien`.`ABONO2`,
+      `ccorclie_ccpclien`.`ABONO3`,
+      `ccorclie_ccpclien`.`ABONO4`,
       (`ccorclie_ccpclien`.`ABONO1` + `ccorclie_ccpclien`.`ABONO2` + `ccorclie_ccpclien`.`ABONO3` + `ccorclie_ccpclien`.`ABONO4`) as `Total`,
-      `cargos`.`CAVALO`,cargos.nro_oc as OC
+      `cargos`.`CAVALO`,
+      cargos.nro_oc as OC
       FROM `ccorclie_ccpclien`
       LEFT JOIN `cargos` on `ccorclie_ccpclien`.`CCPDOCUMEN` = `cargos`.`CANMRO`
       WHERE `ccorclie_ccpclien`.`CCPRUTCLIE` = ".$request->get('rut')."
@@ -125,7 +151,8 @@ class MantencionClientesCreditoController extends Controller
       AND `ccorclie_ccpclien`.`CCPFECHAHO` LIKE '%%'
       AND `ccorclie_ccpclien`.`CCPESTADOD`<>'N'
       AND `cargos`.`depto` = $depto
-      ORDER BY 'CCPFECHAHO' ASC");
+      AND `cargos`.`CATIPO` = 8
+      ORDER BY `CCPFECHAHO` ASC");
 
       $fecha_hoy = date('Y-m-d');
 
@@ -133,4 +160,112 @@ class MantencionClientesCreditoController extends Controller
 
       return view('admin.MantencionClientesCreditoDetalle', compact('cliente', 'ciudad', 'giro', 'abonos', 'regiones', 'deuda', 'fecha_hoy', "fecha_moron"));
     }
+
+    public function AbonarDetalleCliente(Request $request){
+
+
+
+        $numero_factura = DB::table('ccorclie_ccpclien')
+        ->where('CCPDOCUMEN', $request->get('numfac'))
+        ->where('CCPTIPODOC', '8')
+        ->first();
+
+        $abonados = DB::table('ccorclie_ccpclien')
+        ->where('CCPDOCUMEN', $request->get('numfac'))
+        ->where('CCPTIPODOC', '8')
+        ->select('CCPVALORFA', 'ABONO1', 'ABONO2', 'ABONO3')
+        ->get();
+
+        $factura = $request->get('numfac');
+
+
+        $total = $request->get('totalabonado');
+        $abononum1 = $request->get('abonoo1');
+        $formadepago = $request->get('forma_pago');
+        $nombrebanco = $request->get('banco_pago');
+        $fechacliente = $request->get('fecha_cheque');
+        $numcheque = $request->get('numerocheque');
+        $numrecibo = $request->get('numerorecibo');
+        $fechabono = $request->get('fecha_abono');
+
+        $modo = value('ABONOCLI');
+        $mac = value('1');
+        $quienabono = value('LUCIA');
+        $glosa = 'Abono a Factura Nro: ' . $factura;
+        $hora = date('H:i:s');
+
+
+        if($numero_factura->ABONO1 == 0){
+
+            $abononum = [
+                'ABONO1' => $request->get('abonoo1'),
+                'TIPDOCABO1' => $request->get('forma_pago'),
+                'TIPOBANCO1' => $request->get('banco_pago'),
+                'FECHACHEQ1' => $request->get('fecha_cheque'),
+                'NUDOCUABO1' => $request->get('numerocheque'),
+                'CCPFOLRECV' => $request->get('numerorecibo'),
+                'FECHAPABO1' => $request->get('fecha_abono'),
+
+
+
+            ];
+        }
+        if($numero_factura->ABONO2 == 0 && $numero_factura->ABONO1 != 0){
+
+            $abononum = [
+                'ABONO2' => $request->get('abonoo1'),
+                'TIPDOCABO2' => $request->get('forma_pago'),
+                'TIPOBANCO2' => $request->get('banco_pago'),
+                'FECHACHEQ2' => $request->get('fecha_cheque'),
+                'NUDOCUABO2' => $request->get('numerocheque'),
+                'CCPFOLRECV' => $request->get('numerorecibo'),
+                'FECHAPABO2' => $request->get('fecha_abono'),
+
+            ];
+        }
+        if($numero_factura->ABONO3 == 0 && $numero_factura->ABONO2 != 0 && $numero_factura->ABONO1 != 0){
+            $abononum = [
+                'ABONO3' => $request->get('abonoo1'),
+                'TIPDOCABO3' => $request->get('forma_pago'),
+                'TIPOBANCO3' => $request->get('banco_pago'),
+                'FECHACHEQ3' => $request->get('fecha_cheque'),
+                'NUDOCUABO3' => $request->get('numerocheque'),
+                'CCPFOLRECV' => $request->get('numerorecibo'),
+                'FECHAPABO3' => $request->get('fecha_abono'),
+
+            ];
+        }
+
+
+
+        if ($numero_factura) {
+
+
+            DB::table('ccorclie_ccpclien')
+            ->where('CCPDOCUMEN', $request->get('numfac'))
+            ->where('CCPTIPODOC', '8')
+            ->update($abononum);
+
+            DB::table('log_bmix')->insert([
+                'tipo_operacion' => $modo,
+                'nro_oper_doc' => $factura,
+                'nomb_ususario' => $quienabono,
+                'hora' => $hora,
+                'mac' => $mac,
+                'fecha' => $fechabono,
+                'monto' => $abononum1,
+                'glosa' => $glosa,
+            ]);
+
+        }
+
+
+
+
+
+        return view ('admin.MantencionClientesCredito');
+    }
+
+
+
 }
