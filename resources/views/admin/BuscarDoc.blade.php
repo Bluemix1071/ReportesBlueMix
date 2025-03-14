@@ -46,6 +46,7 @@
                                 <option value="105">Caja 105</option>
                                 <option value="108">Caja 108</option>
                                 <option value="109">Caja 109</option>
+                                <option value="201">Caja 201</option>
                                 <option value="17">Caja 17</option>
                             </select>
                         </div>
