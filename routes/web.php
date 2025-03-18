@@ -155,7 +155,7 @@ Route::prefix('Informatica')->middleware('auth', 'SuperAdmin')->group(function()
     Route::get('/FirmaBoletasFiltro','Informatica\FirmaDocumentosController@FirmaBoletasFiltro')->name('FirmaBoletasFiltro');
     Route::get('/FirmaGuias','Informatica\FirmaDocumentosController@FirmaGuias')->name('FirmaGuias');
     Route::get('/FirmaGuiasFiltro','Informatica\FirmaDocumentosController@FirmaGuiasFiltro')->name('FirmaGuiasFiltro');
-    
+
     Route::post('/FirmaFacturas','Informatica\FirmaDocumentosController@FirmarFacturasDia')->name('FirmarFacturasDia');
     Route::post('/FirmaFactura','Informatica\FirmaDocumentosController@FirmarFactura')->name('FirmarFactura');
     Route::get('/CreateFacturaJson','Informatica\FirmaDocumentosController@CreateFacturaJson')->name('CreateFacturaJson');
@@ -315,6 +315,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/MantencionClientes','AdminController@MantencionClientes')->name('MantencionClientes');
     Route::post('/MantencionClientesFiltro','AdminController@MantencionClientesFiltro')->name('MantencionClientesFiltro');
     Route::put('/MantencionClientesUpdate','AdminController@MantencionClientesUpdate')->name('MantencionClientesUpdate');
+    Route::put('/AbonarDetalleCliente', 'MantencionClientesCreditoController@AbonarDetalleCliente')->name('AbonarDetalleCliente');
+    Route::get('/MantencionClientesCredito', 'MantencionClientesCreditoController@index')->name('MantencionClientesCredito');
+    Route::post('/MantencionClientesCreditoDetalle', 'MantencionClientesCreditoController@DetalleCliente')->name('MantencionClientesCreditoDetalle');
+    Route::get('/buscacliente', 'MantencionClientesCreditoController@buscacliente')->name('buscacliente');
+    Route::post('/guardar-registro', [MantencionClientesCreditoController::class, 'GuardarRegistro'])->name('guardar.registro');
 
     Route::get('/ventasCategoria','AdminController@ventasCategoria')->name('ventasCategoria');
     Route::post('/ventasCategoriaFiltro','AdminController@ventasCategoriaFiltro')->name('ventasCategoriaFiltro');

@@ -260,6 +260,7 @@
                                                     <th scope="col">VALOR DOC.</th>
                                                     <th scope="Col">Orden de Compra</th>
                                                     <th scope="col">Total Abonos</th>
+                                                    <th scope="col" ></th>
                                                 </tr>
                                             </thead>
                                                 <tbody style="text-align:center">
@@ -278,6 +279,13 @@
                                                         <td style="text-align:center">{{ number_format(($item->CAVALO), 0, ',', '.') }}</td>
                                                         <td style="text-align:center">{{ $item->OC }}</td>
                                                         <td style="text-align:center">{{ number_format(($item->Total), 0, ',', '.') }}</td>
+                                                        <td>
+                                                            <a href="#" data-toggle="modal" data-target="#abonar"
+                                                                data-ccpdocument="{{ $item->CCPDOCUMEN }}" data-ccpvalorfa="{{ $item->CCPVALORFA }}"
+                                                                data-total="{{ $item->Total }}" data-abono1="{{ $item->ABONO1 }}"
+                                                                data-abono2="{{ $item->ABONO2 }}" data-abono3="{{ $item->ABONO3 }}"
+                                                                class="btn btn-primary btn-sm">Abonar</a>
+                                                        </td>
                                                     </td>
                                                     @php($total_valordoc_x_pagar += $item->CAVALO)
                                                 @endforeach
@@ -299,8 +307,187 @@
                     </div>
                 </div>
             </div>
-        </div>
-        </section>
+
+            <div class="modal fade" id="abonar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Abono</h4>
+                        </div>
+                        <form action="{{ route('AbonarDetalleCliente') }}" method="POST">
+                            {{ method_field('put') }}
+                            {{ csrf_field() }}
+                            <div class="modal-body">
+                                <!-- Valor Documento -->
+                                <div class="form-group row">
+                                    <label for="saldo" class="col-md-4 col-form-label text-md-right">Valor Documento:</label>
+                                    <div class="col-md-6">
+                                        <input type="number" name="saldo" id="saldo" class="form-control" disabled>
+                                        <input type="number" name="abonado1" id="abonado1" class="form-control" disabled hidden>
+                                        <input type="number" name="abonado2" id="abonado2" class="form-control" disabled hidden>
+                                        <input type="number" name="abonado3" id="abonado3" class="form-control" disabled hidden>
+                                    </div>
+                                </div>
+
+                                <!-- Valor Abonado -->
+                                <div class="form-group row">
+                                    <label for="totalabonado" class="col-md-4 col-form-label text-md-right">Valor Abonado:</label>
+                                    <div class="col-md-6">
+                                        <input type="number" name="totalabonado" id="totalabonado" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                <!-- Abono 1 -->
+                                <div class="form-group row">
+                                    <label for="primerabono" class="col-md-4 col-form-label text-md-right">Abono 1:</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="primerabono" id="primerabono" class="form-control" disabled required>
+                                    </div>
+                                </div>
+                                <!-- Abono 2 -->
+                                <div class="form-group row">
+                                    <label for="segundoabono" class="col-md-4 col-form-label text-md-right">Abono 2:</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="segundoabono" id="segundoabono" class="form-control" disabled required>
+                                    </div>
+                                </div>
+                                <!-- Abono 3 -->
+                                <div class="form-group row">
+                                    <label for="tercerabono" class="col-md-4 col-form-label text-md-right">Abono 3:</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="tercerabono" id="tercerabono" class="form-control" disabled required>
+                                    </div>
+                                </div>
+
+                                <!-- Valor a Pagar -->
+                                <div class="form-group row">
+                                    <label for="saldoRestante" class="col-md-4 col-form-label text-md-right">Valor a Pagar:</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="saldoRestante" id="saldoRestante" class="form-control" disabled>
+                                    </div>
+                                </div>
+
+                                <!-- Monto a Pagar -->
+                                <div class="form-group row">
+                                    <label for="abonopagar" class="col-md-4 col-form-label text-md-right">Monto a pagar:</label>
+                                    <div class="col-md-6">
+                                        <input type="number" name="abonoo1" id="abonopagar" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <!-- Método de Pago -->
+                                <div class="form-group row">
+                                    <label for="forma_pago" class="col-md-4 col-form-label text-md-right">Método de Pago:</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" required name="forma_pago" id="forma_pago">
+                                            <option value="" disabled selected>Seleccione</option>
+                                            <option value="12">Depósito</option>
+                                            <option value="2">Cheque</option>
+                                            <option value="4">Convenio</option>
+                                            <option value="1">Efectivo</option>
+                                            <option value="15">Cheque en tesorería</option>
+                                            <option value="5">Factura</option>
+                                            <option value="7">Facturas por cobrar</option>
+                                            <option value="3">Nota de Crédito</option>
+                                            <option value="16">Tarjeta de crédito</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Nombre del Banco -->
+                                <div class="form-group row">
+                                    <label for="banco_pago" class="col-md-4 col-form-label text-md-right">Nombre del Banco:</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" name="banco_pago" id="banco_pago">
+                                            <option value="" disabled selected>Seleccione</option>
+                                            <option value="65">BAN EFE</option>
+                                            <option value="41">Banco Bicentenario</option>
+                                            <option value="22">Banesto</option>
+                                            <option value="5">BBVA</option>
+                                            <option value="8">A.Edwars</option>
+                                            <option value="2">BHIF</option>
+                                            <option value="9">Boston</option>
+                                            <option value="4">Central de chile</option>
+                                            <option value="27">Chase</option>
+                                            <option value="42">Citibank</option>
+                                            <option value="7">Concepcion</option>
+                                            <option value="36">Corp Blanca</option>
+                                            <option value="10">Credito y inversiones</option>
+                                            <option value="13">De chile</option>
+                                            <option value="15">Del Desarrollo</option>
+                                            <option value="25">Banco Estado</option>
+                                            <option value="44">Internacional</option>
+                                            <option value="1">Itaú</option>
+                                            <option value="18">O'higgins</option>
+                                            <option value="16">Osorno</option>
+                                            <option value="14">Santander</option>
+                                            <option value="11">Santiago</option>
+                                            <option value="3">Scotiabank</option>
+                                            <option value="43">Security</option>
+                                            <option value="12">Sud. Americano</option>
+                                            <option value="40">Tiendas</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Fecha de Cheque -->
+                                <div class="form-group row">
+                                    <label for="fecha_cheque" class="col-md-4 col-form-label text-md-right">Fecha de Cheque:</label>
+                                    <div class="col-md-6">
+                                        <input type="date" name="fecha_cheque" id="fecha_cheque" class="form-control" disabled required>
+                                    </div>
+                                </div>
+
+                                <!-- Número de Factura (hidden) -->
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <input type="text" name="numfac" id="numfac" class="form-control" hidden>
+                                    </div>
+                                </div>
+
+                                <!-- Número de Cheque -->
+                                <div class="form-group row">
+                                    <label for="numerocheque" class="col-md-4 col-form-label text-md-right">Número de Cheque:</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="numerocheque" id="numerocheque" class="form-control" disabled required>
+                                    </div>
+                                </div>
+
+                                <!-- Número del Recibo -->
+                                @if(session()->get('email') == "marcial.polanco99@gmail.com")
+                                    <div class="form-group row">
+                                        <label for="numerorecibo" class="col-md-4 col-form-label text-md-right">Número del Recibo:</label>
+                                        <div class="col-md-6">
+                                            <input type="text" name="numerorecibo" id="numerorecibo" class="form-control" disabled required>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <!-- Fecha de Abono -->
+                                <div class="form-group row">
+                                    <label for="fecha_abono" class="col-md-4 col-form-label text-md-right">Fecha de Abono:</label>
+                                    <div class="col-md-6">
+                                        <input type="date" name="fecha_abono" id="fecha_abono" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botones de Modal -->
+                            @if(session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            @else
+                                <div class="modal-footer">
+                                    <button type="submit" disabled class="btn btn-primary">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            @endif
+                        </form>
+                    </div>
+                </div>
+            </div>
+
 
         <!-- Modal AYUDA TABLAS POR PAGAR-->
         <div class="modal fade bd-example-modal-lg" id="mimodalinfo1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -318,7 +505,6 @@
             </div>
         </div>
         </div>
-        <!-- FIN Modal -->
 
         <!-- Modal AYUDA TABLAS DEUDAS-->
         <div class="modal fade bd-example-modal-lg" id="mimodalinfo2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -340,7 +526,6 @@
             </div>
         </div>
         </div>
-        <!-- FIN Modal -->
 
 
     @endsection
@@ -462,13 +647,10 @@
     });
 
 
-            // var deuda = $('#deuda').DataTable({
-            //     "order": [[ 1, "desc" ]]
-            // });
 
             var deuda = $('#deuda').DataTable({
                 "order": [[ 1, "desc" ]],
-             dom: 'Bfrtip', // Agrega los botones a la parte superior derecha
+             dom: 'Bfrtip',
              buttons: [
                 'copy', 'pdf', 'print'
             ],
@@ -507,6 +689,103 @@
                 deuda.draw();
             });
         });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.btn[data-toggle="modal"]').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var ccpDocument = this.getAttribute('data-ccpdocument');
+                        var ccpValorFa = this.getAttribute('data-ccpvalorfa');
+                        var totalabono = this.getAttribute('data-total');
+                        var abonado1 = this.getAttribute('data-abono1');
+                        var abonado2 = this.getAttribute('data-abono2');
+                        var abonado3 = this.getAttribute('data-abono3');
+
+                        document.getElementById('totalabonado').value = totalabono;
+                        document.getElementById('saldo').value = ccpValorFa;
+                        document.getElementById('numfac').value = ccpDocument;
+                        document.getElementById('abonado1').value = abonado1;
+                        document.getElementById('abonado2').value = abonado2;
+                        document.getElementById('abonado3').value = abonado3;
+                        document.getElementById('primerabono').value = abonado1;
+                        document.getElementById('segundoabono').value = abonado2;
+                        document.getElementById('tercerabono').value = abonado3;
+
+                        var saldoRestante = ccpValorFa - totalabono;
+                        document.getElementById('saldoRestante').value = Math.round(saldoRestante);
+                    });
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const formaPagoSelect = document.getElementById('forma_pago');
+                const fechaChequeInput = document.getElementById('fecha_cheque');
+                const bancoSeleccion = document.getElementById('banco_pago');
+                const numrecibo = document.getElementById('numerorecibo');
+                const numcheque = document.getElementById('numerocheque');
+                const saldoRestanteInput = document.getElementById('saldoRestante');
+                const abonoInput = document.getElementById('abonopagar');
+                const form = abonoInput.closest('form');
+
+                formaPagoSelect.addEventListener('change', function() {
+                    const selectedValue = formaPagoSelect.value;
+
+                    if (selectedValue === '2') {
+                        fechaChequeInput.disabled = false;
+                        bancoSeleccion.disabled = false;
+                        numcheque.disabled = false;
+                        numrecibo.disabled = false;
+                    } else if (selectedValue === '1') {
+                        fechaChequeInput.disabled = true;
+                        bancoSeleccion.disabled = true;
+                        numcheque.disabled = true;
+                        numrecibo.disabled = true;
+                        fechaChequeInput.value = '';
+                        numrecibo.value = '';
+                        numcheque.value = '';
+
+                    } else {
+                        fechaChequeInput.disabled = true;
+                        bancoSeleccion.disabled = false;
+                        numcheque.disabled = true;
+                        numrecibo.disabled = true;
+                        fechaChequeInput.value = '';
+                        numrecibo.value = '';
+                        numcheque.value = '';
+
+                    }
+                });
+
+                abonoInput.addEventListener('input', function() {
+                    const saldoRestante = parseFloat(saldoRestanteInput.value) || 0;
+                    const abono = parseFloat(abonoInput.value) || 0;
+
+                    if (abono > saldoRestante) {
+                        alert('El monto a pagar no puede superar el Valor restante.');
+                        abonoInput.value = '';
+                    }
+                });
+
+                form.addEventListener('submit', function(event) {
+                    const saldoRestante = parseFloat(saldoRestanteInput.value) || 0;
+                    const abono = parseFloat(abonoInput.value) || 0;
+                    const abonado1 = parseFloat(document.getElementById('abonado1').value) || 0;
+                    const abonado2 = parseFloat(document.getElementById('abonado2').value) || 0;
+
+                    if (abonado1 > 0 && abonado2 > 0) {
+                      if (abono !== saldoRestante) {
+                      alert('El monto a pagar debe ser igual al saldo restante.');
+                      event.preventDefault();
+                      return;
+                }
+            }
+
+                    if (abono > saldoRestante) {
+                        alert('El monto a pagar no puede superar el Valor restante.');
+                        event.preventDefault();
+                    }
+                });
+            });
         </script>
 
 
