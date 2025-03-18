@@ -388,7 +388,7 @@
       XLSX.utils.book_append_sheet(workbook, table3Data, "enviossiidetref");
 
       // Exportar el libro de trabajo
-      XLSX.writeFile(workbook, "DocSiiFa.xlsx");
+      XLSX.writeFile(workbook, "DocSiiFA.xlsx");
     });
   });
   </script>

@@ -111,7 +111,7 @@ class FirmaDocumentosController extends Controller
       left join cliente on LEFT(nota_credito.rut, LENGTH(nota_credito.rut) - 2) = cliente.CLRUTC
       left join tablas on cliente.CLGIRO = tablas.tarefe
       left join comunas on cliente.CLCOMF = comunas.id 
-      where fecha = "'.$fecha.'" group by rut) t group by rutreceptor, departamento');
+      where fecha = "'.$fecha.'" group by rut, DEPARTAMENTO) t group by rutreceptor, departamento');
 
       return view('Informatica.Receptores', compact('receptores', 'fecha'));
     }
@@ -134,7 +134,7 @@ class FirmaDocumentosController extends Controller
       left join cliente on LEFT(nota_credito.rut, LENGTH(nota_credito.rut) - 2) = cliente.CLRUTC
       left join tablas on cliente.CLGIRO = tablas.tarefe
       left join comunas on cliente.CLCOMF = comunas.id 
-      where fecha = "'.$request->get('fecha').'" group by rut) t group by rutreceptor, departamento');
+      where fecha = "'.$request->get('fecha').'" group by rut, DEPARTAMENTO) t group by rutreceptor, departamento');
 
       $fecha = $request->get('fecha');
 
