@@ -238,4 +238,16 @@ class PublicoController extends Controller
 
     }
 
+    public function ReimprimirTicketEntrada(Request $request){
+      $ticket = DB::table('estacionamiento')->where('id', $request->get('id'))->get()[0];
+
+      return view('exports.ticket_in', compact('ticket'));
+    }
+
+    public function ReimprimirTicketSalida(Request $request){
+      $ticket_out = DB::table('estacionamiento')->where('id', $request->get('id'))->get()[0];
+
+      return view('exports.ticket_out', compact('ticket_out'));
+    }
+
 }

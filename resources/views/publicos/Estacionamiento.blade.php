@@ -49,7 +49,7 @@
                                       <th scope="col">Fecha</th>
                                       <th scope="col">Hora Entrada</th>
                                       <th scope="col">Hora Salida</th>
-                                      <!-- <th scope="col">Reimprimir</th> -->
+                                      <th scope="col">Reimprimir Ticket</th>
                                     </tr>
                                   </thead>
                                   <tbody id="res">
@@ -67,10 +67,19 @@
                                         <button class="btn btn-success" data-toggle="modal" data-target="#modalterminarticket" data-id="{{ $item->id }}" data-patente="{{ strtoupper($item->patente) }}" data-creacion="{{ $item->creacion }}" data-hora_in="{{ $item->hora_in }}">Marcar Salida</button>
                                       @endif
                                       </td>
-                                      <!-- <td>
-                                        <button class="btn btn-primary">Entrada</button>
-                                        <button class="btn btn-success">Salida</button>
-                                      </td> -->
+                                      <td class="row">
+                                        <form action="{{ route('ReimprimirTicketEntrada') }}" method="get">
+                                          <input type="number" name="id" value="{{ $item->id }}" hidden>
+                                          <button type="submit" class="btn btn-primary" formtarget="_blank">Entrada</button>
+                                        </form>
+                                        @if(!is_null($item->hora_out))
+                                        &nbsp;&nbsp;
+                                        <form action="{{ route('ReimprimirTicketSalida') }}" method="get">
+                                          <input type="number" name="id" value="{{ $item->id }}" hidden>
+                                          <button type="submit" class="btn btn-success" formtarget="_blank">Salida</button>
+                                        </form>
+                                        @endif
+                                      </td>
                                     </tr>
                                     @endforeach
                                   </tbody>

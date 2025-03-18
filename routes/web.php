@@ -125,6 +125,8 @@ Route::prefix('publicos')->middleware('auth')->group(function(){
     Route::post('/EstacionamientoFiltro','publico\PublicoController@EstacionamientoFiltro')->name('EstacionamientoFiltro');
     Route::post('/GenerarTicket','publico\PublicoController@GenerarTicket')->name('GenerarTicket');
     Route::post('/GenerarTicketSalida','publico\PublicoController@GenerarTicketSalida')->name('GenerarTicketSalida');
+    Route::get('/ReimprimirTicketEntrada','publico\PublicoController@ReimprimirTicketEntrada')->name('ReimprimirTicketEntrada');
+    Route::get('/ReimprimirTicketSalida','publico\PublicoController@ReimprimirTicketSalida')->name('ReimprimirTicketSalida');
 
     // Route::get('/ConsultaPrecio','publico\PublicoController@ConsultaPrecio')->name('ConsultaPrecio');
     // Route::post('/ConsultaPrecioFiltro', 'publico\PublicoController@ConsultaPrecioFiltro')->name('ConsultaPrecioFiltro');
