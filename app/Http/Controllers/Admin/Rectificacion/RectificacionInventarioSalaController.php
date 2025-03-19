@@ -167,10 +167,52 @@ class RectificacionInventarioSalaController extends Controller
         DB::raw('ROUND(dcargos.DEPREC * 0.84, 2) as neto')  // Redondeamos a 2 decimales
     )
     ->get();
-     /* dd($folio); */
+     //dd($folio);
 
     return view('admin.FacturaDetalle', compact('folio'));
    }
+
+   public function editfirma(Request $request) {
+    $FOLIO = $request->get("CANMRO");
+
+    $cargo = DB::table('cargos')
+        ->where('CANMRO', $FOLIO)
+        ->where('CATIPO', '8')
+        ->first();
+
+    if ($cargo) {
+        if ($cargo->xml_generado == 'S') {
+            DB::table('cargos')
+                ->where('CANMRO', $FOLIO)
+                ->where('CATIPO', '8')
+                ->update([
+                    'xml_generado' => 'N',
+                    'doc_impreso'  => 'N'
+                ]);
+
+            DB::table('dte_hex')
+                ->where('folio', $FOLIO)
+                ->where('tipo', '33')
+                ->delete();
+
+            return redirect()->route('RectificacionFactura')->with('success', 'Firma eliminada correctamente.');
+        } else {
+            return redirect()->route('RectificacionFactura')->with('error', 'El estado de la firma ya está en "N".');
+        }
+    } else {
+        return redirect()->route('RectificacionFactura')->with('error', 'No se encontró el registro para editar.');
+    }
+}
+
+
+public function borrarfirma(Request $request){
+
+    dd($request);
+
+
+    return redirect()->route('RectificacionFactura');
+}
+
 
     public function RectificacionInsumoMerma(Request $request){
 

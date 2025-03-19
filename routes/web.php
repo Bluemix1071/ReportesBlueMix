@@ -509,6 +509,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/RectificacionGuiaDetalle','Rectificacion\RectificacionInventarioSalaController@DevolverGuiaDetalle')->name('RectificacionGuiaDetalle');
     Route::get('/RectificacionFactura','Rectificacion\RectificacionInventarioSalaController@RectificacionFactura')->name('RectificacionFactura');
     Route::get('/DetalleFactura','Rectificacion\RectificacionInventarioSalaController@DetalleFactura')->name('DetalleFactura');
+    Route::post('/editfirma','Rectificacion\RectificacionInventarioSalaController@editfirma')->name('editfirma');
+    Route::delete('/borrarfirma','Rectificacion\RectificacionInventarioSalaController@borrarfirma')->name('borrarfirma');
     Route::get('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@RectificacionInsumoMerma')->name('RectificacionInsumoMerma');
     Route::post('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@GuardarRectificacionInsumoMerma')->name('GuardarRectificacionInsumoMerma');
     Route::get('/StockSala','Rectificacion\RectificacionInventarioSalaController@StockSala')->name('StockSala');

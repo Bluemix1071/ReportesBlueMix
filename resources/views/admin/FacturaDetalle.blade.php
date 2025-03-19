@@ -23,10 +23,8 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
                     <h2 class="card-title">Información de Facturación</h2>
                     <div class="card-tools">
                         <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
-                            <!--  <i class="fas fa-times"></i> -->
                         </button>
                     </div>
-                    <!-- <button type="button" class="btn btn-success btn-sm float-right" id="add_field_button">Agregar <i class="fas fa-plus"></i></button> -->
                 </div>
 
                 <div class="callout callout-success row">
@@ -36,6 +34,13 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
                         <strong>Rut:</strong> {{ $folio[0]->CARUTC }} <br>
                         <strong>Giro:</strong> {{ $folio[0]->giro_cliente }} <br>
                         <strong>O.C:</strong> {{ $folio[0]->nro_oc }} <br>
+                        <strong>Firmado:</strong>
+                        @if($folio[0]->xml_generado == 'N')
+                         <span style="color: red;">❌</span>
+                        @elseif($folio[0]->xml_generado == 'S')
+                      <span style="color: green;">✔️</span>
+                        @endif
+                        <br>
                     </div>
 
                     <div class="col-sm-6 col-md-6 invoice-col col">
@@ -56,7 +61,7 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
                                 <th scope="col" style="text-align:left">Cantidad</th>
                                 <th scope="col" style="text-align:left">Neto</th>
                                 <th scope="col" style="text-align:left">Neto+IVA</th>
-                                <th scope="col" style="text-align:left">Total Neto</th> <!-- Nueva columna -->
+                                <th scope="col" style="text-align:left">Total Neto</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,8 +90,20 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
                     <strong>TOTAL:</strong> {{ $folio[0]->CAVALO }} <br>
                 </div>
                 <div class="text-center mt-4">
-                    <a href="{{ route('RectificacionFactura') }}" class="btn btn-secondary">Volver</a>
+                    <a href="{{ route('RectificacionFactura') }}" class="btn btn-primary text-white">Volver</a>
                 </div>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="text-center mt-4">
+                    <form action="{{ route('editfirma') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="CANMRO" value="{{ $folio[0]->CANMRO }}">
+                        <button type="submit" class="btn btn-primary" {{ $folio[0]->xml_generado == 'N' ? 'disabled' : '' }}>
+                            Eliminar Firma
+                        </button>
+                    </form>
+                </div>
+
             </div>
 
         </div>
