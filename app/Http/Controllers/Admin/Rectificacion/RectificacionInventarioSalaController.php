@@ -158,19 +158,24 @@ class RectificacionInventarioSalaController extends Controller
     return view('admin.RectificacionFacturas', compact('factura'));
    }
 
-   public function DetalleFactura(Request $request){
+   public function DetalleFactura(Request $request) {
     $folio = DB::table('cargos')
-    ->leftJoin('dcargos', 'cargos.CANMRO', '=', 'dcargos.DENMRO')
-    ->where('cargos.CANMRO', $request->get('folio'))
-    ->where('cargos.CATIPO', 8)
-    ->select('cargos.*', 'dcargos.*',
-        DB::raw('ROUND(dcargos.DEPREC * 0.84, 2) as neto')  // Redondeamos a 2 decimales
-    )
-    ->get();
-     //dd($folio);
+        ->leftJoin('dcargos', function ($join) {
+            $join->on('cargos.CANMRO', '=', 'dcargos.DENMRO')
+                 ->where('dcargos.DETIPO', '=', 8); // Aplicamos la condición en la unión
+        })
+        ->where('cargos.CANMRO', $request->get('folio'))
+        ->where('cargos.CATIPO', 8)
+        ->select(
+            'cargos.*',
+            'dcargos.*',
+            DB::raw('ROUND(dcargos.DEPREC * 0.84, 2) as neto') // Redondeamos a 2 decimales
+        )
+        ->get();
 
     return view('admin.FacturaDetalle', compact('folio'));
-   }
+}
+
 
    public function editfirma(Request $request) {
     $FOLIO = $request->get("CANMRO");
