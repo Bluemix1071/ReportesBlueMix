@@ -40,6 +40,7 @@
                                     <option value="Libros">Libros</option>
                                     <option value="Papeleria">Papeleria</option>
                                     <option value="Servicio">Servicio</option>
+                                    <option value="Servicio">Sucursal</option>
                                     <option value="Vta. Asistida">Vta. Asistida</option>
                                     <option value="Vinculacion">Vinculacion</option>
                                     <option value="Web">Web</option>
@@ -157,6 +158,7 @@
                                         <option value="Papeleria">Papeleria</option>
                                         <option value="Libros">Libros</option>
                                         <option value="Servicio">Servicio</option>
+                                        <option value="Servicio">Sucursal</option>
                                         <option value="Vta. Asistida">Vta. Asistida</option>
                                         <option value="Vinculacion">Vinculacion</option>
                                         <option value="Web">Web</option>
