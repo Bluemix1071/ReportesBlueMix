@@ -207,17 +207,59 @@ class RectificacionInventarioSalaController extends Controller
     } else {
         return redirect()->route('RectificacionFactura')->with('error', 'No se encontró el registro para editar.');
     }
-}
+   }
 
 
-public function borrarfirma(Request $request){
-
-    dd($request);
+    public function activarcodigo(){
 
 
-    return redirect()->route('RectificacionFactura');
-}
+        return view('admin.activarcodigo');
+     }
 
+     public function Buscarproducto(Request $request)
+     {
+         $codigo = $request->codigo;
+
+         if (empty($codigo)) {
+             return response()->json(['success' => false, 'error' => 'Código vacío']);
+         }
+
+         $producto = DB::select("SELECT ARDESC, ARMARCA FROM producto WHERE ARCODI = ?", [$codigo]);
+
+
+         if (!empty($producto)) {
+             return response()->json([
+                 'success' => true,
+                 'detalle' => $producto[0]->ARDESC,
+                 'marca'   => $producto[0]->ARMARCA
+             ]);
+         } else {
+             return response()->json(['success' => false, 'error' => 'Producto no encontrado']);
+         }
+     }
+
+     public function guardarcodigo(Request $request) {
+        $codigo = $request->input('codigo');
+        $bpbode = 1;
+        $bpsrea = 0;
+        $bpstin = 0;
+
+        $codigoexistente = DB::table('bodeprod')
+            ->where('bpprod', $codigo)
+            ->exists();
+
+        if (!$codigoexistente) {
+            DB::table('bodeprod')->insert([
+                'bpprod' => $codigo,
+                'bpbode' => $bpbode,
+                'bpsrea' => $bpsrea,
+                'bpstin' => $bpstin,
+            ]);
+            return redirect()->back()->with('success', 'El código está activado Correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'El código proporcionado ya está activado.');
+        }
+    }
 
     public function RectificacionInsumoMerma(Request $request){
 
