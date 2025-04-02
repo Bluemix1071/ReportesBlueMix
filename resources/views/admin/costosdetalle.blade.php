@@ -59,6 +59,7 @@ Costos Detalles
                             <th scope="col" style="text-align:left">Precio Venta</th>
                             <th scope="col" style="text-align:left">Total Venta</th>
                             <th scope="col" style="text-align:left">Fecha Venta</th>
+                            <th scope="col" style="text-align:left">Márgen</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,6 +92,7 @@ Costos Detalles
                                     <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->totalventa, 0, ',', '.') }}</td>
                                     <td style="text-align:left">{{ $item->DEFECO}}</td>
+                                    <td style="text-align:right">{{ round((1-($item->costototal/$item->totalventa))*100, 1) }}%</td>
                                 </tr>
                             @endforeach
                         @endif
