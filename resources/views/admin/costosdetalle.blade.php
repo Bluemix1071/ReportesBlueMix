@@ -11,36 +11,37 @@ Costos Detalles
 
 @section('contenido')
 
-    <div class="container-fluid">
+    <div class="container-fluid row">
         <h3 class="display-3">Costos Detalle</h3>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <form action="{{ route('costosdetallefiltro') }}" method="post" id="desvForm" class="form-inline">
+            @csrf
+            <div class="form-group mb-2">
+                @if (empty($fecha1))
+                    <label for="staticEmail2" class="sr-only">Fecha 1</label>
+                    <input type="date" id="fecha1" class="form-control" name="fecha1">
+                @else
+                    <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}">
+                @endif
+            </div>
+            <!-- <div class="form-group mx-sm-3 mb-2">
+
+                @if (empty($fecha2))
+                    <label for="inputPassword2" class="sr-only">Fecha 2</label>
+                    <input type="date" id="fecha2" name="fecha2" class="form-control">
+                @else
+                    <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{ $fecha2 }}">
+                @endif
+            </div> -->
+            <div class="form-group mx-sm-3 mb-2">
+                <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+            </div>
+        </form>
         <div class="row">
           <div class="col-md-12">
             {{-- BUSCADOR --}}
             <hr>
 
-            <form action="{{ route('costosdetallefiltro') }}" method="post" id="desvForm" class="form-inline">
-                @csrf
-                <div class="form-group mb-2">
-                    @if (empty($fecha1))
-                        <label for="staticEmail2" class="sr-only">Fecha 1</label>
-                        <input type="date" id="fecha1" class="form-control" name="fecha1">
-                    @else
-                        <input type="date" id="fecha1" class="form-control" name="fecha1" value="{{ $fecha1 }}">
-                    @endif
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-
-                    @if (empty($fecha2))
-                        <label for="inputPassword2" class="sr-only">Fecha 2</label>
-                        <input type="date" id="fecha2" name="fecha2" class="form-control">
-                    @else
-                        <input type="date" id="fecha2" name="fecha2" class="form-control" value="{{ $fecha2 }}">
-                    @endif
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                </div>
-            </form>
 
             <div class="table-responsive-xl">
                 <table id="productos" class="table table-bordered table-hover dataTable table-sm">
@@ -51,6 +52,7 @@ Costos Detalles
                             <th scope="col" style="text-align:left">Codigo</th>
                             <th scope="col" style="text-align:left">Cantidad</th>
                             <th scope="col" style="text-align:left">Detalle</th>
+                            <th scope="col" style="text-align:left">Marca</th>
                             <th scope="col" style="text-align:left">Familia</th>
                             <th scope="col" style="text-align:left">Precio Costo Hoy</th>
                             <th scope="col" style="text-align:left">Total Costo Hoy</th>
@@ -65,16 +67,25 @@ Costos Detalles
                         @else
                             @foreach ($costos as $item)
                                 <tr>
-                                    @if ($item->DETIPO == 7)
-                                    <td style="text-align:left">Boleta</td>
-                                @else
-                                    <td style="text-align:left">Factura</td>
-                                @endif
+                                @switch($item->DETIPO)
+                                    @case(3)
+                                        <td style="text-align:left">GUIA</td>
+                                        @break
+                                    @case(7)
+                                        <td style="text-align:left">BOLETA</td>
+                                        @break
+                                    @case(8)
+                                        <td style="text-align:left">FACTURA</td>
+                                        @break
+                                    @default
+                                        <td style="text-align:left">NO SE K ES XD</td>
+                                @endswitch
                                     <td style="text-align:left">{{ $item->DENMRO}}</td>
                                     <td style="text-align:left">{{ $item->DECODI}}</td>
                                     <td style="text-align:left">{{ $item->DECANT}}</td>
                                     <td style="text-align:left">{{ $item->Detalle}}</td>
-                                    <td style="text-align:left">{{ $item->familia}}</td>
+                                    <td style="text-align:left">{{ $item->ARMARCA}}</td>
+                                    <td style="text-align:left">{{ $item->taglos}}</td>
                                     <td style="text-align:right">{{ number_format(intval($item->PCCOSTO), 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->costototal, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}</td>

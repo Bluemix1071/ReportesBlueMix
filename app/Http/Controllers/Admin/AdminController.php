@@ -1704,22 +1704,26 @@ public function actualizaripmac(Request $request)
 
 
       $fecha1=$request->fecha1;
-      $fecha2=$request->fecha2;
 
-      $costos=DB::table('dcargos')
-      ->selectRaw('DETIPO, DENMRO, DECODI, DECANT, Detalle,tablas.taglos as familia ,PrecioCosto as PrecioCosto,  DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO, precios.PCCOSTO')
-      ->join('precios',  \DB::raw('substr(dcargos.DECODI, 1, 5)'), '=', 'precios.PCCODI')
-      ->join ('producto','dcargos.DECODI','=','producto.arcodi')
-      ->join ('tablas','producto.ARGRPO2','=','tablas.TAREFE')
-      ->where('DETIPO', '!=' , '3')
-      ->where('tablas.tacodi','=','22')
-      ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
-      ->get();
+      $costos=DB::select('select DETIPO, DENMRO, DECODI, DECANT, Detalle, ARMARCA, taglos, PCCOSTO,(DECANT*PCCOSTO) AS costototal, precio_ref,(DECANT*precio_ref) as totalventa, DEFECO from dcargos
+  left join producto on dcargos.DECODI = producto.ARCODI
+  left join vv_tablas22 on producto.ARGRPO2 = vv_tablas22.tarefe
+  left join precios on substring(dcargos.DECODI,1 ,5) = precios.PCCODI
+  where DETIPO = 3 and DENMRO in (select REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+  REPLACE(LOWER(detalle), "a", "")
+  , "b", ""), "c", ""), "d", ""), "e" , ""), "f" , ""), "g" , ""), "h" , ""), "i" , ""), "j" , ""), "k" , ""), "l" , ""), "m" , ""), "n" , ""), "ñ" , ""), "o" , ""), "p" , ""), "q" , ""), "r" , ""), "s" , ""), "t" , ""), "u" , ""), "v" , ""), "w" , ""), "x" , ""), "y" , ""), "z" , ""), " ", ""), "°" , "") AS guias from dcargos where DEFECO = "'.$fecha1.'" and Detalle like "%segun%guia%" and DETIPO = 8
+  ) and DEFECO between  DATE_FORMAT("'.$fecha1.'", "%Y-%m-01") and last_day("'.$fecha1.'")
+  union all
+  select DETIPO, DENMRO, DECODI, DECANT, Detalle,ARMARCA, tablas.taglos, PCCOSTO, DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO
+  from dcargos
+  inner join precios on substr(dcargos.DECODI, 1, 5) = precios.PCCODI
+  inner join producto on dcargos.DECODI = producto.arcodi
+  inner join tablas on producto.ARGRPO2 = tablas.TAREFE
+  where DETIPO != "3" and tablas.tacodi = "22" and DEFECO = "'.$fecha1.'" and Detalle not like "%segun%guia%"');
 
-    //dd($costos[0]);
+  //dd($costos);
 
-
-  return view('admin.costosdetalle',compact('costos'));
+  return view('admin.costosdetalle',compact('costos', 'fecha1'));
 
 
 }
