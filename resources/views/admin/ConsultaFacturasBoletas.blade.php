@@ -556,6 +556,7 @@
                             <div style="display: none">
                                 {{-- variable suma --}}
                                 {{ $totalvendido = 0 }}
+                                {{ $totaldocumentosboletas = 0 }}
                             </div>
                             @foreach ($porcaja as $item)
                                 <tr>
@@ -563,16 +564,21 @@
                                     <td style="text-align:center">{{ number_format($item->cantidad, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->TOTAL, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalvendido += $item->TOTAL }}</div>
+                                    <div style="display: none">{{ $totaldocumentosboletas += $item->cantidad }}</div>
                                 </tr>
                             @endforeach
                         @endif
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2"><strong>Total</strong> </td>
-                            @if (empty($totalvendido))
+                            <td><strong>Total</strong> </td>
+                            @if (empty($totalvendido) && empty($totaldocumentosboletas))
+                                <td><span class="price text-success"></span></td>
                                 <td><span class="price text-success">$</span></td>
                             @else
+                                <td style="text-align:center"><span
+                                        class="price text-success">{{ $totaldocumentosboletas }}</span>
+                                </td>
                                 <td style="text-align:right"><span
                                         class="price text-success">${{ number_format($totalvendido, 0, ',', '.') }}</span>
                                 </td>
@@ -598,6 +604,7 @@
                             <div style="display: none">
                                 {{-- variable suma --}}
                                 {{ $totalvendido = 0 }}
+                                {{ $totaldocumentosfacturas = 0 }}
                             </div>
                             @foreach ($porimpresora as $item)
                                 <tr>
@@ -605,16 +612,21 @@
                                     <td style="text-align:center">{{ number_format($item->cantidad, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->TOTAL, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalvendido += $item->TOTAL }}</div>
+                                    <div style="display: none">{{ $totaldocumentosfacturas += $item->cantidad }}</div>
                                 </tr>
                             @endforeach
                         @endif
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2"><strong>Total</strong> </td>
-                            @if (empty($totalvendido))
+                            <td><strong>Total</strong> </td>
+                            @if (empty($totalvendido) && empty($totaldocumentosfacturas))
+                                <td><span class="price text-success"></span></td>
                                 <td><span class="price text-success">$</span></td>
                             @else
+                                <td style="text-align:center"><span
+                                        class="price text-success">{{ $totaldocumentosfacturas }}</span>
+                                </td>
                                 <td style="text-align:right"><span
                                         class="price text-success">${{ number_format($totalvendido, 0, ',', '.') }}</span>
                                 </td>
@@ -644,23 +656,30 @@
                             <div style="display: none">
                                 {{-- variable suma --}}
                                 {{ $totalvendido = 0 }}
+                                {{ $totaldocumentosguias = 0 }}
                             </div>
                             @foreach ($porguia as $item)
                                 <tr>
                                     <th style="text-align:left">{{ $item->CAJA }}</th>
                                     <td style="text-align:center">{{ number_format($item->cantidad, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->TOTAL, 0, ',', '.') }}</td>
-                                    <div style="display: none">{{ $totalvendido += $item->TOTAL }}</div>
+                                    <div style="display: none">
+                                        {{ $totalvendido += $item->TOTAL }}
+                                        {{ $totaldocumentosguias += $item->cantidad }}</div>
                                 </tr>
                             @endforeach
                         @endif
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2"><strong>Total</strong> </td>
-                            @if (empty($totalvendido))
-                                <td><span class="price text-success">$</span></td>
+                            <td><strong>Total</strong> </td>
+                            @if (empty($totalvendido) && empty($totaldocumentosguias))
+                            <td><span class="price text-success">0</span></td>
+                            <td><span class="price text-success">$</span></td>
                             @else
+                                <td style="text-align:center">
+                                    <span class="price text-success">{{ $totaldocumentosguias }}</span>
+                                </td>
                                 <td style="text-align:right"><span
                                         class="price text-success">${{ number_format($totalvendido, 0, ',', '.') }}</span>
                                 </td>
