@@ -198,6 +198,20 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{ route('RectificacionFactura') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Anul. Firma Factura
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('RectificacionNotaCredito') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Editor Nota Credito
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('BuscarDoc') }}"
                                         class="nav-link {{ setActive('BuscarDoc') }}">
                                         <i class="far fa-circle nav-icon"></i>
@@ -806,13 +820,6 @@
                                                 <a href="{{ route('RectificacionGuia') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Guías
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('RectificacionFactura') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Facturas
                                                     </p>
                                                 </a>
                                             </li>
