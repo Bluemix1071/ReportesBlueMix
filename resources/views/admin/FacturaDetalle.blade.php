@@ -60,7 +60,7 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
                                 <th scope="col" style="text-align:left">Descripcion</th>
                                 <th scope="col" style="text-align:left">Cantidad</th>
                                 <th scope="col" style="text-align:left">Neto</th>
-                                <th scope="col" style="text-align:left">Neto+IVA</th>
+                                <th scope="col" style="text-align:left">Precio</th>
                                 <th scope="col" style="text-align:left">Total Neto</th>
                             </tr>
                         </thead>
@@ -70,9 +70,10 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
                                     <td>{{ $item->DECODI }}</td>
                                     <td>{{ $item->Detalle }}</td>
                                     <td>{{ $item->DECANT }}</td>
-                                    <td>{{ $item->neto }}</td>
-                                    <td>{{ $item->DEPREC }}</td>
-                                    <td>{{ number_format(bcmul($item->DECANT, $item->neto, 2), 2) }}</td>
+                                    <td>{{ number_format($item->neto, 0) }}</td>
+                                    <td>{{ number_format($item->DEPREC, 0) }}</td>
+                                    <td>{{ number_format($item->DEPREC * $item->DECANT, 0) }}</td>
+
                                 </tr>
                             @endforeach
                         </tbody>
@@ -85,9 +86,9 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
 
             <div class="callout callout-success row">
                 <div class="col-sm-6 col-md-6 invoice-col col">
-                    <strong>NETO:</strong> {{ $folio[0]->CANETO }} <br>
-                    <strong>I.V.A:</strong> {{ $folio[0]->CAIVA }} <br>
-                    <strong>TOTAL:</strong> {{ $folio[0]->CAVALO }} <br>
+                    <strong>NETO:</strong>  {{ number_format($folio[0]->CANETO, 0, ',', '.') }} <br>
+                    <strong>I.V.A:</strong>  {{ number_format($folio[0]->CAIVA, 0, ',', '.') }} <br>
+                    <strong>TOTAL:</strong>  {{ number_format($folio[0]->CAVALO, 0, ',', '.') }} <br>
                 </div>
                 <div class="text-center mt-4">
                     <a href="{{ route('RectificacionFactura') }}" class="btn btn-primary text-white">Volver</a>
