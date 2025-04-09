@@ -62,6 +62,7 @@
                             <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                             <option value="SALA">SALA</option>
+                            <option value="SUCURSAL">SUCURSAL</option>
                             <option value="BODEGA">BODEGA</option>
                             <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
                             <option value="CONVENIO MARCO">CONVENIO MARCO</option>
@@ -337,6 +338,7 @@
                                         <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
                                         <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                                         <option value="SALA">SALA</option>
+                                        <option value="SUCURSAL">SUCURSAL</option>
                                         <option value="BODEGA">BODEGA</option>
                                         <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
                                         <option value="CONVENIO MARCO">CONVENIO MARCO</option>
@@ -654,6 +656,7 @@
                                             <option value="VENTAS INSTITUCIONES">VENTAS INSTITUCIONES</option>
                                             <option value="COMPRA ÁGIL">COMPRA ÁGIL</option>
                                             <option value="SALA">SALA</option>
+                                            <option value="SUCURSAL">SUCURSAL</option>
                                             <option value="BODEGA">BODEGA</option>
                                             <!-- <option value="MATERIA PRIMA">MATERIA PRIMA</option> -->
                                             <option value="CONVENIO MARCO">CONVENIO MARCO</option>
