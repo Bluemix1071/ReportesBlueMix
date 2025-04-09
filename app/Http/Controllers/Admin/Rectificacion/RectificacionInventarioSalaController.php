@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Rectificacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+use Carbon\Carbon;
 
 class RectificacionInventarioSalaController extends Controller
 {
@@ -260,6 +261,112 @@ class RectificacionInventarioSalaController extends Controller
             return redirect()->back()->with('error', 'El código proporcionado ya está activado.');
         }
     }
+
+    public function RectificacionNotaCredito(){
+
+        $nota = DB::table('nota_credito')->where('nota_credito.fecha', '>=', '2024-12-31')->orderBy('folio', 'desc')->get();
+
+        return view('admin.notacreditoedit', compact('nota'));
+       }
+
+       public function DetalleNotacredito(Request $request) {
+        $folio = DB::table('nota_credito')
+    ->leftJoin('nota_credito_detalle', 'nota_credito.id', '=', 'nota_credito_detalle.id_nota_cred')
+    ->where('nota_credito.folio', $request->get('folio'))
+    ->select('nota_credito.*', 'nota_credito_detalle.*') // Selecciona todos los campos
+    ->get();
+    //dd($folio);
+
+        return view('admin.DetalleNC', compact('folio'));
+    }
+
+    public function editfirmaNC(Request $request) {
+
+        $NCfolio = $request->get("thefolio");
+
+        $cargo = DB::table('nota_credito')
+            ->where('folio', $NCfolio)
+            ->first();
+
+        if ($cargo) {
+            if ($cargo->xml_generado == 'S') {
+                DB::table('nota_credito')
+                    ->where('folio', $NCfolio)
+                    ->update([
+                        'xml_generado' => 'N',
+                        'doc_impreso'  => 'N'
+                    ]);
+
+                DB::table('dte_hex')
+                    ->where('folio', $NCfolio)
+                    ->where('tipo', '61')
+                    ->delete();
+
+                return redirect()->route('RectificacionNotaCredito')->with('success', 'Firma eliminada correctamente.');
+            } else {
+                return redirect()->route('RectificacionNotaCredito')->with('error', 'El estado de la firma ya está en "N".');
+            }
+        } else {
+            return redirect()->route('RectificacionNotaCredito')->with('error', 'No se encontró el registro para editar.');
+        }
+       }
+
+       public function quitarREF(Request $request) {
+
+
+        $NCfolio = $request->get("thefolio2");
+        $nro_ref = $request->input('nro_ref');
+        $fecha = Carbon::now()->toDateString();
+        $tipo_ref = $request->input('tipo_ref');
+        $tipo_refe_nombre = $tipo_ref == 8 ? 'Factura' : ($tipo_ref == 7 ? 'Boleta' : 'Otro');
+
+        $referencia = DB::table('nota_credito')
+            ->where('folio', $NCfolio)
+            ->first();
+
+        $Referenciaclien = DB::table('ccorclie_ccpclien')
+            ->where('CCPNUMNOTA', $NCfolio)
+            ->exists();
+
+        if ($referencia) {
+            if ($referencia->nro_doc_refe != '') {
+                DB::table('historial_nc')->insert([
+                    'Folio_nc'     => $NCfolio,
+                    'tipo_doc_referenciado'    => $tipo_refe_nombre,
+                    'folio_doc_ref'     => $nro_ref,
+                    'fecha'        => $fecha,
+                ]);
+
+                DB::table('nota_credito')
+                    ->where('folio', $NCfolio)
+                    ->update([
+                        'tipo_doc_refe' => '',
+                        'nro_doc_refe'  => '',
+                        'monto_doc_refe' => '',
+                        'id_doc_ref'    => ''
+                    ]);
+
+                if ($Referenciaclien) {
+                    DB::table('ccorclie_ccpclien')
+                        ->where('CCPNUMNOTA', $NCfolio)
+                        ->update([
+                            'CCPNOTACRE' => '',
+                            'CCPNUMNOTA' => '',
+                            'CCPFECHANO' => '0000-00-00',
+                        ]);
+
+                    return redirect()->route('RectificacionNotaCredito')->with('success', 'Documento Ref quitado correctamente.');
+                } else {
+                    return redirect()->route('RectificacionNotaCredito')->with('success', 'Documento Ref quitado correctamente.');
+                }
+            } else {
+                return redirect()->route('RectificacionNotaCredito')->with('error', 'No Existe Doc Referenciado.');
+            }
+        }
+
+        return redirect()->route('RectificacionNotaCredito')->with('error', 'Error al quitar Doc Referencia.');
+    }
+
 
     public function RectificacionInsumoMerma(Request $request){
 

@@ -31,15 +31,12 @@ class EditarBoletaController extends Controller  {
 
     public function editardetalleboleta(Request $request){
 
-        $fechaHoy = now()->toDateString();
 
-        if($fechaHoy != $request->get('fecha')){
-            return redirect()->route('verboleta')->with('warning', 'La fecha del documento no es de hoy');
-        }
-        
+        $fechabol = $request->get('fecha');
+
         $captura = DB::table('cargos')->where('id', $request->get('id_boleta'))->get();
         $capturas = DB::table('dcargos')->where('id_cargos', $request->get('id_boleta'))->get();
-        $capturass = DB::table('tarjeta_credito')->whereDate('fecha', $fechaHoy)->where('monto', $request->get('montoboleta'))->where('nro_doc', 0)->get();
+        $capturass = DB::table('tarjeta_credito')->whereDate('fecha', $fechabol)->where('monto', $request->get('montoboleta'))->where('nro_doc', 0)->get();
         $ultimaboleta = DB::table('cargos')->where('CACOCA', $request->get('numerocaja'))->whereDate('CAFECO', '>', '2023-01-01' )->max('CANMRO')+1;
 
         if ($capturas != null) {
@@ -63,11 +60,11 @@ class EditarBoletaController extends Controller  {
         }else{
             return redirect()->route('verboleta')->with('error', 'Documento no Coincide con datos ingresados');
         }
-            //dd($ultimaboleta);
 
             DB::table('dcargos')->where('id_cargos', $request->id_boleta)->update($editar_folio);
             DB::table('cargos')->where('id', $request->id_boleta)->update($editar_folio_boleta);
-            DB::table('tarjeta_credito')->where('monto', $request->get('montoboleta'))->where('fecha', $fechaHoy)->update($editar_foliotarjeta);
+            DB::table('tarjeta_credito')->where('monto', $request->get('montoboleta'))->where('fecha', $fechabol)->where('nro_doc', 0)->update($editar_foliotarjeta);
+
 
             return redirect()->route('verboleta')->with('success', 'Folio actualizado correctamente');
       }

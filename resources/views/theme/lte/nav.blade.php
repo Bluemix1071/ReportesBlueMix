@@ -130,175 +130,171 @@
 
                 @can('RolesYPermisos')
 
-                    <li class="nav-item has-treeview">
-                        <a href="" class="nav-link">
-                            <i class="fas fa-user-edit"></i>
-                            <p>
-                                Informatica
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
+                <li class="nav-item has-treeview">
+                    <a href="" class="nav-link">
+                        <i class="fas fa-user-edit"></i>
+                        <p>
+                            Informatica
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
 
-                            <li class="nav-item">
-                                <a href="{{ route('Roles') }}" class="nav-link {{ setActive('indexGiftCard') }} ">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Roles Y Permisos</p>
-                                </a>
-                            </li>
-
-                            @can('ListarUsers')
-
+                        @can('AnulacionDocs')
+                        {{-- PRIMERA SUBSECCIÓN: Edit Documentos --}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>
+                                    Edit Documentos
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('ListarUser') }}" class="nav-link {{ setActive('ListarUser') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Control De Usuarios</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{{ route('ListarUserCombo') }}"
-                                        class="nav-link {{ setActive('ListarUserCOMBO') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Control Usuarios COMBO</p>
-                                    </a>
-                                </li>
-                            @endcan
-
-
-                            @can('ControlDeFolios')
-
-                                <li class="nav-item">
-                                    <a href="{{ route('ControlDeFolios') }}"
-                                        class="nav-link {{ setActive('ControlDeFolios') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Control De Folios</p>
-                                    </a>
-                                </li>
-                            @endcan
-
-                            @can('ControlIpMac')
-
-                                <li class="nav-item">
-                                    <a href="{{ route('controlipmac') }}"
-                                        class="nav-link {{ setActive('controlipmac') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Control IP Mac</p>
-                                    </a>
-                                </li>
-                            @endcan
-
-                            @can('AnulacionDocs')
-
-                                <li class="nav-item">
-                                    <a href="{{ route('AnulacionDocs') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Anulacion Docs
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('BuscarDoc') }}"
-                                        class="nav-link {{ setActive('BuscarDoc') }}">
-                                        <i class="far fa-circle nav-icon"></i>
+                                    <a href="{{ route('BuscarDoc') }}" class="nav-link {{ setActive('BuscarDoc') }}">
+                                        <i class="nav-icon fas fa-circle"></i>
                                         <p>Buscar Documento</p>
                                     </a>
                                 </li>
-                            @endcan
-
-
-                            @can('movimientoinventario')
-
                                 <li class="nav-item">
-                                    <a href="{{ route('movimientoinventario') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inventario
-                                        </p>
-                                    </a>
-                                </li>
-
-                            @endcan
-
-
-                            @can('CargaOrdenCompra')
-
-                                <li class="nav-item">
-                                    <a href="{{ route('cargaroc') }}" class="nav-link {{ setActive('cargaroc') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Cargar Orden De Compra</p>
-                                    </a>
-                                </li>
-                            @endcan
-
-                                <li class="nav-item">
-                                     <a href="{{ route('verboleta') }}" class="nav-link">
-                                         <i class="far fa-circle nav-icon"></i>
-                                         <p>Configuracion Boleta</p>
+                                    <a href="{{ route('AnulacionDocs') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-circle"></i>
+                                        <p>Anulacion Docs</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('activarcodigo') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Activar Codigo</p>
-                                   </a>
-                               </li>
+                                    <a href="{{ route('RectificacionFactura') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-circle"></i>
+                                        <p>Anul. Firma Factura</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('RectificacionNotaCredito') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-circle"></i>
+                                        <p>Editor Nota Credito</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endcan
 
-                            <li class="nav-item">
-                                        <a href="" class="nav-link ">
-                                            <i class="nav-icon fas fa-circle"></i>
-                                            <p>Firmar Documentos
-                                                <i class="right fas fa-angle-left"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview">
-                                            <li class="nav-item">
-                                                <a href="{{ route('Receptores') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Receptores
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <ul class="nav nav-treeview">
-                                            <li class="nav-item">
-                                                <a href="{{ route('FirmaFacturas') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Facturas
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <ul class="nav nav-treeview">
-                                            <li class="nav-item">
-                                                <a href="{{ route('FirmaNC') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Nota Credito
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <ul class="nav nav-treeview">
-                                            <li class="nav-item">
-                                                <a href="{{ route('FirmaGuias') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Guias de Despacho
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <ul class="nav nav-treeview">
-                                            <li class="nav-item">
-                                                <a href="{{ route('FirmaBoletas') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Boletas
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                        </ul>
-                    </li>
+                        <li class="nav-item">
+                            <a href="{{ route('Roles') }}" class="nav-link {{ setActive('indexGiftCard') }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Roles Y Permisos</p>
+                            </a>
+                        </li>
+
+                        @can('ListarUsers')
+                        <li class="nav-item">
+                            <a href="{{ route('ListarUser') }}" class="nav-link {{ setActive('ListarUser') }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Control De Usuarios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('ListarUserCombo') }}" class="nav-link {{ setActive('ListarUserCOMBO') }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Control Usuarios COMBO</p>
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('ControlDeFolios')
+                        <li class="nav-item">
+                            <a href="{{ route('ControlDeFolios') }}" class="nav-link {{ setActive('ControlDeFolios') }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Control De Folios</p>
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('ControlIpMac')
+                        <li class="nav-item">
+                            <a href="{{ route('controlipmac') }}" class="nav-link {{ setActive('controlipmac') }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Control IP Mac</p>
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('movimientoinventario')
+                        <li class="nav-item">
+                            <a href="{{ route('movimientoinventario') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Inventario</p>
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('CargaOrdenCompra')
+                        <li class="nav-item">
+                            <a href="{{ route('cargaroc') }}" class="nav-link {{ setActive('cargaroc') }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Cargar Orden De Compra</p>
+                            </a>
+                        </li>
+                        @endcan
+
+                        <li class="nav-item">
+                            <a href="{{ route('verboleta') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Configuracion Boleta</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('activarcodigo') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Activar Codigo</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-circle"></i>
+                                <p>Firmar Documentos
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('Receptores') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Receptores</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('FirmaFacturas') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Facturas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('FirmaNC') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Nota Credito</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('FirmaGuias') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Guias de Despacho</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('FirmaBoletas') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Boletas</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 @endcan
+
+
 
                 @can('GiftCard')
 
@@ -806,13 +802,6 @@
                                                 <a href="{{ route('RectificacionGuia') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Guías
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('RectificacionFactura') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Facturas
                                                     </p>
                                                 </a>
                                             </li>

@@ -510,8 +510,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/RectificacionFactura','Rectificacion\RectificacionInventarioSalaController@RectificacionFactura')->name('RectificacionFactura');
     Route::get('/DetalleFactura','Rectificacion\RectificacionInventarioSalaController@DetalleFactura')->name('DetalleFactura');
     Route::post('/editfirma','Rectificacion\RectificacionInventarioSalaController@editfirma')->name('editfirma');
+    Route::post('/editfirmaNC','Rectificacion\RectificacionInventarioSalaController@editfirmaNC')->name('editfirmaNC');
+    Route::post('/quitarREF','Rectificacion\RectificacionInventarioSalaController@quitarREF')->name('quitarREF');
     Route::get('/activarcodigo','Rectificacion\RectificacionInventarioSalaController@activarcodigo')->name('activarcodigo');
     Route::post('/guardarcodigo','Rectificacion\RectificacionInventarioSalaController@guardarcodigo')->name('guardarcodigo');
+    Route::get('/RectificacionNotaCredito','Rectificacion\RectificacionInventarioSalaController@RectificacionNotaCredito')->name('RectificacionNotaCredito');
+    Route::get('/DetalleNotacredito','Rectificacion\RectificacionInventarioSalaController@DetalleNotacredito')->name('DetalleNotacredito');
     Route::post('/Buscarproducto', 'Rectificacion\RectificacionInventarioSalaController@Buscarproducto')->name('Buscarproducto');
     Route::get('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@RectificacionInsumoMerma')->name('RectificacionInsumoMerma');
     Route::post('/RectificacionInsumoMerma','Rectificacion\RectificacionInventarioSalaController@GuardarRectificacionInsumoMerma')->name('GuardarRectificacionInsumoMerma');
