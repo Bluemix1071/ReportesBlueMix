@@ -107,7 +107,7 @@
                             <input type="hidden" name="thefolio2" value="{{ $folio[0]->folio }}">
                             <input type="hidden" name="nro_ref" value="{{ $folio[0]->nro_doc_refe }}">
                             <input type="hidden" name="tipo_ref" value="{{ $folio[0]->tipo_doc_refe }}">
-                            <button type="submit" class="btn btn-primary" {{ ($folio[0]->monto_doc_refe == $folio[0]->total_nc || $folio[0]->monto_doc_refe == 0) ? 'disabled' : '' }}>
+                            <button type="submit" class="btn btn-primary" {{ ($folio[0]->monto_doc_refe == 0) ? 'disabled' : '' }}>
                                 Eliminar Doc Referencia
                             </button>
                         </form>
