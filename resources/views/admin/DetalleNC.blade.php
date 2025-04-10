@@ -117,7 +117,7 @@
         </div>
     </div>
 @endsection
-
+{{-- intento --}}
 @section('script')
 <script>
   $(document).ready(function() {
