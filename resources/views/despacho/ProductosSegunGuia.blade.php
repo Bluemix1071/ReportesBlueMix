@@ -25,6 +25,27 @@
     .boton-flotante:hover {
       background-color: #1c7b32;
     }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #007bff;
+      color: #ffffff;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(20, 20, 20, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s, visibility 0.5s;
+      z-index: 9999;
+    }
+
+    .popup.mostrar {
+      opacity: 1;
+      visibility: visible;
+    }
   </style>
 
 @endsection
@@ -32,6 +53,9 @@
     <button class="boton-flotante" form="miFormulario">
         GUARDAR
     </button>
+
+    <div id="miPopup" class="popup">¡Se copió el Codigo en el Portapapeles!</div>
+
     <div class="container my-4">
         <h1 class="display-4">Productos Según Guía
         </h1>
@@ -55,7 +79,7 @@
                             <br>
                             @foreach($productos as $index => $item)
                             <div class="row">
-                                <div class="col"><input type="text" value="{{ $item->ARCODI }}" readonly style="border: none; background: transparent; font-weight: normal;" name="producto_{{ $index+1 }}[codigo]"></div>
+                                <div class="col"><input type="text" value="{{ $item->ARCODI }}" readonly style="border: none; background: transparent; font-weight: normal;" name="producto_{{ $index+1 }}[codigo]" onclick="copiar('{{ $item->ARCODI }}')"></div>
                                 <div class="col-2"><input type="text" value="{{ substr($item->ARDESC, 0, 14) }}" readonly style="border: none; background: transparent; font-weight: normal;"></div>
                                 <div class="col"><input type="text" value="{{ substr($item->ARDESC, 14) }}" name="producto_{{ $index+1 }}[guia]"></div>
                                 <div class="col"><input type="text" value="{{ $item->ARCOPV }}" name="producto_{{ $index+1 }}[comentario]"></div>
@@ -91,6 +115,17 @@
     @endsection
     @section('script')
         <script>
+            function copiar(codigo){
+                navigator.clipboard.writeText(codigo)
+
+                const popup = document.getElementById('miPopup');
+                    popup.classList.add('mostrar');
+
+                    // Ocultar después de 3 segundos
+                    setTimeout(() => {
+                        popup.classList.remove('mostrar');
+                    }, 3000);
+                }
 
             $('#autorizarmodal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget)
