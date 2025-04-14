@@ -90,34 +90,36 @@
                         <strong>TOTAL:</strong> {{ number_format($folio[0]->total_nc, 0, ',', '.') }} <br>
                     </div>
 
-                    <div class="d-flex justify-content-start mt-4">
-                        <a href="{{ route('RectificacionNotaCredito') }}" class="btn btn-primary">Volver</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                        <form action="{{ route('editfirmaNC') }}" method="POST" class="me-3">
+                    <div class="d-flex justify-content-center align-items-center mt-4 gap-3 flex-wrap">
+                        <a href="{{ route('RectificacionNotaCredito') }}" class="btn btn-primary text-white">
+                            Volver
+                        </a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <form action="{{ route('editfirmaNC') }}" method="POST" class="m-0">
                             @csrf
                             <input type="hidden" name="thefolio" value="{{ $folio[0]->folio }}">
                             <button type="submit" class="btn btn-primary" {{ $folio[0]->xml_generado == 'N' ? 'disabled' : '' }}>
                                 Eliminar Firma
                             </button>
                         </form>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <form action="{{ route('quitarREF') }}" method="POST">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <form action="{{ route('quitarREF') }}" method="POST" class="m-0">
                             @csrf
                             <input type="hidden" name="thefolio2" value="{{ $folio[0]->folio }}">
                             <input type="hidden" name="nro_ref" value="{{ $folio[0]->nro_doc_refe }}">
                             <input type="hidden" name="tipo_ref" value="{{ $folio[0]->tipo_doc_refe }}">
-                            <button type="submit" class="btn btn-primary" {{ ($folio[0]->monto_doc_refe == $folio[0]->total_nc || $folio[0]->monto_doc_refe == 0) ? 'disabled' : '' }}>
+                            <button type="submit" class="btn btn-primary" {{ ($folio[0]->monto_doc_refe == 0) ? 'disabled' : '' }}>
                                 Eliminar Doc Referencia
                             </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 @endsection
-
+{{-- intento --}}
 @section('script')
 <script>
   $(document).ready(function() {

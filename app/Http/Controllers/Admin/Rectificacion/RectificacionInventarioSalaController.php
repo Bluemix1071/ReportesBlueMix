@@ -177,6 +177,52 @@ class RectificacionInventarioSalaController extends Controller
     return view('admin.FacturaDetalle', compact('folio'));
 }
 
+public function editartotal(Request $request)
+{
+    $factura     = $request->get("canmro");
+    $neto        = $request->get("neto");
+    $iva         = $request->get("iva");
+    $totalsin    = $request->get("total_sin_descuento");
+    $totalcon    = $request->get("total_con_descuento");
+
+    $documento = DB::table('cargos')
+        ->where('CANMRO', $factura)
+        ->where('CATIPO', '8')
+        ->first();
+
+    if (!$documento) {
+        return redirect()->route('RectificacionFactura')->with('error', 'No se encontró el registro para editar en la tabla "cargos".');
+    }
+
+    DB::table('cargos')
+        ->where('CANMRO', $factura)
+        ->where('CATIPO', '8')
+        ->update([
+            'CASUTO' => $totalsin,
+            'CAVALO' => $totalcon,
+            'CAIVA'  => $iva,
+            'CANETO' => $neto,
+        ]);
+
+    $ccp = DB::table('ccorclie_ccpclien')
+        ->where('CCPDOCUMEN', $factura)
+        ->where('CCPTIPODOC', '8')
+        ->first();
+
+    if ($ccp) {
+        DB::table('ccorclie_ccpclien')
+            ->where('CCPDOCUMEN', $factura)
+            ->where('CCPTIPODOC', '8')
+            ->update([
+                'CCPVALORFA' => $totalcon
+            ]);
+    } else {
+        return redirect()->route('RectificacionFactura')->with('error', 'No se encontró el registro para editar en la tabla "ccorclie_ccpclien".');
+    }
+
+    return redirect()->route('RectificacionFactura')->with('success', 'Totales editados correctamente.');
+}
+
 
    public function editfirma(Request $request) {
     $FOLIO = $request->get("CANMRO");

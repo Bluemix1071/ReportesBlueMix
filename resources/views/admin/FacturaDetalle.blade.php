@@ -102,6 +102,15 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
                         <button type="submit" class="btn btn-primary" {{ $folio[0]->xml_generado == 'N' ? 'disabled' : '' }}>
                             Eliminar Firma
                         </button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="" data-toggle="modal" data-target="#editotal"
+                                   data-capode="{{ $item->CAPODE }}"
+                                   data-canmro="{{ $item->CANMRO }}"
+                                   data-caiva="{{ $item->CAIVA }}"
+                                   data-casuto="{{ $item->CASUTO }}"
+                                   data-caneto="{{ $item->CANETO }}"
+                                   data-cavalo="{{ $item->CAVALO }}"
+                                   class="btn btn-primary text-white">Editar Total</a>
                     </form>
                 </div>
 
@@ -110,12 +119,159 @@ Productos Factura Nro: {{ $folio[0]->CANMRO }}
         </div>
     </div>
 </div>
+<div class="modal fade" id="editotal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('editartotal') }}" method="POST">
+            @csrf
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Cambio Precio Total de Documento</h4>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="canmro" id="canmro">
+
+                    <div class="row">
+                        <!-- VALORES ACTUALES -->
+                        <div class="col-md-6">
+                            <h5>Valores actuales</h5>
+                            <div class="form-group">
+                                <label for="capode">Descuento:</label>
+                                <input type="number" class="form-control" id="capode" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="caneto">Neto:</label>
+                                <input type="number" class="form-control" id="caneto" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="caiva">IVA:</label>
+                                <input type="number" class="form-control" id="caiva" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="casuto">Total sin descuento:</label>
+                                <input type="number" class="form-control" id="casuto" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="cavalo">TOTAL con descuento:</label>
+                                <input type="number" class="form-control" id="cavalo" readonly>
+                            </div>
+                        </div>
+
+                        <!-- NUEVOS VALORES -->
+                        <div class="col-md-6">
+                            <h5>Nuevos valores</h5>
+                            <div class="form-group">
+                                <label for="canetonuevo">Neto:</label>
+                                <input type="number" class="form-control" id="canetonuevo" name="neto" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="caivanuevo">IVA:</label>
+                                <input type="number" class="form-control" id="caivanuevo" name="iva" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="casutonuevo">Total sin descuento:</label>
+                                <input type="number" class="form-control" id="casutonuevo" name="total_sin_descuento" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="cavalonuevo">TOTAL con descuento:</label>
+                                <input type="number" class="form-control" id="cavalonuevo" name="total_con_descuento">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones dentro del formulario -->
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" id="btnEditar" disabled>Editar</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
 @endsection
 
 
 @section('script')
 <script>
+$('#editotal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Botón que activó el modal
+    var canmro = button.data('canmro');
+    var caiva = button.data('caiva');
+    var capode = button.data('capode');
+    var casuto = button.data('casuto');
+    var caneto = button.data('caneto');
+    var cavalo = button.data('cavalo');
+
+    // Asignamos a los campos actuales (readonly)
+    $('#canmro').val(canmro);
+    $('#caiva').val(caiva);
+    $('#capode').val(capode);
+    $('#casuto').val(casuto);
+    $('#caneto').val(caneto);
+    $('#cavalo').val(cavalo);
+
+    // Limpiamos campos nuevos
+    $('#caivanuevo').val('');
+    $('#canetonuevo').val('');
+    $('#casutonuevo').val('');
+    $('#cavalonuevo').val('');
+});
+
+function truncar(valor) {
+    return Math.floor(valor);
+}
+
+$('#cavalonuevo').on('input', function () {
+    const valor = parseFloat($(this).val());
+    let totalConDescuento = parseFloat($(this).val());
+    let descuento = parseFloat($('#capode').val()) || 0;
+
+    if (!valor || valor <= 0) {
+            $('#btnEditar').prop('disabled', true);
+        } else {
+            $('#btnEditar').prop('disabled', false);
+        }
+
+    if (!isNaN(totalConDescuento)) {
+        let neto = totalConDescuento / 1.19;
+        let iva = totalConDescuento - neto;
+
+        $('#canetonuevo').val(truncar(neto));
+        $('#caivanuevo').val(truncar(iva));
+
+        if (descuento > 0) {
+            let totalSinDescuento = totalConDescuento / (1 - (descuento / 100));
+            $('#casutonuevo').val(truncar(totalSinDescuento));
+        } else {
+            $('#casutonuevo').val(truncar(totalConDescuento));
+        }
+    } else {
+        $('#canetonuevo').val('');
+        $('#caivanuevo').val('');
+        $('#casutonuevo').val('');
+    }
+});
+    $('#btnGuardarValores').on('click', function () {
+        let neto = $('#canetonuevo').val();
+        let iva = $('#caivanuevo').val();
+        let totalSinDescuento = $('#casutonuevo').val();
+        let totalConDescuento = $('#cavalonuevo').val();
+
+        // Aquí puedes hacer lo que necesites con los valores
+        console.log('Neto:', neto);
+        console.log('IVA:', iva);
+        console.log('Total sin descuento:', totalSinDescuento);
+        console.log('TOTAL con descuento:', totalConDescuento);
+
+    });
+
+
 
   $(document).ready(function() {
     $('#cursos').DataTable( {

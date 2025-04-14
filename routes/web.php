@@ -515,6 +515,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/RectificacionFactura','Rectificacion\RectificacionInventarioSalaController@RectificacionFactura')->name('RectificacionFactura');
     Route::get('/DetalleFactura','Rectificacion\RectificacionInventarioSalaController@DetalleFactura')->name('DetalleFactura');
     Route::post('/editfirma','Rectificacion\RectificacionInventarioSalaController@editfirma')->name('editfirma');
+    Route::post('/editartotal','Rectificacion\RectificacionInventarioSalaController@editartotal')->name('editartotal');
     Route::post('/editfirmaNC','Rectificacion\RectificacionInventarioSalaController@editfirmaNC')->name('editfirmaNC');
     Route::post('/quitarREF','Rectificacion\RectificacionInventarioSalaController@quitarREF')->name('quitarREF');
     Route::get('/activarcodigo','Rectificacion\RectificacionInventarioSalaController@activarcodigo')->name('activarcodigo');
