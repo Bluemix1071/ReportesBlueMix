@@ -17,6 +17,14 @@
             <a href="https://www.bluemixempresas.cl" class="nav-link">BlueMix Empresas</a>
         </li>
 
+        <!-- <div class="bg-warning text-dark py-2 overflow-hidden position-relative" style="width: 50%">
+            <div class="d-inline-block px-5 animate-slide">
+                <strong>
+                    <marquee scrollamount="8" behavior="scroll" direction="left">🚨 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique qui, tempore at asperiores iusto ut, ducimus aperiam a cupiditate laudantium animi deleniti debitis quam dolorum exercitationem quo vitae temporibus iure.</marquee>
+                </strong>
+            </div>
+        </div> -->
+
     </ul>
 
 
@@ -1398,12 +1406,6 @@
                                 </a>
                             </li> -->
                             <li class="nav-item">
-                                <a href="{{ route('ListarProductosPendientes') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Productos Pendientes</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="{{ route('ProductosExpiracion') }}"
                                     class="nav-link {{ setActive('ProductosExpiracion') }}">
                                     <i  class="far fa-circle nav-icon"></i>
@@ -1441,6 +1443,33 @@
                 @endcan
 
 
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                        <i class="fa fa-truck" aria-hidden="true"></i>
+                            <p>
+                                Despacho
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+
+                            <li class="nav-item">
+                                <a href="{{ route('ProductosSegunGuia') }}" class="nav-link {{ setActive('ProductosSegunGuia') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Productos Según Guía</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('ListarProductosPendientes') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Productos Pendientes</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
