@@ -102,7 +102,7 @@ Route::prefix('api')->middleware('auth')->group(function(){
     Route::get('/', 'ApiController@LoadReact')->name('apiReact');
 });
 
-Route::prefix('Despacho')->namespace('despacho')->middleware('auth')->group(function(){
+Route::prefix('Despacho')->namespace('Despacho')->middleware('auth')->group(function(){
     Route::get('/ProductosSegunGuia','DespachoController@ProductosSegunGuia')->name('ProductosSegunGuia');
     Route::post('/GuardarProductosSegunGuia','DespachoController@GuardarProductosSegunGuia')->name('GuardarProductosSegunGuia');
 });
