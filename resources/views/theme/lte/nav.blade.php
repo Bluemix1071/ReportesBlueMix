@@ -931,6 +931,15 @@
                                                     </p>
                                                 </a>
                                             </li>
+                                            @if(session()->get('email') == "adquisiciones@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "ventas@bluemix.cl")
+                                            <li class="nav-item">
+                                                <a href="{{ route('PreciosProveedores') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Precios de Proveedores
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            @endif
                                             <!-- <li class="nav-item">
                                                 <a href="{{ route('Rutas') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>

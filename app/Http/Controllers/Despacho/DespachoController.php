@@ -15,7 +15,7 @@ class DespachoController extends Controller
         ->orderBy('ARCODI', 'asc')
         ->get();
 
-        return view('Despacho.ProductosSegunGuia', compact('productos'));
+        return view('despacho.ProductosSegunGuia', compact('productos'));
     }
 
     public function GuardarProductosSegunGuia(Request $request){

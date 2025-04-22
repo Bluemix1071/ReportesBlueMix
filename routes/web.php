@@ -625,6 +625,11 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/VentasPorArea','VentasPorAreaController@index')->name('VentasPorArea');
     Route::post('/VentasPorAreaFiltro','VentasPorAreaController@VentasPorAreaFiltro')->name('VentasPorAreaFiltro');
 
+    //Listado precios proveedores
+    Route::get('/PreciosProveedores','Contratos\PreciosProveedoresController@PreciosProveedores')->name('PreciosProveedores');
+    Route::post('/GuardarPreciosProveedores','Contratos\PreciosProveedoresController@GuardarPreciosProveedores')->name('GuardarPreciosProveedores');
+    Route::get('/DescargarAdjunto/{id}','Contratos\PreciosProveedoresController@DescargarAdjunto')->name('DescargarAdjunto');
+    Route::post('/EditarPreciosProveedores','Contratos\PreciosProveedoresController@EditarPreciosProveedores')->name('EditarPreciosProveedores');
 
 });
 
