@@ -14,7 +14,7 @@ class PreciosProveedoresController extends Controller
         //dd("llega a precios");
         $precios = DB::table('precios_proveedores')->get();
 
-        return view('admin.contratos.PreciosProveedores', compact('precios'));
+        return view('admin.Contratos.PreciosProveedores', compact('precios'));
     }
 
     public function GuardarPreciosProveedores(Request $request){
