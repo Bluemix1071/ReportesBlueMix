@@ -1306,6 +1306,29 @@
                         </ul>
                     </li>
                 @endcan
+                
+                @if(session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl")
+                <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            <p>
+                                Sucursal
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+
+                            <li class="nav-item">
+                                <a href="{{ route('ProductosSucursal') }}" class="nav-link {{ setActive('ProductosSucursal') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Productos Sucursal</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                @endif
 
                 @can('Administrador')
                     <li class="nav-item has-treeview">
