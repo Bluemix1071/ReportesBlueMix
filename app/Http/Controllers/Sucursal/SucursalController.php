@@ -26,18 +26,20 @@ class SucursalController extends Controller
 
         $producto = DB::table('producto')->where('arcodi', $request->get('codigo'))->get()[0];
 
+        $cantidad_anterior = DB::table('bodeprod')->where('bpprod', $request->get('codigo'))->get()[0];
+
+        error_log(print_r($cantidad_anterior->bpsrea1, true));
+
         DB::table('solicitud_ajuste')->insert([
             "codprod" => $request->get('codigo'),
             "producto" => $producto->ARDESC,
             "fecha" => date('Y-m-d'),
-            "stock_anterior" => $request->get('cantidad_anterior'),
+            "stock_anterior" => $cantidad_anterior->bpsrea1,
             "nuevo_stock" => $request->get('cantidad'),
             "autoriza" => "Diego Carrasco",
             "solicita" => "Sucursal",
             "observacion" => "Cambio de stock en Sucursal Isabel Riquelme"
         ]);
-
-        //error_log(print_r($producto->ARDESC, true));
 
         DB::table('bodeprod')
         ->where('bpprod', $request->get('codigo'))

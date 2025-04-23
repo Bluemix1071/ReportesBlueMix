@@ -106,14 +106,14 @@
         modal.find('.modal-body #cod_articulo').val(cod_articulo);
 })
 
-function guardar_cantidad(codigo, id, cantidad_anterior){
+function guardar_cantidad(codigo, id){
 
     const cantidad = $('#input_'+id).val();
 
     $.ajax({
         url: '../Sucursal/GuardarCantidadSucursal',
         type: 'POST',
-        data: {codigo, cantidad, cantidad_anterior},
+        data: {codigo, cantidad},
         success: function(result) {
             const popup = document.getElementById('miPopup');
                 popup.classList.add('mostrar');
