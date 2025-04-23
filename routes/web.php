@@ -107,7 +107,7 @@ Route::prefix('Despacho')->namespace('Despacho')->middleware('auth')->group(func
     Route::post('/GuardarProductosSegunGuia','DespachoController@GuardarProductosSegunGuia')->name('GuardarProductosSegunGuia');
 });
 
-Route::prefix('Sucursal')->namespace('sucursal')->middleware('auth')->group(function(){
+Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(function(){
     Route::get('/ProductosSucursal','SucursalController@ProductosSucursal')->name('ProductosSucursal');
     Route::post('/GuardarCantidadSucursal','SucursalController@GuardarCantidadSucursal')->name('GuardarCantidadSucursal');
 });
