@@ -27,6 +27,7 @@
                                     <th scope="col">Giro</th>
                                     <th scope="col">O.C</th>
                                     <th scope="col">Ref.</th>
+                                    <th scope="col">Total</th>
                                     <th scope="col">Estado/Acción</th>
                                 </tr>
                             </thead>
@@ -40,6 +41,7 @@
                                      <td>{{ $item->giro_cliente }}</td>
                                      <td>{{ $item->nro_oc }}</td>
                                      <td>{{ $item->referenciaOC}}</td>
+                                     <td>{{ number_format($item->CAVALO, 0, ',', '.') }}</td>
                                      <td class="row">
                                      @if($item->t_doc != "Guia")
                                         <!-- <button type="button" class="btn btn-primary btn-sm col" data-toggle="modal" data-target="#modalidevolver" data-id='{{ $item->CANMRO }}'>Devolver Mercadería</button> -->
@@ -131,6 +133,22 @@
         <script>
 
             $(document).ready(function() {
+
+            $('#users thead tr').clone(true).appendTo( '#users thead' );
+            $('#users thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+            $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎 '+title+'" />' );
+
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( table.column(i).search() !== this.value ) {
+                    table
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                }
+                });
+            });
+            
                 var table = $('#users').DataTable({
                     order: [[ 0, "desc" ]],
                     orderCellsTop: true,
