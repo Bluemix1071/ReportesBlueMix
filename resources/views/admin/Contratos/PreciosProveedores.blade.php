@@ -121,6 +121,7 @@
                                      <div class="col-md-6">
                                              <input type="file" name="adjunto" class="form-control">
                                      </div>
+                                     <p>MAX 50MB</p>
                            </div>
                            <button type="submit" class="btn btn-success">Agregar</button>
                         </form>
@@ -197,6 +198,7 @@
                                       <div class="col-md-3">
                                         <input type="file" name="adjunto" class="form-control" readonly>
                                       </div>
+                                      <p>MAX 50MB</p>
                            </div>
                            <button type="submit" class="btn btn-success">Acualizar</button>
                         </form>
