@@ -1326,6 +1326,20 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a href="{{ route('EgresosPorVentas') }}" class="nav-link {{ setActive('EgresosPorVentas') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Egresos por Ventas</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('IngresoMercaderiaSucursal') }}" class="nav-link {{ setActive('IngresoMercaderiaSucursal') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ingresos de Meracdería</p>
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
                 @endif

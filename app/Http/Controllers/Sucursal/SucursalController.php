@@ -47,4 +47,190 @@ class SucursalController extends Controller
 
         return response()->json(["status" => "ok"]);
     }
+
+    public function EgresosPorVentas(Request $request){
+
+        $fecha = date('Y-m-d');
+        
+        $productos = DB::table('dcargos')
+            ->select(
+                'dcargos.DECODI',
+                'dcargos.Detalle',
+                'bodeprod.bpsrea1',
+                DB::raw('SUM(dcargos.DECANT) as total'),
+                DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta')
+            )
+            ->leftJoin('cargos', 'cargos.CANMRO', '=', 'dcargos.DENMRO')
+            ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
+            ->where('DEFECO', $fecha)
+            ->where('CACOCA', '201')
+            ->where('bpsrea1', '>', 0)
+            ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1') // importante para evitar errores SQL
+            ->get();
+
+        $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
+
+        return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso'));
+    }
+
+    public function EgresosPorVentasDetalle(Request $request){
+
+        $fecha = $request->get('fecha');
+        
+        $productos = DB::table('dcargos')
+            ->select(
+                'dcargos.DECODI',
+                'dcargos.Detalle',
+                'bodeprod.bpsrea1',
+                DB::raw('SUM(dcargos.DECANT) as total'),
+                DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta')
+            )
+            ->leftJoin('cargos', 'cargos.CANMRO', '=', 'dcargos.DENMRO')
+            ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
+            ->where('DEFECO', $fecha)
+            ->where('CACOCA', '201')
+            ->where('bpsrea1', '>', 0)
+            ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1') // importante para evitar errores SQL
+            ->get();
+
+        $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
+
+        return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso'));
+    }
+
+    public function CargarEgresosPorVentas(Request $request){
+        $fecha = $request->get('fecha');
+        
+        $productos = DB::table('dcargos')
+            ->select(
+                'dcargos.DECODI',
+                'dcargos.Detalle',
+                'bodeprod.bpsrea1',
+                DB::raw('SUM(dcargos.DECANT) as total'),
+                DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta')
+            )
+            ->leftJoin('cargos', 'cargos.CANMRO', '=', 'dcargos.DENMRO')
+            ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
+            ->where('DEFECO', $fecha)
+            ->where('CACOCA', '201')
+            ->where('bpsrea1', '>', 0)
+            ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1') // importante para evitar errores SQL
+            ->get();
+        
+            if(count($productos) === 0){
+                return redirect()->route('EgresosPorVentas')->with('danger','Dia Sin Ventas');
+            }
+        
+        foreach($productos as $item){
+            /* error_log(print_r($item->resta, true)); */
+
+            DB::table('bodeprod')
+                ->where('bpprod', $item->DECODI)
+                ->update(['bpsrea1' => $item->resta]);
+
+            DB::table('solicitud_ajuste')->insert([
+                "codprod" => $item->DECODI,
+                "producto" => $item->Detalle,
+                "fecha" => date('Y-m-d'),
+                "stock_anterior" => $item->bpsrea1,
+                "nuevo_stock" => $item->resta,
+                "autoriza" => "Diego Carrasco",
+                "solicita" => "Sucursal",
+                "observacion" => "Egreso Mercaderia de Sucursal Isabel Riquelme del Dia"
+            ]);
+        }
+        
+        DB::table('detalle_devolucion')->insert([
+            "folio" => 0,
+            "t_doc" => "Egreso",
+            "fecha" => $fecha,
+            "estado" => "Egreso Mercaderia a Sucursal Isabel Riquelme",
+            ]);
+            
+        $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
+    
+        //return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso'));
+        return redirect()->route('EgresosPorVentas')->with('success','Mercaderia Descontada Correctamente');
+    }
+
+    public function IngresoMercaderia(Request $request){
+        
+        /* $productos = DB::table('dvales')
+        ->leftJoin('producto', 'dvales.vaarti', '=', 'producto.ARCODI')
+        ->leftJoin('bodeprod', 'dvales.vaarti', '=', 'bodeprod.bpprod')
+        ->where('vanmro', '1381093')
+        ->select('dvales.*', 'producto.*', 'bodeprod.*')
+        ->get();
+
+        dd($productos); */
+
+        return view('Sucursal.IngresoMercaderia');
+    }
+
+    public function BuscarValeSucursal(Request $request){
+
+        $n_vale = $request->get('n_vale');
+
+        $message = "";
+
+        $vale = DB::table('db_bluemix.vales')
+            ->where('vanmro', $request->get('n_vale'))
+            ->get();
+        
+        if(count($vale) === 0){
+            $message = "Vale no Encontrado";
+            return view('Sucursal.IngresoMercaderia', compact('message'));
+        }
+        
+        if($vale[0]->vaesta == 1){
+            $message = "Vale ya Cargado";
+            return view('Sucursal.IngresoMercaderia', compact('message'));
+        }
+
+        $productos = DB::table('dvales')
+        ->leftJoin('producto', 'dvales.vaarti', '=', 'producto.ARCODI')
+        ->leftJoin('bodeprod', 'dvales.vaarti', '=', 'bodeprod.bpprod')
+        ->where('vanmro', $n_vale)
+        ->select('dvales.*', 'producto.*', 'bodeprod.*')
+        ->get();
+            //error_log(print_r("tiene algo", true));
+        return view('Sucursal.IngresoMercaderia', compact('n_vale', 'productos'));
+
+    }
+
+    public function CargarValeSucursal(Request $request){
+        //dd($request->get('n_vale'));
+
+        $productos = DB::table('dvales')
+        ->leftJoin('producto', 'dvales.vaarti', '=', 'producto.ARCODI')
+        ->leftJoin('bodeprod', 'dvales.vaarti', '=', 'bodeprod.bpprod')
+        ->where('vanmro', $request->get('n_vale'))
+        ->select('dvales.*', 'producto.*', 'bodeprod.*')
+        ->get();
+
+        foreach($productos as $item){
+            /* error_log(print_r($item->ARCODI, true));
+            error_log(print_r($item->vacant+$item->bpsrea1, true)); */
+            DB::table('bodeprod')
+                ->where('bpprod', $item->ARCODI)
+                ->update(['bpsrea1' => ($item->vacant + $item->bpsrea1)]);
+
+            DB::table('solicitud_ajuste')->insert([
+                "codprod" => $item->ARCODI,
+                "producto" => $item->ARDESC,
+                "fecha" => date('Y-m-d'),
+                "stock_anterior" => $item->bpsrea1,
+                "nuevo_stock" => ($item->vacant + $item->bpsrea1),
+                "autoriza" => "Diego Carrasco",
+                "solicita" => "Sucursal",
+                "observacion" => "Ingreso Mercaderia a Sucursal Isabel Riquelme por Vale N°: $item->vanmro"
+            ]);
+        }
+
+        DB::table('vales')
+                ->where('vanmro', $request->get('n_vale'))
+                ->update(['vaesta' => 1]);
+
+        return redirect()->route('IngresoMercaderiaSucursal')->with('success','Vale Ingresado Correctamente');
+    }
 }

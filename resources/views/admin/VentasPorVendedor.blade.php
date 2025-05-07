@@ -30,26 +30,40 @@
                 @endif
             </div>
             <div class="form-group mx-sm-3 mb-2">
-                <input class="form-control" list="vendedor" required autocomplete="off" name="vendedor" id="xd" type="text"
-                    placeholder="Vendedor...">
+                @if(!empty($elvendedor))
+                    <input class="form-control" list="vendedor" required autocomplete="off" name="vendedor" id="xd" type="text" placeholder="Vendedor..." value="{{ $elvendedor }}">
+                @else
+                    <input class="form-control" list="vendedor" required autocomplete="off" name="vendedor" id="xd" type="text" placeholder="Vendedor...">
+                @endif
                 <datalist id="vendedor">
+                    <option>TODOS</option>
                     @foreach ($vendedor as $item)
-                        <option>TODOS
-                        </option>
                         <option value="{{ $item->TAREFE }}">{{ $item->TAGLOS }}</option>
                     @endforeach
                 </datalist>
             </div>
             <div class="form-group mx-sm-3 mb-2">
-                <select class="form-control" name="comision">
-                    <option value="0.00">Comisión</option>
-                    <option value="0.01">1%</option>
-                    <option value="0.02">2%</option>
-                    <option value="0.03">3%</option>
-                    <option value="0.04">4%</option>
-                    <option value="0.05">5%</option>
-                    <option value="0.06">6%</option>
-                </select>
+            @if(!isset($comision))
+            <select class="form-control" name="comision" required>
+                <option value="" disabled selected>Comisión</option>
+                <option value="0.01">1%</option>
+                <option value="0.02">2%</option>
+                <option value="0.03">3%</option>
+                <option value="0.04">4%</option>
+                <option value="0.05">5%</option>
+                <option value="0.06">6%</option>
+            </select>
+            @else
+            <select class="form-control" name="comision" required>
+                <option value="" disabled selected>Comisión</option>
+                <option value="0.01" {{ $comision == '0.01' ? 'selected' : '' }}>1%</option>
+                <option value="0.02" {{ $comision == '0.02' ? 'selected' : '' }}>2%</option>
+                <option value="0.03" {{ $comision == '0.03' ? 'selected' : '' }}>3%</option>
+                <option value="0.04" {{ $comision == '0.04' ? 'selected' : '' }}>4%</option>
+                <option value="0.05" {{ $comision == '0.05' ? 'selected' : '' }}>5%</option>
+                <option value="0.06" {{ $comision == '0.06' ? 'selected' : '' }}>6%</option>
+            </select>
+            @endif
             </div>
             <div class="col-md-2 ">
 
@@ -72,6 +86,9 @@
                             <th scope="col" style="text-align:left">IVA</th>
                             <th scope="col" style="text-align:left">Neto</th>
                             <th scope="col" style="text-align:right">Total Doc.</th>
+                            <th scope="col" style="text-align:right">NC</th>
+                            <th scope="col" style="text-align:right">Total NC</th>
+                            <th scope="col" style="text-align:right">Total Neto</th>
                             <th scope="col" style="text-align:right">Comisión (Neto)</th>
                         </tr>
                     </thead>
@@ -98,6 +115,9 @@
                                     <td style="text-align:right">{{ number_format($item->CAIVA, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->CANETO, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->CAVALO, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ $item->folio }}</td>
+                                    <td style="text-align:right">{{ number_format($item->total_nc, 0, ',', '.') }}</td>
+                                    <td style="text-align:right">{{ number_format(($item->CAVALO-$item->total_nc)/1.19, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->comision, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalneto += $item->CANETO }}</div>
                                     <div style="display: none">{{ $totalcomision += $item->comision }}</div>
@@ -107,7 +127,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="8"><strong>Total</strong> </td>
+                            <td colspan="11"><strong>Total</strong> </td>
                             @if (empty($totalcomision))
                                 <td><span class="price text-success">$</span></td>
                             @else
@@ -128,7 +148,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-row">
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-2 mb-2">
                         <label for="validationTooltip02">Documentos</label>
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02"
                             readonly value="Boletas" required>
@@ -169,10 +189,23 @@
                         </div>
                     </div>
                     <div class="col-md-2 mb-2">
+                        <label for="validationTooltipUsername">Nota Credito Neto</label>
+                        <div class="input-group">
+                            @if (empty($ncboletas))
+                                <input type="text" class="form-control" id="validationTooltipUsername" value="0" readonly
+                                    aria-describedby="validationTooltipUsernamePrepend" required>
+                            @else
+                                <input type="text" class="form-control" id="validationTooltipUsername"
+                                    value="${{ number_format($ncboletas, 0, ',', '.') }}" readonly
+                                    aria-describedby="validationTooltipUsernamePrepend" required>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-2">
                         <label for="validationTooltipUsername">Comisión Neto</label>
                         <div class="input-group">
                             @if (empty($boletatotal))
-                                <input type="text" class="form-control" id="validationTooltipUsername" value="" readonly
+                                <input type="text" class="form-control" id="validationTooltipUsername" value="0" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @else
                                 <input type="text" class="form-control" id="validationTooltipUsername"
@@ -183,7 +216,7 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-2 mb-2">
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02"
                             readonly value="Facturas" required>
                     </div>
@@ -221,8 +254,20 @@
                     </div>
                     <div class="col-md-2 mb-2">
                         <div class="input-group">
+                            @if (empty($ncfacturas))
+                                <input type="text" class="form-control"  value="0" readonly
+                                    aria-describedby="validationTooltipUsernamePrepend" required>
+                            @else
+                                <input type="text" class="form-control"
+                                    value="${{ number_format($ncfacturas, 0, ',', '.') }}" readonly
+                                    aria-describedby="validationTooltipUsernamePrepend" required>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <div class="input-group">
                             @if (empty($facturatotal))
-                                <input type="text" class="form-control"  value="" readonly
+                                <input type="text" class="form-control"  value="0" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @else
                                 <input type="text" class="form-control"
@@ -234,7 +279,7 @@
                 </div>
                 <hr>
                 <div class="form-row">
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-2 mb-2">
                         <input type="text" class="form-control" style="font-weight: bold;" id="validationTooltip02"
                             readonly value="Total" required>
                     </div>
@@ -268,6 +313,19 @@
                             @else
                                 <input type="text" class="form-control" style="font-weight: bold;"
                                     value="${{ number_format($totalneto, 0, ',', '.') }}"
+                                    id="validationTooltipUsername" readonly
+                                    aria-describedby="validationTooltipUsernamePrepend" required>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <div class="input-group">
+                            @if (empty($totalneto))
+                                <input type="text" class="form-control" value="" id="validationTooltipUsername" readonly
+                                    aria-describedby="validationTooltipUsernamePrepend" required>
+                            @else
+                                <input type="text" class="form-control" style="font-weight: bold;"
+                                    value="${{ number_format(($ncfacturas+$ncboletas), 0, ',', '.') }}"
                                     id="validationTooltipUsername" readonly
                                     aria-describedby="validationTooltipUsernamePrepend" required>
                             @endif

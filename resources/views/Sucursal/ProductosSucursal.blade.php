@@ -65,7 +65,10 @@
                                     <td>{{ $item->ARDESC }}</td>
                                     <td>{{ $item->ARMARCA }}</td>
                                     <td>{{ $item->bpsrea }}</td>
-                                    <td><input type="number" name="cant_sucursal" id="input_{{ ($loop->index+1) }}" value="{{ $item->bpsrea1 }}"></td>
+                                    <td>
+                                        <input type="number" name="cant_sucursal" id="input_{{ ($loop->index+1) }}" value="{{ $item->bpsrea1 }}">
+                                        <p hidden>{{ $item->bpsrea1 }}</p>
+                                    </td>
                                     <td>{{ $item->cantidad }}</td>
                                     <td><button type="button" class="btn btn-success" onclick="guardar_cantidad('{{ $item->bpprod }}', {{ $loop->index+1 }}, {{ $item->bpsrea1 }})">Guardar</button></td>
                                 </tr>

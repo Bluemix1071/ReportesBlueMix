@@ -110,6 +110,12 @@ Route::prefix('Despacho')->namespace('Despacho')->middleware('auth')->group(func
 Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(function(){
     Route::get('/ProductosSucursal','SucursalController@ProductosSucursal')->name('ProductosSucursal');
     Route::post('/GuardarCantidadSucursal','SucursalController@GuardarCantidadSucursal')->name('GuardarCantidadSucursal');
+    Route::get('/EgresosPorVentas','SucursalController@EgresosPorVentas')->name('EgresosPorVentas');
+    Route::post('/EgresosPorVentasDetalle','SucursalController@EgresosPorVentasDetalle')->name('EgresosPorVentasDetalle');
+    Route::post('/CargarEgresosPorVentas','SucursalController@CargarEgresosPorVentas')->name('CargarEgresosPorVentas');
+    Route::get('/IngresoMercaderia','SucursalController@IngresoMercaderia')->name('IngresoMercaderiaSucursal');
+    Route::post('/BuscarValeSucursal','SucursalController@BuscarValeSucursal')->name('BuscarValeSucursal');
+    Route::post('/CargarValeSucursal','SucursalController@CargarValeSucursal')->name('CargarValeSucursal');
 });
 
 
