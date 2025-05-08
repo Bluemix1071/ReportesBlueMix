@@ -1307,7 +1307,7 @@
                     </li>
                 @endcan
                 
-                @if(session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl")
+                @if(session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "adquisiciones@bluemix.cl")
                 <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
