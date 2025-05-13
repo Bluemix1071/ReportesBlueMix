@@ -1306,7 +1306,7 @@
                         </ul>
                     </li>
                 @endcan
-                
+
                 @if(session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "adquisiciones@bluemix.cl")
                 <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
@@ -1336,7 +1336,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('IngresoMercaderiaSucursal') }}" class="nav-link {{ setActive('IngresoMercaderiaSucursal') }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Ingresos de Meracdería</p>
+                                    <p>Ingresos de Mercadería</p>
                                 </a>
                             </li>
 

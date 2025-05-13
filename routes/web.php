@@ -116,6 +116,8 @@ Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(func
     Route::get('/IngresoMercaderia','SucursalController@IngresoMercaderia')->name('IngresoMercaderiaSucursal');
     Route::post('/BuscarValeSucursal','SucursalController@BuscarValeSucursal')->name('BuscarValeSucursal');
     Route::post('/CargarValeSucursal','SucursalController@CargarValeSucursal')->name('CargarValeSucursal');
+    Route::post('/Convertirsolicitud','SucursalController@Convertirsolicitud')->name('Convertirsolicitud');
+    Route::get('/listar-vales', 'SucursalController@listarRegistroVales')->name('listar.vales');
 });
 
 
