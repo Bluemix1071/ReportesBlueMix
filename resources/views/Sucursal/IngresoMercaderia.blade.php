@@ -151,7 +151,7 @@ Ingreso de Mercaderia
                     </div>
 
                     <!-- Tabla de registros -->
-                    <table class="table table-bordered table-hover dataTable">
+                    <table id="tabla-registros" class="table table-bordered table-hover dataTable">
                         <thead>
                             <tr>
                                 <th scope="col" style="text-align:left">Nro Vale</th>
@@ -237,6 +237,35 @@ Ingreso de Mercaderia
   <script src="{{asset("js/vfs_fonts.js")}}"></script>
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
+  <script>
+    $(document).ready(function() {
+        $('#tabla-registros').DataTable({
+            "pageLength": 10,
+            "lengthChange": false,
+            "order": [[0, 'desc']],
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron registros",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+    });
+</script>
+<!-- jQuery (obligatorio para DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
 
 
 
