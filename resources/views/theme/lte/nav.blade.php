@@ -662,7 +662,7 @@
                                         </p>
                                     </a>
                                 </li>
-{{--
+                                {{--
                                 <li class="nav-item">
                                     <a href="{{ route('InformeExistencia') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -1310,8 +1310,9 @@
                 @if(session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "adquisiciones@bluemix.cl")
                 <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
+                        &nbsp;
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                            <p>
+                            <p>&nbsp;
                                 Sucursal
                                 <i class="fas fa-angle-left right"></i>
                             </p>
@@ -1330,6 +1331,13 @@
                                 <a href="{{ route('EgresosPorVentas') }}" class="nav-link {{ setActive('EgresosPorVentas') }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Egresos por Ventas</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="EgresosPorVales" class="nav-link {{ setActive('EgresosPorVales') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Egresos por Vales</p>
                                 </a>
                             </li>
 
@@ -1491,8 +1499,9 @@
 
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
+                        &nbsp;
                         <i class="fa fa-truck" aria-hidden="true"></i>
-                            <p>
+                            <p>&nbsp;
                                 Despacho
                                 <i class="fas fa-angle-left right"></i>
                             </p>
@@ -1516,7 +1525,6 @@
 
                         </ul>
                     </li>
-            </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>
