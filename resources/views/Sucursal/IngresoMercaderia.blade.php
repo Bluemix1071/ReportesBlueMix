@@ -70,9 +70,9 @@ Ingreso de Mercaderia
     <div class="container-fluid row">
         <h3 class="display-3">Ingreso de Mercaderia Sucursal</h3>
     </div>
-    
+
     <form action="{{ route('BuscarValeSucursal') }}" method="post">
-    <div class="form-group row d-flex justify-content-center align-items-center" style="height: 5vh;"> 
+    <div class="form-group row d-flex justify-content-center align-items-center" style="height: 5vh;">
         &nbsp;&nbsp;&nbsp;
         <div class="col-xs-3">
                 @if (empty($n_vale))
@@ -84,7 +84,11 @@ Ingreso de Mercaderia
         &nbsp;&nbsp;&nbsp;
         <div class="col-xs-3">
           <button type="submit" class="btn btn-primary mb-2">Buscar Vale</button>
-        </div> 
+          <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modalConvertirVale">
+            Convertir a Vale
+        </button>
+        </div>
+
       </div>
     </form>
     <div>
@@ -123,6 +127,60 @@ Ingreso de Mercaderia
         </div>
 
 </div>
+
+<!-- Modal Convertir a Vale -->
+<div class="modal fade" id="modalConvertirVale" tabindex="-1" role="dialog" aria-labelledby="modalConvertirValeLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalConvertirValeLabel">Convertir a Vale</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Formulario -->
+            <form action="{{ route('Convertirsolicitud') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <!-- Campo de ingreso -->
+                    <div class="form-group">
+                        <label for="numeroBodega">Número de Solicitud de Bodega</label>
+                        <input type="number" class="form-control" id="numeroBodega" name="numeroBodega" required placeholder="Ingrese número de solicitud">
+                    </div>
+
+                    <!-- Tabla de registros -->
+                    <table id="tabla-registros" class="table table-bordered table-hover dataTable">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="text-align:left">Nro Vale</th>
+                                <th scope="col" style="text-align:left">Nro Solicitud</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!empty($registro))
+                                @foreach($registro as $item)
+                                    <tr>
+                                        <td>{{ $item->Numerovale }}</td>
+                                        <td>{{ $item->Numerosolicitudbodega }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Confirmar Conversión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('script')
@@ -179,6 +237,35 @@ Ingreso de Mercaderia
   <script src="{{asset("js/vfs_fonts.js")}}"></script>
   <script src="{{asset("js/buttons.html5.min.js")}}"></script>
   <script src="{{asset("js/buttons.print.min.js")}}"></script>
+  <script>
+    $(document).ready(function() {
+        $('#tabla-registros').DataTable({
+            "pageLength": 10,
+            "lengthChange": false,
+            "order": [[0, 'desc']],
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron registros",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+    });
+</script>
+<!-- jQuery (obligatorio para DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
 
 
 
