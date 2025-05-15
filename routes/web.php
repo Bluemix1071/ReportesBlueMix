@@ -118,7 +118,6 @@ Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(func
     Route::post('/CargarValeSucursal','SucursalController@CargarValeSucursal')->name('CargarValeSucursal');
     Route::post('/Convertirsolicitud','SucursalController@Convertirsolicitud')->name('Convertirsolicitud');
     Route::get('/listar-vales', 'SucursalController@listarRegistroVales')->name('listar.vales');
-
 });
 
 

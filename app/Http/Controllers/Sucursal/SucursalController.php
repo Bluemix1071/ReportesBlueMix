@@ -237,7 +237,8 @@ class SucursalController extends Controller
         return redirect()->route('IngresoMercaderiaSucursal')->with('success','Vale Ingresado Correctamente');
     }
 
-    public function Convertirsolicitud(Request $request){
+    public function Convertirsolicitud(Request $request)
+{
     $numeroBodega = $request->input('numeroBodega');
     $maxNumero = (DB::table('dvales')->max('vanmro') ?? 0) + 1;
     $horaActual = date('Hi');
