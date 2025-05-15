@@ -280,5 +280,74 @@ class SucursalController extends Controller
     return redirect()->back()->with('success', 'Vale creado correctamente');
 }
 
+    public function EgresosPorVales(Request $request){
+        return view('Sucursal.EgresosPorVales');
+    }
+
+    public function BuscarValeSucursalEgreso(Request $request){
+        $n_vale = $request->get('n_vale');
+
+        $message = "";
+
+        $vale = DB::table('db_bluemix.vales')
+            ->where('vanmro', $request->get('n_vale'))
+            ->get();
+        
+        if(count($vale) === 0){
+            $message = "Vale no Encontrado";
+            return view('Sucursal.EgresosPorVales', compact('message'));
+        }
+
+        if($vale[0]->vaesta == 1){
+            $message = "Vale ya Cargado";
+            return view('Sucursal.EgresosPorVales', compact('message'));
+        }
+
+        $productos = DB::table('dvales')
+        ->leftJoin('producto', 'dvales.vaarti', '=', 'producto.ARCODI')
+        ->leftJoin('bodeprod', 'dvales.vaarti', '=', 'bodeprod.bpprod')
+        ->where('vanmro', $n_vale)
+        ->select('dvales.*', 'producto.*', 'bodeprod.*')
+        ->get();
+
+        return view('Sucursal.EgresosPorVales', compact('n_vale', 'productos'));
+    }
+
+    public function CargarValeSucursalEgreso(Request $request){
+        //dd($request->get('n_vale'));
+
+        $productos = DB::table('dvales')
+        ->leftJoin('producto', 'dvales.vaarti', '=', 'producto.ARCODI')
+        ->leftJoin('bodeprod', 'dvales.vaarti', '=', 'bodeprod.bpprod')
+        ->where('vanmro', $request->get('n_vale'))
+        ->select('dvales.*', 'producto.*', 'bodeprod.*')
+        ->get();
+
+        foreach($productos as $item){
+            /* error_log(print_r($item->ARCODI, true));
+            error_log(print_r($item->vacant+$item->bpsrea1, true)); */
+            DB::table('bodeprod')
+                ->where('bpprod', $item->ARCODI)
+                ->update(['bpsrea1' => ($item->bpsrea1 - $item->vacant)]);
+
+            DB::table('solicitud_ajuste')->insert([
+                "codprod" => $item->ARCODI,
+                "producto" => $item->ARDESC,
+                "fecha" => date('Y-m-d'),
+                "stock_anterior" => $item->bpsrea1,
+                "nuevo_stock" => ($item->bpsrea1 - $item->vacant),
+                "autoriza" => "Diego Carrasco",
+                "solicita" => "Sucursal",
+                "observacion" => "Egreso Mercaderia de Sucursal Isabel Riquelme por Vale N°: $item->vanmro"
+            ]);
+        }
+
+        DB::table('vales')
+                ->where('vanmro', $request->get('n_vale'))
+                ->update(['vaesta' => 1]);
+
+        return redirect()->route('EgresosPorVales')->with('success','Vale Descontado Correctamente');
+    }
+
 
 }
