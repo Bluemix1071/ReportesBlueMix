@@ -23,7 +23,7 @@
         </div>
 
         <input type="text" id="precio" value="{{ $precio }}" name="0000100" hidden>
-        
+
         <form action="{{ route('EstacionamientoFiltro') }}" method="post" class="form-inline col">
                 <tr>
                     <td>Fecha:</td>
@@ -35,7 +35,7 @@
                 <!-- <button type="submit" class="btn btn-success btn-sm row">Buscar</button> -->
                 <button type="submit" class="btn btn-success btn-sm row">Buscar</button>
         </form>
-        
+
       </div>
         <div class="row">
           <div class="col-md-12">
@@ -61,7 +61,7 @@
                                       <td>{{ substr($item->creacion, 0, 10) }}</td>
                                       <td>{{ $item->hora_in }}</td>
                                       <td>
-                                      @if(!is_null($item->hora_out))  
+                                      @if(!is_null($item->hora_out))
                                         {{ $item->hora_out }}
                                       @else
                                         <button class="btn btn-success" data-toggle="modal" data-target="#modalterminarticket" data-id="{{ $item->id }}" data-patente="{{ strtoupper($item->patente) }}" data-creacion="{{ $item->creacion }}" data-hora_in="{{ $item->hora_in }}">Marcar Salida</button>
@@ -100,7 +100,13 @@
             </div>
             <form action="{{ route('GenerarTicket') }}" method="post" id="form_in">
               <div class="modal-body">
-                <input type="text" id="patente" name="patente" required class="form-control input-sm" placeholder="Patente" maxlength="6" minlength="6">
+                <div class="input-group mb-3">
+                    <input type="text" id="patente" name="patente" required class="form-control" placeholder="Patente" maxlength="6" minlength="6">
+                    <div class="input-group-append">
+                        <button class="btn btn-info" type="button" onclick="verificarPatente()">Verificar</button>
+                    </div>
+                </div>
+                <small id="resultadoVerificacion" class="form-text text-muted"></small>
                 <br>
                 <!-- <input type="texarea" id="detalle" name="detalle" class="form-control" placeholder="Detalle"> -->
                 <textarea id="detalle" name="detalle" rows="4" cols="50" class="form-control"></textarea>
@@ -125,7 +131,7 @@
             </div>
             <form action="{{ route('GenerarTicketSalida') }}" method="post" id="form_out">
               <div class="modal-body" style="font-size: 25px">
-                
+
                 <div class="form-group row">
                     <label for="patente" class="col-md col-form-label text-md-right">Matricula:</label>
 
@@ -334,10 +340,10 @@
             const minutos1 = h1 * 60 + m1;
             const minutos2 = h2 * 60 + m2;
 
-            return Math.abs(minutos1 - minutos2); 
+            return Math.abs(minutos1 - minutos2);
         } */
         function diferenciaEnMinutos(creacion) {
-            
+
             const date1 = new Date();
             const date2 = new Date(creacion);
 
@@ -356,6 +362,48 @@
 
             return diferenciaMinutos;
         }
+        function verificarPatente() {
+    const patente = $('#patente').val().toUpperCase();
+    const botonIngresar = $('#btnIngresar');
+
+    if (patente.length !== 6) {
+        $('#resultadoVerificacion').text('La patente debe tener 6 caracteres.').addClass('text-danger');
+        botonIngresar.prop('disabled', true);
+        return;
+    }
+
+    $.ajax({
+        url: '{{ route('VerificarPatente') }}',
+        type: 'POST',
+        data: {
+            patente: patente,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            const resultado = $('#resultadoVerificacion');
+            resultado.removeClass('text-success text-danger');
+
+            if (response.status === 'libre') {
+                resultado.addClass('text-success');
+                botonIngresar.prop('disabled', false);
+            } else if (response.status === 'ocupado') {
+                resultado.addClass('text-danger');
+                botonIngresar.prop('disabled', true);
+            } else {
+                resultado.addClass('text-danger');
+                botonIngresar.prop('disabled', true);
+            }
+
+            resultado.text(response.message);
+        },
+        error: function() {
+            $('#resultadoVerificacion').text('Error al verificar la patente.').addClass('text-danger');
+            botonIngresar.prop('disabled', true);
+        }
+    });
+}
+
+
 
         const checkbox = document.getElementById("descuento");
         checkbox.addEventListener("change", () => {
@@ -383,6 +431,8 @@
           }
         });
 </script>
+
+
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css")}}">
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css")}}">

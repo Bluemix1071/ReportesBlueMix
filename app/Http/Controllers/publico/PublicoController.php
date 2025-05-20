@@ -65,22 +65,22 @@ class PublicoController extends Controller
       //$cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2022-11-02')->orderBy('CZ_FECHA', 'DESC')->get();
       //$productos=DB::table('productos_negativos')->get();
       $productos = DB::select('select *, count(1) as estado from (
-        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod` 
-        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` 
+        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod`
+        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI`
         left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
         left join prod_pendientes on bodeprod.bpprod = prod_pendientes.cod_articulo
         where `bpsrea` < 0 and `tablas`.`TACODI` = 22 and prod_pendientes.estado = 1 group by bpprod
         union all
-        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod` 
-        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` 
+        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod`
+        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI`
         left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
         where `bpsrea` < 0 and `tablas`.`TACODI` = 22
         ) t
         left join negativos_historico on t.bpprod = negativos_historico.codigo and negativos_historico.stock_anterior >= 0
         group by bpprod having count(1) >= 1');
 
-        /* $en_solicitud = DB::select('select ARCODI, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod` 
-        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI` 
+        /* $en_solicitud = DB::select('select ARCODI, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod`
+        left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI`
         left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
         left join dsalida_bodega on bodeprod.bpprod = dsalida_bodega.articulo
         LEFT JOIN salida_de_bodega on dsalida_bodega.id = salida_de_bodega.nro
@@ -183,15 +183,15 @@ class PublicoController extends Controller
 
     public function GenerarTicket(Request $request) {
 
-      
+
       $hora_in = DB::select('select curtime() as hora')[0]->hora;
-      
+
       $id = DB::table('estacionamiento')->insertGetId([
         "hora_in" => substr($hora_in, 0, 8),
         "patente" => strtoupper($request->get('patente')),
         "detalle" => strtoupper($request->get('detalle')),
       ]);
-      
+
       $ticket = DB::table('estacionamiento')->where('id', $id)->get()[0];
 
       //dd($ticket);
@@ -199,6 +199,31 @@ class PublicoController extends Controller
       return view('exports.ticket_in', compact('ticket'));
 
     }
+
+    public function VerificarPatente(Request $request)
+{
+    $patente = strtoupper($request->input('patente'));
+
+    $registro = \DB::table('estacionamiento')
+                ->where('patente', $patente)
+                ->orderByDesc('id')
+                ->first();
+
+    if (!$registro) {
+        return response()->json(['status' => 'libre', 'message' => 'Patente no encontrada. Puedes ingresar.']);
+    }
+
+    if ($registro->estado == 'TERMINADO') {
+        return response()->json(['status' => 'libre', 'message' => 'Patente finalizada. Puedes ingresar.']);
+    }
+
+    if ($registro->estado == 'INGRESADO') {
+        return response()->json(['status' => 'ocupado', 'message' => 'Esta patente ya está ingresada y tiene deuda pendiente.']);
+    }
+
+    return response()->json(['status' => 'error', 'message' => 'Estado desconocido.']);
+}
+
 
     public function GenerarTicketSalida(Request $request) {
 
