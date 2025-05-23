@@ -206,10 +206,18 @@ class PublicoController extends Controller
 
     $registro = \DB::table('estacionamiento')
                 ->where('patente', $patente)
+                ->where('estado', "INGRESADO")
                 ->orderByDesc('id')
                 ->first();
 
-    if (!$registro) {
+    if(empty($registro)){
+      return response()->json(['status' => "SIN DEUDA"]);
+    }else{
+      return response()->json(['status' => "CON DEUDA"]);
+    }
+
+
+    /* if (!$registro) {
         return response()->json(['status' => 'libre', 'message' => 'Patente no encontrada. Puedes ingresar.']);
     }
 
@@ -221,7 +229,7 @@ class PublicoController extends Controller
         return response()->json(['status' => 'ocupado', 'message' => 'Esta patente ya está ingresada y tiene deuda pendiente.']);
     }
 
-    return response()->json(['status' => 'error', 'message' => 'Estado desconocido.']);
+    return response()->json(['status' => 'error', 'message' => 'Estado desconocido.']); */
 }
 
 

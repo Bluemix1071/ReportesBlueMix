@@ -101,18 +101,18 @@
             <form action="{{ route('GenerarTicket') }}" method="post" id="form_in">
               <div class="modal-body">
                 <div class="input-group mb-3">
-                    <input type="text" id="patente" name="patente" required class="form-control" placeholder="Patente" maxlength="6" minlength="6">
-                    <div class="input-group-append">
+                    <input type="text" id="patente" name="patente" required class="form-control" placeholder="Patente" maxlength="6" minlength="5">
+                    <!-- <div class="input-group-append">
                         <button class="btn btn-info" type="button" onclick="verificarPatente()">Verificar</button>
-                    </div>
+                    </div> -->
                 </div>
-                <small id="resultadoVerificacion" class="form-text text-muted"></small>
+                <div id="resultadoVerificacion" class="alert alert-warning" role="alert" hidden></div>
                 <br>
                 <!-- <input type="texarea" id="detalle" name="detalle" class="form-control" placeholder="Detalle"> -->
                 <textarea id="detalle" name="detalle" rows="4" cols="50" class="form-control"></textarea>
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" formtarget="_blank" onclick="recargar()">Ingresar</button>
+                <button type="button" class="btn btn-primary" formtarget="_blank" onclick="recargar()">Ingresar</button>
                 <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
               </div>
            </form>
@@ -222,6 +222,11 @@
 
 <script>
 
+  $('#modalticket').on('hidden.bs.modal', function () {
+    $('#resultadoVerificacion').prop('hidden', true);
+    // Aquí puedes ejecutar cualquier código adicional que necesites
+  });
+
   const precio = $("#precio").val();
 
   $(document).ready(function() {
@@ -250,10 +255,39 @@
 
   function recargar(){
     if($("#form_in")[0].checkValidity()){
-      $("#form_in").submit();
-      setTimeout(function(){
-        location.reload();
-      }, 2000);
+      
+    const patente = $('#patente').val().toUpperCase();
+
+    const $form = $('#form_in');
+
+    const targetOriginal = $form.attr('target');
+
+     $.ajax({
+        url: '{{ route('VerificarPatente') }}',
+        type: 'POST',
+        data: {
+            patente: patente,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+          console.log(response.status);
+          if(response.status == "SIN DEUDA"){
+            $form.attr('target', '_blank');
+            $("#form_in").submit();
+            setTimeout(function(){
+              location.reload();
+            }, 2000);
+          }else{
+            $('#resultadoVerificacion').prop('hidden', false);
+            $('#resultadoVerificacion').text('La Patente tiene una deuda Pendiente').addClass('text-danger');
+          }
+
+        }
+    });
+
+    }else{
+      $('#resultadoVerificacion').prop('hidden', false);
+      $('#resultadoVerificacion').text('La Patente debe tener al menos 5 Dígitos').addClass('text-danger');
     }
   }
 
@@ -362,48 +396,6 @@
 
             return diferenciaMinutos;
         }
-        function verificarPatente() {
-    const patente = $('#patente').val().toUpperCase();
-    const botonIngresar = $('#btnIngresar');
-
-    if (patente.length !== 6) {
-        $('#resultadoVerificacion').text('La patente debe tener 6 caracteres.').addClass('text-danger');
-        botonIngresar.prop('disabled', true);
-        return;
-    }
-
-    $.ajax({
-        url: '{{ route('VerificarPatente') }}',
-        type: 'POST',
-        data: {
-            patente: patente,
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(response) {
-            const resultado = $('#resultadoVerificacion');
-            resultado.removeClass('text-success text-danger');
-
-            if (response.status === 'libre') {
-                resultado.addClass('text-success');
-                botonIngresar.prop('disabled', false);
-            } else if (response.status === 'ocupado') {
-                resultado.addClass('text-danger');
-                botonIngresar.prop('disabled', true);
-            } else {
-                resultado.addClass('text-danger');
-                botonIngresar.prop('disabled', true);
-            }
-
-            resultado.text(response.message);
-        },
-        error: function() {
-            $('#resultadoVerificacion').text('Error al verificar la patente.').addClass('text-danger');
-            botonIngresar.prop('disabled', true);
-        }
-    });
-}
-
-
 
         const checkbox = document.getElementById("descuento");
         checkbox.addEventListener("change", () => {
