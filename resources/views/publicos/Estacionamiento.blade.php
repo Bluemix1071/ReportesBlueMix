@@ -222,6 +222,14 @@
 
 <script>
 
+  $('#form_in').on('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Evita el envío del formulario
+      recargar();
+      // Aquí puedes ejecutar tu lógica personalizada
+    }
+  });
+
   $('#modalticket').on('hidden.bs.modal', function () {
     $('#resultadoVerificacion').prop('hidden', true);
     // Aquí puedes ejecutar cualquier código adicional que necesites
