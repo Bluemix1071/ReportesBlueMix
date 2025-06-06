@@ -100,16 +100,18 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        'sqlsrv' => [
+        'DB3' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => env('DB3_HOST', '127.0.0.1'),
+            'port' => env('DB3_PORT', '1433'),
+            'database' => env('DB3_DATABASE', 'forge'),
+            'username' => env('DB3_USERNAME', 'forge'),
+            'password' => env('DB3_PASSWORD', 'forge'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT', 'no'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true')
         ],
 
     ],

@@ -13,7 +13,38 @@ use Milon\Barcode\DNS2D;
 class FirmaDocumentosController extends Controller
 {
     //
+    protected $DB3;
+
+    public function __construct()
+    {
+        // Guarda la instancia de la conexión 'DB3' una sola vez
+        $this->DB3 = DB::connection('DB3');
+    }
+
     public function FirmaFacturas(){
+
+      //dd($this->smalldateToHex(date('y-m-d')));
+
+      /* $cafs = $this->DB3->table('cafautorizados')->insert([
+        "cafid" => "7",
+        "tipodoc" => "34",
+        "rutemisoR" => "77283950-2",
+        "razonsocial" => "BLUE MIX SPA",
+        "rangodesde" => "0",
+        "rangohasta" => "1",
+        "fechaaut" => DB::raw("CAST(0xB2E60000 AS smalldatetime)"),
+        "rsapkM" => "signM",
+        "rsapkE" => "signE",
+        "idk" => "300",
+        "rsask" => "signK",
+        "firmacaf" => "signsign",
+        "fechacarga" => DB::raw("CAST(0xB2E60000 AS smalldatetime)"),
+        "usuarioid" => "FRIQUELME",
+        "utilizados" => "1",
+        "estado" => "A"
+      ]); */
+
+      //DB::table('conteo_inventario_detalle')->insert($item);
 
        $fecha_hoy = date('Y-m-d');
 
