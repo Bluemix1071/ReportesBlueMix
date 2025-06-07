@@ -134,7 +134,7 @@ class ConteoInventarioBodegaController extends Controller
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->where('conteo_inventario.ubicacion', 'Sala')
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
-        ->whereBetween('conteo_inventario.fecha', ['2024-10-01 00:00:00', '2024-11-31 23:59:59'])
+        ->whereBetween('conteo_inventario.fecha', ['2025-06-01 00:00:00', '2025-06-09 23:59:59'])
         ->groupBy('codigo', 'modulo')
         ->get();
         // dd($consolidacionSala);
@@ -148,18 +148,24 @@ class ConteoInventarioBodegaController extends Controller
     public function actualizarInventarioSala(Request $request) {
 
         $InsertNewinventario = DB::table('conteo_inventario_detalle')
-        ->select('conteo_inventario_detalle.*', DB::raw('SUM(conteo_inventario_detalle.cantidad) as total'), 'conteo_inventario.modulo', 'conteo_inventario.ubicacion','bodeprod.bpsrea as stock_anterior')
+        ->select('conteo_inventario_detalle.*', DB::raw('SUM(conteo_inventario_detalle.cantidad) as total'), 'conteo_inventario.modulo', 'conteo_inventario.ubicacion','bodeprod.bpsrea1 as stock_anterior')
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->leftJoin ('bodeprod', 'conteo_inventario_detalle.codigo', '=', 'bodeprod.bpprod')
         ->where('conteo_inventario.ubicacion', 'Sala')
-        ->whereBetween('conteo_inventario.fecha', ['2024-10-01 00:00:00', '2024-11-31 23:59:59'])
+        ->whereBetween('conteo_inventario.fecha', ['2025-06-01 00:00:00', '2025-06-09 23:59:59'])
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
         ->groupBy('codigo')
         ->orderBy('id')
         ->chunk(100000, function ($resultados)
         {
-        //dd($resultados->take(1000));
+        /* if(is_null($resultados[2]->stock_anterior)){
+            $resultados[2]->stock_anterior = '0';
+        }
+        dd($resultados[2]->stock_anterior); */
         foreach ($resultados as $resultado) {
+            if(is_null($resultado->stock_anterior)){
+                $resultado->stock_anterior = '0';
+            }
             // Insertar en la tabla solicitud_ajuste
             DB::table('solicitud_ajuste')->insert([
                 'codprod' => $resultado->codigo,
@@ -167,9 +173,9 @@ class ConteoInventarioBodegaController extends Controller
                 'fecha' => date('Y-m-d'), //fecha de insercion a la BD
                 'stock_anterior' => $resultado->stock_anterior,
                 'nuevo_stock' => $resultado->total,
-                'autoriza' => "Diego Carrasco",
-                'solicita' => "Inventario 2024",
-                'observacion' => 'Conteo Inventario Sala 2024'
+                'autoriza' => "Valentin Bello",
+                'solicita' => "Inventario Sucursal 2025",
+                'observacion' => 'Conteo Inventario Sucursal Isabel Riquelme Junio 2025'
             ]);
 
         }
@@ -177,7 +183,7 @@ class ConteoInventarioBodegaController extends Controller
         //Establece todos los stocks en 0
         DB::table('bodeprod')
         ->update([
-           'bpsrea' => '0'
+           'bpsrea1' => '0'
         ]);
 
         // error_log(print_r($resultado,true)); es un dd para un arreglo el cual imprime los resultados por consola en visual studio code
@@ -192,13 +198,13 @@ class ConteoInventarioBodegaController extends Controller
                         // El código ya existe en bodeprod, actualizamos la cantidad
                         DB::table('bodeprod')
                             ->where('bpprod', $codigo)
-                            ->update(['bpsrea' => $resultado->total]);
+                            ->update(['bpsrea1' => $resultado->total]);
                     } else {
                         // El código no existe en bodeprod, lo insertamos
                         DB::table('bodeprod')->insert([
                             'bpprod' => $codigo,
                             'bpbode' => '1',
-                            'bpsrea' => $resultado->total,
+                            'bpsrea1' => $resultado->total,
                             'bpstin' => '0'
                         ]);
                     }
