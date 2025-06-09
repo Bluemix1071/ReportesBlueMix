@@ -36,7 +36,7 @@ class SucursalController extends Controller
             "fecha" => date('Y-m-d'),
             "stock_anterior" => $cantidad_anterior->bpsrea1,
             "nuevo_stock" => $request->get('cantidad'),
-            "autoriza" => "Diego Carrasco",
+            "autoriza" => "Valentin Bello",
             "solicita" => "Sucursal",
             "observacion" => "Cambio de stock en Sucursal Isabel Riquelme"
         ]);
@@ -53,20 +53,24 @@ class SucursalController extends Controller
         $fecha = date('Y-m-d');
 
         $productos = DB::table('dcargos')
-            ->select(
-                'dcargos.DECODI',
-                'dcargos.Detalle',
-                'bodeprod.bpsrea1',
-                DB::raw('SUM(dcargos.DECANT) as total'),
-                DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta')
-            )
-            ->leftJoin('cargos', 'cargos.CANMRO', '=', 'dcargos.DENMRO')
-            ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
-            ->where('DEFECO', $fecha)
-            ->where('CACOCA', '201')
-            ->where('bpsrea1', '>', 0)
-            ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1') // importante para evitar errores SQL
-            ->get();
+                    ->select(
+                        'dcargos.DECODI',
+                        'dcargos.Detalle',
+                        'bodeprod.bpsrea1',
+                        DB::raw('SUM(dcargos.DECANT) as total'),
+                        DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta'),
+                        'dcargos.DETIPO'
+                    )
+                    ->leftJoin('cargos', function($join) {
+                        $join->on('cargos.CANMRO', '=', 'dcargos.DENMRO')
+                            ->whereColumn('cargos.CATIPO', 'dcargos.DETIPO');
+                    })
+                    ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
+                    ->where('dcargos.DEFECO', $fecha)
+                    ->where('cargos.CACOCA', '201')
+                    ->where('bodeprod.bpsrea1', '>', 0)
+                    ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1')
+                    ->get();
 
         $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
 
@@ -78,20 +82,24 @@ class SucursalController extends Controller
         $fecha = $request->get('fecha');
 
         $productos = DB::table('dcargos')
-            ->select(
-                'dcargos.DECODI',
-                'dcargos.Detalle',
-                'bodeprod.bpsrea1',
-                DB::raw('SUM(dcargos.DECANT) as total'),
-                DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta')
-            )
-            ->leftJoin('cargos', 'cargos.CANMRO', '=', 'dcargos.DENMRO')
-            ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
-            ->where('DEFECO', $fecha)
-            ->where('CACOCA', '201')
-            ->where('bpsrea1', '>', 0)
-            ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1')
-            ->get();
+                    ->select(
+                        'dcargos.DECODI',
+                        'dcargos.Detalle',
+                        'bodeprod.bpsrea1',
+                        DB::raw('SUM(dcargos.DECANT) as total'),
+                        DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta'),
+                        'dcargos.DETIPO'
+                    )
+                    ->leftJoin('cargos', function($join) {
+                        $join->on('cargos.CANMRO', '=', 'dcargos.DENMRO')
+                            ->whereColumn('cargos.CATIPO', 'dcargos.DETIPO');
+                    })
+                    ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
+                    ->where('dcargos.DEFECO', $fecha)
+                    ->where('cargos.CACOCA', '201')
+                    ->where('bodeprod.bpsrea1', '>', 0)
+                    ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1')
+                    ->get();
 
         $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
 
@@ -102,20 +110,24 @@ class SucursalController extends Controller
         $fecha = $request->get('fecha');
 
         $productos = DB::table('dcargos')
-            ->select(
-                'dcargos.DECODI',
-                'dcargos.Detalle',
-                'bodeprod.bpsrea1',
-                DB::raw('SUM(dcargos.DECANT) as total'),
-                DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta')
-            )
-            ->leftJoin('cargos', 'cargos.CANMRO', '=', 'dcargos.DENMRO')
-            ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
-            ->where('DEFECO', $fecha)
-            ->where('CACOCA', '201')
-            ->where('bpsrea1', '>', 0)
-            ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1')
-            ->get();
+                    ->select(
+                        'dcargos.DECODI',
+                        'dcargos.Detalle',
+                        'bodeprod.bpsrea1',
+                        DB::raw('SUM(dcargos.DECANT) as total'),
+                        DB::raw('(bodeprod.bpsrea1 - SUM(dcargos.DECANT)) as resta'),
+                        'dcargos.DETIPO'
+                    )
+                    ->leftJoin('cargos', function($join) {
+                        $join->on('cargos.CANMRO', '=', 'dcargos.DENMRO')
+                            ->whereColumn('cargos.CATIPO', 'dcargos.DETIPO');
+                    })
+                    ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
+                    ->where('dcargos.DEFECO', $fecha)
+                    ->where('cargos.CACOCA', '201')
+                    ->where('bodeprod.bpsrea1', '>', 0)
+                    ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1')
+                    ->get();
 
             if(count($productos) === 0){
                 return redirect()->route('EgresosPorVentas')->with('danger','Dia Sin Ventas');
@@ -134,7 +146,7 @@ class SucursalController extends Controller
                 "fecha" => date('Y-m-d'),
                 "stock_anterior" => $item->bpsrea1,
                 "nuevo_stock" => $item->resta,
-                "autoriza" => "Diego Carrasco",
+                "autoriza" => "Valentin Bello",
                 "solicita" => "Sucursal",
                 "observacion" => "Egreso Mercaderia de Sucursal Isabel Riquelme del Dia"
             ]);
@@ -144,7 +156,7 @@ class SucursalController extends Controller
             "folio" => 0,
             "t_doc" => "Egreso",
             "fecha" => $fecha,
-            "estado" => "Egreso Mercaderia a Sucursal Isabel Riquelme",
+            "estado" => "Egreso Mercaderia a Sucursal Isabel Riquelme"
             ]);
 
         $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
@@ -224,7 +236,7 @@ class SucursalController extends Controller
                 "fecha" => date('Y-m-d'),
                 "stock_anterior" => $item->bpsrea1,
                 "nuevo_stock" => ($item->vacant + $item->bpsrea1),
-                "autoriza" => "Diego Carrasco",
+                "autoriza" => "Valentin Bello",
                 "solicita" => "Sucursal",
                 "observacion" => "Ingreso Mercaderia a Sucursal Isabel Riquelme por Vale N°: $item->vanmro"
             ]);
@@ -336,7 +348,7 @@ class SucursalController extends Controller
                 "fecha" => date('Y-m-d'),
                 "stock_anterior" => $item->bpsrea1,
                 "nuevo_stock" => ($item->bpsrea1 - $item->vacant),
-                "autoriza" => "Diego Carrasco",
+                "autoriza" => "Valentin Bello",
                 "solicita" => "Sucursal",
                 "observacion" => "Egreso Mercaderia de Sucursal Isabel Riquelme por Vale N°: $item->vanmro"
             ]);
