@@ -68,7 +68,6 @@ class SucursalController extends Controller
                     ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
                     ->where('dcargos.DEFECO', $fecha)
                     ->where('cargos.CACOCA', '201')
-                    ->where('bodeprod.bpsrea1', '>', 0)
                     ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1')
                     ->get();
 
@@ -97,7 +96,6 @@ class SucursalController extends Controller
                     ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
                     ->where('dcargos.DEFECO', $fecha)
                     ->where('cargos.CACOCA', '201')
-                    ->where('bodeprod.bpsrea1', '>', 0)
                     ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1')
                     ->get();
 
@@ -125,7 +123,6 @@ class SucursalController extends Controller
                     ->leftJoin('bodeprod', 'bodeprod.bpprod', '=', 'dcargos.DECODI')
                     ->where('dcargos.DEFECO', $fecha)
                     ->where('cargos.CACOCA', '201')
-                    ->where('bodeprod.bpsrea1', '>', 0)
                     ->groupBy('dcargos.DECODI', 'dcargos.Detalle', 'bodeprod.bpsrea1')
                     ->get();
 
