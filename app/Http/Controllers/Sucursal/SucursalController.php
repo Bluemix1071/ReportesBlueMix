@@ -185,18 +185,21 @@ class SucursalController extends Controller
 
         $message = "";
 
+        $registro = DB::table('registro_vales')
+        ->get();
+
         $vale = DB::table('db_bluemix.vales')
             ->where('vanmro', $request->get('n_vale'))
             ->get();
 
         if(count($vale) === 0){
             $message = "Vale no Encontrado";
-            return view('Sucursal.IngresoMercaderia', compact('message'));
+            return view('Sucursal.IngresoMercaderia', compact('message', 'registro'));
         }
 
         if($vale[0]->vaesta == 1){
             $message = "Vale ya Cargado";
-            return view('Sucursal.IngresoMercaderia', compact('message'));
+            return view('Sucursal.IngresoMercaderia', compact('message', 'registro'));
         }
 
         $productos = DB::table('dvales')
@@ -206,7 +209,7 @@ class SucursalController extends Controller
         ->select('dvales.*', 'producto.*', 'bodeprod.*')
         ->get();
             //error_log(print_r("tiene algo", true));
-        return view('Sucursal.IngresoMercaderia', compact('n_vale', 'productos'));
+        return view('Sucursal.IngresoMercaderia', compact('n_vale', 'productos', 'registro'));
 
     }
 
