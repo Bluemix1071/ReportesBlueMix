@@ -177,11 +177,7 @@
                       <td>{{ $item->descripcion }}</td>
                       <td>{{ $item->marca }}</td>
                       <td>{{ $item->cantidad }}</td>
-                      @if(session()->get('email') == "adquisiciones@bluemix.cl")
-                        <td>{{ $item->stock_bodega }}</td>
-                      @else
-                        <td hidden>{{ $item->stock_bodega }}</td>
-                      @endif
+                      <td>{{ $item->stock_bodega }}</td>
                       <td>{{ $item->depto }}</td>
                       <td>
 
