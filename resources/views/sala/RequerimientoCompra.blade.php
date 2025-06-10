@@ -143,11 +143,7 @@
                   <th scope="col" class="col-3">Descripción</th>
                   <th scope="col">Marca</th>
                   <th scope="col">Cantidad</th>
-                  @if(session()->get('email') == "adquisiciones@bluemix.cl")
-                    <th scope="col">Stock Bodega</th>
-                  @else
-                    <th scope="col" hidden>Stock Bodega</th>
-                  @endif
+                  <th scope="col">Stock Bodega</th>
                   <th scope="col">Departamento</th>
                   <th scope="col">Estado</th>
                   <th scope="col">OC</th>
