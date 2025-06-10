@@ -1335,7 +1335,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="EgresosPorVales" class="nav-link {{ setActive('EgresosPorVales') }}">
+                                <a href="{{ route('EgresosPorVales') }}" class="nav-link {{ setActive('EgresosPorVales') }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Egresos por Vales</p>
                                 </a>
