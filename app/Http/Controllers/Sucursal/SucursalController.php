@@ -350,7 +350,7 @@ class SucursalController extends Controller
                 "nuevo_stock" => ($item->bpsrea1 - $item->vacant),
                 "autoriza" => "Valentin Bello",
                 "solicita" => "Sucursal",
-                "observacion" => "Egreso Mercaderia de Sucursal Isabel Riquelme por Vale N°: $item->vanmro"
+                "observacion" => "".$request->get('motivo')." de Sucursal Isabel Riquelme por Vale N°: $item->vanmro"
             ]);
         }
 

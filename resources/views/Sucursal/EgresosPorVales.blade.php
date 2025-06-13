@@ -21,6 +21,25 @@ Egresos de Mercaderia por Vales
       z-index: 1000;
     }
 
+    .select-flotante:hover {
+      background-color:rgb(32, 126, 189);
+    }
+
+    .select-flotante {
+      position: fixed;
+      bottom: 20px;
+      right: 150px;
+      background-color:rgb(45, 141, 219);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px; /* Podés dejarlo en 0 para que sea totalmente cuadrado */
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
     .boton-flotante:hover {
       background-color: #1c7b32;
     }
@@ -58,6 +77,11 @@ Egresos de Mercaderia por Vales
       <button class="boton-flotante" type="submit">
           Cargar Vale
       </button>
+      <select name="motivo" id="" class="select-flotante">
+          <option value="Devolucion">Devolución</option>
+          <option value="Merma">Merma</option>
+          <option value="Insumo">Insumo</option>
+      </select>
     </form>
     @endif
 
