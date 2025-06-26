@@ -51,7 +51,7 @@
                                         @else
                                         <!-- <button type="button" class="btn btn-primary btn-sm col" disabled>Sacar Mercadería</button> -->
                                         <form action="">
-                                            <span class="badge badge-success">Justificada</span>
+                                            <span class="badge badge-success">{{ $item->estado }}</span>
                                         </form>
                                     @endif
                                         <form method="post" action="{{ route('RectificacionGuiaDetalle', ['folio' => $item->CANMRO]) }}" target="_blank">
