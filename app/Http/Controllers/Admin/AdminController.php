@@ -3573,4 +3573,15 @@ public function stocktiemporeal (Request $request){
             return 0; // Devolver 0 en caso de que no se encuentre la propiedad IPCs
         }
     }
+
+    public function VerLog(Request $request){
+
+        $registro=DB::table('log_bmix')
+        ->orderBy('fecha', 'desc')
+        ->paginate(10000);
+
+        return view('admin.verlog',compact('registro'));
+
+
+    }
 }

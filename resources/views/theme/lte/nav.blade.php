@@ -414,6 +414,13 @@
                                         <p>Movimiento Producto</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('VerLog') }}"
+                                        class="nav-link {{ setActive('VerLog') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Registros</p>
+                                    </a>
+                                </li>
 
                                 <li class="nav-item">
                                     <a href="{{ route('MantencionClientes') }}"

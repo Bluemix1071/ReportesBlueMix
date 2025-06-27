@@ -335,6 +335,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/ListarOrdenesDisenoDetalleedittermino', 'AdminController@ListarOrdenesDisenoDetalleedittermino')->name('ListarOrdenesDisenoDetalleedittermino');
     Route::get('/descargaordendiseno/{id}', 'AdminController@descargaordendiseno')->name('descargaordendiseno');
     Route::post('/desactivarordendiseno', 'AdminController@desactivarordendiseno')->name('desactivarordendiseno');
+    Route::get('/VerLog','AdminController@VerLog')->name('VerLog');
 
     Route::get('/MantencionClientes','AdminController@MantencionClientes')->name('MantencionClientes');
     Route::post('/MantencionClientesFiltro','AdminController@MantencionClientesFiltro')->name('MantencionClientesFiltro');

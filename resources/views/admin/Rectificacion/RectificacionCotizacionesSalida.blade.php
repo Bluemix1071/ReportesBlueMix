@@ -62,7 +62,7 @@
                 </div>
             </div>
     </section>
-    
+
     <!-- Modal oconfirmacion de devolucion-->
     <div class="modal fade" id="modalidevolver" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document" >
@@ -124,7 +124,7 @@
         <script src="{{asset("js/vfs_fonts.js")}}"></script>
         <script src="{{asset("js/buttons.html5.min.js")}}"></script>
         <script src="{{asset("js/buttons.print.min.js")}}"></script>
-        
+
 
         <script>
 
