@@ -16,8 +16,14 @@
                 <h3 class="display-3">Historial de Registros</h3>
             </div>
             <div class="col md-6">
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <form action="{{ route('VerLogMes')}}" method="post" id="form_fecha">
+                        <input type="month" id="mes" name="mes" value="{{ $mes }}">
+                    </form>
+                </div>
+                <div class="row">&nbsp;</div>
                 {{-- algo al lado del titulo --}}
-
             </div>
 
         </div>
@@ -28,7 +34,7 @@
                             <tr>
                                 <th scope="col">Operacion</th>
                                 <th scope="col">Nro de documento</th>
-                                <th scope="col">Ususario Combo</th>
+                                <th scope="col">Usuario Combo</th>
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Hora</th>
                                 <th scope="col">Monto</th>
@@ -57,7 +63,9 @@
                                         'MODIFSTK'         => 'Modificación Stock Sala',
                                         'NOTACRE2'         => 'Nota de Crédito',
                                         'NEW_TTBLS'        => 'Nueva Tabla',
-                                        'POS_CAMBPREC3'    => 'Cambio de Precio POS',
+                                        'POS_CAMBPREC3'    => 'Cambio de Precio Guia',
+                                        'POS_CAMBPREC8'    => 'Cambio de Precio Factura',
+                                        'POS_CAMBPREC7'    => 'Cambio de Precio Boleta',
                                         'FILTRO'           => 'Filtro',
                                         'CLIENTE'          => 'Cliente',
                                         'INSERT'           => 'Inserción',
@@ -83,7 +91,7 @@
                                         'INV_EDI'         => 'Edición Inventario',
                                         'ANULDOCU'        => 'Anulación de Documento',
                                         'POS_audit'       => 'Auditoría POS',
-                                        'POS_CAMBPREC'    => 'Cambio de Precio POS',
+                                        'POS_CAMBPREC'    => 'Cambio de Precio POS'
                                     ];
                                     @endphp
 
@@ -100,6 +108,8 @@
                                                 $tipo = 'Folio de documento';
                                             } elseif (preg_match('/^\d{7,8}-[0-9kK]$/', $valor)) {
                                                 $tipo = 'RUT';
+                                            } elseif (preg_match('/^\d{7}-\d{6}$/', $valor)) {
+                                                $tipo = 'Código/N° Doc';
                                             } else {
                                                 $tipo = 'Desconocido';
                                             }
@@ -125,10 +135,82 @@
     <script>
         $(document).ready(function() {
 
+            $('#mes').on('change', function() {
+                const mesSeleccionado = $(this).val();
+                console.log('Mes seleccionado:', mesSeleccionado);
+                $("#form_fecha").submit();
+            });
+
             $('#productos thead tr').clone(true).appendTo( '#productos thead' );
             $('#productos thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
-                $(this).html( '<input type="text" class="form-control" placeholder="Buscar '+title+'" />' );
+                
+                // Solo para la primera columna (índice 0)
+                if (i === 0) {
+                    // Opciones del datalist (puedes cargarlas dinámicamente si quieres)
+                    var datalistId = 'datalist-col-' + i;
+                    var opciones = [
+                        'Abono a Documentos',
+                        'Abono Proveedor',
+                        'Abonos Diarios',
+                        'Actualización',
+                        'Actualización de Stock',
+                        'Actualización de Tablas',
+                        'Ajuste de Precio',
+                        'Anulación de Documento',
+                        'Anulación de Nota',
+                        'Auditoría POS',
+                        'Cambio de Clave',
+                        'Cambio de Precio',
+                        'Cambio de Precio Boleta',
+                        'Cambio de Precio Cotización',
+                        'Cambio de Precio Factura',
+                        'Cambio de Precio Guia',
+                        'Cambio de Precio POS',
+                        'Cliente',
+                        'Cupón Escolar',
+                        'Desautorización de OC',
+                        'Descuadre',
+                        'Edición Inventario',
+                        'Eliminación de Nota',
+                        'Error Fiscal',
+                        'Filtro',
+                        'Filtro 3',
+                        'Guardar Inventario',
+                        'Impresión UEF',
+                        'Ingreso de Bodega',
+                        'Inserción',
+                        'Lista Escolar',
+                        'Mantención de Barras',
+                        'Mantención de Clientes',
+                        'Mantención de Costos',
+                        'Mantención de Productos',
+                        'Mantención de Proveedores',
+                        'Mantención de Tablas',
+                        'Modificación Stock Sala',
+                        'Movimiento de Mercadería',
+                        'Nota de Crédito',
+                        'Nueva Tabla',
+                        'Pago Convencional',
+                        'Rectificación de Boleta',
+                        'Restaurar',
+                        'Salida de Bodega',
+                        'Uso de Gift Card'
+                    ];
+
+
+                    var dataListHTML = '<input list="' + datalistId + '" class="form-control" placeholder="Buscar ' + title + '"/>';
+                    dataListHTML += '<datalist id="' + datalistId + '">';
+                    opciones.forEach(function (opt) {
+                        dataListHTML += '<option value="' + opt + '">';
+                    });
+                    dataListHTML += '</datalist>';
+
+                    $(this).html(dataListHTML);
+                } else {
+                    // Para las otras columnas, usar input normal
+                    $(this).html('<input type="text" class="form-control" placeholder="Buscar ' + title + '" />');
+                }
 
                 $( 'input', this ).on( 'keyup change', function () {
                     if ( table.column(i).search() !== this.value ) {
@@ -141,6 +223,7 @@
             } );
 
             var table = $('#productos').DataTable({
+                order: [[3, 'desc']],
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'pdf', 'print'

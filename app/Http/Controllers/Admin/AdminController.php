@@ -3576,11 +3576,44 @@ public function stocktiemporeal (Request $request){
 
     public function VerLog(Request $request){
 
-        $registro=DB::table('log_bmix')
-        ->orderBy('fecha', 'desc')
-        ->paginate(10000);
+      $mes = date('Y-m');
 
-        return view('admin.verlog',compact('registro'));
+      // Crear fechas de inicio y fin de mes con funciones nativas
+      $inicio = $mes . '-01';
+
+      // Obtener último día del mes (ej: 31) usando date() + strtotime()
+      $ultimoDia = date('t', strtotime($inicio)); // "t" = total de días del mes
+
+      $fin = $mes . '-' . $ultimoDia;
+
+        $registro=DB::table('log_bmix')
+        ->whereBetween('fecha', [$inicio, $fin])
+        ->orderBy('fecha', 'desc')
+        ->paginate(100000);
+
+        return view('admin.verlog',compact('registro', 'mes'));
+
+
+    }
+
+    public function VerLogMes(Request $request){
+
+      $mes = request('mes');
+
+      // Crear fechas de inicio y fin de mes con funciones nativas
+      $inicio = $mes . '-01';
+
+      // Obtener último día del mes (ej: 31) usando date() + strtotime()
+      $ultimoDia = date('t', strtotime($inicio)); // "t" = total de días del mes
+
+      $fin = $mes . '-' . $ultimoDia;
+
+        $registro=DB::table('log_bmix')
+        ->whereBetween('fecha', [$inicio, $fin])
+        ->orderBy('fecha', 'desc')
+        ->paginate(100000);
+
+        return view('admin.verlog',compact('registro', 'mes'));
 
 
     }

@@ -4,7 +4,7 @@
 @endsection
 @section('styles')
 
-    <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css") }}">
+    <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 
 @endsection
 @section('contenido')
@@ -181,15 +181,47 @@
     @endsection
     @section('script')
 
-        <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>
-        <script src="{{ asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js") }}"></script>
+        <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
+        <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
+
+        <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
+        <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset('js/buttons.flash.min.js') }}"></script>
+        <script src="{{ asset('js/jszip.min.js') }}"></script>
+        <script src="{{ asset('js/pdfmake.min.js') }}"></script>
+        <script src="{{ asset('js/vfs_fonts.js') }}"></script>
+        <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
+        <script src="{{ asset('js/buttons.print.min.js') }}"></script>
+
+    <script src="{{ asset('js/ajaxProductosNegativos.js') }}"></script>
 
         <script>
             $(document).ready(function() {
                 $('#users').DataTable({
-                    "order": [
+                    order: [
                         [0, "desc"]
-                    ]
+                    ],
+                    dom: 'Bfrtip',
+                    buttons: [
+                    'copy', 'pdf', 'print'
+                    ],
+                    "language": {
+                    "info": "_TOTAL_ registros",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+
+                    },
+                    "loadingRecords": "cargando",
+                    "processing": "procesando",
+                    "emptyTable": "no hay resultados",
+                    "zeroRecords": "no hay coincidencias",
+                    "infoEmpty": "",
+                    "infoFiltered": ""
+                    },
+                    orderCellsTop: true,
+                    fixedHeader: true
                 });
             });
         </script>
