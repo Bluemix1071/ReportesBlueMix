@@ -202,4 +202,31 @@ class EstadisticaContratoController extends Controller
         }
 
     }
+
+    public function AgrupadosProductosContratos(Request $request) {
+        //dd($request);
+
+        $productos = DB::select('SELECT codigo_producto, ARCOPV, ARDESC, ARMARCA, precio, id_contratos_licitacion, nombre_contrato, id_depto FROM db_bluemix.contrato_detalle
+                        left join contratos on contrato_detalle.fk_contrato = contratos.id_contratos
+                        left join producto on contrato_detalle.codigo_producto = producto.ARCODI
+                        where contratos.estado = "VIGENTE" group by codigo_producto, id_contratos_licitacion');
+
+        return view('admin.Contratos.AgrupadosProductosContratos', compact('productos'));
+    }
+
+    public function ProductosSimilares($codigo){
+
+        $producto = DB::table('producto')->where('ARCODI', $codigo)->get()[0];
+
+        $similares = DB::select("SELECT *, (precios.PCCOSTO/1.19) as costo_neto FROM producto 
+                        left join precios on substring(producto.ARCODI, 1, 5)  = precios.PCCODI
+                        WHERE ARDESC LIKE CONCAT(LEFT('$producto->ARDESC', FLOOR(CHAR_LENGTH('$producto->ARDESC') * 0.33)), '%')
+                        and ARDESC LIKE CONCAT('%', RIGHT('$producto->ARDESC', FLOOR(CHAR_LENGTH('$producto->ARDESC') * 0.33)));");
+
+        /* $similares = DB::select("SELECT * FROM producto WHERE 
+                        ARDESC LIKE CONCAT(LEFT('$producto->ARDESC', FLOOR(CHAR_LENGTH('$producto->ARDESC') * 0.50)), '%')");
+ */
+        return response()->json($similares);
+    }
+
 }

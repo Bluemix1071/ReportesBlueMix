@@ -953,6 +953,13 @@
                                                     <p>Rutas</p>
                                                 </a>
                                             </li> -->
+                                             <li class="nav-item">
+                                                <a href="{{ route('AgrupadosProductosContratos') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Productos Contratos
+                                                    </p>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 @endcan

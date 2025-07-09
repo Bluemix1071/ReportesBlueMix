@@ -375,6 +375,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::get('/descargaPlantillaSincProductos', 'exports\MyController@descargaPlantillaSincProductos')->name('descargaPlantillaSincProductos');
     Route::get('/StockCategorias', 'Contratos\StockCategoriasController@StockCategorias')->name('StockCategorias');
     Route::get('/DetalleCategoria/{id}', 'Contratos\StockCategoriasController@DetalleCategoria')->name('DetalleCategoria');
+    Route::get('/AgrupadosProductosContratos', 'Contratos\EstadisticaContratoController@AgrupadosProductosContratos')->name('AgrupadosProductosContratos');
+    Route::get('/ProductosSimilares/{codigo}', 'Contratos\EstadisticaContratoController@ProductosSimilares')->name('ProductosSimilares');
 
     Route::get('/MercadoPublico','Contratos\MercadoPublicoController@MercadoPublico')->name('MercadoPublico');
     Route::post('/MercadoPublicoDia','Contratos\MercadoPublicoController@MercadoPublicoDia')->name('MercadoPublicoDia');
