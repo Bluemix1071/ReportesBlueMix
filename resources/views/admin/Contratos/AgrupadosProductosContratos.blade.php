@@ -76,12 +76,12 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <th>5</th>
-                            <th>6</th>
+                            <td>Cargando...</td>
+                            <td>Cargando...</td>
+                            <td>Cargando...</td>
+                            <td>Cargando...</td>
+                            <th>Cargando...</th>
+                            <th>Cargando...</th>
                           </tr>
                         </tbody>
                       </table>
