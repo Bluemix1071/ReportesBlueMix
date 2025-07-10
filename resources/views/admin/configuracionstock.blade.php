@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
-Ingreso de Mercaderia
+Devolucion a bodega
 @endsection
 @section('styles')
 
@@ -52,13 +52,15 @@ Ingreso de Mercaderia
 @endsection
 
 @section('contenido')
-    @if(!empty($n_vale))
-    <form action="{{ route('CargarValeSucursal') }}" method="post">
-      <input type="number" value="{{ $n_vale }}" name="n_vale" hidden>
-      <button class="boton-flotante" type="submit">
-          Cargar Vale
-      </button>
+    @if(!empty($nro_oc))
+    <form id="form-editarstock" action="{{ route('editarstock') }}" method="post">
+        @csrf
+        <input type="hidden" name="nro_oc" value="{{ $nro_oc }}">
     </form>
+
+    <button id="btn-cargar-oc" class="boton-flotante">
+        Cargar OC
+    </button>
     @endif
 
     @if(!empty($message))
@@ -68,25 +70,22 @@ Ingreso de Mercaderia
     @endif
 
     <div class="container-fluid row">
-        <h3 class="display-3">Devolucion a Bodega</h3>
+        <h3 class="display-3">Devolución a Bodega</h3>
     </div>
 
-    <form action="{{ route('BuscarValeSucursal') }}" method="post">
+    <form action="{{ route('buscarOC') }}" method="post">
     <div class="form-group row d-flex justify-content-center align-items-center" style="height: 5vh;">
         &nbsp;&nbsp;&nbsp;
         <div class="col-xs-3">
-                @if (empty($n_vale))
-                    <input class="form-control" id="ex1" type="number" required name="n_vale">
+                @if (empty($nro_oc))
+                    <input class="form-control" id="ex1" type="number" required name="nro_oc">
                 @else
-                    <input class="form-control" id="ex1" type="number" required name="n_vale" value="{{ $n_vale }}">
+                    <input class="form-control" id="ex1" type="number" required name="nro_oc" value="{{ $nro_oc }}">
                 @endif
         </div>
         &nbsp;&nbsp;&nbsp;
         <div class="col-xs-3">
-          <button type="submit" class="btn btn-primary mb-2">Buscar Vale</button>
-          <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modalConvertirVale">
-            Convertir a Vale
-        </button>
+          <button type="submit" class="btn btn-primary mb-2">Buscar Oc</button>
         </div>
 
       </div>
@@ -102,83 +101,49 @@ Ingreso de Mercaderia
                             <th scope="col" style="text-align:left">Codigo</th>
                             <th scope="col" style="text-align:left">Detalle</th>
                             <th scope="col" style="text-align:left">Marca</th>
-                            <th scope="col" style="text-align:left">Cantidad Vale</th>
                             <th scope="col" style="text-align:left">Stock Actual</th>
-                            <th scope="col" style="text-align:left">Nueva Cantidad</th>
+                            <th scope="col" style="text-align:left">Cantidad en OC</th>
+                            <th scope="col" style="text-align:left">Nuevo Stock</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @if (!empty($n_vale))
-                        @foreach($productos as $item)
-                          <tr>
-                            <td>{{ $item->ARCODI }}</td>
-                            <td>{{ $item->ARDESC }}</td>
-                            <td>{{ $item->ARMARCA }}</td>
-                            <td>{{ $item->vacant }}</td>
-                            <td>{{ $item->bpsrea1 }}</td>
-                            <td>{{ ($item->vacant+$item->bpsrea1) }}</td>
-                          </tr>
-                        @endforeach
-                      @endif
+                        @if (!empty($nro_oc))
+                            @foreach($productos as $item)
+                                @php
+                                    $stock_actual = intval($item->bpsrea);
+                                    $cantidad_oc = intval($item->Cantidad);
+                                    $nuevo_stock = $stock_actual - $cantidad_oc;
+                                @endphp
+                                <tr>
+                                    <td>{{ $item->Codigo }}</td>
+                                    <td>{{ $item->Descripcion }}</td>
+                                    <td>{{ $item->ARMARCA }}</td>
+                                    <td class="stock-actual" data-stock="{{ $stock_actual }}">
+                                        {{ $stock_actual }}
+                                    </td>
+                                    <td>
+                                        <input
+                                        type="number"
+                                        name="nueva_cantidad[{{ $item->Codigo }}]"
+                                        value="{{ $cantidad_oc }}"
+                                        class="form-control cantidad-input"
+                                        min="0"
+                                        data-stock="{{ $stock_actual }}"
+                                        data-codigo="{{ $item->Codigo }}"
+                                    />
+                                    </td>
+                                    <td class="nuevo-stock">
+                                        {{ $nuevo_stock }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
           </div>
         </div>
 
-</div>
-
-<!-- Modal Convertir a Vale -->
-<div class="modal fade" id="modalConvertirVale" tabindex="-1" role="dialog" aria-labelledby="modalConvertirValeLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!-- Header -->
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="modalConvertirValeLabel">Convertir a Vale</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <!-- Formulario -->
-            <form action="{{ route('Convertirsolicitud') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <!-- Campo de ingreso -->
-                    <div class="form-group">
-                        <label for="numeroBodega">Número de Solicitud de Bodega</label>
-                        <input type="number" class="form-control" id="numeroBodega" name="numeroBodega" required placeholder="Ingrese número de solicitud">
-                    </div>
-
-                    <!-- Tabla de registros -->
-                    <table id="tabla-registros" class="table table-bordered table-hover dataTable">
-                        <thead>
-                            <tr>
-                                <th scope="col" style="text-align:left">Nro Vale</th>
-                                <th scope="col" style="text-align:left">Nro Solicitud</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!empty($registro))
-                                @foreach($registro as $item)
-                                    <tr>
-                                        <td>{{ $item->Numerovale }}</td>
-                                        <td>{{ $item->Numerosolicitudbodega }}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Confirmar Conversión</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 
 @endsection
@@ -195,6 +160,62 @@ Ingreso de Mercaderia
       }, 3000);
     }
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.cantidad-input').forEach(function(input) {
+            input.addEventListener('input', function() {
+                var stockOriginal = parseInt(this.dataset.stock) || 0;
+                var nuevaCantidad = parseInt(this.value) || 0;
+                var stockDescontado = stockOriginal - nuevaCantidad;
+
+                var nuevoStockCell = this.closest('tr').querySelector('.nuevo-stock');
+                nuevoStockCell.textContent = stockDescontado;
+            });
+        });
+    });
+    </script>
+<script>
+document.getElementById('btn-cargar-oc').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    let form = document.getElementById('form-editarstock');
+
+    // Limpiar inputs ocultos anteriores
+    form.querySelectorAll('.hidden-dato').forEach(el => el.remove());
+
+    let index = 0;
+
+    document.querySelectorAll('.cantidad-input').forEach(function(input) {
+        let codigo = input.dataset.codigo;
+        let stockOriginal = parseInt(input.dataset.stock) || 0;
+        let cantidadIngresada = parseInt(input.value) || 0;
+        let nuevoStock = stockOriginal - cantidadIngresada;
+
+        // Crear input oculto para código
+        let hiddenCodigo = document.createElement('input');
+        hiddenCodigo.type = 'hidden';
+        hiddenCodigo.name = `productos[${index}][codigo]`;
+        hiddenCodigo.value = codigo;
+        hiddenCodigo.classList.add('hidden-dato');
+        form.appendChild(hiddenCodigo);
+
+        // Crear input oculto para stock
+        let hiddenStock = document.createElement('input');
+        hiddenStock.type = 'hidden';
+        hiddenStock.name = `productos[${index}][stock]`;
+        hiddenStock.value = nuevoStock;
+        hiddenStock.classList.add('hidden-dato');
+        form.appendChild(hiddenStock);
+
+        index++;
+    });
+
+    form.submit();
+});
+</script>
+
+
 
 <script>
 

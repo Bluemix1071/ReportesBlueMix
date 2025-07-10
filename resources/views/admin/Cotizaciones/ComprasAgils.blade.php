@@ -86,6 +86,7 @@ Compras Agiles
                               <option value="2">ROSITA</option>
                               <option value="1">SALA DE VENTAS</option>
                               <option value="36">SCARLETTE</option>
+                              <option value="14">MONICA</option>
                               <option value="11">VALENTIN</option>
                             </select>
                           </div>

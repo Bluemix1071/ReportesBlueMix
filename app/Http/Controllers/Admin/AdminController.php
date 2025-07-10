@@ -3617,4 +3617,99 @@ public function stocktiemporeal (Request $request){
 
 
     }
+    public function modistock(Request $request){
+
+        return view('admin.configuracionstock');
+
+    }
+
+    public function buscarOC(Request $request){
+
+
+        $nro_oc = $request->get('nro_oc');
+
+        $message = "";
+
+         $oc = DB::table('db_bluemix.ordendecompradetalle')
+            ->where('NroOC', $request->get('nro_oc'))
+            ->get();
+
+         if(count($oc) === 0){
+                $message = "OC no Encontrado";
+                return view('admin.configuracionstock', compact('message'));
+            }
+
+            $productos = DB::table('ordendecompradetalle')
+            ->leftJoin('producto', 'ordendecompradetalle.Codigo', '=', 'producto.ARCODI')
+            ->leftJoin('bodeprod', 'ordendecompradetalle.Codigo', '=', 'bodeprod.bpprod')
+            ->where('NroOC', $nro_oc)
+            ->select('ordendecompradetalle.*', 'producto.*', 'bodeprod.*')
+            ->get();
+
+
+            return view('admin.configuracionstock',compact('productos', 'nro_oc'));
+    }
+
+    public function editarstock(Request $request)
+{
+    $productos = $request->get('productos');
+
+    if (!$productos) {
+        return back()->with('message', 'No se recibieron datos de stock.');
+    }
+
+    \DB::beginTransaction();
+
+    try {
+        foreach ($productos as $producto) {
+            $codigo = $producto['codigo'];
+            $nuevoStock = $producto['stock'];
+
+            // ➊ Buscar stock anterior en bodeprod
+            $stockAnterior = \DB::table('bodeprod')
+                ->where('bpprod', $codigo)
+                ->value('bpsrea');
+
+            if (is_null($stockAnterior)) {
+                throw new \Exception("Producto con código $codigo no encontrado en bodeprod.");
+            }
+
+            // ➋ Buscar nombre del producto en producto
+            $nombreProducto = \DB::table('producto')
+                ->where('ARCODI', $codigo)
+                ->value('ARDESC');
+
+            if (is_null($nombreProducto)) {
+                throw new \Exception("Producto con código $codigo no encontrado en tabla producto.");
+            }
+
+            // ➌ Actualizar stock en bodeprod
+            \DB::table('bodeprod')
+                ->where('bpprod', $codigo)
+                ->update(['bpsrea' => $nuevoStock]);
+
+            // ➍ Insertar registro en solicitud_ajuste
+            \DB::table('solicitud_ajuste')->insert([
+                'codprod'         => $codigo,
+                'producto'        => $nombreProducto,
+                'fecha'           => now()->format('Y-m-d'),
+                'stock_anterior'  => $stockAnterior,
+                'nuevo_stock'     => $nuevoStock,
+                'autoriza'        => 'Valentin Bello',
+                'solicita'        => 'Gerardo Salgado',
+                'Observacion'     => 'Devolucion a Bodega',
+            ]);
+        }
+
+        \DB::commit();
+
+        return redirect()->route('modistock')->with('success', 'Datos actualizados correctamente.');
+
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return back()->with('message', 'Error al actualizar stock: ' . $e->getMessage());
+    }
+}
+
+
 }

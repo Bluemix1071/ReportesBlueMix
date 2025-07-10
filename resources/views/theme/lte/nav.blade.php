@@ -738,6 +738,13 @@
                                         <p>Consolidación Inventario</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('modistock') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Devolución a Bodega
+                                        </p>
+                                    </a>
+                             </li>
 
                                 <li class="nav-item">
                                     <a href="" class="nav-link ">
