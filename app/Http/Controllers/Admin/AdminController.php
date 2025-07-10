@@ -3630,7 +3630,7 @@ public function stocktiemporeal (Request $request){
 
         $message = "";
 
-         $oc = DB::table('db_bluemix.ordendecompradetalle')
+         $oc = DB::table('db_bluemix.OrdenDeCompraDetalle')
             ->where('NroOC', $request->get('nro_oc'))
             ->get();
 
@@ -3639,11 +3639,11 @@ public function stocktiemporeal (Request $request){
                 return view('admin.configuracionstock', compact('message'));
             }
 
-            $productos = DB::table('ordendecompradetalle')
-            ->leftJoin('producto', 'ordendecompradetalle.Codigo', '=', 'producto.ARCODI')
-            ->leftJoin('bodeprod', 'ordendecompradetalle.Codigo', '=', 'bodeprod.bpprod')
+            $productos = DB::table('OrdenDeCompraDetalle')
+            ->leftJoin('producto', 'OrdenDeCompraDetalle.Codigo', '=', 'producto.ARCODI')
+            ->leftJoin('bodeprod', 'OrdenDeCompraDetalle.Codigo', '=', 'bodeprod.bpprod')
             ->where('NroOC', $nro_oc)
-            ->select('ordendecompradetalle.*', 'producto.*', 'bodeprod.*')
+            ->select('OrdenDeCompraDetalle.*', 'producto.*', 'bodeprod.*')
             ->get();
 
 
