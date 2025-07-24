@@ -73,7 +73,7 @@ Devolucion a bodega
         <h3 class="display-3">Devolución a Bodega</h3>
     </div>
 
-    <form action="{{ route('buscarOC') }}" method="post">
+    <form action="{{ route('buscarOC') }}" method="get">
     <div class="form-group row d-flex justify-content-center align-items-center" style="height: 5vh;">
         &nbsp;&nbsp;&nbsp;
         <div class="col-xs-3">
