@@ -6,13 +6,33 @@ Convenio Marco
 
 <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 
+<style>
+    .btn-oblicuo {
+      background: linear-gradient(135deg, #dc3545 50%, #28a745 50%);
+      color: white;
+      padding: 7px 20px;
+      border: none;
+      border-radius: 0.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-oblicuo:hover {
+      filter: brightness(1.1);
+    }
+  </style>
+
 
 @endsection
 
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Convenio Marco</h3>
+        <div class='d-flex justify-content-between align-items-center'>
+            <h3 class="display-3 mb-0">Convenio Marco</h3>
+            <a href='#' class="btn btn-primary ml-auto" data-toggle="modal" data-target="#modalcatalogo">Exportar Catalogo</a>
+            <input type="button" value="Agregar" class="btn btn-success ml-auto" data-toggle="modal" data-target="#modalagregar">
+        </div>
         <div class="row">
           <div class="container-fluid">
             <hr>
@@ -25,7 +45,7 @@ Convenio Marco
                             </div>
                         </div>
                         <hr> --}}
-                            <div class="container-fluid">
+                            {{-- <div class="container-fluid">
                                     <div class="form-group row">
                                         <form action="{{ route('AgregarProducto') }}" method="post" enctype="multipart/form-data" id="agregaritem">
                                         <div class="form-group row">
@@ -43,127 +63,125 @@ Convenio Marco
 
                                 </div>
                                 </div>
-                                <hr>
+                                <hr> --}}
                 <div class="row">
                     <div class="col-md-12">
-                        <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
+                        <table id="Listas" class="table table-bordered table-hover dataTable table-sm small">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align:left">Codigo Producto</th>
-                                    <th scope="col" style="text-align:left">Id Convenio</th>
+                                    <th scope="col" style='width: 25px'></th>
+                                    <th scope="col" style="text-align:left">Codigo</th>
+                                    <th scope="col" style="text-align:left">Id</th>
                                     <th scope="col" style="text-align:left">Detalle</th>
                                     <th scope="col" style="text-align:left">Marca</th>
+                                    <th scope="col" style="text-align:left">Neto</th>
                                     <th scope="col" style="text-align:left">Stock Sala</th>
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
-                                    <th scope="col" style="text-align:left">Costo Neto</th>
-                                    <th scope="col" style="text-align:left">Precio Venta</th>
+                                    <th scope="col" style="text-align:left">Tipo</th>
+                                    <th scope="col" style="text-align:left">Modelo</th>
+                                    <th scope="col" style="text-align:left">Oferta</th>
                                     <th scope="col" style="text-align:left">Margen</th>
+                                    <th scope="col" style="text-align:left">Convenio</th>
+                                    <th scope="col" style="text-align:left">Estado</th>
                                     <th scope="col" style="text-align:left">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @if(Session::has('alert'))
-                                <div class="alert alert-danger">{{ Session::get('alert') }}</div>
-                                @endif --}}
-
-                                @if (empty($convenio))
-
-                                @else
-                                <div style="display: none">
-                                    {{-- variable suma --}}
-                                    {{ $total = 0 }}
-
-                                    @foreach ($convenio as $item)
+                                @foreach($convenio as $item)
                                 <tr>
-                                    <td scope="col" style="text-align:left"><a href="https://www.libreriabluemix.cl/search?q={{ $item->cod_articulo }}" target="_blank">{{ $item->cod_articulo }}</a></td>
-                                    @if (empty($item->id_conveniomarco))
-                                    <td style="text-algin:left">{{0}}</td>
-                                    @else
-                                    <td style="text-align:left">{{ $item->id_conveniomarco }}</td>
-                                    @endif
-                                    <td style="text-align:left">{{ $item->descripcion }}</td>
-                                    <td style="text-align:left">{{ $item->marca }}</td>
-                                    @if (empty($item->stock_sala))
-                                        <td style="text-align:left">{{ 0 }}</td>
-                                    @else
-                                        <td style="text-align:left">{{ $item->stock_sala }}</td>
-                                    @endif
-                                    @if (empty($item->stock_bodega))
-                                    <td style="text-align:left">{{ 0 }}</td>
-                                    @else
-                                    <td style="text-align:left">{{ $item->stock_bodega }}</td>
-                                    @endif
-                                    <td style="text-align:left">${{ number_format(($item->neto), 0, ',', '.') }}</td>
-                                    <td style="text-align:left">${{ number_format(($item->precio_venta), 0, ',', '.') }}</td>
-                                    <td style="text-align:left">{{$item->margen }}</td>
                                     <td>
-                                        <div class="container">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <a href="" class="btn btn-primary btm-sm" title="Editar Producto" data-toggle="modal" data-target="#modaleditarp"
-                                                data-id='{{ $item->id}}'
-                                                data-cod_articulo='{{ $item->cod_articulo }}'
-                                                data-id_conveniomarco='{{ $item->id_conveniomarco }}'
-                                                data-descripcion='{{ $item->descripcion }}'
-                                                data-marca='{{ $item->marca }}'
-                                                data-cantidad='{{ $item->cantidad }}'
-                                                data-neto='{{ $item->neto }}'
-                                                data-precio_venta='{{ $item->precio_venta }}'
-                                                data-margen='{{ $item->margen }}'
-                                            ><i class="fa fa-eye"></i></a>
-                                            </div>
-
-
-                                            <div class="col-1" style="text-algin:left">
-                                                {{-- <form action="{{ route('EliminarProd')}}" method="post" enctype="multipart/form-data">
-                                                <input type="text" value="" name="id" id="id" hidden>
-                                                <input type="text" value="{{$item->id}}" name="id" hidden>
-                                                <input type="text" value="{{$item->cod_articulo}}" name="cod_articulo" hidden>
-                                                <input type="text" value="{{$item->descripcion}}" name="descripcion" hidden>
-                                                <input type="text" value="{{$item->marca}}" name="marca" hidden>
-                                                <button class="btn btn-danger" type="submit" style="margin-rigth: -60%;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                                    </svg>
-                                                </button>
-                                                </form> --}}
-                                                <a href="" title="Eliminar Curso" data-toggle="modal" data-target="#modaleliminarproducto"
-                                                class="btn btn-danger"
-                                                data-id='{{ $item->id }}'
-                                                data-cod_articulo='{{$item->cod_articulo}}'
-                                                data-descripcion='{{$item->descripcion}}'
-                                                data-marca='{{$item->marca}}'
-                                                >🗑</a>
-                                            </div>
-                                        </div>
-                                        </div>
+                                        @if($item->ARMARCA)
+                                            {{-- <input type="checkbox" name="" id=""> --}}
+                                            <input type="checkbox" id="id_{{ $item->id }}" class="case" name="case[]" value="{{ $item->id }}" onclick="contador({{ $item->id }})">
+                                        @else
+                                            <input type="checkbox" name="" id="" disabled>
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->cod_articulo }}</td>
+                                    <td>{{ $item->id_producto }}</td>
+                                    <td>{{ $item->ARDESC }}</td>
+                                    <td>{{ $item->ARMARCA }}</td>
+                                    <td>{{ $item->neto }}</td>
+                                    <td>{{ $item->bpsrea }}</td>
+                                    <td>{{ $item->cantidad }}</td>
+                                    <td>{{ $item->tipo }}</td>
+                                    <td>{{ $item->modelo }}</td>
+                                    <td>{{ $item->oferta }}</td>
+                                        @if(is_null($item->neto))
+                                            <td>0%</td>
+                                        @elseif($item->neto == 0 )
+                                            <td>-100%</td>
+                                        @else
+                                            <td>{{ $item->margen }}%</td>
+                                        @endif
+                                    <td>{{ $item->convenio }}</td>
+                                    <td>
+                                        @if($item->estado == 'HABILITADO')
+                                            <span class="badge badge-success">Habilitado</span>
+                                        @else
+                                            <span class="badge badge-danger">De Baja</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditar" 
+                                        data-id_editar='{{ $item->id }}'
+                                        data-id_producto_editar='{{ $item->id_producto }}'
+                                        data-cod_producto_editar='{{ $item->cod_articulo }}'
+                                        data-detalle_editar='{{ $item->ARDESC }}'
+                                        data-lamarca_editar='{{ $item->ARMARCA }}'
+                                        data-modelo_editar='{{ $item->modelo }}'
+                                        data-tipo_editar='{{ $item->tipo }}'
+                                        data-oferta_editar='{{ $item->oferta }}'
+                                        data-margen_editar='{{ $item->margen }}'
+                                        data-convenio_editar='{{ $item->convenio }}'
+                                        data-estado_editar='{{ $item->estado }}'>📝</i></button>
+                                        {{-- <button type="button" class="btn btn-danger btn-sm" data-toggle='modal' data-target='#modaleliminarproducto' data-id='{{ $item->id }}'>🗑</button> --}}
                                     </td>
                                 </tr>
                                 @endforeach
-                                @endif
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    {{-- <td colspan="9"><strong>Total</strong> </td>
-                                    @if (empty($precio_venta))
-                                        <td><span class="price text-success">$</span></td>
-                                    @else
-                                        <td style="text-align:right"><span
-                                                class="price text-success">${{ number_format($precio_venta, 0, ',', '.') }}</span>
-                                        </td>
-                                    @endif
-                                </tr> --}}
-                            </tfoot>
-
                     </table>
+                    <br>
+                    <form action="{{ route('CrearCotizacionCM') }}" method="post" id="desvForm" target="_blank">
+                        <div class="card card-primary collapsed-card">
+                            <div class="card-header">
+                                    <h3 class="card-title">Selección Múltiple</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button type="button" disabled class="btn btn-tool" data-card-widget="remove">
+                                        </button>
+                                    </div>
+                                </div>
+                            <div class="card-body">
+                                <div id="selects" style="margin-bottom: 1%">
+                                </div>
+                                <input type="number" id="x" value='0' hidden>
+                                <!-- <input type="date" placeholder="Fecha" required name="fecha_abono_multiple" class="form-control col" style="margin-bottom: 1%" />
+                                <select class="form-control" required name="tipo_pago_multiple" style="margin-bottom: 1%">
+                                    <option value="Transferencia">Transferencia</option>
+                                    <option value="Cheque">Cheque</option>
+                                </select>
+                                <select class="form-control" required name="banco_multiple" style="margin-bottom: 1%">
+                                    <option value="Banco Itau">Banco Itau</option>
+                                    <option value="Banco Estado">Banco Estado</option>
+                                </select>
+                                <input type="number" placeholder="N° Pago" required name="n_pago_multiple" class="form-control col" style="margin-bottom: 1%"  />
+                                <input type="number" readonly placeholder="Monto Total" required id="monto_total_multiple" name="monto_total_multiple" class="form-control col" style="margin-bottom: 1%" value="0" /> -->
+                                <button type="submit" class="btn btn-danger" id="button_crear_corizacion" disabled>Generar Cotización PDF</button>
+                                <button type="button" class="btn btn-success" onclick="enviarAGenerarExcel()" id="button_generar_excel" disabled >Generar Cotización Excel</button>
+                                <button class="btn-oblicuo btn" type='button' onclick="enviarACambiarEstado()" id="button_cambiar_estado" disabled>Cambiar Estado</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             {{-- </div> --}}
           </div>
         </div>
 </div>
 <!-- Modal Editar -->
-<div class="modal fade" id="modaleditarp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="modaleditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -175,90 +193,110 @@ Convenio Marco
                         {{ method_field('put') }}
                         {{ csrf_field() }}
                         @csrf
-                        <input type="hidden" name="id" id="id" value="">
+                        <input name="id" id="id_editar" value="" hidden>
 
                         <div class="form-group row">
-                            <label for="cod_articulo"
-                                class="col-md-4 col-form-label text-md-right">{{ __('Codigo Producto') }}</label>
+                            <label for="id_producto"
+                                class="col-md-4 col-form-label text-md-right">{{ __('ID Porducto') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="cod_articulo" type="text"
-                                    class="form-control @error('cod_articulo') is-invalid @enderror" name="cod_articulo"
-                                    value="{{ old('cod_articulo') }}" required autocomplete="cod_articulo" autofocus readonly>
+                            <div class="col-md-7">
+                                <input id="id_producto_editar" type="text"
+                                    class="form-control @error('id_producto') is-invalid @enderror"
+                                    value="{{ old('id_producto') }}" required autocomplete="id_producto" autofocus readonly>
                             </div>
                         </div>
-                        <!-- ID Convenio -->
+                        <!-- SKU -->
                         <div class="form-group row">
-                            <label for="id_conveniomarco"
-                                class="col-md-4 col-form-label text-md-right">{{ __('ID Convenio') }}</label>
-                            <div class="col-md-6">
-                                 <input id="id_conveniomarco" type="text"
-                                    class="form-control @error('id_conveniomarco') is-invalid @enderror" name="id_conveniomarco"
-                                    value="{{ old('id_conveniomarco') }}" required autocomplete="id_conveniomarco" min="0" max="99999999">
+                            <label for="cod_producto"
+                                class="col-md-4 col-form-label text-md-right">{{ __('SKU Producto') }}</label>
+                            <div class="col-md-7">
+                                 <input id="cod_producto_editar" type="text"
+                                    class="form-control @error('cod_producto') is-invalid @enderror" name="cod_producto"
+                                    value="{{ old('cod_producto') }}" autocomplete="cod_producto" minlength="7" maxlength="7" onkeyup="processChangeUpdate()">
                             </div>
                         </div>
-                        <!-- Detalle -->
+                         <!-- Detalle -->
                         <div class="form-group row">
-                            <label for="descripcion"
-                                class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="descripcion" type="descripcion"
-                                    class="form-control @error('descripcion') is-invalid @enderror" name="descripcion"
-                                    value="{{ old('descripcion') }}" required autocomplete="descripcion" readonly>
+                            <label for="detalle"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Detalle') }}</label>
+                            <div class="col-md-7">
+                                 <input id="detalle_editar" type="text"
+                                    class="form-control @error('detalle') is-invalid @enderror"
+                                    value="{{ old('detalle') }}" disabled autocomplete="detalle">
                             </div>
                         </div>
-                         <!-- Marca -->
-                         <div class="form-group row">
-                            <label for="marca"
+                        <!-- Marca -->
+                        <div class="form-group row">
+                            <label for="lamarca"
                                 class="col-md-4 col-form-label text-md-right">{{ __('Marca') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="marca" type="marca"
-                                    class="form-control @error('marca') is-invalid @enderror" name="marca"
-                                    value="{{ old('marca') }}" required autocomplete="marca" readonly>
+                            <div class="col-md-7">
+                                 <input id="lamarca_editar" type="text"
+                                    class="form-control @error('marca') is-invalid @enderror"
+                                    value="{{ old('lamarca') }}" disabled autocomplete="lamarca">
                             </div>
                         </div>
-                        <!-- Cantidad -->
-                        {{-- <div class="form-group row">
-                            <label for="cantidad"
-                                class="col-md-4 col-form-label text-md-right">{{ __('Cantidad') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="cantidad" type="number"
-                                    class="form-control @error('cantidad') is-invalid @enderror" name="cantidad"
-                                    value="{{ old('cantidad') }}" required autocomplete="cantidad" min="0" max="99999999">
-                            </div>
-                        </div> --}}
-                        <!-- Neto -->
+                         <!-- Modelo -->
                         <div class="form-group row">
-                            <label for="neto"
-                                class="col-md-4 col-form-label text-md-right">{{ __('Neto') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="neto" type="number"
-                                    class="form-control @error('neto') is-invalid @enderror" name="neto"
-                                    value="{{ old('neto') }}" required autocomplete="neto" min="0" max="99999999">
+                            <label for="modelo"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Modelo*') }}</label>
+                            <div class="col-md-7">
+                                 <input id="modelo_editar" type="text"
+                                    class="form-control @error('modelo') is-invalid @enderror" name="modelo"
+                                    value="{{ old('modelo') }}" required autocomplete="modelo" min="0" max="99999999">
                             </div>
                         </div>
-                        <!-- Precio Venta -->
+                        <!-- Tipo -->
                         <div class="form-group row">
-                            <label for="precio_venta"
-                                class="col-md-4 col-form-label text-md-right">{{ __('Precio Venta') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="precio_venta2" type="number"
-                                    class="form-control @error('precio_venta') is-invalid @enderror" name="precio_venta2"
-                                    value="{{ old('precio_venta') }}" required autocomplete="precio_venta" min="0" max="99999999">
+                            <label for="tipo"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Tipo*') }}</label>
+                            <div class="col-md-7">
+                                <input id="tipo_editar" list="tipos" class="form-control @error('tipo') is-invalid @enderror" name="tipo" required min="0" max="99999999">
+                                <datalist id="tipos">
+                                    @foreach($tipos as $item)
+                                    <option value="{{ $item->tipo }}">
+                                    @endforeach
+                                </datalist>
+                            </div>
+                        </div>
+                         <!-- Oferta -->
+                        <div class="form-group row">
+                            <label for="oferta"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Oferta*') }}</label>
+                            <div class="col-md-7">
+                                 <input id="oferta_editar" type="number"
+                                    class="form-control @error('oferta') is-invalid @enderror" name="oferta"
+                                    value="{{ old('oferta') }}" required autocomplete="oferta" min="0" max="99999999">
                             </div>
                         </div>
                         <!-- Margen -->
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="margen"
                                 class="col-md-4 col-form-label text-md-right">{{ __('Margen') }}</label>
 
-                            <div class="col-md-6">
-                                <input type="text" id="margen" required name="margen" placeholder="Margen" readonly class="form-control col" value="0%" min="1" max="99999999"/>
+                            <div class="col-md-7">
+                                <input type="text" id="margen_editar" name="margen" readonly class="form-control col" value="0%" min="1" max="99999999"/>
+                            </div>
+                        </div> -->
+                        <!-- Convenio -->
+                        <div class="form-group row">
+                            <label for="convenio"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Convenio*') }}</label>
+                            <div class="col-md-7">
+                                <select class="form-control" id="convenio_editar" name="convenio" required>
+                                    <option>OFICINA</option>
+                                    <option>ASEO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Estado -->
+                        <div class="form-group row">
+                            <label for="estado"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Estado*') }}</label>
+                            <div class="col-md-7">
+                                <select class="form-control" id="estado_editar" name="estado" required>
+                                    <option>HABILITADO</option>
+                                    <option>DE BAJA</option>
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -302,6 +340,45 @@ Convenio Marco
             </div>
         </div>
 <!-- FIN MODAL COTIZACION -->
+
+<!-- MODAL VER CATALOGO -->
+ <div class="modal fade" id="modalcatalogo" tabindex="-1" role="dialog"
+            aria-labelledby="eliminarproductocontrato" aria-hidden="true">
+            <div class="modal-dialog" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Exportar Catalogo</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{{ route('ExportarCatalogoCM') }}" id="desvForm" target="_blank">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <!-- <label for="inputEmail3" class="col-sm-3 col-form-label">N° Cotización</label> -->
+                                        <div class="col-sm-10">
+                                             <!-- Convenio -->
+                                            <div class="form-group row">
+                                                <label for="convenio"
+                                                    class="col-md-4 col-form-label text-md-right">{{ __('Convenio') }}</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control" id="convenio_exportar" name="convenio">
+                                                        <option value='A'>TODOS</option>
+                                                        <option value='OFICINA'>OFICINA</option>
+                                                        <option value='ASEO'>ASEO</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">Exportar PDF</button>
+                                    <!-- <button type="button" class="btn btn-success">Exportar Excel</button> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 <!-- Inicio Modal eliminar item -->
 <div class="modal fade" id="modaleliminarproducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -314,14 +391,127 @@ Convenio Marco
               @csrf
                  <div class="form-group row">
                      <div class="col-md-6" >
-                         <input type="text" value="" name="id" id="id" hidden>
-                         <input type="text" value="" name="cod_articulo" id="cod_articulo" hidden>
+                         <input type="text" value="" name="id" id="id_eliminar" hidden>
                          <h4 class="modal-title" id="myModalLabel">¿Eliminar Producto?</h4>
                      </div>
                  </div>
                  <div class="modal-footer">
                  <button type="submit" class="btn btn-danger">Eliminar</button>
                  <button type="button" data-dismiss="modal" class="btn btn-success">Cerrar</button>
+                 </div>
+             </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+<!-- Inicio Modal agregar item -->
+ <div class="modal fade" id="modalagregar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+            <div class="modal-body">
+             <div class="card-body">
+            <form method="post" action="{{ route('AgregarProducto') }}">
+             {{ method_field('post') }}
+             {{ csrf_field() }}
+              @csrf
+                 <div class="form-group row">
+                     <div class="col-md-6" >
+                         <h4 class="modal-title" id="myModalLabel">Agregar Producto</h4>
+                     </div>
+                 </div>
+                 <hr>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <!-- ID Producto -->
+                        <div class="form-group row">
+                            <label for="id_producto"
+                                class="col-md-4 col-form-label text-md-right">{{ __('ID Producto*') }}</label>
+                            <div class="col-md-7">
+                                 <input id="id_producto" type="number"
+                                    class="form-control @error('id_producto') is-invalid @enderror" name="id_producto"
+                                    value="{{ old('id_producto') }}" required autocomplete="id_producto" min="0" max="99999999" minlength="7" maxlength="7">
+                            </div>
+                        </div>
+                        <!-- SKU -->
+                        <div class="form-group row">
+                            <label for="cod_producto"
+                                class="col-md-4 col-form-label text-md-right">{{ __('SKU Producto') }}</label>
+                            <div class="col-md-7">
+                                 <input id="cod_producto" type="text"
+                                    class="form-control @error('cod_producto') is-invalid @enderror" name="cod_producto"
+                                    value="{{ old('cod_producto') }}" autocomplete="cod_producto" minlength="7" maxlength="7" onkeyup="processChange()">
+                            </div>
+                        </div>
+                        <!-- Detalle -->
+                        <div class="form-group row">
+                            <label for="detalle"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Detalle') }}</label>
+                            <div class="col-md-7">
+                                 <input id="detalle" type="text"
+                                    class="form-control @error('detalle') is-invalid @enderror" name="detalle"
+                                    value="{{ old('detalle') }}" disabled autocomplete="detalle">
+                            </div>
+                        </div>
+                        <!-- Marca -->
+                        <div class="form-group row">
+                            <label for="lalamarca"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Marca') }}</label>
+                            <div class="col-md-7">
+                                 <input id="lamarca" type="text"
+                                    class="form-control @error('marca') is-invalid @enderror" name="lamarca"
+                                    value="{{ old('lamarca') }}" disabled autocomplete="lamarca">
+                            </div>
+                        </div>
+                        <!-- Modelo -->
+                        <div class="form-group row">
+                            <label for="modelo"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Modelo*') }}</label>
+                            <div class="col-md-7">
+                                 <input id="modelo" type="text"
+                                    class="form-control @error('modelo') is-invalid @enderror" name="modelo"
+                                    value="{{ old('modelo') }}" required autocomplete="modelo" min="0" max="99999999">
+                            </div>
+                        </div>
+                        <!-- Tipo -->
+                        <div class="form-group row">
+                            <label for="tipo"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Tipo*') }}</label>
+                            <div class="col-md-7">
+                                <input id="tipo" list="tipos" class="form-control @error('tipo') is-invalid @enderror" name="tipo" required min="0" max="99999999">
+                                <datalist id="tipos">
+                                    @foreach($tipos as $item)
+                                    <option value="{{ $item->tipo }}">
+                                    @endforeach
+                                </datalist>
+                            </div>
+                        </div>
+                        <!-- Oferta -->
+                        <div class="form-group row">
+                            <label for="oferta"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Oferta*') }}</label>
+                            <div class="col-md-7">
+                                 <input id="oferta" type="number"
+                                    class="form-control @error('oferta') is-invalid @enderror" name="oferta"
+                                    value="{{ old('oferta') }}" required autocomplete="oferta" min="0" max="99999999">
+                            </div>
+                        </div>
+                        <!-- Convenio -->
+                        <div class="form-group row">
+                            <label for="convenio"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Convenio*') }}</label>
+                            <div class="col-md-7">
+                                <select class="form-control" id="convenio" name="convenio" required>
+                                    <option>OFICINA</option>
+                                    <option>ASEO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-light">Cerrar</button>
                  </div>
              </form>
          </div>
@@ -338,37 +528,79 @@ Convenio Marco
     $('#modaleliminarproducto').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
-        var cod_articulo = button.data('cod_articulo')
+        //var cod_articulo = button.data('cod_articulo')
         var modal = $(this)
-        modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #cod_articulo').val(cod_articulo);
+        modal.find('.modal-body #id_eliminar').val(id);
+        //modal.find('.modal-body #cod_articulo').val(cod_articulo);
 })
+
+    function enviarACambiarEstado() {
+        const form = document.getElementById('desvForm');
+    
+        // Guardar valores originales
+        const originalAction = form.action;
+        const originalTarget = form.target;
+
+        // Cambiar acción y remover target temporalmente
+        form.action = "{{ route('CambiarEstadoMasivoCM') }}";
+        form.removeAttribute('target');
+
+        // Enviar formulario
+        form.submit();
+
+        // Restaurar valores originales
+        form.action = originalAction;
+        form.target = originalTarget;
+    }
+
+    function enviarAGenerarExcel(){
+        const form = document.getElementById('desvForm');
+    
+        // Guardar valores originales
+        const originalAction = form.action;
+        const originalTarget = form.target;
+
+        // Cambiar acción y remover target temporalmente
+        form.action = "{{ route('CrearCotizacionCMExcel') }}";
+        form.removeAttribute('target');
+
+        // Enviar formulario
+        form.submit();
+
+        // Restaurar valores originales
+        form.action = originalAction;
+        form.target = originalTarget;
+    }
 </script>
 
 <script>
-$('#modaleditarp').on('show.bs.modal', function (event) {
+$('#modaleditar').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
-    var id = button.data('id')
-    var cod_articulo = button.data('cod_articulo')
-    var id_conveniomarco = button.data('id_conveniomarco')
-    var descripcion = button.data('descripcion')
-    var marca = button.data('marca')
-    var cantidad = button.data('cantidad')
-    var neto = button.data('neto')
-    var precio_venta = button.data('precio_venta')
-    var margen = button.data('margen')
+    var id_editar = button.data('id_editar')
+    var id_producto_editar = button.data('id_producto_editar')
+    var cod_producto_editar = button.data('cod_producto_editar')
+    var detalle_editar = button.data('detalle_editar')
+    var lamarca_editar = button.data('lamarca_editar')
+    var modelo_editar = button.data('modelo_editar')
+    var tipo_editar = button.data('tipo_editar')
+    var oferta_editar = button.data('oferta_editar')
+    var margen_editar = button.data('margen_editar')
+    var convenio_editar = button.data('convenio_editar')
+    var estado_editar = button.data('estado_editar')
     var modal = $(this)
-    modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #cod_articulo').val(cod_articulo);
-    modal.find('.modal-body #id_conveniomarco').val(id_conveniomarco);
-    modal.find('.modal-body #descripcion').val(descripcion);
-    modal.find('.modal-body #marca').val(marca);
-    modal.find('.modal-body #cantidad').val(cantidad);
-    modal.find('.modal-body #neto').val(neto);
-    modal.find('.modal-body #precio_venta2').val(precio_venta);
-    modal.find('.modal-body #margen').val(margen);
+    modal.find('.modal-body #id_editar').val(id_editar);
+    modal.find('.modal-body #id_producto_editar').val(id_producto_editar);
+    modal.find('.modal-body #cod_producto_editar').val(cod_producto_editar);
+    modal.find('.modal-body #detalle_editar').val(detalle_editar);
+    modal.find('.modal-body #lamarca_editar').val(lamarca_editar);
+    modal.find('.modal-body #modelo_editar').val(modelo_editar);
+    modal.find('.modal-body #tipo_editar').val(tipo_editar);
+    modal.find('.modal-body #oferta_editar').val(oferta_editar);
+    modal.find('.modal-body #margen_editar').val(margen_editar+'%');
+    modal.find('.modal-body #convenio_editar').val(convenio_editar);
+    modal.find('.modal-body #estado_editar').val(estado_editar);
 
-    $( "#precio_venta2" ).keyup(function() {
+    /* $( "#precio_venta2" ).keyup(function() {
       var neto = $( "#neto" ).val();
       var total = $( "#precio_venta2" ).val();
       if(total != ""){
@@ -389,7 +621,7 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
       }else{
         $('#margen').val('0%');
       }
-    });
+    }); */
 
 })
 </script>
@@ -397,10 +629,30 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
 <script>
 
   $(document).ready(function() {
-    $('#Listas').DataTable( {
 
+    $('#Listas thead tr').clone(false).appendTo('#Listas thead');
 
+    $('#Listas thead tr:eq(1) th').each(function (i) {
+        if (i === 0 || i === 14) {
+            $(this).html('');
+            return;
+        }
+
+        $(this).html('<input type="text" class="form-control input-sm" placeholder="🔎" />');
+
+        $('input', this).on('keyup change', function () {
+            if (table.column(i).search() !== this.value) {
+                table
+                    .column(i)
+                    .search(this.value)
+                    .draw();
+            }
+        });
+    });
+
+    var table = $('#Listas').DataTable( {
         dom: 'Bfrtip',
+        orderCellsTop: true,
         buttons: [
                         'copy', 'pdf',
                         {
@@ -476,6 +728,53 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
     var costo = null;
     var precio_venta = null;
 
+    function buscar(){
+        $('#detalle').val('');
+        $('#lamarca').val('');
+
+        var sku = $('#cod_producto').val();
+        if(sku.length === 7){
+            $.ajax({
+                    url: '../admin/BuscarProducto/'+sku,
+                    type: 'GET',
+                    success: function(result) {
+                        console.log(result[0]);
+                        $('#detalle').val(result[0].ARDESC);
+                        $('#lamarca').val(result[0].ARMARCA);
+                }
+            });
+        }
+    }
+
+    function buscar_update(){
+        $('#detalle_editar').val('');
+        $('#lamarca_editar').val('');
+
+        var sku = $('#cod_producto_editar').val();
+        if(sku.length === 7){
+            $.ajax({
+                    url: '../admin/BuscarProducto/'+sku,
+                    type: 'GET',
+                    success: function(result) {
+                        console.log(result[0]);
+                        $('#detalle_editar').val(result[0].ARDESC);
+                        $('#lamarca_editar').val(result[0].ARMARCA);
+                }
+            });
+        }
+    }
+
+    function debounce(func, timeout = 1000){
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+    }
+
+    const processChange = debounce(() => buscar());
+    const processChangeUpdate = debounce(() => buscar_update());
+
         $('#codigo').bind("enterKey",function(e){
             $.ajax({
                 url: '../admin/BuscarProducto/'+$('#codigo').val(),
@@ -537,6 +836,58 @@ $('#modaleditarp').on('show.bs.modal', function (event) {
         $('#label_bara').val('0%');
       }
     });
+
+    function contador(id){
+        var max_fields = 999;
+        var wrapper = $("#selects");
+        var x = $('#x').val();
+        var input = document.getElementById('input_'+id+'');
+
+        //var acumulado = $("#monto_total_multiple").val();
+
+        //alert(typeof monto);
+
+        //console.log($('input[class="case"]:checked'));
+
+        if ($('#id_'+id).is(":checked")) {
+            //$("#monto_total_multiple").val(Number(Number(acumulado)+Number(monto)));
+            if(x < max_fields){
+                x++;
+                $('#x').val(x);
+                $(wrapper).append(
+                    '<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+id+'" name="case[]" value='+id+'>'
+                );
+
+            if(x !== 0){
+                $('#button_crear_corizacion').prop('disabled', false);
+                $('#button_cambiar_estado').prop('disabled', false);
+                $('#button_generar_excel').prop('disabled', false);
+            }
+        }
+        } else {
+            //$("#monto_total_multiple").val(Number(Number(acumulado)-Number(monto)));
+            input.remove();
+            x--;
+            $('#x').val(x);
+            if(x === 0){
+                $('#button_crear_corizacion').prop('disabled', true);
+                $('#button_cambiar_estado').prop('disabled', true);
+                $('#button_generar_excel').prop('disabled', true);
+            }
+        }
+
+
+        /* var input = $( "input[class=case]" ).on("click");
+        console.log(input); */
+
+        /* $('.case').change(function() {
+            if(this.checked) {
+                alert(true);
+            }else{
+                alert(false);
+            }
+        }); */
+    }
 </script>
 
 

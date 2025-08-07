@@ -1705,7 +1705,8 @@ public function actualizaripmac(Request $request)
 
       $fecha1=$request->fecha1;
 
-      $costos=DB::select('select DETIPO, DENMRO, DECODI, DECANT, Detalle, ARMARCA, taglos, PCCOSTO,(DECANT*PCCOSTO) AS costototal, precio_ref,(DECANT*precio_ref) as totalventa, DEFECO from dcargos
+            $costos=DB::select('select DETIPO, DENMRO, CACOCA,DECODI, DECANT, Detalle, ARMARCA, taglos, PCCOSTO,(DECANT*PCCOSTO) AS costototal, precio_ref,(DECANT*precio_ref) as totalventa, DEFECO from dcargos
+  left join cargos on dcargos.DENMRO = cargos.CANMRO and dcargos.DETIPO = cargos.CATIPO
   left join producto on dcargos.DECODI = producto.ARCODI
   left join vv_tablas22 on producto.ARGRPO2 = vv_tablas22.tarefe
   left join precios on substring(dcargos.DECODI,1 ,5) = precios.PCCODI
@@ -1714,8 +1715,9 @@ public function actualizaripmac(Request $request)
   , "b", ""), "c", ""), "d", ""), "e" , ""), "f" , ""), "g" , ""), "h" , ""), "i" , ""), "j" , ""), "k" , ""), "l" , ""), "m" , ""), "n" , ""), "ñ" , ""), "o" , ""), "p" , ""), "q" , ""), "r" , ""), "s" , ""), "t" , ""), "u" , ""), "v" , ""), "w" , ""), "x" , ""), "y" , ""), "z" , ""), " ", ""), "°" , "") AS guias from dcargos where DEFECO = "'.$fecha1.'" and Detalle like "%segun%guia%" and DETIPO = 8
   ) and DEFECO between  DATE_FORMAT("'.$fecha1.'", "%Y-%m-01") and last_day("'.$fecha1.'")
   union all
-  select DETIPO, DENMRO, DECODI, DECANT, Detalle,ARMARCA, tablas.taglos, PCCOSTO, DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO
+  select DETIPO, DENMRO, CACOCA, DECODI, DECANT, Detalle,ARMARCA, tablas.taglos, PCCOSTO, DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO
   from dcargos
+  left join cargos on dcargos.DENMRO = cargos.CANMRO and dcargos.DETIPO = cargos.CATIPO
   inner join precios on substr(dcargos.DECODI, 1, 5) = precios.PCCODI
   inner join producto on dcargos.DECODI = producto.arcodi
   inner join tablas on producto.ARGRPO2 = tablas.TAREFE

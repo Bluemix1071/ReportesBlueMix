@@ -175,7 +175,7 @@ class PublicoController extends Controller
 
       $fecha = $request->get('fecha');
 
-      $precio = 25;
+      $precio = DB::table('precios')->where('PCCODI', '00001')->get('PCPVDET')[0]->PCPVDET;
 
       return view('publicos.Estacionamiento', compact('tickets', 'fecha', 'precio'));
 

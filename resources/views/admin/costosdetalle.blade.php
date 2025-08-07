@@ -49,6 +49,7 @@ Costos Detalles
                         <tr>
                             <th scope="col" style="text-align:left">Tipo Documento</th>
                             <th scope="col" style="text-align:left">N° Documento</th>
+                            <th scope="col" style="text-align:left">Caja</th>
                             <th scope="col" style="text-align:left">Codigo</th>
                             <th scope="col" style="text-align:left">Cantidad</th>
                             <th scope="col" style="text-align:left">Detalle</th>
@@ -82,6 +83,7 @@ Costos Detalles
                                         <td style="text-align:left">NO SE K ES XD</td>
                                 @endswitch
                                     <td style="text-align:left">{{ $item->DENMRO}}</td>
+                                    <td style="text-align:left">{{ $item->CACOCA }}</td>
                                     <td style="text-align:left">{{ $item->DECODI}}</td>
                                     <td style="text-align:left">{{ $item->DECANT}}</td>
                                     <td style="text-align:left">{{ $item->Detalle}}</td>
@@ -108,8 +110,25 @@ Costos Detalles
 @section('script')
 <script>
   $(document).ready(function() {
-    $('#productos').DataTable( {
+
+    $('#productos thead tr').clone(false).appendTo( '#productos thead' );
+    $('#productos thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        $(this).html( '<input type="text" class="form-control input-sm" placeholder="🔎'+title+'" />' );
+
+        $( 'input', this ).on( 'keyup change', function () {
+            if ( table.column(i).search() !== this.value ) {
+                table
+                .column(i)
+                .search( this.value )
+                .draw();
+            }
+        } );
+    } );
+
+    var table = $('#productos').DataTable( {
         dom: 'Bfrtip',
+        orderCellsTop: true,
         buttons: [
             'copy', 'pdf', 'print'
 

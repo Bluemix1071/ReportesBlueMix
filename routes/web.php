@@ -456,6 +456,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     Route::post('/CargarCotizacion', 'ListaEscolarController@CargarCotizacion')->name('CargarCotizacion');
     Route::post('/CargarCotizacion', 'ConvenioMarcoController@CargarCotizacion')->name('CargarCotizacion');
     Route::post('/EliminarProd','ConvenioMarcoController@eliminarprod')->name('EliminarProd');
+    Route::post('/ExportarCatalogoCM','ConvenioMarcoController@ExportarCatalogoCM')->name('ExportarCatalogoCM');
+    Route::post('/CrearCotizacionCM','ConvenioMarcoController@CrearCotizacionCM')->name('CrearCotizacionCM');
+    Route::post('/CrearCotizacionCMExcel','ConvenioMarcoController@CrearCotizacionCMExcel')->name('CrearCotizacionCMExcel');
+    Route::post('/CambiarEstadoMasivoCM','ConvenioMarcoController@CambiarEstadoMasivoCM')->name('CambiarEstadoMasivoCM');
 
     //Route::get('/colegios','ListaEscolarController@colegios')->name('colegios');
     //Route::post('/AgregarComentario','ListaEscolarController@AgregarComentario')->name('AgregarComentario');

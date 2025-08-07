@@ -27,8 +27,7 @@ class ConvenioMarcoController extends Controller
 {
     public function ListarConvenio(Request $request){
 
-
-        $convenio=DB::select("select
+       /*  $convenio=DB::select("select
         convenio_marco.id,
         convenio_marco.cod_articulo,
         convenio_marco.id_conveniomarco,
@@ -44,65 +43,45 @@ class ConvenioMarcoController extends Controller
         left join precios on SUBSTRING(convenio_marco.cod_articulo,1,5)  = precios.PCCODI
         left join producto on convenio_marco.cod_articulo = producto.ARCODI
         left join bodeprod on convenio_marco.cod_articulo = bodeprod.bpprod
-        left join Suma_Bodega on convenio_marco.cod_articulo = Suma_Bodega.inarti");
+        left join Suma_Bodega on convenio_marco.cod_articulo = Suma_Bodega.inarti"); */
 
+        $convenio = DB::select('SELECT id, cod_articulo, id_producto, ARDESC, ARMARCA, bpsrea, cantidad,round(PCCOSTO/1.19) as neto ,tipo, modelo, oferta, round(((oferta -round(PCCOSTO/1.19)) / oferta) * 100) as margen, estado, convenio, creacion FROM db_bluemix.convenio_marco
+                    left join producto on convenio_marco.cod_articulo = producto.arcodi
+                    left join precios on substring(producto.ARCODI, 1, 5) = precios.PCCODI
+                    left join bodeprod on producto.ARCODI = bodeprod.bpprod
+                    left join suma_bodega on producto.ARCODI = suma_bodega.inarti');
+        
+        $tipos = DB::table('convenio_marco')
+                    ->select('tipo')
+                    ->distinct()
+                    ->get();
 
-        return view('admin.Cotizaciones.ConvenioMarco',compact('convenio'));
-
+        return view('admin.Cotizaciones.ConvenioMarco',compact('convenio', 'tipos'));
 
     }
 
     public function AgregarProducto(Request $request){
-        $inputs = request()->all();
 
-        $codigo = $request->input('codigo');
-        $cantidadingresada = $request->input('cantidad');
-        $precioventa = $request->input('precio_venta');
-        $validaidconvenio = $request->input('idconvenio');
-
-        $codigof = DB::table('convenio_marco')
-        -> where('cod_articulo', $codigo)->first();
-        // dd($precioventa);
-
-        if ($precioventa == null){
-            return redirect()->route('ListarConvenio')->with('error', 'Ingresar Precio de Venta');
-        } else {
-        // if ($validaidconvenio == null){
-        //     return redirect()->route('ListarConvenio')->with('error', 'Ingresar Id Convenio');
-
-        // }
-        // else {
-
-        if ($codigof) {
-
-            // $cantidad = $codigof->cantidad+$cantidadingresada;
-
-            // DB::table('convenio_marco')
-            // ->where('convenio_marco.cod_articulo', $request->get("codigo"))
-            // ->update(
-            //     [
-            //         'convenio_marco.cantidad'=> $cantidad]
-
-            //     );
-            return redirect()->route('ListarConvenio')->with('error', 'El producto ya existe!');
-        } else {
-
-
-        $iconvenio = DB::table('convenio_marco')->insert([
-            [
-                "cod_articulo" => $request->get('codigo'),
-                // "cantidad" => $request->get('cantidad'),
-                "neto" => $request->get('buscar_costo'),
-                "precio_venta" => $request->get('precio_venta'),
-                "margen" => $request->get("label_bara"),
-                "id_conveniomarco" => $request->get('idconvenio'),
-                ]
-                ]);
+        //dd($request);
+        $producto = DB::table('convenio_marco')->where('id_producto', $request->get('id_producto'))->get();
+        
+        if(count($producto) > 0){
+            return redirect()->route('ListarConvenio')->with('warning','Producto Ya Existe');
         }
 
-            return redirect()->route('ListarConvenio')->with('success','Producto Agregado Correctamente');
-        // }
-    }
+        DB::table('convenio_marco')->insert([
+            'cod_articulo' => $request->get('cod_producto') ?? null,
+            'id_producto' => $request->get('id_producto'),
+            'modelo' => strtoupper($request->get('modelo')),
+            'tipo' => strtoupper($request->get('tipo')),
+            'oferta' => $request->get('oferta'),
+            'convenio' => $request->get('convenio'),
+            'estado' => 'HABILITADO',
+            'creacion' => 'NUEVO'
+        ]);
+       
+
+        return redirect()->route('ListarConvenio')->with('success','Producto Agregado Correctamente');
     }
 
 
@@ -133,31 +112,126 @@ class ConvenioMarcoController extends Controller
     public function eliminarprod(Request $request)
     {
         // dd($request);
-        $update = DB::table('convenio_marco')
+        $delete = DB::table('convenio_marco')
         ->where('convenio_marco.id' , $request->get('id'))
         ->take(5)
         ->delete();
 
-        return redirect()->route('ListarConvenio')->with('success','Producto Eliminado Correctamente');
+        return redirect()->route('ListarConvenio')->with('error','Producto Eliminado Correctamente');
     }
 
     public function EditarProducto(Request $request){
 
-        // dd($request);
+         //dd($request);
               DB::table('convenio_marco')
               ->where('convenio_marco.id', $request->get("id"))
               ->update(
                 [
-                    'cantidad'=> $request->cantidad,
-                    'neto'=> $request->neto,
-                    'precio_venta'=> $request->precio_venta2,
-                    'margen'=> $request->margen,
-                    'id_conveniomarco'=> $request->id_conveniomarco]
-
-                );
+                    'cod_articulo' => $request->get('cod_producto') ?? null,
+                    'modelo' => strtoupper($request->get('modelo')),
+                    'tipo' => strtoupper($request->get('tipo')),
+                    'oferta' => $request->get('oferta'),
+                    'convenio' => $request->get('convenio'),
+                    'estado' => $request->get('estado')
+                ]);
 
                 return redirect()->route('ListarConvenio')->with('success','Producto Editado Correctamente');
           }
+
+    public function ExportarCatalogoCM(Request $request){
+        //dd($request->get('convenio'));
+        $productos = DB::table('convenio_marco')
+        ->where('estado', 'HABILITADO')
+        ->where('convenio', 'like', '%'.$request->get('convenio').'%')->get();
+        //dd($productos);
+
+        $titulo = 'Catálogo Convenio Marco Bluemix';
+
+        $pdf =PDF::loadView('exports.cotizacion_cm', compact('productos','titulo'));
+
+        return $pdf->stream('CatalogoCM.pdf');
+        
+        //return view('exports.cotizacion_cm');
+    }
+
+    public function CrearCotizacionCM(Request $request){
+        //dd($request->get('case'));
+
+        $productos = DB::table('convenio_marco')->whereIn('id', $request->get('case'))->get();
+
+        $titulo = 'Cotización Convenio Marco Bluemix';
+
+        $pdf =PDF::loadView('exports.cotizacion_cm', compact('productos','titulo'));
+
+        return $pdf->stream('CotizacionCM.pdf');
+    }
+
+    public function CambiarEstadoMasivoCM(Request $request){
+        
+        foreach($request->get('case') as $item){
+            //error_log(print_r($item, true));
+            $registro = DB::table('convenio_marco')
+                ->select('estado')
+                ->where('id', $item)
+                ->first();
+
+            if ($registro) {
+                $nuevoEstado = $registro->estado === 'HABILITADO' ? 'DE BAJA' : 'HABILITADO';
+
+                DB::table('convenio_marco')
+                    ->where('id', $item)
+                    ->update(['estado' => $nuevoEstado]);
+            }
+        }
+
+        return back()->with('success', 'Se han cambiado los estados Correctamente.');
+    }
+
+    public function CrearCotizacionCMExcel(Request $request){
+        //dd($request);
+        // 1. Obtener datos
+        $productos = DB::table('convenio_marco')->whereIn('id', $request->get('case'))->get();
+        //$productos = DB::table('convenio_marco')->whereIn('id', ['56','57','58'])->get();
+
+        // 2. Crear documento
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Cambiar el nombre de la hoja
+        $sheet->setTitle('Cotizacion');
+
+        // 3. Encabezados
+        $sheet->setCellValue('A1', 'ID');
+        $sheet->setCellValue('B1', 'TIPO');
+        $sheet->setCellValue('C1', 'MODELO');
+        $sheet->setCellValue('D1', 'PRECIO');
+
+        $sheet->getStyle('A1:D1')->applyFromArray([
+            'font' => [
+                'bold' => true
+            ]
+        ]);
+
+        // 4. Llenar filas desde fila 2
+        $fila = 2;
+        foreach ($productos as $item) {
+            $sheet->setCellValue('A' . $fila, $item->id_producto);
+            $sheet->setCellValue('B' . $fila, $item->tipo);
+            $sheet->setCellValue('C' . $fila, $item->modelo);
+            $sheet->setCellValue('D' . $fila, $item->oferta);
+            $fila++;
+        }
+
+        // 5. Descargar
+        $writer = new Xlsx($spreadsheet);
+        $nombreArchivo = 'Cotizacion_' . date('Y-m-d') . '.xlsx';
+
+        return response()->streamDownload(function () use ($writer) {
+            $writer->save('php://output');
+        }, $nombreArchivo, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
+    }
 
 
 }
