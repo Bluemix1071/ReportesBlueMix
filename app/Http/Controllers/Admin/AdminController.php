@@ -2830,8 +2830,9 @@ public function stocktiemporeal (Request $request){
         $ventasala17=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=17 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
         $ventasala108=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=108 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
         $ventasala109=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=109 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+        $ventasala201=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=201 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
 
-        $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma+$ventasala104[0]->suma+$ventasala105[0]->suma+$ventasala106[0]->suma+$ventasala17[0]->suma+$ventasala108[0]->suma+$ventasala109[0]->suma;
+        $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma+$ventasala104[0]->suma+$ventasala105[0]->suma+$ventasala201[0]->suma+$ventasala106[0]->suma+$ventasala17[0]->suma+$ventasala108[0]->suma+$ventasala109[0]->suma;
 
         //$factuasxnc=$factuasxnca24[0]->sumaa+$factuasxncb24[0]->sumab;
         $factuasxnc=$factuasxnca25[0]->sumaa+$factuasxncb25[0]->sumab;
