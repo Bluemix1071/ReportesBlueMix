@@ -112,6 +112,15 @@
                                 Eliminar Doc Referencia
                             </button>
                         </form>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <form action="{{ route('errordesc') }}" method="POST" class="m-0">
+                            @csrf
+                            <input type="hidden" name="Id_credito" value="{{ $folio[0]->id_nota_cred }}">
+                            <input type="hidden" name="Descuento" value="{{ $folio[0]->porc_desc }}">
+                            <button type="submit" class="btn btn-primary" {{ ($folio[0]->porc_desc == 0) ? 'disabled' : '' }}>
+                                Eliminar Error descuento
+                            </button>
+                        </form>
                     </div>
 
                 </div>

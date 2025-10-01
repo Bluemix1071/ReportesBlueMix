@@ -413,6 +413,18 @@ public function editartotal(Request $request)
         return redirect()->route('RectificacionNotaCredito')->with('error', 'Error al quitar Doc Referencia.');
     }
 
+    public function errordesc (Request $request){
+    $idnota = $request->get("Id_credito");
+
+        DB::table('nota_credito_detalle')
+        ->where('id_nota_cred', $idnota)
+        ->update([
+            'porc_desc' => 0,
+
+        ]);
+        return redirect()->route('RectificacionNotaCredito')->with('success', 'Error Descuento Solucionado.');
+    }
+
 
     public function RectificacionInsumoMerma(Request $request){
 

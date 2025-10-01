@@ -133,103 +133,133 @@
                                 </button> -->
                     </div>
 
-            <div>
-            <table id="users" class="table table-bordered table-hover dataTable table-sm" style="text-align:center; font-size: 15px;">
-              <thead>
-                <tr>
-                  <th scope="col" style="width: 3%;"></th>
-                  <th scope="col" style="width: 5%; display:none;">ID</th>
-                  <th scope="col">Codigo</th>
-                  <th scope="col" class="col-3">Descripción</th>
-                  <th scope="col">Marca</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Stock Bodega</th>
-                  <th scope="col">Departamento</th>
-                  <th scope="col">Estado</th>
-                  <th scope="col">OC</th>
-                  <th scope="col" style="display:none">Observación</th>
-                  <th scope="col" class="col-1" style="display:none">Fecha Ingreso</th>
-                  <th scope="col" class="col-1">Observacion Interna</th>
-                  <th scope="col">Acciones</th>
-                  <th scope="col" class="col-1" style="display:none;">Prioridad</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($requerimiento_compra as $item)
+                    <div class="table-responsive">
+                        <table id="users" class="table table-bordered table-hover table-sm text-center" style="font-size: 15px;">
+                          <thead>
+                            <tr>
+                              <th style="width: 3%;"></th>
+                              <th style="width: 5%; display:none;">ID</th>
+                              <th>Código</th>
+                              <th class="col-3">Descripción</th>
+                              <th>Marca</th>
+                              <th>Cantidad</th>
+                              <th>Stock Bodega</th>
+                              <th>Departamento</th>
+                              <th>Estado</th>
+                              <th>OC</th>
+                              <th style="display:none;">Observación</th>
+                              <th class="col-1" style="display:none;">Fecha Ingreso</th>
+                              <th class="col-1">Observación Interna</th>
+                              <th>Acciones</th>
+                              <th class="col-1" style="display:none;">Prioridad</th>
+                            </tr>
+                          </thead>
 
-                    @if($item->prioridad == 1 && $item->estado == "INGRESADO" && session()->get('email') == "adquisiciones@bluemix.cl")
-                        <tr class="bg-dark bg-gradient">
-                    @else
-                        <tr>
-                    @endif
+                          <tbody>
+                            @foreach ($requerimiento_compra as $item)
+                              @if($item->prioridad == 1 && $item->estado == "INGRESADO" && session()->get('email') == "adquisiciones@bluemix.cl")
+                                <tr class="bg-dark bg-gradient">
+                              @else
+                                <tr>
+                              @endif
 
-                      <td><input type="checkbox" id="id_{{ $item->id }}" class="case" name="case[]" value="{{ $item->id }}" onclick="contador({{ $item->id }}, {{ $item->id }})"></td>
-                      <td style="display:none">{{ $item->id }}</td>
-                      @if(session()->get('email') == "adquisiciones@bluemix.cl")
-                        <td data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary('{{ $item->codigo }}')" class="text-primary">{{ $item->codigo }}</td>
-                      @else
-                        <td data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary('{{ $item->codigo }}')" class="text-primary">{{ $item->codigo }}</td>
-                      @endif
-                      <td>{{ $item->descripcion }}</td>
-                      <td>{{ $item->marca }}</td>
-                      <td>{{ $item->cantidad }}</td>
-                      <td>{{ $item->stock_bodega }}</td>
-                      <td>{{ $item->depto }}</td>
-                      <td>
+                                <!-- Checkbox -->
+                                <td>
+                                  <input type="checkbox"
+                                         id="id_{{ $item->id }}"
+                                         class="case"
+                                         name="case[]"
+                                         value="{{ $item->id }}"
+                                         onclick="contador({{ $item->id }}, {{ $item->id }})">
+                                </td>
 
-                        @if($item->estado == "INGRESADO")
-                            <h4><span class="badge badge-secondary">{{ $item->estado }}</span></h4>
-                        @elseif($item->estado == "ENVÍO OC")
-                            <h4><span class="badge badge-primary">{{ $item->estado }}</span></h4>
-                        @elseif($item->estado == "BODEGA")
-                            <h4><span class="badge badge-success">{{ $item->estado }}</span></h4>
-                        @elseif($item->estado == "RECHAZADO")
-                            <h4><span class="badge badge-warning">{{ $item->estado }}</span></h4>
-                        @elseif($item->estado == "DESACTIVADO")
-                            <h4><span class="badge badge-danger">{{ $item->estado }}</span></h4>
-                        @endif
-                        </td>
-                      <td><a href="{{route('pdf.orden', $item->oc)}}" target="_blank">{{ $item->oc }}</a></td>
-                      <td style="display:none">{{ $item->observacion }}</td>
-                      <td style="display:none">{{ $item->fecha }}</td>
-                        @if($item->estado == "RECHAZADO")
-                            <td><p class="text-danger">{{ $item->observacion_interna }}</p></td>
-                        @else
-                            <td><p>{{ $item->observacion_interna }}</p></td>
-                        @endif
-                      <td>
+                                <!-- ID oculto -->
+                                <td style="display:none;">{{ $item->id }}</td>
 
-                        {{-- <button type="button" class="btn btn-primary" target="_blank" title="Cambiar estado Requerimiento" data-toggle="modal" data-target="#cambiarestado" onclick="cargaridcambiar({{$item->id}}, $('#estado{{$item->id}} option:selected').text())"><i class="fa fa-save" aria-hidden="true"></i></button> --}}
-                        {{-- <button type="button" class="btn btn-danger" target="_blank" title="Desactivar Requerimiento" data-toggle="modal" data-target="#desactivar" onclick="cargariddesactivar({{$item->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button> --}}
-                        <a href="" class="btn btn-primary btm-sm" title="Editar Requerimiento" data-toggle="modal" data-target="#editarrequerimiento"
-                            data-id='{{ $item->id }}'
-                            data-codigo='{{ $item->codigo }}'
-                            data-descripcion='{{ $item->descripcion }}'
-                            data-marca='{{ $item->marca }}'
-                            data-cantidad='{{ $item->cantidad }}'
-                            data-departamento='{{ $item->depto }}'
-                            data-estado='{{ $item->estado }}'
-                            data-oc='{{ $item->oc }}'
-                            data-observacion='{{ $item->observacion }}'
-                            data-observacion_interna='{{ $item->observacion_interna }}'
-                            data-fecha_ingreso='{{ $item->fecha }}'
-                            data-fecha_enviooc='{{ $item->fecha_enviooc }}'
-                            data-fecha_bodega='{{ $item->fecha_bodega }}'
-                            data-fecha_rechazado='{{ $item->fecha_rechazado }}'
-                            data-fecha_desactivado='{{ $item->fecha_desactivado }}'
-                        ><i class="fa fa-eye"></i></a>
+                                <!-- Código -->
+                                <td data-toggle="modal"
+                                    data-target="#modalresumencodigo"
+                                    onclick="loadsumary('{{ $item->codigo }}')"
+                                    class="text-primary">
+                                    {{ $item->codigo }}
+                                </td>
 
-                      {{-- <button type="button" class="btn btn-primary" title="Cambiar estado Requerimiento" disabled><i class="fa fa-save" aria-hidden="true"></i></button> --}}
-                      {{-- <button type="button" class="btn btn-danger" title="Desactivar Requerimiento" disabled><i class="fa fa-trash" aria-hidden="true"></i></button> --}}
-                      {{-- <button type="button" class="btn btn-primary" title="Editar Requerimiento" disabled><i class="fa fa-eye" aria-hidden="true"></i></button> --}}
+                                <!-- Datos -->
+                                <td>{{ $item->descripcion }}</td>
+                                <td>{{ $item->marca }}</td>
+                                <td>{{ $item->cantidad }}</td>
+                                <td>{{ $item->stock_bodega }}</td>
+                                <td>{{ $item->depto }}</td>
 
-                      </td>
-                      <td style="display:none;">{{ $item->prioridad }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-            </table>
-             </div>
+                                <!-- Estado con colores -->
+                                <td>
+                                  @if($item->estado == "INGRESADO")
+                                    <h4><span class="badge badge-secondary">{{ $item->estado }}</span></h4>
+                                  @elseif($item->estado == "ENVÍO OC")
+                                    <h4><span class="badge badge-primary">{{ $item->estado }}</span></h4>
+                                  @elseif($item->estado == "BODEGA")
+                                    <h4><span class="badge badge-success">{{ $item->estado }}</span></h4>
+                                  @elseif($item->estado == "RECHAZADO")
+                                    <h4><span class="badge badge-warning">{{ $item->estado }}</span></h4>
+                                  @elseif($item->estado == "DESACTIVADO")
+                                    <h4><span class="badge badge-danger">{{ $item->estado }}</span></h4>
+                                  @endif
+                                </td>
+
+                                <!-- OC -->
+                                <td>
+                                  <a href="{{ route('pdf.orden', $item->oc) }}" target="_blank">
+                                    {{ $item->oc }}
+                                  </a>
+                                </td>
+
+                                <!-- Ocultos -->
+                                <td style="display:none;">{{ $item->observacion }}</td>
+                                <td style="display:none;">{{ $item->fecha }}</td>
+
+                                <!-- Observación Interna -->
+                                <td>
+                                  @if($item->estado == "RECHAZADO")
+                                    <p class="text-danger">{{ $item->observacion_interna }}</p>
+                                  @else
+                                    <p>{{ $item->observacion_interna }}</p>
+                                  @endif
+                                </td>
+
+                                <!-- Acciones -->
+                                <td>
+                                  <a href="" class="btn btn-primary btn-sm"
+                                     title="Editar Requerimiento"
+                                     data-toggle="modal"
+                                     data-target="#editarrequerimiento"
+                                     data-id="{{ $item->id }}"
+                                     data-codigo="{{ $item->codigo }}"
+                                     data-descripcion="{{ $item->descripcion }}"
+                                     data-marca="{{ $item->marca }}"
+                                     data-cantidad="{{ $item->cantidad }}"
+                                     data-departamento="{{ $item->depto }}"
+                                     data-estado="{{ $item->estado }}"
+                                     data-oc="{{ $item->oc }}"
+                                     data-observacion="{{ $item->observacion }}"
+                                     data-observacion_interna="{{ $item->observacion_interna }}"
+                                     data-fecha_ingreso="{{ $item->fecha }}"
+                                     data-fecha_enviooc="{{ $item->fecha_enviooc }}"
+                                     data-fecha_bodega="{{ $item->fecha_bodega }}"
+                                     data-fecha_rechazado="{{ $item->fecha_rechazado }}"
+                                     data-fecha_desactivado="{{ $item->fecha_desactivado }}">
+                                     <i class="fa fa-eye"></i>
+                                  </a>
+                                </td>
+
+                                <!-- Prioridad -->
+                                <td style="display:none;">{{ $item->prioridad }}</td>
+
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+
           </div>
           <div class="card-body">
             <div id="jsGrid1"></div>

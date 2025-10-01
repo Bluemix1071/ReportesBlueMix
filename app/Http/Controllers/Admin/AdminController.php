@@ -2840,7 +2840,7 @@ public function stocktiemporeal (Request $request){
         $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
 
         $totalventaxdia=$ventasala+$facturasmenosnc-$ncboletas->sumac;
-
+              // dd($facturasmenosnc);
 
         // dd($facturasmenosnc+$ventasala);
 
