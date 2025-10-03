@@ -74,7 +74,8 @@ Convenio Marco
                                     <th scope="col" style="text-align:left">Id</th>
                                     <th scope="col" style="text-align:left">Detalle</th>
                                     <th scope="col" style="text-align:left">Marca</th>
-                                    <th scope="col" style="text-align:left">Neto</th>
+                                    <th scope="col" style="text-align:left">Cod. Prove</th>
+                                    <th scope="col" style="text-align:left"><div class='row'>Neto/<div style="color: red;">Fijo</div></div></th>
                                     <th scope="col" style="text-align:left">Stock Sala</th>
                                     <th scope="col" style="text-align:left">Stock Bodega</th>
                                     <th scope="col" style="text-align:left">Tipo</th>
@@ -101,7 +102,12 @@ Convenio Marco
                                     <td>{{ $item->id_producto }}</td>
                                     <td>{{ $item->ARDESC }}</td>
                                     <td>{{ $item->ARMARCA }}</td>
-                                    <td>{{ $item->neto }}</td>
+                                    <td>{{ $item->ARCOPV }}</td>
+                                    @if(is_null($item->precio))
+                                        <td>{{ $item->neto }}</td>
+                                    @else
+                                        <td style="color: red;">{{ $item->precio }} <span></span></td>
+                                    @endif
                                     <td>{{ $item->bpsrea }}</td>
                                     <td>{{ $item->cantidad }}</td>
                                     <td>{{ $item->tipo }}</td>
@@ -112,7 +118,11 @@ Convenio Marco
                                         @elseif($item->neto == 0 )
                                             <td>-100%</td>
                                         @else
-                                            <td>{{ $item->margen }}%</td>
+                                            @if(is_null($item->precio))
+                                                <td>{{ $item->margen }}%</td>
+                                            @else
+                                                <td>{{ number_format((1-($item->precio/$item->oferta))*100, 0) }}%</td>
+                                            @endif
                                         @endif
                                     <td>{{ $item->convenio }}</td>
                                     <td>
@@ -134,7 +144,9 @@ Convenio Marco
                                         data-oferta_editar='{{ $item->oferta }}'
                                         data-margen_editar='{{ $item->margen }}'
                                         data-convenio_editar='{{ $item->convenio }}'
-                                        data-estado_editar='{{ $item->estado }}'>📝</i></button>
+                                        data-estado_editar='{{ $item->estado }}'
+                                        data-precio_editar='{{ $item->precio }}'
+                                        data-comentario_editar='{{ $item->comentario }}'>📝</i></button>
                                         {{-- <button type="button" class="btn btn-danger btn-sm" data-toggle='modal' data-target='#modaleliminarproducto' data-id='{{ $item->id }}'>🗑</button> --}}
                                     </td>
                                 </tr>
@@ -235,6 +247,19 @@ Convenio Marco
                                     value="{{ old('lamarca') }}" disabled autocomplete="lamarca">
                             </div>
                         </div>
+                         <!-- Precio -->
+                        <div class="form-group row">
+                            <label for="precio_editar"
+                                class="col-md-4 col-form-label text-md-right">
+                                {{ __('Precio Fijo') }}
+                                <input type="checkbox" name="" id="checkprecio_editar" onclick='preciofijoeditar()'>
+                            </label>
+                            <div class="col-md-7">
+                                <input id="precio_editar" type="number"
+                                    class="form-control @error('precio_editar') is-invalid @enderror" name="precio" disabled required
+                                    value="{{ old('precio_editar') }}" autocomplete="precio_editar">
+                            </div>
+                        </div>
                          <!-- Modelo -->
                         <div class="form-group row">
                             <label for="modelo"
@@ -297,6 +322,14 @@ Convenio Marco
                                     <option>HABILITADO</option>
                                     <option>DE BAJA</option>
                                 </select>
+                            </div>
+                        </div>
+                         <!-- Comentario -->
+                        <div class="form-group row">
+                            <label for="comentario"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Comentario') }}</label>
+                            <div class="col-md-7">
+                                <textarea name="comentario" class="form-control" id="comentario_editar" rows='3'></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -463,6 +496,19 @@ Convenio Marco
                                     value="{{ old('lamarca') }}" disabled autocomplete="lamarca">
                             </div>
                         </div>
+                        <!-- Precio -->
+                        <div class="form-group row">
+                            <label for="precio"
+                                class="col-md-4 col-form-label text-md-right">
+                                {{ __('Precio Fijo') }}
+                                <input type="checkbox" name="" id="checkprecio" onclick='preciofijo()'>
+                            </label>
+                            <div class="col-md-7">
+                                <input id="precio" type="number"
+                                    class="form-control @error('marca') is-invalid @enderror" name="precio" disabled required
+                                    value="{{ old('precio') }}" autocomplete="precio">
+                            </div>
+                        </div>
                         <!-- Modelo -->
                         <div class="form-group row">
                             <label for="modelo"
@@ -505,6 +551,14 @@ Convenio Marco
                                     <option>OFICINA</option>
                                     <option>ASEO</option>
                                 </select>
+                            </div>
+                        </div>
+                        <!-- Comentario -->
+                        <div class="form-group row">
+                            <label for="comentario"
+                                class="col-md-4 col-form-label text-md-right">{{ __('Comentario') }}</label>
+                            <div class="col-md-7">
+                                <textarea name="comentario" class="form-control" id="" rows='3'></textarea>
                             </div>
                         </div>
                     </div>
@@ -575,6 +629,9 @@ Convenio Marco
 
 <script>
 $('#modaleditar').on('show.bs.modal', function (event) {
+    $('#precio_editar').prop('disabled', true);
+    $("#checkprecio_editar").prop("checked", false);
+
     var button = $(event.relatedTarget)
     var id_editar = button.data('id_editar')
     var id_producto_editar = button.data('id_producto_editar')
@@ -587,6 +644,8 @@ $('#modaleditar').on('show.bs.modal', function (event) {
     var margen_editar = button.data('margen_editar')
     var convenio_editar = button.data('convenio_editar')
     var estado_editar = button.data('estado_editar')
+    var precio_editar = button.data('precio_editar')
+    var comentario_editar = button.data('comentario_editar')
     var modal = $(this)
     modal.find('.modal-body #id_editar').val(id_editar);
     modal.find('.modal-body #id_producto_editar').val(id_producto_editar);
@@ -599,6 +658,14 @@ $('#modaleditar').on('show.bs.modal', function (event) {
     modal.find('.modal-body #margen_editar').val(margen_editar+'%');
     modal.find('.modal-body #convenio_editar').val(convenio_editar);
     modal.find('.modal-body #estado_editar').val(estado_editar);
+    modal.find('.modal-body #precio_editar').val(precio_editar);
+    modal.find('.modal-body #comentario_editar').val(comentario_editar);
+
+    if(precio_editar){
+        //lert('tiene precio fijo');
+        $('#precio_editar').prop('disabled', false);
+        $("#checkprecio_editar").prop("checked", true);
+    }
 
     /* $( "#precio_venta2" ).keyup(function() {
       var neto = $( "#neto" ).val();
@@ -633,7 +700,7 @@ $('#modaleditar').on('show.bs.modal', function (event) {
     $('#Listas thead tr').clone(false).appendTo('#Listas thead');
 
     $('#Listas thead tr:eq(1) th').each(function (i) {
-        if (i === 0 || i === 14) {
+        if (i === 0 || i === 15) {
             $(this).html('');
             return;
         }
@@ -888,6 +955,23 @@ $('#modaleditar').on('show.bs.modal', function (event) {
             }
         }); */
     }
+
+    function preciofijo(){
+        if ($("#checkprecio").prop("checked")) {
+            $('#precio').prop('disabled', false);
+        }else{
+            $('#precio').prop('disabled', true);
+        } 
+    }
+
+    function preciofijoeditar(){
+        if ($("#checkprecio_editar").prop("checked")) {
+            $('#precio_editar').prop('disabled', false);
+        }else{
+            $('#precio_editar').prop('disabled', true);
+        } 
+    }
+
 </script>
 
 

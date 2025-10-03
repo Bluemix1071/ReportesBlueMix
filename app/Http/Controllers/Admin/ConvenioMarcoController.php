@@ -45,7 +45,7 @@ class ConvenioMarcoController extends Controller
         left join bodeprod on convenio_marco.cod_articulo = bodeprod.bpprod
         left join Suma_Bodega on convenio_marco.cod_articulo = Suma_Bodega.inarti"); */
 
-        $convenio = DB::select('SELECT id, cod_articulo, id_producto, ARDESC, ARMARCA, bpsrea, cantidad,round(PCCOSTO/1.19) as neto ,tipo, modelo, oferta, round(((oferta -round(PCCOSTO/1.19)) / oferta) * 100) as margen, estado, convenio, creacion FROM db_bluemix.convenio_marco
+        $convenio = DB::select('SELECT id, cod_articulo, id_producto, ARDESC, ARMARCA, ARCOPV,bpsrea, cantidad,round(PCCOSTO/1.19) as neto ,tipo, modelo, oferta, round(((oferta -round(PCCOSTO/1.19)) / oferta) * 100) as margen, estado, convenio, creacion, precio, comentario FROM db_bluemix.convenio_marco
                     left join producto on convenio_marco.cod_articulo = producto.arcodi
                     left join precios on substring(producto.ARCODI, 1, 5) = precios.PCCODI
                     left join bodeprod on producto.ARCODI = bodeprod.bpprod
@@ -77,7 +77,9 @@ class ConvenioMarcoController extends Controller
             'oferta' => $request->get('oferta'),
             'convenio' => $request->get('convenio'),
             'estado' => 'HABILITADO',
-            'creacion' => 'NUEVO'
+            'creacion' => 'NUEVO',
+            'precio' => $request->get('precio') ?? null,
+            'comentario' => $request->get('comentario')
         ]);
        
 
@@ -132,7 +134,9 @@ class ConvenioMarcoController extends Controller
                     'tipo' => strtoupper($request->get('tipo')),
                     'oferta' => $request->get('oferta'),
                     'convenio' => $request->get('convenio'),
-                    'estado' => $request->get('estado')
+                    'estado' => $request->get('estado'),
+                    'precio' => $request->get('precio') ?? null,
+                    'comentario' => $request->get('comentario')
                 ]);
 
                 return redirect()->route('ListarConvenio')->with('success','Producto Editado Correctamente');
