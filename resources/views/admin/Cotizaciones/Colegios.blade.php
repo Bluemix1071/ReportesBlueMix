@@ -49,7 +49,11 @@ Colegios
                         @endif
 
                         @if (request()->url() !== route('colegios.temporada2023'))
-                            <a href="{{ route('colegios.temporada2023') }}" title="Temporada 2022-2023" target="_blank" class="btn btn-warning">T. 2023-2024</a>
+                            <a href="{{ route('colegios.temporada2023') }}" title="Temporada 2023-2024" target="_blank" class="btn btn-warning">T. 2023-2024</a>
+                        @endif
+
+                        @if (request()->url() !== route('colegios.temporada2024'))
+                            <a href="{{ route('colegios.temporada2024') }}" title="Temporada 2024-2025" target="_blank" class="btn btn-warning">T. 2024-2025</a>
                         @endif
 
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
