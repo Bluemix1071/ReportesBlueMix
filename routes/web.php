@@ -393,6 +393,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     //crud de ventas por colegio
     Route::get('/VentasPorColegio','VentasPorColegioController@VentasPorColegio')->name('VentasPorColegio');
     Route::post('/VentasPorColegioDetalle','VentasPorColegioController@VentasPorColegioDetalle')->name('VentasPorColegioDetalle');
+    Route::post('/VentasPorColegioFiltro','VentasPorColegioController@VentasPorColegioFiltro')->name('VentasPorColegioFiltro');
 
     //modulo rutas
     Route::get('/Rutas','Contratos\RutasController@Rutas')->name('Rutas');

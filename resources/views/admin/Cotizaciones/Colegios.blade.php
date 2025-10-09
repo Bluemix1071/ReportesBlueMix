@@ -11,7 +11,7 @@ Colegios
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Colegios</h3>
+        <h3 class="display-3">Colegios Temporada 2025-2026</h3>
         <div class="row">
           <div class="col-md-12">
             <hr>

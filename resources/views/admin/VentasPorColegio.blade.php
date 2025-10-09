@@ -12,7 +12,23 @@
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Ventas Por Colegio Temporada 2024-2025</h3>
+        <div class="row align-items-center mb-3">
+            <div class="col-auto">
+                <h3 class="display-3 mb-0">Ventas Por Colegios</h3>
+            </div>
+            <div class="col-auto">
+                <form action="{{ route('VentasPorColegioFiltro') }}" id="form-facturas" class="d-flex align-items-center" method='post'>
+                    <label for="min" class="me-2">Desde:</label>
+                    <input type="date" id="min" name="min" class="form-control me-3" required value='{{ $min }}'>
+
+                    <label for="max" class="me-2">Hasta:</label>
+                    <input type="date" id="max" name="max" class="form-control me-3" required value="{{ $max }}">
+                    &nbsp;&nbsp;
+                    <button class="btn btn-success" type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <table id="colegios" class="table table-striped table-bordered">
@@ -35,10 +51,12 @@
                                 <td>{{number_format($item->total,0,',','.')}}</td>
                                 <td>{{number_format((($item->total/$total->total)*100),1,',','.')}} %</td>
                                 <td>
-                                    <form action="{{ route('VentasPorColegioDetalle') }}" method="post">
+                                    <form action="{{ route('VentasPorColegioDetalle') }}" method="post" target="_blank">
                                     @csrf
                                         <input type="text" value="{{ $item->CANCON }}" name="id_colegio" hidden>
-                                        <button type="submit" class="btn btn-primary">Detalle</button>
+                                        <input type="text" value="{{ $min }}" name='min' hidden>
+                                        <input type="text" value="{{ $max}}" name='max' hidden>
+                                        <button type="submit" class="btn btn-primary" >Detalle</button>
                                     </form>
                                 </td>
                             </tr>
@@ -94,6 +112,51 @@
             </div>
         </div>
     </div>
+
+     <div class="container-fluid">
+        <h3 class="display-3">Ventas Por Producto</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <table id="productos" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Detalle</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio Venta (Prom)</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Participación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($productos as $item)
+                            <tr>
+                                <td>{{ $item->DECODI }}</td>
+                                <td>{{ $item->detalle }}</td>
+                                <td>{{ $item->ARMARCA }}</td>
+                                <td>{{ $item->cantidad }}</td>
+                                <td>{{number_format($item->prom_precio,0,',','.')}}</td>
+                                <td>{{number_format($item->total,0,',','.')}}</td>
+                                <td>{{number_format((($item->total/$total_productos->total)*100),1,',','.')}} %</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="price text-success">{{ $total_cantidad->total_cantidad }}</td>
+                            <td></td>
+                            <td class="price text-success">{{ number_format($total_productos->total,0,',','.') }}</td>
+                            <td class="price text-success">100%</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -128,6 +191,30 @@
             });
 
             $('#cajas').DataTable({
+                "order": [[ 0, "asc" ]],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'pdf', 'print'
+
+                ],
+                "language": {
+                    "info": "_TOTAL_ registros",
+                    "search": "Buscar",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+
+                    },
+                    "loadingRecords": "cargando",
+                    "processing": "procesando",
+                    "emptyTable": "no hay resultados",
+                    "zeroRecords": "no hay coincidencias",
+                    "infoEmpty": "",
+                    "infoFiltered": ""
+                }
+            });
+
+            $('#productos').DataTable({
                 "order": [[ 0, "asc" ]],
                 dom: 'Bfrtip',
                 buttons: [
