@@ -144,6 +144,7 @@
                               <th>Marca</th>
                               <th>Cantidad</th>
                               <th>Stock Bodega</th>
+                              <th>Stock Sucursal</th>
                               <th>Departamento</th>
                               <th>Estado</th>
                               <th>OC</th>
@@ -189,6 +190,7 @@
                                 <td>{{ $item->marca }}</td>
                                 <td>{{ $item->cantidad }}</td>
                                 <td>{{ $item->stock_bodega }}</td>
+                                <td>{{ $item->bpsrea1 }}</td>
                                 <td>{{ $item->depto }}</td>
 
                                 <!-- Estado con colores -->
@@ -445,6 +447,7 @@
                                     <strong>Marca: <i id="resumen_marca">cargando...</i></strong><br>
                                     <strong>Stock Sala: <i id="resumen_stock_sala">cargando...</i></strong><br>
                                     <strong>Stock Bodega: <i id="resumen_stock_bodega">cargando...</i></strong><br>
+                                    <strong>Stock Sucursal: <i id="resumen_stock_sucursal">cargando...</i></strong><br>
                                     <strong>Ultima Venta: <i id="resumen_ultima_venta">cargando...</i></strong><br>
                                     <strong>Ult. Requerimiento: <i id="resumen_ultimo_requerimiento">cargando...</i></strong><br>
                                     <strong>Ultimo Ingreso: <i id="resumen_ultimo_ingreso">cargando...</i></strong><br>
@@ -1006,6 +1009,7 @@ function loadsumary(codigo){
                 $('#resumen_unidad').text('cargando...');
                 $('#resumen_stock_sala').text('cargando...');
                 $('#resumen_stock_bodega').text('cargando...');
+                $('#resumen_stock_sucursal').text('cargando...');
                 $('#resumen_ultima_venta').text('cargando...');
                 $('#resumen_ultimo_ingreso').text('cargando...');
                 $('#resumen_ultima_cantidad').text('cargando...');
@@ -1025,6 +1029,7 @@ function loadsumary(codigo){
                 $('#resumen_unidad').text(result[0].ARDVTA);
                 $('#resumen_stock_sala').text(result[0].bpsrea);
                 $('#resumen_stock_bodega').text(result[0].cantidad);
+                $('#resumen_stock_sucursal').text(result[0].bpsrea1);
                 $('#resumen_ultima_venta').text(result[0].defeco);
                 $('#resumen_ultimo_ingreso').text(result[0].ult_ingreso);
                 $('#resumen_ultima_cantidad').text(result[0].ult_cant);

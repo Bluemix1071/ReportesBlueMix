@@ -514,8 +514,21 @@ class SalaController extends Controller
       $fecha1 = date("Y-m-d",strtotime(date("Y-m-d")."- 1 month"));
       $fecha2 = date("Y-m-d");
 
-      $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()');
+      /* $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
+      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()'); */
+      $requerimiento_compra = DB::select('
+    SELECT
+        requerimiento_compra.*,
+        IF(ISNULL(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) AS stock_bodega,
+        bodeprod.bpsrea1
+    FROM db_bluemix.requerimiento_compra
+    LEFT JOIN Suma_Bodega
+        ON requerimiento_compra.codigo = Suma_Bodega.inarti
+    LEFT JOIN bodeprod
+        ON requerimiento_compra.codigo = bodeprod.bpprod
+    WHERE fecha BETWEEN "'.$fecha1.'" AND NOW()
+');
+    //dd($requerimiento_compra);
 
       $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
 
@@ -1011,41 +1024,78 @@ class SalaController extends Controller
       return redirect()->route('ConteoInventarioSala')->with('success','Conteo Terminado');
   }
 
-  public function ResumenProducto($codigo){
+  public function ResumenProducto($codigo)
+{
+    $producto = DB::select('
+        SELECT
+            arcodi,
+            arcbar,
+            ARCOPV,
+            ardesc,
+            ARDVTA,
+            armarca,
+            defeco,
+            IF(ISNULL(cantidad), 0, cantidad) AS cantidad,
+            bpsrea,
+            IF(ISNULL(bpsrea1), 0, bpsrea1) AS bpsrea1, -- 👈 agregado aquí
+            (
+                SELECT CMVFECG
+                FROM dmovim
+                LEFT JOIN cmovim ON dmovim.DMVNGUI = cmovim.CMVNGUI
+                WHERE DMVPROD = "'.$codigo.'"
+                ORDER BY CMVFECG DESC
+                LIMIT 1
+            ) AS ult_ingreso,
+            (
+                SELECT DMVCANT
+                FROM dmovim
+                LEFT JOIN cmovim ON dmovim.DMVNGUI = cmovim.CMVNGUI
+                WHERE DMVPROD = "'.$codigo.'"
+                ORDER BY CMVFECG DESC
+                LIMIT 1
+            ) AS ult_cant,
+            (
+                SELECT DATE(fecha)
+                FROM requerimiento_compra
+                WHERE codigo = "'.$codigo.'"
+                ORDER BY fecha DESC
+                LIMIT 1
+            ) AS ult_requerimiento
+        FROM producto
+        LEFT JOIN dcargos ON ARCODI = dcargos.DECODI
+        LEFT JOIN Suma_Bodega ON ARCODI = Suma_Bodega.inarti
+        LEFT JOIN bodeprod ON ARCODI = bodeprod.bpprod
+        WHERE ARCODI = "'.$codigo.'"
+        ORDER BY DEFECO DESC
+        LIMIT 1
+    ')[0];
 
-    //error_log(print_r($codigo, true));
-    $producto = DB::select('SELECT arcodi, arcbar, ARCOPV,ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea, (
-      select CMVFECG from dmovim
-      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo.'" order by CMVFECG desc limit 1
-    ) as ult_ingreso,
-    (select DMVCANT from dmovim
-      left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo.'" order by CMVFECG desc limit 1) as ult_cant,
-      (select date(fecha) from requerimiento_compra where codigo = "'.$codigo.'" order by fecha desc limit 1) as ult_requerimiento
-	FROM producto
-    left join dcargos on ARCODI = dcargos.DECODI
-    left join Suma_Bodega on ARCODI = Suma_Bodega.inarti
-    left join bodeprod on ARCODI = bodeprod.bpprod
-    where ARCODI = "'.$codigo.'" order by DEFECO desc limit 1')[0];
+    $ingresos = DB::select('
+        SELECT DMVPROD, proveed.PVNOMB, DMVCANT, DMVUNID, CMVFECG, PrecioCosto
+        FROM dmovim
+        LEFT JOIN cmovim ON dmovim.DMVNGUI = cmovim.CMVNGUI
+        LEFT JOIN dcargos ON dmovim.DMVPROD = dcargos.DECODI
+        LEFT JOIN proveed ON cmovim.CMVCPRV = proveed.PVRUTP
+        WHERE CMVFECG >= "2020-01-01"
+          AND DMVPROD = "'.$codigo.'"
+          AND DEFECO >= "2020-01-01"
+        GROUP BY CMVFECG, DMVCANT
+    ');
 
-    $ingresos = DB::select('select DMVPROD, proveed.PVNOMB, DMVCANT, DMVUNID, CMVFECG, PrecioCosto from dmovim
-    left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI
-    left join dcargos on dmovim.DMVPROD = dcargos.DECODI
-    left join proveed on cmovim.CMVCPRV = proveed.PVRUTP
-    where CMVFECG >= "2020-01-01" and DMVPROD = "'.$codigo.'" and DEFECO >= "2020-01-01" group by CMVFECG, DMVCANT');
+    $costos = DB::select('
+        SELECT DEFECO, PrecioCosto, DEPREC
+        FROM dcargos
+        WHERE DECODI = "'.$codigo.'"
+          AND DETIPO != 3
+          AND DEFECO >= "2020-01-01"
+          AND PrecioCosto != 100
+        GROUP BY PrecioCosto
+        ORDER BY DEFECO ASC
+    ');
 
-    $costos = DB::select('select DEFECO, PrecioCosto, DEPREC from dcargos where DECODI = "'.$codigo.'" and DETIPO != 3 and DEFECO >= "2020-01-01" AND PrecioCosto != 100 group by PrecioCosto order by DEFECO asc');
+    return response()->json([$producto, $ingresos, $costos]);
+}
 
-    return response()->json([$producto,$ingresos,$costos]);
-  }
-
-  public function DetalleVale($n_vale){
-
-    $vale = DB::select('select vaarti, ARDESC, ARMARCA, dvales.vacant from dvales
-    left join producto on dvales.vaarti = producto.ARCODI
-    where vanmro = '.$n_vale.' group by vaarti');
-
-    return response()->json($vale);
-  }
 
   public function AgregarValeRequerimiento(Request $request){
 
