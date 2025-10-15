@@ -11,14 +11,14 @@ class ConteosController extends Controller
     //
     public function getConteosSala(){
         
-        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Sala")->where('fecha', '>', '2025-06-01')->orderBy('fecha', 'desc')->get();
+        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Sala")->where('fecha', '>', '2025-10-01')->orderBy('fecha', 'desc')->get();
 
         return response()->json($conteos);
     }
 
     public function getConteosBodega(){
         
-        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Bodega")->where('fecha', '>', '2025-06-01')->orderBy('fecha', 'desc')->get();
+        $conteos = DB::table('conteo_inventario')->where('ubicacion', "Bodega")->where('fecha', '>', '2025-10-01')->orderBy('fecha', 'desc')->get();
 
         return response()->json($conteos);
     }

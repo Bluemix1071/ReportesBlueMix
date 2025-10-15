@@ -51,7 +51,7 @@
             </div>
     </div>
     <div class="container my-4">
-        <h1 class="display-4">Consolidación Inventario Sucursal</h1>
+        <h1 class="display-4">Consolidación Inventario Sala</h1>
         <hr>
         <div class="col-3" style="text-align: left">
             <form action="" enctype="multipart/form-data">

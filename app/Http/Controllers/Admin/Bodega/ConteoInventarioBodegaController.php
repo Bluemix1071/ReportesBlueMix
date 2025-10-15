@@ -134,7 +134,7 @@ class ConteoInventarioBodegaController extends Controller
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->where('conteo_inventario.ubicacion', 'Sala')
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
-        ->whereBetween('conteo_inventario.fecha', ['2025-06-01 00:00:00', '2025-06-09 23:59:59'])
+        ->whereBetween('conteo_inventario.fecha', ['2025-10-01 00:00:00', '2025-11-09 23:59:59'])
         ->groupBy('codigo', 'modulo')
         ->get();
         // dd($consolidacionSala);
@@ -152,7 +152,7 @@ class ConteoInventarioBodegaController extends Controller
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->leftJoin ('bodeprod', 'conteo_inventario_detalle.codigo', '=', 'bodeprod.bpprod')
         ->where('conteo_inventario.ubicacion', 'Sala')
-        ->whereBetween('conteo_inventario.fecha', ['2025-06-01 00:00:00', '2025-06-09 23:59:59'])
+        ->whereBetween('conteo_inventario.fecha', ['2025-10-01 00:00:00', '2025-11-09 23:59:59'])
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
         ->groupBy('codigo')
         ->orderBy('id')
@@ -173,9 +173,9 @@ class ConteoInventarioBodegaController extends Controller
                 'fecha' => date('Y-m-d'), //fecha de insercion a la BD
                 'stock_anterior' => $resultado->stock_anterior,
                 'nuevo_stock' => $resultado->total,
-                'autoriza' => "Valentin Bello",
-                'solicita' => "Inventario Sucursal 2025",
-                'observacion' => 'Conteo Inventario Sucursal Isabel Riquelme Junio 2025'
+                'autoriza' => "Francisco Moraga",
+                'solicita' => "Inventario Sala 2025",
+                'observacion' => 'Conteo Inventario Sala 2025'
             ]);
 
         }
@@ -183,7 +183,7 @@ class ConteoInventarioBodegaController extends Controller
         //Establece todos los stocks en 0
         DB::table('bodeprod')
         ->update([
-           'bpsrea1' => '0'
+           'bpsrea' => '0'
         ]);
 
         // error_log(print_r($resultado,true)); es un dd para un arreglo el cual imprime los resultados por consola en visual studio code
@@ -198,13 +198,13 @@ class ConteoInventarioBodegaController extends Controller
                         // El código ya existe en bodeprod, actualizamos la cantidad
                         DB::table('bodeprod')
                             ->where('bpprod', $codigo)
-                            ->update(['bpsrea1' => $resultado->total]);
+                            ->update(['bpsrea' => $resultado->total]);
                     } else {
                         // El código no existe en bodeprod, lo insertamos
                         DB::table('bodeprod')->insert([
                             'bpprod' => $codigo,
                             'bpbode' => '1',
-                            'bpsrea1' => $resultado->total,
+                            'bpsrea' => $resultado->total,
                             'bpstin' => '0'
                         ]);
                     }
