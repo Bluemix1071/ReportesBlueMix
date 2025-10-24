@@ -140,16 +140,23 @@ class ConteosController extends Controller
 
         /* error_log(print_r($request->get('modulo'), true));
         error_log(print_r($request->get('encargado'), true)); */
+        $modulo = DB::table('conteo_inventario')->where('modulo', $request->get('modulo'))->where('fecha', '>=', '2025-10-01 00:00:00')->get();
 
-        $nuevo = ['ubicacion' => 'Sala',
-          'modulo' => $request->get('modulo'),
-          'encargado' => $request->get('encargado'),
-          'estado' => "Ingresado"
-        ];
+        if(count($modulo) > 0){
+            return response()->json(["message" => "El Modulo ya esta Ingresado", 'color' => 'danger']);
+        }else{
 
-      DB::table('conteo_inventario')->insert($nuevo);
+            $nuevo = ['ubicacion' => 'Sala',
+                'modulo' => $request->get('modulo'),
+                'encargado' => $request->get('encargado'),
+                'estado' => "Ingresado"
+                ];
 
-      return response()->json(["status" => "Ingresado correctamente"]);
+            DB::table('conteo_inventario')->insert($nuevo);
+
+            return response()->json(["message" => "Conteo agregado Correctamente", 'color' => 'success']);
+        }
+
     }
 
     public function nuevoConteoBodega(Request $request){

@@ -130,7 +130,7 @@ class ConteoInventarioBodegaController extends Controller
         // group by codigo, modulo");
 
         $consolidacionSala = DB::table('conteo_inventario_detalle')
-        ->select('conteo_inventario_detalle.*', DB::raw('SUM(cantidad) as total'), 'conteo_inventario.modulo', 'conteo_inventario.ubicacion','conteo_inventario.fecha')
+        ->select('conteo_inventario_detalle.*', DB::raw('SUM(cantidad) as total'),'conteo_inventario.modulo', 'conteo_inventario.ubicacion', 'conteo_inventario.encargado','conteo_inventario.fecha')
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->where('conteo_inventario.ubicacion', 'Sala')
         // ->where('conteo_inventario.fecha','like','2023-10-11%')
@@ -148,7 +148,7 @@ class ConteoInventarioBodegaController extends Controller
     public function actualizarInventarioSala(Request $request) {
 
         $InsertNewinventario = DB::table('conteo_inventario_detalle')
-        ->select('conteo_inventario_detalle.*', DB::raw('SUM(conteo_inventario_detalle.cantidad) as total'), 'conteo_inventario.modulo', 'conteo_inventario.ubicacion','bodeprod.bpsrea1 as stock_anterior')
+        ->select('conteo_inventario_detalle.*', DB::raw('SUM(conteo_inventario_detalle.cantidad) as total'), 'conteo_inventario.modulo', 'conteo_inventario.ubicacion','bodeprod.bpsrea as stock_anterior', 'bodeprod.bpsrea1 as stock_sucursal')
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
         ->leftJoin ('bodeprod', 'conteo_inventario_detalle.codigo', '=', 'bodeprod.bpprod')
         ->where('conteo_inventario.ubicacion', 'Sala')
@@ -172,7 +172,7 @@ class ConteoInventarioBodegaController extends Controller
                 'producto' => $resultado->detalle,//descripcion
                 'fecha' => date('Y-m-d'), //fecha de insercion a la BD
                 'stock_anterior' => $resultado->stock_anterior,
-                'nuevo_stock' => $resultado->total,
+                'nuevo_stock' => ($resultado->total+$resultado->stock_sucursal),
                 'autoriza' => "Francisco Moraga",
                 'solicita' => "Inventario Sala 2025",
                 'observacion' => 'Conteo Inventario Sala 2025'
@@ -198,13 +198,13 @@ class ConteoInventarioBodegaController extends Controller
                         // El código ya existe en bodeprod, actualizamos la cantidad
                         DB::table('bodeprod')
                             ->where('bpprod', $codigo)
-                            ->update(['bpsrea' => $resultado->total]);
+                            ->update(['bpsrea' => ($resultado->total+$resultado->stock_sucursal)]);
                     } else {
                         // El código no existe en bodeprod, lo insertamos
                         DB::table('bodeprod')->insert([
                             'bpprod' => $codigo,
                             'bpbode' => '1',
-                            'bpsrea' => $resultado->total,
+                            'bpsrea' => ($resultado->total),
                             'bpstin' => '0'
                         ]);
                     }

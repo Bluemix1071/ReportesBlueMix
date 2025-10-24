@@ -85,6 +85,7 @@
                                     <th scope="col">Cantidad</th>
                                     <th scope="col">Ubicacion</th>
                                     <th scope="col">Modulo</th>
+                                    <th scope="col">Encargado</th>
                                     <th scope="col">Fecha</th>
                                 </tr>
                             </thead>
@@ -97,6 +98,7 @@
                                     <td>{{ $item2->total }}</td>
                                     <td>{{ $item2->ubicacion }}</td>
                                     <td>{{ $item2->modulo }}</td>
+                                    <td>{{ $item2->encargado }}</td>
                                     <td>{{ $item2->fecha }}</td>
                                 </tr>
                                 @endforeach
