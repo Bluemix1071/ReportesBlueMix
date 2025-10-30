@@ -167,7 +167,8 @@ class ConteosController extends Controller
         $nuevo = ['ubicacion' => 'Bodega',
           'modulo' => $request->get('modulo'),
           'encargado' => $request->get('encargado'),
-          'estado' => "Ingresado"
+          'estado' => "Ingresado",
+          'consolidado' => $request->get('consolidado')
         ];
 
       DB::table('conteo_inventario')->insert($nuevo);
@@ -308,5 +309,33 @@ class ConteosController extends Controller
 
         return response()->json($racks);
 
+    }
+
+    public function cargarRack(Request $request, $id) {
+
+        $posicion = 1;
+
+        $productos = DB::select("SELECT * FROM db_bluemix.inventa
+                                left join vv_tablas25 on inventa.inmodu = vv_tablas25.tarefe
+                                left join producto on inventa.inartI = producto.ARCODI
+                                where vv_tablas25.taglos = '".$request->get('rack')."'");
+
+        foreach($productos as $item){
+                //error_log(print_r("agrega", true));
+                DB::table('conteo_inventario_detalle')->insert(
+                    ['codigo' => $item->inarti,
+                    'detalle' => $item->ARDESC,
+                    'marca' => $item->ARMARCA,
+                    'cantidad' => $item->incant,
+                    'costo' => 0,
+                    'precio' => 0,
+                    'estado' => 'exeptuado',
+                    'posicion' => $posicion++,
+                    'id_conteo_inventario' => $id]
+                );
+            }
+
+        //return response()->json(['pos' => $posicion, 'rack' => $request->get('rack'), 'id' => $id, 'productos' => $productos]);
+        return response()->json(["status" => "Se cargó el Rack" , "color" => 'success']);
     }
 }

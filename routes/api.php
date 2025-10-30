@@ -79,6 +79,7 @@ Route::get('/getConteoBodega/{id}','Api\ConteosController@getConteoBodega')->nam
 Route::get('/getHeadConteoBodega/{id}','Api\ConteosController@getHeadConteoBodega')->name('getHeadConteoBodega');
 Route::post('/nuevoConteoBodega','Api\ConteosController@nuevoConteoBodega')->name('nuevoConteoBodega');
 Route::get('/getRacks','Api\ConteosController@getRacks')->name('getRacks');
+Route::post('/cargarRack/{id_conteo}','Api\ConteosController@cargarRack')->name('cargarRack');
 
 
 
