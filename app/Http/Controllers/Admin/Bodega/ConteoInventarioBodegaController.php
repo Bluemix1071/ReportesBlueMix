@@ -205,11 +205,14 @@ class ConteoInventarioBodegaController extends Controller
                             'bpprod' => $codigo,
                             'bpbode' => '1',
                             'bpsrea' => ($resultado->total),
-                            'bpstin' => '0'
+                            'bpstin' => '0',
+                            'bpsrea1' => '0',
                         ]);
                     }
                 });
             }
+
+            DB::select('UPDATE bodeprod set bpsrea = bpsrea1 where bpsrea1 > 0 and bpsrea = 0');
 
     });
 
