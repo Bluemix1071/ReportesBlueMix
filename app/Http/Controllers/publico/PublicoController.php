@@ -65,15 +65,17 @@ class PublicoController extends Controller
       //$cotiz=DB::table('cotiz')->leftjoin('detalle_devolucion', 'cotiz.CZ_NRO', '=', 'detalle_devolucion.folio')->where('cotiz.CZ_FECHA', '>=', '2022-11-02')->orderBy('CZ_FECHA', 'DESC')->get();
       //$productos=DB::table('productos_negativos')->get();
       $productos = DB::select('select *, count(1) as estado from (
-        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod`
+        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS, PCCOSTO from `bodeprod`
         left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI`
         left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
+        LEFT JOIN precios ON SUBSTRING(bpprod,1,5) = precios.PCCODI
         left join prod_pendientes on bodeprod.bpprod = prod_pendientes.cod_articulo
         where `bpsrea` < 0 and `tablas`.`TACODI` = 22 and prod_pendientes.estado = 1 group by bpprod
         union all
-        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS from `bodeprod`
+        select bpprod, ARDESC, ARMARCA, bpsrea, TAGLOS, PCCOSTO from `bodeprod`
         left join `producto` on `bodeprod`.`bpprod` = `producto`.`ARCODI`
         left join `tablas` on `producto`.`ARGRPO2` = `tablas`.`TAREFE`
+        LEFT JOIN precios ON SUBSTRING(bpprod,1,5) = precios.PCCODI
         where `bpsrea` < 0 and `tablas`.`TACODI` = 22
         ) t
         left join negativos_historico on t.bpprod = negativos_historico.codigo and negativos_historico.stock_anterior >= 0
@@ -85,7 +87,7 @@ class PublicoController extends Controller
         left join dsalida_bodega on bodeprod.bpprod = dsalida_bodega.articulo
         LEFT JOIN salida_de_bodega on dsalida_bodega.id = salida_de_bodega.nro
         where `bpsrea` < 0 and `tablas`.`TACODI` = 22 and salida_de_bodega.estado = "K" and fecha between "'.$min.'" and "'.$max.'" group by bpprod'); */
-
+        
       return view('publicos.productosNegativos',compact('productos'));
 
     }

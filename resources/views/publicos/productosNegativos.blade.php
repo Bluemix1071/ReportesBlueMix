@@ -34,6 +34,7 @@
                                       <th scope="col">Familia</th>
                                       <th scope="col">Negativo Desde:</th>
                                       <th scope="col" hidden>Estado</th>
+                                      <th scope="col">Costo</th>
                                     </tr>
                                   </thead>
                                   <tbody id="res">
@@ -51,6 +52,7 @@
                                           <td>{{ $item->TAGLOS }}</td>
                                           <td>{{ $item->fecha_modificacion }}</td>
                                           <td hidden>{{ $item->estado }}</td>
+                                          <td>{{ number_format(($item->PCCOSTO*$item->bpsrea),0,',','.') }}</td>
                                         </tr>
                                   
                                   @endforeach
