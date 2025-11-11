@@ -516,18 +516,8 @@ class SalaController extends Controller
 
       /* $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
       left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()'); */
-      $requerimiento_compra = DB::select('
-    SELECT
-        requerimiento_compra.*,
-        IF(ISNULL(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) AS stock_bodega,
-        bodeprod.bpsrea1
-    FROM db_bluemix.requerimiento_compra
-    LEFT JOIN Suma_Bodega
-        ON requerimiento_compra.codigo = Suma_Bodega.inarti
-    LEFT JOIN bodeprod
-        ON requerimiento_compra.codigo = bodeprod.bpprod
-    WHERE fecha BETWEEN "'.$fecha1.'" AND NOW()
-');
+       $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
+      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()');
     //dd($requerimiento_compra);
 
       $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
@@ -1095,6 +1085,14 @@ class SalaController extends Controller
 
     return response()->json([$producto, $ingresos, $costos]);
 }
+
+  public function DetalleVale($n_vale){
+
+    $vale = DB::select('select vaarti, ARDESC, ARMARCA, dvales.vacant from dvales
+    left join producto on dvales.vaarti = producto.ARCODI
+    where vanmro = '.$n_vale.' group by vaarti');
+    return response()->json($vale);
+  }
 
 
   public function AgregarValeRequerimiento(Request $request){
