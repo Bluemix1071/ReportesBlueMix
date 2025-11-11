@@ -210,16 +210,16 @@ class PublicoController extends Controller
 {
     $patente = strtoupper($request->input('patente'));
 
-    $registro = \DB::table('estacionamiento')
+    $registro = DB::table('estacionamiento')
                 ->where('patente', $patente)
                 ->where('moron', 1)
                 ->orderByDesc('id')
                 ->first();
 
     if(empty($registro)){
-      return response()->json(['status' => "SIN DEUDA"]);
+      return response()->json(['status' => "SIN DEUDA", "message" => $registro->detalle]);
     }else{
-      return response()->json(['status' => "CON DEUDA"]);
+      return response()->json(['status' => "CON DEUDA", "message" => $registro->detalle]);
     }
 
 

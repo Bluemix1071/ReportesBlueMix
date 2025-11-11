@@ -127,6 +127,7 @@
                       <th>Pantente</th>
                       <th>Minutos</th>
                       <th>Deuda</th>
+                      <th>Comentario</th>
                       <th>Fecha</th>
                     </tr>
                   </thead>
@@ -136,6 +137,7 @@
                       <td>{{ $item->patente }}</td>
                       <td>{{ $item->minutos }}</td>
                       <td>{{ number_format(($item->debe),0,',','.') }}</td>
+                      <td>{{ $item->detalle }}</td>
                       <td>{{ $item->creacion }}</td>
                     </tr>
                     @endforeach
@@ -388,7 +390,7 @@
             }, 2000);
           }else{
             $('#resultadoVerificacion').prop('hidden', false);
-            $('#resultadoVerificacion').text('La Patente tiene una deuda Pendiente').addClass('text-danger');
+            $('#resultadoVerificacion').text('La Patente tiene una deuda Pendiente, por: '+response.message).addClass('text-danger');
           }
 
         }
