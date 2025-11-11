@@ -217,7 +217,7 @@ class PublicoController extends Controller
                 ->first();
 
     if(empty($registro)){
-      return response()->json(['status' => "SIN DEUDA", "message" => $registro->detalle]);
+      return response()->json(['status' => "SIN DEUDA"]);
     }else{
       return response()->json(['status' => "CON DEUDA", "message" => $registro->detalle]);
     }
