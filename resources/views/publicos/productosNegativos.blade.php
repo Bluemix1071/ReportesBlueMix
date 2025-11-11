@@ -37,7 +37,7 @@
                                       <th scope="col">Costo</th>
                                     </tr>
                                   </thead>
-                                  {{ $total = 0 }}
+                                  <div hidden>{{ $total = 0 }}</div>
                                   <tbody id="res">
                                   @foreach($productos as $item)
                                     
