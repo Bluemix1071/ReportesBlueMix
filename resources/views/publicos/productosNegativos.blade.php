@@ -35,6 +35,7 @@
                                       <th scope="col">Negativo Desde:</th>
                                       <th scope="col" hidden>Estado</th>
                                       <th scope="col">Costo</th>
+                                      <th hidden>Total</th>
                                     </tr>
                                   </thead>
                                   <div hidden>{{ $total = 0 }}</div>
