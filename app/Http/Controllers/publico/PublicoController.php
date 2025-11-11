@@ -167,7 +167,9 @@ class PublicoController extends Controller
 
       $precio = DB::table('precios')->where('PCCODI', '00001')->get('PCPVDET')[0]->PCPVDET;
 
-      return view('publicos.Estacionamiento', compact('tickets', 'fecha', 'precio'));
+      $deudores = DB::select('select *, (select (PCPVDET * estacionamiento.minutos) from precios where PCCODI = "00001") as debe from estacionamiento where moron = 1');
+
+      return view('publicos.Estacionamiento', compact('tickets', 'fecha', 'precio', 'deudores'));
 
     }
 
@@ -179,7 +181,9 @@ class PublicoController extends Controller
 
       $precio = DB::table('precios')->where('PCCODI', '00001')->get('PCPVDET')[0]->PCPVDET;
 
-      return view('publicos.Estacionamiento', compact('tickets', 'fecha', 'precio'));
+      $deudores = DB::select('select *, (select (PCPVDET * estacionamiento.minutos) from precios where PCCODI = "00001") as debe from estacionamiento where moron = 1');
+
+      return view('publicos.Estacionamiento', compact('tickets', 'fecha', 'precio', 'deudores'));
 
     }
 
@@ -208,7 +212,7 @@ class PublicoController extends Controller
 
     $registro = \DB::table('estacionamiento')
                 ->where('patente', $patente)
-                ->where('estado', "INGRESADO")
+                ->where('moron', 1)
                 ->orderByDesc('id')
                 ->first();
 
@@ -244,14 +248,16 @@ class PublicoController extends Controller
             "minutos" => 0,
             "hora_out" => $request->get('hora_out'),
             "descuento" => "1",
-            "estado" => "TERMINADO"
+            "estado" => "TERMINADO",
+            'detalle' => strtoupper($request->get('detalle'))
           ];
         }else{
           $update = [
             "minutos" => ($request->get('minutos')-60),
             "hora_out" => $request->get('hora_out'),
             "descuento" => "1",
-            "estado" => "TERMINADO"
+            "estado" => "TERMINADO",
+            'detalle' => strtoupper($request->get('detalle'))
           ];
         }
       }else{
@@ -259,11 +265,15 @@ class PublicoController extends Controller
           "minutos" => $request->get('minutos'),
           "hora_out" => $request->get('hora_out'),
           "descuento" => "0",
-          "estado" => "TERMINADO"
+          "estado" => "TERMINADO",
+          'detalle' => strtoupper($request->get('detalle'))
         ];
       }
 
       //dd($update);
+      if(!empty($request->get('moron'))){
+        DB::table('estacionamiento')->where('id', $request->get('id'))->update(['moron' => 1]);
+      }
 
       DB::table('estacionamiento')->where('id', $request->get('id'))->update($update);
 

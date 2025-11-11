@@ -22,6 +22,30 @@
           </div>
         </div>
 
+         <style>
+            .card {
+              border: 2px solid #337ab7; /* color del borde (azul Bootstrap) */
+              border-radius: 10px;       /* esquinas redondeadas */
+              padding: 15px;
+              margin: 10px;
+              background-color: #fff;
+              box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* leve sombra opcional */
+              transition: all 0.3s ease;
+            }
+            .card:hover {
+              box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            }
+            .card-title {
+              font-size: 18px;
+              font-weight: bold;
+              color: #337ab7;
+            }
+            .card-text {
+              font-size: 14px;
+              color: #555;
+            }
+          </style>
+
         <input type="text" id="precio" value="{{ $precio }}" name="0000100" hidden>
 
         <form action="{{ route('EstacionamientoFiltro') }}" method="post" class="form-inline col">
@@ -34,7 +58,8 @@
                 &nbsp &nbsp &nbsp
                 <!-- <button type="submit" class="btn btn-success btn-sm row">Buscar</button> -->
                 <button type="submit" class="btn btn-success btn-sm row">Buscar</button>
-        </form>
+              </form>
+              <button class="btn btn-danger btn-sm row" data-toggle="modal" data-target="#modalticketdeudores">Deudores</button>
 
       </div>
         <div class="row">
@@ -88,6 +113,41 @@
           </div>
         </div>
 </div>
+
+<div class="modal fade" id="modalticketdeudores" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Deudores</h4>
+            </div>
+              <div class="modal-body">
+                <table id="deudores" class="table table-bordered table-hover dataTable">
+                  <thead>
+                    <tr>
+                      <th>Pantente</th>
+                      <th>Minutos</th>
+                      <th>Deuda</th>
+                      <th>Fecha</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($deudores as $item)
+                    <tr>
+                      <td>{{ $item->patente }}</td>
+                      <td>{{ $item->minutos }}</td>
+                      <td>{{ number_format(($item->debe),0,',','.') }}</td>
+                      <td>{{ $item->creacion }}</td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+              </div>
+          </div>
+        </div>
+      </div>
 
 <div class="modal fade" id="modalticket" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -204,6 +264,25 @@
                       &ensp;&ensp;<input type="checkbox" class="form" id="descuento" name="descuento" value="off">
                     </div>
                 </div>
+    
+                <div class="col">
+                  <div class="card" style="border-color: #ff0000ff;">
+                    <div class="form-group row">
+                        <label for="id" class="col-md col-form-label text-md-right">Deudor: </label>
+    
+                        <div class="col-md-6">
+                          &ensp;&ensp;<input type="checkbox" class="form" id="moron" name="moron" value="on">
+                        </div>
+                    </div>
+    
+                    <div class="form-group row">
+                      <label for="id" class="col-md col-form-label text-md-right">Comentario: </label>
+                      <div class="col-md-6">
+                          <textarea id="detalle_terminado" name="detalle" rows="3" cols="50" class="form-control"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <input type="text" name="id" id="id" hidden>
                 <input type="text" name="minutos" id="minutos" hidden>
@@ -239,6 +318,28 @@
 
   $(document).ready(function() {
     $('#tickets').DataTable( {
+        order: [0, 'desc'],
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'excel', 'print'
+        ],
+        "language":{
+      "info": "_TOTAL_ registros",
+      "paginate":{
+        "next": "Siguiente",
+        "previous": "Anterior",
+
+    },
+    "loadingRecords": "cargando",
+    "processing": "procesando",
+    "emptyTable": "no hay resultados",
+    "zeroRecords": "no hay coincidencias",
+    "infoEmpty": "",
+    "infoFiltered": ""
+    }
+    });
+
+    $('#deudores').DataTable( {
         order: [0, 'desc'],
         dom: 'Bfrtip',
         buttons: [
