@@ -37,6 +37,7 @@
                                       <th scope="col">Costo</th>
                                     </tr>
                                   </thead>
+                                  {{ $total = 0 }}
                                   <tbody id="res">
                                   @foreach($productos as $item)
                                     
@@ -53,10 +54,17 @@
                                           <td>{{ $item->fecha_modificacion }}</td>
                                           <td hidden>{{ $item->estado }}</td>
                                           <td>{{ number_format(($item->PCCOSTO*$item->bpsrea),0,',','.') }}</td>
+                                          <td hidden>{{ $total += ($item->PCCOSTO*$item->bpsrea) }}</td>
                                         </tr>
                                   
                                   @endforeach
                                   </tbody>
+                                  <tfoot>
+                                    <tr>
+                                      <td></td><td></td><td></td><td></td><td></td><td>
+                                      <td>{{ number_format(($total),0,',','.') }}</td>
+                                    </tr>
+                                  </tfoot>
                                 </table>
                       </div>
           </div>
