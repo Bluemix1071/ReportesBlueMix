@@ -46,7 +46,7 @@ class DespachoController extends Controller
             ->select('detalle_devolucion.*', 'cotiz.*')
             ->get();
 
-        return view('Despacho.ConversorCotizaciones', compact('cotizaciones'));
+        return view('despacho.ConversorCotizaciones', compact('cotizaciones'));
 
     }
 
