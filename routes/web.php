@@ -105,6 +105,8 @@ Route::prefix('api')->middleware('auth')->group(function(){
 Route::prefix('Despacho')->namespace('Despacho')->middleware('auth')->group(function(){
     Route::get('/ProductosSegunGuia','DespachoController@ProductosSegunGuia')->name('ProductosSegunGuia');
     Route::post('/GuardarProductosSegunGuia','DespachoController@GuardarProductosSegunGuia')->name('GuardarProductosSegunGuia');
+    Route::get('/ConversorCotizaciones','DespachoController@ConversorCotizaciones')->name('ConversorCotizaciones');
+    Route::post('/ConvertirCotizacion','DespachoController@ConvertirCotizacion')->name('ConvertirCotizacion');
 });
 
 Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(function(){
