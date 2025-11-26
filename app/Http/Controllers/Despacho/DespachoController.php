@@ -74,7 +74,7 @@ class DespachoController extends Controller
                 'CZ_FECHA' => $cotizacion[0]->CZ_FECHA,
                 'CZ_HORA' => $cotizacion[0]->CZ_HORA,
                 'CZ_CODVEND' => $cotizacion[0]->CZ_CODVEND,
-                'CZ_MONTO' => ($cotizacion[0]->CZ_MONTO*1.19),
+                'CZ_MONTO' => (str_replace(['.', ','], ['', '.'], $cotizacion[0]->CZ_MONTO )*1.19),
                 'CZ_DIRECCION' => $cotizacion[0]->CZ_DIRECCION,
                 'CZ_TIPOCOT' => 'COTIZDET',
                 'id_cliente' => $cotizacion[0]->id_cliente,
