@@ -158,6 +158,7 @@
             $(document).ready(function() {
             $('#cotizaciones').DataTable({
             dom: 'Bfrtip',
+            order: [[4, 'desc']],
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
 

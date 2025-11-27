@@ -51,6 +51,9 @@ Lista Escolar
                         <div>
                             <form method="post" action="{{ route('AgregarCurso') }}" id="basic-form" class="d-flex justify-content-end">
                                 <!-- <button type="button" class="btn btn-success d-flex justify-content-start" href="{{ route('ListaEscolar') }}">< Ver Colegios</button> -->
+                                @if(session()->get('email') == "adquisiciones@bluemix.cl")
+                                    <button type="button" class='btn btn-info' data-toggle="modal" data-target="#modalstockcritico">Reporte Stock Critico</button>&nbsp;&nbsp;
+                                @endif
                                 <a href="{{ route('ListaEscolar') }}" class="btn btn-success d-flex justify-content-start">Ver Colegios</a>
                                 <div class="row">
                                     <div class="col"><input type="text" class="form-control" placeholder="ID COLEGIO" name="id_colegio" required id="id_colegio" value="{{ $colegio->id }}" style="display: none"></div>
@@ -153,6 +156,50 @@ Lista Escolar
    </div>
  </div>
 <!-- Modal Eliminar Curso-->
+
+<!-- Modal stock critico-->
+<div class="modal fade" id="modalstockcritico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-xl" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+             <h4 class="modal-title" id="myModalLabel">Stock Critico (<= 14 Días)</h4>
+           </div>
+            <div class="modal-body">
+             <div class="card-body">
+                <table id='stock_critico' class="table w-100">
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Detalle</th>
+                            <th>Marca</th>
+                            <th>Stock Total</th>
+                            <th>Quedan Días</th>
+                            <th>Categoria</th>
+                            <th>Sub Categoria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($stock_critico as $item)
+                        <tr>
+                            <td>{{ $item->cod_articulo }}</td>
+                            <td>{{ $item->descripcion }}</td>
+                            <td>{{ $item->marca }}</td>
+                            <td>{{ $item->stock_total }}</td>
+                            <td>{{ number_format(($item->quedan), 0, ',', '.') }}</td>
+                            <td>{{ $item->nombre_curso }}</td>
+                            <td>{{ $item->letra }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-success">Cerrar</button>
+                </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
 @endsection
 
 @section('script')
@@ -170,6 +217,32 @@ Lista Escolar
 
 <script>
         $(document).ready(function() {
+
+        $('#stock_critico').DataTable( {
+          dom: 'Bfrtip',
+          order: [[4, 'asc']],
+          buttons: [
+              'copy', 'pdf', {
+          extend: 'print',
+        }
+
+          ],
+            "language":{
+          "info": "_TOTAL_ registros",
+          "search":  "Buscar",
+          "paginate":{
+            "next": "Siguiente",
+            "previous": "Anterior",
+
+        },
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        }
+      });
 
 var table = $('#cursos').DataTable({
   dom: 'Bfrtip',
