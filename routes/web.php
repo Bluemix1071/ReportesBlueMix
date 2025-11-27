@@ -123,6 +123,8 @@ Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(func
     Route::get('/EgresosPorVales','SucursalController@EgresosPorVales')->name('EgresosPorVales');
     Route::post('/BuscarValeSucursalEgreso','SucursalController@BuscarValeSucursalEgreso')->name('BuscarValeSucursalEgreso');
     Route::post('/CargarValeSucursalEgreso','SucursalController@CargarValeSucursalEgreso')->name('CargarValeSucursalEgreso');
+    Route::get('/VentasSucursal','SucursalController@VentasSucursal')->name('VentasSucursal');
+    Route::post('/VentasSucursalFiltro','SucursalController@VentasSucursalFiltro')->name('VentasSucursalFiltro');
 });
 
 

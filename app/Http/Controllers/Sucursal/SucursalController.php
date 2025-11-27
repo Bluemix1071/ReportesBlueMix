@@ -361,5 +361,64 @@ class SucursalController extends Controller
         return redirect()->route('EgresosPorVales')->with('success','Vale Descontado Correctamente');
     }
 
+    public function VentasSucursal(Request $request){
+
+        /* 'select DECODI, Detalle, ARMARCA,sum(DECANT), defeco, PCCOSTO, (avg(precio_real_con_iva)) from dcargos
+left join cargos on dcargos.DENMRO = cargos.CANMRO and dcargos.DETIPO = cargos.CATIPO
+left join precios on substring(dcargos.DECODI,1,5) = precios.PCCODI
+left join producto on dcargos.DECODI = producto.ARCODI
+where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by DECODI, month(defeco);' */
+        $ventas = DB::table('dcargos')
+                ->select(
+                    'dcargos.DECODI',
+                    'dcargos.Detalle',
+                    'producto.ARMARCA',
+                    DB::raw('SUM(dcargos.DECANT) as total_decant'),
+                    'dcargos.DEFECO',
+                    'precios.PCCOSTO',
+                    DB::raw('AVG(dcargos.precio_real_con_iva) as avg_precio')
+                )
+                ->leftJoin('cargos', function($join) {
+                    $join->on('dcargos.DENMRO', '=', 'cargos.CANMRO')
+                        ->on('dcargos.DETIPO', '=', 'cargos.CATIPO');
+                })
+                ->leftJoin('precios', DB::raw('SUBSTRING(dcargos.DECODI,1,5)'), '=', 'precios.PCCODI')
+                ->leftJoin('producto', 'dcargos.DECODI', '=', 'producto.ARCODI')
+                ->whereBetween('dcargos.DEFECO', [date('Y-m-d'), date('Y-m-d')])
+                ->where('cargos.CACOCA', '201')
+                ->groupBy('dcargos.DECODI', DB::raw('MONTH(dcargos.DEFECO)'))
+                ->get();;
+
+        return view('Sucursal.VentasSucursal', compact('ventas'));
+    }
+
+    public function VentasSucursalFiltro(Request $request){
+
+        $fechamin = $request->get('fechamin');
+        $fechamax = $request->get('fechamax');
+
+        $ventas = DB::table('dcargos')
+                ->select(
+                    'dcargos.DECODI',
+                    'dcargos.Detalle',
+                    'producto.ARMARCA',
+                    DB::raw('SUM(dcargos.DECANT) as total_decant'),
+                    'dcargos.DEFECO',
+                    'precios.PCCOSTO',
+                    DB::raw('AVG(dcargos.precio_real_con_iva) as avg_precio')
+                )
+                ->leftJoin('cargos', function($join) {
+                    $join->on('dcargos.DENMRO', '=', 'cargos.CANMRO')
+                        ->on('dcargos.DETIPO', '=', 'cargos.CATIPO');
+                })
+                ->leftJoin('precios', DB::raw('SUBSTRING(dcargos.DECODI,1,5)'), '=', 'precios.PCCODI')
+                ->leftJoin('producto', 'dcargos.DECODI', '=', 'producto.ARCODI')
+                ->whereBetween('dcargos.DEFECO', [$fechamin, $fechamax])
+                ->where('cargos.CACOCA', '201')
+                ->groupBy('dcargos.DECODI', DB::raw('MONTH(dcargos.DEFECO)'))
+                ->get();
+
+        return view('Sucursal.VentasSucursal', compact('ventas', 'fechamin', 'fechamax'));
+    }
 
 }
