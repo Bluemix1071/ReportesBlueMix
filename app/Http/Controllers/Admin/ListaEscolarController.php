@@ -565,6 +565,16 @@ $stock_critico = DB::select('SELECT d.id, d.comentario, d.id_curso, d.cod_articu
         return view('admin.Cotizaciones.ListasEscolares', compact('listas','colegio','curso', 'stock_critico'));
     }
 
+public function eliminarTodos(Request $request)
+{
+    DB::table('ListaEscolar_detalle')
+        ->where('id_curso', $request->idcurso)
+        ->delete();
+
+    return redirect()
+        ->back()
+        ->with('success', 'Todos los productos fueron eliminados correctamente');
+}
 
 
     public function Listas(Request $request){
