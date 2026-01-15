@@ -278,11 +278,13 @@
     @endif
     <td>{{ strtoupper($detalle->NmbItem) }}</td>
     <td>{{ number_format(($detalle->QtyItem ), 0, ',', '.') }}</td>
-    @if(!empty($detalle->UnmdItem))
-      <td>{{ $detalle->UnmdItem }}</td>
-    @else
-      <td>C/U</td>
-    @endif
+   <td>
+    {{
+        is_object($detalle->UnmdItem)
+            ? ($detalle->UnmdItem->{'#text'} ?? 'C/U')
+            : (!empty($detalle->UnmdItem) ? $detalle->UnmdItem : 'C/U')
+    }}
+</td>
     <td>{{ number_format(($detalle->PrcItem), 0, ',', '.') }}</td>
     <td>{{ number_format(($detalle->PrcItem*1.19), 0, ',', '.') }}</td>
     <td>{{ number_format(($detalle->MontoItem), 0, ',', '.') }}</td>
