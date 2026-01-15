@@ -284,9 +284,9 @@
     <td>{{ strtoupper($detalle->NmbItem ?? '-') }}</td>
 
     {{-- Cantidad (NC no siempre trae QtyItem) --}}
-    <td>
-        {{ number_format(isset($detalle->QtyItem) ? $detalle->QtyItem : 1, 0, ',', '.') }}
-    </td>
+    
+<td>{{ number_format(data_get($item, 'QtyItem', 1), 0, ',', '.') }}</td>
+ 
 
     {{-- Unidad de Medida --}}
     <td>
