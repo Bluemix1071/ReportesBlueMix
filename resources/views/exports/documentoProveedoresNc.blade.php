@@ -266,25 +266,39 @@
   </tr>
   @endforeach
 @else
+<!-- actualizacion de exportar pdf -->
 <tr class="tr-detalle">
+
+    {{-- Código Item --}}
     @if(!empty($detalle->CdgItem))
-    @if(is_array($detalle->CdgItem))
-        <td>{{ $detalle->CdgItem[0]->VlrCodigo }}</td>
-      @else
-        <td>{{ $detalle->CdgItem->VlrCodigo }}</td>
-      @endif
+        @if(is_array($detalle->CdgItem))
+            <td>{{ $detalle->CdgItem[0]->VlrCodigo }}</td>
+        @else
+            <td>{{ $detalle->CdgItem->VlrCodigo }}</td>
+        @endif
     @else
-    <td>-</td>
+        <td>-</td>
     @endif
-    <td>{{ strtoupper($detalle->NmbItem) }}</td>
-    <td>{{ number_format(($detalle->QtyItem ), 0, ',', '.') }}</td>
-   <td>
-    {{
-        is_object($detalle->UnmdItem)
-            ? ($detalle->UnmdItem->{'#text'} ?? 'C/U')
-            : (!empty($detalle->UnmdItem) ? $detalle->UnmdItem : 'C/U')
-    }}
-</td>
+
+    {{-- Nombre --}}
+    <td>{{ strtoupper($detalle->NmbItem ?? '-') }}</td>
+
+    {{-- Cantidad (NC no siempre trae QtyItem) --}}
+    <td>
+        {{ number_format(isset($detalle->QtyItem) ? $detalle->QtyItem : 1, 0, ',', '.') }}
+    </td>
+
+    {{-- Unidad de Medida --}}
+    <td>
+        {{
+            is_object($detalle->UnmdItem)
+                ? ($detalle->UnmdItem->{'#text'} ?? 'C/U')
+                : (!empty($detalle->UnmdItem) ? $detalle->UnmdItem : 'C/U')
+        }}
+    </td>
+
+</tr>
+
     <td>{{ number_format(($detalle->PrcItem), 0, ',', '.') }}</td>
     <td>{{ number_format(($detalle->PrcItem*1.19), 0, ',', '.') }}</td>
     <td>{{ number_format(($detalle->MontoItem), 0, ',', '.') }}</td>
