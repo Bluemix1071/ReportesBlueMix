@@ -11,6 +11,7 @@ Stock Sala
 
 @section('contenido')
 
+
     <div class="container-fluid">
         <h3 class="display-3">Stock Sala</h3>
         <div class="row">
@@ -74,9 +75,23 @@ Stock Sala
                                 </div>
                                 </div>
                                 <hr>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <form method="GET" class="form-inline">
+                            <label class="mr-2">Mostrar:</label>
+                            <select name="per_page" onchange="this.form.submit()" class="form-control form-control-sm">
+                                <option value="5" {{ request()->get('per_page', 50) == 5 ? 'selected' : '' }}>5</option>
+                                <option value="10" {{ request()->get('per_page', 50) == 10 ? 'selected' : '' }}>10</option>
+                                <option value="30" {{ request()->get('per_page', 50) == 30 ? 'selected' : '' }}>30</option>
+                                <option value="50" {{ request()->get('per_page', 50) == 50 ? 'selected' : '' }}>50</option>
+                            </select>
+                            <label class="ml-2">registros</label>
+                        </form>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
+                        <table id="ListasStockSala" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>Folio</th>
@@ -110,6 +125,13 @@ Stock Sala
                             </tfoot>
 
                     </table>
+                </div>
+                <div class="col-md-12">
+                    {{ $solicitudaj->appends(request()->query())->links() }}
+                    <div class="mt-2 text-center">
+                        <b>Total de registros: {{ $solicitudaj->total() }}</b>
+                    </div>
+                </div>
                 </div>
             {{-- </div> --}}
           </div>
@@ -353,6 +375,28 @@ Stock Sala
       "infoFiltered": ""
       },
       order: [[0, 'desc']]
+    } );
+  } );
+
+  $(document).ready(function() {
+    var table = $('#ListasStockSala').DataTable( {
+        paging: false,
+        orderCellsTop: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'pdf', 'print'
+        ],
+        "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        },
+        order: [[0, 'desc']]
     } );
   } );
   </script>
