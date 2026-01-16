@@ -218,6 +218,10 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth','SuperAdmin')->gro
     // fin
     /*  Mantenedor CRUD Cotizaciones */
     Route::get('/Cotizaciones/{id}','CotizacionesController@index')->name('Cotizaciones');
+    Route::post('/admin/listaescolar/eliminar-todos', 
+    'Rectificacion\RectificacionInventarioSalaController@eliminarTodos'
+)->name('listaescolar.eliminarTodos');
+
     // fin
     /*  Mantenedor CRUD Compras a proveedores */
     Route::get('/ComprasProveedores','Compras\ComprasProveedoresController@index')->name('ComprasProveedores');

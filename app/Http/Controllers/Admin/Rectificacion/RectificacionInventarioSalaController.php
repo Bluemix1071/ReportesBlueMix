@@ -539,7 +539,7 @@ public function editartotal(Request $request)
     ->leftJoin('producto', 'solicitud_ajuste.codprod', '=', 'producto.ARCODI')
     ->whereBetween('fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
     ->orderBy('folio', 'DESC')
-    ->get();
+    ->paginate($request->get('per_page', 50));
 
 
 

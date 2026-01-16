@@ -15,7 +15,7 @@ class SucursalController extends Controller
         ->leftJoin('producto', 'bodeprod.bpprod', '=', 'producto.ARCODI')
         ->leftJoin('suma_bodega', 'bodeprod.bpprod', '=', 'suma_bodega.inarti')
         ->select('bodeprod.*', 'producto.*', 'suma_bodega.*')
-        ->get();
+        ->paginate($request->get('per_page', 50));
 
         //dd($productos);
 

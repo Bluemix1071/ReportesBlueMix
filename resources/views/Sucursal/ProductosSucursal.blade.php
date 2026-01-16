@@ -43,6 +43,20 @@
                         </div>
                 </div>
                 <hr> -->
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <form method="GET" class="form-inline">
+                            <label class="mr-2">Mostrar:</label>
+                            <select name="per_page" onchange="this.form.submit()" class="form-control form-control-sm">
+                                <option value="5" {{ request()->get('per_page', 50) == 5 ? 'selected' : '' }}>5</option>
+                                <option value="10" {{ request()->get('per_page', 50) == 10 ? 'selected' : '' }}>10</option>
+                                <option value="30" {{ request()->get('per_page', 50) == 30 ? 'selected' : '' }}>30</option>
+                                <option value="50" {{ request()->get('per_page', 50) == 50 ? 'selected' : '' }}>50</option>
+                            </select>
+                            <label class="ml-2">registros</label>
+                        </form>
+                    </div>
+                </div>
                 <div id="miPopup" class="popup">¡Se Actualizó la Cantidad Correctamente!</div>
                 <div class="row">
                     <div class="col-md-12">
@@ -75,6 +89,12 @@
                                 @endforeach
                             </tbody>
                     </table>
+                </div>
+                <div class="col-md-12">
+                    {{ $productos->appends(request()->query())->links() }}
+                    <div class="mt-2 text-center">
+                        <b>Total de registros: {{ $productos->total() }}</b>
+                    </div>
                 </div>
           </div>
         </div>
@@ -152,6 +172,7 @@ function guardar_cantidad(codigo, id){
 
    
     var table = $('#Listas').DataTable( {
+        paging: false,
 
         orderCellsTop: true,
         dom: 'Bfrtip',
