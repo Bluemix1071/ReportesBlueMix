@@ -422,3 +422,4 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
     }
 
 }
+ 
