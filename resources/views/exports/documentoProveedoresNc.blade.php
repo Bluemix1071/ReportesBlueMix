@@ -254,7 +254,7 @@
     <td>-</td>
     @endif
     <td>{{ strtoupper($item->NmbItem) }}</td>
-    <td>{{ number_format(($item->QtyItem ), 0, ',', '.') }}</td>
+    <td>{{ number_format(data_get($detalle, 'QtyItem', 1), 0, ',', '.') }}</td>
     @if(!empty($item->UnmdItem))
       <td>{{ $item->UnmdItem }}</td>
     @else
@@ -285,7 +285,7 @@
 
     {{-- Cantidad (NC no siempre trae QtyItem) --}}
     
-<td>{{ number_format(data_get($item, 'QtyItem', 1), 0, ',', '.') }}</td>
+<td>{{ number_format((float)data_get($detalle, 'QtyItem', 1), 0, ',', '.') }}</td>
  
 
     {{-- Unidad de Medida --}}
