@@ -38,19 +38,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($productos as $item)
-                                <tr>
-                                    <th>{{ $item->codigo }}</th>
-                                    <td>{{ $item->descripcion }}</td>
-                                    <td>{{ $item->marca }}</td>
-                                    <td>{{ $item->stock_sala }}</td>
-                                    <td>{{ $item->stock_bodega }}</td>
-                                    <td>{{ $item->precio_detalle }}</td>
-                                    <td>{{ $item->precio_mayor }}</td>
-                                    <td>{{ $item->neto }}</td>
-                                    <td>{{ $item->FechaCambioPrecio }}</td>
-                                </tr>
-                            @endforeach
                         </tbody>
                     </table>
             </div>
@@ -77,6 +64,23 @@
             } );
 
             var table = $('#productos').DataTable({
+                ajax: {
+                    url: "{{ route('stocktiemporeal') }}",
+                    type: 'GET'
+                },
+                deferRender: true,
+                paging: false,
+                columns: [
+                    { data: 'codigo' },
+                    { data: 'descripcion' },
+                    { data: 'marca' },
+                    { data: 'stock_sala' },
+                    { data: 'stock_bodega' },
+                    { data: 'precio_detalle' },
+                    { data: 'precio_mayor' },
+                    { data: 'neto' },
+                    { data: 'FechaCambioPrecio' }
+                ],
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'pdf', 'print'
@@ -88,10 +92,10 @@
                         "previous": "Anterior",
 
                     },
-                    "loadingRecords": "cargando",
-                    "processing": "procesando",
-                    "emptyTable": "no hay resultados",
-                    "zeroRecords": "no hay coincidencias",
+                    "loadingRecords": "Cargando registros...",
+                    "processing": "Procesando...",
+                    "emptyTable": "No hay resultados",
+                    "zeroRecords": "No hay coincidencias",
                     "infoEmpty": "",
                     "infoFiltered": ""
                 },

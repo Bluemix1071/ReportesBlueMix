@@ -224,6 +224,23 @@
                             </div>
                         </div>
                         <br>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-6">
+                                <input type="text" class="form-control" style="font-weight: bold;"
+                                    id="validationTooltip02" readonly value="2026" required>
+                            </div>
+                            <div class="col-md-6 mb-6">
+                                @if (empty($mensual2026[0]->año2026))
+                                    <input type="text" class="form-control" id="2026mensual" readonly value="0"
+                                        required>
+                                @else
+                                    <input type="text" class="form-control" id="2026mensual" readonly
+                                        value="{{ number_format($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26, 0, ',', '.') }}" required>
+                                @endif
+                            </div>
+                        </div>
+                        <br>
+                        
                     </div>
                     <div class="col-md-6">
                         <div class="card">
@@ -379,6 +396,24 @@
                                 @endif
                             </div>
                         </div>
+                        <br>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-6">
+                                <input type="text" class="form-control" style="font-weight: bold;"
+                                    id="validationTooltip02" readonly value="2026" required>
+                            </div>
+                                
+                            <div class="col-md-6 mb-6">
+                                @if (empty($anual2026[0]->anualaño2026))
+                                    <input type="text" class="form-control" id="2026anual" readonly value="0"
+                                        required>
+                                @else
+                                    <input type="text" class="form-control" id="2026anual" readonly
+                                        value="{{ number_format(($anual2026[0]->anualaño2026-$destucan26[0]->destucan26-$desnene26[0]->desnene26), 0, ',', '.') }}" required>
+                                @endif
+                            </div>
+                        </div>
+                        <br>
                         <!-- -->
                         <br>
                     </div>
@@ -459,6 +494,12 @@
                                 @else
                                 <input type="text" class="form-control" hidden id="m2025" name="m2025" readonly value="{{ number_format($mensual2025[0]->año2025, 0, ',', '.') }}" required>
                                 @endif
+                                @if (empty($mensual2026[0]->año2026))
+                                <input type="text" class="form-control" hidden id="m2026" name="m2026" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="m2026" name="m2026" readonly value="{{ number_format($mensual2026[0]->año2026, 0, ',', '.') }}" required>
+                                @endif
+                                
                                 {{-- @if (empty($anual2018[0]->anualaño2018))
                                 <input type="text" class="form-control" hidden id="a2018" name="a2018" readonly value="0" required>
                                 @else
@@ -498,6 +539,11 @@
                                 <input type="text" class="form-control" hidden id="a2025" name="a2025" readonly value="0" required>
                                 @else
                                 <input type="text" class="form-control" hidden id="a2025" name="a2025" readonly value="{{ number_format(($anual2025[0]->anualaño2025), 0, ',', '.') }}" required>
+                                @endif
+                                @if (empty($anual2026[0]->anualaño2026))
+                                <input type="text" class="form-control" hidden id="a2026" name="a2026" readonly value="0" required>
+                                @else
+                                <input type="text" class="form-control" hidden id="a2026" name="a2026" readonly value="{{ number_format(($anual2026[0]->anualaño2026), 0, ',', '.') }}" required>
                                 @endif
                                 {{-- <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="{{ number_format($ventadiaria, 0, ',', '.') }}" required> --}}
                                 {{-- <input type="text" class="form-control" hidden id="2022anual" name="facturasporcobrar" readonly value="{{ number_format($facturasporcobrar[0]->porcobrar, 0, ',', '.') }}" required> --}}
@@ -551,42 +597,42 @@
                                 </tr>
                                 <tr>
                                     <th>Acumulado Actual</th>
-                                    <td class="text-right">{{ number_format($mensual2025[0]->año2025-$destucanm25[0]->destucanm25-$desnenem25[0]->desnenem25, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Acumulado 2024</th>
-                                    <td class="text-right">{{ number_format($mensual2024[0]->año2024-$destucanm24[0]->destucanm24-$desnenem24[0]->desnenem24, 0, ',', '.') }}</td>
+                                    <th>Acumulado 2025</th>
+                                    <td class="text-right">{{ number_format($mensual2025[0]->año2025-$destucanm25[0]->destucanm25-$desnenem25[0]->desnenem25, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <th>X̅ diario Acumulado</th>
                                     <td class="text-right">
                                         @if($diasvan == 0)
-                                            {{ number_format(($mensual2025[0]->año2025-$destucanm25[0]->destucanm25-$desnenem25[0]->desnenem25), 0, ',','.') }}
+                                            {{ number_format(($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26), 0, ',','.') }}
                                         @else
-                                            {{ number_format(($mensual2025[0]->año2025-$destucanm25[0]->destucanm25-$desnenem25[0]->desnenem25)/($diasvan), 0, ',','.') }}
+                                            {{ number_format(($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26)/($diasvan), 0, ',','.') }}
                                         @endif
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Meta del Mes</th>
-                                    <td class="text-right">{{ number_format(($totalmescursado2024*($ipc/100+1)), 0, ',','.' ) }}</td>
+                                    <td class="text-right">{{ number_format(($totalmescursado2025*($ipc/100+1)), 0, ',','.' ) }}</td>
                                 </tr>
                                 <tr>
                                     <th>Avance %</th>
-                                    <td class="text-right">{{ number_format(((($mensual2025[0]->año2025-$destucanm25[0]->destucanm25-$desnenem25[0]->desnenem25)/($totalmescursado2024*($ipc/100+1)))*100), 1, ',', '.') }}%</td>
+                                    <td class="text-right">{{ number_format(((($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26)/($totalmescursado2025*($ipc/100+1)))*100), 1, ',', '.') }}%</td>
                                 </tr>
                                 <tr>
                                     <th>Falta para Meta</th>
-                                    <td class="text-right">{{ number_format((($totalmescursado2024*($ipc/100+1))-($mensual2025[0]->año2025-$destucanm25[0]->destucanm25-$desnenem25[0]->desnenem25)), 0, ',' , '.') }}</td>
+                                    <td class="text-right">{{ number_format((($totalmescursado2025*($ipc/100+1))-($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26)), 0, ',' , '.') }}</td>
                                 </tr>
                                 <tr>
                                     <th>X̅ para Meta</th>
                                     <td class="text-right">
                                         @if($diasquedan == 0)
-                                            {{ number_format((($totalmescursado2024*($ipc/100+1))-($mensual2025[0]->año2025-$destucanm25[0]->destucanm25-$desnenem25[0]->desnenem25)),0,',','.') }}
+                                            {{ number_format((($totalmescursado2025*($ipc/100+1))-($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26)),0,',','.') }}
                                         @else
-                                            {{ number_format(((($totalmescursado2024*($ipc/100+1))-($mensual2025[0]->año2025-$destucanm25[0]->destucanm25-$desnenem25[0]->desnenem25))/$diasquedan),0,',','.') }}
+                                            {{ number_format(((($totalmescursado2025*($ipc/100+1))-($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26))/$diasquedan),0,',','.') }}
                                         @endif
                                     </td>
                                 </tr>
@@ -660,16 +706,16 @@
         // let mensual2019 = $("#2019mensual").val().replace(/\./g, '');
         // let mensual2020 = $("#2020mensual").val().replace(/\./g, '');
         // let mensual2021 = $("#2021mensual").val().replace(/\./g, '');
-        let mensual2022 = $("#2022mensual").val().replace(/\./g, '');
         let mensual2023 = $("#2023mensual").val().replace(/\./g, '');
         let mensual2024 = $("#2024mensual").val().replace(/\./g, '');
         let mensual2025 = $("#2025mensual").val().replace(/\./g, '');
+        let mensual2026 = $("#2026mensual").val().replace(/\./g, '');
 
 
         //var categorias = [  '2020', '2021', '2022','2023','2024','2025'];
         //var valor = [ mensual2020, mensual2021, mensual2022,mensual2023,mensual2024,mensual2025];
-        var categorias = ['2022','2023','2024','2025'];
-        var valor = [mensual2022,mensual2023,mensual2024,mensual2025];
+        var categorias = ['2023','2024','2025','2026'];
+        var valor = [mensual2023,mensual2024,mensual2025,mensual2026];
 
 
         const ctx = document.getElementById('myChart').getContext('2d');
@@ -717,16 +763,16 @@
         // let anual2019 = $("#2019anual").val().replace(/\./g, '');
         // let anual2020 = $("#2020anual").val().replace(/\./g, '');
         // let anual2021 = $("#2021anual").val().replace(/\./g, '');
-        let anual2022 = $("#2022anual").val().replace(/\./g, '');
         let anual2023 = $("#2023anual").val().replace(/\./g, '');
         let anual2024 = $("#2024anual").val().replace(/\./g, '');
         let anual2025 = $("#2025anual").val().replace(/\./g, '');
+        let anual2026 = $("#2026anual").val().replace(/\./g, '');
 
 
         //var categorias2 = [ '2020', '2021', '2022','2023','2024','2025'];
         //var valor2 = [ anual2020, anual2021, anual2022, anual2023,anual2024,anual2025];
-        var categorias2 = ['2022','2023','2024','2025'];
-        var valor2 = [anual2022, anual2023,anual2024,anual2025];
+        var categorias2 = ['2023','2024','2025','2026'];
+        var valor2 = [anual2023,anual2024,anual2025,anual2026];
 
         const ctx2 = document.getElementById('myChart2').getContext('2d');
         const myChart2 = new Chart(ctx2, {

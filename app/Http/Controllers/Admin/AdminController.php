@@ -1780,10 +1780,12 @@ public function actualizaripmac(Request $request)
 public function stocktiemporeal (Request $request){
 
 
-  $productos=DB::table('conveniomarco')->get();
+  if ($request->ajax()) {
+    $productos = DB::table('conveniomarco')->get();
+    return response()->json(['data' => $productos]);
+  }
 
-
-  return view('admin.stocktiemporeal',compact('productos'));
+  return view('admin.stocktiemporeal');
 }
 
 
@@ -2751,22 +2753,25 @@ public function stocktiemporeal (Request $request){
         $facturasporcobrar=DB::select('select sum(cavalo) as porcobrar from cargos where forma_pago = "X" and cafeco = ? ' , [$fecha1]);
         $fechames23=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames23',[$fecha1menos1formateada]);
         $fechames24=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames24',[$fecha1menos1formateada]);
+        $fechames25=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames25',[$fecha1menos1formateada]);
         $fechames=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames' , [$fecha1]);
-        $ano2018=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -85 MONTH) as ano2018' , [$fecha1]);
-        $ano2019=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -73 MONTH) as ano2019' , [$fecha1]);//49
-        $ano2020=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -61 MONTH) as ano2020' , [$fecha1]);//37
-        $ano2021=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -49 MONTH) as ano2021' , [$fecha1]);//25
-        $ano2022=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -37 MONTH) as ano2022' , [$fecha1]);
-        $ano2023=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -25 MONTH) as ano2023' , [$fecha1]);
-        $ano2024=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -13 MONTH) as ano2024' , [$fecha1]);
+        $ano2018=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -97 MONTH) as ano2018' , [$fecha1]);
+        $ano2019=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -85 MONTH) as ano2019' , [$fecha1]);
+        $ano2020=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -73 MONTH) as ano2020' , [$fecha1]);
+        $ano2021=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -61 MONTH) as ano2021' , [$fecha1]);
+        $ano2022=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -49 MONTH) as ano2022' , [$fecha1]);
+        $ano2023=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -37 MONTH) as ano2023' , [$fecha1]);
+        $ano2024=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -25 MONTH) as ano2024' , [$fecha1]);
+        $ano2025=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -13 MONTH) as ano2025' , [$fecha1]);
 
-        $hasta2018=DB::select('select DATE_ADD(?,INTERVAL -7 YEAR) as hasta2018' , [$fecha1]);//5
-        $hasta2019=DB::select('select DATE_ADD(?,INTERVAL -6 YEAR) as hasta2019' , [$fecha1]);
-        $hasta2020=DB::select('select DATE_ADD(?,INTERVAL -5 YEAR) as hasta2020' , [$fecha1]);
-        $hasta2021=DB::select('select DATE_ADD(?,INTERVAL -4 YEAR) as hasta2021' , [$fecha1]);
-        $hasta2022=DB::select('select DATE_ADD(?,INTERVAL -3 YEAR) as hasta2022' , [$fecha1]);
-        $hasta2023=DB::select('select DATE_ADD(?,INTERVAL -2 YEAR) as hasta2023' , [$fecha1]);
-        $hasta2024=DB::select('select DATE_ADD(?,INTERVAL -1 YEAR) as hasta2024' , [$fecha1]);
+        $hasta2018=DB::select('select DATE_ADD(?,INTERVAL -8 YEAR) as hasta2018' , [$fecha1]);
+        $hasta2019=DB::select('select DATE_ADD(?,INTERVAL -7 YEAR) as hasta2019' , [$fecha1]);
+        $hasta2020=DB::select('select DATE_ADD(?,INTERVAL -6 YEAR) as hasta2020' , [$fecha1]);
+        $hasta2021=DB::select('select DATE_ADD(?,INTERVAL -5 YEAR) as hasta2021' , [$fecha1]);
+        $hasta2022=DB::select('select DATE_ADD(?,INTERVAL -4 YEAR) as hasta2022' , [$fecha1]);
+        $hasta2023=DB::select('select DATE_ADD(?,INTERVAL -3 YEAR) as hasta2023' , [$fecha1]);
+        $hasta2024=DB::select('select DATE_ADD(?,INTERVAL -2 YEAR) as hasta2024' , [$fecha1]);
+        $hasta2025=DB::select('select DATE_ADD(?,INTERVAL -1 YEAR) as hasta2025' , [$fecha1]);
 
         // dd($hasta2022[0]->hasta2022);
         $h2018=$hasta2018[0]->hasta2018;
@@ -2776,6 +2781,7 @@ public function stocktiemporeal (Request $request){
         $h2022=$hasta2022[0]->hasta2022;
         $h2023=$hasta2023[0]->hasta2023;
         $h2024=$hasta2024[0]->hasta2024;
+        $h2025=$hasta2025[0]->hasta2025;
 
 
         $a2018=$ano2018[0]->ano2018;
@@ -2785,6 +2791,7 @@ public function stocktiemporeal (Request $request){
         $a2022=$ano2022[0]->ano2022;
         $a2023=$ano2023[0]->ano2023;
         $a2024=$ano2024[0]->ano2024;
+        $a2025=$ano2025[0]->ano2025;
 
 
         $fechainiciomes=$fechames[0]->primerdiames;
@@ -2853,7 +2860,8 @@ public function stocktiemporeal (Request $request){
         $mensual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2022 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2022,$h2022,$a2022,$h2022]);
         $mensual2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2023 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2023,$h2023,$a2023,$h2023]);
         $mensual2024=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2024 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2024,$h2024,$a2024,$h2024]);
-        $mensual2025=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2025 from cargos where catipo != 3  and cafeco between ? and ?' , [$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);
+        $mensual2025=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2025 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2025,$h2025,$a2025,$h2025]);
+        $mensual2026=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2026 from cargos where catipo != 3  and cafeco between ? and ?' , [$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);
 
         $anual2018=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2018-01-01" and ?) as anualaño2018 from cargos where catipo != 3  and cafeco between "2018-01-01" and ?' , [$h2018,$h2018]);
         $anual2019=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2019-01-01" and ?) as anualaño2019 from cargos where catipo != 3  and cafeco between "2019-01-01" and ?' , [$h2019,$h2019]);
@@ -2861,9 +2869,9 @@ public function stocktiemporeal (Request $request){
         $anual2021=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2021-01-01" and ?) as anualaño2021 from cargos where catipo != 3  and cafeco between "2021-01-01" and ?' , [$h2021,$h2021]);
         $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$h2022,$h2022]);
         $anual2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2023-01-01" and ?) as anualaño2023 from cargos where catipo != 3  and cafeco between "2023-01-01" and ?' , [$h2023,$h2023]);
-        // dd($fecha1);
         $anual2024=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2024-01-01" and ?) as anualaño2024 from cargos where catipo != 3  and cafeco between "2024-01-01" and ?' , [$h2024,$h2024]);
-        $anual2025=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2025-01-01" and ?) as anualaño2025 from cargos where catipo != 3  and cafeco between "2025-01-01" and ?' , [$fecha1,$fecha1]);
+        $anual2025=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2025-01-01" and ?) as anualaño2025 from cargos where catipo != 3  and cafeco between "2025-01-01" and ?' , [$h2025,$h2025]);
+        $anual2026=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "'.date('Y-01-01', strtotime($fecha1)).'" and ?) as anualaño2026 from cargos where catipo != 3  and cafeco between "'.date('Y-01-01', strtotime($fecha1)).'" and ?' , [$fecha1,$fecha1]);
 
         //Anual al día año 2022 (Tucan,Nene,Artel)
         $destucan=DB::select('select sum(cavalo) as destucan
@@ -2880,12 +2888,16 @@ public function stocktiemporeal (Request $request){
         //$desartel23=DB::select('select sum(cavalo) as desartel23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "92642000"',[$fecha1]);//anual al dia año 2023
 
         $destucan24=DB::select('select sum(cavalo) as destucan24 from cargos where cafeco between "2024-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between "2024-01-01" and ? )',[$hasta2024[0]->hasta2024,$hasta2024[0]->hasta2024]);//anual al dia año 2024
-        $desnene24=DB::select('select sum(cavalo) as desnene24 from cargos where cafeco between "2024-01-01" and ? and CARUTC= "76067436"',[$hasta2024[0]->hasta2024]);//anual al dia año 2024
+        FROM nota_credito where fecha between "2024-01-01" and ? )',[$h2024,$h2024]);//anual al dia año 2024
+        $desnene24=DB::select('select sum(cavalo) as desnene24 from cargos where cafeco between "2024-01-01" and ? and CARUTC= "76067436"',[$h2024]);//anual al dia año 2024
 
         $destucan25=DB::select('select sum(cavalo) as destucan25 from cargos where cafeco between "2025-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between "2025-01-01" and ? )',[$fecha1,$fecha1]);//anual al dia año 2025
-        $desnene25=DB::select('select sum(cavalo) as desnene25 from cargos where cafeco between "2025-01-01" and ? and CARUTC= "76067436"',[$fecha1]);//anual al dia año 2025
+        FROM nota_credito where fecha between "2025-01-01" and ? )',[$h2025,$h2025]);//anual al dia año 2025
+        $desnene25=DB::select('select sum(cavalo) as desnene25 from cargos where cafeco between "2025-01-01" and ? and CARUTC= "76067436"',[$h2025]);//anual al dia año 2025
+
+        $destucan26=DB::select('select sum(cavalo) as destucan26 from cargos where cafeco between "'.date('Y-01-01', strtotime($fecha1)).'" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between "'.date('Y-01-01', strtotime($fecha1)).'" and ? )',[$fecha1,$fecha1]);//anual al dia año 2026
+        $desnene26=DB::select('select sum(cavalo) as desnene26 from cargos where cafeco between "'.date('Y-01-01', strtotime($fecha1)).'" and ? and CARUTC= "76067436"',[$fecha1]);//anual al dia año 2026
 
         //Mensual al día año 2022 (Tucan,Nene,Artel)
         $destucanm=DB::select('select sum(cavalo) as destucanm from cargos where cafeco between DATE_ADD(?,INTERVAL -3 year) and DATE_ADD(?,INTERVAL -3 year) and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
@@ -2898,15 +2910,17 @@ public function stocktiemporeal (Request $request){
         FROM nota_credito where fecha between DATE_ADD(?,INTERVAL -2 year) and DATE_ADD(?,INTERVAL -2 year))',[$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);// mensual al dia año 2023
         $desnenem23=DB::select('select sum(cavalo) as desnenem23 from cargos where cafeco between DATE_ADD(?,INTERVAL -2 year) and DATE_ADD(?,INTERVAL -2 year) and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);;// mensual al dia año 2023
 
-        $destucanm24=DB::select('select sum(cavalo) as destucanm24 from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year))',[$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);// mensual al dia año 2023
-        $desnenem24=DB::select('select sum(cavalo) as desnenem24 from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);;// mensual al dia año 2024
+        $destucanm24=DB::select('select sum(cavalo) as destucanm24 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between ? and ?)',[$a2024,$h2024,$a2024,$h2024]);// mensual al dia año 2024
+        $desnenem24=DB::select('select sum(cavalo) as desnenem24 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$a2024,$h2024]);// mensual al dia año 2024
 
-       /*  $destucanm24=DB::select('select sum(cavalo) as destucanm24 from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2024
-        $desnenem24=DB::select('select sum(cavalo) as desnenem24 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2024 */
+        $destucanm25=DB::select('select sum(cavalo) as destucanm25 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between ? and ?)',[$a2025,$h2025,$a2025,$h2025]);// mensual al dia año 2025
+        $desnenem25=DB::select('select sum(cavalo) as desnenem25 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$a2025,$h2025]);// mensual al dia año 2025
 
-        $destucanm25=DB::select('select sum(cavalo) as destucanm25 from cargos where cafeco between ? and ? and CARUTC= "76926330"',[$fechainiciomes,$fecha1]);// mensual al dia año 2025
-        $desnenem25=DB::select('select sum(cavalo) as desnenem25 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2025
+        $destucanm26=DB::select('select sum(cavalo) as destucanm26 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between ? and ?)',[$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);// mensual al dia año 2026
+        $desnenem26=DB::select('select sum(cavalo) as desnenem26 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2026
 
         $mescursado = date("m", strtotime($fecha1));
         $anocursado = date("Y", strtotime($fecha1));
@@ -2932,15 +2946,21 @@ public function stocktiemporeal (Request $request){
 
         $totalmescursado2024 = $mensualcursado2024->año2024-$desnenetucan2024cursado2024->descuento;
 
+        $mensualcursado2025=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "'.date('2025-'.$mescursado.'-01').'" and "'.date('2025-'.$mescursado.'-t').'") as año2025 from cargos where catipo != 3  and cafeco between "'.date('2025-'.$mescursado.'-01').'" and "'.date('2025-'.$mescursado.'-t').'"')[0];
+        $desnenetucan2025cursado2025=DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "'.date('2025-'.$mescursado.'-01').'" and "'.date('2025-'.$mescursado.'-t').'"')[0];
+
+        $totalmescursado2025 = $mensualcursado2025->año2025-$desnenetucan2025cursado2025->descuento;
+
         $ipc = $this->ipc($anocursado,$mescursado);
 
         return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019',
-        'mensual2020','mensual2021','mensual2022','mensual2023','mensual2024','mensual2025','anual2018','anual2019','anual2020','anual2021','anual2022',
-        'anual2023','anual2024','anual2025','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem',
+        'mensual2020','mensual2021','mensual2022','mensual2023','mensual2024','mensual2025','mensual2026','anual2018','anual2019','anual2020','anual2021','anual2022',
+        'anual2023','anual2024','anual2025','anual2026','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem',
         'destucanm23','desnenem23','destucan23','desnene23',
         'destucanm24','desnenem24','destucan24','desnene24',
         'destucanm25','desnenem25','destucan25','desnene25',
-        'totalventaxdia','ncboletas','diasvan','diasquedan','totalmescursado2023','totalmescursado2024','ipc'));
+        'destucanm26','desnenem26','destucan26','desnene26',
+        'totalventaxdia', 'ncboletas', 'diasvan', 'diasquedan', 'totalmescursado2023', 'totalmescursado2024', 'totalmescursado2025', 'ipc'));
 
 
     }
@@ -2960,11 +2980,19 @@ public function stocktiemporeal (Request $request){
         $m2020=$request->m2020;
         $m2021=$request->m2021;
         $m2022=$request->m2022;
+        $m2023=$request->m2023;
+        $m2024=$request->m2024;
+        $m2025=$request->m2025;
+        $m2026=$request->m2026;
         $a2018=$request->a2018;
         $a2019=$request->a2019;
         $a2020=$request->a2020;
         $a2021=$request->a2021;
         $a2022=$request->a2022;
+        $a2023=$request->a2023;
+        $a2024=$request->a2024;
+        $a2025=$request->a2025;
+        $a2026=$request->a2026;
 
 
 
@@ -2987,12 +3015,21 @@ public function stocktiemporeal (Request $request){
         $sheet->setCellValue('A15', '2020');
         $sheet->setCellValue('A16', '2021');
         $sheet->setCellValue('A17', '2022');
-        $sheet->setCellValue('A18', 'Avance Anual');
-        $sheet->setCellValue('A19', '2018');
-        $sheet->setCellValue('A20', '2019');
-        $sheet->setCellValue('A21', '2020');
-        $sheet->setCellValue('A21', '2021');
-        $sheet->setCellValue('A22', '2022');
+        $sheet->setCellValue('A18', '2023');
+        $sheet->setCellValue('A19', '2024');
+        $sheet->setCellValue('A20', '2025');
+        $sheet->setCellValue('A21', '2026');
+        $sheet->setCellValue('A22', 'Avance Anual');
+        $sheet->setCellValue('A23', '2018');
+        $sheet->setCellValue('A24', '2019');
+        $sheet->setCellValue('A25', '2020');
+        $sheet->setCellValue('A26', '2021');
+        $sheet->setCellValue('A27', '2022');
+        $sheet->setCellValue('A28', '2023');
+        $sheet->setCellValue('A29', '2024');
+        $sheet->setCellValue('A30', '2025');
+        $sheet->setCellValue('A31', '2026');
+
         $sheet->setCellValue('B4', $ventadiaria);
         $sheet->setCellValue('B5', $facturasporcobrar);
         // $sheet->setCellValue('B6', $ventacajas);
@@ -3001,11 +3038,20 @@ public function stocktiemporeal (Request $request){
         $sheet->setCellValue('B15', $m2020);
         $sheet->setCellValue('B16', $m2021);
         $sheet->setCellValue('B17', $m2022);
-        $sheet->setCellValue('B18', $a2018);
-        $sheet->setCellValue('B19', $a2019);
-        $sheet->setCellValue('B20', $a2020);
-        $sheet->setCellValue('B21', $a2021);
-        $sheet->setCellValue('B22', $a2022);
+        $sheet->setCellValue('B18', $m2023);
+        $sheet->setCellValue('B19', $m2024);
+        $sheet->setCellValue('B20', $m2025);
+        $sheet->setCellValue('B21', $m2026);
+
+        $sheet->setCellValue('B23', $a2018);
+        $sheet->setCellValue('B24', $a2019);
+        $sheet->setCellValue('B25', $a2020);
+        $sheet->setCellValue('B26', $a2021);
+        $sheet->setCellValue('B27', $a2022);
+        $sheet->setCellValue('B28', $a2023);
+        $sheet->setCellValue('B29', $a2024);
+        $sheet->setCellValue('B30', $a2025);
+        $sheet->setCellValue('B31', $a2026);
 
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
