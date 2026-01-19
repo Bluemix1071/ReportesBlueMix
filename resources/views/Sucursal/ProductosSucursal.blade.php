@@ -46,6 +46,10 @@
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <form method="GET" class="form-inline">
+                            <label class="mr-2">Buscar:</label>
+                            <input type="text" name="buscar" class="form-control form-control-sm mr-2" value="{{ request()->get('buscar') }}" placeholder="Código, Nombre, Marca...">
+                            <button type="submit" class="btn btn-primary btn-sm mr-4">Buscar</button>
+
                             <label class="mr-2">Mostrar:</label>
                             <select name="per_page" onchange="this.form.submit()" class="form-control form-control-sm">
                                 <option value="5" {{ request()->get('per_page', 50) == 5 ? 'selected' : '' }}>5</option>
@@ -63,12 +67,36 @@
                         <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align:left">Codigo</th>
-                                    <th scope="col" style="text-align:left">Detalle</th>
-                                    <th scope="col" style="text-align:left">Marca</th>
-                                    <th scope="col" style="text-align:left">Stk Casa Matriz</th>
-                                    <th scope="col" style="text-align:left">Stk Sucursal</th>
-                                    <th scope="col" style="text-align:left">Stk Bodega</th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'codigo', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Codigo @if(request('sort') == 'codigo') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'detalle', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Detalle @if(request('sort') == 'detalle') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'marca', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Marca @if(request('sort') == 'marca') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'stock_matriz', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Stk Casa Matriz @if(request('sort') == 'stock_matriz') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'stock_sucursal', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Stk Sucursal @if(request('sort') == 'stock_sucursal') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'stock_bodega', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Stk Bodega @if(request('sort') == 'stock_bodega') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
                                     <th scope="col" style="text-align:left">Herramientas</th>
                                 </tr>
                             </thead>
@@ -217,8 +245,10 @@ function guardar_cantidad(codigo, id){
       "zeroRecords": "no hay coincidencias",
       "infoEmpty": "",
       "infoFiltered": ""
+      "infoFiltered": ""
       },
-      order: [[0, 'desc']]
+      ordering: false, // Desactivar ordenamiento del lado del cliente
+      order: [] // Asegurar que no haya orden predeterminado por DataTables
     } );
   } );
   </script>

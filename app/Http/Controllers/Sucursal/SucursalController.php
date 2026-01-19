@@ -11,13 +11,46 @@ class SucursalController extends Controller
     //
     public function ProductosSucursal(Request $request){
         //dd("llega aki");
-        $productos = DB::table('bodeprod')
+        $query = DB::table('bodeprod')
         ->leftJoin('producto', 'bodeprod.bpprod', '=', 'producto.ARCODI')
         ->leftJoin('suma_bodega', 'bodeprod.bpprod', '=', 'suma_bodega.inarti')
-        ->select('bodeprod.*', 'producto.*', 'suma_bodega.*')
-        ->paginate($request->get('per_page', 50));
+        ->select('bodeprod.*', 'producto.*', 'suma_bodega.*');
 
-        //dd($productos);
+        if ($request->has('buscar') && $request->get('buscar') != "") {
+            $search = $request->get('buscar');
+            $query->where(function($q) use ($search) {
+                $q->where('bodeprod.bpprod', 'like', "%{$search}%")
+                  ->orWhere('producto.ARDESC', 'like', "%{$search}%")
+                  ->orWhere('producto.ARMARCA', 'like', "%{$search}%");
+            });
+        }
+
+        $sort = $request->get('sort', 'bodeprod.bpprod'); // Default sort
+        $direction = $request->get('direction', 'desc');   // Default direction
+
+        // Map sortable columns if needed, or use direct column names
+        $allowedSorts = [
+            'codigo' => 'bodeprod.bpprod',
+            'detalle' => 'producto.ARDESC',
+            'marca' => 'producto.ARMARCA',
+            'stock_matriz' => 'bodeprod.bpsrea', // Assuming bpsrea is Matrix? Need to check view mapping. View says bpsrea
+            'stock_sucursal' => 'bodeprod.bpsrea1',
+            'stock_bodega' => 'suma_bodega.cantidad' // Fixed: cantidad is in suma_bodega
+        ];
+
+        // Ensure we are sorting by a valid column
+        // If sorting by a direct DB column name passed from view, we might need to adjust or trust it.
+        // For simplicity in view, we'll pass keys like 'codigo'.
+        if (array_key_exists($sort, $allowedSorts)) {
+            $query->orderBy($allowedSorts[$sort], $direction);
+        } else {
+             $query->orderBy('bodeprod.bpprod', 'desc');
+        }
+
+        $productos = $query->paginate($request->get('per_page', 50));
+        
+        // Append all request parameters to pagination links so sorting/search persists
+        $productos->appends($request->all());
 
         return view('Sucursal.ProductosSucursal', compact('productos'));
     }

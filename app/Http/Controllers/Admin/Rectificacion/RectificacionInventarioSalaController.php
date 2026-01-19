@@ -535,15 +535,44 @@ public function editartotal(Request $request)
         // ->orderBy('folio', 'DESC')
         // ->get();
 
-        $solicitudaj = DB::table('solicitud_ajuste')
+        $query = DB::table('solicitud_ajuste')
     ->leftJoin('producto', 'solicitud_ajuste.codprod', '=', 'producto.ARCODI')
     ->whereBetween('fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
-    ->orderBy('folio', 'DESC')
-    ->paginate($request->get('per_page', 50));
+    ->orderBy('folio', 'DESC');
 
+    if ($request->has('buscar') && $request->get('buscar') != "") {
+        $search = $request->get('buscar');
+        $query->where(function($q) use ($search) {
+            $q->where('solicitud_ajuste.codprod', 'like', "%{$search}%")
+              ->orWhere('solicitud_ajuste.producto', 'like', "%{$search}%");
+        });
+    }
 
+    $sort = $request->get('sort', 'folio'); // Default sort
+    $direction = $request->get('direction', 'desc');   // Default direction
 
-        return view('admin.Rectificacion.StockSala',compact('solicitudaj'));
+    $allowedSorts = [
+        'folio' => 'folio',
+        'codprod' => 'solicitud_ajuste.codprod',
+        'producto' => 'solicitud_ajuste.producto',
+        'marca' => 'producto.ARMARCA',
+        'stock_anterior' => 'stock_anterior',
+        'nuevo_stock' => 'nuevo_stock',
+        'fecha' => 'fecha',
+        'solicita' => 'solicita',
+        'observacion' => 'observacion'
+    ];
+
+    if (array_key_exists($sort, $allowedSorts)) {
+        $query->orderBy($allowedSorts[$sort], $direction);
+    } else {
+         $query->orderBy('folio', 'desc');
+    }
+
+    $solicitudaj = $query->paginate($request->get('per_page', 50));
+    $solicitudaj->appends($request->all());
+
+    return view('admin.Rectificacion.StockSala',compact('solicitudaj'));
 
     }
 

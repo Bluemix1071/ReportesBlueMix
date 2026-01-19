@@ -80,15 +80,15 @@
         </tr>
         <tr>
           <td class="td-table1">Giro</td>
-          <td>{{ strtoupper($encabezado->Emisor->GiroEmis) }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->GiroEmis ?? '') }}</td>
         </tr>
         <tr>
           <td class="td-table1">Dirección</td>
-          <td>{{ strtoupper($encabezado->Emisor->DirOrigen) }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->DirOrigen ?? '') }}</td>
         </tr>
         <tr>
           <td class="td-table1">Comuna</td>
-          <td>{{ strtoupper($encabezado->Emisor->CmnaOrigen) }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->CmnaOrigen ?? '') }}</td>
         </tr>
         <tr>
           <td class="td-table1">Ciudad</td>
@@ -96,7 +96,7 @@
           @if(!empty($encabezado->Emisor->CiudadOrigen))
             {{ strtoupper($encabezado->Emisor->CiudadOrigen) }}
           @else
-            {{ strtoupper($encabezado->Emisor->CmnaOrigen) }}
+            {{ strtoupper($encabezado->Emisor->CmnaOrigen ?? '') }}
           @endif
           </td>
         </tr>
@@ -125,7 +125,7 @@
         @if(!empty($encabezado->Emisor->CiudadOrigen))
           <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CiudadOrigen) }}</div>
         @else
-          <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CmnaOrigen) }}</div>
+          <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CmnaOrigen ?? '') }}</div>
         @endif
     </div>
 </div>
@@ -253,13 +253,9 @@
     @else
     <td>-</td>
     @endif
-    <td>{{ strtoupper($item->NmbItem) }}</td>
+    <td>{{ strtoupper($item->NmbItem ?? '') }}</td>
     <td>{{ number_format(data_get($detalle, 'QtyItem', 1), 0, ',', '.') }}</td>
-    @if(!empty($item->UnmdItem))
-      <td>{{ $item->UnmdItem }}</td>
-    @else
-      <td>C/U</td>
-    @endif
+    <td>{{ $item->UnmdItem ?? 'C/U' }}</td>
     <td>{{ number_format(($item->PrcItem), 0, ',', '.') }}</td>
     <td>{{ number_format(($item->PrcItem*1.19), 0, ',', '.') }}</td>
     <td>{{ number_format(($item->MontoItem), 0, ',', '.') }}</td>
@@ -291,9 +287,9 @@
     {{-- Unidad de Medida --}}
     <td>
         {{
-            is_object($detalle->UnmdItem)
+            (isset($detalle->UnmdItem) && is_object($detalle->UnmdItem))
                 ? ($detalle->UnmdItem->{'#text'} ?? 'C/U')
-                : (!empty($detalle->UnmdItem) ? $detalle->UnmdItem : 'C/U')
+                : ($detalle->UnmdItem ?? 'C/U')
         }}
     </td>
 
