@@ -24,6 +24,10 @@ use Illuminate\Support\Arr;
 use App\Modelos\InventarioTemporal;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Carbon\Carbon as CarbonAlias;
 use DateTime;
 use DatePeriod;
@@ -2970,99 +2974,206 @@ public function stocktiemporeal (Request $request){
 
         // SE USA LIBRERIA PhpSpreadsheet para excel
 
-        // dd($request->all());
+        // Obtener datos del request
+        $ventadiaria = str_replace('.', '', $request->ventadiaria);
+        $facturasporcobrar = str_replace('.', '', $request->facturasporcobrar);
+        $ventasala = str_replace('.', '', $request->ventasala);
+        
+        // Datos mensuales
+        $m2020 = str_replace('.', '', $request->m2020 ?? '0');
+        $m2021 = str_replace('.', '', $request->m2021 ?? '0');
+        $m2022 = str_replace('.', '', $request->m2022 ?? '0');
+        $m2023 = str_replace('.', '', $request->m2023 ?? '0');
+        $m2024 = str_replace('.', '', $request->m2024 ?? '0');
+        $m2025 = str_replace('.', '', $request->m2025 ?? '0');
+        $m2026 = str_replace('.', '', $request->m2026 ?? '0');
+        
+        // Datos anuales
+        $a2020 = str_replace('.', '', $request->a2020 ?? '0');
+        $a2021 = str_replace('.', '', $request->a2021 ?? '0');
+        $a2022 = str_replace('.', '', $request->a2022 ?? '0');
+        $a2023 = str_replace('.', '', $request->a2023 ?? '0');
+        $a2024 = str_replace('.', '', $request->a2024 ?? '0');
+        $a2025 = str_replace('.', '', $request->a2025 ?? '0');
+        $a2026 = str_replace('.', '', $request->a2026 ?? '0');
 
-        $ventadiaria=$request->ventadiaria;
-        $facturasporcobrar=$request->facturasporcobrar;
-        // $ventacajas=$ventadiaria-$facturasporcobrar;
-        $m2018=$request->m2018;
-        $m2019=$request->m2019;
-        $m2020=$request->m2020;
-        $m2021=$request->m2021;
-        $m2022=$request->m2022;
-        $m2023=$request->m2023;
-        $m2024=$request->m2024;
-        $m2025=$request->m2025;
-        $m2026=$request->m2026;
-        $a2018=$request->a2018;
-        $a2019=$request->a2019;
-        $a2020=$request->a2020;
-        $a2021=$request->a2021;
-        $a2022=$request->a2022;
-        $a2023=$request->a2023;
-        $a2024=$request->a2024;
-        $a2025=$request->a2025;
-        $a2026=$request->a2026;
-
-
-
+        // Crear spreadsheet
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->getColumnDimension('A')->setWidth(30);
+        $sheet->setTitle('Avance Mensual y Anual');
+
+        // Configurar anchos de columnas
+        $sheet->getColumnDimension('A')->setWidth(35);
         $sheet->getColumnDimension('B')->setWidth(20);
-        $sheet->setCellValue('A3', 'Ingreso');
-        $sheet->setCellValue('A4', 'Total Diario');
-        $sheet->setCellValue('A5', 'Facturas Por Cobrar / Total');
-        $sheet->setCellValue('A6', 'Venta /Cajas');
-        $sheet->setCellValue('A7', 'Costo Venta Diaria');
-        $sheet->setCellValue('A8', 'Margen De Contribucion');
-        $sheet->setCellValue('A9', 'Porcentaje Del Día');
-        $sheet->setCellValue('A10', 'Ingreso Semanal');
-        $sheet->setCellValue('A11', 'Ingreso Promedio Diario');
-        $sheet->setCellValue('A12', 'Avance Mensual');
-        $sheet->setCellValue('A13', '2018');
-        $sheet->setCellValue('A14', '2019');
-        $sheet->setCellValue('A15', '2020');
-        $sheet->setCellValue('A16', '2021');
-        $sheet->setCellValue('A17', '2022');
-        $sheet->setCellValue('A18', '2023');
-        $sheet->setCellValue('A19', '2024');
-        $sheet->setCellValue('A20', '2025');
-        $sheet->setCellValue('A21', '2026');
-        $sheet->setCellValue('A22', 'Avance Anual');
-        $sheet->setCellValue('A23', '2018');
-        $sheet->setCellValue('A24', '2019');
-        $sheet->setCellValue('A25', '2020');
-        $sheet->setCellValue('A26', '2021');
-        $sheet->setCellValue('A27', '2022');
-        $sheet->setCellValue('A28', '2023');
-        $sheet->setCellValue('A29', '2024');
-        $sheet->setCellValue('A30', '2025');
-        $sheet->setCellValue('A31', '2026');
 
-        $sheet->setCellValue('B4', $ventadiaria);
-        $sheet->setCellValue('B5', $facturasporcobrar);
-        // $sheet->setCellValue('B6', $ventacajas);
-        $sheet->setCellValue('B13', $m2018);
-        $sheet->setCellValue('B14', $m2019);
-        $sheet->setCellValue('B15', $m2020);
-        $sheet->setCellValue('B16', $m2021);
-        $sheet->setCellValue('B17', $m2022);
-        $sheet->setCellValue('B18', $m2023);
-        $sheet->setCellValue('B19', $m2024);
-        $sheet->setCellValue('B20', $m2025);
-        $sheet->setCellValue('B21', $m2026);
+        // ========== TÍTULO PRINCIPAL ==========
+        $sheet->mergeCells('A1:B1');
+        $sheet->setCellValue('A1', 'REPORTE AVANCE MENSUAL Y ANUAL');
+        $sheet->getStyle('A1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'size' => 16,
+                'color' => ['rgb' => 'FFFFFF']
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '2E75B6']
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER
+            ]
+        ]);
+        $sheet->getRowDimension(1)->setRowHeight(30);
 
-        $sheet->setCellValue('B23', $a2018);
-        $sheet->setCellValue('B24', $a2019);
-        $sheet->setCellValue('B25', $a2020);
-        $sheet->setCellValue('B26', $a2021);
-        $sheet->setCellValue('B27', $a2022);
-        $sheet->setCellValue('B28', $a2023);
-        $sheet->setCellValue('B29', $a2024);
-        $sheet->setCellValue('B30', $a2025);
-        $sheet->setCellValue('B31', $a2026);
+        // ========== FECHA ==========
+        $sheet->mergeCells('A2:B2');
+        $sheet->setCellValue('A2', 'Fecha: ' . date('d/m/Y'));
+        $sheet->getStyle('A2')->applyFromArray([
+            'font' => ['italic' => true, 'size' => 10],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+        ]);
 
+        $row = 4;
+
+        // ========== SECCIÓN: RESUMEN DIARIO ==========
+        $sheet->mergeCells("A{$row}:B{$row}");
+        $sheet->setCellValue("A{$row}", 'RESUMEN DIARIO');
+        $sheet->getStyle("A{$row}")->applyFromArray([
+            'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '4472C4']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+        ]);
+        $row++;
+
+        // Encabezados
+        $sheet->setCellValue("A{$row}", 'Concepto');
+        $sheet->setCellValue("B{$row}", 'Valor');
+        $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '5B9BD5']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+        ]);
+        $row++;
+
+        // Datos diarios
+        $sheet->setCellValue("A{$row}", 'Total Diario');
+        $sheet->setCellValue("B{$row}", $ventadiaria);
+        $row++;
+        
+        $sheet->setCellValue("A{$row}", 'Venta Sala');
+        $sheet->setCellValue("B{$row}", $ventasala);
+        $row++;
+        
+        $sheet->setCellValue("A{$row}", 'Facturas Por Cobrar');
+        $sheet->setCellValue("B{$row}", $facturasporcobrar);
+        $row++;
+
+        // Aplicar formato a datos diarios
+        $sheet->getStyle("B6:B{$row}")->getNumberFormat()->setFormatCode('#,##0');
+        $sheet->getStyle("B6:B{$row}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+        $sheet->getStyle("A6:B{$row}")->applyFromArray([
+            'borders' => [
+                'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
+            ]
+        ]);
+
+        $row += 2;
+
+        // ========== SECCIÓN: AVANCE MENSUAL ==========
+        $sheet->mergeCells("A{$row}:B{$row}");
+        $sheet->setCellValue("A{$row}", 'AVANCE MENSUAL AL DÍA');
+        $sheet->getStyle("A{$row}")->applyFromArray([
+            'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '70AD47']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+        ]);
+        $row++;
+
+        // Encabezados
+        $sheet->setCellValue("A{$row}", 'Año');
+        $sheet->setCellValue("B{$row}", 'Monto');
+        $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '92D050']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+        ]);
+        $row++;
+
+        $mensualStart = $row;
+        
+        // Datos mensuales
+        $sheet->setCellValue("A{$row}", '2021'); $sheet->setCellValue("B{$row}", $m2021); $row++;
+        $sheet->setCellValue("A{$row}", '2022'); $sheet->setCellValue("B{$row}", $m2022); $row++;
+        $sheet->setCellValue("A{$row}", '2023'); $sheet->setCellValue("B{$row}", $m2023); $row++;
+        $sheet->setCellValue("A{$row}", '2024'); $sheet->setCellValue("B{$row}", $m2024); $row++;
+        $sheet->setCellValue("A{$row}", '2025'); $sheet->setCellValue("B{$row}", $m2025); $row++;
+        $sheet->setCellValue("A{$row}", '2026'); $sheet->setCellValue("B{$row}", $m2026); $row++;
+
+        // Aplicar formato a datos mensuales
+        $sheet->getStyle("B{$mensualStart}:B" . ($row-1))->getNumberFormat()->setFormatCode('#,##0');
+        $sheet->getStyle("B{$mensualStart}:B" . ($row-1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+        $sheet->getStyle("A{$mensualStart}:B" . ($row-1))->applyFromArray([
+            'borders' => [
+                'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
+            ]
+        ]);
+
+        $row += 2;
+
+        // ========== SECCIÓN: AVANCE ANUAL ==========
+        $sheet->mergeCells("A{$row}:B{$row}");
+        $sheet->setCellValue("A{$row}", 'AVANCE ANUAL AL DÍA');
+        $sheet->getStyle("A{$row}")->applyFromArray([
+            'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFC000']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+        ]);
+        $row++;
+
+        // Encabezados
+        $sheet->setCellValue("A{$row}", 'Año');
+        $sheet->setCellValue("B{$row}", 'Monto');
+        $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFD966']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+        ]);
+        $row++;
+
+        $anualStart = $row;
+        
+        // Datos anuales
+        $sheet->setCellValue("A{$row}", '2021'); $sheet->setCellValue("B{$row}", $a2021); $row++;
+        $sheet->setCellValue("A{$row}", '2022'); $sheet->setCellValue("B{$row}", $a2022); $row++;
+        $sheet->setCellValue("A{$row}", '2023'); $sheet->setCellValue("B{$row}", $a2023); $row++;
+        $sheet->setCellValue("A{$row}", '2024'); $sheet->setCellValue("B{$row}", $a2024); $row++;
+        $sheet->setCellValue("A{$row}", '2025'); $sheet->setCellValue("B{$row}", $a2025); $row++;
+        $sheet->setCellValue("A{$row}", '2026'); $sheet->setCellValue("B{$row}", $a2026); $row++;
+
+        // Aplicar formato a datos anuales
+        $sheet->getStyle("B{$anualStart}:B" . ($row-1))->getNumberFormat()->setFormatCode('#,##0');
+        $sheet->getStyle("B{$anualStart}:B" . ($row-1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+        $sheet->getStyle("A{$anualStart}:B" . ($row-1))->applyFromArray([
+            'borders' => [
+                'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
+            ]
+        ]);
+
+        // Aplicar bordes a todas las secciones
+        $sheet->getStyle('A4:B' . ($row-1))->applyFromArray([
+            'borders' => [
+                'outline' => ['borderStyle' => Border::BORDER_MEDIUM, 'color' => ['rgb' => '000000']]
+            ]
+        ]);
+
+        // Generar archivo
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Avance Mensual Anual.xlsx"');
+        header('Content-Disposition: attachment;filename="Avance_Mensual_Anual_' . date('Y-m-d') . '.xlsx"');
         header('Cache-Control: max-age=0');
 
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
-
-        // return view('admin.VentasPorVendedor',compact('vendedor'));
-
     }
 
 

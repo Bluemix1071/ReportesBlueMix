@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a9c846e74cc211187fe46fc02d50206",
+    "content-hash": "02d9422782fd937f51822ab94fcc5eb8",
     "packages": [
         {
             "name": "balping/json-raw-encoder",
@@ -1952,18 +1952,6 @@
         },
         {
             "name": "league/mime-type-detection",
-<<<<<<< HEAD
-            "version": "1.12.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "c7f2872fb273bf493811473dafc88d60ae829f48"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/c7f2872fb273bf493811473dafc88d60ae829f48",
-                "reference": "c7f2872fb273bf493811473dafc88d60ae829f48",
-=======
             "version": "1.16.0",
             "source": {
                 "type": "git",
@@ -1974,7 +1962,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/2d6702ff215bf922936ccc1ad31007edc76451b9",
                 "reference": "2d6702ff215bf922936ccc1ad31007edc76451b9",
->>>>>>> 38d9b82db642e0c9bb4da3a80e40eb428ef7c203
                 "shasum": ""
             },
             "require": {
@@ -2005,11 +1992,7 @@
             "description": "Mime-type detection for Flysystem",
             "support": {
                 "issues": "https://github.com/thephpleague/mime-type-detection/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.12.0"
-=======
                 "source": "https://github.com/thephpleague/mime-type-detection/tree/1.16.0"
->>>>>>> 38d9b82db642e0c9bb4da3a80e40eb428ef7c203
             },
             "funding": [
                 {
@@ -2021,11 +2004,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2023-08-03T07:14:11+00:00"
-=======
             "time": "2024-09-21T08:32:55+00:00"
->>>>>>> 38d9b82db642e0c9bb4da3a80e40eb428ef7c203
         },
         {
             "name": "maatwebsite/excel",
@@ -2344,32 +2323,31 @@
         },
         {
             "name": "mike42/escpos-php",
-            "version": "v3.0",
+            "version": "v2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mike42/escpos-php.git",
-                "reference": "dcb569a123d75f9f6a4a927aae7625ca6b7fdcf3"
+                "reference": "e5496cf819b048b11877117bd14a9cea4fb17c03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mike42/escpos-php/zipball/dcb569a123d75f9f6a4a927aae7625ca6b7fdcf3",
-                "reference": "dcb569a123d75f9f6a4a927aae7625ca6b7fdcf3",
+                "url": "https://api.github.com/repos/mike42/escpos-php/zipball/e5496cf819b048b11877117bd14a9cea4fb17c03",
+                "reference": "e5496cf819b048b11877117bd14a9cea4fb17c03",
                 "shasum": ""
             },
             "require": {
-                "ext-intl": "*",
-                "ext-json": "*",
-                "ext-zlib": "*",
-                "mike42/gfx-php": "^0.6",
-                "php": ">=7.0.0"
+                "ext-mbstring": "*",
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.5",
-                "squizlabs/php_codesniffer": "^3.3"
+                "guzzlehttp/guzzle": "^5.3",
+                "phpunit/phpunit": "^4.8",
+                "squizlabs/php_codesniffer": "^3.2"
             },
             "suggest": {
                 "ext-gd": "Used for image printing if present.",
-                "ext-imagick": "Will be used for image printing if present. Required for PDF printing or use of custom fonts."
+                "ext-imagick": "Will be used for image printing if present. Required for PDF printing or use of custom fonts.",
+                "guzzlehttp/guzzle": "Allows the use of the ApiConnector to send print jobs over HTTP."
             },
             "type": "library",
             "autoload": {
@@ -2390,63 +2368,17 @@
             "description": "PHP receipt printer library for use with ESC/POS-compatible thermal and impact printers",
             "homepage": "https://github.com/mike42/escpos-php",
             "keywords": [
-                "Epson",
-                "barcode",
+                "ESC-POS",
+                "driver",
                 "escpos",
-                "printer",
-                "receipt-printer"
+                "print",
+                "receipt"
             ],
             "support": {
                 "issues": "https://github.com/mike42/escpos-php/issues",
-                "source": "https://github.com/mike42/escpos-php/tree/v3.0"
+                "source": "https://github.com/mike42/escpos-php/tree/v2.2"
             },
-            "time": "2019-10-13T06:27:43+00:00"
-        },
-        {
-            "name": "mike42/gfx-php",
-            "version": "v0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mike42/gfx-php.git",
-                "reference": "ed9ded2a9298e4084a9c557ab74a89b71e43dbdb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mike42/gfx-php/zipball/ed9ded2a9298e4084a9c557ab74a89b71e43dbdb",
-                "reference": "ed9ded2a9298e4084a9c557ab74a89b71e43dbdb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "require-dev": {
-                "phpbench/phpbench": "@dev",
-                "phpunit/phpunit": "^6.5",
-                "squizlabs/php_codesniffer": "^3.3.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Mike42\\": "src/Mike42"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Billington",
-                    "email": "michael.billington@gmail.com"
-                }
-            ],
-            "description": "The pure PHP graphics library",
-            "homepage": "https://github.com/mike42/gfx-php",
-            "support": {
-                "issues": "https://github.com/mike42/gfx-php/issues",
-                "source": "https://github.com/mike42/gfx-php/tree/v0.6"
-            },
-            "time": "2019-10-05T02:44:33+00:00"
+            "time": "2019-10-05T05:59:00+00:00"
         },
         {
             "name": "milon/barcode",
@@ -3117,25 +3049,6 @@
         },
         {
             "name": "phenx/php-svg-lib",
-<<<<<<< HEAD
-            "version": "v0.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PhenX/php-svg-lib.git",
-                "reference": "5fa61b65e612ce1ae15f69b3d223cb14ecc60e32"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/5fa61b65e612ce1ae15f69b3d223cb14ecc60e32",
-                "reference": "5fa61b65e612ce1ae15f69b3d223cb14ecc60e32",
-                "shasum": ""
-            },
-            "require": {
-                "sabberworm/php-css-parser": "^8.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.5|^6.5"
-=======
             "version": "0.4.1",
             "source": {
                 "type": "git",
@@ -3155,7 +3068,6 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5"
->>>>>>> 38d9b82db642e0c9bb4da3a80e40eb428ef7c203
             },
             "type": "library",
             "autoload": {
@@ -3176,25 +3088,6 @@
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
             "support": {
-<<<<<<< HEAD
-                "issues": "https://github.com/PhenX/php-svg-lib/issues",
-                "source": "https://github.com/PhenX/php-svg-lib/tree/master"
-            },
-            "time": "2019-09-11T20:02:13+00:00"
-        },
-        {
-            "name": "phpoffice/phpspreadsheet",
-            "version": "1.25.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "a317a09e7def49852400a4b3eca4a4b0790ceeb5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/a317a09e7def49852400a4b3eca4a4b0790ceeb5",
-                "reference": "a317a09e7def49852400a4b3eca4a4b0790ceeb5",
-=======
                 "issues": "https://github.com/dompdf/php-svg-lib/issues",
                 "source": "https://github.com/dompdf/php-svg-lib/tree/0.4.1"
             },
@@ -3212,7 +3105,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/09cdde5e2f078b9a3358dd217e2c8cb4dac84be2",
                 "reference": "09cdde5e2f078b9a3358dd217e2c8cb4dac84be2",
->>>>>>> 38d9b82db642e0c9bb4da3a80e40eb428ef7c203
                 "shasum": ""
             },
             "require": {
@@ -3234,16 +3126,6 @@
                 "maennchen/zipstream-php": "^2.1",
                 "markbaker/complex": "^3.0",
                 "markbaker/matrix": "^3.0",
-<<<<<<< HEAD
-                "php": "^7.3 || ^8.0",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0",
-                "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
-                "dompdf/dompdf": "^1.0 || ^2.0",
-=======
                 "php": ">=7.4.0 <8.5.0",
                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
             },
@@ -3251,7 +3133,6 @@
                 "dealerdirect/phpcodesniffer-composer-installer": "dev-main",
                 "doctrine/instantiator": "^1.5",
                 "dompdf/dompdf": "^1.0 || ^2.0 || ^3.0",
->>>>>>> 38d9b82db642e0c9bb4da3a80e40eb428ef7c203
                 "friendsofphp/php-cs-fixer": "^3.2",
                 "mitoteam/jpgraph": "10.2.4",
                 "mpdf/mpdf": "8.1.1",
@@ -3316,15 +3197,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.25.2"
-            },
-            "time": "2022-09-25T17:21:01+00:00"
-=======
                 "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.30.2"
             },
             "time": "2026-01-11T05:58:24+00:00"
->>>>>>> 38d9b82db642e0c9bb4da3a80e40eb428ef7c203
         },
         {
             "name": "phpoption/phpoption",
@@ -8699,11 +8574,6 @@
     "platform": {
         "php": "^7.1.3"
     },
-<<<<<<< HEAD
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
-=======
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
->>>>>>> 38d9b82db642e0c9bb4da3a80e40eb428ef7c203
 }

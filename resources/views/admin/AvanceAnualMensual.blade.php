@@ -432,14 +432,15 @@
                     </div>
                     <div class="col-md-6">
                         <form action="{{ route('AvanceAnualMensualExcel') }}" method="post" id="desvForm" class="form-inline">
+                            @csrf
                             <div class="col-md-6">
                                 <button type="button" onclick="javascript:window.print()" class="btn btn-primary"><i
                                         class="fa fa-print"></i> Imprimir</button>
                                 <button type="submit" class="btn btn-success"><i class="fa fa-file"></i> Excel</button>
                                 @if (empty($totalventaxdia))
-                                <input type="text" class="form-control" hidden id="totalventaxdia" name="totalventaxdia" readonly value="0" required>
+                                <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="0" required>
                                 @else
-                                <input type="text" class="form-control" hidden id="totalventaxdia" name="totalventaxdia" readonly value="{{ number_format($totalventaxdia, 0, ',', '.') }}" required>
+                                <input type="text" class="form-control" hidden id="ventadiaria" name="ventadiaria" readonly value="{{ number_format($totalventaxdia, 0, ',', '.') }}" required>
                                 @endif
                                 {{-- HERE--}}
                                 @if (empty($ventasala))
