@@ -621,7 +621,7 @@
                                 </tr>
                                 <tr>
                                     <th>Avance %</th>
-                                    <td class="text-right">{{ number_format(((($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26)/($totalmescursado2025*($ipc/100+1)))*100), 1, ',', '.') }}%</td>
+                                    <td class="text-right">@if(($totalmescursado2025*($ipc/100+1)) != 0) {{ number_format(((($mensual2026[0]->año2026-$destucanm26[0]->destucanm26-$desnenem26[0]->desnenem26)/($totalmescursado2025*($ipc/100+1)))*100), 1, ',', '.') }} @else 0 @endif%</td>
                                 </tr>
                                 <tr>
                                     <th>Falta para Meta</th>
