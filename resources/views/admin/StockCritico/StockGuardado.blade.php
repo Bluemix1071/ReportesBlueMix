@@ -10,7 +10,6 @@
 @endsection
 
 @section('contenido')
-<?php $variable=0?>
 <div class="container my-4">
   <h1 class="display-4">Stock Guardado</h1>
     <div class="card-body">
@@ -30,47 +29,18 @@
             </tr>
         </thead>
     <tbody>
-      <!-- filtrado de informacion a desplegar en la tabla primero el imprimir la informacion solo delos 
-      productos que existan en la tabla producto clasificar y el resto sigue la misma logica que la de stock necesario-->
-    @foreach($status as $listado)
-    @if(($listado->Estado)==1) 
-    @foreach($datos as $lista)
-    @if(strtoupper($lista->Codigo) != $variable && ($listado->Codigo)==($lista->Codigo))
-    @if($lista->Media_de_ventas*1.2 >= $lista->Bodega)
-    @foreach($familia as $family)
-    @if($lista->codigo_familia == $family->tarefe)
-    @if($lista->Media_de_ventas>=$lista->Bodega)
-    <tr class="text-danger" id="{{$lista->Codigo}}">
-        <td>Critico</td>
-    @else
-        <tr class="text-warning" id="{{$lista->Codigo}}">
-        <td>Cercano critico</td>
-    @endif
-        <td>{{strtoupper($lista->Codigo)}}</td>
-        <td>{{$lista->Detalle}}</td>
-        <td>{{$lista->Marca_producto}}</td>        
-        <td>{{$family->taglos}}</td>
-        <td>{{$lista->fecha}}</td>
-        <td>{{$lista->Media_de_ventas}}</td>
-        <td>{{$lista->Bodega}}</td>
-       {{--  <td>
-        <button class="fa fa-comment text-primary border border-light"  onclick='IngresarComentario(id,value)' value="{{$lista->Detalle}}" id="{{$lista->Codigo}}" data-target=#ModalComentar data-toggle="modal"></button>
-        <button class="fa fa-list text-primary border border-light"  onclick='historial(id,value)' value="{{$lista->Detalle}}" id="{{$lista->Codigo}}" data-target=#ModalVer data-toggle="modal"></button>
-        <button class="fa fa-exchange text-primary border border-light"  onclick='CambiarVariable(id)'  id="{{$lista->Codigo}}"></button>
-        <button class="fa fa-external-link-square text-primary border border-light"  onclick='GenerarOrden(id,value)'  id="{{$lista->Codigo}}" value="{{$lista->Detalle}}"></button>
-        </td>       --}}            
+      @foreach($datos as $lista)
+        <tr class="{{ $lista->clase_css }}" id="{{ $lista->Codigo }}">
+            <td>{{ $lista->estado_stock }}</td>
+            <td>{{ strtoupper($lista->Codigo) }}</td>
+            <td>{{ $lista->Detalle }}</td>
+            <td>{{ $lista->Marca_producto }}</td>
+            <td>{{ $lista->familia_nombre ?? 'N/A' }}</td>
+            <td>{{ $lista->fecha }}</td>
+            <td>{{ $lista->Media_de_ventas }}</td>
+            <td>{{ $lista->Bodega }}</td>
         </tr>
-    <?php $variable=$lista->Codigo ?>    
-    @endif
-    @endforeach    
-    @else
-    <?php $variable=$lista->Codigo ?>
-    @endif
-    @endif
-    
-    @endforeach
-    @endif
-    @endforeach
+      @endforeach
     </tbody>  
     <tfoot>
             <tr>
@@ -142,7 +112,24 @@
 
 <script>
   $(document).ready(function() {
-      $('#StockGuardado').DataTable();
+      $('#StockGuardado').DataTable({
+          "pageLength": 25,
+          "order": [[6, "desc"]], // Order by Media de ventas descending
+          "language": {
+              "search": "Buscar:",
+              "lengthMenu": "Mostrar _MENU_ registros por página",
+              "zeroRecords": "No se encontraron resultados",
+              "info": "Mostrando página _PAGE_ de _PAGES_",
+              "infoEmpty": "No hay registros disponibles",
+              "infoFiltered": "(filtrado de _MAX_ registros totales)",
+              "paginate": {
+                  "first": "Primero",
+                  "last": "Último",
+                  "next": "Siguiente",
+                  "previous": "Anterior"
+              }
+          }
+      });
   });
 </script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>

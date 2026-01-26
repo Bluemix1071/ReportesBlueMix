@@ -1115,26 +1115,27 @@ function( settings, data, dataIndex ) {
         orderCellsTop: true,
         dom: 'Bfrtip',
         order: [[ 1, "desc" ]],
+        pageLength: 50, // Increased from default 10 to reduce pagination clicks
+        processing: true, // Show processing indicator
+        deferRender: true, // Improve performance with large datasets
         buttons: [
             'copy', 'pdf', 'print', 'excel'
-
         ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
-
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      },
-      fixedHeader: true
+        "language":{
+            "info": "_TOTAL_ registros",
+            "search":  "Buscar",
+            "paginate":{
+                "next": "Siguiente",
+                "previous": "Anterior",
+            },
+            "loadingRecords": "cargando",
+            "processing": "procesando",
+            "emptyTable": "no hay resultados",
+            "zeroRecords": "no hay coincidencias",
+            "infoEmpty": "",
+            "infoFiltered": ""
+        },
+        fixedHeader: true
     });
 
     /* $('#min, #max').on('change', function () {

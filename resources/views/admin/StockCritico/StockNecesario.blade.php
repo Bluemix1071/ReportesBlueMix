@@ -10,9 +10,6 @@
     <div class="container my-4">
         <h1 class="display-4">Stock Necesario</h1>
         <div class="card-body">
-            <?php $variable = 0;
-            $boton = 0;
-            $coincidente = 0; ?>
             <div>
                 <div class="card-body">
                     <!-- tabla principal -->
@@ -31,49 +28,16 @@
                         </thead>
                         <tbody>
                             @foreach ($datos as $lista)
-                                <?php $coincidente = 0; ?>
-                                @if (strtoupper($lista->Codigo) != $variable)
-                                    @if ($lista->Media_de_ventas * 1.2 >= $lista->Bodega)
-                                        @foreach ($familia as $family)
-                                            @if ($lista->codigo_familia == $family->tarefe)
-                                                @if ($lista->Media_de_ventas >= $lista->Bodega)
-                                                    <tr class="text-danger" id="{{ $lista->Codigo }}">
-                                                        <td>Critico</td>
-                                                    @else
-                                                    <tr class="text-warning" id="{{ $lista->Codigo }}">
-                                                        <td>Poca Cantidad</td>
-                                                @endif
-                                                <td>{{ strtoupper($lista->Codigo) }}</td>
-                                                <td>{{ $lista->Detalle }}</td>
-                                                <td>{{ $lista->Marca_producto }}</td>
-                                                <td>{{ $family->taglos }}</td>
-                                                <td>{{ $lista->fecha }}</td>
-                                                <td>{{ $lista->Media_de_ventas }}</td>
-                                                <td>{{ $lista->Bodega }}</td>
-                                                {{-- <td>
-                                                    <button class="fa fa-comment text-primary border border-light"
-                                                        onclick='IngresarComentario(id,value)'
-                                                        value="{{ $lista->Detalle }}" id="{{ $lista->Codigo }}"
-                                                        data-target=#ModalComentar data-toggle="modal"></button>
-                                                    <button class="fa fa-list text-primary border border-light"
-                                                        onclick='historial(id,value)' value="{{ $lista->Detalle }}"
-                                                        id="{{ $lista->Codigo }}" data-target=#ModalVer
-                                                        data-toggle="modal"></button>
-                                                    <button class="fa fa-exchange text-primary border border-light"
-                                                        onclick='ClasificarProducto(id)'
-                                                        id="{{ $lista->Codigo }}"></button>
-                                                    <button
-                                                        class="fa fa-external-link-square text-primary border border-light"
-                                                        onclick='GenerarOrden(id,value)' id="{{ $lista->Codigo }}"
-                                                        value="{{ $lista->Detalle }}"></button>
-                                                </td> --}}
-                                                </tr>
-                                                <?php $variable = $lista->Codigo;
-                                                $coincidente = 0; ?>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                @endif
+                                <tr class="{{ $lista->clase_css }}" id="{{ $lista->Codigo }}">
+                                    <td>{{ $lista->estado_stock }}</td>
+                                    <td>{{ strtoupper($lista->Codigo) }}</td>
+                                    <td>{{ $lista->Detalle }}</td>
+                                    <td>{{ $lista->Marca_producto }}</td>
+                                    <td>{{ $lista->familia_nombre ?? 'N/A' }}</td>
+                                    <td>{{ $lista->fecha }}</td>
+                                    <td>{{ $lista->Media_de_ventas }}</td>
+                                    <td>{{ $lista->Bodega }}</td>
+                                </tr>
                             @endforeach
                         </tbody>
 
@@ -92,7 +56,24 @@
 
     <script>
         $(document).ready(function() {
-            $('#StockNecesario').DataTable();
+            $('#StockNecesario').DataTable({
+                "pageLength": 25,
+                "order": [[6, "desc"]], // Order by Media de ventas descending
+                "language": {
+                    "search": "Buscar:",
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
         });
     </script>
 @endsection

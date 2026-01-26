@@ -16,15 +16,36 @@ class StockCriticoController extends Controller
     
     
     public function StockNecesario(){
-        $datos=DB::table('Stock_critico_2')
-        ->get();
-        $familia=DB::table('vv_tablas22') 
-        ->get();
-        $comentario=DB::table('comentario_stock_critico')
-        ->get();
-        $estado=DB::table('producto_clasificar')
-        ->get();
-        return view('admin.StockCritico.StockNecesario',compact('datos','familia','comentario','estado'));
+        // Optimized query with joins and filtering at database level
+        $datos = DB::table('Stock_critico_2 as sc')
+            ->leftJoin('vv_tablas22 as fam', 'sc.codigo_familia', '=', 'fam.tarefe')
+            ->leftJoin('producto_clasificar as pc', 'sc.Codigo', '=', 'pc.Codigo')
+            ->select(
+                'sc.Codigo',
+                'sc.Detalle',
+                'sc.Marca_producto',
+                'sc.codigo_familia',
+                'sc.fecha',
+                'sc.Media_de_ventas',
+                'sc.Bodega',
+                'fam.taglos as familia_nombre',
+                DB::raw('CASE 
+                    WHEN sc.Media_de_ventas >= sc.Bodega THEN "Critico"
+                    ELSE "Poca Cantidad"
+                END as estado_stock'),
+                DB::raw('CASE 
+                    WHEN sc.Media_de_ventas >= sc.Bodega THEN "text-danger"
+                    ELSE "text-warning"
+                END as clase_css')
+            )
+            ->whereRaw('sc.Media_de_ventas * 1.2 >= sc.Bodega')
+            ->whereNull('pc.Codigo') // Exclude products already classified
+            ->groupBy('sc.Codigo', 'sc.Detalle', 'sc.Marca_producto', 'sc.codigo_familia', 
+                     'sc.fecha', 'sc.Media_de_ventas', 'sc.Bodega', 'fam.taglos')
+            ->orderBy('sc.Media_de_ventas', 'desc')
+            ->get();
+        
+        return view('admin.StockCritico.StockNecesario', compact('datos'));
     }
 
     
@@ -82,17 +103,39 @@ class StockCriticoController extends Controller
         ->delete();
     }
     public function StockGuardado(){
-        $datos=DB::table('Stock_critico_2')        
-        ->get();
-        $familia=DB::table('vv_tablas22')
-        ->get();
-        $comentario=DB::table('comentario_stock_critico')
-        ->get();
-        $status=DB::table('producto_clasificar')
-        ->get();
-        $listado=DB::table('ventas_clasificar')
-        ->get();
-        return view('admin.StockCritico.StockGuardado',compact('datos','familia','comentario','status','listado'));
+        // Optimized query with joins - only get products with Estado = 1
+        $datos = DB::table('Stock_critico_2 as sc')
+            ->join('producto_clasificar as pc', 'sc.Codigo', '=', 'pc.Codigo')
+            ->leftJoin('vv_tablas22 as fam', 'sc.codigo_familia', '=', 'fam.tarefe')
+            ->select(
+                'sc.Codigo',
+                'sc.Detalle',
+                'sc.Marca_producto',
+                'sc.codigo_familia',
+                'sc.fecha',
+                'sc.Media_de_ventas',
+                'sc.Bodega',
+                'fam.taglos as familia_nombre',
+                'pc.Estado',
+                DB::raw('CASE 
+                    WHEN sc.Media_de_ventas >= sc.Bodega THEN "Critico"
+                    ELSE "Cercano critico"
+                END as estado_stock'),
+                DB::raw('CASE 
+                    WHEN sc.Media_de_ventas >= sc.Bodega THEN "text-danger"
+                    ELSE "text-warning"
+                END as clase_css')
+            )
+            ->where('pc.Estado', '=', 1)
+            ->whereRaw('sc.Media_de_ventas * 1.2 >= sc.Bodega')
+            ->groupBy('sc.Codigo', 'sc.Detalle', 'sc.Marca_producto', 'sc.codigo_familia', 
+                     'sc.fecha', 'sc.Media_de_ventas', 'sc.Bodega', 'fam.taglos', 'pc.Estado')
+            ->orderBy('sc.Media_de_ventas', 'desc')
+            ->get();
+        
+        $listado = DB::table('ventas_clasificar')->get();
+        
+        return view('admin.StockCritico.StockGuardado', compact('datos', 'listado'));
     }
 
     //funcion usada para regresar el producto seleccionado a stock necesario

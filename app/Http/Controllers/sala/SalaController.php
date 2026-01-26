@@ -508,27 +508,28 @@ class SalaController extends Controller
     }
 
     public function RequerimientoCompra(Request $request){
+        $fecha1 = date("Y-m-d", strtotime(date("Y-m-d")." - 1 month"));
+        $fecha2 = date("Y-m-d");
 
-      //$requerimiento_compra = DB::table('requerimiento_compra')->get();
-      //$requerimiento_compra = DB::connection('DB2')->table('requerimiento_compra')->get();
-      $fecha1 = date("Y-m-d",strtotime(date("Y-m-d")."- 1 month"));
-      $fecha2 = date("Y-m-d");
+        // Optimized query using Query Builder instead of raw SQL
+        $requerimiento_compra = DB::table('requerimiento_compra')
+            ->leftJoin('Suma_Bodega', 'requerimiento_compra.codigo', '=', 'Suma_Bodega.inarti')
+            ->select(
+                'requerimiento_compra.*',
+                DB::raw('IFNULL(Suma_Bodega.cantidad, 0) as stock_bodega')
+            )
+            ->whereBetween('requerimiento_compra.fecha', [$fecha1, now()])
+            ->orderBy('requerimiento_compra.id', 'desc')
+            ->get();
 
-      /* $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()'); */
-       $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()');
-    //dd($requerimiento_compra);
+        $estados = [
+            ["estado" => "INGRESADO"],
+            ["estado" => "ENVÍO OC"],
+            ["estado" => "BODEGA"],
+            ["estado" => "DESACTIVADO"]
+        ];
 
-      $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
-
-      //$productos = DB::table('producto')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
-
-      //$productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
-
-      //$productos = DB::connection('DB2')->table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
-
-      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
+        return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
     }
 
     public function AgregarRequerimientoCompra(Request $request){
@@ -725,20 +726,28 @@ class SalaController extends Controller
     }
 
     public function BuscarRequerimientoFecha(Request $request){
+        $fecha1 = $request->get('min');
+        $fecha2 = $request->get('max');
 
-      $fecha1 = $request->get('min');
-      $fecha2 = $request->get('max');
+        // Optimized query using Query Builder
+        $requerimiento_compra = DB::table('requerimiento_compra')
+            ->leftJoin('Suma_Bodega', 'requerimiento_compra.codigo', '=', 'Suma_Bodega.inarti')
+            ->select(
+                'requerimiento_compra.*',
+                DB::raw('IFNULL(Suma_Bodega.cantidad, 0) as stock_bodega')
+            )
+            ->whereBetween('requerimiento_compra.fecha', [$fecha1, $fecha2 . ' 23:59:59'])
+            ->orderBy('requerimiento_compra.id', 'desc')
+            ->get();
 
-      $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$request->get('min').'" and "'.$request->get('max').' 23:59:59"');
+        $estados = [
+            ["estado" => "INGRESADO"],
+            ["estado" => "ENVÍO OC"],
+            ["estado" => "BODEGA"],
+            ["estado" => "DESACTIVADO"]
+        ];
 
-      $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
-
-
-      //$productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
-
-      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
-
+        return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
     }
 
     public function BuscarProductosRequerimiento(Request $request){
