@@ -132,7 +132,15 @@ class ListaEscolarController extends Controller
         ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
         ->get()[0];
 
-        $stock_critico = DB::select('SELECT d.id, d.comentario, d.id_curso, d.cod_articulo, p.ARDESC AS descripcion, p.ARMARCA AS marca, d.cantidad AS cantidad, b.bpsrea AS stock_sala, sb.cantidad AS stock_bodega, (b.bpsrea + sb.cantidad) AS stock_total, (ds.sum_cantidad * pr.PCPVDET) AS precio_detalle, pr.PCPVDET AS preciou, d.comentario, (b.bpsrea + sb.cantidad) / (dc.decant30 / 30) AS quedan, c.nombre_curso, c.letra 
+        $dias = $request->get('dias', 14); // Default a 14 días si no se especifica
+
+        $stock_critico = DB::select("SELECT d.id, d.comentario, d.id_curso, d.cod_articulo, p.ARDESC AS descripcion, p.ARMARCA AS marca, d.cantidad AS cantidad, b.bpsrea AS stock_sala, sb.cantidad AS stock_bodega, (IFNULL(b.bpsrea,0) + IFNULL(sb.cantidad,0)) AS stock_total, (ds.sum_cantidad * pr.PCPVDET) AS precio_detalle, pr.PCPVDET AS preciou, d.comentario, 
+            CASE 
+                WHEN (IFNULL(b.bpsrea,0) + IFNULL(sb.cantidad,0)) <= 0 THEN 0 
+                WHEN IFNULL(dc.decant30,0) = 0 THEN 9999 
+                ELSE (IFNULL(b.bpsrea,0) + IFNULL(sb.cantidad,0)) / (dc.decant30 / 30) 
+            END AS quedan, 
+            c.nombre_curso, c.letra 
             FROM ListaEscolar_detalle d 
             LEFT JOIN (SELECT cod_articulo, SUM(cantidad) AS sum_cantidad FROM ListaEscolar_detalle GROUP BY cod_articulo) ds ON d.cod_articulo = ds.cod_articulo 
             LEFT JOIN precios pr ON SUBSTRING(d.cod_articulo, 1, 5) = pr.PCCODI 
@@ -143,9 +151,9 @@ class ListaEscolarController extends Controller
             LEFT JOIN curso c ON d.id_curso = c.id 
             WHERE c.id_colegio = 676 
             GROUP BY d.cod_articulo 
-            HAVING quedan <= 14');
+            HAVING quedan <= $dias");
 
-        return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos', 'stock_critico'));
+        return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos', 'stock_critico', 'dias'));
     }
 
     // public function AgregarCurso(Request $request){
