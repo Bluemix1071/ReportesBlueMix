@@ -10,14 +10,14 @@ class ProductosProveedorController extends Controller
 {
     public function ProductosProveedor()
     {
-        // Obtiene productos relacionados con proveedores
-        $productos = DB::table('productos_fecha')
-            ->join('OrdenDeCompra', 'OrdenDeCompra.NombreProveedor', '=', 'productos_fecha.PVNOMB')
-            ->join ("Stock_critico_2", 'Stock_critico_2.Detalle', '=', 'productos_fecha.ARDESC')
-            ->where ("media_de_ventas", '>=', "Bodega")
-            ->select('productos_fecha.*', 'OrdenDeCompra.*', 'Stock_critico_2.*')
-            ->orderBy('NombreProveedor')
-            ->groupBy('RutProveedor')
+        // Obtiene productos relacionados con proveedores optimizado por códigos
+        $productos = DB::table('productos_fecha as pf')
+            ->join('OrdenDeCompra as oc', 'oc.NombreProveedor', '=', 'pf.PVNOMB')
+            ->join("Stock_critico_2 as sc", 'sc.Codigo', '=', 'pf.DMVPROD')
+            ->whereRaw("sc.Media_de_ventas >= sc.Bodega")
+            ->select('pf.*', 'oc.*', 'sc.Media_de_ventas', 'sc.Bodega', 'sc.fecha as fecha_ventas')
+            ->orderBy('oc.NombreProveedor')
+            ->groupBy('oc.RutProveedor')
             ->get();
 
         return view('Admin.Bodega.ProductosProveedor', compact('productos'));

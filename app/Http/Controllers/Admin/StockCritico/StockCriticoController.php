@@ -62,7 +62,7 @@ class StockCriticoController extends Controller
         JOIN suma_bodega)
         JOIN producto)
     WHERE
-        ((dcargos.DEFECO BETWEEN ((CURDATE() + INTERVAL (-(DAYOFMONTH(CURDATE())) + 1) DAY) - INTERVAL 23 MONTH) AND CURDATE())
+        ((dcargos.DEFECO BETWEEN ((CURDATE() + INTERVAL (-(DAYOFMONTH(CURDATE())) + 1) DAY) - INTERVAL 6 MONTH) AND CURDATE())
             AND (dcargos.DECODI = suma_bodega.inarti)
             AND (dcargos.DECODI = producto.ARCODI)
             AND (dcargos.DETIPO <> 3)) and dcargos.DECODI="'.$id.'"
