@@ -79,7 +79,7 @@
                                     @else
                                         <td style="text-align:left">Boletas Transbank</td>
                                     @endif
-                                    <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                    <td style="text-align:left">{{ $item->CARUTC }}-{{ $item->CARUTD }}</td>
                                     <td style="text-align:left">{{ $item->FPAGO }}</td>
                                     <td style="text-align:left">{{ $item->CACOCA }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
@@ -150,7 +150,7 @@
                                     @else
                                         <td style="text-align:left">Factura</td>
                                     @endif
-                                    <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                    <td style="text-align:left">{{ $item->CARUTC }}-{{ $item->CARUTD }}</td>
                                     <td style="text-align:left">{{ $item->razon }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
                                     <td style="text-align:left">{{ $item->FPAGO }}</td>

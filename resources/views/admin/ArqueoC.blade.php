@@ -77,7 +77,7 @@
                                     @else
                                         <td style="text-align:left">Boletas Transbank</td>
                                     @endif
-                                    <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                    <td style="text-align:left">{{ $item->CARUTC }}-{{ $item->CARUTD }}</td>
                                     <td style="text-align:left">{{ $item->FPAGO }}</td>
                                     <td style="text-align:left">{{ $item->CACOCA }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
@@ -147,7 +147,7 @@
                                     @else
                                         <td style="text-align:left">Boletas Transbank</td>
                                     @endif
-                                    <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                    <td style="text-align:left">{{ $item->CARUTC }}-{{ $item->CARUTD }}</td>
                                     <td style="text-align:left">{{ $item->FPAGO }}</td>
                                     <td style="text-align:left">{{ $item->CACOCA }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
@@ -220,7 +220,7 @@
                                     @else
                                         <td style="text-align:left">Factura</td>
                                     @endif
-                                    <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                    <td style="text-align:left">{{ $item->CARUTC }}-{{ $item->CARUTD }}</td>
                                     <td style="text-align:left">{{ $item->razon }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
                                     <td style="text-align:left">{{ $item->FPAGO }}</td>
@@ -287,7 +287,7 @@
                             @foreach ($facturaTX as $item)
                                 <tr>
 
-                                    <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                    <td style="text-align:left">{{ $item->CARUTC }}-{{ $item->CARUTD }}</td>
                                     <td style="text-align:left">{{ $item->CANMRO }}</td>
                                     <td style="text-align:left">{{ $item->razon }}</td>
                                     <td style="text-align:left">{{ $item->CCPFECHAHO }}</td>
@@ -350,7 +350,7 @@
                             @foreach ($guiaT as $item)
                                 <tr>
                                     <th style="text-align:left">{{ $item->CANMRO }}</th>
-                                    <td style="text-align:left">{{ $item->CARUTC }}</td>
+                                    <td style="text-align:left">{{ $item->CARUTC }}-{{ $item->CARUTD }}</td>
                                     <td style="text-align:left">{{ $item->razon }}</td>
                                     <td style="text-align:left">{{ $item->CAFECO }}</td>
                                     <td style="text-align:left">{{ $item->cacoca }}</td>

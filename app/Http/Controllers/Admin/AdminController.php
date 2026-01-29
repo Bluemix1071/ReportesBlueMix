@@ -32,6 +32,7 @@ use Carbon\Carbon as CarbonAlias;
 use DateTime;
 use DatePeriod;
 use DateInterval;
+use DataTables;
 
 
 class AdminController extends Controller
@@ -1121,9 +1122,24 @@ public function filtrarconsultafacturaboleta(Request $request){
 
 
 
+      $boleta = $boleta->map(function($item) {
+          $item->CARUTD = $this->dv($item->CARUTC);
+          return $item;
+      });
+
+      $factura = $factura->map(function($item) {
+          $item->CARUTD = $this->dv($item->CARUTC);
+          return $item;
+      });
+
   return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora','boletatransbankcount','boletatransbanksumaiva','boletatransbanksumaneto','boletatransbanktotal','totalboletasumaneto','totalboletasumaiva','totalboletasuma','porguia'));
+}
 
-
+public function dv($r){
+    $s=1;
+    for($m=0;$r!=0;$r/=10)
+        $s=($s+$r%10*(9-$m++%6))%11;
+    return chr($s?$s+47:75);
 }
 //-----------------------------Inicio Controller ArqueoC--------------------------------------//
 public function filtrarArqueoC(Request $requestT){
@@ -1590,7 +1606,11 @@ public function filtrarArqueoC(Request $requestT){
     $suma_mnto_tot_17 = intval($boletas_efec_mnto_tot_17[0]->total)+intval($boletas_trans_mnto_tot_17[0]->total)+intval($facturas_pagadas_mnto_tot_17[0]->total)-intval($nc_mnto_tot_17[0]->total);
     $suma_mnto_tot_108 = intval($boletas_efec_mnto_tot_108[0]->total)+intval($boletas_trans_mnto_tot_108[0]->total)+intval($facturas_pagadas_mnto_tot_108[0]->total)-intval($nc_mnto_tot_108[0]->total);
 
-
+    $boletaT = collect($boletaT)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
+    $boletaTR = collect($boletaTR)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
+    $facturaT = collect($facturaT)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
+    $facturaTX = collect($facturaTX)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
+    $guiaT = collect($guiaT)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
 
 return view('admin.ArqueoC',compact('guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT',
 'totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT',
@@ -1780,13 +1800,27 @@ public function actualizaripmac(Request $request)
 
 //------------------------------Fin Cupon Escolar-----------------------------------------------//
 
-
 public function stocktiemporeal (Request $request){
 
 
   if ($request->ajax()) {
-    $productos = DB::table('conveniomarco')->get();
-    return response()->json(['data' => $productos]);
+    $productos = DB::table('bodeprod as bp')
+        ->join('producto as p', 'p.ARCODI', '=', 'bp.bpprod')
+        ->join('precios as pr', 'pr.PCCODI', '=', DB::raw('LEFT(p.ARCODI, 5)'))
+        ->leftJoin('suma_bodega as sb', 'sb.inarti', '=', 'bp.bpprod')
+        ->select([
+            'bp.bpprod as codigo',
+            'p.ARDESC as descripcion',
+            'p.ARMARCA as marca',
+            'bp.bpsrea as stock_sala',
+            DB::raw('IFNULL(sb.cantidad, 0) as stock_bodega'),
+            'pr.PCPVDET as precio_detalle',
+            'pr.PCPVMAY as precio_mayor',
+            DB::raw('ROUND(pr.PCCOSTOREA / 1.19, 1) as neto'),
+            'pr.FechaCambioPrecio'
+        ]);
+
+    return DataTables::of($productos)->make(true);
   }
 
   return view('admin.stocktiemporeal');

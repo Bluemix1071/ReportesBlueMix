@@ -29,18 +29,6 @@
             </tr>
         </thead>
     <tbody>
-      @foreach($datos as $lista)
-        <tr class="{{ $lista->clase_css }}" id="{{ $lista->Codigo }}">
-            <td>{{ $lista->estado_stock }}</td>
-            <td>{{ strtoupper($lista->Codigo) }}</td>
-            <td>{{ $lista->Detalle }}</td>
-            <td>{{ $lista->Marca_producto }}</td>
-            <td>{{ $lista->familia_nombre ?? 'N/A' }}</td>
-            <td>{{ $lista->fecha }}</td>
-            <td>{{ $lista->Media_de_ventas }}</td>
-            <td>{{ $lista->Bodega }}</td>
-        </tr>
-      @endforeach
     </tbody>  
     <tfoot>
             <tr>
@@ -125,7 +113,24 @@
 
         // DataTable initialization
         var table = $('#StockGuardado').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{ route('StockGuardado') }}",
             "pageLength": 25,
+            "columns": [
+                { data: 'estado_stock', name: 'sc.Media_de_ventas' },
+                { data: 'Codigo', name: 'sc.Codigo' },
+                { data: 'Detalle', name: 'sc.Detalle' },
+                { data: 'Marca_producto', name: 'sc.Marca_producto' },
+                { data: 'familia_nombre', name: 'fam.taglos' },
+                { data: 'fecha', name: 'sc.fecha' },
+                { data: 'Media_de_ventas', name: 'sc.Media_de_ventas' },
+                { data: 'Bodega', name: 'sc.Bodega' }
+            ],
+            "createdRow": function(row, data, dataIndex) {
+                $(row).addClass(data.clase_css);
+                $(row).attr('id', data.Codigo);
+            },
             "order": [[6, "desc"]],
             "dom": 'Bfrtip',
             "buttons": [

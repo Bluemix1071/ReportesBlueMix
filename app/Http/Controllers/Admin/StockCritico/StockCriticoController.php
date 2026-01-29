@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\StockCritico;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class StockCriticoController extends Controller
 {
@@ -15,37 +16,43 @@ class StockCriticoController extends Controller
 
     
     
-    public function StockNecesario(){
-        // Optimized query with joins and filtering at database level
-        $datos = DB::table('Stock_critico_2 as sc')
-            ->leftJoin('vv_tablas22 as fam', 'sc.codigo_familia', '=', 'fam.tarefe')
-            ->leftJoin('producto_clasificar as pc', 'sc.Codigo', '=', 'pc.Codigo')
-            ->select(
-                'sc.Codigo',
-                'sc.Detalle',
-                'sc.Marca_producto',
-                'sc.codigo_familia',
-                'sc.fecha',
-                'sc.Media_de_ventas',
-                'sc.Bodega',
-                'fam.taglos as familia_nombre',
-                DB::raw('CASE 
-                    WHEN sc.Media_de_ventas >= sc.Bodega THEN "Critico"
-                    ELSE "Poca Cantidad"
-                END as estado_stock'),
-                DB::raw('CASE 
-                    WHEN sc.Media_de_ventas >= sc.Bodega THEN "text-danger"
-                    ELSE "text-warning"
-                END as clase_css')
-            )
-            ->whereRaw('sc.Media_de_ventas * 1.2 >= sc.Bodega')
-            ->whereNull('pc.Codigo') // Exclude products already classified
-            ->groupBy('sc.Codigo', 'sc.Detalle', 'sc.Marca_producto', 'sc.codigo_familia', 
-                     'sc.fecha', 'sc.Media_de_ventas', 'sc.Bodega', 'fam.taglos')
-            ->orderBy('sc.Media_de_ventas', 'desc')
-            ->get();
+    public function StockNecesario(Request $request){
+        if ($request->ajax()) {
+            $query = DB::table('Stock_critico_2 as sc')
+                ->leftJoin('vv_tablas22 as fam', 'sc.codigo_familia', '=', 'fam.tarefe')
+                ->leftJoin('producto_clasificar as pc', 'sc.Codigo', '=', 'pc.Codigo')
+                ->select([
+                    'sc.Codigo',
+                    'sc.Detalle',
+                    'sc.Marca_producto',
+                    'sc.codigo_familia',
+                    'sc.fecha',
+                    'sc.Media_de_ventas',
+                    'sc.Bodega',
+                    'fam.taglos as familia_nombre',
+                    DB::raw('CASE 
+                        WHEN sc.Media_de_ventas >= sc.Bodega THEN "Critico"
+                        ELSE "Poca Cantidad"
+                    END as estado_stock'),
+                    DB::raw('CASE 
+                        WHEN sc.Media_de_ventas >= sc.Bodega THEN "text-danger"
+                        ELSE "text-warning"
+                    END as clase_css')
+                ])
+                ->whereRaw('sc.Media_de_ventas * 1.2 >= sc.Bodega')
+                ->whereNull('pc.Codigo');
+            
+            return DataTables::of($query)
+                ->editColumn('Codigo', function($row) {
+                    return strtoupper($row->Codigo);
+                })
+                ->addColumn('clase_css', function($row) {
+                    return $row->Media_de_ventas >= $row->Bodega ? 'text-danger' : 'text-warning';
+                })
+                ->make(true);
+        }
         
-        return view('admin.StockCritico.StockNecesario', compact('datos'));
+        return view('admin.StockCritico.StockNecesario');
     }
 
     
@@ -102,40 +109,44 @@ class StockCriticoController extends Controller
         ->where('Codigo','=',$id)
         ->delete();
     }
-    public function StockGuardado(){
-        // Optimized query with joins - only get products with Estado = 1
-        $datos = DB::table('Stock_critico_2 as sc')
-            ->join('producto_clasificar as pc', 'sc.Codigo', '=', 'pc.Codigo')
-            ->leftJoin('vv_tablas22 as fam', 'sc.codigo_familia', '=', 'fam.tarefe')
-            ->select(
-                'sc.Codigo',
-                'sc.Detalle',
-                'sc.Marca_producto',
-                'sc.codigo_familia',
-                'sc.fecha',
-                'sc.Media_de_ventas',
-                'sc.Bodega',
-                'fam.taglos as familia_nombre',
-                'pc.Estado',
-                DB::raw('CASE 
-                    WHEN sc.Media_de_ventas >= sc.Bodega THEN "Critico"
-                    ELSE "Cercano critico"
-                END as estado_stock'),
-                DB::raw('CASE 
-                    WHEN sc.Media_de_ventas >= sc.Bodega THEN "text-danger"
-                    ELSE "text-warning"
-                END as clase_css')
-            )
-            ->where('pc.Estado', '=', 1)
-            ->whereRaw('sc.Media_de_ventas * 1.2 >= sc.Bodega')
-            ->groupBy('sc.Codigo', 'sc.Detalle', 'sc.Marca_producto', 'sc.codigo_familia', 
-                     'sc.fecha', 'sc.Media_de_ventas', 'sc.Bodega', 'fam.taglos', 'pc.Estado')
-            ->orderBy('sc.Media_de_ventas', 'desc')
-            ->get();
+    public function StockGuardado(Request $request){
+        if ($request->ajax()) {
+            $query = DB::table('Stock_critico_2 as sc')
+                ->join('producto_clasificar as pc', 'sc.Codigo', '=', 'pc.Codigo')
+                ->leftJoin('vv_tablas22 as fam', 'sc.codigo_familia', '=', 'fam.tarefe')
+                ->select([
+                    'sc.Codigo',
+                    'sc.Detalle',
+                    'sc.Marca_producto',
+                    'sc.codigo_familia',
+                    'sc.fecha',
+                    'sc.Media_de_ventas',
+                    'sc.Bodega',
+                    'fam.taglos as familia_nombre',
+                    'pc.Estado',
+                    DB::raw('CASE 
+                        WHEN sc.Media_de_ventas >= sc.Bodega THEN "Critico"
+                        ELSE "Cercano critico"
+                    END as estado_stock'),
+                    DB::raw('CASE 
+                        WHEN sc.Media_de_ventas >= sc.Bodega THEN "text-danger"
+                        ELSE "text-warning"
+                    END as clase_css')
+                ])
+                ->where('pc.Estado', '=', 1)
+                ->whereRaw('sc.Media_de_ventas * 1.2 >= sc.Bodega');
+            
+            return DataTables::of($query)
+                ->editColumn('Codigo', function($row) {
+                    return strtoupper($row->Codigo);
+                })
+                ->addColumn('clase_css', function($row) {
+                    return $row->Media_de_ventas >= $row->Bodega ? 'text-danger' : 'text-warning';
+                })
+                ->make(true);
+        }
         
-        $listado = DB::table('ventas_clasificar')->get();
-        
-        return view('admin.StockCritico.StockGuardado', compact('datos', 'listado'));
+        return view('admin.StockCritico.StockGuardado');
     }
 
     //funcion usada para regresar el producto seleccionado a stock necesario

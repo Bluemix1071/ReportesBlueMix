@@ -64,24 +64,26 @@
             } );
 
             var table = $('#productos').DataTable({
+                processing: true,
+                serverSide: true,
                 ajax: {
                     url: "{{ route('stocktiemporeal') }}",
                     type: 'GET'
                 },
+                pageLength: 100,
                 deferRender: true,
-                paging: false,
                 columns: [
-                    { data: 'codigo' },
-                    { data: 'descripcion' },
-                    { data: 'marca' },
-                    { data: 'stock_sala' },
-                    { data: 'stock_bodega' },
-                    { data: 'precio_detalle' },
-                    { data: 'precio_mayor' },
-                    { data: 'neto' },
-                    { data: 'FechaCambioPrecio' }
+                    { data: 'codigo', name: 'bp.bpprod' },
+                    { data: 'descripcion', name: 'p.ARDESC' },
+                    { data: 'marca', name: 'p.ARMARCA' },
+                    { data: 'stock_sala', name: 'bp.bpsrea' },
+                    { data: 'stock_bodega', name: 'sb.cantidad', searchable: false },
+                    { data: 'precio_detalle', name: 'pr.PCPVDET' },
+                    { data: 'precio_mayor', name: 'pr.PCPVMAY' },
+                    { data: 'neto', name: 'pr.PCCOSTOREA', searchable: false },
+                    { data: 'FechaCambioPrecio', name: 'pr.FechaCambioPrecio' }
                 ],
-                dom: 'Bfrtip',
+                dom: 'lBfrtip',
                 buttons: [
                     'copy', 'pdf', 'print'
                 ],
