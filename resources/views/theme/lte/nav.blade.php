@@ -739,13 +739,13 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="" class="nav-link ">
                                         <i class="nav-icon fas fa-circle"></i>
                                         <p>Stock Critico
                                             <i class="right fas fa-angle-left"></i>
                                         </p>
-                                    </a>
+                                    </a> -->
                                     <ul class="nav nav-treeview">
                                         <!-- <li class="nav-item">
                                                 <a href="{{ route('RectificacionNotasCredito') }}" class="nav-link">
