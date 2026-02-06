@@ -12,7 +12,7 @@ class StockTiempoRealExport implements FromView
     {
         $productos = DB::table('bodeprod as bp')
             ->join('producto as p', 'p.ARCODI', '=', 'bp.bpprod')
-            ->join('precios as pr', 'pr.PCCODI', '=', 'p.ARCODI_PREFIX')
+            ->join('precios as pr', 'pr.PCCODI', '=', DB::raw('LEFT(p.ARCODI, 5)'))
             ->leftJoin('suma_bodega as sb', 'sb.inarti', '=', 'bp.bpprod')
             ->select([
                 'bp.bpprod as codigo',
