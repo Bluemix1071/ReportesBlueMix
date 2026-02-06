@@ -183,7 +183,7 @@ public function exportpdfDocProvNc($folio, $rut){
 
   //$son = $formatterES->format($documento->total);
 
-  $datated = $xml->SetDTE->DTE->Documento->TED ?? null;
+  $datated = isset($xml->SetDTE->DTE->Documento->TED) ? $xml->SetDTE->DTE->Documento->TED : null;
   
   if ($datated) {
       $timbre = DNS2D::getBarcodePNG($this->makeTEDstring($datated), 'PDF417');
@@ -252,7 +252,7 @@ public function son($son){
   curl_close($ch);
   if (!$data) return '-';
   $letras = json_decode($data);
-  return $letras->letras ?? '-';
+  return isset($letras->letras) ? $letras->letras : '-';
 }
 
 }
