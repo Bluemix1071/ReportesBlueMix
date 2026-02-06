@@ -735,7 +735,7 @@
                                 <li class="nav-item">
                                     <a href="{{ route('ConsolidacionInventarioBodega') }}" class="nav-link {{ setActive('ConsolidacionInventario') }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Consolidación Inventario</p>
+                                        <p>  Inventario</p>
                                     </a>
                                 </li>
 

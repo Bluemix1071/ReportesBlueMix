@@ -70,6 +70,7 @@
                     url: "{{ route('stocktiemporeal') }}",
                     type: 'GET'
                 },
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
                 pageLength: 100,
                 deferRender: true,
                 columns: [
@@ -85,10 +86,37 @@
                 ],
                 dom: 'lBfrtip',
                 buttons: [
-                    'copy', 'pdf', 'print'
+                    {
+                        extend: 'copy',
+                        text: 'Copiar',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: 'PDF',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    }
                 ],
                 "language": {
                     "info": "_TOTAL_ registros",
+                    "lengthMenu": "Mostrar _MENU_ registros",
                     "paginate": {
                         "next": "Siguiente",
                         "previous": "Anterior",
