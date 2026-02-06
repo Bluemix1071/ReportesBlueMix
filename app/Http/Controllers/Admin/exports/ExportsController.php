@@ -11,6 +11,7 @@ use App\Exports\ProductospormarcaExport;
 use App\Exports\DesviacionExports;
 use App\Exports\CambiodepreciosExport;
 use App\Exports\ordenExport;
+use App\Exports\StockTiempoRealExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 use \NumberFormatter;
@@ -63,6 +64,10 @@ class ExportsController extends Controller
 
 
        }
+       
+    public function exportExcelStockTiempoReal(Request $request){
+        return Excel::download(new StockTiempoRealExport(), 'Stock Tiempo Real.xlsx');
+    }
 
 
 
