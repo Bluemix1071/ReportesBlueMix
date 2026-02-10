@@ -13,9 +13,7 @@ class StockTiempoRealExport implements FromQuery, WithHeadings, WithMapping
     {
         return DB::table('bodeprod as bp')
             ->join('producto as p', 'p.ARCODI', '=', 'bp.bpprod')
-            ->join('precios as pr', function ($join) {
-                $join->on('pr.PCCODI', '=', DB::raw('LEFT(p.ARCODI, 5)'));
-            })
+            ->join('precios as pr', 'pr.PCCODI', '=', 'p.ARCODI_PREFIX')
             ->leftJoin('suma_bodega as sb', 'sb.inarti', '=', 'bp.bpprod')
             ->select([
                 'bp.bpprod as codigo',
@@ -49,11 +47,11 @@ class StockTiempoRealExport implements FromQuery, WithHeadings, WithMapping
     public function map($row): array
     {
         return [
-            $row->codigo,
+            (string) $row->codigo,
             $row->descripcion,
             $row->marca,
-            $row->stock_sala,
-            $row->stock_bodega,
+            (string) $row->stock_sala,
+            (string) $row->stock_bodega,
             $row->precio_detalle,
             $row->precio_mayor,
             $row->neto,
