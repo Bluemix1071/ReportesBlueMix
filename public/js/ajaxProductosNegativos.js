@@ -5,9 +5,12 @@ $('#form').on('submit',function(e){
 e.preventDefault();
 
 var data =$(this).serialize();*/
-var text = document.getElementById('xd').value;
-var excel= document.getElementById('valorBuscar').value = text;
-console.log(excel);
+    var xdElement = document.getElementById('xd');
+    if (xdElement) {
+        var text = xdElement.value;
+        var excel = document.getElementById('valorBuscar').value = text;
+        console.log(excel);
+    }
  /*
 var form = $(this);
 var url = form.attr('action');

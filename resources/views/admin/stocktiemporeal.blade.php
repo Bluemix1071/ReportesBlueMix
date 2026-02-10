@@ -4,7 +4,7 @@
 @endsection
 @section('styles')
 
-<link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}">
 
 @endsection
 
@@ -23,48 +23,49 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                    <div class="alert alert-info" role="alert">
-                        <strong>Tip:</strong> Para copiar o exportar todos los registros (más de 27.000), utiliza el botón <strong>Excel</strong>. Es mucho más rápido y seguro para grandes cantidades de datos.
-                    </div>
-                    <table id="productos" class="table table-bordered table-hover dataTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">Codigo</th>
-                                <th scope="col">Descripcion</th>
-                                <th scope="col">Marca</th>
-                                <th scope="col">Stock Sala</th>
-                                <th scope="col">Stock Bodega</th>
-                                <th scope="col">Precio Detalle</th>
-                                <th scope="col">Precio Mayor</th>
-                                <th scope="col">Neto</th>
-                                <th scope="col">Cambio Precio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="alert alert-info" role="alert">
+                    <strong>Tip:</strong> Para copiar o exportar todos los registros (más de 27.000), utiliza el botón
+                    <strong>Excel</strong>. Es mucho más rápido y seguro para grandes cantidades de datos.
+                </div>
+                <table id="productos" class="table table-bordered table-hover dataTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Stock Sala</th>
+                            <th scope="col">Stock Bodega</th>
+                            <th scope="col">Precio Detalle</th>
+                            <th scope="col">Precio Mayor</th>
+                            <th scope="col">Neto</th>
+                            <th scope="col">Cambio Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
-            $('#productos thead tr').clone(true).appendTo( '#productos thead' );
-            $('#productos thead tr:eq(1) th').each( function (i) {
+            $('#productos thead tr').clone(true).appendTo('#productos thead');
+            $('#productos thead tr:eq(1) th').each(function (i) {
                 var title = $(this).text();
-                $(this).html( '<input type="text" class="form-control" placeholder="Buscar '+title+'" />' );
-        
-                $( 'input', this ).on( 'keyup change', function () {
-                    if ( table.column(i).search() !== this.value ) {
+                $(this).html('<input type="text" class="form-control" placeholder="Buscar ' + title + '" />');
+
+                $('input', this).on('keyup change', function () {
+                    if (table.column(i).search() !== this.value) {
                         table
                             .column(i)
-                            .search( this.value )
+                            .search(this.value)
                             .draw();
                     }
-                } );
-            } );
+                });
+            });
 
             var table = $('#productos').DataTable({
                 processing: true,
@@ -92,14 +93,14 @@
                     {
                         extend: 'copy',
                         text: 'Copiar',
-                        action: function ( e, dt, node, config ) {
+                        action: function (e, dt, node, config) {
                             var self = this;
 
                             Swal.fire({
                                 title: 'Copiando registros...',
                                 text: 'Esto puede tardar unos segundos para los más de 27.000 registros.',
                                 allowOutsideClick: false,
-                                didOpen: () => {
+                                onOpen: () => {
                                     Swal.showLoading()
                                 }
                             });
@@ -115,20 +116,20 @@
                                         value: dt.search()
                                     }
                                 },
-                                success: function(json) {
+                                success: function (json) {
                                     var output = "";
                                     output += "Codigo\tDescripcion\tMarca\tStock Sala\tStock Bodega\tPrecio Detalle\tPrecio Mayor\tNeto\tCambio Precio\n";
-                                    
-                                    json.data.forEach(function(row) {
-                                        output += (row.codigo || '') + "\t" + 
-                                                  (row.descripcion || '') + "\t" + 
-                                                  (row.marca || '') + "\t" + 
-                                                  (row.stock_sala || 0) + "\t" + 
-                                                  (row.stock_bodega || 0) + "\t" + 
-                                                  (row.precio_detalle || '') + "\t" + 
-                                                  (row.precio_mayor || '') + "\t" + 
-                                                  (row.neto || '') + "\t" + 
-                                                  (row.FechaCambioPrecio || '') + "\n";
+
+                                    json.data.forEach(function (row) {
+                                        output += (row.codigo || '') + "\t" +
+                                            (row.descripcion || '') + "\t" +
+                                            (row.marca || '') + "\t" +
+                                            (row.stock_sala || 0) + "\t" +
+                                            (row.stock_bodega || 0) + "\t" +
+                                            (row.precio_detalle || '') + "\t" +
+                                            (row.precio_mayor || '') + "\t" +
+                                            (row.neto || '') + "\t" +
+                                            (row.FechaCambioPrecio || '') + "\n";
                                     });
 
                                     var temp = $("<textarea>");
@@ -140,7 +141,7 @@
                                     Swal.close();
                                     Swal.fire('¡Copiado!', 'Se han copiado ' + json.data.length + ' registros al portapapeles.', 'success');
                                 },
-                                error: function() {
+                                error: function () {
                                     Swal.close();
                                     Swal.fire('Error', 'No se pudo obtener la información para copiar.', 'error');
                                 }
@@ -149,7 +150,7 @@
                     },
                     {
                         text: 'Excel',
-                        action: function ( e, dt, node, config ) {
+                        action: function (e, dt, node, config) {
                             window.location.href = "{{ route('exportExcelStockTiempoReal') }}";
                         }
                     },
@@ -190,7 +191,7 @@
                 orderCellsTop: true,
                 fixedHeader: true
             });
- 
+
         });
     </script>
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
