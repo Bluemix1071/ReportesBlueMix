@@ -7,8 +7,15 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Illuminate\Support\Facades\DB;
 
-class StockTiempoRealExport implements FromQuery, WithHeadings, WithMapping
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+
+class StockTiempoRealExport implements FromQuery, WithHeadings, WithMapping, WithChunkReading
 {
+    public function chunkSize(): int
+    {
+        return 1000;
+    }
+
     public function query()
     {
         return DB::table('bodeprod as bp')
