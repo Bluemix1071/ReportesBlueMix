@@ -1942,7 +1942,8 @@ class AdminController extends Controller
 
   public function stocktiemporeal(Request $request)
   {
-
+    set_time_limit(300);
+    ini_set('memory_limit', '512M');
 
     if ($request->ajax()) {
       $productos = DB::table('bodeprod as bp')

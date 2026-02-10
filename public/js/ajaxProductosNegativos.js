@@ -1,76 +1,77 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-/*
-$('#form').on('submit',function(e){
-e.preventDefault();
-
-var data =$(this).serialize();*/
+    /*
+    $('#form').on('submit',function(e){
+    e.preventDefault();
+    
+    var data =$(this).serialize();*/
     var xdElement = document.getElementById('xd');
-    if (xdElement) {
+    var valorBuscarElement = document.getElementById('valorBuscar');
+    if (xdElement && valorBuscarElement) {
         var text = xdElement.value;
-        var excel = document.getElementById('valorBuscar').value = text;
-        console.log(excel);
+        valorBuscarElement.value = text;
+        console.log("Busqueda: " + text);
     }
- /*
-var form = $(this);
-var url = form.attr('action');
-
-
-
-
-$.post(url,data,function(result){
-    //console.log(result.productos);
-    let res =document.querySelector('#res');
-   // let pagination = document.querySelector('#productos_paginate');
+    /*
+   var form = $(this);
+   var url = form.attr('action');
    
-    $(".productosNegativos").html(result);
+   
+   
+   
+   $.post(url,data,function(result){
+       //console.log(result.productos);
+       let res =document.querySelector('#res');
+      // let pagination = document.querySelector('#productos_paginate');
+      
+       $(".productosNegativos").html(result);
+   
+   
+   }).fail(function(){
+   
+       alert('algo salio mal ');
+       //console.log(result.productos);
+   });
+   
+   });
+   */
 
-
-}).fail(function(){
-
-    alert('algo salio mal ');
-    //console.log(result.productos);
-});
-
-});
-*/
-
-/*
-});
-
-$(document).on('click','.pagination a',function(e){
-e.preventDefault();
-
-
-var text = document.getElementById('xd').value;
-if(text==''){ 
-var page = $(this).attr('href').split('page=')[1];
-var route= "ProductosNegativos"
-$.ajax({
-    url:route,
-    data: {page :page},
-    type: 'GET',
-    dataType: 'json',
-    success: function (data){
-    $(".productosNegativos").html(data);
+    /*
+    });
+    
+    $(document).on('click','.pagination a',function(e){
+    e.preventDefault();
+    
+    
+    var text = document.getElementById('xd').value;
+    if(text==''){ 
+    var page = $(this).attr('href').split('page=')[1];
+    var route= "ProductosNegativos"
+    $.ajax({
+        url:route,
+        data: {page :page},
+        type: 'GET',
+        dataType: 'json',
+        success: function (data){
+        $(".productosNegativos").html(data);
+        }
+    });
+    
+    }else{
+    var page = $(this).attr('href').split('page=')[1];
+    var route= "ProductosNegativos2"
+    $.ajax({
+        url:route,
+        data: {page: page},
+        type: 'GET',
+        dataType: 'json',
+        success: function (data){
+        $(".productosNegativos").html(data);
+        }
+    });
+    
     }
-});
-
-}else{
-var page = $(this).attr('href').split('page=')[1];
-var route= "ProductosNegativos2"
-$.ajax({
-    url:route,
-    data: {page: page},
-    type: 'GET',
-    dataType: 'json',
-    success: function (data){
-    $(".productosNegativos").html(data);
-    }
-});
-
-}
-*/
+    */
 
 });
 
