@@ -37,185 +37,197 @@ use DataTables;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\View\View
+   */
+  public function index()
+  {
 
 
     return view('/publicos');
 
 
-    }
+  }
 
-    public function registrar(){
+  public function registrar()
+  {
 
     return view('auth.register');
-    }
+  }
 
 
-    public function CuadroDeMAndo(){
-      $productos=DB::table('productos_negativos')->get();
+  public function CuadroDeMAndo()
+  {
+    $productos = DB::table('productos_negativos')->get();
 
 
-    return view('admin.CuadroDeMando',compact('productos'));
-    }
+    return view('admin.CuadroDeMando', compact('productos'));
+  }
 
-    public function ProductosPorMarca(Request $request){
+  public function ProductosPorMarca(Request $request)
+  {
 
-        $marcas=DB::table('marcas')
-        ->get();
+    $marcas = DB::table('marcas')
+      ->get();
 
-        // dd($marcas);
+    // dd($marcas);
 
-        return view('admin.productospormarca',compact('marcas'));
+    return view('admin.productospormarca', compact('marcas'));
 
-    }
+  }
 
-    public function ProductosPorMarcafiltrar(Request $request){
+  public function ProductosPorMarcafiltrar(Request $request)
+  {
 
-        // dd($request->all());
+    // dd($request->all());
 
-      $productos=DB::table('Productos_x_Marca')
-      ->where('MARCA_DEL_PRODUCTO',$request->marcas)
+    $productos = DB::table('Productos_x_Marca')
+      ->where('MARCA_DEL_PRODUCTO', $request->marcas)
       ->get();
 
 
-        $marcas=DB::table('marcas')
-        ->get();
+    $marcas = DB::table('marcas')
+      ->get();
 
 
-      return view('admin.productospormarca',compact('productos','marcas'));
-    }
+    return view('admin.productospormarca', compact('productos', 'marcas'));
+  }
 
 
-    public function comprassegunprov(Request $request){
+  public function comprassegunprov(Request $request)
+  {
 
-      $comprasprove=DB::table('compras_por_ano_segun_proveedor')->get();
+    $comprasprove = DB::table('compras_por_ano_segun_proveedor')->get();
 
-      return view('admin.comprassegunproveedor',compact('comprasprove'));
-    }
+    return view('admin.comprassegunproveedor', compact('comprasprove'));
+  }
 
-    public function ordenesdecompra(Request $request)
-    {
+  public function ordenesdecompra(Request $request)
+  {
 
-      $ordendecompra =DB::table('ordenesdecompra')->get();
+    $ordendecompra = DB::table('ordenesdecompra')->get();
 
-      return view('admin.ordenesdecompra',compact('ordendecompra'));
-    }
+    return view('admin.ordenesdecompra', compact('ordendecompra'));
+  }
 
-    public function areaproveedor()
-    {
-
-
-      return view('admin.areaproveedor');
-    }
+  public function areaproveedor()
+  {
 
 
-    public function areaproveedorfamilia(Request $request)
-    {
-
-      $familia =DB::table('stock_productos_area_proveedor_familia')->get();
+    return view('admin.areaproveedor');
+  }
 
 
-      return view('admin.areaproveedorfamilia',compact('familia'));
-    }
+  public function areaproveedorfamilia(Request $request)
+  {
+
+    $familia = DB::table('stock_productos_area_proveedor_familia')->get();
+
+
+    return view('admin.areaproveedorfamilia', compact('familia'));
+  }
 
 
 
-    public function porcentajeDesviacion (){
+  public function porcentajeDesviacion()
+  {
 
 
-      $porcentaje=DB::table('porcentaje_desviacion')
+    $porcentaje = DB::table('porcentaje_desviacion')
       ->orderBy('desv', 'desc')
       ->paginate(10);
 
-      return view('admin.PorcentajeDesviacion',compact('porcentaje'));
-    }
+    return view('admin.PorcentajeDesviacion', compact('porcentaje'));
+  }
 
-    public function filtrarDesviacion (Request $request){
+  public function filtrarDesviacion(Request $request)
+  {
 
-      $fecha1=$request->fecha1;
-      $fecha2=$request->fecha2;
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
 
-      $porcentaje=DB::table('porcentaje_desviacion')
-      ->whereBetween('ultima_fecha', array($request->fecha1,$request->fecha2))
+    $porcentaje = DB::table('porcentaje_desviacion')
+      ->whereBetween('ultima_fecha', array($request->fecha1, $request->fecha2))
       ->orderBy('desv', 'desc')
       ->paginate(2000);
 
 
 
-      return view('admin.PorcentajeDesviacion',compact('porcentaje','fecha1','fecha2'));
-    }
+    return view('admin.PorcentajeDesviacion', compact('porcentaje', 'fecha1', 'fecha2'));
+  }
 
-    public function filtarProductospormarca (Request $request){ /*Referencia Aqui */
+  public function filtarProductospormarca(Request $request)
+  { /*Referencia Aqui */
 
-      if ($request->searchText==null) {
-       $productos=DB::table('Productos_x_Marca')->paginate(10);
-       return view('admin.productospormarca',comparct('productos'));
-       }else{
-        $buscador=$request->searchText;
+    if ($request->searchText == null) {
+      $productos = DB::table('Productos_x_Marca')->paginate(10);
+      return view('admin.productospormarca', compact('productos'));
+    } else {
+      $buscador = $request->searchText;
 
-        $productos=DB::table('Productos_x_Marca')
-        ->where('nombre_del_producto','LIKE','%'.$request->searchText.'%')
-        ->orwhere('codigo_producto','LIKE','%'.$request->searchText.'%')
-        ->orwhere('MARCA_DEL_PRODUCTO','LIKE','%'.$request->searchText.'%')
-        ->orwhere('cantidad_en_bodega','LIKE','%'.$request->searchText.'%')
-        ->orwhere('cantidad_en_sala','LIKE','%'.$request->searchText.'%')
+      $productos = DB::table('Productos_x_Marca')
+        ->where('nombre_del_producto', 'LIKE', '%' . $request->searchText . '%')
+        ->orwhere('codigo_producto', 'LIKE', '%' . $request->searchText . '%')
+        ->orwhere('MARCA_DEL_PRODUCTO', 'LIKE', '%' . $request->searchText . '%')
+        ->orwhere('cantidad_en_bodega', 'LIKE', '%' . $request->searchText . '%')
+        ->orwhere('cantidad_en_sala', 'LIKE', '%' . $request->searchText . '%')
         ->paginate(2000);
-       }
-       return view('admin.productospormarca',compact('productos','buscador'));
     }
+    return view('admin.productospormarca', compact('productos', 'buscador'));
+  }
 
 
-    public function Productos(){
-      //$productos=DB::table('Vista_Productos')->get();
-      return view('admin.Productos');
-    }
+  public function Productos()
+  {
+    //$productos=DB::table('Vista_Productos')->get();
+    return view('admin.Productos');
+  }
 
 
-    public function FiltrarProductos(Request $request){
+  public function FiltrarProductos(Request $request)
+  {
 
-      $consulta=$request->searchText;
+    $consulta = $request->searchText;
 
-      $productos=DB::table('Vista_Productos')
-      ->where('interno','LIKE','%'.$request->searchText.'%')
-      ->orwhere('descripcion','LIKE','%'.$request->searchText.'%')
-      ->orwhere('marca','LIKE','%'.$request->searchText.'%')
+    $productos = DB::table('Vista_Productos')
+      ->where('interno', 'LIKE', '%' . $request->searchText . '%')
+      ->orwhere('descripcion', 'LIKE', '%' . $request->searchText . '%')
+      ->orwhere('marca', 'LIKE', '%' . $request->searchText . '%')
       ->get();
 
 
 
-      return view('admin.Productos',compact('productos','consulta'));
+    return view('admin.Productos', compact('productos', 'consulta'));
 
-    }
+  }
 
-    public function IndexVentaProductos(){
+  public function IndexVentaProductos()
+  {
 
-        $marcas=DB::table('marcas')->get();
-
-
-      return view('admin.VentasProductosPorFecha',compact('marcas'));
-    }
+    $marcas = DB::table('marcas')->get();
 
 
+    return view('admin.VentasProductosPorFecha', compact('marcas'));
+  }
 
 
-    public function VentaProductosPorFechas (Request $request){
 
-      $marca = $request->marca;
-      $rut = $request->rut;
-      $fecha1=$request->fecha1;
-      $fecha2=$request->fecha2;
 
-      if ($request->rut==null) {
+  public function VentaProductosPorFechas(Request $request)
+  {
 
-      $marcas=DB::table('marcas')->get();
+    $marca = $request->marca;
+    $rut = $request->rut;
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
 
-      $productos=DB::select('select *
+    if ($request->rut == null) {
+
+      $marcas = DB::table('marcas')->get();
+
+      $productos = DB::select('select *
       from
           dcargos as dc,
           producto as p,
@@ -226,18 +238,18 @@ class AdminController extends Controller
               and c.CATIPO != 3
               and c.CATIPO = dc.DETIPO
               and p.ARMARCA = ?
-              and dc.DEFECO between ? and ?', [$marca,$fecha1,$fecha2]);
+              and dc.DEFECO between ? and ?', [$marca, $fecha1, $fecha2]);
 
 
 
 
 
-      return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2','marcas','rut'));
+      return view('admin.VentasProductosPorFecha', compact('productos', 'marca', 'fecha1', 'fecha2', 'marcas', 'rut'));
 
-      }else{
+    } else {
 
-        $marcas=DB::table('marcas')->get();
-        $productos=DB::select('select *
+      $marcas = DB::table('marcas')->get();
+      $productos = DB::select('select *
         from
             dcargos as dc,
             producto as p,
@@ -248,38 +260,40 @@ class AdminController extends Controller
                 and c.CATIPO != 3
                 and c.CATIPO = dc.DETIPO
                 and p.ARRUTPROV2 = ?
-                and dc.DEFECO between ? and ?', [$rut,$fecha1,$fecha2]);
+                and dc.DEFECO between ? and ?', [$rut, $fecha1, $fecha2]);
 
 
 
-        return view('admin.VentasProductosPorFecha',compact('productos','marca','fecha1','fecha2','marcas','rut'));
-
-      }
-
+      return view('admin.VentasProductosPorFecha', compact('productos', 'marca', 'fecha1', 'fecha2', 'marcas', 'rut'));
 
     }
 
-    public function IndexCompraProductos(Request $request){
 
-        $marcas=DB::table('marcas')->get();
+  }
 
+  public function IndexCompraProductos(Request $request)
+  {
 
-
-      return view('admin.CompraProductosPorFecha',compact('marcas'));
-    }
-
-    public function CompraProductosPorFechas (Request $request){
-
-
-      $marca = $request->marca;
-      $fecha1=$request->fecha1;
-      $fecha2=$request->fecha2;
-
-      $marcas=DB::table('marcas')->get();
+    $marcas = DB::table('marcas')->get();
 
 
 
-      $productos=DB::select('select
+    return view('admin.CompraProductosPorFecha', compact('marcas'));
+  }
+
+  public function CompraProductosPorFechas(Request $request)
+  {
+
+
+    $marca = $request->marca;
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+
+    $marcas = DB::table('marcas')->get();
+
+
+
+    $productos = DB::select('select
       p.ARMARCA as "marca",
       d.DMVPROD AS "Cod_Producto",
       p.ARDESC AS "Descripción_Producto",
@@ -298,624 +312,631 @@ class AdminController extends Controller
           AND c.CMVFECG BETWEEN  ?  AND  ?
           AND pr.PCCODI = LEFT(p.ARCODI, 5)
   GROUP BY p.ARMARCA , d.DMVPROD , p.ARDESC
-  ORDER BY d.DMVPROD', [$marca,$fecha1,$fecha2]);
+  ORDER BY d.DMVPROD', [$marca, $fecha1, $fecha2]);
 
 
 
-      return view('admin.CompraProductosPorFecha',compact('productos','marca','fecha1','fecha2','marcas'));
+    return view('admin.CompraProductosPorFecha', compact('productos', 'marca', 'fecha1', 'fecha2', 'marcas'));
+
+
+  }
+
+
+
+
+  public function DocumentosPorHora(Request $request)
+  {
+
+
+
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    $TotalBoleta = 0;
+    $TotalFactura = 0;
+    $TotalCantBoletas = 0;
+    $TotalCantFacturas = 0;
+    $collection = Collection::make($vacio = []);
+
+    //dd($fecha1,$fecha2);
+
+    //Rango de las 9:00:00 a las 9:59:59
+    $doc1 = DB::select('select
+       tipo as "Tipo" ,
+       count(cantidad) as "cantidad",
+       round(Sum(bruto*1.19)) as "bruto"
+       from compras_x_hora
+       where
+       fecha_real between ? and ? and
+       tiempo Between 90000 And 95959 group by tipo', [$fecha1, $fecha2]);
+    //convertir array en coleccion
+    //dd($doc1);
+    //dd($doc1);
+    if (empty($doc1)) {
+
+
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc1[0])) {
+
+
+        $TotalBoleta = 0;
+        $TotalCantBoletas = 0;
+
+
+
+      } else {
+
+        $TotalBoleta = $doc1[0]->bruto;
+        $TotalCantBoletas = $doc1[0]->cantidad;
+      }
+
+      if (!isset($doc1[1])) {
+        $TotalFactura = 0;
+        $TotalCantFacturas = 0;
+
+
+
+      } else {
+
+        $TotalFactura = $doc1[1]->bruto;
+        $TotalCantFacturas = $doc1[1]->cantidad;
+        $collection = Collection::make($doc1);
+      }
+
 
 
     }
 
 
-
-
-  public function DocumentosPorHora(Request $request){
-
-
-
-    $fecha1=$request->fecha1;
-    $fecha2=$request->fecha2;
-    $TotalBoleta;
-    $TotalFactura ;
-    $TotalCantBoletas;
-    $TotalCantFacturas ;
-    $collection = Collection::make($vacio=[]);
-
-    //dd($fecha1,$fecha2);
-
-      //Rango de las 9:00:00 a las 9:59:59
-      $doc1=DB::select( 'select
+    //Rango de las 10:00:00 a las 10:59:59
+    $doc2 = DB::select('select
        tipo as "Tipo" ,
        count(cantidad) as "cantidad",
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
        fecha_real between ? and ? and
-       tiempo Between 90000 And 95959 group by tipo', [$fecha1,$fecha2]);
-       //convertir array en coleccion
-      //dd($doc1);
-      //dd($doc1);
-      if(empty($doc1)){
+       tiempo Between 100000 And 105959 group by tipo', [$fecha1, $fecha2]);
+
+    if (empty($doc2)) {
+
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc2[0])) {
 
 
-      }else{
-            //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc1[0] )){
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
+      } else {
 
-            $TotalBoleta =   0;
-             $TotalCantBoletas =0;
+        $TotalBoleta = $TotalBoleta + $doc2[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc2[0]->cantidad;
+      }
 
+      if (!isset($doc2[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-
-            }else{
-
-              $TotalBoleta =  $doc1[0]->bruto;
-              $TotalCantBoletas = $doc1[0]->cantidad;
-            }
-
-            if(! isset($doc1[1] )){
-               $TotalFactura = 0;
-              $TotalCantFacturas = 0;
-
-
-
-            }else{
-
-            $TotalFactura = $doc1[1]->bruto;
-            $TotalCantFacturas =$doc1[1]->cantidad;
-            $collection = Collection::make($doc1);
-          }
-
-
+        $TotalFactura = $TotalFactura + $doc2[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc2[1]->cantidad;
 
       }
 
+      //añadir mas rangos a la coleccion
+      $collection = $collection->merge(Collection::make($doc2));
+    }
 
-      //Rango de las 10:00:00 a las 10:59:59
-       $doc2=DB::select( 'select
+    //Rango de las 11:00:00 a las 11:59:59
+    $doc3 = DB::select('select
        tipo as "Tipo" ,
        count(cantidad) as "cantidad",
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
        fecha_real between ? and ? and
-       tiempo Between 100000 And 105959 group by tipo', [$fecha1,$fecha2]);
+       tiempo Between 110000 And 115959 group by tipo', [$fecha1, $fecha2]);
+    if (empty($doc3)) {
 
-       if(empty($doc2)){
 
-       }else{
+    } else {
       //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc2[0] )){
+      //posicion [1] Facturas
+      if (!isset($doc3[0])) {
 
 
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
-            }else{
+      } else {
 
-              $TotalBoleta = $TotalBoleta + $doc2[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc2[0]->cantidad;
-            }
+        $TotalBoleta = $TotalBoleta + $doc3[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc3[0]->cantidad;
+      }
 
-            if(! isset($doc2[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
+      if (!isset($doc3[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-            $TotalFactura =$TotalFactura + $doc2[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc2[1]->cantidad;
+        $TotalFactura = $TotalFactura + $doc3[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc3[1]->cantidad;
 
-          }
+      }
 
-        //añadir mas rangos a la coleccion
-       $collection = $collection->merge(Collection::make($doc2));
-       }
+      $collection = $collection->merge(Collection::make($doc3));
+    }
 
-       //Rango de las 11:00:00 a las 11:59:59
-       $doc3=DB::select('select
+    //Rango de las 12:00:00 a las 12:59:59
+    $doc4 = DB::select('select
        tipo as "Tipo" ,
        count(cantidad) as "cantidad",
        round(Sum(bruto*1.19)) as "bruto"
        from compras_x_hora
        where
        fecha_real between ? and ? and
-       tiempo Between 110000 And 115959 group by tipo', [$fecha1,$fecha2]);
-       if(empty($doc3)){
+       tiempo Between 120000 And 125959 group by tipo', [$fecha1, $fecha2]);
+
+    if (empty($doc4)) {
 
 
-       }else{
-       //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc3[0] )){
-
-
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
-
-            }else{
-
-              $TotalBoleta = $TotalBoleta + $doc3[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc3[0]->cantidad;
-            }
-
-            if(! isset($doc3[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
-
-            $TotalFactura =$TotalFactura + $doc3[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc3[1]->cantidad;
-
-          }
-
-       $collection = $collection->merge(Collection::make($doc3));
-       }
-
-        //Rango de las 12:00:00 a las 12:59:59
-       $doc4=DB::select('select
-       tipo as "Tipo" ,
-       count(cantidad) as "cantidad",
-       round(Sum(bruto*1.19)) as "bruto"
-       from compras_x_hora
-       where
-       fecha_real between ? and ? and
-       tiempo Between 120000 And 125959 group by tipo', [$fecha1,$fecha2]);
-
-       if(empty($doc4)){
-
-
-       }else{
-     //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc4[0] )){
-
-
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
-
-            }else{
-
-              $TotalBoleta = $TotalBoleta + $doc4[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc4[0]->cantidad;
-            }
-
-            if(! isset($doc4[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
-
-            $TotalFactura =$TotalFactura + $doc4[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc4[1]->cantidad;
-
-          }
-
-       $collection = $collection->merge(Collection::make($doc4));
-       }
-      //ango de las 13:00:00 a las 13:59:59
-       $doc5=DB::select('select
-       tipo as "Tipo" ,
-       count(cantidad) as "cantidad",
-       round(Sum(bruto*1.19)) as "bruto"
-       from compras_x_hora
-       where
-       fecha_real between ? and ? and
-       tiempo Between 130000 And 135959 group by tipo' , [$fecha1,$fecha2]);
-
-       if(empty($doc5)){
-
-       }else{
+    } else {
       //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc5[0] )){
+      //posicion [1] Facturas
+      if (!isset($doc4[0])) {
 
 
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
-            }else{
+      } else {
 
-              $TotalBoleta = $TotalBoleta + $doc5[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc5[0]->cantidad;
-            }
+        $TotalBoleta = $TotalBoleta + $doc4[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc4[0]->cantidad;
+      }
 
-            if(! isset($doc5[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
+      if (!isset($doc4[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-            $TotalFactura =$TotalFactura + $doc5[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc5[1]->cantidad;
+        $TotalFactura = $TotalFactura + $doc4[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc4[1]->cantidad;
 
-          }
+      }
 
-       $collection = $collection->merge(Collection::make($doc5));
-       }
-        //Rango de las 14:00:00 a las 14:59:59
-        $doc6=DB::select('select
+      $collection = $collection->merge(Collection::make($doc4));
+    }
+    //ango de las 13:00:00 a las 13:59:59
+    $doc5 = DB::select('select
+       tipo as "Tipo" ,
+       count(cantidad) as "cantidad",
+       round(Sum(bruto*1.19)) as "bruto"
+       from compras_x_hora
+       where
+       fecha_real between ? and ? and
+       tiempo Between 130000 And 135959 group by tipo', [$fecha1, $fecha2]);
+
+    if (empty($doc5)) {
+
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc5[0])) {
+
+
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
+
+      } else {
+
+        $TotalBoleta = $TotalBoleta + $doc5[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc5[0]->cantidad;
+      }
+
+      if (!isset($doc5[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
+
+        $TotalFactura = $TotalFactura + $doc5[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc5[1]->cantidad;
+
+      }
+
+      $collection = $collection->merge(Collection::make($doc5));
+    }
+    //Rango de las 14:00:00 a las 14:59:59
+    $doc6 = DB::select('select
         tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
-        tiempo Between 140000 And 145959 group by tipo', [$fecha1,$fecha2]);
-        if(empty($doc6)){
+        tiempo Between 140000 And 145959 group by tipo', [$fecha1, $fecha2]);
+    if (empty($doc6)) {
 
-        }else{
-       //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc6[0] )){
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc6[0])) {
 
 
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
-            }else{
+      } else {
 
-              $TotalBoleta = $TotalBoleta + $doc6[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc6[0]->cantidad;
-            }
+        $TotalBoleta = $TotalBoleta + $doc6[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc6[0]->cantidad;
+      }
 
-            if(! isset($doc6[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
+      if (!isset($doc6[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-            $TotalFactura =$TotalFactura + $doc6[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc6[1]->cantidad;
+        $TotalFactura = $TotalFactura + $doc6[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc6[1]->cantidad;
 
-          }
+      }
 
-        $collection = $collection->merge(Collection::make($doc6));
-        }
-        //Rango de las 15:00:00 a las 15:59:59
-        $doc7=DB::select('select
+      $collection = $collection->merge(Collection::make($doc6));
+    }
+    //Rango de las 15:00:00 a las 15:59:59
+    $doc7 = DB::select('select
         tipo as "Tipo",
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
-        tiempo Between 150000 And 155959 group by tipo', [$fecha1,$fecha2]);
+        tiempo Between 150000 And 155959 group by tipo', [$fecha1, $fecha2]);
 
-        //dd($doc7);
-        if(empty($doc7)){
+    //dd($doc7);
+    if (empty($doc7)) {
 
-        }else{
-       //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc7[0] )){
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc7[0])) {
 
 
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
-            }else{
+      } else {
 
-              $TotalBoleta = $TotalBoleta + $doc7[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc7[0]->cantidad;
-            }
+        $TotalBoleta = $TotalBoleta + $doc7[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc7[0]->cantidad;
+      }
 
-            if(! isset($doc7[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
+      if (!isset($doc7[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-            $TotalFactura =$TotalFactura + $doc7[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc7[1]->cantidad;
+        $TotalFactura = $TotalFactura + $doc7[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc7[1]->cantidad;
 
-          }
+      }
 
-        $collection = $collection->merge(Collection::make($doc7));
+      $collection = $collection->merge(Collection::make($doc7));
 
-        }
-        //Rango de las 16:00:00 a las 16:59:59
-        $doc8=DB::select('select
+    }
+    //Rango de las 16:00:00 a las 16:59:59
+    $doc8 = DB::select('select
         tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
-        tiempo Between 160000 And 165959 group by tipo', [$fecha1,$fecha2]);
+        tiempo Between 160000 And 165959 group by tipo', [$fecha1, $fecha2]);
 
-        if(empty($doc8)){
-
-
-        }else{
-     //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc8[0] )){
+    if (empty($doc8)) {
 
 
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc8[0])) {
 
-            }else{
 
-              $TotalBoleta = $TotalBoleta + $doc8[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc8[0]->cantidad;
-            }
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
-            if(! isset($doc8[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
+      } else {
 
-            $TotalFactura =$TotalFactura + $doc8[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc8[1]->cantidad;
+        $TotalBoleta = $TotalBoleta + $doc8[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc8[0]->cantidad;
+      }
 
-          }
+      if (!isset($doc8[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-        $collection = $collection->merge(Collection::make($doc8));
-       }
-        //Rango de las 17:00:00 a las 17:59:59
-        $doc9=DB::select('select
+        $TotalFactura = $TotalFactura + $doc8[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc8[1]->cantidad;
+
+      }
+
+      $collection = $collection->merge(Collection::make($doc8));
+    }
+    //Rango de las 17:00:00 a las 17:59:59
+    $doc9 = DB::select('select
         tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
-        tiempo Between 170000 And 175959 group by tipo', [$fecha1,$fecha2]);
+        tiempo Between 170000 And 175959 group by tipo', [$fecha1, $fecha2]);
 
-        if(empty($doc9)){
-
-
-        }else{
-        //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc9[0] )){
+    if (empty($doc9)) {
 
 
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc9[0])) {
 
-            }else{
 
-              $TotalBoleta = $TotalBoleta + $doc9[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc9[0]->cantidad;
-            }
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
-            if(! isset($doc9[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
+      } else {
 
-            $TotalFactura =$TotalFactura + $doc9[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc9[1]->cantidad;
+        $TotalBoleta = $TotalBoleta + $doc9[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc9[0]->cantidad;
+      }
 
-          }
+      if (!isset($doc9[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-        $collection = $collection->merge(Collection::make($doc9));
-        }
-        //Rango de las 18:00:00 a las 18:59:59
-        $doc10=DB::select('select
+        $TotalFactura = $TotalFactura + $doc9[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc9[1]->cantidad;
+
+      }
+
+      $collection = $collection->merge(Collection::make($doc9));
+    }
+    //Rango de las 18:00:00 a las 18:59:59
+    $doc10 = DB::select('select
         tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
-        tiempo Between 180000 And 185959 group by tipo', [$fecha1,$fecha2]);
+        tiempo Between 180000 And 185959 group by tipo', [$fecha1, $fecha2]);
 
-        if(empty($doc10)){
+    if (empty($doc10)) {
 
-        }else{
-        //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc10[0] )){
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc10[0])) {
 
 
-            $TotalBoleta = $TotalBoleta + 0;
-             $TotalCantBoletas = $TotalCantBoletas+0;
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
-            }else{
+      } else {
 
-              $TotalBoleta = $TotalBoleta + $doc10[0]->bruto;
-              $TotalCantBoletas = $TotalCantBoletas+$doc10[0]->cantidad;
-            }
+        $TotalBoleta = $TotalBoleta + $doc10[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc10[0]->cantidad;
+      }
 
-            if(! isset($doc10[1] )){
-               $TotalFactura = $TotalFactura +0;
-              $TotalCantFacturas = $TotalCantFacturas+0;
-            }else{
+      if (!isset($doc10[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-            $TotalFactura =$TotalFactura + $doc10[1]->bruto;
-            $TotalCantFacturas =$TotalCantFacturas+$doc10[1]->cantidad;
+        $TotalFactura = $TotalFactura + $doc10[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc10[1]->cantidad;
 
-          }
+      }
 
-        $collection = $collection->merge(Collection::make($doc10));
-        }
-        //Rango de las 19:00:00 a las 19:59:59
-        $doc11=DB::select('select
+      $collection = $collection->merge(Collection::make($doc10));
+    }
+    //Rango de las 19:00:00 a las 19:59:59
+    $doc11 = DB::select('select
         tipo as "Tipo" ,
         count(cantidad) as "cantidad",
         round(Sum(bruto*1.19)) as "bruto"
         from compras_x_hora
         where
         fecha_real between ? and ? and
-        tiempo Between 190000 And 195959 group by tipo', [$fecha1,$fecha2]);
-      // dd('varaible 11',$doc11);
-        if(empty($doc11)){
+        tiempo Between 190000 And 195959 group by tipo', [$fecha1, $fecha2]);
+    // dd('varaible 11',$doc11);
+    if (empty($doc11)) {
 
 
-        }else{
-          //posicion [0] Boletas
-          //posicion [1] Facturas
-          if(! isset($doc11[0] )){
+    } else {
+      //posicion [0] Boletas
+      //posicion [1] Facturas
+      if (!isset($doc11[0])) {
 
 
-          $TotalBoleta = $TotalBoleta + 0;
-           $TotalCantBoletas = $TotalCantBoletas+0;
+        $TotalBoleta = $TotalBoleta + 0;
+        $TotalCantBoletas = $TotalCantBoletas + 0;
 
-          }else{
+      } else {
 
-            $TotalBoleta = $TotalBoleta + $doc11[0]->bruto;
-            $TotalCantBoletas = $TotalCantBoletas+$doc11[0]->cantidad;
-          }
+        $TotalBoleta = $TotalBoleta + $doc11[0]->bruto;
+        $TotalCantBoletas = $TotalCantBoletas + $doc11[0]->cantidad;
+      }
 
-          if(! isset($doc11[1] )){
-             $TotalFactura = $TotalFactura +0;
-            $TotalCantFacturas = $TotalCantFacturas+0;
-          }else{
+      if (!isset($doc11[1])) {
+        $TotalFactura = $TotalFactura + 0;
+        $TotalCantFacturas = $TotalCantFacturas + 0;
+      } else {
 
-          $TotalFactura =$TotalFactura + $doc11[1]->bruto;
-          $TotalCantFacturas =$TotalCantFacturas+$doc11[1]->cantidad;
+        $TotalFactura = $TotalFactura + $doc11[1]->bruto;
+        $TotalCantFacturas = $TotalCantFacturas + $doc11[1]->cantidad;
 
-        }
-
-
-          $collection = $collection->merge(Collection::make($doc11));
-
-        }
-        /*
-         //Rango de las 20:00:00 a las 20:59:59
-         $doc12=DB::select('select
-         tipo as "Tipo" ,
-         count(cantidad) as "cantidad",
-         round(Sum(bruto*1.19)) as "bruto"
-         from compras_x_hora
-         where
-         fecha_real between ? and ? and
-         tiempo Between 200000 And 205959 group by tipo', [$fecha1,$fecha2]);
-         */
-
-         if(!isset($collection[0])){
-
-          $collection=null;
-          $TotalBoleta = 0;
-          $TotalFactura =0;
-          $TotalCantBoletas = 0;
-          $TotalCantFacturas =0;
-
-         }
-
-        //
-       // dd($collection[0]);
+      }
 
 
+      $collection = $collection->merge(Collection::make($doc11));
 
+    }
+    /*
+     //Rango de las 20:00:00 a las 20:59:59
+     $doc12=DB::select('select
+     tipo as "Tipo" ,
+     count(cantidad) as "cantidad",
+     round(Sum(bruto*1.19)) as "bruto"
+     from compras_x_hora
+     where
+     fecha_real between ? and ? and
+     tiempo Between 200000 And 205959 group by tipo', [$fecha1,$fecha2]);
+     */
 
-       return view('admin.VentasPorHora',compact('collection','TotalFactura','TotalBoleta','TotalCantBoletas','TotalCantFacturas'));
+    if (!isset($collection[0])) {
+
+      $collection = null;
+      $TotalBoleta = 0;
+      $TotalFactura = 0;
+      $TotalCantBoletas = 0;
+      $TotalCantFacturas = 0;
 
     }
 
-
-    public function DocumentosPorHoraIndex(){
-
-      return view('admin.VentasPorHora');
-
-    }
+    //
+    // dd($collection[0]);
 
 
 
-    public function ProyeccionDeCompras(Request $request){
+
+    return view('admin.VentasPorHora', compact('collection', 'TotalFactura', 'TotalBoleta', 'TotalCantBoletas', 'TotalCantFacturas'));
+
+  }
+
+
+  public function DocumentosPorHoraIndex()
+  {
+
+    return view('admin.VentasPorHora');
+
+  }
+
+
+
+  public function ProyeccionDeCompras(Request $request)
+  {
     // dd($request->all());
-       $proyeccion_compra=DB::table('Proyeccion_compra_vendedor')
-       ->whereBetween('fecha_ingreso', array($request->fecha1,$request->fecha2))
-       ->where([
-        ['codigo', 'like', '%'.$request->codigo.'%'],
-        ['proveedor', 'Like', '%'.$request->proveedor.'%'],
-        ])->get();
-
-      $proyeccion_compra_venta =DB::table('vista_ventas_proyeccion')
-      ->select('deprec as precio',DB::raw('sum(decant) as total'))
-      ->whereBetween('defeco', array($request->fecha1,$request->fecha2))
+    $proyeccion_compra = DB::table('Proyeccion_compra_vendedor')
+      ->whereBetween('fecha_ingreso', array($request->fecha1, $request->fecha2))
       ->where([
-       ['decodi', 'like', '%'.$request->codigo.'%'],
-       ])->get();
+        ['codigo', 'like', '%' . $request->codigo . '%'],
+        ['proveedor', 'Like', '%' . $request->proveedor . '%'],
+      ])->get();
 
-      /// dd($proyeccion_compra_venta);
+    $proyeccion_compra_venta = DB::table('vista_ventas_proyeccion')
+      ->select('deprec as precio', DB::raw('sum(decant) as total'))
+      ->whereBetween('defeco', array($request->fecha1, $request->fecha2))
+      ->where([
+        ['decodi', 'like', '%' . $request->codigo . '%'],
+      ])->get();
 
-/*
-       ->whereBetween('fecha_ingreso', array($request->fecha1,$request->fecha2))
-       ->get();
-*/
+    /// dd($proyeccion_compra_venta);
 
-       return view('admin.ProyeccionCompras',compact('proyeccion_compra','proyeccion_compra_venta'));
+    /*
+           ->whereBetween('fecha_ingreso', array($request->fecha1,$request->fecha2))
+           ->get();
+    */
 
-    }
+    return view('admin.ProyeccionCompras', compact('proyeccion_compra', 'proyeccion_compra_venta'));
 
-    public function ProyeccionIndex(){
+  }
 
-
-      return view('admin.ProyeccionCompras');
-
-
-    }
-
-
-    public function movimientoinventario(){
-
-
-        $usuario = session()->get('nombre');
+  public function ProyeccionIndex()
+  {
 
 
-        $ultimos = DB::table('movimientos_de_mercaderia')
-        ->where('USUARIO',$usuario)
-        ->orderBy('id_Movimientos_de_mercaderia','desc')
-        ->take(3)
-        ->get();
+    return view('admin.ProyeccionCompras');
 
 
-      return view('admin.ajustedeinventario',compact('ultimos'));
+  }
 
 
-    }
-
-    public function filtrarmovimientoinventario(Request $request){
-
-
-        $cod=$request->codigo;
-
-        $date = Carbon::now("Chile/Continental");
-
-        $usuario = session()->get('nombre');
+  public function movimientoinventario()
+  {
 
 
-        $consulta = DB::table('inventario_temporal')
-        ->join('producto', 'ARCODI', '=', 'inventario_temporal.codigo')
-        ->where('codigo',$cod)
-        ->get();
-
-        $ultimos = DB::table('movimientos_de_mercaderia')
-        ->where('USUARIO',$usuario)
-        ->orderBy('id_Movimientos_de_mercaderia','desc')
-        ->take(3)
-        ->get();
+    $usuario = session()->get('nombre');
 
 
-        // if (empty($consulta)) {
-        //     dd('coleccion vacia ',$consulta);
-        // }
-        //     dd('hy algo ',$consulta);
-
-        // dd($request->all());
-
+    $ultimos = DB::table('movimientos_de_mercaderia')
+      ->where('USUARIO', $usuario)
+      ->orderBy('id_Movimientos_de_mercaderia', 'desc')
+      ->take(3)
+      ->get();
 
 
-
-        // dd($ultimos);
-
-
-        return view('admin.ajustedeinventario',compact('consulta','date','usuario','ultimos'));
+    return view('admin.ajustedeinventario', compact('ultimos'));
 
 
-    }
+  }
 
-    public function ajustemovimientoinventario(Request $request){
+  public function filtrarmovimientoinventario(Request $request)
+  {
+
+
+    $cod = $request->codigo;
+
+    $date = Carbon::now("Chile/Continental");
+
+    $usuario = session()->get('nombre');
+
+
+    $consulta = DB::table('inventario_temporal')
+      ->join('producto', 'ARCODI', '=', 'inventario_temporal.codigo')
+      ->where('codigo', $cod)
+      ->get();
+
+    $ultimos = DB::table('movimientos_de_mercaderia')
+      ->where('USUARIO', $usuario)
+      ->orderBy('id_Movimientos_de_mercaderia', 'desc')
+      ->take(3)
+      ->get();
+
+
+    // if (empty($consulta)) {
+    //     dd('coleccion vacia ',$consulta);
+    // }
+    //     dd('hy algo ',$consulta);
+
+    // dd($request->all());
+
+
+
+
+    // dd($ultimos);
+
+
+    return view('admin.ajustedeinventario', compact('consulta', 'date', 'usuario', 'ultimos'));
+
+
+  }
+
+  public function ajustemovimientoinventario(Request $request)
+  {
 
     //   dd($request->all());
 
     $inventario = InventarioTemporal::find($request->codigo);
 
-   // dd($inventario);
+    // dd($inventario);
     $inventario->cantidad = $inventario->cantidad + $request->cantidadreal;
 
     $inventario->save();
@@ -927,230 +948,235 @@ class AdminController extends Controller
     //   ->update(['cantidad' => 'cantidad' + $request->cantidadreal]);
 
 
-            ///sacar del programa
-            $insert = DB::table('movimientos_de_mercaderia')->insert(
-              ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => 'INVENTARIO 2021']
-          );
+    ///sacar del programa
+    $insert = DB::table('movimientos_de_mercaderia')->insert(
+      ['CODIGO_PRODUCTO' => $request->codigo, 'DESCRIPCION' => $request->descripcion, 'FECHA_MOVIMIENTO' => $request->fecha, 'CANTIDAD' => $request->cantidadreal, 'USUARIO' => $request->usuario, 'OBSERVACION' => 'INVENTARIO 2021']
+    );
 
 
 
 
-        return redirect('/admin/movimientoinventario');
-      //return view('admin.ajustedeinventario');
+    return redirect('/admin/movimientoinventario');
+    //return view('admin.ajustedeinventario');
 
 
   }
 
 
-  public function consultafacturaboleta(){
+  public function consultafacturaboleta()
+  {
 
 
     return view('admin.ConsultaFacturasBoletas');
 
 
-}
+  }
 
-  public function ArqueoC(){
+  public function ArqueoC()
+  {
     return view('admin.ArqueoC');
   }
 
-public function filtrarconsultafacturaboleta(Request $request){
+  public function filtrarconsultafacturaboleta(Request $request)
+  {
 
 
 
-      $fecha1=$request->fecha1;
-      $fecha2=$request->fecha2;
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
 
-      $factura=DB::table('cargos')
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-      ->where('catipo',8)
+    $factura = DB::table('cargos')
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+      ->where('catipo', 8)
       ->get();
 
 
-      $facturacount=DB::table('cargos')
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-      ->where('catipo',8)
+    $facturacount = DB::table('cargos')
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+      ->where('catipo', 8)
       ->count('CANMRO');
 
 
-      $boleta=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $boleta = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->get();
 
-      $boletacount=DB::table('cargos')
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-      ->where('catipo',7)
-      ->where('CANMRO' ,'<', 1000000000)
+    $boletacount = DB::table('cargos')
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+      ->where('catipo', 7)
+      ->where('CANMRO', '<', 1000000000)
       ->count('CANMRO');
 
-      $boletatransbankcount=DB::table('cargos')  /////transbank
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-      ->where('catipo',7)
-      ->where('CANMRO' ,'>', 1000000000)
+    $boletatransbankcount = DB::table('cargos')  /////transbank
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+      ->where('catipo', 7)
+      ->where('CANMRO', '>', 1000000000)
       ->count('CANMRO');
 
 
-      $notacredito=DB::table('nota_credito')
-      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+    $notacredito = DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
       ->get();
 
-      $notacreditocount=DB::table('nota_credito')
-      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+    $notacreditocount = DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
       ->count('id');
 
-      $boletasuma=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $boletasuma = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('cavalo');
 
-      $facturasuma=DB::table('cargos')
-      ->where('CATIPO',8)
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $facturasuma = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('cavalo');
 
-      $notacreditosuma=DB::table('nota_credito') //notacredito.
-      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+    $notacreditosuma = DB::table('nota_credito') //notacredito.
+      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
       ->sum('total_nc');
 
-      $totalboletasumaneto=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->where('CANMRO','<',1000000000)  //boleta
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $totalboletasumaneto = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1000000000)  //boleta
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CANETO');
 
-      $boletatransbanksumaneto=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->where('CANMRO','>',1000000000)  //transbank
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $boletatransbanksumaneto = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1000000000)  //transbank
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CANETO');
 
-      $totalboletasumaiva=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->where('CANMRO','<', 1000000000)  //boleta
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $totalboletasumaiva = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1000000000)  //boleta
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CAIVA');
 
-      $boletatransbanksumaiva=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->where('CANMRO','>', 1000000000)  //transbank
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $boletatransbanksumaiva = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1000000000)  //transbank
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CAIVA');
 
-      $totalboletasuma=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->where('CANMRO' ,'<', 1000000000)   //boleta
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $totalboletasuma = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1000000000)   //boleta
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CAVALO');
 
-      $boletatransbanktotal=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->where('CANMRO' ,'>', 1000000000)   //transbank
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $boletatransbanktotal = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1000000000)   //transbank
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CAVALO');
 
-      $total=(($boletasuma+$facturasuma)-$notacreditosuma);
+    $total = (($boletasuma + $facturasuma) - $notacreditosuma);
 
 
-      $boletasumaiva=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $boletasumaiva = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CAIVA');
 
-      $facturasumaiva=DB::table('cargos')
-      ->where('CATIPO',8)
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $facturasumaiva = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CAIVA');
 
 
-      $notacreditosumaiva=DB::table('nota_credito')
-      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+    $notacreditosumaiva = DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
       ->sum('iva');
 
-      $totaliva=(($boletasumaiva+$facturasumaiva)-$notacreditosumaiva);
+    $totaliva = (($boletasumaiva + $facturasumaiva) - $notacreditosumaiva);
 
-      $boletasumaneto=DB::table('cargos')
-      ->where('CATIPO',7)
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $boletasumaneto = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CANETO');
 
-      $facturasumaneto=DB::table('cargos')
-      ->where('CATIPO',8)
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    $facturasumaneto = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
       ->sum('CANETO');
 
-      $notacreditosumaneto=DB::table('nota_credito')
-      ->whereBetween('fecha', array($request->fecha1,$request->fecha2))
+    $notacreditosumaneto = DB::table('nota_credito')
+      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
       ->sum('neto');
 
-      $totalneto=(($boletasumaneto+$facturasumaneto)-$notacreditosumaneto);
+    $totalneto = (($boletasumaneto + $facturasumaneto) - $notacreditosumaneto);
 
-      $sumadocumentos = ($facturacount + $notacreditocount + $boletacount + $boletatransbankcount);
+    $sumadocumentos = ($facturacount + $notacreditocount + $boletacount + $boletatransbankcount);
 
     //   dd($sumadocumentos);
 
 
-      $porcaja=DB::table('cargos')
+    $porcaja = DB::table('cargos')
       ->selectRaw('cacoca AS CAJA,
       count(cacoca) AS cantidad,
       SUM(CAVALO) AS TOTAL')
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-      ->where('CATIPO',7)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+      ->where('CATIPO', 7)
       ->groupBy('cacoca')
       ->get();
 
 
 
-      $porimpresora=DB::table('cargos')
+    $porimpresora = DB::table('cargos')
       ->selectRaw('cacoca AS CAJA,
       count(cacoca) AS cantidad,
       SUM(CAVALO) AS TOTAL')
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-      ->where('CATIPO',8)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+      ->where('CATIPO', 8)
       ->groupBy('cacoca')
       ->get();
 
-      $porguia=DB::table('cargos')
+    $porguia = DB::table('cargos')
       ->selectRaw('cacoca AS CAJA,
       count(cacoca) AS cantidad,
       SUM(CAVALO) AS TOTAL')
-      ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-      ->where('CATIPO',3)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+      ->where('CATIPO', 3)
       ->groupBy('cacoca')
       ->get();
 
 
 
 
-      $boleta = $boleta->map(function($item) {
-          $item->CARUTD = $this->dv($item->CARUTC);
-          return $item;
-      });
+    $boleta = $boleta->map(function ($item) {
+      $item->CARUTD = $this->dv($item->CARUTC);
+      return $item;
+    });
 
-      $factura = $factura->map(function($item) {
-          $item->CARUTD = $this->dv($item->CARUTC);
-          return $item;
-      });
+    $factura = $factura->map(function ($item) {
+      $item->CARUTD = $this->dv($item->CARUTC);
+      return $item;
+    });
 
-  return view('admin.ConsultaFacturasBoletas',compact('fecha1','fecha2','boleta','factura','notacredito','total','totaliva','totalneto','boletacount','notacreditocount','facturacount','sumadocumentos','porcaja','porimpresora','boletatransbankcount','boletatransbanksumaiva','boletatransbanksumaneto','boletatransbanktotal','totalboletasumaneto','totalboletasumaiva','totalboletasuma','porguia'));
-}
+    return view('admin.ConsultaFacturasBoletas', compact('fecha1', 'fecha2', 'boleta', 'factura', 'notacredito', 'total', 'totaliva', 'totalneto', 'boletacount', 'notacreditocount', 'facturacount', 'sumadocumentos', 'porcaja', 'porimpresora', 'boletatransbankcount', 'boletatransbanksumaiva', 'boletatransbanksumaneto', 'boletatransbanktotal', 'totalboletasumaneto', 'totalboletasumaiva', 'totalboletasuma', 'porguia'));
+  }
 
-public function dv($r){
-    $s=1;
-    for($m=0;$r!=0;$r/=10)
-        $s=($s+$r%10*(9-$m++%6))%11;
-    return chr($s?$s+47:75);
-}
-//-----------------------------Inicio Controller ArqueoC--------------------------------------//
-public function filtrarArqueoC(Request $requestT){
+  public function dv($r)
+  {
+    $s = 1;
+    for ($m = 0; $r != 0; $r /= 10)
+      $s = ($s + $r % 10 * (9 - $m++ % 6)) % 11;
+    return chr($s ? $s + 47 : 75);
+  }
+  //-----------------------------Inicio Controller ArqueoC--------------------------------------//
+  public function filtrarArqueoC(Request $requestT)
+  {
 
-    $fecha1T=$requestT->fecha1T;
-    $fecha2T=$requestT->fecha2T;
+    $fecha1T = $requestT->fecha1T;
+    $fecha2T = $requestT->fecha2T;
 
 
 
 
-    $facturaT=db::select("(select * from cargos where CATIPO = 8 and forma_pago='T' and
+    $facturaT = db::select("(select * from cargos where CATIPO = 8 and forma_pago='T' and
     CAFECO between ? and ?)
     UNION ALL
     (select cargos.* from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8
@@ -1158,28 +1184,30 @@ public function filtrarArqueoC(Request $requestT){
     UNION ALL
     (select * from cargos where CATIPO = 8 and forma_pago='E' and
     CAFECO between ? and ?)",
-    array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+      array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T)
+    );
 
 
 
-    $facturaTX=DB::select("Select
+    $facturaTX = DB::select("Select
     cargos.CANMRO,cargos.CATIPO,cargos.CARUTC,cargos.razon,
     ccorclie_ccpclien.CCPFECHAHO,ccorclie_ccpclien.CCPFECHAP1,
     cargos.FPAGO,cargos.cacoca,cargos.caneto,cargos.CAIVA,cargos.cavalo
     from ccorclie_ccpclien JOIN cargos
     on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND CCPFECHAHO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
 
 
-    $facturacountT=count($facturaT);
+    $facturacountT = count($facturaT);
 
-    $facturacountTX=count($facturaTX);
+    $facturacountTX = count($facturaTX);
 
 
 
     //Inicio Valores Facturas
-    $facturasneto=DB::select("select sum(suma) as total from(
+    $facturasneto = DB::select("select sum(suma) as total from(
         (select sum(caneto) as suma from cargos where CATIPO = 8 and forma_pago='T' and
         CAFECO between ? and ?)
         UNION ALL
@@ -1188,10 +1216,11 @@ public function filtrarArqueoC(Request $requestT){
         UNION ALL
         (select sum(caneto) as suma from cargos where CATIPO = 8 and forma_pago='E' and
         CAFECO between ? and ?))t",
-    array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+      array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T)
+    );
 
 
-    $facturasiva=DB::select("select sum(suma) as total from(
+    $facturasiva = DB::select("select sum(suma) as total from(
         (select sum(caiva) as suma from cargos where CATIPO = 8 and forma_pago='T' and
         CAFECO between ? and ?)
         UNION ALL
@@ -1200,11 +1229,12 @@ public function filtrarArqueoC(Request $requestT){
         UNION ALL
         (select sum(caiva) as suma from cargos where CATIPO = 8 and forma_pago='E' and
         CAFECO between ? and ?))t",
-    array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+      array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T)
+    );
 
 
 
-    $facturastotal=DB::select("select sum(suma) as total from(
+    $facturastotal = DB::select("select sum(suma) as total from(
         (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago='T' and
         CAFECO between ? and ?)
         UNION ALL
@@ -1213,531 +1243,642 @@ public function filtrarArqueoC(Request $requestT){
         UNION ALL
         (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago='E' and
         CAFECO between ? and ?))t",
-    array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+      array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T)
+    );
     //Fin Valores Facturas
 
     //Inicio Valores Facturas x pagar
-    $facturasxneto=DB::select("Select sum(caneto) as total
+    $facturasxneto = DB::select("Select sum(caneto) as total
     from ccorclie_ccpclien JOIN cargos
     on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND
     CCPFECHAHO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $facturasxiva=DB::select("Select sum(caiva) as total
+    $facturasxiva = DB::select("Select sum(caiva) as total
     from ccorclie_ccpclien JOIN cargos
     on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND
     CCPFECHAHO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $facturasxtotal=DB::select("Select sum(cavalo) as total
+    $facturasxtotal = DB::select("Select sum(cavalo) as total
     from ccorclie_ccpclien JOIN cargos
     on CANMRO = CCPDOCUMEN where (ccorclie_ccpclien.ABONO1+ccorclie_ccpclien.ABONO2+ccorclie_ccpclien.ABONO3+ccorclie_ccpclien.ABONO4) != CCPVALORFA AND
     CCPFECHAHO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
     //Fin Valores Facturas x pagar
 
     //Inicio Valores BoletasE
-    $boletasneto=DB::select("select sum(caneto) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $boletasneto = DB::select(
+      "select sum(caneto) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
 
 
-    $boletasiva=DB::select("select sum(caiva) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $boletasiva = DB::select(
+      "select sum(caiva) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $boletastotal=DB::select("select sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $boletastotal = DB::select(
+      "select sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = 'E' AND CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
     //Fin Valores BoletasE
 
     //Inicio Valores BoletasT
-    $boletasnetot=DB::select("select sum(caneto) as total from cargos where CATIPO = 7 and forma_pago = 'T' and CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $boletasnetot = DB::select(
+      "select sum(caneto) as total from cargos where CATIPO = 7 and forma_pago = 'T' and CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $boletasivat=DB::select("select sum(caiva) as total from cargos where CATIPO = 7 and forma_pago = 'T' AND CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $boletasivat = DB::select(
+      "select sum(caiva) as total from cargos where CATIPO = 7 and forma_pago = 'T' AND CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $boletastotalt=DB::select("select sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = 'T' AND CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $boletastotalt = DB::select(
+      "select sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = 'T' AND CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
     //Fin Valores BoletasT
 
     //Inicio Valores Guias
-    $guiasneto=DB::select("select sum(caneto) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $guiasneto = DB::select(
+      "select sum(caneto) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $guiasiva=DB::select("select sum(caiva) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $guiasiva = DB::select(
+      "select sum(caiva) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $guiastotal=DB::select("select sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $guiastotal = DB::select(
+      "select sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
     //Fin Valores Guias
 
     //Inicio Valores Nota Credito
-    $notacreditoneto=DB::select("select sum(nota_credito.neto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $notacreditoneto = DB::select(
+      "select sum(nota_credito.neto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $notacreditoiva=DB::select("select sum(nota_credito.iva) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $notacreditoiva = DB::select(
+      "select sum(nota_credito.iva) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
-    $notacreditototal=DB::select("select sum(nota_credito.total_nc) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
-    array($requestT->fecha1T,$requestT->fecha2T));
+    $notacreditototal = DB::select(
+      "select sum(nota_credito.total_nc) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ?",
+      array($requestT->fecha1T, $requestT->fecha2T)
+    );
 
     //Fin Valores Nota Credito
 
     //Total neto
-    $neto=(($facturasneto[0]->total)+($boletasneto[0]->total)+($boletasnetot[0]->total)-($notacreditoneto[0]->total));
+    $neto = (($facturasneto[0]->total) + ($boletasneto[0]->total) + ($boletasnetot[0]->total) - ($notacreditoneto[0]->total));
     //Total iva
-    $iva=(($facturasiva[0]->total)+($boletasiva[0]->total)+($boletasivat[0]->total)-($notacreditoiva[0]->total));
+    $iva = (($facturasiva[0]->total) + ($boletasiva[0]->total) + ($boletasivat[0]->total) - ($notacreditoiva[0]->total));
     //Totaltotal
-    $total=(($facturastotal[0]->total)+($boletastotal[0]->total)+($boletastotalt[0]->total)-($notacreditototal[0]->total));
+    $total = (($facturastotal[0]->total) + ($boletastotal[0]->total) + ($boletastotalt[0]->total) - ($notacreditototal[0]->total));
 
-    $boletaT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('forma_pago',"E")
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->get();
+    $boletaT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('forma_pago', "E")
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->get();
 
     //dd(count($boletaT));
 
-    $boletaTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('forma_pago',"T")
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->get();
+    $boletaTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('forma_pago', "T")
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->get();
 
-    $boletacountT=DB::table('cargos')
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->where('catipo',7)
-    ->where('forma_pago',"E")
-    ->count('CANMRO');
+    $boletacountT = DB::table('cargos')
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->where('catipo', 7)
+      ->where('forma_pago', "E")
+      ->count('CANMRO');
 
-    $boletacountTR=DB::table('cargos')
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->where('catipo',7)
-    ->where('CANMRO' ,'<', 1100000001)
-    ->count('CANMRO');
+    $boletacountTR = DB::table('cargos')
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->where('catipo', 7)
+      ->where('CANMRO', '<', 1100000001)
+      ->count('CANMRO');
 
-    $boletatransbankcountT=DB::table('cargos')  /////transbank
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->where('catipo',7)
-    ->where('CANMRO' ,'>', 1100000001)
-    ->count('CANMRO');
+    $boletatransbankcountT = DB::table('cargos')  /////transbank
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->where('catipo', 7)
+      ->where('CANMRO', '>', 1100000001)
+      ->count('CANMRO');
 
-    $boletatransbankcountTR=DB::table('cargos')  /////transbank
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->where('catipo',7)
-    ->where('CANMRO' ,'>', 1100000001)
-    ->count('CANMRO');
+    $boletatransbankcountTR = DB::table('cargos')  /////transbank
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->where('catipo', 7)
+      ->where('CANMRO', '>', 1100000001)
+      ->count('CANMRO');
 
-    $guiaT=DB::select("select
+    $guiaT = DB::select("select
     cargos.CANMRO,cargos.CARUTC,cargos.razon,cargos.CAFECO,
     cargos.FPAGO,cargos.cacoca,cargos.CANETO,cargos.CAIVA,cargos.CASUTO
-    from cargos where cargos.catipo=3 and cargos.cafeco between ? and ?",array($requestT->fecha1T,$requestT->fecha2T));
+    from cargos where cargos.catipo=3 and cargos.cafeco between ? and ?", array($requestT->fecha1T, $requestT->fecha2T));
 
 
-    $guiacountT=count($guiaT);
+    $guiacountT = count($guiaT);
 
-    $guiasumnT=DB::table('cargos')
-    ->where('CATIPO',3)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');
-
-
-
-    $notacreditoT=DB::table('nota_credito')
-    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
-    ->get();
-
-    $notacreditocountT=DB::table('nota_credito')
-    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
-    ->count('id');
-
-    $boletasumaT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('cavalo');
-
-    $boletasumaTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('cavalo');
-
-    $facturasumaT=DB::table('cargos')
-    ->where('CATIPO',8)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('cavalo');
-
-    $facturasumaTX=DB::table('cargos')
-    ->where('CATIPO',8)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('cavalo');
-
-    $notacreditosumaT=DB::table('nota_credito') //notacredito.
-    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('total_nc');
-
-    $totalboletasumanetoT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO','<',1100000001)  //boleta
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');
-
-    $totalboletasumanetoTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO','<',1100000001)  //boleta
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');
-
-    $boletatransbanksumanetoT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO','>',1100000001)  //transbank
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');
-
-    $boletatransbanksumanetoTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO','>',1100000001)  //transbank
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');
-
-    $totalboletasumaivaT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO','<', 1100000001)  //boleta
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAIVA');
-
-    $totalboletasumaivaTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO','<', 1100000001)  //boleta
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAIVA');
-
-    $boletatransbanksumaivaT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO','>', 1100000001)  //transbank
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAIVA');
-
-    $boletatransbanksumaivaTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO','>', 1100000001)  //transbank
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAIVA');
-
-    $totalboletasumaT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO' ,'<', 1100000001)   //boleta
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAVALO');
-
-    $totalboletasumaTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO' ,'<', 1100000001)   //boleta
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAVALO');
-
-    $boletatransbanktotalT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO' ,'>', 1100000001)   //transbank
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAVALO');
-
-    $boletatransbanktotalTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->where('CANMRO' ,'>', 1100000001)   //transbank
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAVALO');
-
-    $totalT=(($boletasumaT+$facturasumaTX)-$notacreditosumaT);
+    $guiasumnT = DB::table('cargos')
+      ->where('CATIPO', 3)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');
 
 
-    $boletasumaivaT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAIVA');
 
-    $facturasumaivaT=DB::table('cargos')
-    ->where('CATIPO',8)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAIVA');
+    $notacreditoT = DB::table('nota_credito')
+      ->whereBetween('fecha', array($requestT->fecha1T, $requestT->fecha2T))
+      ->get();
 
-    $facturasumaivaTX=DB::table('cargos')
-    ->where('CATIPO',8)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CAIVA');
+    $notacreditocountT = DB::table('nota_credito')
+      ->whereBetween('fecha', array($requestT->fecha1T, $requestT->fecha2T))
+      ->count('id');
+
+    $boletasumaT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('cavalo');
+
+    $boletasumaTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('cavalo');
+
+    $facturasumaT = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('cavalo');
+
+    $facturasumaTX = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('cavalo');
+
+    $notacreditosumaT = DB::table('nota_credito') //notacredito.
+      ->whereBetween('fecha', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('total_nc');
+
+    $totalboletasumanetoT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1100000001)  //boleta
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');
+
+    $totalboletasumanetoTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1100000001)  //boleta
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');
+
+    $boletatransbanksumanetoT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1100000001)  //transbank
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');
+
+    $boletatransbanksumanetoTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1100000001)  //transbank
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');
+
+    $totalboletasumaivaT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1100000001)  //boleta
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAIVA');
+
+    $totalboletasumaivaTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1100000001)  //boleta
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAIVA');
+
+    $boletatransbanksumaivaT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1100000001)  //transbank
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAIVA');
+
+    $boletatransbanksumaivaTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1100000001)  //transbank
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAIVA');
+
+    $totalboletasumaT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1100000001)   //boleta
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAVALO');
+
+    $totalboletasumaTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '<', 1100000001)   //boleta
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAVALO');
+
+    $boletatransbanktotalT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1100000001)   //transbank
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAVALO');
+
+    $boletatransbanktotalTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->where('CANMRO', '>', 1100000001)   //transbank
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAVALO');
+
+    $totalT = (($boletasumaT + $facturasumaTX) - $notacreditosumaT);
 
 
-    $notacreditosumaivaT=DB::table('nota_credito')
-    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('iva');
+    $boletasumaivaT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAIVA');
 
-    $totalivaT=(($boletasumaivaT+$facturasumaivaTX)-$notacreditosumaivaT);
+    $facturasumaivaT = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAIVA');
 
-    $boletasumanetoT=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');
-
-    $boletasumanetoTR=DB::table('cargos')
-    ->where('CATIPO',7)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');///
-
-    $facturasumanetoT=DB::table('cargos')
-    ->where('CATIPO',8)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');
-
-    $facturasumanetoTX=DB::table('cargos')
-    ->where('CATIPO',8)
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('CANETO');
-
-    $notacreditosumanetoT=DB::table('nota_credito')
-    ->whereBetween('fecha', array($requestT->fecha1T,$requestT->fecha2T))
-    ->sum('neto');
+    $facturasumaivaTX = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CAIVA');
 
 
-    $totalnetoT=(($boletasumanetoT+$guiasumnT+$facturasumanetoTX)-$notacreditosumanetoT);
+    $notacreditosumaivaT = DB::table('nota_credito')
+      ->whereBetween('fecha', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('iva');
+
+    $totalivaT = (($boletasumaivaT + $facturasumaivaTX) - $notacreditosumaivaT);
+
+    $boletasumanetoT = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');
+
+    $boletasumanetoTR = DB::table('cargos')
+      ->where('CATIPO', 7)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');///
+
+    $facturasumanetoT = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');
+
+    $facturasumanetoTX = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('CANETO');
+
+    $notacreditosumanetoT = DB::table('nota_credito')
+      ->whereBetween('fecha', array($requestT->fecha1T, $requestT->fecha2T))
+      ->sum('neto');
+
+
+    $totalnetoT = (($boletasumanetoT + $guiasumnT + $facturasumanetoTX) - $notacreditosumanetoT);
     //$totalnetoT=(($totalboletasumanetoT+$boletatransbanksumanetoT+$totalfacturanetoT)-($totalfacturanetoTX+$totalguianetoT+$totalnotacrenetoT));
 
-    $sumadocumentosT = ($facturacountT+$guiacountT+$facturacountTX+ $notacreditocountT + $boletacountT + $boletatransbankcountT);
+    $sumadocumentosT = ($facturacountT + $guiacountT + $facturacountTX + $notacreditocountT + $boletacountT + $boletatransbankcountT);
 
 
 
 
-    $porcajaT=DB::table('cargos')
-    ->selectRaw('cacoca AS CAJA,
+    $porcajaT = DB::table('cargos')
+      ->selectRaw('cacoca AS CAJA,
     count(cacoca) AS cantidad,
     SUM(CAVALO) AS TOTAL')
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->where('CATIPO',7)
-    ->groupBy('cacoca')
-    ->get();
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->where('CATIPO', 7)
+      ->groupBy('cacoca')
+      ->get();
 
 
 
-    $porimpresoraT=DB::table('cargos')
-    ->selectRaw('cacoca AS CAJA,
+    $porimpresoraT = DB::table('cargos')
+      ->selectRaw('cacoca AS CAJA,
     count(cacoca) AS cantidad,
     SUM(CAVALO) AS TOTAL')
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->where('CATIPO',8)
-    ->groupBy('cacoca')
-    ->get();
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->where('CATIPO', 8)
+      ->groupBy('cacoca')
+      ->get();
 
-    $porguiaT=DB::table('cargos')
-    ->selectRaw('cacoca AS CAJA,
+    $porguiaT = DB::table('cargos')
+      ->selectRaw('cacoca AS CAJA,
     count(cacoca) AS cantidad,
     SUM(CAVALO) AS TOTAL')
-    ->whereBetween('CAFECO', array($requestT->fecha1T,$requestT->fecha2T))
-    ->where('CATIPO',3)
-    ->groupBy('cacoca')
-    ->get();
+      ->whereBetween('CAFECO', array($requestT->fecha1T, $requestT->fecha2T))
+      ->where('CATIPO', 3)
+      ->groupBy('cacoca')
+      ->get();
 
 
 
-    $boletas_efec_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_efec_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_efec_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_efec_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_efec_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_efec_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_efec_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_efec_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_efec_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_efec_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_efec_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_efec_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_efec_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_efec_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_efec_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_efec_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "E" AND CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T, $requestT->fecha2T));
     $boletas_efec_mnto_tot = [[$boletas_efec_mnto_tot_101[0]], [$boletas_efec_mnto_tot_102[0]], [$boletas_efec_mnto_tot_103[0]], [$boletas_efec_mnto_tot_104[0]], [$boletas_efec_mnto_tot_105[0]], [$boletas_efec_mnto_tot_106[0]], [$boletas_efec_mnto_tot_17[0]], [$boletas_efec_mnto_tot_108[0]]];
     //------------------boletas en tarjeta-----------------------------------
-    $boletas_trans_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_trans_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_trans_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_trans_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_trans_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_trans_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_trans_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
-    $boletas_trans_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $boletas_trans_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_trans_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_trans_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_trans_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_trans_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_trans_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_trans_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T, $requestT->fecha2T));
+    $boletas_trans_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 7 and forma_pago = "T" and CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T, $requestT->fecha2T));
     $boletas_trans_mnto_tot = [[$boletas_trans_mnto_tot_101[0]], [$boletas_trans_mnto_tot_102[0]], [$boletas_trans_mnto_tot_103[0]], [$boletas_trans_mnto_tot_104[0]], [$boletas_trans_mnto_tot_105[0]], [$boletas_trans_mnto_tot_106[0]], [$boletas_trans_mnto_tot_17[0]], [$boletas_trans_mnto_tot_108[0]]];
     //------------------facturas pagadas-----------------------------------
-    $facturas_pagadas_mnto_tot_101 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="101" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="101" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="101" and CAFECO between ? and ?))t', array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
-    $facturas_pagadas_mnto_tot_102 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="102" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="102" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="102" and CAFECO between ? and ?))t', array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
-    $facturas_pagadas_mnto_tot_103 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="103" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="103" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="103" and CAFECO between ? and ?))t', array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
-    $facturas_pagadas_mnto_tot_104 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="104" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="104" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="104" and CAFECO between ? and ?))t', array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
-    $facturas_pagadas_mnto_tot_105 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="105" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="105" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="105" and CAFECO between ? and ?))t', array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
-    $facturas_pagadas_mnto_tot_106 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="106" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="106" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="106" and CAFECO between ? and ?))t', array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
-    $facturas_pagadas_mnto_tot_17 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="17" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="17" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="17" and CAFECO between ? and ?))t', array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
-    $facturas_pagadas_mnto_tot_108 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="108" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="108" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="108" and CAFECO between ? and ?))t', array($requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T,$requestT->fecha1T,$requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_101 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="101" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="101" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="101" and CAFECO between ? and ?))t', array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_102 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="102" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="102" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="102" and CAFECO between ? and ?))t', array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_103 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="103" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="103" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="103" and CAFECO between ? and ?))t', array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_104 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="104" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="104" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="104" and CAFECO between ? and ?))t', array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_105 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="105" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="105" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="105" and CAFECO between ? and ?))t', array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_106 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="106" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="106" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="106" and CAFECO between ? and ?))t', array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_17 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="17" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="17" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="17" and CAFECO between ? and ?))t', array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T));
+    $facturas_pagadas_mnto_tot_108 = DB::select('select sum(suma) as total from((select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="T" and CACOCA="108" and cafeco between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and (ABONO1+ABONO2+ABONO3+ABONO4) = CCPVALORFA and cargos.cacoca="108" and CCPFECHAHO between ? and ?) UNION ALL (select sum(cavalo) as suma from cargos where CATIPO = 8 and forma_pago="E" and cargos.cacoca="108" and CAFECO between ? and ?))t', array($requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T, $requestT->fecha1T, $requestT->fecha2T));
     $facturas_pagadas_mnto_tot = [[$facturas_pagadas_mnto_tot_101[0]], [$facturas_pagadas_mnto_tot_102[0]], [$facturas_pagadas_mnto_tot_103[0]], [$facturas_pagadas_mnto_tot_104[0]], [$facturas_pagadas_mnto_tot_105[0]], [$facturas_pagadas_mnto_tot_106[0]], [$facturas_pagadas_mnto_tot_17[0]], [$facturas_pagadas_mnto_tot_108[0]]];
     //------------------facturas x pagadar-----------------------------------
-    $facturas_x_pagar_mnto_tot_101 = DB::select('select cacoca, sum(total) as total from(select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "101" union select 101 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "101") t group by cacoca');
-    $facturas_x_pagar_mnto_tot_102 = DB::select('select cacoca, sum(total) as total from(select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "102" union select 102 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "102") t group by cacoca');
-    $facturas_x_pagar_mnto_tot_103 = DB::select('select cacoca, sum(total) as total from(select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "103" union select 103 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "103") t group by cacoca');
-    $facturas_x_pagar_mnto_tot_104 = DB::select('select cacoca, sum(total) as total from(select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "104" union select 104 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "104") t group by cacoca');
-    $facturas_x_pagar_mnto_tot_105 = DB::select('select cacoca, sum(total) as total from(select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "105" union select 105 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "105") t group by cacoca');
-    $facturas_x_pagar_mnto_tot_106 = DB::select('select cacoca, sum(total) as total from(select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "106" union select 106 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "106") t group by cacoca');
-    $facturas_x_pagar_mnto_tot_17 = DB::select('select cacoca, sum(total) as total from(select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "17" union select 17 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "17") t group by cacoca');
-    $facturas_x_pagar_mnto_tot_108 = DB::select('select cacoca, sum(total) as total from(select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "108" union select 108 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "'.$requestT->fecha1T.'" and "'.$requestT->fecha2T.'" and CACOCA = "108") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_101 = DB::select('select cacoca, sum(total) as total from(select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "101" union select 101 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "101") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_102 = DB::select('select cacoca, sum(total) as total from(select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "102" union select 102 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "102") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_103 = DB::select('select cacoca, sum(total) as total from(select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "103" union select 103 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "103") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_104 = DB::select('select cacoca, sum(total) as total from(select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "104" union select 104 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "104") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_105 = DB::select('select cacoca, sum(total) as total from(select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "105" union select 105 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "105") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_106 = DB::select('select cacoca, sum(total) as total from(select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "106" union select 106 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "106") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_17 = DB::select('select cacoca, sum(total) as total from(select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "17" union select 17 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "17") t group by cacoca');
+    $facturas_x_pagar_mnto_tot_108 = DB::select('select cacoca, sum(total) as total from(select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 8 and FPAGO = "Contado" and CAFECO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "108" union select 108 as cacoca, sum(cavalo) as total from cargos left join ccorclie_ccpclien on cargos.CANMRO = ccorclie_ccpclien.CCPDOCUMEN where cargos.CATIPO = 8 and cargos.FPAGO = "Credito" and (ABONO1+ABONO2+ABONO3+ABONO4) != CCPVALORFA and CCPFECHAHO between "' . $requestT->fecha1T . '" and "' . $requestT->fecha2T . '" and CACOCA = "108") t group by cacoca');
     $facturas_x_pagar_mnto_tot = [[$facturas_x_pagar_mnto_tot_101[0]], [$facturas_x_pagar_mnto_tot_102[0]], [$facturas_x_pagar_mnto_tot_103[0]], [$facturas_x_pagar_mnto_tot_104[0]], [$facturas_x_pagar_mnto_tot_105[0]], [$facturas_x_pagar_mnto_tot_106[0]], [$facturas_x_pagar_mnto_tot_17[0]], [$facturas_x_pagar_mnto_tot_108[0]]];
     //------------------guias-----------------------------------
-    $guias_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
-    $guias_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
-    $guias_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
-    $guias_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
-    $guias_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
-    $guias_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
-    $guias_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
-    $guias_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $guias_mnto_tot_101 = DB::select('select 101 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "101"', array($requestT->fecha1T, $requestT->fecha2T));
+    $guias_mnto_tot_102 = DB::select('select 102 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "102"', array($requestT->fecha1T, $requestT->fecha2T));
+    $guias_mnto_tot_103 = DB::select('select 103 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "103"', array($requestT->fecha1T, $requestT->fecha2T));
+    $guias_mnto_tot_104 = DB::select('select 104 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "104"', array($requestT->fecha1T, $requestT->fecha2T));
+    $guias_mnto_tot_105 = DB::select('select 105 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "105"', array($requestT->fecha1T, $requestT->fecha2T));
+    $guias_mnto_tot_106 = DB::select('select 106 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "106"', array($requestT->fecha1T, $requestT->fecha2T));
+    $guias_mnto_tot_17 = DB::select('select 17 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "17"', array($requestT->fecha1T, $requestT->fecha2T));
+    $guias_mnto_tot_108 = DB::select('select 108 as cacoca, sum(cavalo) as total from cargos where CATIPO = 3 and CAFECO between ? and ? and CACOCA = "108"', array($requestT->fecha1T, $requestT->fecha2T));
     $guias_mnto_tot = [[$guias_mnto_tot_101[0]], [$guias_mnto_tot_102[0]], [$guias_mnto_tot_103[0]], [$guias_mnto_tot_104[0]], [$guias_mnto_tot_105[0]], [$guias_mnto_tot_106[0]], [$guias_mnto_tot_17[0]], [$guias_mnto_tot_108[0]]];
     //------------------notas credito-----------------------------------
-    $nc_mnto_tot_101 = DB::select('select 101 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "101"', array($requestT->fecha1T,$requestT->fecha2T));
-    $nc_mnto_tot_102 = DB::select('select 102 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "102"', array($requestT->fecha1T,$requestT->fecha2T));
-    $nc_mnto_tot_103 = DB::select('select 103 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "103"', array($requestT->fecha1T,$requestT->fecha2T));
-    $nc_mnto_tot_104 = DB::select('select 104 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "104"', array($requestT->fecha1T,$requestT->fecha2T));
-    $nc_mnto_tot_105 = DB::select('select 105 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "105"', array($requestT->fecha1T,$requestT->fecha2T));
-    $nc_mnto_tot_106 = DB::select('select 106 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "106"', array($requestT->fecha1T,$requestT->fecha2T));
-    $nc_mnto_tot_17 = DB::select('select 17 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "17"', array($requestT->fecha1T,$requestT->fecha2T));
-    $nc_mnto_tot_108 = DB::select('select 108 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "108"', array($requestT->fecha1T,$requestT->fecha2T));
+    $nc_mnto_tot_101 = DB::select('select 101 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "101"', array($requestT->fecha1T, $requestT->fecha2T));
+    $nc_mnto_tot_102 = DB::select('select 102 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "102"', array($requestT->fecha1T, $requestT->fecha2T));
+    $nc_mnto_tot_103 = DB::select('select 103 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "103"', array($requestT->fecha1T, $requestT->fecha2T));
+    $nc_mnto_tot_104 = DB::select('select 104 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "104"', array($requestT->fecha1T, $requestT->fecha2T));
+    $nc_mnto_tot_105 = DB::select('select 105 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "105"', array($requestT->fecha1T, $requestT->fecha2T));
+    $nc_mnto_tot_106 = DB::select('select 106 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "106"', array($requestT->fecha1T, $requestT->fecha2T));
+    $nc_mnto_tot_17 = DB::select('select 17 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "17"', array($requestT->fecha1T, $requestT->fecha2T));
+    $nc_mnto_tot_108 = DB::select('select 108 as cacoca,sum(nota_credito.monto) as total from nota_credito left join cargos on nota_credito.nro_doc_refe = cargos.CANMRO where fecha between ? and ? and CACOCA = "108"', array($requestT->fecha1T, $requestT->fecha2T));
     $nc_mnto_tot = [[$nc_mnto_tot_101[0]], [$nc_mnto_tot_102[0]], [$nc_mnto_tot_103[0]], [$nc_mnto_tot_104[0]], [$nc_mnto_tot_105[0]], [$nc_mnto_tot_106[0]], [$nc_mnto_tot_17[0]], [$nc_mnto_tot_108[0]]];
 
     //------------------------------Totalisadores de cajas---------------------------
-    $suma_mnto_tot_101 = intval($boletas_efec_mnto_tot_101[0]->total)+intval($boletas_trans_mnto_tot_101[0]->total)+intval($facturas_pagadas_mnto_tot_101[0]->total)-intval($nc_mnto_tot_101[0]->total);
-    $suma_mnto_tot_102 = intval($boletas_efec_mnto_tot_102[0]->total)+intval($boletas_trans_mnto_tot_102[0]->total)+intval($facturas_pagadas_mnto_tot_102[0]->total)-intval($nc_mnto_tot_102[0]->total);
-    $suma_mnto_tot_103 = intval($boletas_efec_mnto_tot_103[0]->total)+intval($boletas_trans_mnto_tot_103[0]->total)+intval($facturas_pagadas_mnto_tot_103[0]->total)-intval($nc_mnto_tot_103[0]->total);
-    $suma_mnto_tot_104 = intval($boletas_efec_mnto_tot_104[0]->total)+intval($boletas_trans_mnto_tot_104[0]->total)+intval($facturas_pagadas_mnto_tot_104[0]->total)-intval($nc_mnto_tot_104[0]->total);
-    $suma_mnto_tot_105 = intval($boletas_efec_mnto_tot_105[0]->total)+intval($boletas_trans_mnto_tot_105[0]->total)+intval($facturas_pagadas_mnto_tot_105[0]->total)-intval($nc_mnto_tot_105[0]->total);
-    $suma_mnto_tot_106 = intval($boletas_efec_mnto_tot_106[0]->total)+intval($boletas_trans_mnto_tot_106[0]->total)+intval($facturas_pagadas_mnto_tot_106[0]->total)-intval($nc_mnto_tot_106[0]->total);
-    $suma_mnto_tot_17 = intval($boletas_efec_mnto_tot_17[0]->total)+intval($boletas_trans_mnto_tot_17[0]->total)+intval($facturas_pagadas_mnto_tot_17[0]->total)-intval($nc_mnto_tot_17[0]->total);
-    $suma_mnto_tot_108 = intval($boletas_efec_mnto_tot_108[0]->total)+intval($boletas_trans_mnto_tot_108[0]->total)+intval($facturas_pagadas_mnto_tot_108[0]->total)-intval($nc_mnto_tot_108[0]->total);
+    $suma_mnto_tot_101 = intval($boletas_efec_mnto_tot_101[0]->total) + intval($boletas_trans_mnto_tot_101[0]->total) + intval($facturas_pagadas_mnto_tot_101[0]->total) - intval($nc_mnto_tot_101[0]->total);
+    $suma_mnto_tot_102 = intval($boletas_efec_mnto_tot_102[0]->total) + intval($boletas_trans_mnto_tot_102[0]->total) + intval($facturas_pagadas_mnto_tot_102[0]->total) - intval($nc_mnto_tot_102[0]->total);
+    $suma_mnto_tot_103 = intval($boletas_efec_mnto_tot_103[0]->total) + intval($boletas_trans_mnto_tot_103[0]->total) + intval($facturas_pagadas_mnto_tot_103[0]->total) - intval($nc_mnto_tot_103[0]->total);
+    $suma_mnto_tot_104 = intval($boletas_efec_mnto_tot_104[0]->total) + intval($boletas_trans_mnto_tot_104[0]->total) + intval($facturas_pagadas_mnto_tot_104[0]->total) - intval($nc_mnto_tot_104[0]->total);
+    $suma_mnto_tot_105 = intval($boletas_efec_mnto_tot_105[0]->total) + intval($boletas_trans_mnto_tot_105[0]->total) + intval($facturas_pagadas_mnto_tot_105[0]->total) - intval($nc_mnto_tot_105[0]->total);
+    $suma_mnto_tot_106 = intval($boletas_efec_mnto_tot_106[0]->total) + intval($boletas_trans_mnto_tot_106[0]->total) + intval($facturas_pagadas_mnto_tot_106[0]->total) - intval($nc_mnto_tot_106[0]->total);
+    $suma_mnto_tot_17 = intval($boletas_efec_mnto_tot_17[0]->total) + intval($boletas_trans_mnto_tot_17[0]->total) + intval($facturas_pagadas_mnto_tot_17[0]->total) - intval($nc_mnto_tot_17[0]->total);
+    $suma_mnto_tot_108 = intval($boletas_efec_mnto_tot_108[0]->total) + intval($boletas_trans_mnto_tot_108[0]->total) + intval($facturas_pagadas_mnto_tot_108[0]->total) - intval($nc_mnto_tot_108[0]->total);
 
-    $boletaT = collect($boletaT)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
-    $boletaTR = collect($boletaTR)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
-    $facturaT = collect($facturaT)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
-    $facturaTX = collect($facturaTX)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
-    $guiaT = collect($guiaT)->map(function($item) { $item->CARUTD = $this->dv($item->CARUTC); return $item; });
+    $boletaT = collect($boletaT)->map(function ($item) {
+      $item->CARUTD = $this->dv($item->CARUTC);
+      return $item;
+    });
+    $boletaTR = collect($boletaTR)->map(function ($item) {
+      $item->CARUTD = $this->dv($item->CARUTC);
+      return $item;
+    });
+    $facturaT = collect($facturaT)->map(function ($item) {
+      $item->CARUTD = $this->dv($item->CARUTC);
+      return $item;
+    });
+    $facturaTX = collect($facturaTX)->map(function ($item) {
+      $item->CARUTD = $this->dv($item->CARUTC);
+      return $item;
+    });
+    $guiaT = collect($guiaT)->map(function ($item) {
+      $item->CARUTD = $this->dv($item->CARUTC);
+      return $item;
+    });
 
-return view('admin.ArqueoC',compact('guiacountT','guiaT','fecha1T','fecha2T','boletaT','boletaTR','facturaT','facturaTX','notacreditoT','totalT',
-'totalivaT','totalnetoT','boletacountT','boletacountTR','notacreditocountT','facturacountT','facturacountTX','sumadocumentosT','porcajaT','porimpresoraT',
-'boletatransbankcountT','boletatransbankcountTR','boletatransbanksumaivaT','boletatransbanksumaivaTR','boletatransbanksumanetoT','boletatransbanksumanetoTR',
-'boletatransbanktotalT','boletatransbanktotalTR','totalboletasumanetoT','totalboletasumanetoTR','totalboletasumaivaT','totalboletasumaivaTR','totalboletasumaT',
-'totalboletasumaTR','porguiaT','facturasneto','facturasxneto','boletasneto','boletasnetot','guiasneto','notacreditoneto','facturasiva','facturasxiva',
-'boletasiva','boletasivat','guiasiva','notacreditoiva','facturastotal','facturasxtotal','boletastotal','boletastotalt','guiastotal','notacreditototal','neto','iva','total',
-'boletas_efec_mnto_tot', 'boletas_trans_mnto_tot', 'facturas_pagadas_mnto_tot', 'facturas_x_pagar_mnto_tot', 'guias_mnto_tot', 'nc_mnto_tot',
-'suma_mnto_tot_101', 'suma_mnto_tot_102', 'suma_mnto_tot_103', 'suma_mnto_tot_104', 'suma_mnto_tot_105', 'suma_mnto_tot_106', 'suma_mnto_tot_17', 'suma_mnto_tot_108'));
+    return view('admin.ArqueoC', compact(
+      'guiacountT',
+      'guiaT',
+      'fecha1T',
+      'fecha2T',
+      'boletaT',
+      'boletaTR',
+      'facturaT',
+      'facturaTX',
+      'notacreditoT',
+      'totalT',
+      'totalivaT',
+      'totalnetoT',
+      'boletacountT',
+      'boletacountTR',
+      'notacreditocountT',
+      'facturacountT',
+      'facturacountTX',
+      'sumadocumentosT',
+      'porcajaT',
+      'porimpresoraT',
+      'boletatransbankcountT',
+      'boletatransbankcountTR',
+      'boletatransbanksumaivaT',
+      'boletatransbanksumaivaTR',
+      'boletatransbanksumanetoT',
+      'boletatransbanksumanetoTR',
+      'boletatransbanktotalT',
+      'boletatransbanktotalTR',
+      'totalboletasumanetoT',
+      'totalboletasumanetoTR',
+      'totalboletasumaivaT',
+      'totalboletasumaivaTR',
+      'totalboletasumaT',
+      'totalboletasumaTR',
+      'porguiaT',
+      'facturasneto',
+      'facturasxneto',
+      'boletasneto',
+      'boletasnetot',
+      'guiasneto',
+      'notacreditoneto',
+      'facturasiva',
+      'facturasxiva',
+      'boletasiva',
+      'boletasivat',
+      'guiasiva',
+      'notacreditoiva',
+      'facturastotal',
+      'facturasxtotal',
+      'boletastotal',
+      'boletastotalt',
+      'guiastotal',
+      'notacreditototal',
+      'neto',
+      'iva',
+      'total',
+      'boletas_efec_mnto_tot',
+      'boletas_trans_mnto_tot',
+      'facturas_pagadas_mnto_tot',
+      'facturas_x_pagar_mnto_tot',
+      'guias_mnto_tot',
+      'nc_mnto_tot',
+      'suma_mnto_tot_101',
+      'suma_mnto_tot_102',
+      'suma_mnto_tot_103',
+      'suma_mnto_tot_104',
+      'suma_mnto_tot_105',
+      'suma_mnto_tot_106',
+      'suma_mnto_tot_17',
+      'suma_mnto_tot_108'
+    ));
 
-}
-//-----------------------------Fin Controller ArqueoC-----------------------------------------//
+  }
+  //-----------------------------Fin Controller ArqueoC-----------------------------------------//
 
-//------------------------------ ControL IP mac-----------------------------------------------//
+  //------------------------------ ControL IP mac-----------------------------------------------//
 
-public function controlipmac(Request $request){
+  public function controlipmac(Request $request)
+  {
 
-    $control=DB::table('control_ip_mac')->get();
-
-
-  return view('admin.controlipmac',compact('control'));
-
-
-}
-
-
-public function actualizaripmac(Request $request)
-
-
-    {
-      // dd($request->all());
-
-        $control=ipmac::findOrfail($request->id);
-        $control->id=$request->get('id');
-        $control->ip=$request->get('ip');
-        $control->mac=$request->get('mac');
-        $control->desc_pc=$request->get('desc_pc');
-        $control->update();
-        return back();
-
-    }
-
-
-
-    public function insertaripmac(Request $request)
-    {
-
-      ipmac::create([
-
-
-            'ip' => $request->ip,
-            'mac' => $request->mac,
-            'desc_pc' => $request->desc_pc,
-
-
-        ]);
-
-        return redirect()->route('controlipmac');
-
-    }
-
-
-    public function agregaripmac(){
-
-
-      return view('admin.registraripmac');
-
-
-    }
-
-//------------------------------FIN Control Ip mac-----------------------------------------------//
-
-
-
-//------------------------------ COSTOS -----------------------------------------------//
-
-
-    public function costos() {
-
-
-      return view('admin.costos');
-
-    }
-
-    public function costosfiltro(Request $request){
+    $control = DB::table('control_ip_mac')->get();
 
 
-        $fecha1=$request->fecha1;
-        $fecha2=$request->fecha2;
+    return view('admin.controlipmac', compact('control'));
 
-        $costos=DB::table('dcargos')
-        ->selectRaw('DETIPO, DENMRO, sum(DECANT*PrecioCosto) as costototal, sum(DECANT*precio_ref) as ventatotal, DEFECO')
-        ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
-        ->where('DETIPO', '!=' , '3')
-        ->groupBy('DENMRO')
-        ->get();
+
+  }
+
+
+  public function actualizaripmac(Request $request)
+  {
+    // dd($request->all());
+
+    $control = ipmac::findOrfail($request->id);
+    $control->id = $request->get('id');
+    $control->ip = $request->get('ip');
+    $control->mac = $request->get('mac');
+    $control->desc_pc = $request->get('desc_pc');
+    $control->update();
+    return back();
+
+  }
+
+
+
+  public function insertaripmac(Request $request)
+  {
+
+    ipmac::create([
+
+
+      'ip' => $request->ip,
+      'mac' => $request->mac,
+      'desc_pc' => $request->desc_pc,
+
+
+    ]);
+
+    return redirect()->route('controlipmac');
+
+  }
+
+
+  public function agregaripmac()
+  {
+
+
+    return view('admin.registraripmac');
+
+
+  }
+
+  //------------------------------FIN Control Ip mac-----------------------------------------------//
+
+
+
+  //------------------------------ COSTOS -----------------------------------------------//
+
+
+  public function costos()
+  {
+
+
+    return view('admin.costos');
+
+  }
+
+  public function costosfiltro(Request $request)
+  {
+
+
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+
+    $costos = DB::table('dcargos')
+      ->selectRaw('DETIPO, DENMRO, sum(DECANT*PrecioCosto) as costototal, sum(DECANT*precio_ref) as ventatotal, DEFECO')
+      ->whereBetween('DEFECO', array($request->fecha1, $request->fecha2))
+      ->where('DETIPO', '!=', '3')
+      ->groupBy('DENMRO')
+      ->get();
 
     //   dd($costos);
 
 
-    return view('admin.costos',compact('costos'));
+    return view('admin.costos', compact('costos'));
 
 
   }
 
 
 
-  public function costosdetalle() {
+  public function costosdetalle()
+  {
 
 
     return view('admin.costosdetalle');
   }
 
-  public function costosdetallefiltro(Request $request){
+  public function costosdetallefiltro(Request $request)
+  {
 
 
-      $fecha1=$request->fecha1;
+    $fecha1 = $request->fecha1;
 
-            $costos=DB::select('select DETIPO, DENMRO, CACOCA,DECODI, DECANT, Detalle, ARMARCA, taglos, PCCOSTO,(DECANT*PCCOSTO) AS costototal, precio_ref,(DECANT*precio_ref) as totalventa, DEFECO from dcargos
+    $costos = DB::select('select DETIPO, DENMRO, CACOCA,DECODI, DECANT, Detalle, ARMARCA, taglos, PCCOSTO,(DECANT*PCCOSTO) AS costototal, precio_ref,(DECANT*precio_ref) as totalventa, DEFECO from dcargos
   left join cargos on dcargos.DENMRO = cargos.CANMRO and dcargos.DETIPO = cargos.CATIPO
   left join producto on dcargos.DECODI = producto.ARCODI
   left join vv_tablas22 on producto.ARGRPO2 = vv_tablas22.tarefe
   left join precios on substring(dcargos.DECODI,1 ,5) = precios.PCCODI
   where DETIPO = 3 and DENMRO in (select REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
   REPLACE(LOWER(detalle), "a", "")
-  , "b", ""), "c", ""), "d", ""), "e" , ""), "f" , ""), "g" , ""), "h" , ""), "i" , ""), "j" , ""), "k" , ""), "l" , ""), "m" , ""), "n" , ""), "ñ" , ""), "o" , ""), "p" , ""), "q" , ""), "r" , ""), "s" , ""), "t" , ""), "u" , ""), "v" , ""), "w" , ""), "x" , ""), "y" , ""), "z" , ""), " ", ""), "°" , "") AS guias from dcargos where DEFECO = "'.$fecha1.'" and Detalle like "%segun%guia%" and DETIPO = 8
-  ) and DEFECO between  DATE_FORMAT("'.$fecha1.'", "%Y-%m-01") and last_day("'.$fecha1.'")
+  , "b", ""), "c", ""), "d", ""), "e" , ""), "f" , ""), "g" , ""), "h" , ""), "i" , ""), "j" , ""), "k" , ""), "l" , ""), "m" , ""), "n" , ""), "ñ" , ""), "o" , ""), "p" , ""), "q" , ""), "r" , ""), "s" , ""), "t" , ""), "u" , ""), "v" , ""), "w" , ""), "x" , ""), "y" , ""), "z" , ""), " ", ""), "°" , "") AS guias from dcargos where DEFECO = "' . $fecha1 . '" and Detalle like "%segun%guia%" and DETIPO = 8
+  ) and DEFECO between  DATE_FORMAT("' . $fecha1 . '", "%Y-%m-01") and last_day("' . $fecha1 . '")
   union all
   select DETIPO, DENMRO, CACOCA, DECODI, DECANT, Detalle,ARMARCA, tablas.taglos, PCCOSTO, DECANT*(precios.PCCOSTO) as costototal, precio_ref, DECANT*precio_ref AS totalventa, DEFECO
   from dcargos
@@ -1745,14 +1886,14 @@ public function actualizaripmac(Request $request)
   inner join precios on substr(dcargos.DECODI, 1, 5) = precios.PCCODI
   inner join producto on dcargos.DECODI = producto.arcodi
   inner join tablas on producto.ARGRPO2 = tablas.TAREFE
-  where DETIPO != "3" and tablas.tacodi = "22" and DEFECO = "'.$fecha1.'" and Detalle not like "%segun%guia%"');
+  where DETIPO != "3" and tablas.tacodi = "22" and DEFECO = "' . $fecha1 . '" and Detalle not like "%segun%guia%"');
 
-  //dd($costos);
+    //dd($costos);
 
-  return view('admin.costosdetalle',compact('costos', 'fecha1'));
+    return view('admin.costosdetalle', compact('costos', 'fecha1'));
 
 
-}
+  }
 
   //------------------------------ COSTOS - FIN -----------------------------------------------//
 
@@ -1763,267 +1904,275 @@ public function actualizaripmac(Request $request)
 
 
 
-//------------------------------Cupon Escolar----------------------------------------------//
+  //------------------------------Cupon Escolar----------------------------------------------//
 
 
-    public function cuponesescolares(Request $request){
+  public function cuponesescolares(Request $request)
+  {
 
-      $control=DB::table('cupon_escolar')
+    $control = DB::table('cupon_escolar')
       ->where('anno_esc', 2020)
       ->get();
 
 
-    return view('admin.cuponesescolares',compact('control'));
+    return view('admin.cuponesescolares', compact('control'));
 
 
   }
 
 
   public function actualizarcupon(Request $request)
+  {
+    // dd($request->all());
+
+    $control = cuponescolar::findOrfail($request->id);
+    $control->id = $request->get('id');
+    $control->nro_cupon = $request->get('nro_cupon');
+    $control->e_mail = $request->get('e_mail');
+    $control->fono = $request->get('fono');
+    $control->colegio = $request->get('colegio');
+    $control->comuna = $request->get('comuna');
+    $control->update();
+    return back();
+
+  }
 
 
-      {
-        // dd($request->all());
+  //------------------------------Fin Cupon Escolar-----------------------------------------------//
 
-          $control=cuponescolar::findOrfail($request->id);
-          $control->id=$request->get('id');
-          $control->nro_cupon=$request->get('nro_cupon');
-          $control->e_mail=$request->get('e_mail');
-          $control->fono=$request->get('fono');
-          $control->colegio=$request->get('colegio');
-          $control->comuna=$request->get('comuna');
-          $control->update();
-          return back();
-
-      }
+  public function stocktiemporeal(Request $request)
+  {
 
 
-//------------------------------Fin Cupon Escolar-----------------------------------------------//
-
-public function stocktiemporeal (Request $request){
-
-
-  if ($request->ajax()) {
-    $productos = DB::table('bodeprod as bp')
+    if ($request->ajax()) {
+      $productos = DB::table('bodeprod as bp')
         ->join('producto as p', 'p.ARCODI', '=', 'bp.bpprod')
-        ->join('precios as pr', function($join) {
-            $join->on('pr.PCCODI', '=', DB::raw('LEFT(p.ARCODI, 5)'));
+        ->join('precios as pr', function ($join) {
+          $join->on('pr.PCCODI', '=', DB::raw('LEFT(p.ARCODI, 5)'));
         })
         ->leftJoin('suma_bodega as sb', 'sb.inarti', '=', 'bp.bpprod')
         ->select([
-            'bp.bpprod as codigo',
-            'p.ARDESC as descripcion',
-            'p.ARMARCA as marca',
-            'bp.bpsrea as stock_sala',
-            DB::raw('IFNULL(sb.cantidad, 0) as stock_bodega'),
-            'pr.PCPVDET as precio_detalle',
-            'pr.PCPVMAY as precio_mayor',
-            DB::raw('ROUND(pr.PCCOSTOREA / 1.19, 1) as neto'),
-            'pr.FechaCambioPrecio'
+          'bp.bpprod as codigo',
+          'p.ARDESC as descripcion',
+          'p.ARMARCA as marca',
+          'bp.bpsrea as stock_sala',
+          DB::raw('IFNULL(sb.cantidad, 0) as stock_bodega'),
+          'pr.PCPVDET as precio_detalle',
+          'pr.PCPVMAY as precio_mayor',
+          DB::raw('ROUND(pr.PCCOSTOREA / 1.19, 1) as neto'),
+          'pr.FechaCambioPrecio'
         ]);
 
-    return DataTables::of($productos)->make(true);
+      return DataTables::of($productos)->make(true);
+    }
+
+    return view('admin.stocktiemporeal');
   }
 
-  return view('admin.stocktiemporeal');
-}
+
+
+  public function ListarOrdenesDiseño(Request $request)
+  {
+
+    $ordenes = DB::table('ordenesdiseño')
+      ->orderBy('idOrdenesDiseño', 'desc')
+      ->get();
 
 
 
-    public function ListarOrdenesDiseño(Request $request){
+    return view('admin.ListarOrdenesDiseño', compact('ordenes'));
+  }
 
-        $ordenes=DB::table('ordenesdiseño')
-        ->orderBy('idOrdenesDiseño', 'desc')
-        ->get();
+  public function ListarOrdenesDisenoDetalle($idOrdenesDiseño)
+  {
 
+    $ordenesdiseño = DB::table('ordenesdiseño')
+      ->where('idOrdenesDiseño', $idOrdenesDiseño)
+      ->get();
 
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+      //dd('Este un servidor usando Windows!');
+      if (!is_null($ordenesdiseño[0]->archivo)) {
+        $path = storage_path('app\archivos' . substr($ordenesdiseño[0]->archivo, 8));
+        $data = file_get_contents($path);
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $base64 = base64_encode($data);
 
-        return view('admin.ListarOrdenesDiseño',compact('ordenes'));
+        $img = 'data:image/' . $type . ';base64,' . $base64;
+      } else {
+        $img = null;
+      }
+    } else {
+      //dd('Este es un servidor que no usa Windows!');
+      $path = storage_path('app/' . $ordenesdiseño[0]->archivo);
+      $data = file_get_contents($path);
+      $type = pathinfo($path, PATHINFO_EXTENSION);
+      $base64 = base64_encode($data);
+
+      $img = 'data:image/' . $type . ';base64,' . $base64;
     }
 
-    public function ListarOrdenesDisenoDetalle($idOrdenesDiseño){
+    //  dd($ordenesdiseño);
 
-        $ordenesdiseño=DB::table('ordenesdiseño')
-        ->where('idOrdenesDiseño', $idOrdenesDiseño)
-        ->get();
-
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-          //dd('Este un servidor usando Windows!');
-          if(!is_null($ordenesdiseño[0]->archivo)){
-            $path = storage_path('app\archivos'.substr($ordenesdiseño[0]->archivo, 8));
-            $data = file_get_contents($path);
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $base64 = base64_encode($data);
-
-            $img = 'data:image/' . $type . ';base64,' . $base64;
-          }else{
-            $img = null;
-          }
-        } else {
-          //dd('Este es un servidor que no usa Windows!');
-          $path = storage_path('app/'.$ordenesdiseño[0]->archivo);
-          $data = file_get_contents($path);
-          $type = pathinfo($path, PATHINFO_EXTENSION);
-          $base64 = base64_encode($data);
-
-          $img = 'data:image/' . $type . ';base64,' . $base64;
-        }
-
-        //  dd($ordenesdiseño);
-
-        return view('admin.ListarOrdenesDiseñoDetalle',compact('ordenesdiseño', 'img'));
-    }
+    return view('admin.ListarOrdenesDiseñoDetalle', compact('ordenesdiseño', 'img'));
+  }
 
 
-    public function ListarOrdenesDisenoDetalleedit(Request $request){
+  public function ListarOrdenesDisenoDetalleedit(Request $request)
+  {
 
-        // dd($request->all());
+    // dd($request->all());
 
-            $update = DB::table('ordenesdiseño')
-            ->where('idOrdenesDiseño' , $request->idorden)
-            ->update(['estado' => 'Proceso']);
-
-
-            return redirect()->route('ListarOrdenesDiseño');
-
-    }
-
-    public function ListarOrdenesDisenoDetalleedittermino(Request $request){
-
-        // dd($request->all());
-
-            $update = DB::table('ordenesdiseño')
-            ->where('idOrdenesDiseño' , $request->idorden)
-            ->update(['estado' => 'Terminado']);
-
-            $ordenesdiseño=DB::table('ordenesdiseño')
-            ->where('idOrdenesDiseño', $request->idorden)
-            ->get();
-
-            // dd($ordenesdiseño);
+    $update = DB::table('ordenesdiseño')
+      ->where('idOrdenesDiseño', $request->idorden)
+      ->update(['estado' => 'Proceso']);
 
 
-            $data = array(
-                'nombre' => $ordenesdiseño[0]->nombre,
-                'telefono' => $ordenesdiseño[0]->telefono,
-                'correo' => $ordenesdiseño[0]->correo,
-                'trabajo' => $ordenesdiseño[0]->trabajo,
-                'comentario' => $ordenesdiseño[0]->comentario,
-                'orden' => $request->idorden,
-            );
+    return redirect()->route('ListarOrdenesDiseño');
 
-            Mail::send('emails.correotermino', $data, function ($message) use($ordenesdiseño) {
-                $message->from('bluemix.informatica@gmail.com', 'Bluemix SPA.');
-                $message->to($ordenesdiseño[0]->correo)->subject('Trabajo ' . $ordenesdiseño[0]->trabajo . ' Libreria Bluemix');
+  }
 
-            });
+  public function ListarOrdenesDisenoDetalleedittermino(Request $request)
+  {
+
+    // dd($request->all());
+
+    $update = DB::table('ordenesdiseño')
+      ->where('idOrdenesDiseño', $request->idorden)
+      ->update(['estado' => 'Terminado']);
+
+    $ordenesdiseño = DB::table('ordenesdiseño')
+      ->where('idOrdenesDiseño', $request->idorden)
+      ->get();
+
+    // dd($ordenesdiseño);
 
 
-            return redirect()->route('ListarOrdenesDiseño')->with('success','Se ha Terminado la Orden');
+    $data = array(
+      'nombre' => $ordenesdiseño[0]->nombre,
+      'telefono' => $ordenesdiseño[0]->telefono,
+      'correo' => $ordenesdiseño[0]->correo,
+      'trabajo' => $ordenesdiseño[0]->trabajo,
+      'comentario' => $ordenesdiseño[0]->comentario,
+      'orden' => $request->idorden,
+    );
 
-    }
+    Mail::send('emails.correotermino', $data, function ($message) use ($ordenesdiseño) {
+      $message->from('bluemix.informatica@gmail.com', 'Bluemix SPA.');
+      $message->to($ordenesdiseño[0]->correo)->subject('Trabajo ' . $ordenesdiseño[0]->trabajo . ' Libreria Bluemix');
+
+    });
 
 
-    public function descargaordendiseno($id){
+    return redirect()->route('ListarOrdenesDiseño')->with('success', 'Se ha Terminado la Orden');
+
+  }
+
+
+  public function descargaordendiseno($id)
+  {
 
 
 
-            $ruta = OrdenDiseno::find($id);
+    $ruta = OrdenDiseno::find($id);
 
 
-        return response()->download(storage_path("app/" .$ruta->archivo));
+    return response()->download(storage_path("app/" . $ruta->archivo));
 
 
-    }
+  }
 
-    public function desactivarordendiseno(Request $request){
+  public function desactivarordendiseno(Request $request)
+  {
 
-      //dd($request->idorden);
+    //dd($request->idorden);
 
-      $update = DB::table('ordenesdiseño')
-            ->where('idOrdenesDiseño' , $request->idorden)
-            ->update(['estado' => 'Desactivado']);
+    $update = DB::table('ordenesdiseño')
+      ->where('idOrdenesDiseño', $request->idorden)
+      ->update(['estado' => 'Desactivado']);
 
-            return redirect()->route('ListarOrdenesDiseño')->with('success','Se ha Desactivado la Orden');
+    return redirect()->route('ListarOrdenesDiseño')->with('success', 'Se ha Desactivado la Orden');
 
-    }
+  }
 
-    public function MantencionClientes(){
+  public function MantencionClientes()
+  {
 
-            /* $clientescredito = DB::table('cliente')
-            ->leftjoin('tablas', 'cliente.CLCIUF' , '=', 'tablas.TAREFE')
-            ->where('CLTCLI', 7)
-            ->get('CLRUTC', 'CLRUTD', 'DEPARTAMENTO', 'CLRSOC', 'tablas.TAGLOS AS GIRO'); */
-            /* $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI
-              FROM cliente
-              LEFT JOIN tablas ON cliente.CLCIUF = tablas.TAREFE
-              AND tablas.TACODI = 8"); */
+    /* $clientescredito = DB::table('cliente')
+    ->leftjoin('tablas', 'cliente.CLCIUF' , '=', 'tablas.TAREFE')
+    ->where('CLTCLI', 7)
+    ->get('CLRUTC', 'CLRUTD', 'DEPARTAMENTO', 'CLRSOC', 'tablas.TAGLOS AS GIRO'); */
+    /* $clientescredito = DB::select("SELECT CLRUTC, CLRUTD, DEPARTAMENTO, CLRSOC, tablas.TAGLOS AS GIRO, CLTCLI
+      FROM cliente
+      LEFT JOIN tablas ON cliente.CLCIUF = tablas.TAREFE
+      AND tablas.TACODI = 8"); */
 
-            //dd($clientescredito);
+    //dd($clientescredito);
 
-            $p_r_a = [];
-            $p_p_e = [];
-            $t_c_a_a = 0;
-            $t_c_a_m = 0;
+    $p_r_a = [];
+    $p_p_e = [];
+    $t_c_a_a = 0;
+    $t_c_a_m = 0;
 
-            return view('admin.MantencionClientes', compact('p_r_a', 'p_p_e', 't_c_a_a', 't_c_a_m'));
-    }
+    return view('admin.MantencionClientes', compact('p_r_a', 'p_p_e', 't_c_a_a', 't_c_a_m'));
+  }
 
-    public function MantencionClientesFiltro(Request $request){
+  public function MantencionClientesFiltro(Request $request)
+  {
 
-        //dd($request->all());
-        $n_rut = substr($request->rut, 0, -2);
+    //dd($request->all());
+    $n_rut = substr($request->rut, 0, -2);
 
-        $clientescredito = [];
+    $clientescredito = [];
 
-        $cliente=DB::table('cliente')
-        ->where('CLRUTC', $n_rut)
-        ->where('DEPARTAMENTO', $request->depto)
-        ->first();
+    $cliente = DB::table('cliente')
+      ->where('CLRUTC', $n_rut)
+      ->where('DEPARTAMENTO', $request->depto)
+      ->first();
 
-        /* $cliente = DB::select("SELECT *, (select nombre from regiones where id = (select region from cliente where CLRUTC = $n_rut and DEPARTAMENTO = $request->depto)) as n_region
-        FROM db_bluemix.cliente
-        where CLRUTC = $n_rut and DEPARTAMENTO = $request->depto LIMIT 1")[0]; */
+    /* $cliente = DB::select("SELECT *, (select nombre from regiones where id = (select region from cliente where CLRUTC = $n_rut and DEPARTAMENTO = $request->depto)) as n_region
+    FROM db_bluemix.cliente
+    where CLRUTC = $n_rut and DEPARTAMENTO = $request->depto LIMIT 1")[0]; */
 
-        //dd($cliente);
+    //dd($cliente);
 
-        if($cliente != null){
-          $consulta=DB::table('cargos')
+    if ($cliente != null) {
+      $consulta = DB::table('cargos')
         ->where('CARUTC', $n_rut)
         // ->where('DETIPO', '!=' , '3')
         ->orderBy('cafeco', 'desc')
         ->get();
 
-        $ciudad=DB::table('tablas')
+      $ciudad = DB::table('tablas')
         ->join('cliente', 'CLCIUF', '=', 'tarefe')
         ->where('CLRUTC', $n_rut)
         ->where('DEPARTAMENTO', $request->depto)
         ->where('TACODI', 2)
-        ->first('taglos');
+        ->first(['taglos']);
 
-        $giro=DB::table('tablas')
+      $giro = DB::table('tablas')
         ->join('cliente', 'CLGIRO', '=', 'tarefe')
         ->where('CLRUTC', $n_rut)
         ->where('DEPARTAMENTO', $request->depto)
         ->where('TACODI', 8)
-        ->first('taglos');
+        ->first(['taglos']);
 
-        $cotiz=DB::table('cotiz')
+      $cotiz = DB::table('cotiz')
         ->where('CZ_RUT', 'LIKE', "%{$n_rut}%")
-        ->where('CZ_GIRO' , $giro->taglos)
+        ->where('CZ_GIRO', $giro->taglos)
         ->get();
 
-        $compras_agiles=DB::table('compra_agil')
+      $compras_agiles = DB::table('compra_agil')
         ->where('rut', 'LIKE', "%{$n_rut}%")
         ->where('depto', "{$request->depto}")
         ->get();
 
-        $regiones=DB::table('regiones')->get();
+      $regiones = DB::table('regiones')->get();
 
-        $p_r_a = [];
+      $p_r_a = [];
 
-        try{
-          $p_r_a=DB::select("SELECT observacion, COUNT(observacion) as moda
+      try {
+        $p_r_a = DB::select("SELECT observacion, COUNT(observacion) as moda
               FROM compra_agil
               where rut = '$request->rut'
               and depto = '$request->depto'
@@ -2032,14 +2181,14 @@ public function stocktiemporeal (Request $request){
               HAVING COUNT(observacion)
               order by moda desc
               limit 1")[0];
-        }catch(\Throwable $th){
-          $p_r_a = [];
-        }
+      } catch (\Throwable $th) {
+        $p_r_a = [];
+      }
 
-        $p_p_e = [];
+      $p_p_e = [];
 
-        try{
-          $p_p_e=DB::select("SELECT adjudicatorio, COUNT(adjudicatorio) as moda
+      try {
+        $p_p_e = DB::select("SELECT adjudicatorio, COUNT(adjudicatorio) as moda
               FROM compra_agil
               where rut = '$request->rut'
               and depto = '$request->depto'
@@ -2048,32 +2197,33 @@ public function stocktiemporeal (Request $request){
               HAVING COUNT(adjudicatorio)
               order by moda desc
               limit 1")[0];
-        }catch(\Throwable $th){
-          $p_p_e = [];
+      } catch (\Throwable $th) {
+        $p_p_e = [];
+      }
+
+      $t_c_a_a = 0;
+      $t_c_a_m = 0;
+      foreach ($compras_agiles as &$item) {
+        if ($item->adjudicada === 1) {
+          $t_c_a_a++;
+          $t_c_a_m += $item->total;
         }
+      }
 
-        $t_c_a_a = 0;
-        $t_c_a_m = 0;
-        foreach ($compras_agiles as &$item) {
-          if($item->adjudicada === 1){
-            $t_c_a_a++;
-            $t_c_a_m += $item->total;
-          }
-        }
+    } else {
+      return redirect()->route('MantencionClientes')->with('warning', 'Cliente no Existe');
+    }
 
-        }else{
-          return redirect()->route('MantencionClientes')->with('warning','Cliente no Existe');
-        }
+    return view('admin.MantencionClientes', compact('consulta', 'cliente', 'ciudad', 'giro', 'cotiz', 'compras_agiles', 'regiones', 't_c_a_a', 't_c_a_m', 'p_r_a', 'p_p_e', 'clientescredito'));
 
-        return view('admin.MantencionClientes',compact('consulta','cliente','ciudad','giro','cotiz','compras_agiles','regiones','t_c_a_a','t_c_a_m','p_r_a','p_p_e','clientescredito'));
+  }
 
-}
+  public function MantencionClientesUpdate(Request $request)
+  {
 
-    public function MantencionClientesUpdate(Request $request){
+    //dd($request);
 
-      //dd($request);
-
-      DB::table('cliente')->where('CLRUTC', $request->get('rut'))
+    DB::table('cliente')->where('CLRUTC', $request->get('rut'))
       ->where('CLRUTD', $request->get('dv'))
       ->where('DEPARTAMENTO', $request->get('depto'))
       ->update([
@@ -2082,44 +2232,46 @@ public function stocktiemporeal (Request $request){
         'email_dte_2' => $request->get('email_dte2')
       ]);
 
-      return redirect()->route('MantencionClientes');
-    }
+    return redirect()->route('MantencionClientes');
+  }
 
-    public function ventasCategoria(Request $request){
-
-
-        $categorias=DB::table('tablas')
-        ->where('tacodi', '22')
-        ->get();
+  public function ventasCategoria(Request $request)
+  {
 
 
-
-        return view('admin.ventasCategoria',compact('categorias'));
-
-    }
-
-
-    public function ventasCategoriaFiltro(Request $request){
-
-        // dd($request->all());
-
-        $fecha1=$request->fecha1;
-        $fecha2=$request->fecha2;
-        $contrato=$request->contrato;
-
-        $diseno=DB::table('dcargos')
-        ->join('producto','ARCODI', '=', 'decodi')
-        ->whereBetween('DEFECO', array($request->fecha1,$request->fecha2))
-        ->where('DETIPO', '!=' , '3')
-        ->where('ARGRPO2', $request->categoria)
-        ->get();
-
-        $categorias=DB::table('tablas')
-        ->where('tacodi', '22')
-        ->get();
+    $categorias = DB::table('tablas')
+      ->where('tacodi', '22')
+      ->get();
 
 
-      $todo=DB::select('select
+
+    return view('admin.ventasCategoria', compact('categorias'));
+
+  }
+
+
+  public function ventasCategoriaFiltro(Request $request)
+  {
+
+    // dd($request->all());
+
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    $contrato = $request->contrato;
+
+    $diseno = DB::table('dcargos')
+      ->join('producto', 'ARCODI', '=', 'decodi')
+      ->whereBetween('DEFECO', array($request->fecha1, $request->fecha2))
+      ->where('DETIPO', '!=', '3')
+      ->where('ARGRPO2', $request->categoria)
+      ->get();
+
+    $categorias = DB::table('tablas')
+      ->where('tacodi', '22')
+      ->get();
+
+
+    $todo = DB::select('select
       taglos,
       ARGRPO2,
       sum(precio_ref*DECANT) as valor
@@ -2135,9 +2287,9 @@ public function stocktiemporeal (Request $request){
               and dc.DENMRO = c.CANMRO
               and c.CATIPO != 3
               and c.CATIPO = dc.DETIPO
-              and dc.DEFECO between ? and ? group by ARGRPO2 ', [$fecha1,$fecha2]);
+              and dc.DEFECO between ? and ? group by ARGRPO2 ', [$fecha1, $fecha2]);
 
-              $todo2=DB::select('select
+    $todo2 = DB::select('select
               taglos,
               ARGRPO2,
               sum(precio_ref*DECANT) as valor
@@ -2153,144 +2305,148 @@ public function stocktiemporeal (Request $request){
                       and dc.DENMRO = c.CANMRO
                       and c.CATIPO != 3
                       and c.CATIPO = dc.DETIPO
-                      and dc.DEFECO between ? and ? group by ARGRPO2 WITH ROLLUP', [$fecha1,$fecha2]);
+                      and dc.DEFECO between ? and ? group by ARGRPO2 WITH ROLLUP', [$fecha1, $fecha2]);
 
-                $desc = DB::select('select(
-                (select sum(casuto-cavalo) as resta from cargos where CAFECO between "'.$fecha1.'" and "'.$fecha2.'" and CAPODE != 0)+
-                (select sum(total_nc) from nota_credito where fecha between "'.$fecha1.'" and "'.$fecha2.'")) as descuentos')[0];
+    $desc = DB::select('select(
+                (select sum(casuto-cavalo) as resta from cargos where CAFECO between "' . $fecha1 . '" and "' . $fecha2 . '" and CAPODE != 0)+
+                (select sum(total_nc) from nota_credito where fecha between "' . $fecha1 . '" and "' . $fecha2 . '")) as descuentos')[0];
 
-                //dd($desc->descuentos);
+    //dd($desc->descuentos);
 
-              $cosa=end($todo2);
+    $cosa = end($todo2);
 
-             $suma=$cosa->valor;
+    $suma = $cosa->valor;
 
-             //blsldkfmls
-
-
+    //blsldkfmls
 
 
-        return view('admin.ventasCategoria',compact('diseno','categorias','todo','suma','fecha1','fecha2','contrato', 'desc'));
 
+
+    return view('admin.ventasCategoria', compact('diseno', 'categorias', 'todo', 'suma', 'fecha1', 'fecha2', 'contrato', 'desc'));
+
+  }
+
+
+  public function MantenedorContrato(Request $request)
+  {
+    $fecha2 = date("Y-m-d");
+    $fecha1 = date("Y-m-d", strtotime($fecha2 . "- 1 month"));
+    $contratof = "";
+
+    $contratos = DB::table('contratos')->orderBy('estado', 'desc')
+      ->get();
+
+    $contratosagregar = DB::table('contratos')
+      ->get();
+
+    $elcontrato = null;
+
+    return view('admin.MantenedorContrato', compact('contratof', 'fecha1', 'fecha2', 'contratos', 'contratosagregar', 'elcontrato'));
+
+  }
+
+  public function EditarPrecio(Request $request)
+  {
+
+    $cambioprecio = DB::table('contrato_detalle')->where('id_contrato_detalle', $request->get('idcontratodetalle'))->first();
+
+    if ($cambioprecio != null) {
+      $precioeditado = [
+        'precio' => $request->botonidcontrato
+      ];
+      DB::table('contrato_detalle')->where('id_contrato_detalle', $request->get('idcontratodetalle'))->update($precioeditado);
+      return redirect()->route('MantenedorContrato')->with('success', 'Precio actualizado correctamente');
+    } else {
+      return redirect()->route('MantenedorContrato')->with('error', 'Precio no encontrado');
     }
 
+  }
 
-    public function MantenedorContrato(Request $request){
-        $fecha2=date("Y-m-d");
-        $fecha1 = date("Y-m-d",strtotime($fecha2."- 1 month"));
-        $contratof="";
+  public function updateproductocontrato(Request $request)
+  {
 
-        $contratos=DB::table('contratos')->orderBy('estado', 'desc')
+    // dd($request->all());
+
+    $update = DB::table('contrato_detalle')
+      ->join('contratos', 'id_contratos', '=', 'fk_contrato')
+      ->where('codigo_producto', $request->codigo)
+      ->where('nombre_contrato', $request->contrato)
+      ->update(['cantidad_contrato' => $request->cantidad_contrato]);
+
+
+    // return redirect()->route('MantenedorContrato');
+    return redirect()->route('MantenedorContrato')->with('success', 'Producto Editado');
+
+  }
+
+
+  public function deleteproductocontrato(Request $request)
+  {
+
+    //dd($request->all());
+
+    $update = DB::table('contrato_detalle')
+      ->join('contratos', 'id_contratos', '=', 'fk_contrato')
+      ->where('codigo_producto', $request->codigo)
+      ->where('nombre_contrato', $request->contrato)
+      ->delete();
+
+
+    // return redirect()->route('MantenedorContrato');
+    return redirect()->route('MantenedorContrato')->with('success', 'Producto Eliminado');
+
+
+
+  }
+
+
+
+
+  public function MantenedorContratoFiltro(Request $request)
+  {
+
+    if ($request->codigo == null) {
+
+      $contratof = $request->get('contrato');
+      $fecha1 = $request->fecha1;
+      $fecha2 = $request->fecha2;
+
+      $contratos = DB::table('contratos')->orderBy('estado', 'desc')
         ->get();
 
-        $contratosagregar=DB::table('contratos')
-        ->get();
+      $elcontrato = DB::table('contratos')->where('id_contratos', $contratof)->get()[0];
 
-        $elcontrato = null;
+      if ($elcontrato->id_depto == null) {
+        $elcontrato->id_depto = "987654321";
+      }
 
-        return view('admin.MantenedorContrato',compact('contratof','fecha1','fecha2','contratos','contratosagregar','elcontrato'));
-
-    }
-
-    public function EditarPrecio(Request $request){
-
-        $cambioprecio = DB::table('contrato_detalle')->where('id_contrato_detalle', $request->get('idcontratodetalle'))->first();
-
-        if($cambioprecio != null){
-            $precioeditado = [
-                'precio' => $request->botonidcontrato];
-                DB::table('contrato_detalle')->where('id_contrato_detalle', $request->get('idcontratodetalle'))->update($precioeditado);
-                return redirect()->route('MantenedorContrato')->with('success','Precio actualizado correctamente');
-        }else{
-            return redirect()->route('MantenedorContrato')->with('error','Precio no encontrado');
-        }
-
-    }
-
-    public function updateproductocontrato(Request $request){
-
-        // dd($request->all());
-
-        $update = DB::table('contrato_detalle')
-            ->join('contratos','id_contratos', '=', 'fk_contrato')
-            ->where('codigo_producto' , $request->codigo)
-            ->where('nombre_contrato' , $request->contrato)
-            ->update(['cantidad_contrato' => $request->cantidad_contrato]);
-
-
-            // return redirect()->route('MantenedorContrato');
-            return redirect()->route('MantenedorContrato')->with('success','Producto Editado');
-
-    }
-
-
-    public function deleteproductocontrato(Request $request){
-
-         //dd($request->all());
-
-        $update = DB::table('contrato_detalle')
-            ->join('contratos','id_contratos', '=', 'fk_contrato')
-            ->where('codigo_producto' , $request->codigo)
-            ->where('nombre_contrato' , $request->contrato)
-            ->delete();
-
-
-            // return redirect()->route('MantenedorContrato');
-            return redirect()->route('MantenedorContrato')->with('success','Producto Eliminado');
-
-
-
-    }
-
-
-
-
-    public function MantenedorContratoFiltro(Request $request){
-
-        if($request->codigo == null){
-
-            $contratof=$request->get('contrato');
-            $fecha1=$request->fecha1;
-            $fecha2=$request->fecha2;
-
-            $contratos=DB::table('contratos')->orderBy('estado', 'desc')
-            ->get();
-
-            $elcontrato = DB::table('contratos')->where('id_contratos', $contratof)->get()[0];
-
-            if($elcontrato->id_depto == null){
-              $elcontrato->id_depto = "987654321";
-            }
-
-            $contrato=DB::select('select contrato_detalle.id_contrato_detalle,contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
+      $contrato = DB::select('select contrato_detalle.id_contrato_detalle,contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
             LEFT join producto on ARCODI = codigo_producto
             LEFT join contratos on id_contratos = fk_contrato
             left join bodeprod on contrato_detalle.codigo_producto = bodeprod.bpprod
             left join Suma_Bodega on contrato_detalle.codigo_producto = Suma_Bodega.inarti
-            left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "'.$elcontrato->id_depto.'%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO between ? and ? group by decodi) d on codigo_producto = d.decodi
-            where contratos.nombre_contrato = ?', [$request->fecha1,$request->fecha2,$elcontrato->nombre_contrato]);
+            left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "' . $elcontrato->id_depto . '%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO between ? and ? group by decodi) d on codigo_producto = d.decodi
+            where contratos.nombre_contrato = ?', [$request->fecha1, $request->fecha2, $elcontrato->nombre_contrato]);
 
-            $contratosagregar=DB::table('contratos')
-            ->get();
+      $contratosagregar = DB::table('contratos')
+        ->get();
 
-            //dd($contrato);
+      //dd($contrato);
 
-            return view('admin.MantenedorContrato',compact('fecha1','fecha2','contratof','contrato', 'contratos','contratosagregar','elcontrato'));
+      return view('admin.MantenedorContrato', compact('fecha1', 'fecha2', 'contratof', 'contrato', 'contratos', 'contratosagregar', 'elcontrato'));
 
-            }
+    } else {
 
-            else{
+      // $contrato=DB::table('producto')
+      // ->leftjoin('contrato_detalle','codigo_producto', '=', 'ARCODI')
+      // ->leftjoin('contratos','id_contratos', '=', 'fk_contrato')
+      // ->leftjoin('bodeprod','contrato_detalle.codigo_producto','=','bodeprod.bpprod')
+      // ->leftjoin('Suma_Bodega','contrato_detalle.codigo_producto','=','Suma_Bodega.inarti')
+      // ->where('ARCODI', $request->codigo)
+      // ->get();
 
-            // $contrato=DB::table('producto')
-            // ->leftjoin('contrato_detalle','codigo_producto', '=', 'ARCODI')
-            // ->leftjoin('contratos','id_contratos', '=', 'fk_contrato')
-            // ->leftjoin('bodeprod','contrato_detalle.codigo_producto','=','bodeprod.bpprod')
-            // ->leftjoin('Suma_Bodega','contrato_detalle.codigo_producto','=','Suma_Bodega.inarti')
-            // ->where('ARCODI', $request->codigo)
-            // ->get();
-
-            $contrato=DB::select('select contrato_detalle.id_contrato_detalle,contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
+      $contrato = DB::select('select contrato_detalle.id_contrato_detalle,contrato_detalle.codigo_producto,producto.ARDESC,producto.ARMARCA,contratos.nombre_contrato,contrato_detalle.precio,bodeprod.bpsrea ,Suma_Bodega.cantidad, total_cant, total_suma
             from contrato_detalle
             LEFT join producto on ARCODI = codigo_producto
             LEFT join contratos on id_contratos = fk_contrato
@@ -2299,270 +2455,278 @@ public function stocktiemporeal (Request $request){
             left join (SELECT DECODI, sum(DECANT) as total_cant, sum(DECANT*DEPREC) as total_suma FROM dcargos left join cargos on dcargos.DENMRO = cargos.CANMRO where nro_oc like "%SE%" and dcargos.DECODI not like "V%" and cargos.CATIPO = 8 and DEFECO >= "2020-01-01" group by decodi) d on codigo_producto = d.decodi
             where contrato_detalle.codigo_producto =?', [$request->codigo]);
 
-            $contratos=DB::table('contratos')
-            ->get();
+      $contratos = DB::table('contratos')
+        ->get();
 
-            $contratosagregar=DB::table('contratos')
-            ->get();
+      $contratosagregar = DB::table('contratos')
+        ->get();
 
-            //dd($contrato);
+      //dd($contrato);
 
-            return view('admin.MantenedorContrato',compact('fecha1','fecha2','contrato', 'contratos','contratosagregar'));
-
-            }
+      return view('admin.MantenedorContrato', compact('fecha1', 'fecha2', 'contrato', 'contratos', 'contratosagregar'));
 
     }
 
-    public function MantenedorContratoAgregarProducto(Request $request){
+  }
+
+  public function MantenedorContratoAgregarProducto(Request $request)
+  {
 
 
 
-        $validacion=DB::table('producto')
-        ->where('ARCODI', $request->codigo)
-        ->get();
+    $validacion = DB::table('producto')
+      ->where('ARCODI', $request->codigo)
+      ->get();
 
-        $validacion2=DB::table('contrato_detalle')
-        ->where('codigo_producto', $request->codigo)
-        ->where('fk_contrato', $request->id_contrato)
-        ->get();
-
-
-        // $validacion3=DB::table('contrato_detalle')
-        // ->where('fk_contrato',$request->contrato)
-        // ->get();
-
-        //dd($validacion2);
+    $validacion2 = DB::table('contrato_detalle')
+      ->where('codigo_producto', $request->codigo)
+      ->where('fk_contrato', $request->id_contrato)
+      ->get();
 
 
-        if($validacion->isEmpty()){
+    // $validacion3=DB::table('contrato_detalle')
+    // ->where('fk_contrato',$request->contrato)
+    // ->get();
 
-          return redirect()->route('MantenedorContrato')->with('warning','Producto No Existe');
+    //dd($validacion2);
 
-        }
 
-        else{
+    if ($validacion->isEmpty()) {
 
-            if(!$validacion2->isEmpty()){
+      return redirect()->route('MantenedorContrato')->with('warning', 'Producto No Existe');
 
-                return redirect()->route('MantenedorContrato')->with('warning','El Producto Ya Pertenece a este contrato');
+    } else {
 
-              }
+      if (!$validacion2->isEmpty()) {
 
-              else{
-                //dd($request);
-                DB::table('contrato_detalle')->insert([
-                    [
-                        "codigo_producto" => $request->codigo,
-                        "cantidad_contrato" => 0,
-                        "precio" => $request->precio,
-                        "fk_contrato" => $request->id_contrato,
-                        ]
-                    ]);
+        return redirect()->route('MantenedorContrato')->with('warning', 'El Producto Ya Pertenece a este contrato');
 
-                    return redirect()->route('MantenedorContrato')->with('success','Producto Agregado');
+      } else {
+        //dd($request);
+        DB::table('contrato_detalle')->insert([
+          [
+            "codigo_producto" => $request->codigo,
+            "cantidad_contrato" => 0,
+            "precio" => $request->precio,
+            "fk_contrato" => $request->id_contrato,
+          ]
+        ]);
 
-          }
-        }
+        return redirect()->route('MantenedorContrato')->with('success', 'Producto Agregado');
 
+      }
     }
 
-    public function ResumenProducto($codigo_producto){
+  }
 
-        //error_log(print_r($codigo, true));
-        $producto = DB::select('select arcodi, arcbar, ARCOPV,ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea, (
+  public function ResumenProducto($codigo_producto)
+  {
+
+    //error_log(print_r($codigo, true));
+    $producto = DB::select('select arcodi, arcbar, ARCOPV,ardesc, ARDVTA, armarca, defeco, if(isnull(cantidad), 0, cantidad) as cantidad, bpsrea, (
           select CMVFECG from dmovim
-          left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "'.$codigo_producto.'" order by CMVFECG desc limit 1
+          left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI where DMVPROD = "' . $codigo_producto . '" order by CMVFECG desc limit 1
         ) as ult_ingreso FROM producto
         left join dcargos on ARCODI = dcargos.DECODI
         left join Suma_Bodega on ARCODI = Suma_Bodega.inarti
         left join bodeprod on ARCODI = bodeprod.bpprod
-        where ARCODI = "'.$codigo_producto.'" order by DEFECO desc limit 1')[0];
+        where ARCODI = "' . $codigo_producto . '" order by DEFECO desc limit 1')[0];
 
 
-        // $ingresos = DB::select('select DMVPROD, proveed.PVNOMB, DMVCANT, DMVUNID, CMVFECG, PrecioCosto from dmovim
-        // left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI
-        // left join dcargos on dmovim.DMVPROD = dcargos.DECODI
-        // left join proveed on cmovim.CMVCPRV = proveed.PVRUTP
-        // where CMVFECG >= "2020-01-01" and DMVPROD = "'.$codigo_producto.'" and DEFECO >= "2020-01-01" group by CMVFECG');
+    // $ingresos = DB::select('select DMVPROD, proveed.PVNOMB, DMVCANT, DMVUNID, CMVFECG, PrecioCosto from dmovim
+    // left join cmovim on dmovim.DMVNGUI = cmovim.CMVNGUI
+    // left join dcargos on dmovim.DMVPROD = dcargos.DECODI
+    // left join proveed on cmovim.CMVCPRV = proveed.PVRUTP
+    // where CMVFECG >= "2020-01-01" and DMVPROD = "'.$codigo_producto.'" and DEFECO >= "2020-01-01" group by CMVFECG');
 
-        // $costos = DB::select('select DEFECO, PrecioCosto, DEPREC from dcargos where DECODI = "'.$codigo_producto.'" and DETIPO != 3 and DEFECO >= "2020-01-01" AND PrecioCosto != 100 group by PrecioCosto order by DEFECO asc');
+    // $costos = DB::select('select DEFECO, PrecioCosto, DEPREC from dcargos where DECODI = "'.$codigo_producto.'" and DETIPO != 3 and DEFECO >= "2020-01-01" AND PrecioCosto != 100 group by PrecioCosto order by DEFECO asc');
 
-        return response()->json([$producto]);
-      }
-
-
-
-    public function ListadoProductosContrato(Request $request){
-
-        $contratos=DB::table('contratos')
-        ->get();
-
-
-        $datos = null;
+    return response()->json([$producto]);
+  }
 
 
 
-        return view('admin.ListadoProductosContrato',compact('contratos','datos'));
+  public function ListadoProductosContrato(Request $request)
+  {
 
-    }
+    $contratos = DB::table('contratos')
+      ->get();
+
+
+    $datos = null;
 
 
 
-    public function ListadoProductosContratoFiltro(Request $request){
+    return view('admin.ListadoProductosContrato', compact('contratos', 'datos'));
 
-        // dd($request->all());
+  }
 
-        if($request->codigo == null && $request->descripcion == null){
-        // $contrato=DB::table('Vista_Productos')
-        // ->join('contrato_detalle','codigo_producto', '=', 'interno')
-        // ->join('contratos','id_contratos', '=', 'fk_contrato')
-        // ->where('nombre_contrato', $request->contrato)
-        // ->get();
 
-        $contrato=DB::select('select codigo_producto, descripcion, marca, nombre_contrato, PCCOSTO, sum(decant) as venta, cantidad_contrato, sala, bodega from contrato_detalle
+
+  public function ListadoProductosContratoFiltro(Request $request)
+  {
+
+    // dd($request->all());
+
+    if ($request->codigo == null && $request->descripcion == null) {
+      // $contrato=DB::table('Vista_Productos')
+      // ->join('contrato_detalle','codigo_producto', '=', 'interno')
+      // ->join('contratos','id_contratos', '=', 'fk_contrato')
+      // ->where('nombre_contrato', $request->contrato)
+      // ->get();
+
+      $contrato = DB::select('select codigo_producto, descripcion, marca, nombre_contrato, PCCOSTO, sum(decant) as venta, cantidad_contrato, sala, bodega from contrato_detalle
         left join Vista_Productos on contrato_detalle.codigo_producto = Vista_Productos.interno
         left join contratos on contrato_detalle.fk_contrato = contratos.id_contratos
         left join precios on LEFT(contrato_detalle.codigo_producto, 5) = precios.PCCODI
         where contratos.nombre_contrato = ? group by codigo_producto', [$request->contrato]);
 
-        // $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO, cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5)', [$request->contrato]);
+      // $contrato=DB::select('select codigo_producto,descripcion,marca,nombre_contrato,PCCOSTO, cantidad_contrato, sala, bodega from Vista_Productos, contrato_detalle, contratos, precios, dcargos where codigo_producto = interno and id_contratos = fk_contrato and nombre_contrato = ? and PCCODI = LEFT(interno, 5)', [$request->contrato]);
 
-        //ultima fecha llegada
-        $contratos=DB::table('contratos')
+      //ultima fecha llegada
+      $contratos = DB::table('contratos')
         ->get();
 
-        $datoscontrato=DB::table('contratos')
-        ->where('nombre_contrato',$request->contrato)
+      $datoscontrato = DB::table('contratos')
+        ->where('nombre_contrato', $request->contrato)
         ->first();
 
-        $datos = 1;
+      $datos = 1;
 
-        // dd($contrato);
+      // dd($contrato);
 
-        return view('admin.ListadoProductosContrato',compact('contrato','contratos','datos','datoscontrato'));
+      return view('admin.ListadoProductosContrato', compact('contrato', 'contratos', 'datos', 'datoscontrato'));
 
-        }else{
+    } else {
 
-        // $contrato=DB::table('Vista_Productos')
-        // ->join('contrato_detalle','codigo_producto', '=', 'interno')
-        // ->join('contratos','id_contratos', '=', 'fk_contrato')
-        // ->where('interno', $request->codigo)
-        // ->get();
-        if($request->codigo != null){
-          $contrato=DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
-        }elseif($request->descripcion != null){
-          $contrato=DB::select("select *, (select sum(DECANT) from dcargos where Detalle like ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and descripcion like ? and PCCODI = LEFT(interno, 5)", ['%'.$request->descripcion.'%', '%'.$request->descripcion.'%']);
-        }
-
-
-        // $contrato=DB::select('select * from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo]);
+      // $contrato=DB::table('Vista_Productos')
+      // ->join('contrato_detalle','codigo_producto', '=', 'interno')
+      // ->join('contratos','id_contratos', '=', 'fk_contrato')
+      // ->where('interno', $request->codigo)
+      // ->get();
+      if ($request->codigo != null) {
+        $contrato = DB::select('select *, (select sum(DECANT) from dcargos where DECODI = ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo, $request->codigo]);
+      } elseif ($request->descripcion != null) {
+        $contrato = DB::select("select *, (select sum(DECANT) from dcargos where Detalle like ? and DEFECO between (select DATE_ADD(curdate(),INTERVAL -1 YEAR)) and curdate()) as venta from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and descripcion like ? and PCCODI = LEFT(interno, 5)", ['%' . $request->descripcion . '%', '%' . $request->descripcion . '%']);
+      }
 
 
-        $contratos=DB::table('contratos')
+      // $contrato=DB::select('select * from Vista_Productos, contrato_detalle, contratos, precios where codigo_producto = interno and id_contratos = fk_contrato and interno = ? and PCCODI = LEFT(interno, 5)', [$request->codigo]);
+
+
+      $contratos = DB::table('contratos')
         ->get();
 
-        // dd($request->codigo);
+      // dd($request->codigo);
 
-        $datos = null;
+      $datos = null;
 
 
-        return view('admin.ListadoProductosContrato',compact('contrato', 'contratos', 'datos'));
-
-        }
-
+      return view('admin.ListadoProductosContrato', compact('contrato', 'contratos', 'datos'));
 
     }
 
 
-    public function MantenedorContratoAgregar(){
+  }
 
 
-        return view('admin.MantenedorContratoAgregar');
-
-    }
-
-    public function MantenedorContratoAgregarContrato(Request $request){
-
-        $validacion=DB::table('contratos')
-        ->where('nombre_contrato', $request->nombrecontrato)
-        ->get('nombre_contrato');
-
-        if($validacion->isEmpty()){
-
-            DB::table('contratos')->insert([
-                [
-                    "id_contratos_licitacion" => $request->idcontrato,
-                    "nombre_contrato" => $request->nombrecontrato,
-                    "plazo_entrega" => $request->plazoentrega,
-                    "contado_desde" => $request->contadodesde,
-                    "plazo_aceptar_oc" => $request->plazo,
-                    "multa" => $request->multa,
-                    ]
-                ]);
-
-            return redirect()->route('ListadoContratos')->with('success','Contrato Agregado');
+  public function MantenedorContratoAgregar()
+  {
 
 
-        }else{
+    return view('admin.MantenedorContratoAgregar');
 
-            return redirect()->route('MantenedorContratoAgregar')->with('warning','Ya Existe Un Contrato Con El Mismo Nombre');
+  }
+
+  public function MantenedorContratoAgregarContrato(Request $request)
+  {
+
+    $validacion = DB::table('contratos')
+      ->where('nombre_contrato', $request->nombrecontrato)
+      ->get('nombre_contrato');
+
+    if ($validacion->isEmpty()) {
+
+      DB::table('contratos')->insert([
+        [
+          "id_contratos_licitacion" => $request->idcontrato,
+          "nombre_contrato" => $request->nombrecontrato,
+          "plazo_entrega" => $request->plazoentrega,
+          "contado_desde" => $request->contadodesde,
+          "plazo_aceptar_oc" => $request->plazo,
+          "multa" => $request->multa,
+        ]
+      ]);
+
+      return redirect()->route('ListadoContratos')->with('success', 'Contrato Agregado');
 
 
-    }
+    } else {
 
-    }
-
-    public function ListadoContratos(Request $request){
-
-        $contratos=DB::table('contratos')
-        ->get();
-
-        // dd($contratos);
-
-
-        return view('admin.ListadoContratos',compact('contratos'));
+      return redirect()->route('MantenedorContratoAgregar')->with('warning', 'Ya Existe Un Contrato Con El Mismo Nombre');
 
 
     }
 
-    public function ListaEscolar(){
+  }
+
+  public function ListadoContratos(Request $request)
+  {
+
+    $contratos = DB::table('contratos')
+      ->get();
+
+    // dd($contratos);
 
 
-        return view('admin.cotizaciones.ListaEscolar');
-
-    }
+    return view('admin.ListadoContratos', compact('contratos'));
 
 
+  }
+
+  public function ListaEscolar()
+  {
 
 
-    public function UpdateContrato(Request $request){
+    return view('admin.cotizaciones.ListaEscolar');
 
-        // dd($request->all());
-
-        $update = DB::table('contratos')
-        ->where('id_contratos' , $request->id_contratos)
-        ->update(['id_contratos_licitacion' => $request->id_contratos_licitacion,
-                'plazo_entrega' => $request->plazo_entrega,
-                'contado_desde' => $request->contado_desde,
-                'plazo_aceptar_oc' => $request->plazo_aceptar_oc,
-                'multa' => $request->multa,
-                'estado' => $request->estado,
-                'id_depto' => $request->id_depto]);
-
-
-        return redirect()->route('ListadoContratos')->with('success','Datos Actualizados');
+  }
 
 
 
-    }
 
-    //Controlador productos_x_subir Empresas
-   public function ProductosFaltantes(Request $request){
+  public function UpdateContrato(Request $request)
+  {
 
-        // dd($request->all());
-        //$consulta=DB::table('db_bluemix.productos_x_subir')->get(); OK, sin condicion WHERE.
-        //$consulta=DB::select('SELECT * FROM db_bluemix.productos_x_subir where stock_sala >0;');//OK con WHERE.
-        $consulta=DB::select('select * from (SELECT
+    // dd($request->all());
+
+    $update = DB::table('contratos')
+      ->where('id_contratos', $request->id_contratos)
+      ->update([
+        'id_contratos_licitacion' => $request->id_contratos_licitacion,
+        'plazo_entrega' => $request->plazo_entrega,
+        'contado_desde' => $request->contado_desde,
+        'plazo_aceptar_oc' => $request->plazo_aceptar_oc,
+        'multa' => $request->multa,
+        'estado' => $request->estado,
+        'id_depto' => $request->id_depto
+      ]);
+
+
+    return redirect()->route('ListadoContratos')->with('success', 'Datos Actualizados');
+
+
+
+  }
+
+  //Controlador productos_x_subir Empresas
+  public function ProductosFaltantes(Request $request)
+  {
+
+    // dd($request->all());
+    //$consulta=DB::table('db_bluemix.productos_x_subir')->get(); OK, sin condicion WHERE.
+    //$consulta=DB::select('SELECT * FROM db_bluemix.productos_x_subir where stock_sala >0;');//OK con WHERE.
+    $consulta = DB::select('select * from (SELECT
             `list`.`codigo` AS `codigo`,
             `list`.`descripcion` AS `descripcion`,
             `list`.`marca` AS `marca`,
@@ -2589,14 +2753,15 @@ public function stocktiemporeal (Request $request){
       HAVING `total` = 1) as list1
       where list1.stock_sala > 0;');
 
-        return view('admin.ProductosFaltantes',compact('consulta'));
+    return view('admin.ProductosFaltantes', compact('consulta'));
 
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //Controlador productos_x_subir Web
-    public function ProductosFaltantesweb(Request $request){
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Controlador productos_x_subir Web
+  public function ProductosFaltantesweb(Request $request)
+  {
 
-      $consulta=DB::select('select * from (SELECT
+    $consulta = DB::select('select * from (SELECT
           `list`.`codigo` AS `codigo`,
           `list`.`descripcion` AS `descripcion`,
           `list`.`marca` AS `marca`,
@@ -2623,1299 +2788,1408 @@ public function stocktiemporeal (Request $request){
     HAVING `total` = 1) as list1
     where list1.stock_sala > 0;');
 
-      return view('admin.ProductosFaltantesWeb',compact('consulta'));
+    return view('admin.ProductosFaltantesWeb', compact('consulta'));
 
   }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function MantenedorProducto(Request $request){
-
-
-        return view('admin.MantenedorProducto');
+  public function MantenedorProducto(Request $request)
+  {
 
 
-    }
-    //////////////////////////////////////////Funcion Mostar productos sin subir/////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    return view('admin.MantenedorProducto');
 
 
-    public function MantenedorProductoFiltro(Request $request){
-
-        // dd($request->all());
-
-        $codigo=DB::table('Vista_Productos')
-        ->leftJoin('productosjumpsellerweb', 'Vista_Productos.interno', '=', 'productosjumpsellerweb.sku')
-        ->where('interno' , $request->codigo)
-        ->get();
-
-        // dd($codigo);
-
-        if($codigo->isEmpty()){
-
-            return redirect()->route('MantenedorProducto')->with('error','Producto No Encontrado');
-        }
-        else
-
-        return view('admin.MantenedorProducto',compact('codigo'));
+  }
+  //////////////////////////////////////////Funcion Mostar productos sin subir/////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    }
+  public function MantenedorProductoFiltro(Request $request)
+  {
+
+    // dd($request->all());
+
+    $codigo = DB::table('Vista_Productos')
+      ->leftJoin('productosjumpsellerweb', 'Vista_Productos.interno', '=', 'productosjumpsellerweb.sku')
+      ->where('interno', $request->codigo)
+      ->get();
+
+    // dd($codigo);
+
+    if ($codigo->isEmpty()) {
+
+      return redirect()->route('MantenedorProducto')->with('error', 'Producto No Encontrado');
+    } else
+
+      return view('admin.MantenedorProducto', compact('codigo'));
 
 
-    public function ResumenDeVenta(Request $request){
+  }
 
 
-        return view('admin.resumendeventa');
+  public function ResumenDeVenta(Request $request)
+  {
 
 
-    }
+    return view('admin.resumendeventa');
 
 
-    public function ResumenDeVentaFiltro(Request $request){
+  }
 
-        // dd($request->all());
-        $fecha1=$request->fecha1;
-        $fecha2=$request->fecha2;
-        $caja=$request->caja;
 
-        if ($request->caja !== null) {
+  public function ResumenDeVentaFiltro(Request $request)
+  {
 
-            $tarjetas=DB::select('select *
+    // dd($request->all());
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    $caja = $request->caja;
+
+    if ($request->caja !== null) {
+
+      $tarjetas = DB::select('select *
             from tarjeta_credito,
             cargos where CANMRO = nro_doc
-            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja, $fecha1, $fecha2]);
 
-            $debito=DB::select('select sum(CAVALO) as totaldebito
+      $debito = DB::select('select sum(CAVALO) as totaldebito
             from tarjeta_credito,
             cargos where tipo = "DB" and CANMRO = nro_doc
-            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja, $fecha1, $fecha2]);
 
-            $credito=DB::select('select sum(CAVALO) as totalcredito
+      $credito = DB::select('select sum(CAVALO) as totalcredito
             from tarjeta_credito,
             cargos where tipo != "DB" and CANMRO = nro_doc
-            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja, $fecha1, $fecha2]);
 
-            $debitocount=DB::select('select count(CAVALO) as totaldebito
+      $debitocount = DB::select('select count(CAVALO) as totaldebito
             from tarjeta_credito,
             cargos where tipo = "DB" and CANMRO = nro_doc
-            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja, $fecha1, $fecha2]);
 
-            $creditocount=DB::select('select count(CAVALO) as totalcredito
+      $creditocount = DB::select('select count(CAVALO) as totalcredito
             from tarjeta_credito,
             cargos where tipo != "DB" and CANMRO = nro_doc
-            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja,$fecha1,$fecha2]);
+            and tipo_doc = CATIPO and CACOCA = ? and fecha between ? and ?', [$caja, $fecha1, $fecha2]);
 
-            $totaldocumentostarjeta = $creditocount[0]->totalcredito + $debitocount[0]->totaldebito;
+      $totaldocumentostarjeta = $creditocount[0]->totalcredito + $debitocount[0]->totaldebito;
 
-            $totaltarjeta=$debito[0]->totaldebito+$credito[0]->totalcredito;
+      $totaltarjeta = $debito[0]->totaldebito + $credito[0]->totalcredito;
 
 
-            $porcobrar=DB::select('select *
+      $porcobrar = DB::select('select *
             from ccorclie_ccpclien,
             cargos where forma_pago = "X" and CANMRO = CCPDOCUMEN
-            and CACOCA = ? and CAFECO between ? and ? group by CCPDOCUMEN', [$caja,$fecha1,$fecha2]);
+            and CACOCA = ? and CAFECO between ? and ? group by CCPDOCUMEN', [$caja, $fecha1, $fecha2]);
 
 
-            $guias=DB::select('select *
+      $guias = DB::select('select *
             from cargos where catipo = 3
-            and CACOCA = ? and CAFECO between ? and ? ', [$caja,$fecha1,$fecha2]);
+            and CACOCA = ? and CAFECO between ? and ? ', [$caja, $fecha1, $fecha2]);
 
 
-            return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta','creditocount','debitocount','totaldocumentostarjeta','porcobrar','guias','caja'));
+      return view('admin.resumendeventa', compact('tarjetas', 'fecha1', 'fecha2', 'debito', 'credito', 'totaltarjeta', 'creditocount', 'debitocount', 'totaldocumentostarjeta', 'porcobrar', 'guias', 'caja'));
 
-        }
-        else
-        $tarjetas=DB::select('select *
+    } else
+      $tarjetas = DB::select('select *
         from tarjeta_credito,
         cargos where CANMRO = nro_doc
-        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1, $fecha2]);
 
-        $debito=DB::select('select sum(CAVALO) as totaldebito
+    $debito = DB::select('select sum(CAVALO) as totaldebito
         from tarjeta_credito,
         cargos where tipo = "DB" and CANMRO = nro_doc
-        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1, $fecha2]);
 
-        $credito=DB::select('select sum(CAVALO) as totalcredito
+    $credito = DB::select('select sum(CAVALO) as totalcredito
         from tarjeta_credito,
         cargos where tipo != "DB" and CANMRO = nro_doc
-        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1, $fecha2]);
 
-        $debitocount=DB::select('select count(CAVALO) as totaldebito
+    $debitocount = DB::select('select count(CAVALO) as totaldebito
         from tarjeta_credito,
         cargos where tipo = "DB" and CANMRO = nro_doc
-        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1, $fecha2]);
 
-        $creditocount=DB::select('select count(CAVALO) as totalcredito
+    $creditocount = DB::select('select count(CAVALO) as totalcredito
         from tarjeta_credito,
         cargos where tipo != "DB" and CANMRO = nro_doc
-        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1,$fecha2]);
+        and tipo_doc = CATIPO and fecha between ? and ?', [$fecha1, $fecha2]);
 
-        $totaldocumentostarjeta = $creditocount[0]->totalcredito + $debitocount[0]->totaldebito;
+    $totaldocumentostarjeta = $creditocount[0]->totalcredito + $debitocount[0]->totaldebito;
 
-        $totaltarjeta=$debito[0]->totaldebito+$credito[0]->totalcredito;
+    $totaltarjeta = $debito[0]->totaldebito + $credito[0]->totalcredito;
 
 
-        $porcobrar=DB::select('select *
+    $porcobrar = DB::select('select *
         from ccorclie_ccpclien,
         cargos where forma_pago = "X" and CANMRO = CCPDOCUMEN
-        and CAFECO between ? and ? group by CCPDOCUMEN', [$fecha1,$fecha2]);
+        and CAFECO between ? and ? group by CCPDOCUMEN', [$fecha1, $fecha2]);
 
 
-        $guias=DB::select('select *
+    $guias = DB::select('select *
         from cargos where catipo = 3
-        and CAFECO between ? and ? ', [$fecha1,$fecha2]);
+        and CAFECO between ? and ? ', [$fecha1, $fecha2]);
 
 
-        return view('admin.resumendeventa',compact('tarjetas','fecha1','fecha2','debito','credito','totaltarjeta','creditocount','debitocount','totaldocumentostarjeta','porcobrar','guias','caja'));
+    return view('admin.resumendeventa', compact('tarjetas', 'fecha1', 'fecha2', 'debito', 'credito', 'totaltarjeta', 'creditocount', 'debitocount', 'totaldocumentostarjeta', 'porcobrar', 'guias', 'caja'));
 
 
-    }
+  }
 
 
-    public function AvanceAnualMensual(Request $request){
+  public function AvanceAnualMensual(Request $request)
+  {
 
 
-        return view('admin.AvanceAnualMensual');
+    return view('admin.AvanceAnualMensual');
 
 
-    }
+  }
 
-    public function AvanceAnualMensualFiltro(Request $request){
+  public function AvanceAnualMensualFiltro(Request $request)
+  {
 
-        // dd($request->all());
-        $fecha1=$request->fecha1;
+    // dd($request->all());
+    $fecha1 = $request->fecha1;
 
-        $fecha1menos1 = CarbonAlias::parse($fecha1)->subYear();
-        $fecha1menos1formateada = $fecha1menos1->format('Y-m-d');
-
-
-        $ventadiariadocumentos=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as ventadeldia from cargos where catipo != 3  and cafeco between ? and ? ;' , [$fecha1, $fecha1, $fecha1,$fecha1]);
-        $facturasporcobrar=DB::select('select sum(cavalo) as porcobrar from cargos where forma_pago = "X" and cafeco = ? ' , [$fecha1]);
-        $fechames23=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames23',[$fecha1menos1formateada]);
-        $fechames24=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames24',[$fecha1menos1formateada]);
-        $fechames25=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames25',[$fecha1menos1formateada]);
-        $fechames=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames' , [$fecha1]);
-        $ano2018=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -97 MONTH) as ano2018' , [$fecha1]);
-        $ano2019=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -85 MONTH) as ano2019' , [$fecha1]);
-        $ano2020=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -73 MONTH) as ano2020' , [$fecha1]);
-        $ano2021=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -61 MONTH) as ano2021' , [$fecha1]);
-        $ano2022=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -49 MONTH) as ano2022' , [$fecha1]);
-        $ano2023=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -37 MONTH) as ano2023' , [$fecha1]);
-        $ano2024=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -25 MONTH) as ano2024' , [$fecha1]);
-        $ano2025=DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -13 MONTH) as ano2025' , [$fecha1]);
-
-        $hasta2018=DB::select('select DATE_ADD(?,INTERVAL -8 YEAR) as hasta2018' , [$fecha1]);
-        $hasta2019=DB::select('select DATE_ADD(?,INTERVAL -7 YEAR) as hasta2019' , [$fecha1]);
-        $hasta2020=DB::select('select DATE_ADD(?,INTERVAL -6 YEAR) as hasta2020' , [$fecha1]);
-        $hasta2021=DB::select('select DATE_ADD(?,INTERVAL -5 YEAR) as hasta2021' , [$fecha1]);
-        $hasta2022=DB::select('select DATE_ADD(?,INTERVAL -4 YEAR) as hasta2022' , [$fecha1]);
-        $hasta2023=DB::select('select DATE_ADD(?,INTERVAL -3 YEAR) as hasta2023' , [$fecha1]);
-        $hasta2024=DB::select('select DATE_ADD(?,INTERVAL -2 YEAR) as hasta2024' , [$fecha1]);
-        $hasta2025=DB::select('select DATE_ADD(?,INTERVAL -1 YEAR) as hasta2025' , [$fecha1]);
-
-        // dd($hasta2022[0]->hasta2022);
-        $h2018=$hasta2018[0]->hasta2018;
-        $h2019=$hasta2019[0]->hasta2019;
-        $h2020=$hasta2020[0]->hasta2020;
-        $h2021=$hasta2021[0]->hasta2021;
-        $h2022=$hasta2022[0]->hasta2022;
-        $h2023=$hasta2023[0]->hasta2023;
-        $h2024=$hasta2024[0]->hasta2024;
-        $h2025=$hasta2025[0]->hasta2025;
+    $fecha1menos1 = CarbonAlias::parse($fecha1)->subYear();
+    $fecha1menos1formateada = $fecha1menos1->format('Y-m-d');
 
 
-        $a2018=$ano2018[0]->ano2018;
-        $a2019=$ano2019[0]->ano2019;
-        $a2020=$ano2020[0]->ano2020;
-        $a2021=$ano2021[0]->ano2021;
-        $a2022=$ano2022[0]->ano2022;
-        $a2023=$ano2023[0]->ano2023;
-        $a2024=$ano2024[0]->ano2024;
-        $a2025=$ano2025[0]->ano2025;
+    $ventadiariadocumentos = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as ventadeldia from cargos where catipo != 3  and cafeco between ? and ? ;', [$fecha1, $fecha1, $fecha1, $fecha1]);
+    $facturasporcobrar = DB::select('select sum(cavalo) as porcobrar from cargos where forma_pago = "X" and cafeco = ? ', [$fecha1]);
+    $fechames23 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames23', [$fecha1menos1formateada]);
+    $fechames24 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames24', [$fecha1menos1formateada]);
+    $fechames25 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames25', [$fecha1menos1formateada]);
+    $fechames = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -1 MONTH) as primerdiames', [$fecha1]);
+    $ano2018 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -97 MONTH) as ano2018', [$fecha1]);
+    $ano2019 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -85 MONTH) as ano2019', [$fecha1]);
+    $ano2020 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -73 MONTH) as ano2020', [$fecha1]);
+    $ano2021 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -61 MONTH) as ano2021', [$fecha1]);
+    $ano2022 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -49 MONTH) as ano2022', [$fecha1]);
+    $ano2023 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -37 MONTH) as ano2023', [$fecha1]);
+    $ano2024 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -25 MONTH) as ano2024', [$fecha1]);
+    $ano2025 = DB::select('select DATE_ADD(DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY),INTERVAL -13 MONTH) as ano2025', [$fecha1]);
+
+    $hasta2018 = DB::select('select DATE_ADD(?,INTERVAL -8 YEAR) as hasta2018', [$fecha1]);
+    $hasta2019 = DB::select('select DATE_ADD(?,INTERVAL -7 YEAR) as hasta2019', [$fecha1]);
+    $hasta2020 = DB::select('select DATE_ADD(?,INTERVAL -6 YEAR) as hasta2020', [$fecha1]);
+    $hasta2021 = DB::select('select DATE_ADD(?,INTERVAL -5 YEAR) as hasta2021', [$fecha1]);
+    $hasta2022 = DB::select('select DATE_ADD(?,INTERVAL -4 YEAR) as hasta2022', [$fecha1]);
+    $hasta2023 = DB::select('select DATE_ADD(?,INTERVAL -3 YEAR) as hasta2023', [$fecha1]);
+    $hasta2024 = DB::select('select DATE_ADD(?,INTERVAL -2 YEAR) as hasta2024', [$fecha1]);
+    $hasta2025 = DB::select('select DATE_ADD(?,INTERVAL -1 YEAR) as hasta2025', [$fecha1]);
+
+    // dd($hasta2022[0]->hasta2022);
+    $h2018 = $hasta2018[0]->hasta2018;
+    $h2019 = $hasta2019[0]->hasta2019;
+    $h2020 = $hasta2020[0]->hasta2020;
+    $h2021 = $hasta2021[0]->hasta2021;
+    $h2022 = $hasta2022[0]->hasta2022;
+    $h2023 = $hasta2023[0]->hasta2023;
+    $h2024 = $hasta2024[0]->hasta2024;
+    $h2025 = $hasta2025[0]->hasta2025;
 
 
-        $fechainiciomes=$fechames[0]->primerdiames;
-        $fechainiciomes23=$fechames23[0]->primerdiames23;
-        $fechainiciomes24=$fechames24[0]->primerdiames24;
-        // $ventasala=$ventadiaria-$facturasporcobrar[0]->porcobrar;
+    $a2018 = $ano2018[0]->ano2018;
+    $a2019 = $ano2019[0]->ano2019;
+    $a2020 = $ano2020[0]->ano2020;
+    $a2021 = $ano2021[0]->ano2021;
+    $a2022 = $ano2022[0]->ano2022;
+    $a2023 = $ano2023[0]->ano2023;
+    $a2024 = $ano2024[0]->ano2024;
+    $a2025 = $ano2025[0]->ano2025;
 
 
-        $factuasxnca=DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
+    $fechainiciomes = $fechames[0]->primerdiames;
+    $fechainiciomes23 = $fechames23[0]->primerdiames23;
+    $fechainiciomes24 = $fechames24[0]->primerdiames24;
+    // $ventasala=$ventadiaria-$facturasporcobrar[0]->porcobrar;
+
+
+    $factuasxnca = DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1menos1formateada]);
+        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"', [$fecha1menos1formateada]);
 
-        $factuasxncb=DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
+    $factuasxncb = DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1menos1formateada]);
-        // dd($fecha1);
+        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"', [$fecha1menos1formateada]);
+    // dd($fecha1);
 
-        $factuasxnca24=DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
+    $factuasxnca24 = DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
+        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"', [$fecha1]);
 
-        $factuasxncb24=DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
+    $factuasxncb24 = DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
+        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"', [$fecha1]);
 
-        $factuasxnca25=DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
+    $factuasxnca25 = DB::select('select sum(nota_credito.total_nc) as sumaa FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"',[$fecha1]);
+        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa != "ANULA FACTURA"', [$fecha1]);
 
-        $factuasxncb25=DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
+    $factuasxncb25 = DB::select('select sum(nota_credito.total_nc) as sumab FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe
-        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"',[$fecha1]);
+        WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=8 and cargos.forma_pago="X" and nota_credito.glosa = "ANULA FACTURA"', [$fecha1]);
 
-        $ncboletas=DB::select('select sum(nota_credito.total_nc) as sumac FROM nota_credito
+    $ncboletas = DB::select('select sum(nota_credito.total_nc) as sumac FROM nota_credito
         left join cargos on cargos.CANMRO = nota_credito.nro_doc_refe WHERE nota_credito.fecha = ? and nota_credito.tipo_doc_refe=7', [$fecha1])[0];
 
-        $ventasala101=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=101 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala102=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=102 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala103=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=103 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala104=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=104 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala105=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=105 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala106=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=106 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala17=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=17 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala108=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=108 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala109=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=109 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
-        $ventasala201=DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=201 and catipo != 3 and cargos.forma_pago != "X"',[$fecha1]);
+    $ventasala101 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=101 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala102 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=102 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala103 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=103 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala104 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=104 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala105 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=105 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala106 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=106 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala17 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=17 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala108 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=108 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala109 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=109 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
+    $ventasala201 = DB::select('select sum(cavalo) as suma from cargos where cafeco = ? and cargos.cacoca=201 and catipo != 3 and cargos.forma_pago != "X"', [$fecha1]);
 
-        $ventasala=$ventasala101[0]->suma+$ventasala102[0]->suma+$ventasala103[0]->suma+$ventasala104[0]->suma+$ventasala105[0]->suma+$ventasala201[0]->suma+$ventasala106[0]->suma+$ventasala17[0]->suma+$ventasala108[0]->suma+$ventasala109[0]->suma;
+    $ventasala = $ventasala101[0]->suma + $ventasala102[0]->suma + $ventasala103[0]->suma + $ventasala104[0]->suma + $ventasala105[0]->suma + $ventasala201[0]->suma + $ventasala106[0]->suma + $ventasala17[0]->suma + $ventasala108[0]->suma + $ventasala109[0]->suma;
 
-        //$factuasxnc=$factuasxnca24[0]->sumaa+$factuasxncb24[0]->sumab;
-        $factuasxnc=$factuasxnca25[0]->sumaa+$factuasxncb25[0]->sumab;
-        $facturasmenosnc=$facturasporcobrar[0]->porcobrar-$factuasxnc;
-        $ventadiaria=$ventadiariadocumentos[0]->ventadeldia;
+    //$factuasxnc=$factuasxnca24[0]->sumaa+$factuasxncb24[0]->sumab;
+    $factuasxnc = $factuasxnca25[0]->sumaa + $factuasxncb25[0]->sumab;
+    $facturasmenosnc = $facturasporcobrar[0]->porcobrar - $factuasxnc;
+    $ventadiaria = $ventadiariadocumentos[0]->ventadeldia;
 
-        $totalventaxdia=$ventasala+$facturasmenosnc-$ncboletas->sumac;
-              // dd($facturasmenosnc);
+    $totalventaxdia = $ventasala + $facturasmenosnc - $ncboletas->sumac;
+    // dd($facturasmenosnc);
 
-        // dd($facturasmenosnc+$ventasala);
+    // dd($facturasmenosnc+$ventasala);
 
 
 
-        $mensual2018=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2018 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2018,$h2018,$a2018,$h2018]);
-        $mensual2019=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2019 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2019,$h2019,$a2019,$h2019]);
-        $mensual2020=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2020 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2020,$h2020,$a2020,$h2020]);
-        $mensual2021=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2021 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2021,$h2021,$a2021,$h2021]);
-        $mensual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2022 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2022,$h2022,$a2022,$h2022]);
-        $mensual2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2023 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2023,$h2023,$a2023,$h2023]);
-        $mensual2024=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2024 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2024,$h2024,$a2024,$h2024]);
-        $mensual2025=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2025 from cargos where catipo != 3  and cafeco between ? and ?' , [$a2025,$h2025,$a2025,$h2025]);
-        $mensual2026=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2026 from cargos where catipo != 3  and cafeco between ? and ?' , [$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);
+    $mensual2018 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2018 from cargos where catipo != 3  and cafeco between ? and ?', [$a2018, $h2018, $a2018, $h2018]);
+    $mensual2019 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2019 from cargos where catipo != 3  and cafeco between ? and ?', [$a2019, $h2019, $a2019, $h2019]);
+    $mensual2020 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2020 from cargos where catipo != 3  and cafeco between ? and ?', [$a2020, $h2020, $a2020, $h2020]);
+    $mensual2021 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2021 from cargos where catipo != 3  and cafeco between ? and ?', [$a2021, $h2021, $a2021, $h2021]);
+    $mensual2022 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2022 from cargos where catipo != 3  and cafeco between ? and ?', [$a2022, $h2022, $a2022, $h2022]);
+    $mensual2023 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2023 from cargos where catipo != 3  and cafeco between ? and ?', [$a2023, $h2023, $a2023, $h2023]);
+    $mensual2024 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2024 from cargos where catipo != 3  and cafeco between ? and ?', [$a2024, $h2024, $a2024, $h2024]);
+    $mensual2025 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2025 from cargos where catipo != 3  and cafeco between ? and ?', [$a2025, $h2025, $a2025, $h2025]);
+    $mensual2026 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between ? and ?) as año2026 from cargos where catipo != 3  and cafeco between ? and ?', [$fechainiciomes, $fecha1, $fechainiciomes, $fecha1]);
 
-        $anual2018=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2018-01-01" and ?) as anualaño2018 from cargos where catipo != 3  and cafeco between "2018-01-01" and ?' , [$h2018,$h2018]);
-        $anual2019=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2019-01-01" and ?) as anualaño2019 from cargos where catipo != 3  and cafeco between "2019-01-01" and ?' , [$h2019,$h2019]);
-        $anual2020=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2020-01-01" and ?) as anualaño2020 from cargos where catipo != 3  and cafeco between "2020-01-01" and ?' , [$h2020,$h2020]);
-        $anual2021=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2021-01-01" and ?) as anualaño2021 from cargos where catipo != 3  and cafeco between "2021-01-01" and ?' , [$h2021,$h2021]);
-        $anual2022=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?' , [$h2022,$h2022]);
-        $anual2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2023-01-01" and ?) as anualaño2023 from cargos where catipo != 3  and cafeco between "2023-01-01" and ?' , [$h2023,$h2023]);
-        $anual2024=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2024-01-01" and ?) as anualaño2024 from cargos where catipo != 3  and cafeco between "2024-01-01" and ?' , [$h2024,$h2024]);
-        $anual2025=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2025-01-01" and ?) as anualaño2025 from cargos where catipo != 3  and cafeco between "2025-01-01" and ?' , [$h2025,$h2025]);
-        $anual2026=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "'.date('Y-01-01', strtotime($fecha1)).'" and ?) as anualaño2026 from cargos where catipo != 3  and cafeco between "'.date('Y-01-01', strtotime($fecha1)).'" and ?' , [$fecha1,$fecha1]);
+    $anual2018 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2018-01-01" and ?) as anualaño2018 from cargos where catipo != 3  and cafeco between "2018-01-01" and ?', [$h2018, $h2018]);
+    $anual2019 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2019-01-01" and ?) as anualaño2019 from cargos where catipo != 3  and cafeco between "2019-01-01" and ?', [$h2019, $h2019]);
+    $anual2020 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2020-01-01" and ?) as anualaño2020 from cargos where catipo != 3  and cafeco between "2020-01-01" and ?', [$h2020, $h2020]);
+    $anual2021 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2021-01-01" and ?) as anualaño2021 from cargos where catipo != 3  and cafeco between "2021-01-01" and ?', [$h2021, $h2021]);
+    $anual2022 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2022-01-01" and ?) as anualaño2022 from cargos where catipo != 3  and cafeco between "2022-01-01" and ?', [$h2022, $h2022]);
+    $anual2023 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2023-01-01" and ?) as anualaño2023 from cargos where catipo != 3  and cafeco between "2023-01-01" and ?', [$h2023, $h2023]);
+    $anual2024 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2024-01-01" and ?) as anualaño2024 from cargos where catipo != 3  and cafeco between "2024-01-01" and ?', [$h2024, $h2024]);
+    $anual2025 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "2025-01-01" and ?) as anualaño2025 from cargos where catipo != 3  and cafeco between "2025-01-01" and ?', [$h2025, $h2025]);
+    $anual2026 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "' . date('Y-01-01', strtotime($fecha1)) . '" and ?) as anualaño2026 from cargos where catipo != 3  and cafeco between "' . date('Y-01-01', strtotime($fecha1)) . '" and ?', [$fecha1, $fecha1]);
 
-        //Anual al día año 2022 (Tucan,Nene,Artel)
-        $destucan=DB::select('select sum(cavalo) as destucan
+    //Anual al día año 2022 (Tucan,Nene,Artel)
+    $destucan = DB::select('select sum(cavalo) as destucan
         from cargos
         where cafeco between "2022-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-                                                  FROM nota_credito where fecha between "2022-01-01" and ?)',[$hasta2022[0]->hasta2022,$hasta2022[0]->hasta2022]);//anual al dia año 2022
-        $desnene=DB::select('select sum(cavalo) as desnene from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76067436"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
-        //$desartel=DB::select('select sum(cavalo) as desartel from cargos where cafeco between "2022-01-01" and ? and CARUTC= "92642000"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
+                                                  FROM nota_credito where fecha between "2022-01-01" and ?)', [$hasta2022[0]->hasta2022, $hasta2022[0]->hasta2022]);//anual al dia año 2022
+    $desnene = DB::select('select sum(cavalo) as desnene from cargos where cafeco between "2022-01-01" and ? and CARUTC= "76067436"', [$hasta2022[0]->hasta2022]);//anual al dia año 2022
+    //$desartel=DB::select('select sum(cavalo) as desartel from cargos where cafeco between "2022-01-01" and ? and CARUTC= "92642000"',[$hasta2022[0]->hasta2022]);//anual al dia año 2022
 
-        //Anual al día año 2023 (Tucan,Nene,Artel)
-        $destucan23=DB::select('select sum(cavalo) as destucan23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between "2023-01-01" and ? )',[$hasta2023[0]->hasta2023,$hasta2023[0]->hasta2023]);//anual al dia año 2023
-        $desnene23=DB::select('select sum(cavalo) as desnene23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76067436"',[$hasta2023[0]->hasta2023]);//anual al dia año 2023
-        //$desartel23=DB::select('select sum(cavalo) as desartel23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "92642000"',[$fecha1]);//anual al dia año 2023
+    //Anual al día año 2023 (Tucan,Nene,Artel)
+    $destucan23 = DB::select('select sum(cavalo) as destucan23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between "2023-01-01" and ? )', [$hasta2023[0]->hasta2023, $hasta2023[0]->hasta2023]);//anual al dia año 2023
+    $desnene23 = DB::select('select sum(cavalo) as desnene23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "76067436"', [$hasta2023[0]->hasta2023]);//anual al dia año 2023
+    //$desartel23=DB::select('select sum(cavalo) as desartel23 from cargos where cafeco between "2023-01-01" and ? and CARUTC= "92642000"',[$fecha1]);//anual al dia año 2023
 
-        $destucan24=DB::select('select sum(cavalo) as destucan24 from cargos where cafeco between "2024-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between "2024-01-01" and ? )',[$h2024,$h2024]);//anual al dia año 2024
-        $desnene24=DB::select('select sum(cavalo) as desnene24 from cargos where cafeco between "2024-01-01" and ? and CARUTC= "76067436"',[$h2024]);//anual al dia año 2024
+    $destucan24 = DB::select('select sum(cavalo) as destucan24 from cargos where cafeco between "2024-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between "2024-01-01" and ? )', [$h2024, $h2024]);//anual al dia año 2024
+    $desnene24 = DB::select('select sum(cavalo) as desnene24 from cargos where cafeco between "2024-01-01" and ? and CARUTC= "76067436"', [$h2024]);//anual al dia año 2024
 
-        $destucan25=DB::select('select sum(cavalo) as destucan25 from cargos where cafeco between "2025-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between "2025-01-01" and ? )',[$h2025,$h2025]);//anual al dia año 2025
-        $desnene25=DB::select('select sum(cavalo) as desnene25 from cargos where cafeco between "2025-01-01" and ? and CARUTC= "76067436"',[$h2025]);//anual al dia año 2025
+    $destucan25 = DB::select('select sum(cavalo) as destucan25 from cargos where cafeco between "2025-01-01" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between "2025-01-01" and ? )', [$h2025, $h2025]);//anual al dia año 2025
+    $desnene25 = DB::select('select sum(cavalo) as desnene25 from cargos where cafeco between "2025-01-01" and ? and CARUTC= "76067436"', [$h2025]);//anual al dia año 2025
 
-        $destucan26=DB::select('select sum(cavalo) as destucan26 from cargos where cafeco between "'.date('Y-01-01', strtotime($fecha1)).'" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between "'.date('Y-01-01', strtotime($fecha1)).'" and ? )',[$fecha1,$fecha1]);//anual al dia año 2026
-        $desnene26=DB::select('select sum(cavalo) as desnene26 from cargos where cafeco between "'.date('Y-01-01', strtotime($fecha1)).'" and ? and CARUTC= "76067436"',[$fecha1]);//anual al dia año 2026
+    $destucan26 = DB::select('select sum(cavalo) as destucan26 from cargos where cafeco between "' . date('Y-01-01', strtotime($fecha1)) . '" and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between "' . date('Y-01-01', strtotime($fecha1)) . '" and ? )', [$fecha1, $fecha1]);//anual al dia año 2026
+    $desnene26 = DB::select('select sum(cavalo) as desnene26 from cargos where cafeco between "' . date('Y-01-01', strtotime($fecha1)) . '" and ? and CARUTC= "76067436"', [$fecha1]);//anual al dia año 2026
 
-        //Mensual al día año 2022 (Tucan,Nene,Artel)
-        $destucanm=DB::select('select sum(cavalo) as destucanm from cargos where cafeco between DATE_ADD(?,INTERVAL -3 year) and DATE_ADD(?,INTERVAL -3 year) and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between DATE_ADD(?,INTERVAL -3 year) and DATE_ADD(?,INTERVAL -3 year))',[$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);// mensual al dia año 2022
-        $desnenem=DB::select('select sum(cavalo) as desnenem from cargos where cafeco between DATE_ADD(?,INTERVAL -3 year) and DATE_ADD(?,INTERVAL -3 year) and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2022
-        //$desartelm=DB::select('select sum(cavalo) as desartelm from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC ="92642000"', [$fechainiciomes,$fecha1]);//mensual al dia año 2022
+    //Mensual al día año 2022 (Tucan,Nene,Artel)
+    $destucanm = DB::select('select sum(cavalo) as destucanm from cargos where cafeco between DATE_ADD(?,INTERVAL -3 year) and DATE_ADD(?,INTERVAL -3 year) and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between DATE_ADD(?,INTERVAL -3 year) and DATE_ADD(?,INTERVAL -3 year))', [$fechainiciomes, $fecha1, $fechainiciomes, $fecha1]);// mensual al dia año 2022
+    $desnenem = DB::select('select sum(cavalo) as desnenem from cargos where cafeco between DATE_ADD(?,INTERVAL -3 year) and DATE_ADD(?,INTERVAL -3 year) and CARUTC= "76067436"', [$fechainiciomes, $fecha1]);// mensual al dia año 2022
+    //$desartelm=DB::select('select sum(cavalo) as desartelm from cargos where cafeco between DATE_ADD(?,INTERVAL -1 year) and DATE_ADD(?,INTERVAL -1 year) and CARUTC ="92642000"', [$fechainiciomes,$fecha1]);//mensual al dia año 2022
 
-        //Mensual al día año 2023 (Tucan,Nene,Artel)
-        $destucanm23=DB::select('select sum(cavalo) as destucanm23 from cargos where cafeco between DATE_ADD(?,INTERVAL -2 year) and DATE_ADD(?,INTERVAL -2 year) and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between DATE_ADD(?,INTERVAL -2 year) and DATE_ADD(?,INTERVAL -2 year))',[$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);// mensual al dia año 2023
-        $desnenem23=DB::select('select sum(cavalo) as desnenem23 from cargos where cafeco between DATE_ADD(?,INTERVAL -2 year) and DATE_ADD(?,INTERVAL -2 year) and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);;// mensual al dia año 2023
+    //Mensual al día año 2023 (Tucan,Nene,Artel)
+    $destucanm23 = DB::select('select sum(cavalo) as destucanm23 from cargos where cafeco between DATE_ADD(?,INTERVAL -2 year) and DATE_ADD(?,INTERVAL -2 year) and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between DATE_ADD(?,INTERVAL -2 year) and DATE_ADD(?,INTERVAL -2 year))', [$fechainiciomes, $fecha1, $fechainiciomes, $fecha1]);// mensual al dia año 2023
+    $desnenem23 = DB::select('select sum(cavalo) as desnenem23 from cargos where cafeco between DATE_ADD(?,INTERVAL -2 year) and DATE_ADD(?,INTERVAL -2 year) and CARUTC= "76067436"', [$fechainiciomes, $fecha1]);
+    ;// mensual al dia año 2023
 
-        $destucanm24=DB::select('select sum(cavalo) as destucanm24 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between ? and ?)',[$a2024,$h2024,$a2024,$h2024]);// mensual al dia año 2024
-        $desnenem24=DB::select('select sum(cavalo) as desnenem24 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$a2024,$h2024]);// mensual al dia año 2024
+    $destucanm24 = DB::select('select sum(cavalo) as destucanm24 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between ? and ?)', [$a2024, $h2024, $a2024, $h2024]);// mensual al dia año 2024
+    $desnenem24 = DB::select('select sum(cavalo) as desnenem24 from cargos where cafeco between ? and ? and CARUTC= "76067436"', [$a2024, $h2024]);// mensual al dia año 2024
 
-        $destucanm25=DB::select('select sum(cavalo) as destucanm25 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between ? and ?)',[$a2025,$h2025,$a2025,$h2025]);// mensual al dia año 2025
-        $desnenem25=DB::select('select sum(cavalo) as desnenem25 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$a2025,$h2025]);// mensual al dia año 2025
+    $destucanm25 = DB::select('select sum(cavalo) as destucanm25 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between ? and ?)', [$a2025, $h2025, $a2025, $h2025]);// mensual al dia año 2025
+    $desnenem25 = DB::select('select sum(cavalo) as desnenem25 from cargos where cafeco between ? and ? and CARUTC= "76067436"', [$a2025, $h2025]);// mensual al dia año 2025
 
-        $destucanm26=DB::select('select sum(cavalo) as destucanm26 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
-        FROM nota_credito where fecha between ? and ?)',[$fechainiciomes,$fecha1,$fechainiciomes,$fecha1]);// mensual al dia año 2026
-        $desnenem26=DB::select('select sum(cavalo) as desnenem26 from cargos where cafeco between ? and ? and CARUTC= "76067436"',[$fechainiciomes,$fecha1]);// mensual al dia año 2026
+    $destucanm26 = DB::select('select sum(cavalo) as destucanm26 from cargos where cafeco between ? and ? and CARUTC= "76926330" and cargos.CANMRO NOT IN (SELECT nota_credito.nro_doc_refe
+        FROM nota_credito where fecha between ? and ?)', [$fechainiciomes, $fecha1, $fechainiciomes, $fecha1]);// mensual al dia año 2026
+    $desnenem26 = DB::select('select sum(cavalo) as desnenem26 from cargos where cafeco between ? and ? and CARUTC= "76067436"', [$fechainiciomes, $fecha1]);// mensual al dia año 2026
 
-        $mescursado = date("m", strtotime($fecha1));
-        $anocursado = date("Y", strtotime($fecha1));
+    $mescursado = date("m", strtotime($fecha1));
+    $anocursado = date("Y", strtotime($fecha1));
 
-        if($request->van == null && $request->quedan == null){
-          error_log(print_r("no trae dias", true));
-          $diasvan = $this->daysWeek(date("Y-m-01"),$fecha1);
-          $diasquedan = $this->daysWeek(date($fecha1),date(''.$anocursado.'-'.$mescursado.'-t'));
-        }else{
-          error_log(print_r("tiene dias", true));
-          $diasvan = $request->van;
-          $diasquedan = $request->quedan;
-        }
-
-
-        $mensualcursado2023=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'") as año2023 from cargos where catipo != 3  and cafeco between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'"')[0];
-        $desnenetucan2023cursado2023=DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "'.date('2023-'.$mescursado.'-01').'" and "'.date('2023-'.$mescursado.'-t').'"')[0];
-
-        $totalmescursado2023 = $mensualcursado2023->año2023-$desnenetucan2023cursado2023->descuento;
-
-        $mensualcursado2024=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "'.date('2024-'.$mescursado.'-01').'" and "'.date('2024-'.$mescursado.'-t').'") as año2024 from cargos where catipo != 3  and cafeco between "'.date('2024-'.$mescursado.'-01').'" and "'.date('2024-'.$mescursado.'-t').'"')[0];
-        $desnenetucan2024cursado2024=DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "'.date('2024-'.$mescursado.'-01').'" and "'.date('2024-'.$mescursado.'-t').'"')[0];
-
-        $totalmescursado2024 = $mensualcursado2024->año2024-$desnenetucan2024cursado2024->descuento;
-
-        $mensualcursado2025=DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "'.date('2025-'.$mescursado.'-01').'" and "'.date('2025-'.$mescursado.'-t').'") as año2025 from cargos where catipo != 3  and cafeco between "'.date('2025-'.$mescursado.'-01').'" and "'.date('2025-'.$mescursado.'-t').'"')[0];
-        $desnenetucan2025cursado2025=DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "'.date('2025-'.$mescursado.'-01').'" and "'.date('2025-'.$mescursado.'-t').'"')[0];
-
-        $totalmescursado2025 = $mensualcursado2025->año2025-$desnenetucan2025cursado2025->descuento;
-
-        $ipc = $this->ipc($anocursado,$mescursado);
-
-        return view('admin.AvanceAnualMensual',compact('fecha1','ventadiaria','facturasporcobrar','mensual2018','mensual2019',
-        'mensual2020','mensual2021','mensual2022','mensual2023','mensual2024','mensual2025','mensual2026','anual2018','anual2019','anual2020','anual2021','anual2022',
-        'anual2023','anual2024','anual2025','anual2026','ventasala','factuasxnc','facturasmenosnc','destucan','desnene','destucanm','desnenem',
-        'destucanm23','desnenem23','destucan23','desnene23',
-        'destucanm24','desnenem24','destucan24','desnene24',
-        'destucanm25','desnenem25','destucan25','desnene25',
-        'destucanm26','desnenem26','destucan26','desnene26',
-        'totalventaxdia', 'ncboletas', 'diasvan', 'diasquedan', 'totalmescursado2023', 'totalmescursado2024', 'totalmescursado2025', 'ipc'));
-
-
+    if ($request->van == null && $request->quedan == null) {
+      error_log(print_r("no trae dias", true));
+      $diasvan = $this->daysWeek(date("Y-m-01"), $fecha1);
+      $diasquedan = $this->daysWeek(date($fecha1), date('' . $anocursado . '-' . $mescursado . '-t'));
+    } else {
+      error_log(print_r("tiene dias", true));
+      $diasvan = $request->van;
+      $diasquedan = $request->quedan;
     }
 
 
-    public function AvanceAnualMensualExcel(Request $request){
+    $mensualcursado2023 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "' . date('2023-' . $mescursado . '-01') . '" and "' . date('2023-' . $mescursado . '-t') . '") as año2023 from cargos where catipo != 3  and cafeco between "' . date('2023-' . $mescursado . '-01') . '" and "' . date('2023-' . $mescursado . '-t') . '"')[0];
+    $desnenetucan2023cursado2023 = DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "' . date('2023-' . $mescursado . '-01') . '" and "' . date('2023-' . $mescursado . '-t') . '"')[0];
 
-        // SE USA LIBRERIA PhpSpreadsheet para excel
+    $totalmescursado2023 = $mensualcursado2023->año2023 - $desnenetucan2023cursado2023->descuento;
 
-        // Obtener datos del request
-        $ventadiaria = str_replace('.', '', $request->ventadiaria);
-        $facturasporcobrar = str_replace('.', '', $request->facturasporcobrar);
-        $ventasala = str_replace('.', '', $request->ventasala);
-        
-        // Datos mensuales
-        $m2020 = str_replace('.', '', $request->m2020 ?? '0');
-        $m2021 = str_replace('.', '', $request->m2021 ?? '0');
-        $m2022 = str_replace('.', '', $request->m2022 ?? '0');
-        $m2023 = str_replace('.', '', $request->m2023 ?? '0');
-        $m2024 = str_replace('.', '', $request->m2024 ?? '0');
-        $m2025 = str_replace('.', '', $request->m2025 ?? '0');
-        $m2026 = str_replace('.', '', $request->m2026 ?? '0');
-        
-        // Datos anuales
-        $a2020 = str_replace('.', '', $request->a2020 ?? '0');
-        $a2021 = str_replace('.', '', $request->a2021 ?? '0');
-        $a2022 = str_replace('.', '', $request->a2022 ?? '0');
-        $a2023 = str_replace('.', '', $request->a2023 ?? '0');
-        $a2024 = str_replace('.', '', $request->a2024 ?? '0');
-        $a2025 = str_replace('.', '', $request->a2025 ?? '0');
-        $a2026 = str_replace('.', '', $request->a2026 ?? '0');
+    $mensualcursado2024 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "' . date('2024-' . $mescursado . '-01') . '" and "' . date('2024-' . $mescursado . '-t') . '") as año2024 from cargos where catipo != 3  and cafeco between "' . date('2024-' . $mescursado . '-01') . '" and "' . date('2024-' . $mescursado . '-t') . '"')[0];
+    $desnenetucan2024cursado2024 = DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "' . date('2024-' . $mescursado . '-01') . '" and "' . date('2024-' . $mescursado . '-t') . '"')[0];
 
-        // Crear spreadsheet
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setTitle('Avance Mensual y Anual');
+    $totalmescursado2024 = $mensualcursado2024->año2024 - $desnenetucan2024cursado2024->descuento;
 
-        // Configurar anchos de columnas
-        $sheet->getColumnDimension('A')->setWidth(35);
-        $sheet->getColumnDimension('B')->setWidth(20);
+    $mensualcursado2025 = DB::select('select sum(cavalo) - (select ifnull(sum(total_nc),0) from nota_credito where fecha between "' . date('2025-' . $mescursado . '-01') . '" and "' . date('2025-' . $mescursado . '-t') . '") as año2025 from cargos where catipo != 3  and cafeco between "' . date('2025-' . $mescursado . '-01') . '" and "' . date('2025-' . $mescursado . '-t') . '"')[0];
+    $desnenetucan2025cursado2025 = DB::select('select if(isnull(CAVALO), 0,sum(CAVALO)) as descuento from cargos where CARUTC in ("76926330","76067436") and CAFECO between "' . date('2025-' . $mescursado . '-01') . '" and "' . date('2025-' . $mescursado . '-t') . '"')[0];
 
-        // ========== TÍTULO PRINCIPAL ==========
-        $sheet->mergeCells('A1:B1');
-        $sheet->setCellValue('A1', 'REPORTE AVANCE MENSUAL Y ANUAL');
-        $sheet->getStyle('A1')->applyFromArray([
-            'font' => [
-                'bold' => true,
-                'size' => 16,
-                'color' => ['rgb' => 'FFFFFF']
-            ],
-            'fill' => [
-                'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => '2E75B6']
-            ],
-            'alignment' => [
-                'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical' => Alignment::VERTICAL_CENTER
-            ]
-        ]);
-        $sheet->getRowDimension(1)->setRowHeight(30);
+    $totalmescursado2025 = $mensualcursado2025->año2025 - $desnenetucan2025cursado2025->descuento;
 
-        // ========== FECHA ==========
-        $sheet->mergeCells('A2:B2');
-        $sheet->setCellValue('A2', 'Fecha: ' . date('d/m/Y'));
-        $sheet->getStyle('A2')->applyFromArray([
-            'font' => ['italic' => true, 'size' => 10],
-            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
-        ]);
+    $ipc = $this->ipc($anocursado, $mescursado);
 
-        $row = 4;
-
-        // ========== SECCIÓN: RESUMEN DIARIO ==========
-        $sheet->mergeCells("A{$row}:B{$row}");
-        $sheet->setCellValue("A{$row}", 'RESUMEN DIARIO');
-        $sheet->getStyle("A{$row}")->applyFromArray([
-            'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
-            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '4472C4']],
-            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
-        ]);
-        $row++;
-
-        // Encabezados
-        $sheet->setCellValue("A{$row}", 'Concepto');
-        $sheet->setCellValue("B{$row}", 'Valor');
-        $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
-            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '5B9BD5']],
-            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
-        ]);
-        $row++;
-
-        // Datos diarios
-        $sheet->setCellValue("A{$row}", 'Total Diario');
-        $sheet->setCellValue("B{$row}", $ventadiaria);
-        $row++;
-        
-        $sheet->setCellValue("A{$row}", 'Venta Sala');
-        $sheet->setCellValue("B{$row}", $ventasala);
-        $row++;
-        
-        $sheet->setCellValue("A{$row}", 'Facturas Por Cobrar');
-        $sheet->setCellValue("B{$row}", $facturasporcobrar);
-        $row++;
-
-        // Aplicar formato a datos diarios
-        $sheet->getStyle("B6:B{$row}")->getNumberFormat()->setFormatCode('#,##0');
-        $sheet->getStyle("B6:B{$row}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-        $sheet->getStyle("A6:B{$row}")->applyFromArray([
-            'borders' => [
-                'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
-            ]
-        ]);
-
-        $row += 2;
-
-        // ========== SECCIÓN: AVANCE MENSUAL ==========
-        $sheet->mergeCells("A{$row}:B{$row}");
-        $sheet->setCellValue("A{$row}", 'AVANCE MENSUAL AL DÍA');
-        $sheet->getStyle("A{$row}")->applyFromArray([
-            'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
-            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '70AD47']],
-            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
-        ]);
-        $row++;
-
-        // Encabezados
-        $sheet->setCellValue("A{$row}", 'Año');
-        $sheet->setCellValue("B{$row}", 'Monto');
-        $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
-            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '92D050']],
-            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
-        ]);
-        $row++;
-
-        $mensualStart = $row;
-        
-        // Datos mensuales
-        $sheet->setCellValue("A{$row}", '2021'); $sheet->setCellValue("B{$row}", $m2021); $row++;
-        $sheet->setCellValue("A{$row}", '2022'); $sheet->setCellValue("B{$row}", $m2022); $row++;
-        $sheet->setCellValue("A{$row}", '2023'); $sheet->setCellValue("B{$row}", $m2023); $row++;
-        $sheet->setCellValue("A{$row}", '2024'); $sheet->setCellValue("B{$row}", $m2024); $row++;
-        $sheet->setCellValue("A{$row}", '2025'); $sheet->setCellValue("B{$row}", $m2025); $row++;
-        $sheet->setCellValue("A{$row}", '2026'); $sheet->setCellValue("B{$row}", $m2026); $row++;
-
-        // Aplicar formato a datos mensuales
-        $sheet->getStyle("B{$mensualStart}:B" . ($row-1))->getNumberFormat()->setFormatCode('#,##0');
-        $sheet->getStyle("B{$mensualStart}:B" . ($row-1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-        $sheet->getStyle("A{$mensualStart}:B" . ($row-1))->applyFromArray([
-            'borders' => [
-                'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
-            ]
-        ]);
-
-        $row += 2;
-
-        // ========== SECCIÓN: AVANCE ANUAL ==========
-        $sheet->mergeCells("A{$row}:B{$row}");
-        $sheet->setCellValue("A{$row}", 'AVANCE ANUAL AL DÍA');
-        $sheet->getStyle("A{$row}")->applyFromArray([
-            'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
-            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFC000']],
-            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
-        ]);
-        $row++;
-
-        // Encabezados
-        $sheet->setCellValue("A{$row}", 'Año');
-        $sheet->setCellValue("B{$row}", 'Monto');
-        $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
-            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFD966']],
-            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
-        ]);
-        $row++;
-
-        $anualStart = $row;
-        
-        // Datos anuales
-        $sheet->setCellValue("A{$row}", '2021'); $sheet->setCellValue("B{$row}", $a2021); $row++;
-        $sheet->setCellValue("A{$row}", '2022'); $sheet->setCellValue("B{$row}", $a2022); $row++;
-        $sheet->setCellValue("A{$row}", '2023'); $sheet->setCellValue("B{$row}", $a2023); $row++;
-        $sheet->setCellValue("A{$row}", '2024'); $sheet->setCellValue("B{$row}", $a2024); $row++;
-        $sheet->setCellValue("A{$row}", '2025'); $sheet->setCellValue("B{$row}", $a2025); $row++;
-        $sheet->setCellValue("A{$row}", '2026'); $sheet->setCellValue("B{$row}", $a2026); $row++;
-
-        // Aplicar formato a datos anuales
-        $sheet->getStyle("B{$anualStart}:B" . ($row-1))->getNumberFormat()->setFormatCode('#,##0');
-        $sheet->getStyle("B{$anualStart}:B" . ($row-1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-        $sheet->getStyle("A{$anualStart}:B" . ($row-1))->applyFromArray([
-            'borders' => [
-                'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
-            ]
-        ]);
-
-        // Aplicar bordes a todas las secciones
-        $sheet->getStyle('A4:B' . ($row-1))->applyFromArray([
-            'borders' => [
-                'outline' => ['borderStyle' => Border::BORDER_MEDIUM, 'color' => ['rgb' => '000000']]
-            ]
-        ]);
-
-        // Generar archivo
-        $writer = new Xlsx($spreadsheet);
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Avance_Mensual_Anual_' . date('Y-m-d') . '.xlsx"');
-        header('Cache-Control: max-age=0');
-
-        $writer->save('php://output');
-    }
+    return view('admin.AvanceAnualMensual', compact(
+      'fecha1',
+      'ventadiaria',
+      'facturasporcobrar',
+      'mensual2018',
+      'mensual2019',
+      'mensual2020',
+      'mensual2021',
+      'mensual2022',
+      'mensual2023',
+      'mensual2024',
+      'mensual2025',
+      'mensual2026',
+      'anual2018',
+      'anual2019',
+      'anual2020',
+      'anual2021',
+      'anual2022',
+      'anual2023',
+      'anual2024',
+      'anual2025',
+      'anual2026',
+      'ventasala',
+      'factuasxnc',
+      'facturasmenosnc',
+      'destucan',
+      'desnene',
+      'destucanm',
+      'desnenem',
+      'destucanm23',
+      'desnenem23',
+      'destucan23',
+      'desnene23',
+      'destucanm24',
+      'desnenem24',
+      'destucan24',
+      'desnene24',
+      'destucanm25',
+      'desnenem25',
+      'destucan25',
+      'desnene25',
+      'destucanm26',
+      'desnenem26',
+      'destucan26',
+      'desnene26',
+      'totalventaxdia',
+      'ncboletas',
+      'diasvan',
+      'diasquedan',
+      'totalmescursado2023',
+      'totalmescursado2024',
+      'totalmescursado2025',
+      'ipc'
+    ));
 
 
-    public function VentasPorVendedor(Request $request){
+  }
 
-        $vendedor=DB::table('tablas')
-        ->where('TACODI' , '24')
-        ->where('estado' , 'A')
-        ->orderByRaw('tarefe asc')
+
+  public function AvanceAnualMensualExcel(Request $request)
+  {
+
+    // SE USA LIBRERIA PhpSpreadsheet para excel
+
+    // Obtener datos del request
+    $ventadiaria = str_replace('.', '', $request->ventadiaria);
+    $facturasporcobrar = str_replace('.', '', $request->facturasporcobrar);
+    $ventasala = str_replace('.', '', $request->ventasala);
+
+    // Datos mensuales
+    $m2020 = str_replace('.', '', isset($request->m2020) ? $request->m2020 : '0');
+    $m2021 = str_replace('.', '', isset($request->m2021) ? $request->m2021 : '0');
+    $m2022 = str_replace('.', '', isset($request->m2022) ? $request->m2022 : '0');
+    $m2023 = str_replace('.', '', isset($request->m2023) ? $request->m2023 : '0');
+    $m2024 = str_replace('.', '', isset($request->m2024) ? $request->m2024 : '0');
+    $m2025 = str_replace('.', '', isset($request->m2025) ? $request->m2025 : '0');
+    $m2026 = str_replace('.', '', isset($request->m2026) ? $request->m2026 : '0');
+
+    // Datos anuales
+    $a2020 = str_replace('.', '', isset($request->a2020) ? $request->a2020 : '0');
+    $a2021 = str_replace('.', '', isset($request->a2021) ? $request->a2021 : '0');
+    $a2022 = str_replace('.', '', isset($request->a2022) ? $request->a2022 : '0');
+    $a2023 = str_replace('.', '', isset($request->a2023) ? $request->a2023 : '0');
+    $a2024 = str_replace('.', '', isset($request->a2024) ? $request->a2024 : '0');
+    $a2025 = str_replace('.', '', isset($request->a2025) ? $request->a2025 : '0');
+    $a2026 = str_replace('.', '', isset($request->a2026) ? $request->a2026 : '0');
+
+    // Crear spreadsheet
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setTitle('Avance Mensual y Anual');
+
+    // Configurar anchos de columnas
+    $sheet->getColumnDimension('A')->setWidth(35);
+    $sheet->getColumnDimension('B')->setWidth(20);
+
+    // ========== TÍTULO PRINCIPAL ==========
+    $sheet->mergeCells('A1:B1');
+    $sheet->setCellValue('A1', 'REPORTE AVANCE MENSUAL Y ANUAL');
+    $sheet->getStyle('A1')->applyFromArray([
+      'font' => [
+        'bold' => true,
+        'size' => 16,
+        'color' => ['rgb' => 'FFFFFF']
+      ],
+      'fill' => [
+        'fillType' => Fill::FILL_SOLID,
+        'startColor' => ['rgb' => '2E75B6']
+      ],
+      'alignment' => [
+        'horizontal' => Alignment::HORIZONTAL_CENTER,
+        'vertical' => Alignment::VERTICAL_CENTER
+      ]
+    ]);
+    $sheet->getRowDimension(1)->setRowHeight(30);
+
+    // ========== FECHA ==========
+    $sheet->mergeCells('A2:B2');
+    $sheet->setCellValue('A2', 'Fecha: ' . date('d/m/Y'));
+    $sheet->getStyle('A2')->applyFromArray([
+      'font' => ['italic' => true, 'size' => 10],
+      'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+    ]);
+
+    $row = 4;
+
+    // ========== SECCIÓN: RESUMEN DIARIO ==========
+    $sheet->mergeCells("A{$row}:B{$row}");
+    $sheet->setCellValue("A{$row}", 'RESUMEN DIARIO');
+    $sheet->getStyle("A{$row}")->applyFromArray([
+      'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
+      'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '4472C4']],
+      'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+    ]);
+    $row++;
+
+    // Encabezados
+    $sheet->setCellValue("A{$row}", 'Concepto');
+    $sheet->setCellValue("B{$row}", 'Valor');
+    $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
+      'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+      'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '5B9BD5']],
+      'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+    ]);
+    $row++;
+
+    // Datos diarios
+    $sheet->setCellValue("A{$row}", 'Total Diario');
+    $sheet->setCellValue("B{$row}", $ventadiaria);
+    $row++;
+
+    $sheet->setCellValue("A{$row}", 'Venta Sala');
+    $sheet->setCellValue("B{$row}", $ventasala);
+    $row++;
+
+    $sheet->setCellValue("A{$row}", 'Facturas Por Cobrar');
+    $sheet->setCellValue("B{$row}", $facturasporcobrar);
+    $row++;
+
+    // Aplicar formato a datos diarios
+    $sheet->getStyle("B6:B{$row}")->getNumberFormat()->setFormatCode('#,##0');
+    $sheet->getStyle("B6:B{$row}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+    $sheet->getStyle("A6:B{$row}")->applyFromArray([
+      'borders' => [
+        'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
+      ]
+    ]);
+
+    $row += 2;
+
+    // ========== SECCIÓN: AVANCE MENSUAL ==========
+    $sheet->mergeCells("A{$row}:B{$row}");
+    $sheet->setCellValue("A{$row}", 'AVANCE MENSUAL AL DÍA');
+    $sheet->getStyle("A{$row}")->applyFromArray([
+      'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
+      'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '70AD47']],
+      'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+    ]);
+    $row++;
+
+    // Encabezados
+    $sheet->setCellValue("A{$row}", 'Año');
+    $sheet->setCellValue("B{$row}", 'Monto');
+    $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
+      'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+      'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '92D050']],
+      'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+    ]);
+    $row++;
+
+    $mensualStart = $row;
+
+    // Datos mensuales
+    $sheet->setCellValue("A{$row}", '2021');
+    $sheet->setCellValue("B{$row}", $m2021);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2022');
+    $sheet->setCellValue("B{$row}", $m2022);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2023');
+    $sheet->setCellValue("B{$row}", $m2023);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2024');
+    $sheet->setCellValue("B{$row}", $m2024);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2025');
+    $sheet->setCellValue("B{$row}", $m2025);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2026');
+    $sheet->setCellValue("B{$row}", $m2026);
+    $row++;
+
+    // Aplicar formato a datos mensuales
+    $sheet->getStyle("B{$mensualStart}:B" . ($row - 1))->getNumberFormat()->setFormatCode('#,##0');
+    $sheet->getStyle("B{$mensualStart}:B" . ($row - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+    $sheet->getStyle("A{$mensualStart}:B" . ($row - 1))->applyFromArray([
+      'borders' => [
+        'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
+      ]
+    ]);
+
+    $row += 2;
+
+    // ========== SECCIÓN: AVANCE ANUAL ==========
+    $sheet->mergeCells("A{$row}:B{$row}");
+    $sheet->setCellValue("A{$row}", 'AVANCE ANUAL AL DÍA');
+    $sheet->getStyle("A{$row}")->applyFromArray([
+      'font' => ['bold' => true, 'size' => 12, 'color' => ['rgb' => 'FFFFFF']],
+      'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFC000']],
+      'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+    ]);
+    $row++;
+
+    // Encabezados
+    $sheet->setCellValue("A{$row}", 'Año');
+    $sheet->setCellValue("B{$row}", 'Monto');
+    $sheet->getStyle("A{$row}:B{$row}")->applyFromArray([
+      'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+      'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFD966']],
+      'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+    ]);
+    $row++;
+
+    $anualStart = $row;
+
+    // Datos anuales
+    $sheet->setCellValue("A{$row}", '2021');
+    $sheet->setCellValue("B{$row}", $a2021);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2022');
+    $sheet->setCellValue("B{$row}", $a2022);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2023');
+    $sheet->setCellValue("B{$row}", $a2023);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2024');
+    $sheet->setCellValue("B{$row}", $a2024);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2025');
+    $sheet->setCellValue("B{$row}", $a2025);
+    $row++;
+    $sheet->setCellValue("A{$row}", '2026');
+    $sheet->setCellValue("B{$row}", $a2026);
+    $row++;
+
+    // Aplicar formato a datos anuales
+    $sheet->getStyle("B{$anualStart}:B" . ($row - 1))->getNumberFormat()->setFormatCode('#,##0');
+    $sheet->getStyle("B{$anualStart}:B" . ($row - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+    $sheet->getStyle("A{$anualStart}:B" . ($row - 1))->applyFromArray([
+      'borders' => [
+        'allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'CCCCCC']]
+      ]
+    ]);
+
+    // Aplicar bordes a todas las secciones
+    $sheet->getStyle('A4:B' . ($row - 1))->applyFromArray([
+      'borders' => [
+        'outline' => ['borderStyle' => Border::BORDER_MEDIUM, 'color' => ['rgb' => '000000']]
+      ]
+    ]);
+
+    // Generar archivo
+    $writer = new Xlsx($spreadsheet);
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="Avance_Mensual_Anual_' . date('Y-m-d') . '.xlsx"');
+    header('Cache-Control: max-age=0');
+
+    $writer->save('php://output');
+  }
+
+
+  public function VentasPorVendedor(Request $request)
+  {
+
+    $vendedor = DB::table('tablas')
+      ->where('TACODI', '24')
+      ->where('estado', 'A')
+      ->orderByRaw('tarefe asc')
+      ->get();
+
+    return view('admin.VentasPorVendedor', compact('vendedor'));
+
+
+
+  }
+
+
+  public function VentasPorVendedorFiltro(Request $request)
+  {
+
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    $comision = floatval($request->comision);
+    $elvendedor = $request->vendedor;
+
+    if ($request->vendedor == "TODOS") {
+      $ventas = DB::table('cargos')
+        ->leftJoin('nota_credito', function ($join) {
+          $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
+            ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
+        })
+        ->select(
+          'cargos.CANMRO',
+          'cargos.CATIPO',
+          'cargos.CARUTC',
+          'cargos.razon',
+          'cargos.CAFECO',
+          'cargos.CAIVA',
+          'cargos.CANETO',
+          'cargos.CAVALO',
+          DB::raw('IF(ISNULL(neto), (cargos.CANETO * ' . $comision . '), (cargos.CANETO - neto) * ' . $comision . ') as comision'),
+          'nota_credito.folio',
+          'nota_credito.total_nc'
+        )
+        ->where('CATIPO', '<>', '3')
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
         ->get();
 
-        return view('admin.VentasPorVendedor',compact('vendedor'));
-
-
-
-    }
-
-
-    public function VentasPorVendedorFiltro(Request $request){
-
-        $fecha1=$request->fecha1;
-        $fecha2=$request->fecha2;
-        $comision=floatval($request->comision);
-        $elvendedor = $request->vendedor;
-
-        if ($request->vendedor == "TODOS"){
-            $ventas=DB::table('cargos')
-            ->leftJoin('nota_credito', function($join) {
-              $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
-                   ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
-            })
-            ->select(
-              'cargos.CANMRO',
-              'cargos.CATIPO',
-              'cargos.CARUTC',
-              'cargos.razon',
-              'cargos.CAFECO',
-              'cargos.CAIVA',
-              'cargos.CANETO',
-              'cargos.CAVALO',
-              DB::raw('IF(ISNULL(neto), (cargos.CANETO * '.$comision.'), (cargos.CANETO - neto) * '.$comision.') as comision'),
-              'nota_credito.folio',
-              'nota_credito.total_nc'
-            )
-            ->where('CATIPO' , '<>', '3')
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->get();
-
-            $comisionfactura=DB::table('cargos')
-            ->selectRaw("sum(CANETO * $comision) as boletaneto")
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->get();
-
-            $comisionboleta=DB::table('cargos')
-            ->selectRaw("sum(CANETO * $comision) as boletaneto")
-            ->where('CATIPO' , 7)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->get();
-        }else{
-            $ventas=DB::table('cargos')
-            ->leftJoin('nota_credito', function($join) {
-              $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
-                   ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
-            })
-            ->select(
-              'cargos.CANMRO',
-              'cargos.CATIPO',
-              'cargos.CARUTC',
-              'cargos.razon',
-              'cargos.CAFECO',
-              'cargos.CAIVA',
-              'cargos.CANETO',
-              'cargos.CAVALO',
-              DB::raw('IF(ISNULL(neto), (cargos.CANETO * '.$comision.'), (cargos.CANETO - neto) * '.$comision.') as comision'),
-              'nota_credito.folio',
-              'nota_credito.total_nc'
-            )
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , '<>', '3')
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->get();
-
-            $comisionfactura=DB::table('cargos')
-            ->selectRaw("sum(CANETO * $comision) as boletaneto")
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->get();
-
-            $comisionboleta=DB::table('cargos')
-            ->selectRaw("sum(CANETO * $comision) as boletaneto")
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 7)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->get();
-        }
-
-        if ($request->vendedor == "TODOS"){
-            $boletaconteo=DB::table('cargos')
-            ->where('CATIPO' , 7)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->count('CANMRO');
-
-            $facturaconteo=DB::table('cargos')
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->count('CANMRO');
-
-            $boletasuma=DB::table('cargos')
-            ->where('CATIPO' , 7)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CAVALO');
-
-            $facturasuma=DB::table('cargos')
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CAVALO');
-
-            $boletanetototal=DB::table('cargos')
-            ->where('CATIPO' , 7)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CANETO');
-
-            $facturanetototal=DB::table('cargos')
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CANETO');
-
-            $ncboletas = DB::table('cargos')
-            ->leftJoin('nota_credito', function($join) {
-                $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
-                    ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
-            })
-            ->where('CATIPO', '7')
-            ->whereNotNull('total_nc')
-            ->whereBetween('CAFECO', [$request->fecha1, $request->fecha2])
-            ->sum('nota_credito.total_nc')/1.19;
-
-            $ncfacturas = DB::table('cargos')
-            ->leftJoin('nota_credito', function($join) {
-                $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
-                    ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
-            })
-            ->where('CACOVE', $request->vendedor)
-            ->whereNotNull('total_nc')
-            ->whereBetween('CAFECO', [$request->fecha1, $request->fecha2])
-            ->sum('nota_credito.total_nc')/1.19;
-
-        }else{
-            $boletaconteo=DB::table('cargos')
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 7)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->count('CANMRO');
-
-            $facturaconteo=DB::table('cargos')
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->count('CANMRO');
-
-            $boletasuma=DB::table('cargos')
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 7)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CAVALO');
-
-            $facturasuma=DB::table('cargos')
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CAVALO');
-
-            $boletanetototal=DB::table('cargos')
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 7)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CANETO');
-
-            $facturanetototal=DB::table('cargos')
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CANETO');
-
-            $facturanetototal=DB::table('cargos')
-            ->where('CACOVE' , $request->vendedor)
-            ->where('CATIPO' , 8)
-            ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-            ->sum('CANETO');
-
-            $ncboletas = DB::table('cargos')
-            ->leftJoin('nota_credito', function($join) {
-                $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
-                    ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
-            })
-            ->where('CACOVE', $request->vendedor)
-            ->where('CATIPO', '7')
-            ->whereNotNull('total_nc')
-            ->whereBetween('CAFECO', [$request->fecha1, $request->fecha2])
-            ->sum('nota_credito.total_nc')/1.19;
-
-            $ncfacturas = DB::table('cargos')
-            ->leftJoin('nota_credito', function($join) {
-                $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
-                    ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
-            })
-            ->where('CACOVE', $request->vendedor)
-            ->where('CATIPO', '8')
-            ->whereNotNull('total_nc')
-            ->whereBetween('CAFECO', [$request->fecha1, $request->fecha2])
-            ->sum('nota_credito.total_nc')/1.19;
-
-        }
-        $vendedor=DB::table('tablas')
-        ->where('TACODI' , '24')
-        ->where('estado' , 'A')
-        ->orderByRaw('tarefe asc')
+      $comisionfactura = DB::table('cargos')
+        ->selectRaw("sum(CANETO * $comision) as boletaneto")
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
         ->get();
 
-        $facturatotal = $comisionfactura[0]->boletaneto - ($ncfacturas*$comision);
-        $boletatotal = $comisionboleta[0]->boletaneto - ($ncboletas*$comision);
-
-        $totalconteo=$facturaconteo+$boletaconteo;
-        $totalsuma=$boletasuma+$facturasuma;
-
-        return view('admin.VentasPorVendedor',compact('vendedor','ventas','boletaconteo','facturaconteo','totalconteo','facturasuma','boletasuma','totalsuma','boletanetototal','facturanetototal','boletatotal','facturatotal','fecha1','fecha2','ncfacturas','ncboletas','comision','elvendedor'));
-
-
-    }
-
-
-    public function InformeExistencia(){
-
-
-
-        return view('admin.InformeExistencia');
-
-
-
-    }
-
-
-    public function InformeExistenciaFiltro(Request $request){
-
-        $fecha1=$request->fecha1;
-        $fecha2=$request->fecha2;
-
-        $bodegacosto=DB::select('select sum(incant * PCCOSTO) as bodegacosto from precios, inventa where incant > 0 and PCCODI = LEFT(inarti, 5)');
-
-        $salacosto=DB::select('select sum(bpsrea * PCCOSTO) as salacosto from precios, bodeprod where bpsrea > 0 and PCCODI = LEFT(bpprod, 5)');
-
-        $adquisiciones=DB::select('select sum(Cantidad * round(costo)) as adquisiciones from ingreso_productos_costos, cmovim where Numero_Ingreso = CMVNGUI and CMVFEDO between ? and ?' , [$fecha1,$fecha2]);
-
-        $saldototal = $adquisiciones[0]->adquisiciones + $bodegacosto[0]->bodegacosto;
-
-        $ventas=DB::select('select sum(cavalo) as totalventas from cargos where catipo != 3 and cafeco between ? and ? ' , [$fecha1,$fecha2]);
-
-        $notascredito=DB::select('select sum(total_nc) as totalnc from nota_credito where fecha between ? and ? ' , [$fecha1,$fecha2]);
-
-        $total=(($ventas[0]->totalventas)-$notascredito[0]->totalnc);
-
-        return view('admin.InformeExistencia',compact('fecha1','fecha2','bodegacosto','salacosto','adquisiciones','saldototal','total'));
-
-
-    }
-
-
-
-
-    public function VentaProductosPorDia(Request $request){
-
-        $marcas=DB::table('marcas')->get();
-
-        return view('admin.VentaProductosPorDia',compact('marcas'));
-
-    }
-
-    public function VentaProductosPorDiaFiltro(Request $request){
-
-        // dd($request->all());
-
-        $marca = $request->marca;
-        $fecha1=$request->fecha1;
-        $fecha2=$request->fecha2;
-        if(is_null($marca)){
-          $productos=DB::select("select decodi, sum(decant) as decant, ardesc, armarca, PrecioCosto as costo, DEPREC as venta, DEPREC*(sum(decant)) as venta_total ,defeco from dcargos, producto where DETIPO != 3 and decodi = ARCODI and defeco between ? and ? group by DECODI, DEFECO;" , [$fecha1,$fecha2]);
-        }else{
-          $productos=DB::select("select decodi, sum(decant) as decant, ardesc, armarca, PrecioCosto as costo, DEPREC as venta, DEPREC*(sum(decant)) as venta_total ,defeco from dcargos, producto where armarca = ? and DETIPO != 3 and decodi = ARCODI and defeco between ? and ? group by DECODI, DEFECO" , [$marca,$fecha1,$fecha2]);
-        }
-
-        $marcas=DB::table('marcas')->get();
-
-        // dd($productos);
-
-        return view('admin.VentaProductosPorDia',compact('fecha1','fecha2','marcas','productos'));
-
-    }
-
-
-    public function ControlDeFolios(Request $request){
-
-        $facturas=DB::select('select USCODI, USFADE as desde, USFAHA as hasta, max(CANMRO) as ultima_factura, (USFAHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 8 group by USCODI');
-
-        $boletas=DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and forma_pago != "T" group by USCODI');
-
-        $guias=DB::select('select USCODI, USGDDE as desde, USGDHA as hasta, max(CANMRO) as ultima_guia, (USGDHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 3 group by USCODI');
-
-        $ultima_factura = DB::select('SELECT * FROM usuario order by USFAHA desc limit 1')[0];
-
-        $ultima_boleta = DB::select('SELECT * FROM usuario order by USBOHA desc limit 1')[0];
-
-        $ultima_guia = DB::select('SELECT * FROM usuario order by USGDHA desc limit 1')[0];
-
-        //dd($ultima_boleta);
-
-        return view('admin.ControlDeFolios',compact('facturas','boletas', 'guias','ultima_factura','ultima_boleta', 'ultima_guia'));
-
-    }
-
-    public function EditarFolios(Request $request){
-        //dd($request);
-
-      $primer_folio = $request->get("ultimo")+1;
-      $asignados = $request->get("folios");
-      $caja = $request->get("caja");
-
-      if($asignados > 0 ){
-        DB::table('usuario')
-        ->where('USCODI' , $caja)
-        ->update(['USFADE' => $primer_folio,
-                  'USFAHA' => ($primer_folio+$asignados)]);
-      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
-      }elseif($asignados == 0){
-        DB::table('usuario')
-        ->where('USCODI' , $caja)
-        ->update(['USFADE' => $request->get("desde"),
-                  'USFAHA' => $request->get("hasta")]);
-      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
-      }
-
-    }
-
-    public function EditarFoliosBoletas(Request $request){
-
-      $primer_folio = $request->get("ultimo")+1;
-      $asignados = $request->get("folios");
-      $caja = $request->get("caja");
-
-      if($asignados > 0 ){
-        DB::table('usuario')
-        ->where('USCODI' , $caja)
-        ->update(['USBODE' => $primer_folio,
-                  'USBOHA' => ($primer_folio+$asignados)]);
-      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
-      }elseif($asignados == 0){
-        DB::table('usuario')
-        ->where('USCODI' , $caja)
-        ->update(['USBODE' => $request->get("desde"),
-                  'USBOHA' => $request->get("hasta")]);
-      return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
-      }
-
-    }
-
-    public function EditarFoliosGuias(Request $request){
-
-        $primer_folio = $request->get("ultimo")+1;
-        $asignados = $request->get("folios");
-        $caja = $request->get("caja");
-        if($asignados > 0 ){
-          DB::table('usuario')
-          ->where('USCODI' , $caja)
-          ->update(['USGDDE' => $primer_folio,
-                    'USGDHA' => ($primer_folio+$asignados)]);
-        return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
-        }elseif($asignados == 0){
-          DB::table('usuario')
-          ->where('USCODI' , $caja)
-          ->update(['USGDDE' => $request->get("desde"),
-                    'USGDHA' => $request->get("hasta")]);
-        return redirect()->route('ControlDeFolios')->with('success','Datos Actualizados');
-        }
-
-      }
-
-
-
-
-    public function InformeUtilidades(Request $request){
-
-        $contratos=DB::table('contratos')
+      $comisionboleta = DB::table('cargos')
+        ->selectRaw("sum(CANETO * $comision) as boletaneto")
+        ->where('CATIPO', 7)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->get();
+    } else {
+      $ventas = DB::table('cargos')
+        ->leftJoin('nota_credito', function ($join) {
+          $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
+            ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
+        })
+        ->select(
+          'cargos.CANMRO',
+          'cargos.CATIPO',
+          'cargos.CARUTC',
+          'cargos.razon',
+          'cargos.CAFECO',
+          'cargos.CAIVA',
+          'cargos.CANETO',
+          'cargos.CAVALO',
+          DB::raw('IF(ISNULL(neto), (cargos.CANETO * ' . $comision . '), (cargos.CANETO - neto) * ' . $comision . ') as comision'),
+          'nota_credito.folio',
+          'nota_credito.total_nc'
+        )
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', '<>', '3')
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
         ->get();
 
-        // dd($contratos);
-
-
-        return view('admin.InformeUtilidades');
-
-
-    }
-
-    public function InformeUtilidadesFiltro(Request $request){
-
-        // dd($request->all());
-
-
-        return view('admin.InformeUtilidades',compact('contratos'));
-
-
-    }
-
-
-
-    public function VentasPorRut(Request $request){
-
-
-        return view('admin.VentasPorRut');
-
-
-    }
-
-    public function VentasPorRutFiltro(Request $request){
-
-        $fecha1=$request->fecha1;
-        $fecha2=$request->fecha2;
-        //$rut=$request->rut;
-
-
-        $ventas=DB::table('cargos')
-        ->where('CATIPO' , 8)
-        ->where('CATIPO' , 7)
-        ->where('CARUTC' , $request->rut)
-        ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+      $comisionfactura = DB::table('cargos')
+        ->selectRaw("sum(CANETO * $comision) as boletaneto")
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
         ->get();
 
-
-
-
-        // $ventas=DB::table('cargos')
-        // ->selectRaw("CANMRO,CATIPO,CARUTC,razon,CAFECO,CAIVA,CANETO,CAVALO,(CANETO * $comision) as comision")
-        // ->where('CACOVE' , $request->vendedor)
-        // ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
-        // ->get();
-
-
-        return view('admin.VentasPorRut',compact('ventas'));
-
-
+      $comisionboleta = DB::table('cargos')
+        ->selectRaw("sum(CANETO * $comision) as boletaneto")
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 7)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->get();
     }
 
-    public function daysWeek($inicio, $fin){
+    if ($request->vendedor == "TODOS") {
+      $boletaconteo = DB::table('cargos')
+        ->where('CATIPO', 7)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->count('CANMRO');
 
-      $start = new DateTime($inicio);
-      $end = new DateTime($fin);
+      $facturaconteo = DB::table('cargos')
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->count('CANMRO');
 
-      $interval = $end->diff($start);
+      $boletasuma = DB::table('cargos')
+        ->where('CATIPO', 7)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CAVALO');
 
-      //de lo contrario, se excluye la fecha de finalización (¿error?)
-      $end->modify('+1 day');
+      $facturasuma = DB::table('cargos')
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CAVALO');
 
-      // total dias
-      $days = $interval->days;
-      // crea un período de fecha iterable (P1D equivale a 1 día)
-      $period = new DatePeriod($start, new DateInterval('P1D'), $end);
+      $boletanetototal = DB::table('cargos')
+        ->where('CATIPO', 7)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CANETO');
 
-      // almacenado como matriz, por lo que puede agregar más de una fecha feriada
-      $holidays = ['2024-03-29', '2024-03-30', '2024-05-01', '2024-05-21', '2024-20-06', '2024-06-29', '2024-07-16', '2024-08-15', '2024-08-20', '2024-09-18', '2024-09-20', '2024-10-12', '2024-10-31', '2024-11-01', '2024-12-25'];
+      $facturanetototal = DB::table('cargos')
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CANETO');
 
-      $sabados = 0;
+      $ncboletas = DB::table('cargos')
+        ->leftJoin('nota_credito', function ($join) {
+          $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
+            ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
+        })
+        ->where('CATIPO', '7')
+        ->whereNotNull('total_nc')
+        ->whereBetween('CAFECO', [$request->fecha1, $request->fecha2])
+        ->sum('nota_credito.total_nc') / 1.19;
 
-      foreach($period as $dt) {
-        $curr = $dt->format('D');
-        // obtiene si es Sábado y no feriado y suma
-        if($curr == 'Sat'){
-          $sabados++;
-          //error_log(print_r($dt->format('Y-m-d'), true));
-        }
-        // obtiene si es Domingo
-        if(/* $curr == 'Sat' || */  $curr == 'Sun') {
-            $days--;
-        }elseif (in_array($dt->format('Y-m-d'), $holidays)) {
-            $days--;
-        }
-      }
+      $ncfacturas = DB::table('cargos')
+        ->leftJoin('nota_credito', function ($join) {
+          $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
+            ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
+        })
+        ->where('CACOVE', $request->vendedor)
+        ->whereNotNull('total_nc')
+        ->whereBetween('CAFECO', [$request->fecha1, $request->fecha2])
+        ->sum('nota_credito.total_nc') / 1.19;
 
-      /* error_log(print_r("total kedan ".$days, true));
-      error_log(print_r("domingos ".$domingos, true));
-      error_log(print_r("sabados ".$sabados, true));
-      error_log(print_r("feriados ".$feriados, true)); */
+    } else {
+      $boletaconteo = DB::table('cargos')
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 7)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->count('CANMRO');
 
-      //dd($sabados);
+      $facturaconteo = DB::table('cargos')
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->count('CANMRO');
 
-      return ($days-($sabados/2));
-    }
+      $boletasuma = DB::table('cargos')
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 7)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CAVALO');
 
-    public function countsaturday($inicio, $fin){
+      $facturasuma = DB::table('cargos')
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CAVALO');
 
-      $starDate = new DateTime($inicio);
-      $endDate = new DateTime($fin);
+      $boletanetototal = DB::table('cargos')
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 7)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CANETO');
 
-      $days = 0;
+      $facturanetototal = DB::table('cargos')
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CANETO');
 
-      while( $starDate <= $endDate){
-          if($starDate->format('l')== 'Saturday'){
-                          //error_log(print_r($starDate->format('Y-m-d (D)'), true));
-                          $days++;
-          }
-          $starDate->modify("+1 days");
+      $facturanetototal = DB::table('cargos')
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', 8)
+        ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+        ->sum('CANETO');
 
-      }
+      $ncboletas = DB::table('cargos')
+        ->leftJoin('nota_credito', function ($join) {
+          $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
+            ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
+        })
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', '7')
+        ->whereNotNull('total_nc')
+        ->whereBetween('CAFECO', [$request->fecha1, $request->fecha2])
+        ->sum('nota_credito.total_nc') / 1.19;
 
-      return $days;
-
-    }
-
-    public function ipc($anocursado, $mescursado) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
-        //curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        $data = curl_exec($ch);
-
-        // Verificar errores en la solicitud cURL
-        if ($data === false) {
-            $error = curl_error($ch);
-            curl_close($ch);
-            //error_log('Error en la solicitud cURL: ' . $error);
-            return 0; // Devolver 0 en caso de error
-        }
-
-        curl_close($ch);
-
-        // Decodificar el JSON
-        $data = json_decode($data);
-
-        // Verificar errores en la decodificación JSON
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            //error_log('Error al decodificar JSON: ' . json_last_error_msg());
-            return 0; // Devolver 0 en caso de error
-        }
-
-        // Verificar si se recibió un objeto válido y contiene la propiedad IPCs
-        if (is_object($data) && property_exists($data, 'IPCs')) {
-            $ipc = 0;
-            foreach ($data->IPCs as $item) {
-              // Sumar los valores, convirtiendo la coma a punto y luego a float
-              $ipc += (float) str_replace(",", ".", $item->Valor);
-              //error_log(print_r($ipc, true));
-            }
-            return $ipc;
-        } else {
-            // El objeto $data no tiene la propiedad IPCs válida
-            //error_log(print_r(0));
-            return 0; // Devolver 0 en caso de que no se encuentre la propiedad IPCs
-        }
-    }
-
-    public function VerLog(Request $request){
-
-      $mes = date('Y-m');
-
-      // Crear fechas de inicio y fin de mes con funciones nativas
-      $inicio = $mes . '-01';
-
-      // Obtener último día del mes (ej: 31) usando date() + strtotime()
-      $ultimoDia = date('t', strtotime($inicio)); // "t" = total de días del mes
-
-      $fin = $mes . '-' . $ultimoDia;
-
-        $registro=DB::table('log_bmix')
-        ->whereBetween('fecha', [$inicio, $fin])
-        ->orderBy('fecha', 'desc')
-        ->paginate(100000);
-
-        return view('admin.verlog',compact('registro', 'mes'));
-
+      $ncfacturas = DB::table('cargos')
+        ->leftJoin('nota_credito', function ($join) {
+          $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
+            ->whereColumn('cargos.CATIPO', '=', 'nota_credito.tipo_doc_refe');
+        })
+        ->where('CACOVE', $request->vendedor)
+        ->where('CATIPO', '8')
+        ->whereNotNull('total_nc')
+        ->whereBetween('CAFECO', [$request->fecha1, $request->fecha2])
+        ->sum('nota_credito.total_nc') / 1.19;
 
     }
+    $vendedor = DB::table('tablas')
+      ->where('TACODI', '24')
+      ->where('estado', 'A')
+      ->orderByRaw('tarefe asc')
+      ->get();
 
-    public function VerLogMes(Request $request){
+    $facturatotal = $comisionfactura[0]->boletaneto - ($ncfacturas * $comision);
+    $boletatotal = $comisionboleta[0]->boletaneto - ($ncboletas * $comision);
 
-      $mes = request('mes');
+    $totalconteo = $facturaconteo + $boletaconteo;
+    $totalsuma = $boletasuma + $facturasuma;
 
-      // Crear fechas de inicio y fin de mes con funciones nativas
-      $inicio = $mes . '-01';
-
-      // Obtener último día del mes (ej: 31) usando date() + strtotime()
-      $ultimoDia = date('t', strtotime($inicio)); // "t" = total de días del mes
-
-      $fin = $mes . '-' . $ultimoDia;
-
-        $registro=DB::table('log_bmix')
-        ->whereBetween('fecha', [$inicio, $fin])
-        ->orderBy('fecha', 'desc')
-        ->paginate(100000);
-
-        return view('admin.verlog',compact('registro', 'mes'));
+    return view('admin.VentasPorVendedor', compact('vendedor', 'ventas', 'boletaconteo', 'facturaconteo', 'totalconteo', 'facturasuma', 'boletasuma', 'totalsuma', 'boletanetototal', 'facturanetototal', 'boletatotal', 'facturatotal', 'fecha1', 'fecha2', 'ncfacturas', 'ncboletas', 'comision', 'elvendedor'));
 
 
+  }
+
+
+  public function InformeExistencia()
+  {
+
+
+
+    return view('admin.InformeExistencia');
+
+
+
+  }
+
+
+  public function InformeExistenciaFiltro(Request $request)
+  {
+
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+
+    $bodegacosto = DB::select('select sum(incant * PCCOSTO) as bodegacosto from precios, inventa where incant > 0 and PCCODI = LEFT(inarti, 5)');
+
+    $salacosto = DB::select('select sum(bpsrea * PCCOSTO) as salacosto from precios, bodeprod where bpsrea > 0 and PCCODI = LEFT(bpprod, 5)');
+
+    $adquisiciones = DB::select('select sum(Cantidad * round(costo)) as adquisiciones from ingreso_productos_costos, cmovim where Numero_Ingreso = CMVNGUI and CMVFEDO between ? and ?', [$fecha1, $fecha2]);
+
+    $saldototal = $adquisiciones[0]->adquisiciones + $bodegacosto[0]->bodegacosto;
+
+    $ventas = DB::select('select sum(cavalo) as totalventas from cargos where catipo != 3 and cafeco between ? and ? ', [$fecha1, $fecha2]);
+
+    $notascredito = DB::select('select sum(total_nc) as totalnc from nota_credito where fecha between ? and ? ', [$fecha1, $fecha2]);
+
+    $total = (($ventas[0]->totalventas) - $notascredito[0]->totalnc);
+
+    return view('admin.InformeExistencia', compact('fecha1', 'fecha2', 'bodegacosto', 'salacosto', 'adquisiciones', 'saldototal', 'total'));
+
+
+  }
+
+
+
+
+  public function VentaProductosPorDia(Request $request)
+  {
+
+    $marcas = DB::table('marcas')->get();
+
+    return view('admin.VentaProductosPorDia', compact('marcas'));
+
+  }
+
+  public function VentaProductosPorDiaFiltro(Request $request)
+  {
+
+    // dd($request->all());
+
+    $marca = $request->marca;
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    if (is_null($marca)) {
+      $productos = DB::select("select decodi, sum(decant) as decant, ardesc, armarca, PrecioCosto as costo, DEPREC as venta, DEPREC*(sum(decant)) as venta_total ,defeco from dcargos, producto where DETIPO != 3 and decodi = ARCODI and defeco between ? and ? group by DECODI, DEFECO;", [$fecha1, $fecha2]);
+    } else {
+      $productos = DB::select("select decodi, sum(decant) as decant, ardesc, armarca, PrecioCosto as costo, DEPREC as venta, DEPREC*(sum(decant)) as venta_total ,defeco from dcargos, producto where armarca = ? and DETIPO != 3 and decodi = ARCODI and defeco between ? and ? group by DECODI, DEFECO", [$marca, $fecha1, $fecha2]);
     }
-    public function modistock(Request $request){
 
-        return view('admin.configuracionstock');
+    $marcas = DB::table('marcas')->get();
 
-    }
+    // dd($productos);
 
-    public function buscarOC(Request $request){
+    return view('admin.VentaProductosPorDia', compact('fecha1', 'fecha2', 'marcas', 'productos'));
 
-
-        $nro_oc = $request->get('nro_oc');
-
-        $message = "";
-
-         $oc = DB::table('db_bluemix.OrdenDeCompraDetalle')
-            ->where('NroOC', $request->get('nro_oc'))
-            ->get();
-
-         if(count($oc) === 0){
-                $message = "OC no Encontrado";
-                return view('admin.configuracionstock', compact('message'));
-            }
-
-            $productos = DB::table('OrdenDeCompraDetalle')
-            ->leftJoin('producto', 'OrdenDeCompraDetalle.Codigo', '=', 'producto.ARCODI')
-            ->leftJoin('bodeprod', 'OrdenDeCompraDetalle.Codigo', '=', 'bodeprod.bpprod')
-            ->where('NroOC', $nro_oc)
-            ->select('OrdenDeCompraDetalle.*', 'producto.*', 'bodeprod.*')
-            ->get();
+  }
 
 
-            return view('admin.configuracionstock',compact('productos', 'nro_oc'));
-    }
+  public function ControlDeFolios(Request $request)
+  {
 
-    public function editarstock(Request $request)
-    {
-        $productos = $request->get('productos');
-        $ordenCompra = $request->get('nro_oc');
+    $facturas = DB::select('select USCODI, USFADE as desde, USFAHA as hasta, max(CANMRO) as ultima_factura, (USFAHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 8 group by USCODI');
 
-        if (!$productos || !$ordenCompra) {
-            return redirect()->route('modistock')->with('error', 'Faltan datos de productos o número de orden de compra.');
-        }
+    $boletas = DB::select('select USCODI, USBODE as desde, USBOHA as hasta, max(CANMRO) as ultima_boleta, (USBOHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 7 and NRO_BFISCAL = 0 and forma_pago != "T" group by USCODI');
 
-        // Validar si ya existe esa orden en detalle_devolucion
-        $existe = \DB::table('detalle_devolucion')
-    ->where('folio', $ordenCompra)
-    ->where('t_doc', 'Devolucion a bodega')
-    ->exists();
+    $guias = DB::select('select USCODI, USGDDE as desde, USGDHA as hasta, max(CANMRO) as ultima_guia, (USGDHA - max(CANMRO)) as restantes from cargos, usuario where USCODI = cacoca  and catipo = 3 group by USCODI');
 
+    $ultima_factura = DB::select('SELECT * FROM usuario order by USFAHA desc limit 1')[0];
 
-        if ($existe) {
-            return redirect()->route('modistock')->with('error', 'La orden de compra ya fue devuelta.');
-        }
+    $ultima_boleta = DB::select('SELECT * FROM usuario order by USBOHA desc limit 1')[0];
 
-        foreach ($productos as $producto) {
-            $codigo = $producto['codigo'];
-            $nuevoStock = $producto['stock'];
+    $ultima_guia = DB::select('SELECT * FROM usuario order by USGDHA desc limit 1')[0];
 
-            // Buscar stock anterior
-            $stockAnterior = \DB::table('bodeprod')
-                ->where('bpprod', $codigo)
-                ->value('bpsrea');
+    //dd($ultima_boleta);
 
-            if (is_null($stockAnterior)) {
-                return redirect()->route('modistock')->with('error', "Producto con código $codigo no encontrado en bodeprod.");
-            }
+    return view('admin.ControlDeFolios', compact('facturas', 'boletas', 'guias', 'ultima_factura', 'ultima_boleta', 'ultima_guia'));
 
-            // Buscar nombre del producto
-            $nombreProducto = \DB::table('producto')
-                ->where('ARCODI', $codigo)
-                ->value('ARDESC');
+  }
 
-            if (is_null($nombreProducto)) {
-                return redirect()->route('modistock')->with('error', "Producto con código $codigo no encontrado en tabla producto.");
-            }
+  public function EditarFolios(Request $request)
+  {
+    //dd($request);
 
-            // Actualizar stock
-            \DB::table('bodeprod')
-                ->where('bpprod', $codigo)
-                ->update(['bpsrea' => $nuevoStock]);
+    $primer_folio = $request->get("ultimo") + 1;
+    $asignados = $request->get("folios");
+    $caja = $request->get("caja");
 
-            // Insertar en solicitud_ajuste
-            \DB::table('solicitud_ajuste')->insert([
-                'codprod'         => $codigo,
-                'producto'        => $nombreProducto,
-                'fecha'           => now()->format('Y-m-d'),
-                'stock_anterior'  => $stockAnterior,
-                'nuevo_stock'     => $nuevoStock,
-                'autoriza'        => 'Valentin Bello',
-                'solicita'        => 'Gerardo Salgado',
-                'Observacion'     => 'Devolucion a Bodega',
-            ]);
-        }
-
-        // Insertar en detalle_devolucion
-        \DB::table('detalle_devolucion')->insert([
-            'folio'     => $ordenCompra,
-            't_doc'     => 'Devolucion a bodega',
-            'fecha'     => now(),
-            'estado'    => 'Devuelto',
+    if ($asignados > 0) {
+      DB::table('usuario')
+        ->where('USCODI', $caja)
+        ->update([
+          'USFADE' => $primer_folio,
+          'USFAHA' => ($primer_folio + $asignados)
         ]);
-
-        return redirect()->route('modistock')->with('success', 'Datos actualizados correctamente.');
+      return redirect()->route('ControlDeFolios')->with('success', 'Datos Actualizados');
+    } elseif ($asignados == 0) {
+      DB::table('usuario')
+        ->where('USCODI', $caja)
+        ->update([
+          'USFADE' => $request->get("desde"),
+          'USFAHA' => $request->get("hasta")
+        ]);
+      return redirect()->route('ControlDeFolios')->with('success', 'Datos Actualizados');
     }
+
+  }
+
+  public function EditarFoliosBoletas(Request $request)
+  {
+
+    $primer_folio = $request->get("ultimo") + 1;
+    $asignados = $request->get("folios");
+    $caja = $request->get("caja");
+
+    if ($asignados > 0) {
+      DB::table('usuario')
+        ->where('USCODI', $caja)
+        ->update([
+          'USBODE' => $primer_folio,
+          'USBOHA' => ($primer_folio + $asignados)
+        ]);
+      return redirect()->route('ControlDeFolios')->with('success', 'Datos Actualizados');
+    } elseif ($asignados == 0) {
+      DB::table('usuario')
+        ->where('USCODI', $caja)
+        ->update([
+          'USBODE' => $request->get("desde"),
+          'USBOHA' => $request->get("hasta")
+        ]);
+      return redirect()->route('ControlDeFolios')->with('success', 'Datos Actualizados');
+    }
+
+  }
+
+  public function EditarFoliosGuias(Request $request)
+  {
+
+    $primer_folio = $request->get("ultimo") + 1;
+    $asignados = $request->get("folios");
+    $caja = $request->get("caja");
+    if ($asignados > 0) {
+      DB::table('usuario')
+        ->where('USCODI', $caja)
+        ->update([
+          'USGDDE' => $primer_folio,
+          'USGDHA' => ($primer_folio + $asignados)
+        ]);
+      return redirect()->route('ControlDeFolios')->with('success', 'Datos Actualizados');
+    } elseif ($asignados == 0) {
+      DB::table('usuario')
+        ->where('USCODI', $caja)
+        ->update([
+          'USGDDE' => $request->get("desde"),
+          'USGDHA' => $request->get("hasta")
+        ]);
+      return redirect()->route('ControlDeFolios')->with('success', 'Datos Actualizados');
+    }
+
+  }
+
+
+
+
+  public function InformeUtilidades(Request $request)
+  {
+
+    $contratos = DB::table('contratos')
+      ->get();
+
+    // dd($contratos);
+
+
+    return view('admin.InformeUtilidades');
+
+
+  }
+
+  public function InformeUtilidadesFiltro(Request $request)
+  {
+
+    // dd($request->all());
+
+
+    return view('admin.InformeUtilidades', compact('contratos'));
+
+
+  }
+
+
+
+  public function VentasPorRut(Request $request)
+  {
+
+
+    return view('admin.VentasPorRut');
+
+
+  }
+
+  public function VentasPorRutFiltro(Request $request)
+  {
+
+    $fecha1 = $request->fecha1;
+    $fecha2 = $request->fecha2;
+    //$rut=$request->rut;
+
+
+    $ventas = DB::table('cargos')
+      ->where('CATIPO', 8)
+      ->where('CATIPO', 7)
+      ->where('CARUTC', $request->rut)
+      ->whereBetween('CAFECO', array($request->fecha1, $request->fecha2))
+      ->get();
+
+
+
+
+    // $ventas=DB::table('cargos')
+    // ->selectRaw("CANMRO,CATIPO,CARUTC,razon,CAFECO,CAIVA,CANETO,CAVALO,(CANETO * $comision) as comision")
+    // ->where('CACOVE' , $request->vendedor)
+    // ->whereBetween('CAFECO', array($request->fecha1,$request->fecha2))
+    // ->get();
+
+
+    return view('admin.VentasPorRut', compact('ventas'));
+
+
+  }
+
+  public function daysWeek($inicio, $fin)
+  {
+
+    $start = new DateTime($inicio);
+    $end = new DateTime($fin);
+
+    $interval = $end->diff($start);
+
+    //de lo contrario, se excluye la fecha de finalización (¿error?)
+    $end->modify('+1 day');
+
+    // total dias
+    $days = $interval->days;
+    // crea un período de fecha iterable (P1D equivale a 1 día)
+    $period = new DatePeriod($start, new DateInterval('P1D'), $end);
+
+    // almacenado como matriz, por lo que puede agregar más de una fecha feriada
+    $holidays = ['2024-03-29', '2024-03-30', '2024-05-01', '2024-05-21', '2024-20-06', '2024-06-29', '2024-07-16', '2024-08-15', '2024-08-20', '2024-09-18', '2024-09-20', '2024-10-12', '2024-10-31', '2024-11-01', '2024-12-25'];
+
+    $sabados = 0;
+
+    foreach ($period as $dt) {
+      $curr = $dt->format('D');
+      // obtiene si es Sábado y no feriado y suma
+      if ($curr == 'Sat') {
+        $sabados++;
+        //error_log(print_r($dt->format('Y-m-d'), true));
+      }
+      // obtiene si es Domingo
+      if (/* $curr == 'Sat' || */ $curr == 'Sun') {
+        $days--;
+      } elseif (in_array($dt->format('Y-m-d'), $holidays)) {
+        $days--;
+      }
+    }
+
+    /* error_log(print_r("total kedan ".$days, true));
+    error_log(print_r("domingos ".$domingos, true));
+    error_log(print_r("sabados ".$sabados, true));
+    error_log(print_r("feriados ".$feriados, true)); */
+
+    //dd($sabados);
+
+    return ($days - ($sabados / 2));
+  }
+
+  public function countsaturday($inicio, $fin)
+  {
+
+    $starDate = new DateTime($inicio);
+    $endDate = new DateTime($fin);
+
+    $days = 0;
+
+    while ($starDate <= $endDate) {
+      if ($starDate->format('l') == 'Saturday') {
+        //error_log(print_r($starDate->format('Y-m-d (D)'), true));
+        $days++;
+      }
+      $starDate->modify("+1 days");
+
+    }
+
+    return $days;
+
+  }
+
+  public function ipc($anocursado, $mescursado)
+  {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/' . ($anocursado - 1) . '/' . ($mescursado - 1) . '?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
+    //curl_setopt($ch, CURLOPT_URL, 'https://api.sbif.cl/api-sbifv3/recursos_api/ipc/posteriores/'.($anocursado-1).'/'.($mescursado-1).'?apikey=9309b70972ac0837a356f126866a8bc1b4160a27&formato=json');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    $data = curl_exec($ch);
+
+    // Verificar errores en la solicitud cURL
+    if ($data === false) {
+      $error = curl_error($ch);
+      curl_close($ch);
+      //error_log('Error en la solicitud cURL: ' . $error);
+      return 0; // Devolver 0 en caso de error
+    }
+
+    curl_close($ch);
+
+    // Decodificar el JSON
+    $data = json_decode($data);
+
+    // Verificar errores en la decodificación JSON
+    if (json_last_error() !== JSON_ERROR_NONE) {
+      //error_log('Error al decodificar JSON: ' . json_last_error_msg());
+      return 0; // Devolver 0 en caso de error
+    }
+
+    // Verificar si se recibió un objeto válido y contiene la propiedad IPCs
+    if (is_object($data) && property_exists($data, 'IPCs')) {
+      $ipc = 0;
+      foreach ($data->IPCs as $item) {
+        // Sumar los valores, convirtiendo la coma a punto y luego a float
+        $ipc += (float) str_replace(",", ".", $item->Valor);
+        //error_log(print_r($ipc, true));
+      }
+      return $ipc;
+    } else {
+      // El objeto $data no tiene la propiedad IPCs válida
+      //error_log(print_r(0));
+      return 0; // Devolver 0 en caso de que no se encuentre la propiedad IPCs
+    }
+  }
+
+  public function VerLog(Request $request)
+  {
+
+    $mes = date('Y-m');
+
+    // Crear fechas de inicio y fin de mes con funciones nativas
+    $inicio = $mes . '-01';
+
+    // Obtener último día del mes (ej: 31) usando date() + strtotime()
+    $ultimoDia = date('t', strtotime($inicio)); // "t" = total de días del mes
+
+    $fin = $mes . '-' . $ultimoDia;
+
+    $registro = DB::table('log_bmix')
+      ->whereBetween('fecha', [$inicio, $fin])
+      ->orderBy('fecha', 'desc')
+      ->paginate(100000);
+
+    return view('admin.verlog', compact('registro', 'mes'));
+
+
+  }
+
+  public function VerLogMes(Request $request)
+  {
+
+    $mes = request('mes');
+
+    // Crear fechas de inicio y fin de mes con funciones nativas
+    $inicio = $mes . '-01';
+
+    // Obtener último día del mes (ej: 31) usando date() + strtotime()
+    $ultimoDia = date('t', strtotime($inicio)); // "t" = total de días del mes
+
+    $fin = $mes . '-' . $ultimoDia;
+
+    $registro = DB::table('log_bmix')
+      ->whereBetween('fecha', [$inicio, $fin])
+      ->orderBy('fecha', 'desc')
+      ->paginate(100000);
+
+    return view('admin.verlog', compact('registro', 'mes'));
+
+
+  }
+  public function modistock(Request $request)
+  {
+
+    return view('admin.configuracionstock');
+
+  }
+
+  public function buscarOC(Request $request)
+  {
+
+
+    $nro_oc = $request->get('nro_oc');
+
+    $message = "";
+
+    $oc = DB::table('db_bluemix.OrdenDeCompraDetalle')
+      ->where('NroOC', $request->get('nro_oc'))
+      ->get();
+
+    if (count($oc) === 0) {
+      $message = "OC no Encontrado";
+      return view('admin.configuracionstock', compact('message'));
+    }
+
+    $productos = DB::table('OrdenDeCompraDetalle')
+      ->leftJoin('producto', 'OrdenDeCompraDetalle.Codigo', '=', 'producto.ARCODI')
+      ->leftJoin('bodeprod', 'OrdenDeCompraDetalle.Codigo', '=', 'bodeprod.bpprod')
+      ->where('NroOC', $nro_oc)
+      ->select('OrdenDeCompraDetalle.*', 'producto.*', 'bodeprod.*')
+      ->get();
+
+
+    return view('admin.configuracionstock', compact('productos', 'nro_oc'));
+  }
+
+  public function editarstock(Request $request)
+  {
+    $productos = $request->get('productos');
+    $ordenCompra = $request->get('nro_oc');
+
+    if (!$productos || !$ordenCompra) {
+      return redirect()->route('modistock')->with('error', 'Faltan datos de productos o número de orden de compra.');
+    }
+
+    // Validar si ya existe esa orden en detalle_devolucion
+    $existe = DB::table('detalle_devolucion')
+      ->where('folio', $ordenCompra)
+      ->where('t_doc', 'Devolucion a bodega')
+      ->exists();
+
+
+    if ($existe) {
+      return redirect()->route('modistock')->with('error', 'La orden de compra ya fue devuelta.');
+    }
+
+    foreach ($productos as $producto) {
+      $codigo = $producto['codigo'];
+      $nuevoStock = $producto['stock'];
+
+      // Buscar stock anterior
+      $stockAnterior = DB::table('bodeprod')
+        ->where('bpprod', $codigo)
+        ->value('bpsrea');
+
+      if (is_null($stockAnterior)) {
+        return redirect()->route('modistock')->with('error', "Producto con código $codigo no encontrado en bodeprod.");
+      }
+
+      // Buscar nombre del producto
+      $nombreProducto = DB::table('producto')
+        ->where('ARCODI', $codigo)
+        ->value('ARDESC');
+
+      if (is_null($nombreProducto)) {
+        return redirect()->route('modistock')->with('error', "Producto con código $codigo no encontrado en tabla producto.");
+      }
+
+      // Actualizar stock
+      DB::table('bodeprod')
+        ->where('bpprod', $codigo)
+        ->update(['bpsrea' => $nuevoStock]);
+
+      // Insertar en solicitud_ajuste
+      DB::table('solicitud_ajuste')->insert([
+        'codprod' => $codigo,
+        'producto' => $nombreProducto,
+        'fecha' => now()->format('Y-m-d'),
+        'stock_anterior' => $stockAnterior,
+        'nuevo_stock' => $nuevoStock,
+        'autoriza' => 'Valentin Bello',
+        'solicita' => 'Gerardo Salgado',
+        'Observacion' => 'Devolucion a Bodega',
+      ]);
+    }
+
+    // Insertar en detalle_devolucion
+    DB::table('detalle_devolucion')->insert([
+      'folio' => $ordenCompra,
+      't_doc' => 'Devolucion a bodega',
+      'fecha' => now(),
+      'estado' => 'Devuelto',
+    ]);
+
+    return redirect()->route('modistock')->with('success', 'Datos actualizados correctamente.');
+  }
 
 
 
