@@ -134,10 +134,10 @@
 
                                     // Intentar usar la API moderna de portapapeles
                                     if (navigator.clipboard && window.isSecureContext) {
-                                        navigator.clipboard.writeText(output).then(function() {
+                                        navigator.clipboard.writeText(output).then(function () {
                                             Swal.close();
                                             Swal.fire('¡Copiado!', 'Se han copiado ' + json.data.length + ' registros al portapapeles.', 'success');
-                                        }, function(err) {
+                                        }, function (err) {
                                             console.error('Error al copiar: ', err);
                                             fallbackCopyTextToClipboard(output, json.data.length);
                                         });
@@ -230,7 +230,8 @@
         });
     </script>
     <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/buttons.dataTables.min.css") }}">
-    <link rel="stylesheet" href="{{ asset("assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}">
+    {{--
+    <link rel="stylesheet" href="{{ asset(" assets/$theme/plugins/datatables-bs4/css/jquery.dataTables.min.css") }}"> --}}
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
