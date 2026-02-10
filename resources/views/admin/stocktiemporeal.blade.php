@@ -108,6 +108,7 @@
                             $.ajax({
                                 url: "{{ route('stocktiemporeal') }}",
                                 type: 'GET',
+                                timeout: 120000, // 2 minutos de espera
                                 data: {
                                     draw: 1,
                                     start: 0,
@@ -117,11 +118,10 @@
                                     }
                                 },
                                 success: function (json) {
-                                    var output = "";
-                                    output += "Codigo\tDescripcion\tMarca\tStock Sala\tStock Bodega\tPrecio Detalle\tPrecio Mayor\tNeto\tCambio Precio\n";
+                                    var output = "Codigo\tDescripcion\tMarca\tStock Sala\tStock Bodega\tPrecio Detalle\tPrecio Mayor\tNeto\tCambio Precio\n";
 
-                                    json.data.forEach(function (row) {
-                                        output += (row.codigo || '') + "\t" +
+                                    output += json.data.map(function (row) {
+                                        return (row.codigo || '') + "\t" +
                                             (row.descripcion || '') + "\t" +
                                             (row.marca || '') + "\t" +
                                             (row.stock_sala || 0) + "\t" +
@@ -129,21 +129,56 @@
                                             (row.precio_detalle || '') + "\t" +
                                             (row.precio_mayor || '') + "\t" +
                                             (row.neto || '') + "\t" +
-                                            (row.FechaCambioPrecio || '') + "\n";
-                                    });
+                                            (row.FechaCambioPrecio || '');
+                                    }).join('\n');
 
-                                    var temp = $("<textarea>");
-                                    $("body").append(temp);
-                                    temp.val(output).select();
-                                    document.execCommand("copy");
-                                    temp.remove();
+                                    // Intentar usar la API moderna de portapapeles
+                                    if (navigator.clipboard && window.isSecureContext) {
+                                        navigator.clipboard.writeText(output).then(function() {
+                                            Swal.close();
+                                            Swal.fire('¡Copiado!', 'Se han copiado ' + json.data.length + ' registros al portapapeles.', 'success');
+                                        }, function(err) {
+                                            console.error('Error al copiar: ', err);
+                                            fallbackCopyTextToClipboard(output, json.data.length);
+                                        });
+                                    } else {
+                                        fallbackCopyTextToClipboard(output, json.data.length);
+                                    }
 
-                                    Swal.close();
-                                    Swal.fire('¡Copiado!', 'Se han copiado ' + json.data.length + ' registros al portapapeles.', 'success');
+                                    function fallbackCopyTextToClipboard(text, count) {
+                                        var textArea = document.createElement("textarea");
+                                        textArea.value = text;
+                                        textArea.style.position = "fixed";  // Evitar scroll
+                                        document.body.appendChild(textArea);
+                                        textArea.focus();
+                                        textArea.select();
+
+                                        try {
+                                            var successful = document.execCommand('copy');
+                                            if (successful) {
+                                                Swal.close();
+                                                Swal.fire('¡Copiado!', 'Se han copiado ' + count + ' registros al portapapeles.', 'success');
+                                            } else {
+                                                throw new Error('execCommand falló');
+                                            }
+                                        } catch (err) {
+                                            Swal.close();
+                                            Swal.fire({
+                                                title: 'Error de Seguridad',
+                                                text: 'El navegador bloqueó el copiado automático. Por favor, usa el botón Excel para descargar los datos.',
+                                                icon: 'warning'
+                                            });
+                                        }
+                                        document.body.removeChild(textArea);
+                                    }
                                 },
-                                error: function () {
+                                error: function (jqXHR, textStatus, errorThrown) {
                                     Swal.close();
-                                    Swal.fire('Error', 'No se pudo obtener la información para copiar.', 'error');
+                                    if (textStatus === 'timeout') {
+                                        Swal.fire('Error', 'El servidor tardó demasiado en responder. Intenta usar el botón Excel.', 'error');
+                                    } else {
+                                        Swal.fire('Error', 'No se pudo obtener la información para copiar.', 'error');
+                                    }
                                 }
                             });
                         }
