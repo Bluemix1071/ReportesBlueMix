@@ -166,38 +166,36 @@ class RolesController extends Controller
         $user = User::findOrFail($id);
         
         // Roles asignados
-        $rolesAsignados = $user->roles()->select('roles.id', 'roles.name')->get();
-        // Permisos directos asignados
-        $permisosAsignados = $user->permissions()->select('permissions.id', 'permissions.name')->get()->map(function($p) {
-            return [
-                'id' => 'p_' . $p->id,
-                'name' => '[P] ' . $p->name
-            ];
+        $rolesAsignados = $user->roles()->select('roles.id', 'roles.name')->get()->map(function($r) {
+            return ['id' => $r->id, 'name' => $r->name];
         });
 
-        $Roles = $rolesAsignados->concat($permisosAsignados);
+        // Permisos directos asignados
+        $permisosAsignados = $user->permissions()->select('permissions.id', 'permissions.name')->get()->map(function($p) {
+            return ['id' => 'p_' . $p->id, 'name' => '[P] ' . $p->name];
+        });
 
-        $dataIdsRoles = $rolesAsignados->pluck('id')->toArray();
+        $Roles = $rolesAsignados->concat($permisosAsignados)->values();
+
+        $dataIdsRoles = $user->roles()->pluck('id')->toArray();
         $dataIdsPerms = $user->permissions()->pluck('id')->toArray();
 
         // Roles faltantes
-        $rolesFaltantes = Role::whereNotIn('id', $dataIdsRoles)->select('id', 'name')->get();
-        // Permisos faltantes
-        $permisosFaltantes = Permission::whereNotIn('id', $dataIdsPerms)->select('id', 'name')->get()->map(function($p) {
-            return [
-                'id' => 'p_' . $p->id,
-                'name' => '[P] ' . $p->name
-            ];
+        $rolesFaltantes = Role::whereNotIn('id', $dataIdsRoles)->select('id', 'name')->get()->map(function($r) {
+            return ['id' => $r->id, 'name' => $r->name];
         });
 
-        $RolesFaltantes = $rolesFaltantes->concat($permisosFaltantes);
+        // Permisos faltantes
+        $permisosFaltantes = Permission::whereNotIn('id', $dataIdsPerms)->select('id', 'name')->get()->map(function($p) {
+            return ['id' => 'p_' . $p->id, 'name' => '[P] ' . $p->name];
+        });
 
-        $Json = [
+        $RolesFaltantes = $rolesFaltantes->concat($permisosFaltantes)->values();
+
+        return response()->json([
             "Roles" => $Roles,
             "RolesFaltantes" => $RolesFaltantes
-        ];
-
-        return response()->json($Json);
+        ]);
     }
 
 
