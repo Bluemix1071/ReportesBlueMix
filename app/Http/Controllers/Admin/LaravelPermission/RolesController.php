@@ -163,60 +163,88 @@ class RolesController extends Controller
 
 
     public function ShowRolesUser (Request $request , $id){
+        $user = User::findOrFail($id);
+        
+        // Roles asignados
+        $rolesAsignados = $user->roles()->select('roles.id', 'roles.name')->get();
+        // Permisos directos asignados
+        $permisosAsignados = $user->permissions()->select('permissions.id', 'permissions.name')->get()->map(function($p) {
+            return [
+                'id' => 'p_' . $p->id,
+                'name' => '[P] ' . $p->name
+            ];
+        });
 
-      $Roles = DB::table('users')
-        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-        ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-        ->where('users.id',$id)
-        ->select('roles.id as id','roles.name as name')
-        ->get();
+        $Roles = $rolesAsignados->concat($permisosAsignados);
 
-        $data=[];
+        $dataIdsRoles = $rolesAsignados->pluck('id')->toArray();
+        $dataIdsPerms = $user->permissions()->pluck('id')->toArray();
 
-        for ($i=0; $i < sizeof($Roles) ; $i++) {
-            $data[]=$Roles[$i]->id;
-        }
+        // Roles faltantes
+        $rolesFaltantes = Role::whereNotIn('id', $dataIdsRoles)->select('id', 'name')->get();
+        // Permisos faltantes
+        $permisosFaltantes = Permission::whereNotIn('id', $dataIdsPerms)->select('id', 'name')->get()->map(function($p) {
+            return [
+                'id' => 'p_' . $p->id,
+                'name' => '[P] ' . $p->name
+            ];
+        });
 
-        $RolesFaltantes = DB::table('roles')
-        ->select('id','name')
-        ->whereNotIn('id',$data )
-        ->get();
+        $RolesFaltantes = $rolesFaltantes->concat($permisosFaltantes);
 
+        $Json = [
+            "Roles" => $Roles,
+            "RolesFaltantes" => $RolesFaltantes
+        ];
 
-        $Json=[
-          "Roles"=>$Roles,
-          "RolesFaltantes" => $RolesFaltantes
-      ];
-
-
-      return response()->json($Json);
-
+        return response()->json($Json);
     }
 
 
     public function AddRolUser(Request $request){
-        $arrayRoles = $request->input('Roles') ?? [];
+        $arrayInput = $request->input('Roles') ?? [];
         $userId = $request->input('UserId');
 
         try {
             $user = User::findOrFail($userId);
-            if (!empty($arrayRoles)) {
-                $roles = Role::whereIn('id', $arrayRoles)->pluck('name')->toArray();
+            
+            $roleIds = [];
+            $permIds = [];
+
+            foreach ($arrayInput as $item) {
+                if (is_string($item) && strpos($item, 'p_') === 0) {
+                    $permIds[] = substr($item, 2);
+                } else {
+                    $roleIds[] = $item;
+                }
+            }
+
+            // Sincronizar Roles
+            if (!empty($roleIds)) {
+                $roles = Role::whereIn('id', $roleIds)->pluck('name')->toArray();
             } else {
                 $roles = [];
             }
             $user->syncRoles($roles);
 
+            // Sincronizar Permisos Directos
+            if (!empty($permIds)) {
+                $permissions = Permission::whereIn('id', $permIds)->pluck('name')->toArray();
+            } else {
+                $permissions = [];
+            }
+            $user->syncPermissions($permissions);
+
             $data = [
                 'code' => 200,
                 'status' => 'success',
-                'data' => 'Roles asignados correctamente'
+                'data' => 'Asignaciones actualizadas correctamente'
             ];
         } catch (\Exception $e) {
             $data = [
                 'code' => 500,
                 'status' => 'error',
-                'data' => 'Error al asignar roles'
+                'data' => 'Error al procesar asignaciones: ' . $e->getMessage()
             ];
         }
 
