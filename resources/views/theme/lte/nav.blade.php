@@ -1326,11 +1326,7 @@
                     </li>
                 @endcan
 
-<<<<<<< HEAD
-                @if(session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "adquisiciones@bluemix.cl" || session()->get('email') == "bodega@bluemix.cl" || session()->get('email') == "area.venta@bluemix.cl" || session()->get('email') == "contabilidad@bluemix.cl" || session()->get('email') == "ventas@bluemix.cl")
-=======
-                @if( (auth()->check() && auth()->user()->can('Sucursal')) || session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "adquisiciones@bluemix.cl" || session()->get('email') == "bodega@bluemix.cl" || session()->get('email') == "area.venta@bluemix.cl" || session()->get('email') == "contabilidad@bluemix.cl")
->>>>>>> 6301e388 (actulizacionde rol sucursal)
+                @if( (auth()->check() && auth()->user()->can('Sucursal')) || session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "adquisiciones@bluemix.cl" || session()->get('email') == "bodega@bluemix.cl" || session()->get('email') == "area.venta@bluemix.cl" || session()->get('email') == "contabilidad@bluemix.cl" || session()->get('email') == "ventas@bluemix.cl")
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             &nbsp;
