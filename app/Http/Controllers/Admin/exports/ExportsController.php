@@ -114,27 +114,31 @@ class ExportsController extends Controller
       
       $intentos = [];
 
-      // Desactivar validación de certificados local (crucial para IPs locales bajo HTTPS)
-      $ctx = stream_context_create([
-          "ssl" => [
-              "verify_peer" => false,
-              "verify_peer_name" => false,
-          ],
-      ]);
-
       foreach ($urls as $remoteUrl) {
           try {
-              $body = @file_get_contents($remoteUrl, false, $ctx);
-              if ($body !== false) {
+              $ch = curl_init();
+              curl_setopt($ch, CURLOPT_URL, $remoteUrl);
+              curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+              curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+              curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+              curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
+              curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+              
+              $res = curl_exec($ch);
+              $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+              $curlError = curl_error($ch);
+              curl_close($ch);
+
+              if ($res !== false && $httpCode == 200) {
                   $dir = dirname($path);
                   if (!is_dir($dir)) {
                       mkdir($dir, 0755, true);
                   }
-                  if (file_put_contents($path, $body) !== false) {
+                  if (file_put_contents($path, $res) !== false) {
                       return true; // Éxito!
                   }
               } else {
-                  $intentos[] = "Fallo en $remoteUrl: ". json_encode(error_get_last());
+                  $intentos[] = "Fallo en $remoteUrl -> HTTP: $httpCode | ERROR cURL: $curlError";
               }
           } catch (\Exception $e) { 
               $intentos[] = "Excepcion en $remoteUrl: ". $e->getMessage();
