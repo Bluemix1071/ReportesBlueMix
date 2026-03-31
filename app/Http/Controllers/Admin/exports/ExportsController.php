@@ -100,17 +100,21 @@ class ExportsController extends Controller
           return true;
       }
 
-      // Usar la función nativa route() asegura que se incluya la subcarpeta correcta de XAMPP (ej. /ReportesBlueMix/public)
+      // Usar la función nativa route() pero forzar protocolo HTTP interno (puerto 80) 
+      // para evitar el Error de Conexión Rechazada en el puerto seguro 443 (HTTPS) de red local.
       $localUrl = route('syncXml', ['file' => $relativePath]);
+      $localUrlHttp = str_replace('https://', 'http://', $localUrl);
       
-      $remoteUrl135 = str_replace(['192.168.0.73', 'localhost', '127.0.0.1'], '192.168.0.135', $localUrl);
-      $remoteUrl73  = str_replace(['192.168.0.135', 'localhost', '127.0.0.1'], '192.168.0.73', $localUrl);
+      $remoteUrl135 = str_replace(['192.168.0.73', 'localhost', '127.0.0.1'], '192.168.0.135', $localUrlHttp);
+      $remoteUrl73  = str_replace(['192.168.0.135', 'localhost', '127.0.0.1'], '192.168.0.73', $localUrlHttp);
 
       $urls = [
           $remoteUrl135,
           $remoteUrl73,
-          $localUrl
+          $localUrlHttp,       // Fallback en HTTP
+          $localUrl            // Fallback original con su protocolo nativo (porsi).
       ];
+
       
       $intentos = [];
 
