@@ -107,9 +107,8 @@ class ExportsController extends Controller
       $remoteUrl = str_replace($currentHost, $remoteHost, $baseUrl) . '/api-sync-xml?file=' . urlencode($relativePath);
       
       try {
-          $response = \Illuminate\Support\Facades\Http::get($remoteUrl);
-          if ($response->successful()) {
-              $body = $response->body();
+          $body = @file_get_contents($remoteUrl);
+          if ($body !== false) {
               if (strpos($body, 'xml') !== false && @simplexml_load_string($body)) {
                   $dir = dirname($path);
                   if (!is_dir($dir)) {
@@ -130,9 +129,8 @@ class ExportsController extends Controller
       }
       $remoteUrlFallback = str_replace($currentHost, $remoteHost, $baseUrl) . '/api-sync-xml?file=' . urlencode($relativePath);
       try {
-          $response = \Illuminate\Support\Facades\Http::get($remoteUrlFallback);
-          if ($response->successful()) {
-              $body = $response->body();
+          $body = @file_get_contents($remoteUrlFallback);
+          if ($body !== false) {
               if (strpos($body, 'xml') !== false && @simplexml_load_string($body)) {
                   $dir = dirname($path);
                   if (!is_dir($dir)) {
