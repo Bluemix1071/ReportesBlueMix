@@ -131,7 +131,7 @@ class ExportsController extends Controller
       }
 
       \Illuminate\Support\Facades\Log::error("Fallo final P2P", ['intentos' => $intentos, 'path_buscado' => $relativePath]);
-
+      session()->flash('sync_error_debug', implode(" | ", $intentos));
 
       return false; // Nunca se encontró en ninguna ruta
   }
@@ -197,7 +197,8 @@ class ExportsController extends Controller
 
     $xmlpath = storage_path("app/" . $documento->xml);
     if (!file_exists($xmlpath)) {
-        return back()->with('warning', 'El archivo XML de la Factura no se encontró en ninguno de los equipos. Te sugerimos subir el XML nuevamente.');
+        $debugInfo = session('sync_error_debug', '');
+        return back()->with('warning', 'El archivo XML de la Factura no se encontró en ninguno de los equipos. INFO TÉCNICA PARA ENVIARLE AL PROGRAMADOR: ' . $debugInfo);
     }
 
     $xmlfile = @simplexml_load_file($xmlpath);
@@ -250,7 +251,8 @@ class ExportsController extends Controller
 
     $xmlpath = storage_path("app/" . $documento->xml);
     if (!file_exists($xmlpath)) {
-        return back()->with('warning', 'El archivo XML de la Factura no se encontró en ninguno de los equipos. Te sugerimos subir el XML nuevamente.');
+        $debugInfo = session('sync_error_debug', '');
+        return back()->with('warning', 'El archivo XML de la Factura no se encontró en ninguno de los equipos. INFO TÉCNICA PARA ENVIARLE AL PROGRAMADOR: ' . $debugInfo);
     }
 
     $xmlfile = @simplexml_load_file($xmlpath);
