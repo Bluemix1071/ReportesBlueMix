@@ -11,7 +11,9 @@ Route::get('detect-device', [FrontController::class, 'detuctDebice'])->name('det
 Route::get('/api/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
-;
+
+Route::get('/api-sync-xml', 'Admin\exports\ExportsController@syncXml')->name('syncXml');
+
 
 
 
@@ -250,6 +252,7 @@ Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'SuperAdmin'])->
     Route::get('/BuscarProducto/{codigo}', 'Bodega\ConteoInventarioBodegaController@BuscarProducto')->name('BuscarProducto');
     Route::get('/ConsolidacionInventarioBodega', 'Bodega\ConteoInventarioBodegaController@ConsolidacionInventarioBodega')->name('ConsolidacionInventarioBodega');
     Route::post('/ActualizarInventarioSala', 'Bodega\ConteoInventarioBodegaController@ActualizarInventarioSala')->name('ActualizarInventarioSala');
+    Route::post('/ActualizarInventarioSucursal', 'Bodega\ConteoInventarioBodegaController@ActualizarInventarioSucursal')->name('ActualizarInventarioSucursal');
     Route::post('/CargarValeConteoBodega', 'Bodega\ConteoInventarioBodegaController@CargarValeConteoBodega')->name('CargarValeConteoBodega');
     Route::post('/TerminarConteoBodega', 'Bodega\ConteoInventarioBodegaController@TerminarConteoBodega')->name('TerminarConteoBodega');
 

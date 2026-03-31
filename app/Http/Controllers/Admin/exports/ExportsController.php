@@ -79,6 +79,75 @@ class ExportsController extends Controller
 
 
 
+  public function syncXml(Request $request)
+  {
+      $file = $request->get('file');
+      // Basic security check
+      if (!$file || strpos($file, 'dte/') !== 0 || strpos($file, '..') !== false) {
+          return abort(403);
+      }
+      $path = storage_path("app/" . $file);
+      if (file_exists($path)) {
+          return response()->download($path);
+      }
+      return abort(404);
+  }
+
+  private function ensureLocalXml($relativePath)
+  {
+      $path = storage_path("app/" . $relativePath);
+      if (file_exists($path)) {
+          return true;
+      }
+
+      $currentHost = request()->getHost();
+      $remoteHost = ($currentHost == '192.168.0.135') ? '192.168.0.73' : '192.168.0.135';
+      $baseUrl = request()->root();
+      
+      $remoteUrl = str_replace($currentHost, $remoteHost, $baseUrl) . '/api-sync-xml?file=' . urlencode($relativePath);
+      
+      try {
+          $response = \Illuminate\Support\Facades\Http::get($remoteUrl);
+          if ($response->successful()) {
+              $body = $response->body();
+              if (strpos($body, 'xml') !== false && @simplexml_load_string($body)) {
+                  $dir = dirname($path);
+                  if (!is_dir($dir)) {
+                      mkdir($dir, 0755, true);
+                  }
+                  if (file_put_contents($path, $body) !== false) {
+                      return true;
+                  }
+              }
+          }
+      } catch (\Exception $e) { }
+      
+      // Fallback if the expected remote host wasn't correct
+      if ($remoteHost == '192.168.0.135') {
+           $remoteHost = '192.168.0.73';
+      } else {
+           $remoteHost = '192.168.0.135';
+      }
+      $remoteUrlFallback = str_replace($currentHost, $remoteHost, $baseUrl) . '/api-sync-xml?file=' . urlencode($relativePath);
+      try {
+          $response = \Illuminate\Support\Facades\Http::get($remoteUrlFallback);
+          if ($response->successful()) {
+              $body = $response->body();
+              if (strpos($body, 'xml') !== false && @simplexml_load_string($body)) {
+                  $dir = dirname($path);
+                  if (!is_dir($dir)) {
+                      mkdir($dir, 0755, true);
+                  }
+                  if (file_put_contents($path, $body) !== false) {
+                      return true;
+                  }
+              }
+          }
+      } catch (\Exception $e) {}
+
+      return false;
+  }
+
   //---------------------------------PDF---------------------------------//
 
 
@@ -136,7 +205,17 @@ class ExportsController extends Controller
 
     //dd($documento);
 
-    $xmlfile = simplexml_load_file(storage_path("app/" . $documento->xml));
+    $this->ensureLocalXml($documento->xml);
+
+    $xmlpath = storage_path("app/" . $documento->xml);
+    if (!file_exists($xmlpath)) {
+        return back()->with('warning', 'El archivo XML de la Factura no se encontró en ninguno de los equipos. Te sugerimos subir el XML nuevamente.');
+    }
+
+    $xmlfile = @simplexml_load_file($xmlpath);
+    if ($xmlfile === false) {
+        return back()->with('warning', 'El archivo XML está dañado o no es válido. Te sugerimos subir el XML nuevamente.');
+    }
 
     $datated = json_decode(json_encode($xmlfile->SetDTE->DTE->Documento->TED));
 
@@ -179,7 +258,17 @@ class ExportsController extends Controller
     //dd($documento);
     $son = $this->son($documento->total);
 
-    $xmlfile = simplexml_load_file(storage_path("app/" . $documento->xml));
+    $this->ensureLocalXml($documento->xml);
+
+    $xmlpath = storage_path("app/" . $documento->xml);
+    if (!file_exists($xmlpath)) {
+        return back()->with('warning', 'El archivo XML de la Factura no se encontró en ninguno de los equipos. Te sugerimos subir el XML nuevamente.');
+    }
+
+    $xmlfile = @simplexml_load_file($xmlpath);
+    if ($xmlfile === false) {
+        return back()->with('warning', 'El archivo XML está dañado o no es válido. Te sugerimos subir el XML nuevamente.');
+    }
 
     $xml = json_decode(json_encode($xmlfile));
     //dd($xml->SetDTE->DTE->Documento->Detalle);

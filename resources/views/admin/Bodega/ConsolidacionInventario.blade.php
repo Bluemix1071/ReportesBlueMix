@@ -51,16 +51,20 @@
             </div>
     </div>
     <div class="container my-4">
-        <h1 class="display-4">Consolidación Inventario Sala</h1>
+        <h1 class="display-4">Consolidación Inventario Sala / Sucursal</h1>
         <hr>
-        <div class="col-3" style="text-align: left">
+        <div class="col-6" style="text-align: left">
             <form action="" enctype="multipart/form-data">
                 {{-- Si el usuario es uno de los descritos aqui puede acceder al boton
                 de lo contrario se mostrara el boton deshabilitado --}}
                 @if(session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
-                <a href="" title="confirmacion" data-toggle="modal" data-target="#modalconfirmacion"
+                <a href="" title="Actualizar Sala" data-toggle="modal" data-target="#modalconfirmacion"
                 class="btn btn-success btn-xl btn-rectificar"
-                ><i class="fas fa-exchange-alt"></i></a>
+                ><i class="fas fa-home"></i> Sala</a>
+
+                <a href="" title="Actualizar Sucursal" data-toggle="modal" data-target="#modalconfirmacionsucursal"
+                class="btn btn-info btn-xl btn-rectificar"
+                ><i class="fas fa-store"></i> Sucursal</a>
                 @else
                 <button type="submit" class="btn btn-success btn-xl btn-rectificar" title="No cuenta con permisos" disabled>
                     <i class="fas fa-exchange-alt"></i>
@@ -160,6 +164,35 @@
    </div>
  </div>
 <!-- Fin Modal confirmar rectificacion de inventario-->
+<!-- Inicio Modal confirmar rectificacion de inventario Sucursal -->
+<div class="modal fade" id="modalconfirmacionsucursal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+            <div class="modal-body">
+             <div class="card-body">
+            <form method="POST" action="{{ route('ActualizarInventarioSucursal') }}">
+             {{ method_field('POST') }}
+             {{ csrf_field() }}
+              @csrf
+                 <div class="form-group row">
+                     <div class="col-md-8" >
+                         <input type="text" value="" name="id" id="id" hidden>
+                         <h5 class="modal-title" id="myModalLabel">¿ Actualizar inventario Sucursal ?</h5>
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                    <button type="submit" id="rectificarsucursalnotok" class="btn btn-primary" onclick="cambiarContenidoSucursal(this)">
+                        Aceptar
+                      </button>
+                 <button type="button" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                 </div>
+             </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+<!-- Fin Modal confirmar rectificacion de inventario Sucursal-->
 <div class="modal fade" id="responsableModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
        <div class="modal-content">
@@ -256,6 +289,12 @@
         $('#rectificarsalanotok').prop('disabled',true);
         $('#okinventa').submit();
         }
+
+    function cambiarContenidoSucursal(btn) {
+        btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i>';
+        $('#rectificarsucursalnotok').prop('disabled',true);
+        $(btn).closest('form').submit();
+    }
     </script>
 
         <script src="{{ asset("assets/$theme/plugins/datatables/jquery.dataTables.js") }}"></script>

@@ -11,7 +11,7 @@
     @if((new \Jenssegers\Agent\Agent())->isDesktop())
     <section>
     <div class="container my-4">
-        <h1 class="display-4">Conteo Inventario Sala</h1>
+        <h1 class="display-4">Conteo Inventario {{ $ubicacion == 'Sala' ? 'Matriz' : 'Sucursal' }}</h1>
         <section class="content">
             <div class="card">
                 <div class="card-header">
@@ -73,7 +73,10 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label">Ubicación</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" required name="ubicacion" placeholder="Ubicación" value="Sala" readonly>
+                                            <select class="form-control" name="ubicacion" required>
+                                                <option value="Sala" {{ $ubicacion == 'Sala' ? 'selected' : '' }}>Casa Matriz</option>
+                                                <option value="Sucursal" {{ $ubicacion == 'Sucursal' ? 'selected' : '' }}>Sucursal Isabel Riquelme</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group row">

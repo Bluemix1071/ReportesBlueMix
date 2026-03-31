@@ -1269,19 +1269,26 @@
                                 </li>
                             @endcan
 
-                            @can('Sala')
-                                <li class="nav-item">
-                                    <a href="{{ route('ConteoInventarioSala') }}"
-                                        class="nav-link {{ setActive('ConteoInventarioSala') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Conteo Inventario Sala</p>
-                                    </a>
-                                </li>
-                            @endcan
+                             @can('Sala')
+                                 <li class="nav-item">
+                                     <a href="{{ route('ConteoInventarioSala', ['ubicacion' => 'Sala']) }}"
+                                         class="nav-link {{ request('ubicacion') == 'Sala' ? 'active' : '' }}">
+                                         <i class="far fa-circle nav-icon"></i>
+                                         <p>Conteo Inventario Matriz</p>
+                                     </a>
+                                 </li>
+                                 <li class="nav-item">
+                                     <a href="{{ route('ConteoInventarioSala', ['ubicacion' => 'Sucursal']) }}"
+                                         class="nav-link {{ request('ubicacion') == 'Sucursal' ? 'active' : '' }}">
+                                         <i class="far fa-circle nav-icon"></i>
+                                         <p>Conteo Inventario Sucursal</p>
+                                     </a>
+                                 </li>
+                             @endcan
 
                             @can('Sala')
                                 <li class="nav-item">
-                                    <a href="https://192.168.0.73/www" class="nav-link">
+                                    <a href="/www/" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Cont. Inv. Sala (Ionic)</p>
                                     </a>
@@ -1326,7 +1333,7 @@
                     </li>
                 @endcan
                
-                 @can('Administrador')
+                @if( (auth()->check() && auth()->user()->can('Sucursal')) || session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "adquisiciones@bluemix.cl" || session()->get('email') == "bodega@bluemix.cl" || session()->get('email') == "area.venta@bluemix.cl" || session()->get('email') == "contabilidad@bluemix.cl")
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             &nbsp;
@@ -1380,8 +1387,7 @@
 
                         </ul>
                     </li>
-              
-@endcan
+                @endif
                 @can('Administrador')
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
