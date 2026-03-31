@@ -103,11 +103,12 @@ class ExportsController extends Controller
       $currentRoot = rtrim(request()->root(), '/');
       $remoteRoot = str_replace(['192.168.0.135', '192.168.0.73'], ['192.168.0.73', '192.168.0.135'], $currentRoot);
 
-      // Usar la raíz calculada dinámica para ambos lados, en caso de que manejen subcarpetas o VirtualHosts distintos a /ReportesBlueMix/public/
       $urls = [
           $remoteRoot . '/api-sync-xml?file=',
           $currentRoot . '/api-sync-xml?file='
       ];
+      
+      $intentos = [];
 
       foreach ($urls as $urlBase) {
           $remoteUrl = $urlBase . urlencode($relativePath);
@@ -121,9 +122,16 @@ class ExportsController extends Controller
                   if (file_put_contents($path, $body) !== false) {
                       return true; // Éxito!
                   }
+              } else {
+                  $intentos[] = "Fallo en $remoteUrl: ". json_encode(error_get_last());
               }
-          } catch (\Exception $e) { }
+          } catch (\Exception $e) { 
+              $intentos[] = "Excepcion en $remoteUrl: ". $e->getMessage();
+          }
       }
+
+      \Illuminate\Support\Facades\Log::error("Fallo final P2P", ['intentos' => $intentos, 'path_buscado' => $relativePath]);
+
 
       return false; // Nunca se encontró en ninguna ruta
   }
