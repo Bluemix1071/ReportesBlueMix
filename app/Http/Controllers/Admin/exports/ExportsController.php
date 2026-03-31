@@ -110,10 +110,18 @@ class ExportsController extends Controller
       
       $intentos = [];
 
+      // Desactivar validación de certificados local (crucial para IPs locales bajo HTTPS)
+      $ctx = stream_context_create([
+          "ssl" => [
+              "verify_peer" => false,
+              "verify_peer_name" => false,
+          ],
+      ]);
+
       foreach ($urls as $urlBase) {
           $remoteUrl = $urlBase . urlencode($relativePath);
           try {
-              $body = @file_get_contents($remoteUrl);
+              $body = @file_get_contents($remoteUrl, false, $ctx);
               if ($body !== false) {
                   $dir = dirname($path);
                   if (!is_dir($dir)) {
