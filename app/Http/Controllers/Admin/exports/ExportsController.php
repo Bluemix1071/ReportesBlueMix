@@ -109,14 +109,12 @@ class ExportsController extends Controller
       try {
           $body = @file_get_contents($remoteUrl);
           if ($body !== false) {
-              if (strpos($body, 'xml') !== false && @simplexml_load_string($body)) {
-                  $dir = dirname($path);
-                  if (!is_dir($dir)) {
-                      mkdir($dir, 0755, true);
-                  }
-                  if (file_put_contents($path, $body) !== false) {
-                      return true;
-                  }
+              $dir = dirname($path);
+              if (!is_dir($dir)) {
+                  mkdir($dir, 0755, true);
+              }
+              if (file_put_contents($path, $body) !== false) {
+                  return true;
               }
           }
       } catch (\Exception $e) { }
@@ -131,14 +129,12 @@ class ExportsController extends Controller
       try {
           $body = @file_get_contents($remoteUrlFallback);
           if ($body !== false) {
-              if (strpos($body, 'xml') !== false && @simplexml_load_string($body)) {
-                  $dir = dirname($path);
-                  if (!is_dir($dir)) {
-                      mkdir($dir, 0755, true);
-                  }
-                  if (file_put_contents($path, $body) !== false) {
-                      return true;
-                  }
+              $dir = dirname($path);
+              if (!is_dir($dir)) {
+                  mkdir($dir, 0755, true);
+              }
+              if (file_put_contents($path, $body) !== false) {
+                  return true;
               }
           }
       } catch (\Exception $e) {}
