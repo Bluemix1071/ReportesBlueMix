@@ -100,12 +100,16 @@ class ExportsController extends Controller
           return true;
       }
 
-      $currentRoot = rtrim(request()->root(), '/');
-      $remoteRoot = str_replace(['192.168.0.135', '192.168.0.73'], ['192.168.0.73', '192.168.0.135'], $currentRoot);
+      // Usar la función nativa route() asegura que se incluya la subcarpeta correcta de XAMPP (ej. /ReportesBlueMix/public)
+      $localUrl = route('syncXml', ['file' => $relativePath]);
+      
+      $remoteUrl135 = str_replace(['192.168.0.73', 'localhost', '127.0.0.1'], '192.168.0.135', $localUrl);
+      $remoteUrl73  = str_replace(['192.168.0.135', 'localhost', '127.0.0.1'], '192.168.0.73', $localUrl);
 
       $urls = [
-          $remoteRoot . '/api-sync-xml?file=',
-          $currentRoot . '/api-sync-xml?file='
+          $remoteUrl135,
+          $remoteUrl73,
+          $localUrl
       ];
       
       $intentos = [];
@@ -118,8 +122,7 @@ class ExportsController extends Controller
           ],
       ]);
 
-      foreach ($urls as $urlBase) {
-          $remoteUrl = $urlBase . urlencode($relativePath);
+      foreach ($urls as $remoteUrl) {
           try {
               $body = @file_get_contents($remoteUrl, false, $ctx);
               if ($body !== false) {
