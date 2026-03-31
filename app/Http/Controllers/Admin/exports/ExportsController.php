@@ -100,46 +100,32 @@ class ExportsController extends Controller
           return true;
       }
 
-      $currentHost = request()->getHost();
-      $remoteHost = ($currentHost == '192.168.0.135') ? '192.168.0.73' : '192.168.0.135';
-      $baseUrl = request()->root();
-      
-      $remoteUrl = str_replace($currentHost, $remoteHost, $baseUrl) . '/api-sync-xml?file=' . urlencode($relativePath);
-      
-      try {
-          $body = @file_get_contents($remoteUrl);
-          if ($body !== false) {
-              $dir = dirname($path);
-              if (!is_dir($dir)) {
-                  mkdir($dir, 0755, true);
-              }
-              if (file_put_contents($path, $body) !== false) {
-                  return true;
-              }
-          }
-      } catch (\Exception $e) { }
-      
-      // Fallback if the expected remote host wasn't correct
-      if ($remoteHost == '192.168.0.135') {
-           $remoteHost = '192.168.0.73';
-      } else {
-           $remoteHost = '192.168.0.135';
-      }
-      $remoteUrlFallback = str_replace($currentHost, $remoteHost, $baseUrl) . '/api-sync-xml?file=' . urlencode($relativePath);
-      try {
-          $body = @file_get_contents($remoteUrlFallback);
-          if ($body !== false) {
-              $dir = dirname($path);
-              if (!is_dir($dir)) {
-                  mkdir($dir, 0755, true);
-              }
-              if (file_put_contents($path, $body) !== false) {
-                  return true;
-              }
-          }
-      } catch (\Exception $e) {}
+      $currentRoot = rtrim(request()->root(), '/');
+      $remoteRoot = str_replace(['192.168.0.135', '192.168.0.73'], ['192.168.0.73', '192.168.0.135'], $currentRoot);
 
-      return false;
+      // Usar la raíz calculada dinámica para ambos lados, en caso de que manejen subcarpetas o VirtualHosts distintos a /ReportesBlueMix/public/
+      $urls = [
+          $remoteRoot . '/api-sync-xml?file=',
+          $currentRoot . '/api-sync-xml?file='
+      ];
+
+      foreach ($urls as $urlBase) {
+          $remoteUrl = $urlBase . urlencode($relativePath);
+          try {
+              $body = @file_get_contents($remoteUrl);
+              if ($body !== false) {
+                  $dir = dirname($path);
+                  if (!is_dir($dir)) {
+                      mkdir($dir, 0755, true);
+                  }
+                  if (file_put_contents($path, $body) !== false) {
+                      return true; // Éxito!
+                  }
+              }
+          } catch (\Exception $e) { }
+      }
+
+      return false; // Nunca se encontró en ninguna ruta
   }
 
   //---------------------------------PDF---------------------------------//
