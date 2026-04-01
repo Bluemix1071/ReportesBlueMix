@@ -1332,12 +1332,11 @@
                         </ul>
                     </li>
                 @endcan
-             @if(auth()->check() && (auth()->user()->can('Sucursal') || auth()->user()->tipo_usuario == 'admin'))
+             @can('Sucursal')
 <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
-        &nbsp;
         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-        <p>&nbsp;
+        <p>
             Sucursal
             <i class="fas fa-angle-left right"></i>
         </p>
@@ -1387,7 +1386,7 @@
 
     </ul>
 </li>
-@endif
+@endcan
             
                 @can('Administrador')
                     <li class="nav-item has-treeview">
