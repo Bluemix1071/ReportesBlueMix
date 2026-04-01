@@ -1332,62 +1332,63 @@
                         </ul>
                     </li>
                 @endcan
-               
-                @if( (auth()->check() && auth()->user()->can('Sucursal')) || session()->get('email') == "sucursal@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "adquisiciones@bluemix.cl" || session()->get('email') == "bodega@bluemix.cl" || session()->get('email') == "area.venta@bluemix.cl" || session()->get('email') == "contabilidad@bluemix.cl")
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            &nbsp;
-                            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                            <p>&nbsp;
-                                Sucursal
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
+             @if(auth()->check() && (auth()->user()->can('Sucursal') || auth()->user()->tipo_usuario == 'admin'))
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        &nbsp;
+        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+        <p>&nbsp;
+            Sucursal
+            <i class="fas fa-angle-left right"></i>
+        </p>
+    </a>
 
+    <ul class="nav nav-treeview">
 
-                            <li class="nav-item">
-                                <a href="{{ route('ProductosSucursal') }}"
-                                    class="nav-link {{ setActive('ProductosSucursal') }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Productos Sucursal</p>
-                                </a>
-                            </li>
+        <li class="nav-item">
+            <a href="{{ route('ProductosSucursal') }}"
+               class="nav-link {{ setActive('ProductosSucursal') }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Productos Sucursal</p>
+            </a>
+        </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('EgresosPorVentas') }}"
-                                    class="nav-link {{ setActive('EgresosPorVentas') }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Egresos por Ventas</p>
-                                </a>
-                            </li>
+        <li class="nav-item">
+            <a href="{{ route('EgresosPorVentas') }}"
+               class="nav-link {{ setActive('EgresosPorVentas') }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Egresos por Ventas</p>
+            </a>
+        </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('EgresosPorVales') }}"
-                                    class="nav-link {{ setActive('EgresosPorVales') }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Egresos por Vales</p>
-                                </a>
-                            </li>
+        <li class="nav-item">
+            <a href="{{ route('EgresosPorVales') }}"
+               class="nav-link {{ setActive('EgresosPorVales') }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Egresos por Vales</p>
+            </a>
+        </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('IngresoMercaderiaSucursal') }}"
-                                    class="nav-link {{ setActive('IngresoMercaderiaSucursal') }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Ingresos de Mercadería</p>
-                                </a>
-                            </li>
+        <li class="nav-item">
+            <a href="{{ route('IngresoMercaderiaSucursal') }}"
+               class="nav-link {{ setActive('IngresoMercaderiaSucursal') }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Ingresos de Mercadería</p>
+            </a>
+        </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('VentasSucursal') }}" class="nav-link {{ setActive('VentasSucursal') }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Ventas Sucursal</p>
-                                </a>
-                            </li>
+        <li class="nav-item">
+            <a href="{{ route('VentasSucursal') }}"
+               class="nav-link {{ setActive('VentasSucursal') }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Ventas Sucursal</p>
+            </a>
+        </li>
 
-                        </ul>
-                    </li>
-                @endif
+    </ul>
+</li>
+@endif
+            
                 @can('Administrador')
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
