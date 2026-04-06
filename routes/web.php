@@ -748,5 +748,11 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware(['auth', 'GiftCard'
 });
 
 
+Route::get('/www/{any?}', function () {
+    return response()->file(public_path('www/index.html'));
+})->where('any', '.*');
+
+
+
 
 
