@@ -1332,61 +1332,72 @@
                         </ul>
                     </li>
                 @endcan
-             @can('Sucursal')
-<li class="nav-item has-treeview">
-    <a href="#" class="nav-link">
-        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-        <p>
-            Sucursal
-            <i class="fas fa-angle-left right"></i>
-        </p>
-    </a>
+               
+                     
 
-    <ul class="nav nav-treeview">
+                    @can('Sucursal')
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            &nbsp;
+                            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            <p>&nbsp;
+                                Sucursal
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
 
-        <li class="nav-item">
-            <a href="{{ route('ProductosSucursal') }}"
-               class="nav-link {{ setActive('ProductosSucursal') }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Productos Sucursal</p>
-            </a>
-        </li>
 
-        <li class="nav-item">
-            <a href="{{ route('EgresosPorVentas') }}"
-               class="nav-link {{ setActive('EgresosPorVentas') }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Egresos por Ventas</p>
-            </a>
-        </li>
+                            <li class="nav-item">
+                                <a href="{{ route('ProductosSucursal') }}"
+                                    class="nav-link {{ setActive('ProductosSucursal') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Productos Sucursal</p>
+                                </a>
+                            </li>
 
-        <li class="nav-item">
-            <a href="{{ route('EgresosPorVales') }}"
-               class="nav-link {{ setActive('EgresosPorVales') }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Egresos por Vales</p>
-            </a>
-        </li>
+                            <li class="nav-item">
+                                <a href="{{ route('EgresosPorVentas') }}"
+                                    class="nav-link {{ setActive('EgresosPorVentas') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Egresos por Ventas</p>
+                                </a>
+                            </li>
 
-        <li class="nav-item">
-            <a href="{{ route('IngresoMercaderiaSucursal') }}"
-               class="nav-link {{ setActive('IngresoMercaderiaSucursal') }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Ingresos de Mercadería</p>
-            </a>
-        </li>
+                            <li class="nav-item">
+                                <a href="{{ route('EgresosPorVales') }}"
+                                    class="nav-link {{ setActive('EgresosPorVales') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Egresos por Vales</p>
+                                </a>
+                            </li>
 
-        <li class="nav-item">
-            <a href="{{ route('VentasSucursal') }}"
-               class="nav-link {{ setActive('VentasSucursal') }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Ventas Sucursal</p>
-            </a>
-        </li>
+                            <li class="nav-item">
+                                <a href="{{ route('IngresoMercaderiaSucursal') }}"
+                                    class="nav-link {{ setActive('IngresoMercaderiaSucursal') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ingresos de Mercadería</p>
+                                </a>
+                            </li>
 
-    </ul>
-</li>
-@endcan
+                            <li class="nav-item">
+                                <a href="{{ route('SolicitudGuiaIndex') }}"
+                                    class="nav-link {{ setActive('SolicitudGuiaIndex') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Solicitud de Guía</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('VentasSucursal') }}" class="nav-link {{ setActive('VentasSucursal') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ventas Sucursal</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                @endcan
             
                 @can('Administrador')
                     <li class="nav-item has-treeview">
@@ -1537,6 +1548,7 @@
                         </ul>
                     </li>
                 @endcan
+             
 
 
                 <li class="nav-item has-treeview">
@@ -1575,6 +1587,7 @@
 
                     </ul>
                 </li>
+            </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>

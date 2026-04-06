@@ -129,6 +129,15 @@ Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(func
     Route::post('/CargarValeSucursalEgreso', 'SucursalController@CargarValeSucursalEgreso')->name('CargarValeSucursalEgreso');
     Route::get('/VentasSucursal', 'SucursalController@VentasSucursal')->name('VentasSucursal');
     Route::post('/VentasSucursalFiltro', 'SucursalController@VentasSucursalFiltro')->name('VentasSucursalFiltro');
+
+    /* Modulo Solicitud de Guías */
+    Route::get('/SolicitudGuia', 'SucursalController@SolicitudGuiaIndex')->name('SolicitudGuiaIndex');
+    Route::post('/SolicitudGuiaCrear', 'SucursalController@SolicitudGuiaCrear')->name('SolicitudGuiaCrear');
+    Route::post('/SolicitudGuiaDespachar', 'SucursalController@SolicitudGuiaDespachar')->name('SolicitudGuiaDespachar');
+    Route::post('/SolicitudGuiaRecibir', 'SucursalController@SolicitudGuiaRecibir')->name('SolicitudGuiaRecibir');
+    Route::get('/SolicitudGuiaDetalle/{id}', 'SucursalController@SolicitudGuiaDetalle')->name('SolicitudGuiaDetalle');
+    Route::get('/BuscarProductoSucursal/{codigo}', 'SucursalController@BuscarProductoSucursal')->name('BuscarProductoSucursal');
+
 });
 
 

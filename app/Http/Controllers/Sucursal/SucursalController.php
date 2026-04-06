@@ -420,7 +420,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
                 ->whereBetween('dcargos.DEFECO', [date('Y-m-d'), date('Y-m-d')])
                 ->where('cargos.CACOCA', '201')
                 ->groupBy('dcargos.DECODI', DB::raw('MONTH(dcargos.DEFECO)'))
-                ->get();;
+                ->get();
 
         return view('Sucursal.VentasSucursal', compact('ventas'));
     }
@@ -454,5 +454,106 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
         return view('Sucursal.VentasSucursal', compact('ventas', 'fechamin', 'fechamax'));
     }
 
+    /* Métodos para Solicitud de Guías */
+
+    public function BuscarProductoSucursal($codigo) {
+        $producto = DB::table('producto')
+            ->where('ARCODI', $codigo)
+            ->orWhere('ARCBAR', $codigo)
+            ->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+        return response()->json($producto);
+    }
+
+    public function SolicitudGuiaIndex() {
+
+        $solicitudes = DB::table('solicitud_guias')
+            ->orderBy('fecha_solicitud', 'desc')
+            ->get();
+        
+        $ultimo_folio = DB::table('solicitud_guias')->max('folio_dte');
+
+        return view('Sucursal.SolicitudGuia.Index', compact('solicitudes', 'ultimo_folio'));
+    }
+
+    public function SolicitudGuiaCrear(Request $request) {
+        $usuario = session()->get('nombre');
+        
+        $id = DB::table('solicitud_guias')->insertGetId([
+            'usuario' => $usuario,
+            'fecha_solicitud' => date('Y-m-d H:i:s'),
+            'estado' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        foreach ($request->productos as $prod) {
+            DB::table('dsolicitud_guias')->insert([
+                'id_solicitud' => $id,
+                'articulo' => $prod['codigo'],
+                'detalle' => $prod['detalle'],
+                'marca' => $prod['marca'] ?? '',
+                'cantidad' => $prod['cantidad'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        }
+
+        return response()->json(['status' => 'success', 'message' => 'Solicitud creada con éxito']);
+    }
+
+    public function SolicitudGuiaDetalle($id) {
+        $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
+        $detalles = DB::table('dsolicitud_guias')->where('id_solicitud', $id)->get();
+
+        return response()->json(['cabecera' => $cabecera, 'detalles' => $detalles]);
+    }
+
+    public function SolicitudGuiaDespachar(Request $request) {
+        $id = $request->id;
+        $folio = $request->folio;
+
+        $detalles = DB::table('dsolicitud_guias')->where('id_solicitud', $id)->get();
+
+        // Restar Stock de Matriz (bpsrea)
+        foreach ($detalles as $item) {
+            DB::table('bodeprod')
+                ->where('bpprod', $item->articulo)
+                ->decrement('bpsrea', $item->cantidad);
+        }
+
+        DB::table('solicitud_guias')
+            ->where('id', $id)
+            ->update([
+                'folio_dte' => $folio,
+                'fecha_despacho' => date('Y-m-d H:i:s'),
+                'estado' => 1,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+        return back()->with('success', 'Guía de Despacho procesada. Stock de Matriz actualizado.');
+    }
+
+    public function SolicitudGuiaRecibir(Request $request) {
+        $id = $request->id;
+
+        $detalles = DB::table('dsolicitud_guias')->where('id_solicitud', $id)->get();
+
+        // Sumar Stock a Sucursal (bpsrea1)
+        foreach ($detalles as $item) {
+            DB::table('bodeprod')
+                ->where('bpprod', $item->articulo)
+                ->increment('bpsrea1', $item->cantidad);
+        }
+
+        DB::table('solicitud_guias')
+            ->where('id', $id)
+            ->update([
+                'fecha_recepcion' => date('Y-m-d H:i:s'),
+                'estado' => 2,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+        return back()->with('success', 'Mercadería recibida en Sucursal. Stock actualizado.');
+    }
 }
  
