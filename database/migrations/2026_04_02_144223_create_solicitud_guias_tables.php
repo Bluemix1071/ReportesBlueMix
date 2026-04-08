@@ -18,9 +18,9 @@ class CreateSolicitudGuiasTables extends Migration
             Schema::create('solicitud_guias', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('folio_dte')->nullable()->comment('Folio oficial de la Guía de Despacho');
-                $table->dateTime('fecha_solicitud')->useCurrent();
-                $table->dateTime('fecha_despacho')->nullable();
-                $table->dateTime('fecha_recepcion')->nullable();
+                $table->timestamp('fecha_solicitud')->useCurrent();
+                $table->timestamp('fecha_despacho')->nullable();
+                $table->timestamp('fecha_recepcion')->nullable();
                 $table->string('usuario');
                 $table->integer('estado')->default(0)->comment('0: Pendiente, 1: Despachada, 2: Recibida');
                 $table->string('sucursal_destino')->default('Isabel Riquelme');
