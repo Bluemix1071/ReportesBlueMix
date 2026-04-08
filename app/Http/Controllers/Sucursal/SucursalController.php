@@ -475,6 +475,22 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
         return view('Sucursal.SolicitudGuia.Index', compact('solicitudes', 'ultimo_folio'));
     }
 
+    public function BuscarProductosFiltro(Request $request){
+
+        $codigo = $request->get('codigo');
+        $detalle = $request->get('detalle');
+        $marca = $request->get('marca');
+  
+        $productos = DB::table('producto')
+            ->where('ARCODI', 'like', '%'.$codigo.'%')
+            ->where('ARDESC', 'like', '%'.$detalle.'%')
+            ->where('ARMARCA', 'like', '%'.$marca.'%')
+            ->limit(100)
+            ->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+  
+        return response()->json($productos);
+    }
+
     public function SolicitudGuiaCrear(Request $request) {
         $usuario = session()->get('nombre');
         

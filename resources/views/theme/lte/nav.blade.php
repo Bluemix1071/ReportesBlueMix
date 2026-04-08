@@ -1195,7 +1195,7 @@
                     </ul>
                 </li>
 
-                @can('Sala')
+                @if(session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard' || auth()->user()->canany(['Sala', 'sala']))
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-search-dollar"></i>
@@ -1331,11 +1331,11 @@
 
                         </ul>
                     </li>
-                @endcan
+                @endif
                
                      
 
-                    @can('Sucursal')
+                    @if(session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard' || auth()->user()->canany(['Sucursal', 'sucursal']))
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             &nbsp;
@@ -1397,7 +1397,7 @@
 
                         </ul>
                     </li>
-                @endcan
+                @endif
             
                 @can('Administrador')
                     <li class="nav-item has-treeview">

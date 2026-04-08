@@ -162,9 +162,13 @@ function guardar_cantidad(codigo, id){
     const cantidad = $('#input_'+id).val();
 
     $.ajax({
-        url: '../Sucursal/GuardarCantidadSucursal',
+        url: '{{ route("GuardarCantidadSucursal") }}',
         type: 'POST',
-        data: {codigo, cantidad},
+        data: {
+            _token: '{{ csrf_token() }}',
+            codigo, 
+            cantidad
+        },
         success: function(result) {
             const popup = document.getElementById('miPopup');
                 popup.classList.add('mostrar');
@@ -244,7 +248,6 @@ function guardar_cantidad(codigo, id){
       "emptyTable": "no hay resultados",
       "zeroRecords": "no hay coincidencias",
       "infoEmpty": "",
-      "infoFiltered": ""
       "infoFiltered": ""
       },
       ordering: false, // Desactivar ordenamiento del lado del cliente

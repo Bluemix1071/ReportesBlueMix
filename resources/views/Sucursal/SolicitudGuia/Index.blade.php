@@ -104,7 +104,7 @@
                             <td>
                                 <button class="btn btn-xs btn-info" onclick="verDetalle({{ $sol->id }})" title="Ver Detalle"><i class="fa fa-eye"></i></button>
                                 
-                                @if($sol->estado == 0 && (session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard')) {{-- Solo Matriz/Admin despacha --}}
+                                @if($sol->estado == 0 && (session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard' || session()->get('tipo_usuario') == 'sala' || session()->get('tipo_usuario') == 'bodega')) {{-- Solo Matriz/Admin/Bodega/Sala despacha --}}
                                     <button class="btn btn-xs btn-primary" onclick="abrirDespacho({{ $sol->id }})" title="Despachar"><i class="fa fa-truck"></i></button>
                                 @endif
 
@@ -246,7 +246,7 @@
         if(c.length < 3 && d.length < 3 && m.length < 3) return;
         
         $.ajax({
-            url: '{{ route("BuscarProductosRequerimiento") }}',
+            url: '{{ route("BuscarProductosFiltro") }}',
             data: { codigo: c, detalle: d, marca: m },
             success: function(res) {
                 let html = '';
