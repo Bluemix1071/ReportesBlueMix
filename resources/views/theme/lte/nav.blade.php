@@ -1585,6 +1585,13 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('SolicitudGuiaIndex', ['mode' => 'despacho']) }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Despacho a Sucursales</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
             </ul>

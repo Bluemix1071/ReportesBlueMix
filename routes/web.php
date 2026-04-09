@@ -58,6 +58,7 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function () 
 
     /*  Mantenedor CRUD requerimientos de compra */
     Route::get('/RequerimientoCompra', 'SalaController@RequerimientoCompra')->name('RequerimientoCompra');
+    Route::get('/RequerimientoCompraData', 'SalaController@RequerimientoCompraData')->name('RequerimientoCompraData');
     Route::post('/AgregarRequerimientoCompra', 'SalaController@AgregarRequerimientoCompra')->name('AgregarRequerimientoCompra');
     Route::post('/DesactivarRequerimiento', 'SalaController@DesactivarRequerimiento')->name('DesactivarRequerimiento');
     Route::post('/EditarEstadoRequerimientoCompra', 'SalaController@EditarEstadoRequerimientoCompra')->name('EditarEstadoRequerimientoCompra');
@@ -134,10 +135,16 @@ Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(func
     Route::post('/SolicitudGuiaCrear', 'SucursalController@SolicitudGuiaCrear')->name('SolicitudGuiaCrear');
     Route::post('/SolicitudGuiaDespachar', 'SucursalController@SolicitudGuiaDespachar')->name('SolicitudGuiaDespachar');
     Route::post('/SolicitudGuiaRecibir', 'SucursalController@SolicitudGuiaRecibir')->name('SolicitudGuiaRecibir');
+    Route::post('/SolicitudGuiaAnular', 'SucursalController@SolicitudGuiaAnular')->name('SolicitudGuiaAnular');
+    Route::get('/SolicitudGuiaExportar', 'SucursalController@SolicitudGuiaExport')->name('SolicitudGuiaExportar');
     Route::get('/SolicitudGuiaDetalle/{id}', 'SucursalController@SolicitudGuiaDetalle')->name('SolicitudGuiaDetalle');
     Route::get('/BuscarProductoSucursal/{codigo}', 'SucursalController@BuscarProductoSucursal')->name('BuscarProductoSucursal');
     Route::get('/BuscarProductosFiltro', 'SucursalController@BuscarProductosFiltro')->name('BuscarProductosFiltro');
+});
 
+/* Endpoint Público para Excel en Vivo (protegido por token en controlador) */
+Route::prefix('Sucursal')->namespace('Sucursal')->group(function () {
+    Route::get('/SolicitudGuiaLive', 'SucursalController@SolicitudGuiaLive')->name('SolicitudGuiaLive');
 });
 
 

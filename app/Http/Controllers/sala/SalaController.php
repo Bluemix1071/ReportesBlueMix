@@ -511,17 +511,6 @@ class SalaController extends Controller
         $fecha1 = date("Y-m-d", strtotime(date("Y-m-d")." - 1 month"));
         $fecha2 = date("Y-m-d");
 
-        // Optimized query using Query Builder instead of raw SQL
-        $requerimiento_compra = DB::table('requerimiento_compra')
-            ->leftJoin('Suma_Bodega', 'requerimiento_compra.codigo', '=', 'Suma_Bodega.inarti')
-            ->select(
-                'requerimiento_compra.*',
-                DB::raw('IFNULL(Suma_Bodega.cantidad, 0) as stock_bodega')
-            )
-            ->whereBetween('requerimiento_compra.fecha', [$fecha1, now()])
-            ->orderBy('requerimiento_compra.id', 'desc')
-            ->get();
-
         $estados = [
             ["estado" => "INGRESADO"],
             ["estado" => "ENVÍO OC"],
@@ -529,7 +518,39 @@ class SalaController extends Controller
             ["estado" => "DESACTIVADO"]
         ];
 
-        return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
+        return view('sala.RequerimientoCompra', compact('estados', 'fecha1', 'fecha2'));
+    }
+
+    public function RequerimientoCompraData(Request $request){
+        $fecha1 = $request->get('min') ?: date("Y-m-d", strtotime(date("Y-m-d")." - 1 month"));
+        $fecha2 = $request->get('max') ?: date("Y-m-d");
+
+        $query = DB::table('requerimiento_compra')
+            ->leftJoin('Suma_Bodega', 'requerimiento_compra.codigo', '=', 'Suma_Bodega.inarti')
+            ->select(
+                'requerimiento_compra.*',
+                DB::raw('IFNULL(Suma_Bodega.cantidad, 0) as stock_bodega')
+            )
+            ->whereBetween('requerimiento_compra.fecha', [$fecha1, $fecha2 . ' 23:59:59']);
+
+        return DataTables::of($query)
+            ->addColumn('acciones', function($row){
+                return '
+                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editarrequerimiento" 
+                        data-id="'.$row->id.'" data-codigo="'.$row->codigo.'" data-descripcion="'.$row->descripcion.'"
+                        data-marca="'.$row->marca.'" data-cantidad="'.$row->cantidad.'" data-departamento="'.$row->depto.'"
+                        data-estado="'.$row->estado.'" data-oc="'.$row->oc.'" data-observacion="'.$row->observacion.'"
+                        data-observacion_interna="'.$row->observacion_interna.'" data-fecha_ingreso="'.$row->fecha.'"
+                        data-fecha_enviooc="'.$row->fecha_enviooc.'" data-fecha_bodega="'.$row->fecha_bodega.'"
+                        data-fecha_rechazado="'.$row->fecha_rechazado.'" data-fecha_desactivado="'.$row->fecha_desactivado.'">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary(\''.$row->codigo.'\')">
+                        <i class="fas fa-eye"></i>
+                    </button>';
+            })
+            ->rawColumns(['acciones'])
+            ->make(true);
     }
 
     public function AgregarRequerimientoCompra(Request $request){
@@ -614,7 +635,7 @@ class SalaController extends Controller
 
       $estado = "";
 
-      $now = DB::select('select now() as hoy')[0]->hoy;
+      $now = now();
 
       $requerimiento = DB::table('requerimiento_compra')->where('id' , $request->id)->get()[0];
 
@@ -668,7 +689,7 @@ class SalaController extends Controller
 
       $estado = "";
 
-      $now = DB::select('select now() as hoy')[0]->hoy;
+      $now = now();
 
       switch ($request->estado_multiple) {
         case "INGRESADO":
@@ -725,38 +746,13 @@ class SalaController extends Controller
       }
     }
 
-    public function BuscarRequerimientoFecha(Request $request){
-        $fecha1 = $request->get('min');
-        $fecha2 = $request->get('max');
-
-        // Optimized query using Query Builder
-        $requerimiento_compra = DB::table('requerimiento_compra')
-            ->leftJoin('Suma_Bodega', 'requerimiento_compra.codigo', '=', 'Suma_Bodega.inarti')
-            ->select(
-                'requerimiento_compra.*',
-                DB::raw('IFNULL(Suma_Bodega.cantidad, 0) as stock_bodega')
-            )
-            ->whereBetween('requerimiento_compra.fecha', [$fecha1, $fecha2 . ' 23:59:59'])
-            ->orderBy('requerimiento_compra.id', 'desc')
-            ->get();
-
-        $estados = [
-            ["estado" => "INGRESADO"],
-            ["estado" => "ENVÍO OC"],
-            ["estado" => "BODEGA"],
-            ["estado" => "DESACTIVADO"]
-        ];
-
-        return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
-    }
-
     public function BuscarProductosRequerimiento(Request $request){
 
       $codigo = $request->get('codigo');
       $detalle = $request->get('detalle');
       $marca = $request->get('marca');
 
-      $productos = DB::table('producto')->where('ARCODI', 'like', '%'.$codigo.'%')->where('ARDESC', 'like', '%'.$detalle.'%')->where('ARMARCA', 'like', '%'.$marca.'%')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+      $productos = DB::table('producto')->where('ARCODI', 'like', '%'.$codigo.'%')->where('ARDESC', 'like', '%'.$detalle.'%')->where('ARMARCA', 'like', '%'.$marca.'%')->limit(100)->get(['ARCODI', 'ARDESC', 'ARMARCA']);
 
       return response()->json($productos);
     }
