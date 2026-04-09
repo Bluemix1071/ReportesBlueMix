@@ -10,6 +10,7 @@ use App\Mail\MailNotify;
 use DB;
 use Session;
 use Mail;
+use DataTables;
 
 
 class SalaController extends Controller
