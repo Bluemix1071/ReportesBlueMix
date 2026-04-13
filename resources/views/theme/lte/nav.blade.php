@@ -1288,7 +1288,7 @@
 
                             @can('Sala')
                                 <li class="nav-item">
-                                    <a href="/www/" class="nav-link">
+                                    <a href="public /www/" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Cont. Inv. Sala (Ionic)</p>
                                     </a>
