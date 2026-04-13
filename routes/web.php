@@ -7,6 +7,15 @@ use App\Http\Controllers\CompraAgilController;
 
 Route::get('detect-device', [FrontController::class, 'detuctDebice'])->name('detect-device');
 
+Route::get('/diag-db', function() {
+    $res = DB::select("DESCRIBE solicitud_guias");
+    $output = "--- DESCRIBE solicitud_guias ---\n";
+    foreach ($res as $row) {
+        $output .= "{$row->Field} - {$row->Type}\n";
+    }
+    return response($output)->header('Content-Type', 'text/plain');
+});
+
 
 Route::get('/api/{any}', function () {
     return view('welcome');
@@ -756,7 +765,12 @@ Route::prefix('Giftcard')->namespace('GiftCard')->middleware(['auth', 'GiftCard'
 
 
 Route::get('/www/{any?}', function () {
-    return response()->file(public_path('www/index.html'));
+    $path = public_path('www/index.html');
+    if (!file_exists($path)) {
+        Log::error("Web index not found at: {$path}");
+        abort(404, "El recurso solicitado no está disponible. Verifique la configuración del servidor.");
+    }
+    return response()->file($path);
 })->where('any', '.*');
 
 
