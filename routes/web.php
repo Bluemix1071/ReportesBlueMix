@@ -768,7 +768,7 @@ Route::get('/www/{any?}', function () {
     $path = public_path('www/index.html');
     if (!file_exists($path)) {
         Log::error("Web index not found at: {$path}");
-        abort(404, "El recurso solicitado no está disponible. Verifique la configuración del servidor.");
+        abort(404, "El recurso solicitado no está disponible. No se encontró el archivo en: " . $path);
     }
     return response()->file($path);
 })->where('any', '.*');
