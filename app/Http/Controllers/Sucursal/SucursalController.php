@@ -485,6 +485,163 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
         return view('Sucursal.VentasSucursal', compact('ventas', 'fechamin', 'fechamax'));
     }
 
+    /* Métodos para Devolución de Mercadería (Sucursal -> Matriz) */
+
+    public function DevolucionIndex() {
+        $tipo = session()->get('tipo_usuario');
+        
+        // Obtener todas las devoluciones. Si es bodega/sala, filtrar las que están en tránsito o recibidas
+        $devoluciones = DB::table('devoluciones_sucursal')
+            ->orderBy('id', 'desc')
+            ->get();
+            
+        return view('Sucursal.DevolucionSucursal.Index', compact('devoluciones'));
+    }
+
+    public function DevolucionCrear(Request $request) {
+        $productos = $request->productos;
+        if (!$productos || count($productos) == 0) {
+            return response()->json(['status' => 'error', 'message' => 'No hay productos en la lista.'], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            $id = DB::table('devoluciones_sucursal')->insertGetId([
+                'fecha_solicitud' => date('Y-m-d H:i:s'),
+                'usuario' => session()->get('nombre'),
+                'motivo' => $request->motivo,
+                'observacion' => $request->observacion,
+                'estado' => 0, // Pendiente
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            foreach ($productos as $p) {
+                DB::table('devoluciones_sucursal_detalle')->insert([
+                    'id_devolucion' => $id,
+                    'articulo' => $p['codigo'],
+                    'detalle' => $p['detalle'],
+                    'marca' => $p['marca'],
+                    'cantidad' => $p['cantidad'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Devolución registrada correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => 'Error al guardar: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function DevolucionDetalle($id) {
+        $cabecera = DB::table('devoluciones_sucursal')->where('id', $id)->first();
+        $detalles = DB::table('devoluciones_sucursal_detalle')->where('id_devolucion', $id)->get();
+        return response()->json(['cabecera' => $cabecera, 'detalles' => $detalles]);
+    }
+
+    public function DevolucionDespachar(Request $request) {
+        $id = $request->id;
+        $cabecera = DB::table('devoluciones_sucursal')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 0) {
+            return back()->with('error', 'Estado no válido para despachar.');
+        }
+
+        $detalles = DB::table('devoluciones_sucursal_detalle')->where('id_devolucion', $id)->get();
+
+        DB::beginTransaction();
+        try {
+            foreach ($detalles as $item) {
+                // Descontar de Sucursal (bpsrea1)
+                DB::table('bodeprod')
+                    ->where('bpprod', $item->articulo)
+                    ->decrement('bpsrea1', $item->cantidad);
+            }
+
+            DB::table('devoluciones_sucursal')->where('id', $id)->update([
+                'estado' => 1, // En Tránsito
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
+            return back()->with('success', 'Mercadería despachada de Sucursal. Stock actualizado en sistema.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error al despachar: ' . $e->getMessage());
+        }
+    }
+
+    public function DevolucionRecibirMatriz(Request $request) {
+        $id = $request->id;
+        $cabecera = DB::table('devoluciones_sucursal')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 1) {
+            return back()->with('error', 'Estado no válido para recibir en Matriz.');
+        }
+
+        $detalles = DB::table('devoluciones_sucursal_detalle')->where('id_devolucion', $id)->get();
+
+        DB::beginTransaction();
+        try {
+            foreach ($detalles as $item) {
+                // Aumentar en Matriz (bpsrea)
+                DB::table('bodeprod')
+                    ->where('bpprod', $item->articulo)
+                    ->increment('bpsrea', $item->cantidad);
+            }
+
+            DB::table('devoluciones_sucursal')->where('id', $id)->update([
+                'estado' => 2, // Recibida en Matriz
+                'fecha_recepcion' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
+            return back()->with('success', 'Mercadería recibida en Matriz. Stock de Sala actualizado.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error al recibir en Matriz: ' . $e->getMessage());
+        }
+    }
+
+    public function DevolucionAnular(Request $request) {
+        $id = $request->id;
+        $motivo = $request->motivo;
+        $cabecera = DB::table('devoluciones_sucursal')->where('id', $id)->first();
+
+        if (!$cabecera || ($cabecera->estado != 0 && $cabecera->estado != 1)) {
+            return response()->json(['status' => 'error', 'message' => 'No se puede anular en este estado.'], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            // Si estaba en tránsito (ya descontado de sucursal), devolverlo
+            if ($cabecera->estado == 1) {
+                $detalles = DB::table('devoluciones_sucursal_detalle')->where('id_devolucion', $id)->get();
+                foreach ($detalles as $item) {
+                    DB::table('bodeprod')
+                        ->where('bpprod', $item->articulo)
+                        ->increment('bpsrea1', $item->cantidad);
+                }
+            }
+
+            DB::table('devoluciones_sucursal')->where('id', $id)->update([
+                'estado' => 4, // Anulada
+                'observacion' => $cabecera->observacion . " | ANULADA: " . $motivo,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Devolución anulada correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => 'Error al anular: ' . $e->getMessage()], 500);
+        }
+    }
+
     /* Métodos para Solicitud de Guías */
 
     public function BuscarProductoSucursal($codigo) {
