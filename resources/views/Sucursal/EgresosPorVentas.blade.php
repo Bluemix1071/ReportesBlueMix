@@ -17,7 +17,12 @@ Egresos de Mercaderia por Ventas
         <form action="{{ route('EgresosPorVentasDetalle') }}" method="post" id="desvForm" class="form-inline">
             @csrf
             <div class="form-group mb-2">
-             
+                @if (empty($fecha))
+                    <label for="staticEmail2" class="sr-only">Fecha 1</label>
+                    <input type="date" id="fecha1" class="form-control" name="fecha">
+                @else
+                    <input type="date" id="fecha1" class="form-control" name="fecha" value="{{ $fecha }}">
+                @endif
             </div>
             <div class="form-group mx-sm-3 mb-2">
                 <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
