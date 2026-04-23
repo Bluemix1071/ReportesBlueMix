@@ -68,7 +68,7 @@ Ingreso de Mercaderia
     @endif
 
     <div class="container-fluid row">
-        <h3 class="display-3">Devolucion a Bodega</h3>
+        <h3 class="display-3">fg</h3>
     </div>
 
     <form action="{{ route('BuscarValeSucursal') }}" method="post">

@@ -18,14 +18,19 @@ class RectificacionInventarioSalaController extends Controller
     }
 
     public function DevolverNotasCredito(Request $request){
+        $id_nc = $request->get('id_nc');
+        $solicitante = session()->get('nombre') ?? $request->get('solicita');
 
-        $devuelve = DB::select('select nota_credito.folio ,nota_credito_detalle.codigo, nota_credito_detalle.descripcion, bodeprod.bpsrea as sala, nota_credito_detalle.cantidad as cant_nc, current_date() as fecha ,sum(bodeprod.bpsrea + nota_credito_detalle.cantidad) as total from nota_credito_detalle left join bodeprod on nota_credito_detalle.codigo = bodeprod.bpprod left join nota_credito on nota_credito_detalle.id_nota_cred = nota_credito.id where id_nota_cred = "'.$request->get('id_nc').'" group by codigo order by codigo desc');
-        foreach($devuelve as $item){
-            DB::table('bodeprod')->where('bpprod', $item->codigo)->update(['bpsrea' => $item->total]);
-            DB::table('solicitud_ajuste')->insert(['codprod' => $item->codigo, 'producto' => $item->descripcion, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->total, 'autoriza' => 'Ferenc Riquelme', 'solicita' => $request->get('solicita'), 'observacion' => 'Devolución mercaderia N.C: '.$item->folio.'' ]);
-        }
+        DB::transaction(function() use ($id_nc, $solicitante) {
+            $devuelve = DB::select('select nota_credito.folio ,nota_credito_detalle.codigo, nota_credito_detalle.descripcion, bodeprod.bpsrea as sala, nota_credito_detalle.cantidad as cant_nc, current_date() as fecha ,sum(bodeprod.bpsrea + nota_credito_detalle.cantidad) as total from nota_credito_detalle left join bodeprod on nota_credito_detalle.codigo = bodeprod.bpprod left join nota_credito on nota_credito_detalle.id_nota_cred = nota_credito.id where id_nota_cred = ? group by codigo order by codigo desc', [$id_nc]);
+            
+            foreach($devuelve as $item){
+                DB::table('bodeprod')->where('bpprod', $item->codigo)->update(['bpsrea' => $item->total]);
+                DB::table('solicitud_ajuste')->insert(['codprod' => $item->codigo, 'producto' => $item->descripcion, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->total, 'autoriza' => session()->get('nombre') ?? 'Sistema', 'solicita' => $solicitante, 'observacion' => 'Devolución mercaderia N.C: '.$item->folio.'' ]);
+            }
 
-        $devolucion = DB::table('detalle_devolucion')->insert(['folio' => $request->get('id_nc'), 't_doc' => 'Nota Credito', 'estado' => 'Devuelto']);
+            DB::table('detalle_devolucion')->insert(['folio' => $id_nc, 't_doc' => 'Nota Credito', 'estado' => 'Devuelto']);
+        });
 
         return redirect()->route('RectificacionNotasCredito')->with('success','Mercadería Ingresada Correctamente');
     }
@@ -37,21 +42,20 @@ class RectificacionInventarioSalaController extends Controller
     }
 
     public function DevolverCotizacionSalida(Request $request){
-        //$devuelve = DB::select('select nota_credito_detalle.codigo, nota_credito_detalle.descripcion, bodeprod.bpsrea as sala, nota_credito_detalle.cantidad as cant_nc, current_date() as fecha ,sum(bodeprod.bpsrea + nota_credito_detalle.cantidad) as total from nota_credito_detalle left join bodeprod on nota_credito_detalle.codigo = bodeprod.bpprod where id_nota_cred = "'.$request->get('id_nc').'" group by codigo order by codigo desc');
-        $sale = DB::select('select `dcotiz`.*, (`bodeprod`.`bpsrea`-`dcotiz`.`DZ_CANT`) as CANT, current_date() as fecha, bodeprod.bpsrea as sala from `dcotiz` left join `bodeprod` on `dcotiz`.`DZ_CODIART` = `bodeprod`.`bpprod` where `dcotiz`.`DZ_NUMERO` = "'.$request->get('id_cotiz').'"');
+        $id_cotiz = $request->get('id_cotiz');
+        $solicitante = session()->get('nombre') ?? $request->get('solicita');
+        $ref = $request->get('cotiz_ref');
 
-        /* foreach($sale as $item){
-            if($item->CANT < 0){
-                return redirect()->route('RectificacionCotizacionesSalida')->with('warning','Existe Mercadería que esta en negativo o quedará en negativo, rectifique stock');
+        DB::transaction(function() use ($id_cotiz, $solicitante, $ref) {
+            $sale = DB::select('select `dcotiz`.*, (`bodeprod`.`bpsrea`-`dcotiz`.`DZ_CANT`) as CANT, current_date() as fecha, bodeprod.bpsrea as sala from `dcotiz` left join `bodeprod` on `dcotiz`.`DZ_CODIART` = `bodeprod`.`bpprod` where `dcotiz`.`DZ_NUMERO` = ?', [$id_cotiz]);
+
+            foreach($sale as $item){
+                DB::table('bodeprod')->where('bpprod', $item->DZ_CODIART)->update(['bpsrea' => $item->CANT]);
+                DB::table('solicitud_ajuste')->insert(['codprod' => $item->DZ_CODIART, 'producto' => $item->DZ_DESCARTI, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->CANT, 'autoriza' => session()->get('nombre') ?? 'Sistema', 'solicita' => $solicitante, 'observacion' => 'Salida Mercadería Cotizacion N: '.$id_cotiz.'' ]);
             }
-        } */
 
-        foreach($sale as $item){
-            DB::table('bodeprod')->where('bpprod', $item->DZ_CODIART)->update(['bpsrea' => $item->CANT]);
-            DB::table('solicitud_ajuste')->insert(['codprod' => $item->DZ_CODIART, 'producto' => $item->DZ_DESCARTI, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => $request->get('solicita'), 'observacion' => 'Salida Mercadería Cotizacion N: '.$request->get('id_cotiz').'' ]);
-        }
-
-        $devolucion = DB::table('detalle_devolucion')->insert(['folio' => $request->get('id_cotiz'), 't_doc' => 'Cotizacion Salida', 'estado' => 'Sacada por: '.$request->get('cotiz_ref').'']);
+            DB::table('detalle_devolucion')->insert(['folio' => $id_cotiz, 't_doc' => 'Cotizacion Salida', 'estado' => 'Sacada por: '.$ref.'']);
+        });
 
         return redirect()->route('RectificacionCotizacionesSalida')->with('success','Mercadería Sacada Correctamente');
     }
@@ -72,21 +76,20 @@ class RectificacionInventarioSalaController extends Controller
     }
 
     public function DevolverCotizacionEntrada(Request $request){
-        //$devuelve = DB::select('select nota_credito_detalle.codigo, nota_credito_detalle.descripcion, bodeprod.bpsrea as sala, nota_credito_detalle.cantidad as cant_nc, current_date() as fecha ,sum(bodeprod.bpsrea + nota_credito_detalle.cantidad) as total from nota_credito_detalle left join bodeprod on nota_credito_detalle.codigo = bodeprod.bpprod where id_nota_cred = "'.$request->get('id_nc').'" group by codigo order by codigo desc');
-        $entra = DB::select('select `dcotiz`.*, (`bodeprod`.`bpsrea`+`dcotiz`.`DZ_CANT`) as CANT, current_date() as fecha, bodeprod.bpsrea as sala from `dcotiz` left join `bodeprod` on `dcotiz`.`DZ_CODIART` = `bodeprod`.`bpprod` where `dcotiz`.`DZ_NUMERO` = "'.$request->get('id_cotiz').'"');
+        $id_cotiz = $request->get('id_cotiz');
+        $solicitante = session()->get('nombre') ?? $request->get('solicita');
+        $ref = $request->get('cotiz_ref');
 
-        /* foreach($entra as $item){
-            if($item->CANT < 0){
-                return redirect()->route('RectificacionCotizacionesEntrada')->with('warning','Existe Mercadería que esta en negativo o quedará en negativo, rectifique stock');
+        DB::transaction(function() use ($id_cotiz, $solicitante, $ref) {
+            $entra = DB::select('select `dcotiz`.*, (`bodeprod`.`bpsrea`+`dcotiz`.`DZ_CANT`) as CANT, current_date() as fecha, bodeprod.bpsrea as sala from `dcotiz` left join `bodeprod` on `dcotiz`.`DZ_CODIART` = `bodeprod`.`bpprod` where `dcotiz`.`DZ_NUMERO` = ?', [$id_cotiz]);
+
+            foreach($entra as $item){
+                DB::table('bodeprod')->where('bpprod', $item->DZ_CODIART)->update(['bpsrea' => $item->CANT]);
+                DB::table('solicitud_ajuste')->insert(['codprod' => $item->DZ_CODIART, 'producto' => $item->DZ_DESCARTI, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->CANT, 'autoriza' => session()->get('nombre') ?? 'Sistema', 'solicita' => $solicitante, 'observacion' => 'Entrada Mercadería Cotizacion N: '.$id_cotiz.'' ]);
             }
-        } */
 
-        foreach($entra as $item){
-            DB::table('bodeprod')->where('bpprod', $item->DZ_CODIART)->update(['bpsrea' => $item->CANT]);
-            DB::table('solicitud_ajuste')->insert(['codprod' => $item->DZ_CODIART, 'producto' => $item->DZ_DESCARTI, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => $request->get('solicita'), 'observacion' => 'Entrada Mercadería Cotizacion N: '.$request->get('id_cotiz').'' ]);
-        }
-
-        $devolucion = DB::table('detalle_devolucion')->insert(['folio' => $request->get('id_cotiz'), 't_doc' => 'Cotizacion Entrada', 'estado' => 'Entrada por: '.$request->get('cotiz_ref').'']);
+            DB::table('detalle_devolucion')->insert(['folio' => $id_cotiz, 't_doc' => 'Cotizacion Entrada', 'estado' => 'Entrada por: '.$ref.'']);
+        });
 
         return redirect()->route('RectificacionCotizacionesEntrada')->with('success','Mercadería Entrada Correctamente');
     }
@@ -109,21 +112,19 @@ class RectificacionInventarioSalaController extends Controller
     }
 
     public function DevolverGuia(Request $request){
-        //$devuelve = DB::select('select nota_credito_detalle.codigo, nota_credito_detalle.descripcion, bodeprod.bpsrea as sala, nota_credito_detalle.cantidad as cant_nc, current_date() as fecha ,sum(bodeprod.bpsrea + nota_credito_detalle.cantidad) as total from nota_credito_detalle left join bodeprod on nota_credito_detalle.codigo = bodeprod.bpprod where id_nota_cred = "'.$request->get('id_nc').'" group by codigo order by codigo desc');
-        $entra = DB::select('select dcargos.*, bodeprod.bpsrea as sala, sum(bodeprod.bpsrea + dcargos.DECANT) as CANT from dcargos left join bodeprod on dcargos.DECODI = bodeprod.bpprod where DENMRO = "'.$request->get('folio').'" and dcargos.DETIPO = 3 group by DECODI');
+        $folio = $request->get('folio');
+        $solicitante = session()->get('nombre') ?? $request->get('solicita');
 
-        /* foreach($entra as $item){
-            if($item->CANT < 0){
-                return redirect()->route('RectificacionGuia')->with('warning','Existe Mercadería que esta en negativo o quedará en negativo, rectifique stock');
+        DB::transaction(function() use ($folio, $solicitante) {
+            $entra = DB::select('select dcargos.*, bodeprod.bpsrea as sala, sum(bodeprod.bpsrea + dcargos.DECANT) as CANT from dcargos left join bodeprod on dcargos.DECODI = bodeprod.bpprod where DENMRO = ? and dcargos.DETIPO = 3 group by DECODI', [$folio]);
+
+            foreach($entra as $item){
+                DB::table('bodeprod')->where('bpprod', $item->DECODI)->update(['bpsrea' => $item->CANT]);
+                DB::table('solicitud_ajuste')->insert(['codprod' => $item->DECODI, 'producto' => $item->Detalle, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->CANT, 'autoriza' => session()->get('nombre') ?? 'Sistema', 'solicita' => $solicitante, 'observacion' => 'Devolucion Mercadería Guia N: '.$folio.'' ]);
             }
-        } */
 
-        foreach($entra as $item){
-            DB::table('bodeprod')->where('bpprod', $item->DECODI)->update(['bpsrea' => $item->CANT]);
-            DB::table('solicitud_ajuste')->insert(['codprod' => $item->DECODI, 'producto' => $item->Detalle, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->sala, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => $request->get('solicita'), 'observacion' => 'Devolucion Mercadería Guia N: '.$request->get('folio').'' ]);
-        }
-
-        $devolucion = DB::table('detalle_devolucion')->insert(['folio' => $request->get('folio'), 't_doc' => 'Guia', 'estado' => 'Entrada']);
+            DB::table('detalle_devolucion')->insert(['folio' => $folio, 't_doc' => 'Guia', 'estado' => 'Entrada']);
+        });
 
         return redirect()->route('RectificacionGuia')->with('success','Mercadería Devuelta Correctamente');
     }
@@ -436,8 +437,10 @@ public function editartotal(Request $request)
     public function GuardarRectificacionInsumoMerma(Request $request){
 
         $groups = array();
+        $solicitante = session()->get('nombre') ?? 'Valentin Bello';
 
         foreach($request->request as $item){
+            if (!isset($item['codigo'])) continue; // Skip non-product entries if any
             $key = $item['codigo'];
             if (!array_key_exists($key, $groups)) {
                 $groups[$key] = array(
@@ -452,70 +455,77 @@ public function editartotal(Request $request)
             }
         }
 
-       /*  foreach($groups as $item){
-            if((intval($item['sala'])-intval($item['cantidad'])) < 0){
-                return redirect()->route('RectificacionInsumoMerma')->with('error', 'El articulo '.$item['codigo'].' quedará en negativo. Rectificar stock');
+        DB::transaction(function() use ($groups, $request, $solicitante) {
+            foreach($groups as $item){
+                DB::table('bodeprod')->where('bpprod', $item['codigo'])->update(['bpsrea' => (intval($item['sala'])-intval($item['cantidad']))]);
+
+                $obs = ($item['area'] == "Merma") ? $item['area'] : 'Insumo '.$item['area'];
+                
+                DB::table('solicitud_ajuste')->insert([
+                    'codprod' => $item['codigo'], 
+                    'producto' => $item['detalle'], 
+                    'fecha' => date("Y-m-d"), 
+                    'stock_anterior' => $item['sala'], 
+                    'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 
+                    'autoriza' => session()->get('nombre') ?? 'Sistema', 
+                    'solicita' => $solicitante, 
+                    'observacion' => $obs 
+                ]);
             }
-        } */
 
-        foreach($groups as $item){
-            DB::table('bodeprod')->where('bpprod', $item['codigo'])->update(['bpsrea' => (intval($item['sala'])-intval($item['cantidad']))]);
-
-            if($item['area'] == "Merma"){
-                DB::table('solicitud_ajuste')->insert(['codprod' => $item['codigo'], 'producto' => $item['detalle'], 'fecha' => date("Y-m-d"), 'stock_anterior' => $item['sala'], 'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Valentin Bello', 'observacion' => $item['area'] ]);
-            }else{
-                DB::table('solicitud_ajuste')->insert(['codprod' => $item['codigo'], 'producto' => $item['detalle'], 'fecha' => date("Y-m-d"), 'stock_anterior' => $item['sala'], 'nuevo_stock' => (intval($item['sala'])-intval($item['cantidad'])), 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Valentin Bello', 'observacion' => 'Insumo '.$item['area'].'' ]);
+            foreach($request->request as $item){
+                if (!isset($item['codigo'])) continue;
+                $insumo = [
+                    'codigo' => $item['codigo'],
+                    'detalle' => $item['detalle'],
+                    'marca' => $item['marca'],
+                    'costo' => $item['costo'],
+                    'cantidad' => $item['cantidad'],
+                    'area' => $item['area']
+                ];
+                DB::table('insumos_mermas')->insert($insumo);
             }
-        }
-
-        foreach($request->request as $item){
-            $insumo = ['codigo' => $item['codigo'],
-                'detalle' => $item['detalle'],
-                'marca' => $item['marca'],
-                'costo' => $item['costo'],
-                'cantidad' => $item['cantidad'],
-                'area' => $item['area']
-            ];
-
-            DB::table('insumos_mermas')->insert($insumo);
-
-            //DB::table('bodeprod')->where('bpprod', $item['codigo'])->update(['bpsrea' => (intval($item['sala'])-intval($item['cantidad']))]);
-        }
+        });
 
         return redirect()->route('RectificacionInsumoMerma')->with('success','Insumo/Merma ingresado');
     }
 
     public function CargarValeInsimoMerma(Request $request){
+        $n_vale = $request->get('n_vale');
+        $area = $request->get('area');
+        $solicitante = session()->get('nombre') ?? 'Valentin Bello';
 
-        $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant, bodeprod.bpsrea, precios.PCCOSTO, (bodeprod.bpsrea-dvales.vacant) as CANT from dvales left join producto on dvales.vaarti = producto.ARCODI left join bodeprod on dvales.vaarti = bodeprod.bpprod left join precios on substr(dvales.vaarti,1, 5) = precios.PCCODI where vanmro = '.$request->get('n_vale').'');
+        $vale = DB::select('select dvales.vaarti, producto.ARDESC, producto.ARMARCA, dvales.vacant, bodeprod.bpsrea, precios.PCCOSTO, (bodeprod.bpsrea-dvales.vacant) as CANT from dvales left join producto on dvales.vaarti = producto.ARCODI left join bodeprod on dvales.vaarti = bodeprod.bpprod left join precios on substr(dvales.vaarti,1, 5) = precios.PCCODI where vanmro = ?', [$n_vale]);
 
         if(!empty($vale)){
+            DB::transaction(function() use ($vale, $area, $solicitante) {
+                foreach($vale as $item){
+                    $insumo = [
+                        'codigo' => $item->vaarti,
+                        'detalle' => $item->ARDESC,
+                        'marca' => $item->ARMARCA,
+                        'costo' => $item->PCCOSTO,
+                        'cantidad' => $item->vacant,
+                        'area' => $area
+                    ];
+                    DB::table('insumos_mermas')->insert($insumo);
 
-            /* foreach($vale as $item){
-                if($item->CANT < 0){
-                    return redirect()->route('RectificacionInsumoMerma')->with('error', 'El articulo '.$item->vaarti.' quedará en negativo. Rectificar stock');
+                    DB::table('bodeprod')->where('bpprod', $item->vaarti)->update(['bpsrea' => $item->CANT]);
+
+                    $obs = ($area == "Merma") ? 'Merma' : 'Insumo '.$area;
+
+                    DB::table('solicitud_ajuste')->insert([
+                        'codprod' => $item->vaarti, 
+                        'producto' => $item->ARDESC, 
+                        'fecha' => date("Y-m-d"), 
+                        'stock_anterior' => $item->bpsrea, 
+                        'nuevo_stock' => $item->CANT, 
+                        'autoriza' => session()->get('nombre') ?? 'Sistema', 
+                        'solicita' => $solicitante, 
+                        'observacion' => $obs 
+                    ]);
                 }
-            } */
-
-            foreach($vale as $item){
-                $insumo = ['codigo' => $item->vaarti,
-                'detalle' => $item->ARDESC,
-                'marca' => $item->ARMARCA,
-                'costo' => $item->PCCOSTO,
-                'cantidad' => $item->vacant,
-                'area' => $request->get('area')
-                ];
-                //error_log(print_r($nuevo, true));
-                DB::table('insumos_mermas')->insert($insumo);
-
-                DB::table('bodeprod')->where('bpprod', $item->vaarti)->update(['bpsrea' => $item->CANT]);
-
-                if($request->get('area') == "Merma"){
-                    DB::table('solicitud_ajuste')->insert(['codprod' => $item->vaarti, 'producto' => $item->ARDESC, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->bpsrea, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Valentin Bello', 'observacion' => 'Merma' ]);
-                }else{
-                    DB::table('solicitud_ajuste')->insert(['codprod' => $item->vaarti, 'producto' => $item->ARDESC, 'fecha' => date("Y-m-d"), 'stock_anterior' => $item->bpsrea, 'nuevo_stock' => $item->CANT, 'autoriza' => 'Ferenc Riquelme', 'solicita' => 'Valentin Bello', 'observacion' => 'Insumo '.$request->get('area').'' ]);
-                }
-            }
+            });
         }else{
             return redirect()->route('RectificacionInsumoMerma')->with('warning','Vele no Encontrado');
         }
@@ -580,72 +590,35 @@ public function editartotal(Request $request)
     {
     $codigo = $request->input('codigo');
     $buscar_detalle = $request->input('buscar_detalle');
-    $buscar_marca = $request->input('buscar_marca');
     $buscar_cantidad = $request->input('buscar_cantidad');
     $nueva_cantidad = $request->input('nueva_cantidad');
-    $solicita = $request->input('solicita');
+    $solicita = session()->get('nombre') ?? $request->input('solicita');
     $motivo = $request->input('motivo');
 
-    $bodeprod = DB::select('select bodeprod.bpsrea from bodeprod where bodeprod.bpprod= "'.$codigo.'"');
-    $prod_pendiente = DB::select('select prod_pendientes.cantidad from prod_pendientes where prod_pendientes.cod_articulo="'.$codigo.'"');
-    $fechai = DB::select('select curdate() as fechai');
-    $anio = DB::select('select year(curdate()) as anio');
-
-    // Existe codigo en prod pendiente
-    $producto_pendiente_existe = DB::table('prod_pendientes')
-    ->where('cod_articulo', $codigo)
-    ->exists();
-    //
-    // Existe en solicitud a bodega pendiente
-    $producto_soli_existe = DB::table('dsalida_bodega')
-    ->leftJoin('salida_de_bodega', 'dsalida_bodega.id', '=', 'salida_de_bodega.nro')
-    ->where('dsalida_bodega.articulo', $codigo)
-    ->where('salida_de_bodega.estado', 'K')
-    ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
-    ->select('dsalida_bodega.*', 'salida_de_bodega.*')
-    ->exists();
-    //
-
-    // Verificar si al menos uno de los productos existe
-    if ($producto_pendiente_existe || $producto_soli_existe) {
-    if ($producto_pendiente_existe && $producto_soli_existe) {
-        // Ambos existen, mostrar mensaje para ambos
-        echo "El producto existe en solicitud a bodega pendiente y en producto pendiente.";
-    } elseif ($producto_pendiente_existe) {
-        // Solo existe en solicitud a bodega pendiente
-        echo "El producto existe en solicitud a bodega pendiente.";
-    } elseif ($producto_soli_existe) {
-        // Solo existe en producto pendiente
-        echo "El producto existe en producto pendiente.";
-    }
-    } else {
-    // No existe en ninguno de los dos
-    echo "El producto no existe en solicitud a bodega pendiente ni en producto pendiente.";
-    }
-    //
-    // Inicio registro de cambios
-    $registro = DB::table('solicitud_ajuste')->insert([
-        [
-            "codprod" => $codigo,
-            "producto" => $buscar_detalle,
-            "fecha" => $fechai[0]->fechai,
-            "stock_anterior" => $buscar_cantidad,
-            "nuevo_stock" => $nueva_cantidad,
-            "autoriza" => 'Diego Carrasco',
-            "solicita" => $solicita,
-            "observacion" => $motivo
-        ]
-    ]);
-    // Fin registro de cambios
-
-    // Inicio cambio stock sala
-        DB::table('bodeprod')
-        ->where('bpprod', $codigo)
-        ->update([
-            'bpsrea' => $nueva_cantidad
+    DB::transaction(function() use ($codigo, $buscar_detalle, $buscar_cantidad, $nueva_cantidad, $solicita, $motivo) {
+        // Inicio registro de cambios
+        DB::table('solicitud_ajuste')->insert([
+            [
+                "codprod" => $codigo,
+                "producto" => $buscar_detalle,
+                "fecha" => date('Y-m-d'),
+                "stock_anterior" => $buscar_cantidad,
+                "nuevo_stock" => $nueva_cantidad,
+                "autoriza" => session()->get('nombre') ?? 'Sistema',
+                "solicita" => $solicita,
+                "observacion" => $motivo
+            ]
         ]);
-    //fin cambio stock sala
-    // dd($request->all());
+        // Fin registro de cambios
+
+        // Inicio cambio stock sala
+        DB::table('bodeprod')
+            ->where('bpprod', $codigo)
+            ->update([
+                'bpsrea' => $nueva_cantidad
+            ]);
+        //fin cambio stock sala
+    });
 
     return back()->with('success', '¡Stock sala actualizado correctamente!');
 
@@ -654,45 +627,39 @@ public function editartotal(Request $request)
     public function SumarVale(Request $request)
     {
         $valemas = $request->input('valemas');
+        $solicitante = session()->get('nombre') ?? 'Inventario';
+        $anio = date('Y');
 
-        $newstockmas = DB::select('
-            SELECT dvales.vaarti,producto.ardesc,dvales.vacant as "cant_vale",bodeprod.bpsrea as "stock_actual",(dvales.vacant + bodeprod.bpsrea) as "new_stock"
-            FROM dvales
-            LEFT JOIN bodeprod ON dvales.vaarti = bodeprod.bpprod
-            left join producto on dvales.vaarti = producto.ARCODI
-            WHERE dvales.vanmro = ? GROUP BY dvales.vaarti', [$valemas]);
+        DB::transaction(function() use ($valemas, $solicitante, $anio) {
+            $newstockmas = DB::select('
+                SELECT dvales.vaarti,producto.ardesc,dvales.vacant as "cant_vale",bodeprod.bpsrea as "stock_actual",(dvales.vacant + bodeprod.bpsrea) as "new_stock"
+                FROM dvales
+                LEFT JOIN bodeprod ON dvales.vaarti = bodeprod.bpprod
+                left join producto on dvales.vaarti = producto.ARCODI
+                WHERE dvales.vanmro = ? GROUP BY dvales.vaarti', [$valemas]);
 
-        // dd($newstockmas);
-
-        $fechai = DB::select('select curdate() as fechai');
-        $anio = DB::select('select year(curdate()) as anio');
-
-        // Inicio registro de cambios
-        foreach ($newstockmas as $result) {
-            $registrovalemas = DB::table('solicitud_ajuste')->insert([
-            [
-              "codprod" => $result->vaarti,
-              "producto" => $result->ardesc,
-              "fecha" => $fechai[0]->fechai,
-              "stock_anterior" => $result->stock_actual,
-              "nuevo_stock" => $result->new_stock,
-              "autoriza" => 'Diego Carrasco',
-              "solicita" => 'Inventario',
-              "observacion" => 'Inventario Sala ' . $anio[0]->anio . ' custodia entra',
-            ]
-         ]);
-        }
-        // Fin registro de cambios
-
-        // Inicio cambio stock sala
-        foreach ($newstockmas as $result) {
-            DB::table('bodeprod')
-                ->where('bpprod', $result->vaarti)
-                ->update([
-                    'bpsrea' => $result->new_stock
+            // Inicio registro de cambios e Inicio cambio stock sala
+            foreach ($newstockmas as $result) {
+                DB::table('solicitud_ajuste')->insert([
+                    [
+                        "codprod" => $result->vaarti,
+                        "producto" => $result->ardesc,
+                        "fecha" => date('Y-m-d'),
+                        "stock_anterior" => $result->stock_actual,
+                        "nuevo_stock" => $result->new_stock,
+                        "autoriza" => session()->get('nombre') ?? 'Sistema',
+                        "solicita" => $solicitante,
+                        "observacion" => 'Inventario Sala ' . $anio . ' custodia entra',
+                    ]
                 ]);
-        }
-        //fin cambio stock sala
+
+                DB::table('bodeprod')
+                    ->where('bpprod', $result->vaarti)
+                    ->update([
+                        'bpsrea' => $result->new_stock
+                    ]);
+            }
+        });
 
         return back()->with('success', '¡Stock sala sumado actualizado correctamente!');
     }
@@ -700,45 +667,39 @@ public function editartotal(Request $request)
     public function RestarVale(Request $request)
     {
         $valemenos = $request->input('valemenos');
+        $solicitante = session()->get('nombre') ?? 'Inventario';
+        $anio = date('Y');
 
-        $newstockmenos = DB::select('
-            SELECT dvales.vaarti,producto.ardesc,dvales.vacant as "cant_vale",bodeprod.bpsrea as "stock_actual",(bodeprod.bpsrea - dvales.vacant) as "new_stock"
-            FROM dvales
-            LEFT JOIN bodeprod ON dvales.vaarti = bodeprod.bpprod
-            left join producto on dvales.vaarti = producto.ARCODI
-            WHERE dvales.vanmro = ? GROUP BY dvales.vaarti', [$valemenos]);
+        DB::transaction(function() use ($valemenos, $solicitante, $anio) {
+            $newstockmenos = DB::select('
+                SELECT dvales.vaarti,producto.ardesc,dvales.vacant as "cant_vale",bodeprod.bpsrea as "stock_actual",(bodeprod.bpsrea - dvales.vacant) as "new_stock"
+                FROM dvales
+                LEFT JOIN bodeprod ON dvales.vaarti = bodeprod.bpprod
+                left join producto on dvales.vaarti = producto.ARCODI
+                WHERE dvales.vanmro = ? GROUP BY dvales.vaarti', [$valemenos]);
 
-        // dd($newstockmas);
-
-        $fechai = DB::select('select curdate() as fechai');
-        $anio = DB::select('select year(curdate()) as anio');
-
-        // Inicio registro de cambios
-        foreach ($newstockmenos as $result) {
-            $registrovalemenos = DB::table('solicitud_ajuste')->insert([
-            [
-              "codprod" => $result->vaarti,
-              "producto" => $result->ardesc,
-              "fecha" => $fechai[0]->fechai,
-              "stock_anterior" => $result->stock_actual,
-              "nuevo_stock" => $result->new_stock,
-              "autoriza" => 'Diego Carrasco',
-              "solicita" => 'Inventario',
-              "observacion" => 'Inventario Sala ' . $anio[0]->anio . ' Custodia Sale',
-            ]
-         ]);
-        }
-        // Fin registro de cambios
-
-        // Inicio cambio stock sala
-        foreach ($newstockmenos as $result) {
-            DB::table('bodeprod')
-                ->where('bpprod', $result->vaarti)
-                ->update([
-                    'bpsrea' => $result->new_stock
+            // Inicio registro de cambios e Inicio cambio stock sala
+            foreach ($newstockmenos as $result) {
+                DB::table('solicitud_ajuste')->insert([
+                    [
+                        "codprod" => $result->vaarti,
+                        "producto" => $result->ardesc,
+                        "fecha" => date('Y-m-d'),
+                        "stock_anterior" => $result->stock_actual,
+                        "nuevo_stock" => $result->new_stock,
+                        "autoriza" => session()->get('nombre') ?? 'Sistema',
+                        "solicita" => $solicitante,
+                        "observacion" => 'Inventario Sala ' . $anio . ' Custodia Sale',
+                    ]
                 ]);
-        }
-        //fin cambio stock sala
+
+                DB::table('bodeprod')
+                    ->where('bpprod', $result->vaarti)
+                    ->update([
+                        'bpsrea' => $result->new_stock
+                    ]);
+            }
+        });
 
         return back()->with('success', '¡Stock sala descontado actualizado correctamente!');
     }

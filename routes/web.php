@@ -108,6 +108,13 @@ Route::prefix('Sala')->namespace('sala')->middleware('auth')->group(function () 
 
 });
 
+//Rutas de Diseño
+Route::prefix('Diseno')->namespace('Diseno')->middleware('auth')->group(function () {
+    Route::get('/Bodega', 'BodegaDisenoController@index')->name('BodegaDiseno');
+    Route::get('/getProductos', 'BodegaDisenoController@getProductos')->name('Diseno.getProductos');
+    Route::post('/updateStock', 'BodegaDisenoController@registrarMovimiento')->name('Diseno.updateStock');
+});
+
 
 //rutas globales autenticadas
 Route::prefix('api')->middleware('auth')->group(function () {
@@ -149,6 +156,14 @@ Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(func
     Route::get('/SolicitudGuiaDetalle/{id}', 'SucursalController@SolicitudGuiaDetalle')->name('SolicitudGuiaDetalle');
     Route::get('/BuscarProductoSucursal/{codigo}', 'SucursalController@BuscarProductoSucursal')->name('BuscarProductoSucursal');
     Route::get('/BuscarProductosFiltro', 'SucursalController@BuscarProductosFiltro')->name('BuscarProductosFiltro');
+
+    /* Módulo Devolución de Mercadería (Sucursal → Matriz) */
+    Route::get('/DevolucionSucursal', 'SucursalController@DevolucionIndex')->name('DevolucionSucursalIndex');
+    Route::post('/DevolucionSucursalCrear', 'SucursalController@DevolucionCrear')->name('DevolucionSucursalCrear');
+    Route::get('/DevolucionSucursalDetalle/{id}', 'SucursalController@DevolucionDetalle')->name('DevolucionSucursalDetalle');
+    Route::post('/DevolucionSucursalDespachar', 'SucursalController@DevolucionDespachar')->name('DevolucionSucursalDespachar');
+    Route::post('/DevolucionSucursalRecibirMatriz', 'SucursalController@DevolucionRecibirMatriz')->name('DevolucionSucursalRecibirMatriz');
+    Route::post('/DevolucionSucursalAnular', 'SucursalController@DevolucionAnular')->name('DevolucionSucursalAnular');
 });
 
 /* Endpoint Público para Excel en Vivo (protegido por token en controlador) */

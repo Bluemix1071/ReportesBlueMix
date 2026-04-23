@@ -42,17 +42,25 @@
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalproductos" title="Buscar por nombre"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <input type="text" class="form-control form-control-sm" placeholder="Descripción" id="descripcion_nuevo" readonly>
                 </div>
                 <div class="col-2">
                     <input type="text" class="form-control form-control-sm" placeholder="Marca" id="marca_nuevo" readonly>
                 </div>
                 <div class="col-2">
-                    <input type="number" class="form-control form-control-sm" placeholder="Cantidad" id="cantidad_nuevo" min="1" value="1">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text font-weight-bold bg-secondary text-white">Stock Matriz</span>
+                        </div>
+                        <input type="text" class="form-control text-center font-weight-bold" id="stock_nuevo" readonly>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <input type="number" class="form-control form-control-sm" placeholder="Cant." id="cantidad_nuevo" min="1" value="1" title="Cantidad a solicitar">
                 </div>
                 <div class="col-2 text-center">
-                    <button type="button" class="btn btn-success btn-sm" onclick="agregarALista()">Agregar a Lista</button>
+                    <button type="button" class="btn btn-success btn-sm w-100" onclick="agregarALista()"><i class="fa fa-plus"></i> Agregar</button>
                 </div>
             </div>
             
@@ -180,7 +188,7 @@
             </div>
             <div class="modal-body">
                 <table class="table" id="tabla_productos_ajax">
-                    <thead><tr><th>Código</th><th>Descripción</th><th>Marca</th><th>Acción</th></tr></thead>
+                    <thead><tr><th>Código</th><th>Descripción</th><th>Marca</th><th>Stock Matriz</th><th>Acción</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
@@ -344,8 +352,16 @@
             success: function(res) {
                 console.log('Respuesta:', res);
                 if(res && res.length > 0) {
+                    let stock = res[0].bpsrea !== null ? res[0].bpsrea : 0;
                     $('#descripcion_nuevo').val(res[0].ARDESC);
                     $('#marca_nuevo').val(res[0].ARMARCA);
+                    $('#stock_nuevo').val(stock);
+                    
+                    // Alerta si el stock es 0 o negativo
+                    if (stock <= 0) {
+                        alert('¡Atención! Este producto no tiene stock disponible en Casa Matriz (Stock: ' + stock + '). Se recomienda no solicitarlo.');
+                    }
+                    
                     $('#cantidad_nuevo').focus();
                 } else {
                     alert('Producto no encontrado: ' + codigo);
@@ -370,11 +386,14 @@
             success: function(res) {
                 let html = '';
                 res.forEach(p => {
+                    let stock = p.bpsrea !== null ? p.bpsrea : 0;
+                    let badgeClass = stock > 0 ? 'badge-info' : 'badge-danger';
                     html += `<tr>
                         <td>${p.ARCODI}</td>
                         <td>${p.ARDESC}</td>
                         <td>${p.ARMARCA}</td>
-                        <td><button class="btn btn-sm btn-success" onclick="seleccionarProd('${p.ARCODI}', '${p.ARDESC}', '${p.ARMARCA}')">Ok</button></td>
+                        <td><span class="badge ${badgeClass}" style="font-size:14px;">${stock}</span></td>
+                        <td><button class="btn btn-sm btn-success" onclick="seleccionarProd('${p.ARCODI}', '${p.ARDESC.replace(/'/g, "\\'")}', '${(p.ARMARCA || '').replace(/'/g, "\\'")}', ${stock})">Ok</button></td>
                     </tr>`;
                 });
                 $('#tabla_productos_ajax tbody').html(html);
@@ -382,10 +401,16 @@
         });
     }
 
-    function seleccionarProd(c, d, m) {
+    function seleccionarProd(c, d, m, stock) {
         $('#codigo_nuevo').val(c);
         $('#descripcion_nuevo').val(d);
         $('#marca_nuevo').val(m);
+        $('#stock_nuevo').val(stock);
+        
+        if (stock <= 0) {
+            alert('¡Atención! Este producto no tiene stock disponible en Casa Matriz (Stock: ' + stock + '). Se recomienda no solicitarlo.');
+        }
+
         $('#modalproductos').modal('hide');
         $('#cantidad_nuevo').focus();
     }
@@ -402,7 +427,7 @@
         renderTabla();
         
         // Limpiar
-        $('#codigo_nuevo, #descripcion_nuevo, #marca_nuevo').val('');
+        $('#codigo_nuevo, #descripcion_nuevo, #marca_nuevo, #stock_nuevo').val('');
         $('#cantidad_nuevo').val(1);
         $('#codigo_nuevo').focus();
     }

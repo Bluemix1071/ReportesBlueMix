@@ -460,9 +460,12 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
 
     public function BuscarProductoSucursal($codigo) {
         $producto = DB::table('producto')
-            ->where('ARCODI', $codigo)
-            ->orWhere('ARCBAR', $codigo)
-            ->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+            ->leftJoin('bodeprod', 'producto.ARCODI', '=', 'bodeprod.bpprod')
+            ->where(function($query) use ($codigo) {
+                $query->where('producto.ARCODI', $codigo)
+                      ->orWhere('producto.ARCBAR', $codigo);
+            })
+            ->get(['producto.ARCODI', 'producto.ARDESC', 'producto.ARMARCA', 'bodeprod.bpsrea']);
         return response()->json($producto);
     }
 
@@ -494,11 +497,12 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
         $marca = $request->get('marca');
   
         $productos = DB::table('producto')
-            ->where('ARCODI', 'like', '%'.$codigo.'%')
-            ->where('ARDESC', 'like', '%'.$detalle.'%')
-            ->where('ARMARCA', 'like', '%'.$marca.'%')
+            ->leftJoin('bodeprod', 'producto.ARCODI', '=', 'bodeprod.bpprod')
+            ->where('producto.ARCODI', 'like', '%'.$codigo.'%')
+            ->where('producto.ARDESC', 'like', '%'.$detalle.'%')
+            ->where('producto.ARMARCA', 'like', '%'.$marca.'%')
             ->limit(100)
-            ->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+            ->get(['producto.ARCODI', 'producto.ARDESC', 'producto.ARMARCA', 'bodeprod.bpsrea']);
   
         return response()->json($productos);
     }

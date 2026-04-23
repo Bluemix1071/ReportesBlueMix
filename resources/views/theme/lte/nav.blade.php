@@ -446,6 +446,14 @@
                                             <p>Admin Ordenes Diseño</p>
                                         </a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('BodegaDiseno') }}"
+                                            class="nav-link {{ setActive('BodegaDiseno') }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Bodega Diseño</p>
+                                        </a>
+                                    </li>
                                 @endcan
 
 
@@ -1385,6 +1393,14 @@
                                     class="nav-link {{ setActive('SolicitudGuiaIndex') }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Solicitud de Guía</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('DevolucionSucursalIndex') }}"
+                                    class="nav-link {{ setActive('DevolucionSucursalIndex') }}">
+                                    <i class="fas fa-undo-alt nav-icon text-danger"></i>
+                                    <p>Devolución a Matriz</p>
                                 </a>
                             </li>
 
