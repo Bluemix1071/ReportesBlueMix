@@ -12,16 +12,32 @@ Egresos de Mercaderia por Ventas
 @section('contenido')
 
     <div class="container-fluid row">
-        <h3 class="display-3">Egresos de Mercaderia por Ventas</h3>
+        <div class="w-100 d-flex justify-content-between align-items-center mb-3">
+            <h3 class="display-3 mb-0">Egresos de Mercaderia por Ventas</h3>
+            @if(session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard')
+                <form action="{{ route('ToggleLimiteFechaEgresos') }}" method="POST" class="m-0">
+                    @csrf
+                    @if($limite_activo ?? true)
+                        <button type="submit" class="btn btn-warning" title="Desactivar restricción de 1 semana para el selector de fechas">
+                            <i class="fas fa-unlock"></i> Desactivar Límite de Fecha
+                        </button>
+                    @else
+                        <button type="submit" class="btn btn-secondary" title="Activar restricción de 1 semana para el selector de fechas">
+                            <i class="fas fa-lock"></i> Activar Límite de Fecha
+                        </button>
+                    @endif
+                </form>
+            @endif
+        </div>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <form action="{{ route('EgresosPorVentasDetalle') }}" method="post" id="desvForm" class="form-inline">
             @csrf
             <div class="form-group mb-2">
                 @if (empty($fecha))
                     <label for="staticEmail2" class="sr-only">Fecha 1</label>
-                    <input type="date" id="fecha1" class="form-control" name="fecha">
+                    <input type="date" id="fecha1" class="form-control" name="fecha" {{ ($limite_activo ?? true) ? 'min=' . date('Y-m-d', strtotime('-1 week')) : '' }}>
                 @else
-                    <input type="date" id="fecha1" class="form-control" name="fecha" value="{{ $fecha }}">
+                    <input type="date" id="fecha1" class="form-control" name="fecha" value="{{ $fecha }}" {{ ($limite_activo ?? true) ? 'min=' . date('Y-m-d', strtotime('-1 week')) : '' }}>
                 @endif
             </div>
             <div class="form-group mx-sm-3 mb-2">

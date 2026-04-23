@@ -135,6 +135,7 @@ Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(func
     Route::get('/EgresosPorVentas', 'SucursalController@EgresosPorVentas')->name('EgresosPorVentas');
     Route::post('/EgresosPorVentasDetalle', 'SucursalController@EgresosPorVentasDetalle')->name('EgresosPorVentasDetalle');
     Route::post('/CargarEgresosPorVentas', 'SucursalController@CargarEgresosPorVentas')->name('CargarEgresosPorVentas');
+    Route::post('/ToggleLimiteFechaEgresos', 'SucursalController@ToggleLimiteFechaEgresos')->name('ToggleLimiteFechaEgresos');
     Route::get('/IngresoMercaderia', 'SucursalController@IngresoMercaderia')->name('IngresoMercaderiaSucursal');
     Route::post('/BuscarValeSucursal', 'SucursalController@BuscarValeSucursal')->name('BuscarValeSucursal');
     Route::post('/CargarValeSucursal', 'SucursalController@CargarValeSucursal')->name('CargarValeSucursal');
