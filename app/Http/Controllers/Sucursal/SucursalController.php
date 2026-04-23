@@ -108,37 +108,29 @@ class SucursalController extends Controller
 
         $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
 
-        // Leer configuración del límite
-        $limite_activo = true;
-        $config_path = storage_path('app/config_egresos.json');
-        if (file_exists($config_path)) {
-            $config = json_decode(file_get_contents($config_path), true);
-            if (isset($config['limite_activo'])) {
-                $limite_activo = $config['limite_activo'];
-            }
-        }
+        // Leer configuración del límite desde base de datos
+        $config_limit = DB::table('configuracion_sucursal')->where('clave', 'limite_activo_egresos')->first();
+        $limite_activo = $config_limit ? (bool)$config_limit->valor : true;
 
         return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso', 'limite_activo'));
     }
 
     public function ToggleLimiteFechaEgresos(Request $request) {
         $tipo = session()->get('tipo_usuario');
-        if ($tipo != 'admin' && $tipo != 'adminGiftCard') {
-            return back()->with('error', 'No tiene permisos para modificar la configuración.');
+        // Solo permitir a adminGiftCard
+        if ($tipo != 'adminGiftCard') {
+            return back()->with('error', 'No tiene permisos para modificar esta configuración. (Solo Informática)');
         }
 
-        $config_path = storage_path('app/config_egresos.json');
-        $limite_activo = true;
-        if (file_exists($config_path)) {
-            $config = json_decode(file_get_contents($config_path), true);
-            if (isset($config['limite_activo'])) {
-                $limite_activo = $config['limite_activo'];
-            }
-        }
+        $config_limit = DB::table('configuracion_sucursal')->where('clave', 'limite_activo_egresos')->first();
+        $limite_activo = $config_limit ? (bool)$config_limit->valor : true;
 
         // Invertir
         $limite_activo = !$limite_activo;
-        file_put_contents($config_path, json_encode(['limite_activo' => $limite_activo]));
+        
+        DB::table('configuracion_sucursal')
+            ->where('clave', 'limite_activo_egresos')
+            ->update(['valor' => $limite_activo ? '1' : '0', 'updated_at' => now()]);
 
         $estado = $limite_activo ? 'Activado' : 'Desactivado';
         return redirect()->route('EgresosPorVentas')->with('success', "Límite de 1 semana ha sido $estado.");
@@ -169,15 +161,9 @@ class SucursalController extends Controller
 
         $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
 
-        // Leer configuración del límite
-        $limite_activo = true;
-        $config_path = storage_path('app/config_egresos.json');
-        if (file_exists($config_path)) {
-            $config = json_decode(file_get_contents($config_path), true);
-            if (isset($config['limite_activo'])) {
-                $limite_activo = $config['limite_activo'];
-            }
-        }
+        // Leer configuración del límite desde base de datos
+        $config_limit = DB::table('configuracion_sucursal')->where('clave', 'limite_activo_egresos')->first();
+        $limite_activo = $config_limit ? (bool)$config_limit->valor : true;
 
         return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso', 'limite_activo'));
     }

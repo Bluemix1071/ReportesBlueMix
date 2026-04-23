@@ -14,7 +14,7 @@ Egresos de Mercaderia por Ventas
     <div class="container-fluid row">
         <div class="w-100 d-flex justify-content-between align-items-center mb-3">
             <h3 class="display-3 mb-0">Egresos de Mercaderia por Ventas</h3>
-            @if(session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard')
+            @if(session()->get('tipo_usuario') == 'adminGiftCard')
                 <form action="{{ route('ToggleLimiteFechaEgresos') }}" method="POST" class="m-0">
                     @csrf
                     @if($limite_activo ?? true)
