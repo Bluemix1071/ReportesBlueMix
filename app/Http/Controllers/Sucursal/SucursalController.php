@@ -696,27 +696,59 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
     public function SolicitudGuiaCrear(Request $request) {
         $usuario = session()->get('nombre');
         
-        $id = DB::table('solicitud_guias')->insertGetId([
-            'usuario' => $usuario,
-            'fecha_solicitud' => date('Y-m-d H:i:s'),
-            'estado' => 0,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
+        DB::beginTransaction();
+        try {
+            // Obtener primero el Nro Bodega
+            $maxNro = DB::table('salida_de_bodega')->max('nro');
+            $nroBodega = $maxNro ? $maxNro + 1 : 1;
 
-        foreach ($request->productos as $prod) {
-            DB::table('dsolicitud_guias')->insert([
-                'id_solicitud' => $id,
-                'articulo' => $prod['codigo'],
-                'detalle' => $prod['detalle'],
-                'marca' => $prod['marca'] ?? '',
-                'cantidad' => $prod['cantidad'],
+            $id = DB::table('solicitud_guias')->insertGetId([
+                'usuario' => $usuario,
+                'fecha_solicitud' => date('Y-m-d H:i:s'),
+                'estado' => 0,
+                'nro_bodega' => $nroBodega,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
-        }
 
-        return response()->json(['status' => 'success', 'message' => 'Solicitud creada con éxito']);
+            // Integración con Bodega System (salida_de_bodega)
+            DB::table('salida_de_bodega')->insert([
+                'nro' => $nroBodega,
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i'),
+                'usuario' => $usuario,
+                'estado' => 'W', // Pendiente
+                'tipo' => 'S' // Sucursal
+            ]);
+
+            foreach ($request->productos as $prod) {
+                DB::table('dsolicitud_guias')->insert([
+                    'id_solicitud' => $id,
+                    'articulo' => $prod['codigo'],
+                    'detalle' => $prod['detalle'],
+                    'marca' => $prod['marca'] ?? '',
+                    'cantidad' => $prod['cantidad'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+                DB::table('dsalida_bodega')->insert([
+                    'id' => $nroBodega,
+                    'articulo' => $prod['codigo'],
+                    'cantidad' => $prod['cantidad'],
+                    'destino' => 'SUCURSAL',
+                    'desde' => '',
+                    'tipo' => 'S',
+                    'ubicacion' => ''
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Solicitud creada con éxito. Nro Bodega: ' . $nroBodega]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => 'Error al crear solicitud: ' . $e->getMessage()], 500);
+        }
     }
 
     public function SolicitudGuiaDetalle($id) {
@@ -749,8 +781,8 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
 
         $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
 
-        if (!$cabecera || $cabecera->estado != 0) {
-            return back()->with('error', 'La solicitud no se encuentra en estado pendiente o no existe.');
+        if (!$cabecera || $cabecera->estado != 5) {
+            return back()->with('error', 'La solicitud debe estar Preparada por Bodega (estado 5) para poder despacharla.');
         }
 
         $detalles = DB::table('dsolicitud_guias')->where('id_solicitud', $id)->get();
@@ -950,6 +982,75 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
         ]);
 
         return back()->with('success', 'La solicitud ha sido anulada correctamente.');
+    }
+
+    public function SolicitudGuiaBodegaTomar(Request $request) {
+        $tipo = session()->get('tipo_usuario');
+        if (!in_array($tipo, ['admin', 'adminGiftCard', 'bodega', 'sala'])) {
+            return back()->with('error', 'No tiene permisos para tomar esta solicitud.');
+        }
+
+        $id = $request->id;
+        $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 0) {
+            return back()->with('error', 'La solicitud no se encuentra en estado pendiente.');
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table('solicitud_guias')->where('id', $id)->update([
+                'estado' => 3, // En Preparación por Bodega
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            if ($cabecera->nro_bodega) {
+                DB::table('salida_de_bodega')->where('nro', $cabecera->nro_bodega)->update([
+                    'estado' => 'W', // Ya está en W, pero aseguramos
+                    'usuario' => session()->get('nombre') // Actualizamos quién lo tomó
+                ]);
+            }
+
+            DB::commit();
+            return back()->with('success', 'Has tomado la solicitud. Ahora está En Preparación.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
+    public function SolicitudGuiaBodegaPreparar(Request $request) {
+        $tipo = session()->get('tipo_usuario');
+        if (!in_array($tipo, ['admin', 'adminGiftCard', 'bodega', 'sala'])) {
+            return back()->with('error', 'No tiene permisos para finalizar la preparación.');
+        }
+
+        $id = $request->id;
+        $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 3) {
+            return back()->with('error', 'La solicitud debe estar En Preparación para finalizarla.');
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table('solicitud_guias')->where('id', $id)->update([
+                'estado' => 5, // Preparado, Pendiente de Despacho
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            if ($cabecera->nro_bodega) {
+                DB::table('salida_de_bodega')->where('nro', $cabecera->nro_bodega)->update([
+                    'estado' => 'T', // Terminado en Bodega
+                ]);
+            }
+
+            DB::commit();
+            return back()->with('success', 'Preparación finalizada. La orden ha sido pasada a Despacho.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 
     public function SolicitudGuiaLive(Request $request) {

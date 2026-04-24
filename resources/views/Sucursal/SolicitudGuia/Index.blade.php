@@ -113,6 +113,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Nro Bodega</th>
                             <th>Fecha</th>
                             <th>Usuario</th>
                             <th>Folio Guía (DTE)</th>
@@ -126,6 +127,13 @@
                         @foreach($solicitudes as $sol)
                         <tr>
                             <td>{{ $sol->id }}</td>
+                            <td>
+                                @if(isset($sol->nro_bodega) && $sol->nro_bodega)
+                                    <span class="badge badge-warning">Bod: {{ $sol->nro_bodega }}</span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
                             <td>{{ date('d-m-Y H:i', strtotime($sol->fecha_solicitud)) }}</td>
                             <td>{{ $sol->usuario }}</td>
                             <td>
@@ -140,6 +148,10 @@
                             <td>
                                 @if($sol->estado == 0)
                                     <span class="badge badge-secondary">PENDIENTE</span>
+                                @elseif($sol->estado == 3)
+                                    <span class="badge badge-warning">EN PREPARACIÓN</span>
+                                @elseif($sol->estado == 5)
+                                    <span class="badge badge-info">PREPARADO (Para Despacho)</span>
                                 @elseif($sol->estado == 1)
                                     <span class="badge badge-primary">DESPACHADO</span>
                                 @elseif($sol->estado == 2)
@@ -151,8 +163,25 @@
                             <td>
                                 <button class="btn btn-xs btn-info" onclick="verDetalle({{ $sol->id }})" title="Ver Detalle"><i class="fa fa-eye"></i></button>
                                 
-                                {{-- BOTÓN DESPACHAR (SOLO en modo despacho y para roles autorizados) --}}
-                                @if($sol->estado == 0 && request('mode') == 'despacho' && (session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard' || session()->get('tipo_usuario') == 'sala' || session()->get('tipo_usuario') == 'bodega'))
+                                {{-- BOTONES BODEGA --}}
+                                @if(session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard' || session()->get('tipo_usuario') == 'bodega' || session()->get('tipo_usuario') == 'sala')
+                                    @if($sol->estado == 0)
+                                        <form action="{{ route('SolicitudGuiaBodegaTomar') }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $sol->id }}">
+                                            <button type="submit" class="btn btn-xs btn-warning" title="Tomar Solicitud para Preparar"><i class="fas fa-hand-paper"></i> TOMAR (BODEGA)</button>
+                                        </form>
+                                    @elseif($sol->estado == 3)
+                                        <form action="{{ route('SolicitudGuiaBodegaPreparar') }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $sol->id }}">
+                                            <button type="submit" class="btn btn-xs btn-success" title="Finalizar Preparación"><i class="fas fa-box-open"></i> TERMINAR (BODEGA)</button>
+                                        </form>
+                                    @endif
+                                @endif
+
+                                {{-- BOTÓN DESPACHAR (SOLO en modo despacho y para roles autorizados, y solo si está en estado 5) --}}
+                                @if($sol->estado == 5 && request('mode') == 'despacho' && (session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard' || session()->get('tipo_usuario') == 'sala' || session()->get('tipo_usuario') == 'bodega'))
                                     <button class="btn btn-xs btn-primary btn-pulse" onclick="abrirDespacho({{ $sol->id }})" title="Procesar Despacho"><i class="fa fa-truck"></i> DESPACHAR</button>
                                 @endif
 
