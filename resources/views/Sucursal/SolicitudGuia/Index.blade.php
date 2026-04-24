@@ -486,7 +486,15 @@
     }
 
     function guardarSolicitud() {
-        if(productos_solicitud.length === 0) return;
+        if(productos_solicitud.length === 0) {
+            alert('Debe agregar al menos un producto a la solicitud antes de enviarla.');
+            return;
+        }
+        
+        // Deshabilitar el botón para evitar doble clic
+        const btn = event.currentTarget || event.target;
+        const oldText = $(btn).html();
+        $(btn).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Enviando...');
         
         $.ajax({
             url: '{{ route("SolicitudGuiaCrear") }}',
@@ -498,6 +506,15 @@
             success: function(res) {
                 alert(res.message);
                 location.reload();
+            },
+            error: function(err) {
+                $(btn).prop('disabled', false).html(oldText);
+                console.error(err);
+                if (err.responseJSON && err.responseJSON.message) {
+                    alert('Error: ' + err.responseJSON.message);
+                } else {
+                    alert('Ocurrió un error al enviar la solicitud. Revise la consola para más detalles.');
+                }
             }
         });
     }
