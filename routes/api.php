@@ -81,6 +81,15 @@ Route::post('/nuevoConteoBodega','Api\ConteosController@nuevoConteoBodega')->nam
 Route::get('/getRacks','Api\ConteosController@getRacks')->name('getRacks');
 Route::post('/cargarRack/{id_conteo}','Api\ConteosController@cargarRack')->name('cargarRack');
 
+// Rutas para Gestión Dinámica de Parámetros
+Route::get('/getPersonal','Api\ConteosController@getPersonal')->name('getPersonal');
+Route::post('/addPersonal','Api\ConteosController@addPersonal')->name('addPersonal');
+Route::delete('/deletePersonal/{id}','Api\ConteosController@deletePersonal')->name('deletePersonal');
+
+Route::get('/getModulos','Api\ConteosController@getModulos')->name('getModulos');
+Route::post('/addModulo','Api\ConteosController@addModulo')->name('addModulo');
+Route::delete('/deleteModulo/{id}','Api\ConteosController@deleteModulo')->name('deleteModulo');
+
 
 
 
