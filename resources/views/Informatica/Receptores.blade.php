@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
- Exportar Facturas
+ Exportar Receptores
 @endsection
 @section('styles')
 

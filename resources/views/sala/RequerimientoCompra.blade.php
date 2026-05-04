@@ -102,30 +102,28 @@
       </form>
           <hr>
           <div class="card-header">
-          <div style="text-align:center">
-            <form method="post" action="{{ route('BuscarRequerimientoFecha') }}">
-                                    <tr>
-                                        <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#cargarvale">Cargar Vale</button></td>
-                                    </tr>
-                                    &nbsp;&nbsp;&nbsp;
-                                    <tr>
-                                        <td>Desde:</td>
-                                        <td><input type="date" id="min" name="min" value="{{ $fecha1 }}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Hasta:</td>
-                                        <td><input type="date" id="max" name="max" value="{{ $fecha2 }}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="submit" class="btn btn-info" id="buscar_fecha">Buscar</button></td>
-                                    </tr>
+            <div style="text-align:center" class="form-inline d-flex justify-content-center">
+                                    <div class="mr-3">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#cargarvale">Cargar Vale</button>
+                                    </div>
+                                    <div class="form-group mr-2">
+                                        <label class="mr-1">Desde:</label>
+                                        <input type="date" id="min" name="min" value="{{ $fecha1 }}" class="form-control">
+                                    </div>
+                                    <div class="form-group mr-2">
+                                        <label class="mr-1">Hasta:</label>
+                                        <input type="date" id="max" name="max" value="{{ $fecha2 }}" class="form-control">
+                                    </div>
+                                    <div class="form-group mr-3">
+                                        <button type="button" class="btn btn-info" id="buscar_fecha" onclick="table.draw()">Buscar</button>
+                                    </div>
                                     @if(session()->get('email') == "adquisiciones@bluemix.cl")
-                                    &nbsp;&nbsp;&nbsp;
-                                    <tr>
-                                        <td><input type="checkbox" name="prioridades" id="soloPrioridades" style="accent-color: #343a40;">Mostar solo Prioridades</td>
-                                    </tr>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="prioridades" id="soloPrioridades" class="form-check-input" style="accent-color: #343a40;">
+                                        <label class="form-check-label">Mostrar solo Prioridades</label>
+                                    </div>
                                     @endif
-                                </form>
+                    </div>
 
                                 <!-- &nbsp &nbsp &nbsp
                                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#mimodalinfo1">
@@ -156,106 +154,6 @@
                           </thead>
 
                           <tbody>
-                            @foreach ($requerimiento_compra as $item)
-                              @if($item->prioridad == 1 && $item->estado == "INGRESADO" && session()->get('email') == "adquisiciones@bluemix.cl")
-                                <tr class="bg-dark bg-gradient">
-                              @else
-                                <tr>
-                              @endif
-
-                                <!-- Checkbox -->
-                                <td>
-                                  <input type="checkbox"
-                                         id="id_{{ $item->id }}"
-                                         class="case"
-                                         name="case[]"
-                                         value="{{ $item->id }}"
-                                         onclick="contador({{ $item->id }}, {{ $item->id }})">
-                                </td>
-
-                                <!-- ID oculto -->
-                                <td style="display:none;">{{ $item->id }}</td>
-
-                                <!-- Código -->
-                                <td data-toggle="modal"
-                                    data-target="#modalresumencodigo"
-                                    onclick="loadsumary('{{ $item->codigo }}')"
-                                    class="text-primary">
-                                    {{ $item->codigo }}
-                                </td>
-
-                                <!-- Datos -->
-                                <td>{{ $item->descripcion }}</td>
-                                <td>{{ $item->marca }}</td>
-                                <td>{{ $item->cantidad }}</td>
-                                <td>{{ $item->stock_bodega }}</td>
-                                <td>{{ $item->depto }}</td>
-
-                                <!-- Estado con colores -->
-                                <td>
-                                  @if($item->estado == "INGRESADO")
-                                    <h4><span class="badge badge-secondary">{{ $item->estado }}</span></h4>
-                                  @elseif($item->estado == "ENVÍO OC")
-                                    <h4><span class="badge badge-primary">{{ $item->estado }}</span></h4>
-                                  @elseif($item->estado == "BODEGA")
-                                    <h4><span class="badge badge-success">{{ $item->estado }}</span></h4>
-                                  @elseif($item->estado == "RECHAZADO")
-                                    <h4><span class="badge badge-warning">{{ $item->estado }}</span></h4>
-                                  @elseif($item->estado == "DESACTIVADO")
-                                    <h4><span class="badge badge-danger">{{ $item->estado }}</span></h4>
-                                  @endif
-                                </td>
-
-                                <!-- OC -->
-                                <td>
-                                  <a href="{{ route('pdf.orden', $item->oc) }}" target="_blank">
-                                    {{ $item->oc }}
-                                  </a>
-                                </td>
-
-                                <!-- Ocultos -->
-                                <td style="display:none;">{{ $item->observacion }}</td>
-                                <td style="display:none;">{{ $item->fecha }}</td>
-
-                                <!-- Observación Interna -->
-                                <td>
-                                  @if($item->estado == "RECHAZADO")
-                                    <p class="text-danger">{{ $item->observacion_interna }}</p>
-                                  @else
-                                    <p>{{ $item->observacion_interna }}</p>
-                                  @endif
-                                </td>
-
-                                <!-- Acciones -->
-                                <td>
-                                  <a href="" class="btn btn-primary btn-sm"
-                                     title="Editar Requerimiento"
-                                     data-toggle="modal"
-                                     data-target="#editarrequerimiento"
-                                     data-id="{{ $item->id }}"
-                                     data-codigo="{{ $item->codigo }}"
-                                     data-descripcion="{{ $item->descripcion }}"
-                                     data-marca="{{ $item->marca }}"
-                                     data-cantidad="{{ $item->cantidad }}"
-                                     data-departamento="{{ $item->depto }}"
-                                     data-estado="{{ $item->estado }}"
-                                     data-oc="{{ $item->oc }}"
-                                     data-observacion="{{ $item->observacion }}"
-                                     data-observacion_interna="{{ $item->observacion_interna }}"
-                                     data-fecha_ingreso="{{ $item->fecha }}"
-                                     data-fecha_enviooc="{{ $item->fecha_enviooc }}"
-                                     data-fecha_bodega="{{ $item->fecha_bodega }}"
-                                     data-fecha_rechazado="{{ $item->fecha_rechazado }}"
-                                     data-fecha_desactivado="{{ $item->fecha_desactivado }}">
-                                     <i class="fa fa-eye"></i>
-                                  </a>
-                                </td>
-
-                                <!-- Prioridad -->
-                                <td style="display:none;">{{ $item->prioridad }}</td>
-
-                              </tr>
-                            @endforeach
                           </tbody>
                         </table>
                       </div>
@@ -980,7 +878,6 @@ var ingresos = $('#ingresos').DataTable({
             success: function(result) {
                 if(result.length > 0 ){
                     result.forEach(items => {
-                        //onclick="loadsumary('{{ $item->codigo }}')"
                         vale.rows.add([['<p data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary(`'+items.vaarti+'`)" style="color: #009aff">'+items.vaarti+'</p>','<p style="width: 100%">'+items.ARDESC+'</p>','<td>'+items.ARMARCA+'</td>','<td>'+items.vacant+'</td>', '<input type="checkbox" id="id_'+items.vaarti+'" onclick="incluye(`'+items.vaarti+'`)" checked>']]).draw();
                         $("#vale_cargar").append('<input type="text" readonly style="margin-bottom: 1%; margin-left: 1%; width: 3%; text-align: center; border-color: #007bff; background-color: #007bff; border-radius: 4px; color: white; height: 25px;" id="input_'+items.vaarti+'" name="vale[]" value="'+items.vaarti+'" title="'+items.vaarti+'">');
                     });
@@ -1115,26 +1012,78 @@ function( settings, data, dataIndex ) {
         orderCellsTop: true,
         dom: 'Bfrtip',
         order: [[ 1, "desc" ]],
+        pageLength: 50,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ route('RequerimientoCompraData') }}",
+            data: function (d) {
+                d.min = $('#min').val();
+                d.max = $('#max').val();
+            }
+        },
+        columns: [
+            { data: 'id', name: 'id', orderable: false, searchable: false, render: function(data, type, row) {
+                return '<input type="checkbox" id="id_'+data+'" class="case" name="case[]" value="'+data+'" onclick="contador('+data+', '+data+')">';
+            }},
+            { data: 'id', name: 'id', visible: false },
+            { data: 'codigo', name: 'codigo', className: 'text-primary', render: function(data, type, row) {
+                return '<span style="cursor:pointer" data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary(\''+data+'\')">'+data+'</span>';
+            }},
+            { data: 'descripcion', name: 'descripcion' },
+            { data: 'marca', name: 'marca' },
+            { data: 'cantidad', name: 'cantidad' },
+            { data: 'stock_bodega', name: 'stock_bodega', searchable: false },
+            { data: 'depto', name: 'depto' },
+            { data: 'estado', name: 'estado', render: function(data, type, row) {
+                var badgeClass = 'badge-secondary';
+                if(data == 'ENVÍO OC') badgeClass = 'badge-primary';
+                if(data == 'BODEGA') badgeClass = 'badge-success';
+                if(data == 'RECHAZADO') badgeClass = 'badge-warning';
+                if(data == 'DESACTIVADO') badgeClass = 'badge-danger';
+                return '<h4><span class="badge '+badgeClass+'">'+data+'</span></h4>';
+            }},
+            { data: 'oc', name: 'oc', render: function(data, type, row) {
+                if(!data) return '';
+                var url = "{{ route('pdf.orden', ':oc') }}".replace(':oc', data);
+                return '<a href="'+url+'" target="_blank">'+data+'</a>';
+            }},
+            { data: 'observacion', name: 'observacion', visible: false },
+            { data: 'fecha', name: 'fecha', visible: false },
+            { data: 'observacion_interna', name: 'observacion_interna', render: function(data, type, row) {
+                var textClass = row.estado == 'RECHAZADO' ? 'text-danger' : '';
+                return '<p class="'+textClass+'">'+(data || '')+'</p>';
+            }},
+            { data: 'acciones', name: 'acciones', orderable: false, searchable: false },
+            { data: 'prioridad', name: 'prioridad', visible: false }
+        ],
+        createdRow: function(row, data, dataIndex) {
+            if(data.prioridad == 1 && data.estado == "INGRESADO" && "{{ session()->get('email') }}" == "adquisiciones@bluemix.cl") {
+                $(row).addClass('bg-dark bg-gradient');
+            }
+        },
         buttons: [
             'copy', 'pdf', 'print', 'excel'
-
         ],
-          "language":{
-        "info": "_TOTAL_ registros",
-        "search":  "Buscar",
-        "paginate":{
-          "next": "Siguiente",
-          "previous": "Anterior",
+        "language":{
+            "info": "_TOTAL_ registros",
+            "search":  "Buscar",
+            "paginate":{
+                "next": "Siguiente",
+                "previous": "Anterior",
+            },
+            "loadingRecords": "cargando",
+            "processing": "procesando",
+            "emptyTable": "no hay resultados",
+            "zeroRecords": "no hay coincidencias",
+            "infoEmpty": "",
+            "infoFiltered": ""
+        },
+        fixedHeader: true
+    });
 
-      },
-      "loadingRecords": "cargando",
-      "processing": "procesando",
-      "emptyTable": "no hay resultados",
-      "zeroRecords": "no hay coincidencias",
-      "infoEmpty": "",
-      "infoFiltered": ""
-      },
-      fixedHeader: true
+    $('#min, #max').on('change', function () {
+        table.draw();
     });
 
     /* $('#min, #max').on('change', function () {

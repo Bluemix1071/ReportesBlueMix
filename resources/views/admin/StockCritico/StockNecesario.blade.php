@@ -10,9 +10,6 @@
     <div class="container my-4">
         <h1 class="display-4">Stock Necesario</h1>
         <div class="card-body">
-            <?php $variable = 0;
-            $boton = 0;
-            $coincidente = 0; ?>
             <div>
                 <div class="card-body">
                     <!-- tabla principal -->
@@ -30,53 +27,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($datos as $lista)
-                                <?php $coincidente = 0; ?>
-                                @if (strtoupper($lista->Codigo) != $variable)
-                                    @if ($lista->Media_de_ventas * 1.2 >= $lista->Bodega)
-                                        @foreach ($familia as $family)
-                                            @if ($lista->codigo_familia == $family->tarefe)
-                                                @if ($lista->Media_de_ventas >= $lista->Bodega)
-                                                    <tr class="text-danger" id="{{ $lista->Codigo }}">
-                                                        <td>Critico</td>
-                                                    @else
-                                                    <tr class="text-warning" id="{{ $lista->Codigo }}">
-                                                        <td>Poca Cantidad</td>
-                                                @endif
-                                                <td>{{ strtoupper($lista->Codigo) }}</td>
-                                                <td>{{ $lista->Detalle }}</td>
-                                                <td>{{ $lista->Marca_producto }}</td>
-                                                <td>{{ $family->taglos }}</td>
-                                                <td>{{ $lista->fecha }}</td>
-                                                <td>{{ $lista->Media_de_ventas }}</td>
-                                                <td>{{ $lista->Bodega }}</td>
-                                                {{-- <td>
-                                                    <button class="fa fa-comment text-primary border border-light"
-                                                        onclick='IngresarComentario(id,value)'
-                                                        value="{{ $lista->Detalle }}" id="{{ $lista->Codigo }}"
-                                                        data-target=#ModalComentar data-toggle="modal"></button>
-                                                    <button class="fa fa-list text-primary border border-light"
-                                                        onclick='historial(id,value)' value="{{ $lista->Detalle }}"
-                                                        id="{{ $lista->Codigo }}" data-target=#ModalVer
-                                                        data-toggle="modal"></button>
-                                                    <button class="fa fa-exchange text-primary border border-light"
-                                                        onclick='ClasificarProducto(id)'
-                                                        id="{{ $lista->Codigo }}"></button>
-                                                    <button
-                                                        class="fa fa-external-link-square text-primary border border-light"
-                                                        onclick='GenerarOrden(id,value)' id="{{ $lista->Codigo }}"
-                                                        value="{{ $lista->Detalle }}"></button>
-                                                </td> --}}
-                                                </tr>
-                                                <?php $variable = $lista->Codigo;
-                                                $coincidente = 0; ?>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                @endif
-                            @endforeach
                         </tbody>
-
                     </table>
                 </div>
             </div>
@@ -92,7 +43,41 @@
 
     <script>
         $(document).ready(function() {
-            $('#StockNecesario').DataTable();
+            $('#StockNecesario').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{{ route('StockNecesario') }}",
+                "pageLength": 25,
+                "columns": [
+                    { data: 'estado_stock', name: 'sc.Media_de_ventas' },
+                    { data: 'Codigo', name: 'sc.Codigo' },
+                    { data: 'Detalle', name: 'sc.Detalle' },
+                    { data: 'Marca_producto', name: 'sc.Marca_producto' },
+                    { data: 'familia_nombre', name: 'fam.taglos' },
+                    { data: 'fecha', name: 'sc.fecha' },
+                    { data: 'Media_de_ventas', name: 'sc.Media_de_ventas' },
+                    { data: 'Bodega', name: 'sc.Bodega' }
+                ],
+                "order": [[6, "desc"]],
+                "createdRow": function(row, data, dataIndex) {
+                    $(row).addClass(data.clase_css);
+                    $(row).attr('id', data.Codigo);
+                },
+                "language": {
+                    "search": "Buscar:",
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
         });
     </script>
 @endsection

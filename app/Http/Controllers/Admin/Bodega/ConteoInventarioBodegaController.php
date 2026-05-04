@@ -132,8 +132,7 @@ class ConteoInventarioBodegaController extends Controller
         $consolidacionSala = DB::table('conteo_inventario_detalle')
         ->select('conteo_inventario_detalle.*', DB::raw('SUM(cantidad) as total'),'conteo_inventario.modulo', 'conteo_inventario.ubicacion', 'conteo_inventario.encargado','conteo_inventario.fecha')
         ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
-        ->where('conteo_inventario.ubicacion', 'Sala')
-        // ->where('conteo_inventario.fecha','like','2023-10-11%')
+        ->whereIn('conteo_inventario.ubicacion', ['Sala', 'Sucursal'])
         ->whereBetween('conteo_inventario.fecha', ['2025-10-01 00:00:00', '2025-11-09 23:59:59'])
         ->groupBy('codigo', 'modulo')
         ->get();
@@ -218,6 +217,70 @@ class ConteoInventarioBodegaController extends Controller
 
         return back()->with('success', 'Inventario actualizado correctamente!');
     }
+    public function actualizarInventarioSucursal(Request $request) {
+
+        $InsertNewinventario = DB::table('conteo_inventario_detalle')
+        ->select('conteo_inventario_detalle.*', DB::raw('SUM(conteo_inventario_detalle.cantidad) as total'), 'conteo_inventario.modulo', 'conteo_inventario.ubicacion','bodeprod.bpsrea as stock_anterior', 'bodeprod.bpsrea1 as stock_sucursal')
+        ->leftJoin('conteo_inventario', 'conteo_inventario_detalle.id_conteo_inventario', '=', 'conteo_inventario.id')
+        ->leftJoin ('bodeprod', 'conteo_inventario_detalle.codigo', '=', 'bodeprod.bpprod')
+        ->where('conteo_inventario.ubicacion', 'Sucursal')
+        ->whereBetween('conteo_inventario.fecha', ['2025-10-01 00:00:00', '2025-11-09 23:59:59'])
+        ->groupBy('codigo')
+        ->orderBy('id')
+        ->chunk(100000, function ($resultados)
+        {
+        foreach ($resultados as $resultado) {
+            if(is_null($resultado->stock_anterior)){
+                $resultado->stock_anterior = '0';
+            }
+            if(is_null($resultado->stock_sucursal)){
+                $resultado->stock_sucursal = '0';
+            }
+
+            // Insertar en la tabla solicitud_ajuste
+            DB::table('solicitud_ajuste')->insert([
+                'codprod' => $resultado->codigo,
+                'producto' => $resultado->detalle,
+                'fecha' => date('Y-m-d'),
+                'stock_anterior' => $resultado->stock_sucursal,
+                'nuevo_stock' => $resultado->total,
+                'autoriza' => "Francisco Moraga",
+                'solicita' => "Inventario Sucursal 2025",
+                'observacion' => 'Conteo Inventario Sucursal 2025'
+            ]);
+
+        }
+
+        foreach ($resultados as $resultado) {
+                DB::transaction(function () use ($resultado) {
+                    $codigo = $resultado->codigo;
+                    $registro = DB::table('bodeprod')->where('bpprod', $codigo)->first();
+
+                    if ($registro) {
+                        $stock_matriz = $registro->bpsrea - $registro->bpsrea1;
+                        DB::table('bodeprod')
+                            ->where('bpprod', $codigo)
+                            ->update([
+                                'bpsrea1' => $resultado->total,
+                                'bpsrea' => ($stock_matriz + $resultado->total)
+                            ]);
+                    } else {
+                        DB::table('bodeprod')->insert([
+                            'bpprod' => $codigo,
+                            'bpbode' => '1',
+                            'bpsrea' => $resultado->total,
+                            'bpstin' => '0',
+                            'bpsrea1' => $resultado->total,
+                        ]);
+                    }
+                });
+            }
+
+        });
+
+        return back()->with('success', 'Inventario de Sucursal actualizado correctamente!');
+    }
+
 
 
     public function CargarValeConteoBodega(Request $request){

@@ -94,7 +94,7 @@ Costos Detalles
                                     <td style="text-align:right">{{ number_format($item->precio_ref, 0, ',', '.') }}</td>
                                     <td style="text-align:right">{{ number_format($item->totalventa, 0, ',', '.') }}</td>
                                     <td style="text-align:left">{{ $item->DEFECO}}</td>
-                                    <td style="text-align:right">{{ round((1-($item->costototal/$item->totalventa))*100, 1) }}%</td>
+                                    <td style="text-align:right">@if($item->totalventa != 0) {{ round((1-($item->costototal/$item->totalventa))*100, 1) }} @else 0 @endif%</td>
                                 </tr>
                             @endforeach
                         @endif

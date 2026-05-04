@@ -13,7 +13,7 @@ use App\Modelos\MetodosDePago\CuentaCliente_xCobrar;
 use App\Modelos\PagoEfectivo;
 use App\Modelos\ProductosEnTrancito\Bodeprod;
 use App\Modelos\TarjetaCredito;
-use Faker\Test\Provider\Collection;
+
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +23,7 @@ class AnulacionDocumentosController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -33,7 +33,7 @@ class AnulacionDocumentosController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function create()
     {
@@ -44,21 +44,21 @@ class AnulacionDocumentosController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(AnulacionDocumentosRequest $request)
     {
-        $pago_efectivo=[];
-        $pago_transferencia=[];
-        $pago_tarjeta =[];
-        $x_cobrar =[];
+        $pago_efectivo = [];
+        $pago_transferencia = [];
+        $pago_tarjeta = [];
+        $x_cobrar = [];
 
         $cargos = Cargos::where('canmro', $request->folio)
             ->where('catipo', $request->tipo_documento)
             ->where('cavalo', $request->valor_documento)
             ->where('cafeco', $request->fecha)
             ->first();
-       // dd($cargos);
+        // dd($cargos);
 
         if (is_null($cargos)) {
             return back()->with("flash", "Documento no encontrado!!")->withInput();
@@ -116,7 +116,7 @@ class AnulacionDocumentosController extends Controller
                 break;
             case null:
 
-                    return back()->with("flash", "Selecione un metodo de pago ")->withInput();
+                return back()->with("flash", "Selecione un metodo de pago ")->withInput();
 
                 break;
 
@@ -146,7 +146,7 @@ class AnulacionDocumentosController extends Controller
         }
 
         //dd($pago_efectivo, $pago_tarjeta, $x_cobrar, !empty($pago_efectivo), !empty($pago_tarjeta), !empty($x_cobrar));
-        $dte_hex = Dte_hex::where('folio',$cargos->CANMRO)->where('fecha',$request->fecha)->delete();
+        $dte_hex = Dte_hex::where('folio', $cargos->CANMRO)->where('fecha', $request->fecha)->delete();
 
 
         $dcargos = DB::table('dcargos')
@@ -160,9 +160,9 @@ class AnulacionDocumentosController extends Controller
 
         if (!empty($pago_efectivo)) {
             $pago_efectivo->delete();
-        }elseif (!empty($pago_transferencia)){
+        } elseif (!empty($pago_transferencia)) {
             $pago_transferencia = DB::table('pago_transferencia')->where('id', $pago_transferencia->id)->delete();
-        }elseif (!empty($pago_tarjeta)) {
+        } elseif (!empty($pago_tarjeta)) {
             $pago_tarjeta->delete();
         } elseif (!empty($x_cobrar)) {
             $x_cobrar->delete();
@@ -171,7 +171,7 @@ class AnulacionDocumentosController extends Controller
 
 
 
-        return  redirect()->route('AnulacionDocs')->with('success','Se ha eliminado el documento');
+        return redirect()->route('AnulacionDocs')->with('success', 'Se ha eliminado el documento');
     }
 
 
@@ -179,7 +179,7 @@ class AnulacionDocumentosController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -190,7 +190,7 @@ class AnulacionDocumentosController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function edit($id)
     {
@@ -202,7 +202,7 @@ class AnulacionDocumentosController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function update(Request $request, $id)
     {
@@ -213,7 +213,7 @@ class AnulacionDocumentosController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function destroy($id)
     {

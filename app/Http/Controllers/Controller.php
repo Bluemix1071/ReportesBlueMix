@@ -13,7 +13,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    function smalldateToHex(string $fecha): string {
+    function smalldateToHex($fecha) {
         // Asume siempre la hora 00:00
         $dt = new DateTime($fecha . ' 00:00');
         $base = new DateTime('1900-01-01 00:00');

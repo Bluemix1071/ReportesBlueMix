@@ -57,12 +57,25 @@ class User extends Authenticatable
 
     }
 
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
     }
 
-
+    /**
+     * Determine if the user has any of the given abilities.
+     *
+     * @param  iterable|string  $abilities
+     * @param  array|mixed  $arguments
+     * @return bool
+     */
+    public function canany($abilities, $arguments = [])
+    {
+        return collect($abilities)->contains(function ($ability) use ($arguments) {
+            return $this->can($ability, $arguments);
+        });
+    }
 }
 
 

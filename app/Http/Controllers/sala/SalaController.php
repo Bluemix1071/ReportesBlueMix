@@ -10,6 +10,7 @@ use App\Mail\MailNotify;
 use DB;
 use Session;
 use Mail;
+use DataTables;
 
 
 class SalaController extends Controller
@@ -508,27 +509,49 @@ class SalaController extends Controller
     }
 
     public function RequerimientoCompra(Request $request){
+        $fecha1 = date("Y-m-d", strtotime(date("Y-m-d")." - 1 month"));
+        $fecha2 = date("Y-m-d");
 
-      //$requerimiento_compra = DB::table('requerimiento_compra')->get();
-      //$requerimiento_compra = DB::connection('DB2')->table('requerimiento_compra')->get();
-      $fecha1 = date("Y-m-d",strtotime(date("Y-m-d")."- 1 month"));
-      $fecha2 = date("Y-m-d");
+        $estados = [
+            ["estado" => "INGRESADO"],
+            ["estado" => "ENVÍO OC"],
+            ["estado" => "BODEGA"],
+            ["estado" => "DESACTIVADO"]
+        ];
 
-      /* $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()'); */
-       $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$fecha1.'" and now()');
-    //dd($requerimiento_compra);
+        return view('sala.RequerimientoCompra', compact('estados', 'fecha1', 'fecha2'));
+    }
 
-      $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
+    public function RequerimientoCompraData(Request $request){
+        $fecha1 = $request->get('min') ?: date("Y-m-d", strtotime(date("Y-m-d")." - 1 month"));
+        $fecha2 = $request->get('max') ?: date("Y-m-d");
 
-      //$productos = DB::table('producto')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+        $query = DB::table('requerimiento_compra')
+            ->leftJoin('Suma_Bodega', 'requerimiento_compra.codigo', '=', 'Suma_Bodega.inarti')
+            ->select(
+                'requerimiento_compra.*',
+                DB::raw('IFNULL(Suma_Bodega.cantidad, 0) as stock_bodega')
+            )
+            ->whereBetween('requerimiento_compra.fecha', [$fecha1, $fecha2 . ' 23:59:59']);
 
-      //$productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
-
-      //$productos = DB::connection('DB2')->table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
-
-      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
+        return DataTables::of($query)
+            ->addColumn('acciones', function($row){
+                return '
+                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editarrequerimiento" 
+                        data-id="'.$row->id.'" data-codigo="'.$row->codigo.'" data-descripcion="'.$row->descripcion.'"
+                        data-marca="'.$row->marca.'" data-cantidad="'.$row->cantidad.'" data-departamento="'.$row->depto.'"
+                        data-estado="'.$row->estado.'" data-oc="'.$row->oc.'" data-observacion="'.$row->observacion.'"
+                        data-observacion_interna="'.$row->observacion_interna.'" data-fecha_ingreso="'.$row->fecha.'"
+                        data-fecha_enviooc="'.$row->fecha_enviooc.'" data-fecha_bodega="'.$row->fecha_bodega.'"
+                        data-fecha_rechazado="'.$row->fecha_rechazado.'" data-fecha_desactivado="'.$row->fecha_desactivado.'">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalresumencodigo" onclick="loadsumary(\''.$row->codigo.'\')">
+                        <i class="fas fa-eye"></i>
+                    </button>';
+            })
+            ->rawColumns(['acciones'])
+            ->make(true);
     }
 
     public function AgregarRequerimientoCompra(Request $request){
@@ -613,7 +636,7 @@ class SalaController extends Controller
 
       $estado = "";
 
-      $now = DB::select('select now() as hoy')[0]->hoy;
+      $now = now();
 
       $requerimiento = DB::table('requerimiento_compra')->where('id' , $request->id)->get()[0];
 
@@ -667,7 +690,7 @@ class SalaController extends Controller
 
       $estado = "";
 
-      $now = DB::select('select now() as hoy')[0]->hoy;
+      $now = now();
 
       switch ($request->estado_multiple) {
         case "INGRESADO":
@@ -724,43 +747,28 @@ class SalaController extends Controller
       }
     }
 
-    public function BuscarRequerimientoFecha(Request $request){
-
-      $fecha1 = $request->get('min');
-      $fecha2 = $request->get('max');
-
-      $requerimiento_compra = DB::select('SELECT requerimiento_compra.*, if(isnull(Suma_Bodega.cantidad), 0, Suma_Bodega.cantidad) as stock_bodega FROM db_bluemix.requerimiento_compra
-      left join Suma_Bodega on requerimiento_compra.codigo = Suma_Bodega.inarti where fecha between "'.$request->get('min').'" and "'.$request->get('max').' 23:59:59"');
-
-      $estados = [ ["estado" => "INGRESADO"],  ["estado" => "ENVÍO OC"], ["estado" => "BODEGA"],["estado" => "DESACTIVADO"]];
-
-
-      //$productos = DB::table('conveniomarco')->get(['codigo', 'descripcion', 'marca']);
-
-      return view('sala.RequerimientoCompra', compact('requerimiento_compra', 'estados', 'fecha1', 'fecha2'));
-
-    }
-
     public function BuscarProductosRequerimiento(Request $request){
 
       $codigo = $request->get('codigo');
       $detalle = $request->get('detalle');
       $marca = $request->get('marca');
 
-      $productos = DB::table('producto')->where('ARCODI', 'like', '%'.$codigo.'%')->where('ARDESC', 'like', '%'.$detalle.'%')->where('ARMARCA', 'like', '%'.$marca.'%')->get(['ARCODI', 'ARDESC', 'ARMARCA']);
+      $productos = DB::table('producto')->where('ARCODI', 'like', '%'.$codigo.'%')->where('ARDESC', 'like', '%'.$detalle.'%')->where('ARMARCA', 'like', '%'.$marca.'%')->limit(100)->get(['ARCODI', 'ARDESC', 'ARMARCA']);
 
       return response()->json($productos);
     }
 
-    public function ConteoInventarioSala(){
-      $conteo_inventario = DB::table('conteo_inventario')->where('ubicacion', 'Sala')->orderBy('fecha', 'desc')->get();
+    public function ConteoInventarioSala(Request $request){
+      $ubicacion = $request->get('ubicacion', 'Sala');
+
+      $conteo_inventario = DB::table('conteo_inventario')->where('ubicacion', $ubicacion)->orderBy('fecha', 'desc')->get();
 
       $modulos = [['modulo' => 'ARTE 1'], ['modulo' => 'ARTE 2'], ['modulo' => 'ARTE 3'], ['modulo' => 'ARTE 4'], ['modulo' => 'ARTE 5'], ['modulo' => 'ARTE 6'], ['modulo' => 'ARTE 7'], ['modulo' => 'ARTE 8'], ['modulo' => 'ARTE 9'], ['modulo' => 'ASEO'], ['modulo' => 'BLISTERIA'], ['modulo' => 'CABECERA 1'], ['modulo' => 'CABECERA 2'], ['modulo' => 'CABECERA 3'], ['modulo' => 'CABECERA 4'], ['modulo' => 'CABECERA 5'], ['modulo' => 'CABECERA 6'],
       ['modulo' => 'CABECERA 7'], ['modulo' => 'CABECERA 8'], ['modulo' => 'CORDONEDRIA 1'] , ['modulo' => 'CORDONEDRIA 2'], ['modulo' => 'CORDONEDRIA 3'], ['modulo' => 'CORDONEDRIA 4'], ['modulo' => 'CORDONEDRIA 5'], ['modulo' => 'CORDONEDRIA 6'], ['modulo' => 'CORDONEDRIA 7'],['modulo' => 'CORDONEDRIA 8'], ['modulo' => 'CORDONEDRIA 9'], ['modulo' => 'DESPACHO'], ['modulo' => 'DISEÑO 1'], ['modulo' => 'DISEÑO 2'], ['modulo' => 'GONDOLA 1 (ESCOLARES)'], ['modulo' => 'GONDOLA 2 (ARCHIVADORES)'], ['modulo' => 'GONDOLA 3 (CARPETAS)'],
       ['modulo' => 'GONDOLA 4 (LANAS)'], ['modulo' => 'GONDOLA 4 A(LANAS)'], ['modulo' => 'GONDOLA 5 (CUADERNOS)'], ['modulo' => 'GONDOLA 6 (REGLAS)'], ['modulo' => 'GONDOLA 7 (JUGUETES)'], ['modulo' => 'GONDOLA 8 (DIDACTICOS)'], ['modulo' => 'HILOS DE BORDAR'], ['modulo' => 'LIBROS'], ['modulo' => 'LIBROS 2'], ['modulo' => 'LIBROS 3'], ['modulo' => 'LIBROS 4'], ['modulo' => 'LIBROS 5'], ['modulo' => 'MERMA'], ['modulo' => 'PAPELERIA 1'], ['modulo' => 'PAPELERIA 2'], ['modulo' => 'PAPELERIA 3 (METALES)'], ['modulo' => 'PAPELERIA 4 (GOMA EVA)'],
       ['modulo' => 'PAPELERIA 5 (FOTOGRAFICO)'], ['modulo' => 'PAPELERIA 6 (CINTAS)'], ['modulo' => 'PAPELERIA 7'],['modulo' => 'PAPELERIA 8'], ['modulo' => 'PAPELERIA 9'], ['modulo' => 'PAPELERIA MESON 1'], ['modulo' => 'PAPELERIA MESON 2'], ['modulo' => 'REGALERÍA'], ['modulo' => 'SERVICIOS 1 Y ADETEC'], ['modulo' => 'SERVICIOS CENTRAL'], ['modulo' => 'SERVICIOS CENTRAL 2'], ['modulo' => 'SERVICIOS CENTRAL 3'], ['modulo' => 'SERVICIOS CENTRAL 4'], ['modulo' => 'VENTA ASISTIDA 1'], ['modulo' => 'VENTA ASISTIDA 2'], ['modulo' => 'VENTA ASISTIDA 3'], ['modulo' => 'VENTA ASISTIDA 4'], ['modulo' => 'VENTA ASISTIDA 5'],['modulo' => 'VENTA ASISTIDA 6'],['modulo' => 'VENTA ASISTIDA 7'],['modulo' => 'VENTA ASISTIDA 8'], ['modulo' => 'ZIÑA']];
 
-      return view('sala.ConteoInventarioSala', compact('conteo_inventario', 'modulos'));
+      return view('sala.ConteoInventarioSala', compact('conteo_inventario', 'modulos', 'ubicacion'));
 
     }
 

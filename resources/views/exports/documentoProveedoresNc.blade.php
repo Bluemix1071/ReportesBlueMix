@@ -72,23 +72,23 @@
       <tbody>
         <tr>
           <td class="td-table1">RUT</td>
-          <td>{{ $documento->rut }}</td>
+          <td>{{ $documento->rut ?? '-' }}</td>
         </tr>
         <tr>
           <td class="td-table1">Razón Social</td>
-          <td>{{ strtoupper($documento->razon_social) }}</td>
+          <td>{{ strtoupper($documento->razon_social ?? '-') }}</td>
         </tr>
         <tr>
           <td class="td-table1">Giro</td>
-          <td>{{ strtoupper($encabezado->Emisor->GiroEmis) }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->GiroEmis ?? '') }}</td>
         </tr>
         <tr>
           <td class="td-table1">Dirección</td>
-          <td>{{ strtoupper($encabezado->Emisor->DirOrigen) }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->DirOrigen ?? '') }}</td>
         </tr>
         <tr>
           <td class="td-table1">Comuna</td>
-          <td>{{ strtoupper($encabezado->Emisor->CmnaOrigen) }}</td>
+          <td>{{ strtoupper($encabezado->Emisor->CmnaOrigen ?? '') }}</td>
         </tr>
         <tr>
           <td class="td-table1">Ciudad</td>
@@ -96,7 +96,7 @@
           @if(!empty($encabezado->Emisor->CiudadOrigen))
             {{ strtoupper($encabezado->Emisor->CiudadOrigen) }}
           @else
-            {{ strtoupper($encabezado->Emisor->CmnaOrigen) }}
+            {{ strtoupper($encabezado->Emisor->CmnaOrigen ?? '') }}
           @endif
           </td>
         </tr>
@@ -108,7 +108,7 @@
       <thead class="thead-table2">
         <tr>
           <th colspan="1">RUT:</th>
-          <th colspan="1">{{ $documento->rut }}</th>
+          <th colspan="1">{{ $documento->rut ?? '-' }}</th>
         </tr>
         <tr>
           <th colspan="1">Tipo:</th>
@@ -116,7 +116,7 @@
         </tr>
         <tr>
           <th colspan="1">N°:</th>
-          <th colspan="1">{{ $documento->folio }}</th>
+          <th colspan="1">{{ $documento->folio ?? '-' }}</th>
         </tr>
       </thead>
     </table>
@@ -125,7 +125,7 @@
         @if(!empty($encabezado->Emisor->CiudadOrigen))
           <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CiudadOrigen) }}</div>
         @else
-          <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CmnaOrigen) }}</div>
+          <div colspan="2">S.I.I - {{ strtoupper($encabezado->Emisor->CmnaOrigen ?? '') }}</div>
         @endif
     </div>
 </div>
@@ -253,40 +253,48 @@
     @else
     <td>-</td>
     @endif
-    <td>{{ strtoupper($item->NmbItem) }}</td>
-    <td>{{ number_format(($item->QtyItem ), 0, ',', '.') }}</td>
-    @if(!empty($item->UnmdItem))
-      <td>{{ $item->UnmdItem }}</td>
-    @else
-      <td>C/U</td>
-    @endif
-    <td>{{ number_format(($item->PrcItem), 0, ',', '.') }}</td>
-    <td>{{ number_format(($item->PrcItem*1.19), 0, ',', '.') }}</td>
-    <td>{{ number_format(($item->MontoItem), 0, ',', '.') }}</td>
+    <td>{{ strtoupper($item->NmbItem ?? '') }}</td>
+    <td>{{ number_format((float)data_get($item, 'QtyItem', 1), 0, ',', '.') }}</td>
+    <td>{{ $item->UnmdItem ?? 'C/U' }}</td>
+    <td>{{ number_format(($item->PrcItem ?? 0), 0, ',', '.') }}</td>
+    <td>{{ number_format((($item->PrcItem ?? 0)*1.19), 0, ',', '.') }}</td>
+    <td>{{ number_format(($item->MontoItem ?? 0), 0, ',', '.') }}</td>
   </tr>
   @endforeach
 @else
 <tr class="tr-detalle">
+
+    {{-- Código Item --}}
     @if(!empty($detalle->CdgItem))
-    @if(is_array($detalle->CdgItem))
-        <td>{{ $detalle->CdgItem[0]->VlrCodigo }}</td>
-      @else
-        <td>{{ $detalle->CdgItem->VlrCodigo }}</td>
-      @endif
+        @if(is_array($detalle->CdgItem))
+            <td>{{ $detalle->CdgItem[0]->VlrCodigo }}</td>
+        @else
+            <td>{{ $detalle->CdgItem->VlrCodigo }}</td>
+        @endif
     @else
-    <td>-</td>
+        <td>-</td>
     @endif
-    <td>{{ strtoupper($detalle->NmbItem) }}</td>
-    <td>{{ number_format(($detalle->QtyItem ), 0, ',', '.') }}</td>
-    @if(!empty($detalle->UnmdItem))
-      <td>{{ $detalle->UnmdItem }}</td>
-    @else
-      <td>C/U</td>
-    @endif
-    <td>{{ number_format(($detalle->PrcItem), 0, ',', '.') }}</td>
-    <td>{{ number_format(($detalle->PrcItem*1.19), 0, ',', '.') }}</td>
-    <td>{{ number_format(($detalle->MontoItem), 0, ',', '.') }}</td>
-  </tr>
+
+    {{-- Nombre --}}
+    <td>{{ strtoupper($detalle->NmbItem ?? '-') }}</td>
+
+    {{-- Cantidad --}}
+    <td>{{ number_format((float)data_get($detalle, 'QtyItem', 1), 0, ',', '.') }}</td>
+
+    {{-- Unidad de Medida --}}
+    <td>
+        {{
+            (isset($detalle->UnmdItem) && is_object($detalle->UnmdItem))
+                ? ($detalle->UnmdItem->{'#text'} ?? 'C/U')
+                : ($detalle->UnmdItem ?? 'C/U')
+        }}
+    </td>
+
+    {{-- Precios --}}
+    <td>{{ number_format(($detalle->PrcItem ?? 0), 0, ',', '.') }}</td>
+    <td>{{ number_format((($detalle->PrcItem ?? 0)*1.19), 0, ',', '.') }}</td>
+    <td>{{ number_format(($detalle->MontoItem ?? 0), 0, ',', '.') }}</td>
+</tr>
 @endif
 </tbody>
 </table>
@@ -502,11 +510,11 @@
           <tbody>
             <tr>
               <td class="td-table7">Monto Neto</td>
-              <td>${{ number_format(($documento->neto) , 0, ',', '.') }}</td>
+              <td>${{ number_format(($documento->neto ?? 0) , 0, ',', '.') }}</td>
             </tr>
             <tr>
               <td class="td-table7">IVA(19%)</td>
-              <td>${{ number_format(($documento->iva) , 0, ',', '.') }}</td>
+              <td>${{ number_format(($documento->iva ?? 0) , 0, ',', '.') }}</td>
             </tr>
             <tr>
               <td class="td-table7">Monto Exento</td>
@@ -514,10 +522,10 @@
             </tr>
             <tr>
               <td class="td-table7">Total</td>
-              <td>${{ number_format(($documento->total) , 0, ',', '.')}}</td>
+              <td>${{ number_format(($documento->total ?? 0) , 0, ',', '.')}}</td>
             </tr>
             <tr>
-              <td colspan="2" style="font-size: 9px; font-weight: normal;"><b>SON:</b> {{ strtoupper($son) }} PESOS</td>
+              <td colspan="2" style="font-size: 9px; font-weight: normal;"><b>SON:</b> {{ strtoupper($son ?? '-') }} PESOS</td>
             </tr>
           </tbody>
           </table>

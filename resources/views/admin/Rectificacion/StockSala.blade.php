@@ -11,6 +11,7 @@ Stock Sala
 
 @section('contenido')
 
+
     <div class="container-fluid">
         <h3 class="display-3">Stock Sala</h3>
         <div class="row">
@@ -74,20 +75,70 @@ Stock Sala
                                 </div>
                                 </div>
                                 <hr>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <form method="GET" class="form-inline">
+                            <label class="mr-2">Buscar:</label>
+                            <input type="text" name="buscar" class="form-control form-control-sm mr-2" value="{{ request()->get('buscar') }}" placeholder="Código, Detalle...">
+                            <button type="submit" class="btn btn-primary btn-sm mr-4">Buscar</button>
+
+                            <label class="mr-2">Mostrar:</label>
+                            <select name="per_page" onchange="this.form.submit()" class="form-control form-control-sm">
+                                <option value="5" {{ request()->get('per_page', 50) == 5 ? 'selected' : '' }}>5</option>
+                                <option value="10" {{ request()->get('per_page', 50) == 10 ? 'selected' : '' }}>10</option>
+                                <option value="30" {{ request()->get('per_page', 50) == 30 ? 'selected' : '' }}>30</option>
+                                <option value="50" {{ request()->get('per_page', 50) == 50 ? 'selected' : '' }}>50</option>
+                            </select>
+                            <label class="ml-2">registros</label>
+                        </form>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <table id="Listas" class="table table-bordered table-hover dataTable table-sm">
+                        <table id="ListasStockSala" class="table table-bordered table-hover dataTable table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align:left" hidden>Folio</th>
-                                    <th scope="col" style="text-align:left">Codigo Producto</th>
-                                    <th scope="col" style="text-align:left">Detalle</th>
-                                    <th scope="col" style="text-align:left">Marca</th>
-                                    <th scope="col" style="text-align:left">Stock anterior</th>
-                                    <th scope="col" style="text-align:left">Stock nuevo</th>
-                                    <th scope="col" style="text-align:left">Fecha</th>
-                                    <th scope="col" style="text-align:left">Solicitante</th>
-                                    <th scope="col" style="text-algin:left">Observación</th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'codprod', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Codigo Producto @if(request('sort') == 'codprod') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'producto', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Detalle @if(request('sort') == 'producto') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'marca', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Marca @if(request('sort') == 'marca') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'stock_anterior', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Stock anterior @if(request('sort') == 'stock_anterior') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'nuevo_stock', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Stock nuevo @if(request('sort') == 'nuevo_stock') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'fecha', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Fecha @if(request('sort') == 'fecha') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-align:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'solicita', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Solicitante @if(request('sort') == 'solicita') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
+                                    <th scope="col" style="text-algin:left">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'observacion', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                            Observación @if(request('sort') == 'observacion') @if(request('direction') == 'asc') ▲ @else ▼ @endif @endif
+                                        </a>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,6 +161,13 @@ Stock Sala
                             </tfoot>
 
                     </table>
+                </div>
+                <div class="col-md-12">
+                    {{ $solicitudaj->appends(request()->query())->links() }}
+                    <div class="mt-2 text-center">
+                        <b>Total de registros: {{ $solicitudaj->total() }}</b>
+                    </div>
+                </div>
                 </div>
             {{-- </div> --}}
           </div>
@@ -355,6 +413,29 @@ Stock Sala
       order: [[0, 'desc']]
     } );
   } );
+
+  $(document).ready(function() {
+    var table = $('#ListasStockSala').DataTable( {
+        paging: false,
+        orderCellsTop: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'pdf', 'print'
+        ],
+        "language":{
+        "info": "_TOTAL_ registros",
+        "search":  "Buscar",
+        "loadingRecords": "cargando",
+        "processing": "procesando",
+        "emptyTable": "no hay resultados",
+        "zeroRecords": "no hay coincidencias",
+        "infoEmpty": "",
+        "infoFiltered": ""
+        order: []
+      },
+      ordering: false
+    } );
+  } );
   </script>
 
 <script>
@@ -406,7 +487,8 @@ Stock Sala
         "infoEmpty": "",
         "infoFiltered": ""
         },
-        order: [[0, 'desc']]
+        ordering: false, // Desactivar ordenamiento del lado del cliente
+        order: [] // Asegurar que no haya orden predeterminado por DataTables
       } );
     } );
     </script>
@@ -459,8 +541,9 @@ Stock Sala
         "zeroRecords": "no hay coincidencias",
         "infoEmpty": "",
         "infoFiltered": ""
-        },
-        order: [[0, 'desc']]
+        order: []
+      },
+      ordering: false
       } );
     } );
     </script>

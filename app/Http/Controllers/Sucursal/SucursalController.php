@@ -5,19 +5,54 @@ namespace App\Http\Controllers\Sucursal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+use App\Exports\SolicitudGuiaExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SucursalController extends Controller
 {
     //
     public function ProductosSucursal(Request $request){
         //dd("llega aki");
-        $productos = DB::table('bodeprod')
+        $query = DB::table('bodeprod')
         ->leftJoin('producto', 'bodeprod.bpprod', '=', 'producto.ARCODI')
         ->leftJoin('suma_bodega', 'bodeprod.bpprod', '=', 'suma_bodega.inarti')
-        ->select('bodeprod.*', 'producto.*', 'suma_bodega.*')
-        ->get();
+        ->select('bodeprod.*', 'producto.*', 'suma_bodega.*');
 
-        //dd($productos);
+        if ($request->has('buscar') && $request->get('buscar') != "") {
+            $search = $request->get('buscar');
+            $query->where(function($q) use ($search) {
+                $q->where('bodeprod.bpprod', 'like', "%{$search}%")
+                  ->orWhere('producto.ARDESC', 'like', "%{$search}%")
+                  ->orWhere('producto.ARMARCA', 'like', "%{$search}%");
+            });
+        }
+
+        $sort = $request->get('sort', 'bodeprod.bpprod'); // Default sort
+        $direction = $request->get('direction', 'desc');   // Default direction
+
+        // Map sortable columns if needed, or use direct column names
+        $allowedSorts = [
+            'codigo' => 'bodeprod.bpprod',
+            'detalle' => 'producto.ARDESC',
+            'marca' => 'producto.ARMARCA',
+            'stock_matriz' => 'bodeprod.bpsrea', // Assuming bpsrea is Matrix? Need to check view mapping. View says bpsrea
+            'stock_sucursal' => 'bodeprod.bpsrea1',
+            'stock_bodega' => 'suma_bodega.cantidad' // Fixed: cantidad is in suma_bodega
+        ];
+
+        // Ensure we are sorting by a valid column
+        // If sorting by a direct DB column name passed from view, we might need to adjust or trust it.
+        // For simplicity in view, we'll pass keys like 'codigo'.
+        if (array_key_exists($sort, $allowedSorts)) {
+            $query->orderBy($allowedSorts[$sort], $direction);
+        } else {
+             $query->orderBy('bodeprod.bpprod', 'desc');
+        }
+
+        $productos = $query->paginate($request->get('per_page', 50));
+        
+        // Append all request parameters to pagination links so sorting/search persists
+        $productos->appends($request->all());
 
         return view('Sucursal.ProductosSucursal', compact('productos'));
     }
@@ -73,7 +108,32 @@ class SucursalController extends Controller
 
         $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
 
-        return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso'));
+        // Leer configuración del límite desde base de datos
+        $config_limit = DB::table('configuracion_sucursal')->where('clave', 'limite_activo_egresos')->first();
+        $limite_activo = $config_limit ? (bool)$config_limit->valor : true;
+
+        return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso', 'limite_activo'));
+    }
+
+    public function ToggleLimiteFechaEgresos(Request $request) {
+        $tipo = session()->get('tipo_usuario');
+        // Solo permitir a adminGiftCard
+        if ($tipo != 'adminGiftCard') {
+            return back()->with('error', 'No tiene permisos para modificar esta configuración. (Solo Informática)');
+        }
+
+        $config_limit = DB::table('configuracion_sucursal')->where('clave', 'limite_activo_egresos')->first();
+        $limite_activo = $config_limit ? (bool)$config_limit->valor : true;
+
+        // Invertir
+        $limite_activo = !$limite_activo;
+        
+        DB::table('configuracion_sucursal')
+            ->where('clave', 'limite_activo_egresos')
+            ->update(['valor' => $limite_activo ? '1' : '0', 'updated_at' => now()]);
+
+        $estado = $limite_activo ? 'Activado' : 'Desactivado';
+        return redirect()->route('EgresosPorVentas')->with('success', "Límite de 1 semana ha sido $estado.");
     }
 
     public function EgresosPorVentasDetalle(Request $request){
@@ -101,7 +161,11 @@ class SucursalController extends Controller
 
         $egreso = DB::table('detalle_devolucion')->where('t_doc', 'Egreso')->where('fecha', $fecha)->get();
 
-        return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso'));
+        // Leer configuración del límite desde base de datos
+        $config_limit = DB::table('configuracion_sucursal')->where('clave', 'limite_activo_egresos')->first();
+        $limite_activo = $config_limit ? (bool)$config_limit->valor : true;
+
+        return view('Sucursal.EgresosPorVentas', compact('productos', 'fecha', 'egreso', 'limite_activo'));
     }
 
     public function CargarEgresosPorVentas(Request $request){
@@ -387,7 +451,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
                 ->whereBetween('dcargos.DEFECO', [date('Y-m-d'), date('Y-m-d')])
                 ->where('cargos.CACOCA', '201')
                 ->groupBy('dcargos.DECODI', DB::raw('MONTH(dcargos.DEFECO)'))
-                ->get();;
+                ->get();
 
         return view('Sucursal.VentasSucursal', compact('ventas'));
     }
@@ -421,4 +485,600 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
         return view('Sucursal.VentasSucursal', compact('ventas', 'fechamin', 'fechamax'));
     }
 
+    /* Métodos para Devolución de Mercadería (Sucursal -> Matriz) */
+
+    public function DevolucionIndex() {
+        $tipo = session()->get('tipo_usuario');
+        
+        // Obtener todas las devoluciones. Si es bodega/sala, filtrar las que están en tránsito o recibidas
+        $devoluciones = DB::table('devoluciones_sucursal')
+            ->orderBy('id', 'desc')
+            ->get();
+            
+        return view('Sucursal.DevolucionSucursal.Index', compact('devoluciones'));
+    }
+
+    public function DevolucionCrear(Request $request) {
+        $productos = $request->productos;
+        if (!$productos || count($productos) == 0) {
+            return response()->json(['status' => 'error', 'message' => 'No hay productos en la lista.'], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            $id = DB::table('devoluciones_sucursal')->insertGetId([
+                'fecha_solicitud' => date('Y-m-d H:i:s'),
+                'usuario' => session()->get('nombre'),
+                'motivo' => $request->motivo,
+                'observacion' => $request->observacion,
+                'estado' => 0, // Pendiente
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            foreach ($productos as $p) {
+                DB::table('devoluciones_sucursal_detalle')->insert([
+                    'id_devolucion' => $id,
+                    'articulo' => $p['codigo'],
+                    'detalle' => $p['detalle'],
+                    'marca' => $p['marca'],
+                    'cantidad' => $p['cantidad'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Devolución registrada correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => 'Error al guardar: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function DevolucionDetalle($id) {
+        $cabecera = DB::table('devoluciones_sucursal')->where('id', $id)->first();
+        $detalles = DB::table('devoluciones_sucursal_detalle')->where('id_devolucion', $id)->get();
+        return response()->json(['cabecera' => $cabecera, 'detalles' => $detalles]);
+    }
+
+    public function DevolucionDespachar(Request $request) {
+        $id = $request->id;
+        $cabecera = DB::table('devoluciones_sucursal')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 0) {
+            return back()->with('error', 'Estado no válido para despachar.');
+        }
+
+        $detalles = DB::table('devoluciones_sucursal_detalle')->where('id_devolucion', $id)->get();
+
+        DB::beginTransaction();
+        try {
+            foreach ($detalles as $item) {
+                // Descontar de Sucursal (bpsrea1)
+                DB::table('bodeprod')
+                    ->where('bpprod', $item->articulo)
+                    ->decrement('bpsrea1', $item->cantidad);
+            }
+
+            DB::table('devoluciones_sucursal')->where('id', $id)->update([
+                'estado' => 1, // En Tránsito
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
+            return back()->with('success', 'Mercadería despachada de Sucursal. Stock actualizado en sistema.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error al despachar: ' . $e->getMessage());
+        }
+    }
+
+    public function DevolucionRecibirMatriz(Request $request) {
+        $id = $request->id;
+        $cabecera = DB::table('devoluciones_sucursal')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 1) {
+            return back()->with('error', 'Estado no válido para recibir en Matriz.');
+        }
+
+        $detalles = DB::table('devoluciones_sucursal_detalle')->where('id_devolucion', $id)->get();
+
+        DB::beginTransaction();
+        try {
+            foreach ($detalles as $item) {
+                // Aumentar en Matriz (bpsrea)
+                DB::table('bodeprod')
+                    ->where('bpprod', $item->articulo)
+                    ->increment('bpsrea', $item->cantidad);
+            }
+
+            DB::table('devoluciones_sucursal')->where('id', $id)->update([
+                'estado' => 2, // Recibida en Matriz
+                'fecha_recepcion' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
+            return back()->with('success', 'Mercadería recibida en Matriz. Stock de Sala actualizado.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error al recibir en Matriz: ' . $e->getMessage());
+        }
+    }
+
+    public function DevolucionAnular(Request $request) {
+        $id = $request->id;
+        $motivo = $request->motivo;
+        $cabecera = DB::table('devoluciones_sucursal')->where('id', $id)->first();
+
+        if (!$cabecera || ($cabecera->estado != 0 && $cabecera->estado != 1)) {
+            return response()->json(['status' => 'error', 'message' => 'No se puede anular en este estado.'], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            // Si estaba en tránsito (ya descontado de sucursal), devolverlo
+            if ($cabecera->estado == 1) {
+                $detalles = DB::table('devoluciones_sucursal_detalle')->where('id_devolucion', $id)->get();
+                foreach ($detalles as $item) {
+                    DB::table('bodeprod')
+                        ->where('bpprod', $item->articulo)
+                        ->increment('bpsrea1', $item->cantidad);
+                }
+            }
+
+            DB::table('devoluciones_sucursal')->where('id', $id)->update([
+                'estado' => 4, // Anulada
+                'observacion' => $cabecera->observacion . " | ANULADA: " . $motivo,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Devolución anulada correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => 'Error al anular: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /* Métodos para Solicitud de Guías */
+
+    public function BuscarProductoSucursal($codigo) {
+        $producto = DB::table('producto')
+            ->leftJoin('bodeprod', 'producto.ARCODI', '=', 'bodeprod.bpprod')
+            ->where(function($query) use ($codigo) {
+                $query->where('producto.ARCODI', $codigo)
+                      ->orWhere('producto.ARCBAR', $codigo);
+            })
+            ->get(['producto.ARCODI', 'producto.ARDESC', 'producto.ARMARCA', 'bodeprod.bpsrea']);
+        return response()->json($producto);
+    }
+
+    public function SolicitudGuiaIndex() {
+        $tipo = session()->get('tipo_usuario');
+        
+        // Si es Bodega o Sala (Despachadores), priorizamos lo PENDIENTE (estado 0)
+        if ($tipo == 'bodega' || $tipo == 'sala') {
+            $solicitudes = DB::table('solicitud_guias')
+                ->orderBy('estado', 'asc') // 0 (Pendiente) primero
+                ->orderBy('fecha_solicitud', 'desc')
+                ->get();
+        } else {
+            // Para Sucursal, orden cronológico descendente
+            $solicitudes = DB::table('solicitud_guias')
+                ->orderBy('id', 'desc')
+                ->get();
+        }
+        
+        $ultimo_folio = DB::table('solicitud_guias')->max('folio_dte');
+
+        return view('Sucursal.SolicitudGuia.Index', compact('solicitudes', 'ultimo_folio'));
+    }
+
+    public function BuscarProductosFiltro(Request $request){
+
+        $codigo = $request->get('codigo');
+        $detalle = $request->get('detalle');
+        $marca = $request->get('marca');
+  
+        $productos = DB::table('producto')
+            ->leftJoin('bodeprod', 'producto.ARCODI', '=', 'bodeprod.bpprod')
+            ->where('producto.ARCODI', 'like', '%'.$codigo.'%')
+            ->where('producto.ARDESC', 'like', '%'.$detalle.'%')
+            ->where('producto.ARMARCA', 'like', '%'.$marca.'%')
+            ->limit(100)
+            ->get(['producto.ARCODI', 'producto.ARDESC', 'producto.ARMARCA', 'bodeprod.bpsrea']);
+  
+        return response()->json($productos);
+    }
+
+    public function SolicitudGuiaCrear(Request $request) {
+        $usuario = session()->get('nombre');
+        
+        DB::beginTransaction();
+        try {
+            // Obtener primero el Nro Bodega
+            $maxNro = DB::table('salida_de_bodega')->max('nro');
+            $nroBodega = $maxNro ? $maxNro + 1 : 1;
+
+            $id = DB::table('solicitud_guias')->insertGetId([
+                'usuario' => $usuario,
+                'fecha_solicitud' => date('Y-m-d H:i:s'),
+                'estado' => 0,
+                'nro_bodega' => $nroBodega,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            // Integración con Bodega System (salida_de_bodega)
+            DB::table('salida_de_bodega')->insert([
+                'nro' => $nroBodega,
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i'),
+                'usuario' => $usuario,
+                'estado' => 'W', // Pendiente
+                'tipo' => 'S' // Sucursal
+            ]);
+
+            foreach ($request->productos as $prod) {
+                DB::table('dsolicitud_guias')->insert([
+                    'id_solicitud' => $id,
+                    'articulo' => $prod['codigo'],
+                    'detalle' => $prod['detalle'],
+                    'marca' => $prod['marca'] ?? '',
+                    'cantidad' => $prod['cantidad'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+                DB::table('dsalida_bodega')->insert([
+                    'id' => $nroBodega,
+                    'articulo' => $prod['codigo'],
+                    'cantidad' => $prod['cantidad'],
+                    'destino' => 'SUCURSAL',
+                    'desde' => '',
+                    'tipo' => 'S',
+                    'ubicacion' => ''
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Solicitud creada con éxito. Nro Bodega: ' . $nroBodega]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => 'Error al crear solicitud: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function SolicitudGuiaDetalle($id) {
+        $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
+        $detalles = DB::table('dsolicitud_guias')->where('id_solicitud', $id)->get();
+
+        return response()->json(['cabecera' => $cabecera, 'detalles' => $detalles]);
+    }
+
+    public function SolicitudGuiaDespachar(Request $request) {
+        $tipo = session()->get('tipo_usuario');
+        
+        // Seguridad: Solo perfiles de despacho pueden ejecutar esto
+        if ($tipo != 'admin' && $tipo != 'adminGiftCard' && $tipo != 'bodega' && $tipo != 'sala') {
+            return back()->with('error', 'No tiene permisos para procesar despachos.');
+        }
+
+        $id = $request->id;
+        $folio = $request->folio;
+
+        if (!$folio) {
+            return back()->with('error', 'El número de folio es obligatorio.');
+        }
+
+        // 1. Validar Folio Único (SII Compliance)
+        $existe_folio = DB::table('solicitud_guias')->where('folio_dte', $folio)->where('id', '!=', $id)->exists();
+        if ($existe_folio) {
+            return back()->with('error', 'Error: El Folio de Guía #' . $folio . ' ya fue utilizado en otra solicitud. Verifique el número legal.');
+        }
+
+        $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 5) {
+            return back()->with('error', 'La solicitud debe estar Preparada por Bodega (estado 5) para poder despacharla.');
+        }
+
+        $detalles = DB::table('dsolicitud_guias')->where('id_solicitud', $id)->get();
+        $cantidades_ajustadas = $request->cantidades; // Array [id_detalle => cantidad]
+        $hay_saldos = false;
+        $nuevos_items_saldo = [];
+
+        // 2. Validar Stock Suficiente basado en lo que realmente se enviará
+        foreach ($detalles as $item) {
+            $cant_enviar = isset($cantidades_ajustadas[$item->id]) ? $cantidades_ajustadas[$item->id] : $item->cantidad;
+            
+            // Validar que no se envíe MÁS de lo pedido originalmente
+            if ($cant_enviar > $item->cantidad) {
+                return back()->with('error', 'Error: No puede despachar más unidades de las solicitadas para el artículo: ' . $item->articulo);
+            }
+
+            $producto_stock = DB::table('bodeprod')->where('bpprod', $item->articulo)->first();
+            if (!$producto_stock || $producto_stock->bpsrea < $cant_enviar) {
+                return back()->with('error', 'Stock insuficiente en Matriz para el producto: ' . $item->articulo . '. Disponibles: ' . ($producto_stock->bpsrea ?? 0));
+            }
+
+            // Si se envía menos, preparamos el saldo
+            if ($cant_enviar < $item->cantidad && $cant_enviar >= 0) {
+                $hay_saldos = true;
+                $nuevos_items_saldo[] = [
+                    'articulo' => $item->articulo,
+                    'detalle' => $item->detalle,
+                    'marca' => $item->marca,
+                    'cantidad' => $item->cantidad - $cant_enviar,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+            }
+        }
+
+        // 2. Validar que no estemos despachando una guía VACIA
+        $total_enviar = 0;
+        foreach ($detalles as $item) {
+            $total_enviar += isset($cantidades_ajustadas[$item->id]) ? $cantidades_ajustadas[$item->id] : $item->cantidad;
+        }
+
+        if ($total_enviar == 0) {
+            // Si el total es 0, NO procesamos despacho oficial, solo guardamos nota y mantenemos pendiente
+            DB::table('solicitud_guias')->where('id', $id)->update(['observacion_despacho' => $request->observacion]);
+            return back()->with('info', 'No se puede emitir una guía por 0 artículos. Se ha guardado la nota explicativa y la solicitud sigue pendiente.');
+        }
+
+        DB::beginTransaction();
+        try {
+            // 3. Procesar el Despacho Actual y Generar Saldos si existen
+            if ($hay_saldos && count($nuevos_items_saldo) > 0) {
+                // Crear nueva cabecera para el saldo
+                $id_saldo = DB::table('solicitud_guias')->insertGetId([
+                    'usuario' => $cabecera->usuario,
+                    'fecha_solicitud' => date('Y-m-d H:i:s'),
+                    'estado' => 0, // Pendiente
+                    'sucursal_destino' => $cabecera->sucursal_destino,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+                foreach ($nuevos_items_saldo as $saldo_item) {
+                    $saldo_item['id_solicitud'] = $id_saldo;
+                    DB::table('dsolicitud_guias')->insert($saldo_item);
+                }
+            }
+
+            // 4. Actualizar Detalle Actual y Descontar Stock
+            foreach ($detalles as $item) {
+                $cant_final = isset($cantidades_ajustadas[$item->id]) ? $cantidades_ajustadas[$item->id] : $item->cantidad;
+                
+                // Actualizar la cantidad en la solicitud actual para que coincida con la guía
+                DB::table('dsolicitud_guias')
+                    ->where('id', $item->id)
+                    ->update(['cantidad' => $cant_final, 'cantidad_despachada' => $cant_final]);
+
+                // Solo descontar si es mayor a 0
+                if ($cant_final > 0) {
+                    DB::table('bodeprod')
+                        ->where('bpprod', $item->articulo)
+                        ->decrement('bpsrea', $cant_final);
+                }
+            }
+
+            // 5. Marcar como despachada la solicitud actual con nota de despacho
+            DB::table('solicitud_guias')
+                ->where('id', $id)
+                ->update([
+                    'folio_dte' => $folio,
+                    'fecha_despacho' => date('Y-m-d H:i:s'),
+                    'observacion_despacho' => $request->observacion,
+                    'estado' => 1,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+            DB::commit();
+            
+            $msg = 'Guía de Despacho procesada con éxito.';
+            if ($hay_saldos) {
+                $msg .= ' Se ha generado una nueva solicitud pendiente con los ítems restantes.';
+            }
+            
+            return back()->with('success', $msg);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error crítico procesando el despacho: ' . $e->getMessage());
+        }
+    }
+
+    public function SolicitudGuiaRecibir(Request $request) {
+        $tipo = session()->get('tipo_usuario');
+
+        // Seguridad: Solo sucursales (o admin) pueden recibir
+        if ($tipo != 'admin' && $tipo != 'adminGiftCard' && $tipo != 'sucursal') {
+            return back()->with('error', 'Solo el personal de la Sucursal puede confirmar la recepción.');
+        }
+
+        $id = $request->id;
+        $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 1) {
+            return back()->with('error', 'La solicitud no se encuentra en estado despachado o ya fue recibida.');
+        }
+
+        $detalles = DB::table('dsolicitud_guias')->where('id_solicitud', $id)->get();
+        $sucursal_destino = $cabecera->sucursal_destino;
+
+        $mapa_bodegas = [
+            'Isabel Riquelme' => '234',
+        ];
+
+        $codigo_bodega = isset($mapa_bodegas[$sucursal_destino]) ? $mapa_bodegas[$sucursal_destino] : '2';
+
+        DB::beginTransaction();
+        try {
+            foreach ($detalles as $item) {
+                $existe = DB::table('bodeprod')
+                    ->where('bpprod', $item->articulo)
+                    ->where('bpbode', $codigo_bodega)
+                    ->exists();
+
+                if ($existe) {
+                    DB::table('bodeprod')
+                        ->where('bpprod', $item->articulo)
+                        ->where('bpbode', $codigo_bodega)
+                        ->increment('bpsrea', $item->cantidad);
+                } else {
+                    DB::table('bodeprod')->insert([
+                        'bpbode' => $codigo_bodega,
+                        'bpprod' => $item->articulo,
+                        'bpsrea' => $item->cantidad,
+                        'bpstin' => 0,
+                        'bpsrea1' => 0
+                    ]);
+                }
+            }
+
+            DB::table('solicitud_guias')
+                ->where('id', $id)
+                ->update([
+                    'fecha_recepcion' => date('Y-m-d H:i:s'),
+                    'estado' => 2,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+            DB::commit();
+            return back()->with('success', 'Mercaderia recibida en Sucursal. El stock en COMBO (Bodega ' . $codigo_bodega . ') ha sido actualizado.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error critico sincronizando stock con COMBO: ' . $e->getMessage());
+        }
+    }
+
+    public function SolicitudGuiaExport() {
+        return Excel::download(new SolicitudGuiaExport, 'Movimientos_Sucursal_'.date('d-m-Y').'.xlsx');
+    }
+
+    public function SolicitudGuiaAnular(Request $request) {
+        $tipo = session()->get('tipo_usuario');
+        if ($tipo != 'admin' && $tipo != 'adminGiftCard' && $tipo != 'bodega' && $tipo != 'sala') {
+            return back()->with('error', 'No tiene permisos para anular solicitudes.');
+        }
+
+        $id = $request->id;
+        $motivo = $request->motivo;
+
+        if (!$motivo) {
+            return back()->with('error', 'Debe indicar un motivo para la anulación.');
+        }
+
+        DB::table('solicitud_guias')->where('id', $id)->update([
+            'estado' => 4, // Anulada
+            'observacion_despacho' => 'ANULADA: ' . $motivo,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return back()->with('success', 'La solicitud ha sido anulada correctamente.');
+    }
+
+    public function SolicitudGuiaBodegaTomar(Request $request) {
+        $tipo = session()->get('tipo_usuario');
+        if (!in_array($tipo, ['admin', 'adminGiftCard', 'bodega', 'sala'])) {
+            return back()->with('error', 'No tiene permisos para tomar esta solicitud.');
+        }
+
+        $id = $request->id;
+        $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 0) {
+            return back()->with('error', 'La solicitud no se encuentra en estado pendiente.');
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table('solicitud_guias')->where('id', $id)->update([
+                'estado' => 3, // En Preparación por Bodega
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            if ($cabecera->nro_bodega) {
+                DB::table('salida_de_bodega')->where('nro', $cabecera->nro_bodega)->update([
+                    'estado' => 'W', // Ya está en W, pero aseguramos
+                    'usuario' => session()->get('nombre') // Actualizamos quién lo tomó
+                ]);
+            }
+
+            DB::commit();
+            return back()->with('success', 'Has tomado la solicitud. Ahora está En Preparación.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
+    public function SolicitudGuiaBodegaPreparar(Request $request) {
+        $tipo = session()->get('tipo_usuario');
+        if (!in_array($tipo, ['admin', 'adminGiftCard', 'bodega', 'sala'])) {
+            return back()->with('error', 'No tiene permisos para finalizar la preparación.');
+        }
+
+        $id = $request->id;
+        $cabecera = DB::table('solicitud_guias')->where('id', $id)->first();
+
+        if (!$cabecera || $cabecera->estado != 3) {
+            return back()->with('error', 'La solicitud debe estar En Preparación para finalizarla.');
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table('solicitud_guias')->where('id', $id)->update([
+                'estado' => 5, // Preparado, Pendiente de Despacho
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            if ($cabecera->nro_bodega) {
+                DB::table('salida_de_bodega')->where('nro', $cabecera->nro_bodega)->update([
+                    'estado' => 'T', // Terminado en Bodega
+                ]);
+            }
+
+            DB::commit();
+            return back()->with('success', 'Preparación finalizada. La orden ha sido pasada a Despacho.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
+    public function SolicitudGuiaLive(Request $request) {
+        $token_valid = "BlueMixLive7788"; // Token de seguridad sencillo
+        
+        if ($request->token !== $token_valid) {
+            return response('Acceso denegado. Token inválido.', 403);
+        }
+
+        $datos = DB::table('solicitud_guias')
+            ->join('dsolicitud_guias', 'solicitud_guias.id', '=', 'dsolicitud_guias.id_solicitud')
+            ->select(
+                'solicitud_guias.id as header_id', // Alias para evitar colisión
+                'solicitud_guias.fecha_solicitud',
+                'solicitud_guias.usuario',
+                'solicitud_guias.folio_dte',
+                'solicitud_guias.fecha_despacho',
+                'solicitud_guias.fecha_recepcion',
+                'solicitud_guias.estado',
+                'dsolicitud_guias.articulo',
+                'dsolicitud_guias.detalle',
+                'dsolicitud_guias.marca',
+                'dsolicitud_guias.cantidad'
+            )
+            ->orderBy('solicitud_guias.id', 'desc')
+            ->get();
+            
+        return view('Sucursal.SolicitudGuia.Live', compact('datos'));
+    }
 }
+ 
