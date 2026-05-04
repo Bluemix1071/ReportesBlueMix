@@ -132,6 +132,7 @@ class ListaEscolarController extends Controller
         ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
         ->get()[0];
 
+<<<<<<< Updated upstream
         $dias = $request->get('dias', 14); // Default a 14 días si no se especifica
 
         $stock_critico = DB::select("SELECT d.id, d.comentario, d.id_curso, d.cod_articulo, p.ARDESC AS descripcion, p.ARMARCA AS marca, d.cantidad AS cantidad, b.bpsrea AS stock_sala, sb.cantidad AS stock_bodega, (IFNULL(b.bpsrea,0) + IFNULL(sb.cantidad,0)) AS stock_total, (ds.sum_cantidad * pr.PCPVDET) AS precio_detalle, pr.PCPVDET AS preciou, d.comentario, 
@@ -152,6 +153,50 @@ class ListaEscolarController extends Controller
             WHERE c.id_colegio = 676 
             GROUP BY d.cod_articulo 
             HAVING quedan <= $dias");
+=======
+     $stock_critico = DB::select(
+    'SELECT 
+        d.id,
+        d.comentario,
+        d.id_curso,
+        d.cod_articulo,
+        p.ARDESC AS descripcion,
+        p.ARMARCA AS marca,
+        d.cantidad AS cantidad,
+        b.bpsrea AS stock_sala,
+        sb.cantidad AS stock_bodega,
+        (b.bpsrea + sb.cantidad) AS stock_total,
+        (ds.sum_cantidad * pr.PCPVDET) AS precio_detalle,
+        pr.PCPVDET AS preciou,
+        (b.bpsrea + sb.cantidad) / (dc.decant30 / 30) AS quedan,
+        c.nombre_curso,
+        c.letra
+    FROM ListaEscolar_detalle d
+    LEFT JOIN (
+        SELECT cod_articulo, SUM(cantidad) AS sum_cantidad 
+        FROM ListaEscolar_detalle 
+        GROUP BY cod_articulo
+    ) ds ON d.cod_articulo = ds.cod_articulo
+    LEFT JOIN precios pr ON SUBSTRING(d.cod_articulo, 1, 5) = pr.PCCODI
+    LEFT JOIN producto p ON d.cod_articulo = p.ARCODI
+    LEFT JOIN bodeprod b ON d.cod_articulo = b.bpprod
+    LEFT JOIN Suma_Bodega sb ON d.cod_articulo = sb.inarti
+    LEFT JOIN (
+        SELECT DECODI, SUM(DECANT) AS decant30 
+        FROM dcargos 
+        WHERE DEFECO >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) 
+        AND DEFECO <= CURDATE() 
+        GROUP BY DECODI
+    ) dc ON d.cod_articulo = dc.DECODI
+    LEFT JOIN curso c ON d.id_curso = c.id
+    WHERE c.id_colegio = ?
+    GROUP BY d.cod_articulo
+    HAVING quedan <= 14',
+    [$request->get('id')]
+);
+
+//13/01/2026 corrige borrado de cursos
+>>>>>>> Stashed changes
 
         return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos', 'stock_critico', 'dias'));
     }
@@ -212,6 +257,7 @@ class ListaEscolarController extends Controller
         ->select('colegio.id', 'colegio.nombre as colegio', 'comunas.nombre as comuna')
         ->first();
 
+<<<<<<< Updated upstream
         $stock_critico = DB::select('SELECT d.id, d.comentario, d.id_curso, d.cod_articulo, p.ARDESC AS descripcion, p.ARMARCA AS marca, d.cantidad AS cantidad, b.bpsrea AS stock_sala, sb.cantidad AS stock_bodega, (b.bpsrea + sb.cantidad) AS stock_total, (ds.sum_cantidad * pr.PCPVDET) AS precio_detalle, pr.PCPVDET AS preciou, d.comentario, (b.bpsrea + sb.cantidad) / (dc.decant30 / 30) AS quedan, c.nombre_curso, c.letra 
             FROM ListaEscolar_detalle d 
             LEFT JOIN (SELECT cod_articulo, SUM(cantidad) AS sum_cantidad FROM ListaEscolar_detalle GROUP BY cod_articulo) ds ON d.cod_articulo = ds.cod_articulo 
@@ -226,6 +272,12 @@ class ListaEscolarController extends Controller
             HAVING quedan <= 14');
 
     return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos', 'stock_critico'));
+=======
+    return redirect()
+    ->route('Cursos', ['id' => $idColegio])
+    ->with('success', 'Curso agregado correctamente');
+
+>>>>>>> Stashed changes
 }
     //
     public function AgregarColegio(Request $request){
@@ -454,26 +506,26 @@ class ListaEscolarController extends Controller
       //fin agregar cotizacion
 
 
-    public function eliminar(Request $request)//Eliminar Curso
-    {
+    // public function eliminar(Request $request)//Eliminar Curso
+    // {
 
 
-        $update = DB::table('curso')
-        ->where('id' ,$request->get('id'))
-        ->delete();
+    //     $update = DB::table('curso')
+    //     ->where('id' ,$request->get('id'))
+    //     ->delete();
 
-        $update2 = DB::table('ListaEscolar_detalle')
-        ->where('ListaEscolar_detalle.id_curso' , $request->get('id'))
-        ->delete();
+    //     $update2 = DB::table('ListaEscolar_detalle')
+    //     ->where('ListaEscolar_detalle.id_curso' , $request->get('id'))
+    //     ->delete();
 
 
-        $cursos=DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get();
+    //     $cursos=DB::table('curso')->where('id_colegio', $request->get('id_colegio'))->get();
 
-        $colegio=DB::table('colegio')
-        ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
-        ->where('colegio.id',$request->get('id_colegio'))
-        ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
-        ->get()[0];
+    //     $colegio=DB::table('colegio')
+    //     ->leftjoin('comunas', 'colegio.id_comuna', '=', 'comunas.id')
+    //     ->where('colegio.id',$request->get('id_colegio'))
+    //     ->select('colegio.id','colegio.nombre as colegio','comunas.nombre as comuna')
+    //     ->get()[0];
 
 $stock_critico = DB::select('SELECT d.id, d.comentario, d.id_curso, d.cod_articulo, p.ARDESC AS descripcion, p.ARMARCA AS marca, d.cantidad AS cantidad, b.bpsrea AS stock_sala, sb.cantidad AS stock_bodega, (b.bpsrea + sb.cantidad) AS stock_total, (ds.sum_cantidad * pr.PCPVDET) AS precio_detalle, pr.PCPVDET AS preciou, d.comentario, (b.bpsrea + sb.cantidad) / (dc.decant30 / 30) AS quedan, c.nombre_curso, c.letra 
             FROM ListaEscolar_detalle d 
@@ -488,8 +540,30 @@ $stock_critico = DB::select('SELECT d.id, d.comentario, d.id_curso, d.cod_articu
             GROUP BY d.cod_articulo 
             HAVING quedan <= 14');
 
+<<<<<<< Updated upstream
         return view('admin.Cotizaciones.Cursos', compact('colegio', 'cursos', 'stock_critico'));
     }
+=======
+
+    //     return redirect()->route('Cursos', ['id' => $request->get('id_colegio')]);
+
+    // }
+    public function eliminar(Request $request)
+{
+    DB::table('ListaEscolar_detalle')
+        ->where('id_curso', $request->id)
+        ->delete();
+
+    DB::table('curso')
+        ->where('id', $request->id)
+        ->delete();
+
+    return redirect()
+        ->route('Cursos', ['id' => $request->id_colegio])
+        ->with('success', 'Curso eliminado correctamente');
+}
+
+>>>>>>> Stashed changes
 
 
     public function EliminarColegio(Request $request)
