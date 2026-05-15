@@ -338,4 +338,53 @@ class ConteosController extends Controller
         //return response()->json(['pos' => $posicion, 'rack' => $request->get('rack'), 'id' => $id, 'productos' => $productos]);
         return response()->json(["status" => "Se cargó el Rack" , "color" => 'success']);
     }
+
+    //---------------------------------------------------------------------------------
+    // Gestión Dinámica de Parámetros (Configuración)
+    //---------------------------------------------------------------------------------
+
+    private function ensureTablesExist() {
+        DB::statement("CREATE TABLE IF NOT EXISTS conteo_personal (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(255))");
+        DB::statement("CREATE TABLE IF NOT EXISTS conteo_modulos (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(255), ubicacion VARCHAR(50))");
+        
+        // Opcional: Poblar si están vacías (puedes agregar más nombres aquí si lo deseas)
+        if (DB::table('conteo_personal')->count() == 0) {
+            DB::table('conteo_personal')->insert([
+                ['nombre' => 'EVELYN ACUÑA'], ['nombre' => 'JUAN ARIAS'], ['nombre' => 'CLAUDIA BARAHONA']
+            ]);
+        }
+    }
+
+    public function getPersonal() {
+        $this->ensureTablesExist();
+        return response()->json(DB::table('conteo_personal')->orderBy('nombre', 'asc')->get());
+    }
+
+    public function addPersonal(Request $request) {
+        DB::table('conteo_personal')->insert(['nombre' => $request->get('nombre')]);
+        return response()->json(["status" => "Personal agregado", "color" => "success"]);
+    }
+
+    public function deletePersonal($id) {
+        DB::table('conteo_personal')->where('id', $id)->delete();
+        return response()->json(["status" => "Personal eliminado", "color" => "danger"]);
+    }
+
+    public function getModulos() {
+        $this->ensureTablesExist();
+        return response()->json(DB::table('conteo_modulos')->orderBy('nombre', 'asc')->get());
+    }
+
+    public function addModulo(Request $request) {
+        DB::table('conteo_modulos')->insert([
+            'nombre' => $request->get('nombre'),
+            'ubicacion' => $request->get('ubicacion')
+        ]);
+        return response()->json(["status" => "Modulo agregado", "color" => "success"]);
+    }
+
+    public function deleteModulo($id) {
+        DB::table('conteo_modulos')->where('id', $id)->delete();
+        return response()->json(["status" => "Modulo eliminado", "color" => "danger"]);
+    }
 }
