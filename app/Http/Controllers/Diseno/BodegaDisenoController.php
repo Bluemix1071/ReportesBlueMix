@@ -13,7 +13,7 @@ class BodegaDisenoController extends Controller
 
     public function index()
     {
-        return view('diseno.bodega_diseno');
+        return view('Diseno.bodega_diseno');
     }
 
     public function getProductos(Request $request)

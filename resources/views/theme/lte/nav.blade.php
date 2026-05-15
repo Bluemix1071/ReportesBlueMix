@@ -437,47 +437,7 @@
                                     </a>
                                 </li>
 
-                                @can('Admindiseno')
 
-                                    <li class="nav-item">
-                                        <a href="{{ route('ListarOrdenesDiseño') }}"
-                                            class="nav-link {{ setActive('ListarOrdenesDiseño') }}">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Admin Ordenes Diseño</p>
-                                        </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="{{ route('BodegaDiseno') }}"
-                                            class="nav-link {{ setActive('BodegaDiseno') }}">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Bodega Diseño</p>
-                                        </a>
-                                    </li>
-                                @endcan
-
-
-                                @can('Admindiseno')
-                                    {{--
-                                    <li class="nav-item">
-                                        <a href="{{ route('GastosInternosDiseño') }}"
-                                            class="nav-link {{ setActive('GastosInternosDiseño') }}">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Gastos Internos Diseño</p>
-                                        </a>
-                                    </li> --}}
-                                @endcan
-
-                                @can('Admindiseno')
-
-                                    <li class="nav-item">
-                                        <a href="{{ route('ReporteGastosInternosDiseño') }}"
-                                            class="nav-link {{ setActive('ReporteGastosInternosDiseño') }}">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Reportes Gastos Diseño</p>
-                                        </a>
-                                    </li>
-                                @endcan
 
 
                                 @can('ComprasProveedor')
@@ -1203,6 +1163,54 @@
                     </ul>
                 </li>
 
+                @canany(['Admindiseno', 'ordenesdiseno'])
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-paint-brush"></i>
+                            <p>
+                                Diseño
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('ordenesdiseno')
+                                <li class="nav-item">
+                                    <a href="{{ route('OrdenesDeDiseño') }}" class="nav-link {{ setActive('OrdenesDeDiseño') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Ordenes De Diseño</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('ListarOrdenesDiseñoSala') }}" class="nav-link {{ setActive('ListarOrdenesDiseñoSala') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Admin Ordenes Diseño (Sala)</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('Admindiseno')
+                                <li class="nav-item">
+                                    <a href="{{ route('ListarOrdenesDiseño') }}" class="nav-link {{ setActive('ListarOrdenesDiseño') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Admin Ordenes Diseño</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('BodegaDiseno') }}" class="nav-link {{ setActive('BodegaDiseno') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Bodega Diseño</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('ReporteGastosInternosDiseño') }}" class="nav-link {{ setActive('ReporteGastosInternosDiseño') }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Reportes Gastos Diseño</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
+
                 @if(session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard' || auth()->user()->canany(['Sala', 'sala']))
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
@@ -1244,27 +1252,7 @@
                                 </li>
                             @endcan
 
-                            @can('ordenesdiseno')
 
-                                <li class="nav-item">
-                                    <a href="{{ route('OrdenesDeDiseño') }}"
-                                        class="nav-link {{ setActive('OrdenesDeDiseño') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Ordenes De Diseño</p>
-                                    </a>
-                                </li>
-                            @endcan
-
-                            @can('ordenesdiseno')
-
-                                <li class="nav-item">
-                                    <a href="{{ route('ListarOrdenesDiseñoSala') }}"
-                                        class="nav-link {{ setActive('ListarOrdenesDiseñoSala') }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Admin Ordenes Diseño</p>
-                                    </a>
-                                </li>
-                            @endcan
 
                             @can('Sala')
 
