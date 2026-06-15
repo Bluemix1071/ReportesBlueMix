@@ -165,7 +165,7 @@ class PublicoController extends Controller
 
       $fecha = date('Y-m-d');
 
-      $precio = DB::table('precios')->where('PCCODI', '00001')->get('PCPVDET')[0]->PCPVDET;
+      $precio = DB::table('precios')->where('PCCODI', '00001')->value('PCPVDET') ?? 0;
 
       $deudores = DB::select('select *, (select (PCPVDET * estacionamiento.minutos) from precios where PCCODI = "00001") as debe from estacionamiento where moron = 1');
 
@@ -179,7 +179,7 @@ class PublicoController extends Controller
 
       $fecha = $request->get('fecha');
 
-      $precio = DB::table('precios')->where('PCCODI', '00001')->get('PCPVDET')[0]->PCPVDET;
+      $precio = DB::table('precios')->where('PCCODI', '00001')->value('PCPVDET') ?? 0;
 
       $deudores = DB::select('select *, (select (PCPVDET * estacionamiento.minutos) from precios where PCCODI = "00001") as debe from estacionamiento where moron = 1');
 
@@ -190,7 +190,7 @@ class PublicoController extends Controller
     public function GenerarTicket(Request $request) {
 
 
-      $hora_in = DB::select('select curtime() as hora')[0]->hora;
+      $hora_in = date('H:i:s');
 
       $id = DB::table('estacionamiento')->insertGetId([
         "hora_in" => substr($hora_in, 0, 8),
@@ -198,7 +198,7 @@ class PublicoController extends Controller
         "detalle" => strtoupper($request->get('detalle')),
       ]);
 
-      $ticket = DB::table('estacionamiento')->where('id', $id)->get()[0];
+      $ticket = DB::table('estacionamiento')->where('id', $id)->first();
 
       //dd($ticket);
 
@@ -277,20 +277,20 @@ class PublicoController extends Controller
 
       DB::table('estacionamiento')->where('id', $request->get('id'))->update($update);
 
-      $ticket_out = DB::table('estacionamiento')->where('id', $request->get('id'))->get()[0];
+      $ticket_out = DB::table('estacionamiento')->where('id', $request->get('id'))->first();
 
       return view('exports.ticket_out', compact('ticket_out'));
 
     }
 
     public function ReimprimirTicketEntrada(Request $request){
-      $ticket = DB::table('estacionamiento')->where('id', $request->get('id'))->get()[0];
+      $ticket = DB::table('estacionamiento')->where('id', $request->get('id'))->first();
 
       return view('exports.ticket_in', compact('ticket'));
     }
 
     public function ReimprimirTicketSalida(Request $request){
-      $ticket_out = DB::table('estacionamiento')->where('id', $request->get('id'))->get()[0];
+      $ticket_out = DB::table('estacionamiento')->where('id', $request->get('id'))->first();
 
       return view('exports.ticket_out', compact('ticket_out'));
     }
