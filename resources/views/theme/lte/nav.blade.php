@@ -1328,8 +1328,8 @@
                         </ul>
                     </li>
                 @endif
-               
-                     
+
+
 
                     @if(session()->get('tipo_usuario') == 'admin' || session()->get('tipo_usuario') == 'adminGiftCard' || auth()->user()->canany(['Sucursal', 'sucursal']))
                     <li class="nav-item has-treeview">
@@ -1372,7 +1372,15 @@
                                 <a href="{{ route('IngresoMercaderiaSucursal') }}"
                                     class="nav-link {{ setActive('IngresoMercaderiaSucursal') }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Ingresos de Mercadería</p>
+                                    <p>Ingresos de Mercadería Vale</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('IngresoMercaderiaGuiaSucursal') }}"
+                                    class="nav-link {{ setActive('IngresoMercaderiaGuiaSucursal') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ingr/Egre de Mercadería Guia</p>
                                 </a>
                             </li>
 
@@ -1402,7 +1410,7 @@
                         </ul>
                     </li>
                 @endif
-            
+
                 @can('Administrador')
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
@@ -1552,7 +1560,7 @@
                         </ul>
                     </li>
                 @endcan
-             
+
 
 
                 <li class="nav-item has-treeview">
