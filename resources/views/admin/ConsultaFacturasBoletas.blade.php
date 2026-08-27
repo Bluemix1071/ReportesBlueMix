@@ -213,10 +213,10 @@
                                 <tr>
                                     <th style="text-align:left">{{ $item->folio }}</th>
                                     <td style="text-align:left">Nota Credito</td>
-                                    <td style="text-align:left">{{ $item->nro_doc_refe }}</th>
+                                    <td style="text-align:left">{{ $item->nro_doc_refe }}</td>
                                     <td style="text-align:left">{{ $item->rut }}</td>
-                                    <td style="text-align:left">{{ $item->nombre }}</td>
-                                    <td style="text-align:left">{{ $item->fecha_actual }}</td>
+                                    <td style="text-align:left">{{ $item->nombre ?? $item->glosa ?? 'S/N' }}</td>
+                                    <td style="text-align:left">{{ $item->fecha_actual ?? $item->fecha }}</td>
                                     <td style="text-align:right">{{ number_format($item->neto, 0, ',', '.') }}</td>
                                     <div style="display: none">{{ $totalnotacreneto += $item->neto }}</div>
                                     <td style="text-align:right">{{ number_format($item->iva, 0, ',', '.') }}</td>
@@ -229,10 +229,18 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="7"><strong>Total</strong> </td>
+                            <td colspan="6"><strong>Total</strong> </td>
                             @if (empty($totalnotacre))
-                                <td><span class="price text-success">$</span></td>
+                                <td><span class="price text-success">$0</span></td>
+                                <td><span class="price text-success">$0</span></td>
+                                <td><span class="price text-success">$0</span></td>
                             @else
+                                <td style="text-align:right"><span
+                                        class="price text-success">${{ number_format($totalnotacreneto, 0, ',', '.') }}</span>
+                                </td>
+                                <td style="text-align:right"><span
+                                        class="price text-success">${{ number_format($totalnotacreiva, 0, ',', '.') }}</span>
+                                </td>
                                 <td style="text-align:right"><span
                                         class="price text-success">${{ number_format($totalnotacre, 0, ',', '.') }}</span>
                                 </td>
@@ -536,6 +544,40 @@
                     @endif
                 </div>
             </div>
+    <div class="col-md-12">
+            <div class="form-row">
+                <div class="col-md-12 mb-4">
+                    <h2>Facturas por Método de Pago</h2>
+                </div>
+            </div>
+            
+            @if(!empty($facturas_por_pago))
+                @foreach($facturas_por_pago as $pago)
+                <div class="form-row">
+                    <div class="col-md-3 mb-3">
+                        <input type="text" class="form-control" style="font-weight: bold;" readonly value="{{ $pago->metodo }}" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <input type="text" class="form-control" readonly value="{{ $pago->cantidad }}" required>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="${{ number_format($pago->neto, 0, ',', '.') }}" readonly required>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="${{ number_format($pago->iva, 0, ',', '.') }}" readonly required>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="${{ number_format($pago->total, 0, ',', '.') }}" readonly required>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            @endif
         </div>
         <hr>
         <br>

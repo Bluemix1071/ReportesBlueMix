@@ -1016,11 +1016,22 @@ class AdminController extends Controller
 
 
     $notacredito = DB::table('nota_credito')
-      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
+      ->leftJoin('cargos', function($join) {
+          $join->on('cargos.CANMRO', '=', 'nota_credito.nro_doc_refe')
+               ->whereColumn('cargos.CATIPO', 'nota_credito.tipo_doc_refe');
+      })
+      ->leftJoin('cliente', DB::raw('LEFT(nota_credito.rut, LENGTH(nota_credito.rut) - 2)'), '=', 'cliente.CLRUTC')
+      ->select(
+          'nota_credito.*',
+          'nota_credito.fecha as fecha_actual',
+          DB::raw('COALESCE(NULLIF(nota_credito.nombre, ""), cargos.razon, cliente.CLRSOC, nota_credito.glosa, "SIN NOMBRE") as nombre')
+      )
+      ->whereBetween('nota_credito.fecha', [$request->fecha1, $request->fecha2 . ' 23:59:59'])
+      ->groupBy('nota_credito.id')
       ->get();
 
     $notacreditocount = DB::table('nota_credito')
-      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
+      ->whereBetween('fecha', [$request->fecha1, $request->fecha2 . ' 23:59:59'])
       ->count('id');
 
     $boletasuma = DB::table('cargos')
@@ -1034,7 +1045,7 @@ class AdminController extends Controller
       ->sum('cavalo');
 
     $notacreditosuma = DB::table('nota_credito') //notacredito.
-      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
+      ->whereBetween('fecha', [$request->fecha1, $request->fecha2 . ' 23:59:59'])
       ->sum('total_nc');
 
     $totalboletasumaneto = DB::table('cargos')
@@ -1088,7 +1099,7 @@ class AdminController extends Controller
 
 
     $notacreditosumaiva = DB::table('nota_credito')
-      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
+      ->whereBetween('fecha', [$request->fecha1, $request->fecha2 . ' 23:59:59'])
       ->sum('iva');
 
     $totaliva = (($boletasumaiva + $facturasumaiva) - $notacreditosumaiva);
@@ -1104,7 +1115,7 @@ class AdminController extends Controller
       ->sum('CANETO');
 
     $notacreditosumaneto = DB::table('nota_credito')
-      ->whereBetween('fecha', array($request->fecha1, $request->fecha2))
+      ->whereBetween('fecha', [$request->fecha1, $request->fecha2 . ' 23:59:59'])
       ->sum('neto');
 
     $totalneto = (($boletasumaneto + $facturasumaneto) - $notacreditosumaneto);
@@ -1146,6 +1157,34 @@ class AdminController extends Controller
 
 
 
+    $sql_metodos = "
+        SELECT 
+            CASE 
+                WHEN tc.tipo = 'WP' OR cargos.forma_pago = 'WP' THEN 'Webpay'
+                WHEN cargos.forma_pago = 'X' OR cargos.FPAGO = 'Credito' OR cargos.FPAGO LIKE '%cobrar%' THEN 'Por Cobrar'
+                WHEN cargos.forma_pago = 'T' OR cargos.FPAGO LIKE '%Tarjeta%' OR cargos.FPAGO LIKE '%Debito%' OR cargos.FPAGO LIKE '%Transbank%' THEN 'Transbank'
+                WHEN cargos.forma_pago = 'E' OR cargos.FPAGO LIKE '%Efectivo%' OR cargos.FPAGO = 'Contado' THEN 'Efectivo'
+                WHEN cargos.forma_pago = 'H' OR cargos.FPAGO LIKE '%Transferencia%' THEN 'Transferencia'
+                WHEN cargos.forma_pago = 'Q' OR cargos.FPAGO LIKE '%Cheque%' THEN 'Cheque'
+                ELSE IFNULL(cargos.FPAGO, 'Otros')
+            END as metodo,
+            count(cargos.CANMRO) as cantidad, 
+            sum(cargos.CANETO) as neto, 
+            sum(cargos.CAIVA) as iva, 
+            sum(cargos.CAVALO) as total
+        FROM cargos
+        LEFT JOIN tarjeta_credito tc ON cargos.CANMRO = tc.nro_doc AND cargos.CATIPO = tc.tipo_doc
+        WHERE cargos.CATIPO = 8 
+          AND cargos.CAFECO BETWEEN ? AND ?
+        GROUP BY metodo
+        ORDER BY total DESC
+    ";
+
+    $facturas_por_pago = DB::select($sql_metodos, [$request->fecha1, $request->fecha2]);
+
+
+
+
     $boleta = $boleta->map(function ($item) {
       $item->CARUTD = $this->dv($item->CARUTC);
       return $item;
@@ -1156,7 +1195,7 @@ class AdminController extends Controller
       return $item;
     });
 
-    return view('admin.ConsultaFacturasBoletas', compact('fecha1', 'fecha2', 'boleta', 'factura', 'notacredito', 'total', 'totaliva', 'totalneto', 'boletacount', 'notacreditocount', 'facturacount', 'sumadocumentos', 'porcaja', 'porimpresora', 'boletatransbankcount', 'boletatransbanksumaiva', 'boletatransbanksumaneto', 'boletatransbanktotal', 'totalboletasumaneto', 'totalboletasumaiva', 'totalboletasuma', 'porguia'));
+    return view('admin.ConsultaFacturasBoletas', compact('fecha1', 'fecha2', 'boleta', 'factura', 'notacredito', 'total', 'totaliva', 'totalneto', 'boletacount', 'notacreditocount', 'facturacount', 'sumadocumentos', 'porcaja', 'porimpresora', 'boletatransbankcount', 'boletatransbanksumaiva', 'boletatransbanksumaneto', 'boletatransbanktotal', 'totalboletasumaneto', 'totalboletasumaiva', 'totalboletasuma', 'porguia', 'facturas_por_pago'));
   }
 
   public function dv($r)

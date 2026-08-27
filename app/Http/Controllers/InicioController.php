@@ -16,8 +16,8 @@ class InicioController extends Controller
     {
         $date = Carbon::now();
         $date = $date->format('d-m-Y');
-        $compras=DB::table('comprasdehoy')->get();
-        $variable1=$compras[0]->id;
+        $compras = DB::table('comprasdehoy')->first();
+        $variable1 = $compras->id ?? 0;
     
 
 
@@ -80,7 +80,7 @@ class InicioController extends Controller
         HAVING `total` = 1) as list1
         where list1.stock_sala > 0;');
 
-      return response()->json($consultaPsE[0]);
+      return response()->json(!empty($consultaPsE) ? $consultaPsE[0] : ['Ps' => 0]);
     }
 
     public function ProductosFaltantesWebAPI(){
@@ -113,7 +113,7 @@ class InicioController extends Controller
         HAVING `total` = 1) as list1
         where list1.stock_sala > 0;');
 
-      return response()->json($consultaPs[0]);
+      return response()->json(!empty($consultaPs) ? $consultaPs[0] : ['Ps' => 0]);
     }
 
 
