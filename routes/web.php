@@ -137,6 +137,10 @@ Route::prefix('Sucursal')->namespace('Sucursal')->middleware('auth')->group(func
     Route::post('/CargarEgresosPorVentas', 'SucursalController@CargarEgresosPorVentas')->name('CargarEgresosPorVentas');
     Route::post('/ToggleLimiteFechaEgresos', 'SucursalController@ToggleLimiteFechaEgresos')->name('ToggleLimiteFechaEgresos');
     Route::get('/IngresoMercaderia', 'SucursalController@IngresoMercaderia')->name('IngresoMercaderiaSucursal');
+    Route::get('/IngresoMercaderiaGuia', 'SucursalController@IngresoMercaderiaGuia')->name('IngresoMercaderiaGuiaSucursal');
+    Route::post('/BuscarGuiaSucursal', 'SucursalController@BuscarGuiaSucursal')->name('BuscarGuiaSucursal');
+    Route::post('/CargarGuiaSucursal', 'SucursalController@CargarGuiaSucursal')->name('CargarGuiaSucursal');
+    Route::post('/DescontarGuiaSucursal', 'SucursalController@DescontarGuiaSucursal')->name('DescontarGuiaSucursal');
     Route::post('/BuscarValeSucursal', 'SucursalController@BuscarValeSucursal')->name('BuscarValeSucursal');
     Route::post('/CargarValeSucursal', 'SucursalController@CargarValeSucursal')->name('CargarValeSucursal');
     Route::post('/Convertirsolicitud', 'SucursalController@Convertirsolicitud')->name('Convertirsolicitud');

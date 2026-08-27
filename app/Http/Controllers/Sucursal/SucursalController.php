@@ -50,7 +50,7 @@ class SucursalController extends Controller
         }
 
         $productos = $query->paginate($request->get('per_page', 50));
-        
+
         // Append all request parameters to pagination links so sorting/search persists
         $productos->appends($request->all());
 
@@ -127,7 +127,7 @@ class SucursalController extends Controller
 
         // Invertir
         $limite_activo = !$limite_activo;
-        
+
         DB::table('configuracion_sucursal')
             ->where('clave', 'limite_activo_egresos')
             ->update(['valor' => $limite_activo ? '1' : '0', 'updated_at' => now()]);
@@ -368,7 +368,7 @@ class SucursalController extends Controller
         $vale = DB::table('db_bluemix.vales')
             ->where('vanmro', $request->get('n_vale'))
             ->get();
-        
+
         if(count($vale) === 0){
             $message = "Vale no Encontrado";
             return view('Sucursal.EgresosPorVales', compact('message'));
@@ -489,12 +489,12 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
 
     public function DevolucionIndex() {
         $tipo = session()->get('tipo_usuario');
-        
+
         // Obtener todas las devoluciones. Si es bodega/sala, filtrar las que están en tránsito o recibidas
         $devoluciones = DB::table('devoluciones_sucursal')
             ->orderBy('id', 'desc')
             ->get();
-            
+
         return view('Sucursal.DevolucionSucursal.Index', compact('devoluciones'));
     }
 
@@ -657,7 +657,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
 
     public function SolicitudGuiaIndex() {
         $tipo = session()->get('tipo_usuario');
-        
+
         // Si es Bodega o Sala (Despachadores), priorizamos lo PENDIENTE (estado 0)
         if ($tipo == 'bodega' || $tipo == 'sala') {
             $solicitudes = DB::table('solicitud_guias')
@@ -670,7 +670,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
                 ->orderBy('id', 'desc')
                 ->get();
         }
-        
+
         $ultimo_folio = DB::table('solicitud_guias')->max('folio_dte');
 
         return view('Sucursal.SolicitudGuia.Index', compact('solicitudes', 'ultimo_folio'));
@@ -681,7 +681,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
         $codigo = $request->get('codigo');
         $detalle = $request->get('detalle');
         $marca = $request->get('marca');
-  
+
         $productos = DB::table('producto')
             ->leftJoin('bodeprod', 'producto.ARCODI', '=', 'bodeprod.bpprod')
             ->where('producto.ARCODI', 'like', '%'.$codigo.'%')
@@ -689,13 +689,13 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
             ->where('producto.ARMARCA', 'like', '%'.$marca.'%')
             ->limit(100)
             ->get(['producto.ARCODI', 'producto.ARDESC', 'producto.ARMARCA', 'bodeprod.bpsrea']);
-  
+
         return response()->json($productos);
     }
 
     public function SolicitudGuiaCrear(Request $request) {
         $usuario = session()->get('nombre');
-        
+
         DB::beginTransaction();
         try {
             // Obtener primero el Nro Bodega
@@ -760,7 +760,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
 
     public function SolicitudGuiaDespachar(Request $request) {
         $tipo = session()->get('tipo_usuario');
-        
+
         // Seguridad: Solo perfiles de despacho pueden ejecutar esto
         if ($tipo != 'admin' && $tipo != 'adminGiftCard' && $tipo != 'bodega' && $tipo != 'sala') {
             return back()->with('error', 'No tiene permisos para procesar despachos.');
@@ -793,7 +793,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
         // 2. Validar Stock Suficiente basado en lo que realmente se enviará
         foreach ($detalles as $item) {
             $cant_enviar = isset($cantidades_ajustadas[$item->id]) ? $cantidades_ajustadas[$item->id] : $item->cantidad;
-            
+
             // Validar que no se envíe MÁS de lo pedido originalmente
             if ($cant_enviar > $item->cantidad) {
                 return back()->with('error', 'Error: No puede despachar más unidades de las solicitadas para el artículo: ' . $item->articulo);
@@ -853,7 +853,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
             // 4. Actualizar Detalle Actual y Descontar Stock
             foreach ($detalles as $item) {
                 $cant_final = isset($cantidades_ajustadas[$item->id]) ? $cantidades_ajustadas[$item->id] : $item->cantidad;
-                
+
                 // Actualizar la cantidad en la solicitud actual para que coincida con la guía
                 DB::table('dsolicitud_guias')
                     ->where('id', $item->id)
@@ -879,12 +879,12 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
                 ]);
 
             DB::commit();
-            
+
             $msg = 'Guía de Despacho procesada con éxito.';
             if ($hay_saldos) {
                 $msg .= ' Se ha generado una nueva solicitud pendiente con los ítems restantes.';
             }
-            
+
             return back()->with('success', $msg);
 
         } catch (\Exception $e) {
@@ -1055,7 +1055,7 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
 
     public function SolicitudGuiaLive(Request $request) {
         $token_valid = "BlueMixLive7788"; // Token de seguridad sencillo
-        
+
         if ($request->token !== $token_valid) {
             return response('Acceso denegado. Token inválido.', 403);
         }
@@ -1077,8 +1077,126 @@ where DEFECO between '2025-10-01' and '2025-10-31' and CACOCA = '201' group by D
             )
             ->orderBy('solicitud_guias.id', 'desc')
             ->get();
-            
+
         return view('Sucursal.SolicitudGuia.Live', compact('datos'));
     }
+
+    public function IngresoMercaderiaGuia(Request $request){
+        //dd('llega');
+
+        return view('Sucursal.IngresoMercaderiaGuia');
+    }
+
+    public function BuscarGuiaSucursal(Request $request){
+        $n_guia = $request->get('n_guia');
+
+        $guia = DB::table('db_bluemix.cargos')
+        ->where('canmro', $request->get('n_guia'))
+        ->where('catipo', 3)
+        ->get();
+
+        if(count($guia) === 0){
+            $message = "Guia no Encontrada";
+            return view('Sucursal.IngresoMercaderiaGuia', compact('message'));
+        }
+
+        $gestionada =  DB::table('detalle_devolucion')->where('folio', $n_guia)->where('t_doc', 'Guia')->get();
+
+        if(count($gestionada) !== 0){
+            $message = "Esta Guia ya se Ingreso o Descontó";
+            return view('Sucursal.IngresoMercaderiaGuia', compact('message'));
+        }
+
+        $productos = DB::table('dcargos')
+        ->leftJoin('producto', 'dcargos.decodi', '=', 'producto.ARCODI')
+        ->leftJoin('bodeprod', 'dcargos.decodi', '=', 'bodeprod.bpprod')
+        ->where('denmro', $n_guia)
+        ->where('detipo', 3)
+        ->select('dcargos.*', 'producto.*', 'bodeprod.*')
+        ->get();
+
+        //dd($productos);
+
+        return view('Sucursal.IngresoMercaderiaGuia', compact('n_guia', 'productos'));
+    }
+
+    public function CargarGuiaSucursal(Request $request){
+        //dd($request->get('n_vale'));
+       /*  $existe =  DB::table('detalle_devolucion')->where('folio', $request->get('n_guia'))->where('t_doc', 'Guia');
+
+        dd($existe); */
+
+        $productos = DB::table('dcargos')
+        ->leftJoin('producto', 'dcargos.decodi', '=', 'producto.ARCODI')
+        ->leftJoin('bodeprod', 'dcargos.decodi', '=', 'bodeprod.bpprod')
+        ->where('denmro', $request->get('n_guia'))
+        ->where('detipo', 3)
+        ->select('dcargos.*', 'producto.*', 'bodeprod.*')
+        ->get();
+
+        foreach($productos as $item){
+
+            //AGREGA STOCK A SUCURSAL
+            DB::table('bodeprod')
+                ->where('bpprod', $item->ARCODI)
+                ->update(['bpsrea1' => ($item->bpsrea1 + $item->DECANT)]);
+            //REINGRESA STOCK A SALA
+            DB::table('bodeprod')
+                ->where('bpprod', $item->ARCODI)
+                ->update(['bpsrea' => ($item->bpsrea + $item->DECANT)]);
+            //INGRESA REGISTO DE CAMBIOS
+            DB::table('solicitud_ajuste')->insert([
+                "codprod" => $item->ARCODI,
+                "producto" => $item->ARDESC,
+                "fecha" => date('Y-m-d'),
+                "stock_anterior" => $item->bpsrea1,
+                "nuevo_stock" => ($item->DECANT + $item->bpsrea1),
+                "autoriza" => "Rosita Miranda",
+                "solicita" => "Sucursal",
+                "observacion" => "Ingreso Mercaderia a Sucursal Isabel Riquelme por Guia N°: $item->DENMRO"
+            ]);
+        }
+        //GUIA CAMBIA DE ETADO PARA NO SER USADA OTRA VEZ
+        DB::table('detalle_devolucion')->insert(['folio' => $request->get('n_guia'), 't_doc' => 'Guia', 'estado' => 'Entrada a Sucursal']);
+
+        return redirect()->route('IngresoMercaderiaGuiaSucursal')->with('success','Guia Ingresada Correctamente');
+    }
+
+    public function DescontarGuiaSucursal(Request $request){
+
+        $productos = DB::table('dcargos')
+        ->leftJoin('producto', 'dcargos.decodi', '=', 'producto.ARCODI')
+        ->leftJoin('bodeprod', 'dcargos.decodi', '=', 'bodeprod.bpprod')
+        ->where('denmro', $request->get('n_guia'))
+        ->where('detipo', 3)
+        ->select('dcargos.*', 'producto.*', 'bodeprod.*')
+        ->get();
+
+        foreach($productos as $item){
+
+            //AGREGA STOCK A CASA MATRIZ
+            DB::table('bodeprod')
+                ->where('bpprod', $item->ARCODI)
+                ->update(['bpsrea1' => ($item->bpsrea1 - $item->DECANT)]);
+            //REINGRESA STOCK A SALA
+            DB::table('bodeprod')
+                ->where('bpprod', $item->ARCODI)
+                ->update(['bpsrea' => ($item->bpsrea + $item->DECANT)]);
+            //INGRESA REGISTO DE CAMBIOS
+            DB::table('solicitud_ajuste')->insert([
+                "codprod" => $item->ARCODI,
+                "producto" => $item->ARDESC,
+                "fecha" => date('Y-m-d'),
+                "stock_anterior" => $item->bpsrea1,
+                "nuevo_stock" => ($item->bpsrea1 - $item->DECANT),
+                "autoriza" => "Rosita Miranda",
+                "solicita" => "Sucursal",
+                "observacion" => "Egreso Mercaderia a Sucursal Isabel Riquelme por Guia N°: $item->DENMRO"
+            ]);
+        }
+        //GUIA CAMBIA DE ESTADO PARA NO SER USADA OTRA VEZ
+        DB::table('detalle_devolucion')->insert(['folio' => $request->get('n_guia'), 't_doc' => 'Guia', 'estado' => 'Descontada de Sucursal']);
+
+        return redirect()->route('IngresoMercaderiaGuiaSucursal')->with('success','Guia Descontada Correctamente');
+    }
 }
- 

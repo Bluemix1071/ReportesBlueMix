@@ -832,12 +832,10 @@ class SalaController extends Controller
     }
     //
 
-    // Funcion encontrar producto en solicitudes a Bodega pendientes
     public function BuscarProducto_en_solicitud($codigo)
     {
-        $fechai = DB::select('select curdate() as fechai');
-        $fechades = DB::select('select DATE_SUB(curdate(), INTERVAL 7 DAY) as fechades');
-
+        $fechai   = date('Y-m-d');
+        $fechades = date('Y-m-d', strtotime('-7 days'));
 
         $producto_producto = DB::table('producto')
         ->where('producto.ARCODI',$codigo)
@@ -852,8 +850,7 @@ class SalaController extends Controller
         ->leftJoin('salida_de_bodega', 'dsalida_bodega.id', '=', 'salida_de_bodega.nro')
         ->where('dsalida_bodega.articulo', $arcodi)
         ->where('salida_de_bodega.estado', 'K')
-        // ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
-        ->whereBetween('salida_de_bodega.fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
+        ->whereBetween('salida_de_bodega.fecha', [$fechades, $fechai])
         ->select('dsalida_bodega.*', 'salida_de_bodega.*')
         ->exists();
 
@@ -862,8 +859,7 @@ class SalaController extends Controller
           ->leftJoin('salida_de_bodega', 'dsalida_bodega.id', '=', 'salida_de_bodega.nro')
           ->where('dsalida_bodega.articulo', $codigo)
           ->where('salida_de_bodega.estado', 'K')
-          // ->where('salida_de_bodega.fecha', $fechai[0]->fechai)
-          ->whereBetween('salida_de_bodega.fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
+          ->whereBetween('salida_de_bodega.fecha', [$fechades, $fechai])
           ->select('dsalida_bodega.*', 'salida_de_bodega.*')
           ->exists();
         }

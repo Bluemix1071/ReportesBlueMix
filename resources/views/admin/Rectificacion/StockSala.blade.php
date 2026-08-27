@@ -27,17 +27,13 @@ Stock Sala
                                             &nbsp;<input type="text" id="buscar_cantidad" name="buscar_cantidad" placeholder="Stock Sala" readonly class="form-control col-sm-1" value=""/>
                                             &nbsp;<input type="text" id="buscar_cantidad_bodega" name="buscar_cantidad_bodega" placeholder="Stock Bodega" readonly class="form-control col-sm-1" value=""/>
                                             &nbsp;<input type="number" id="nueva_cantidad" name="nueva_cantidad" placeholder="Nuevo Stock" class="form-control col-sm" value="" required/>
-                                            &nbsp;<input type="text" id="solicita" name="solicita" placeholder="Quien Solicita"  class="form-control col-sm" value="" required/>
+                                            &nbsp;<input type="text" id="solicita" name="solicita" placeholder="Quien Solicita"  class="form-control col-sm" value="{{ session()->get('nombre') }}" required readonly/>
                                             &nbsp;<input type="text" id="motivo" name="motivo" placeholder="Motivo"  class="form-control col-sm" value="" required/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{--Espacio entre input y botones --}}
                                         </div>
 
 
                                          </form>
-                                         @if(session()->get('email') == "marcial.polanco99@bluemix.cl" || session()->get('email') == "ferenc5583@bluemix.cl" || session()->get('email') == "dcarrasco@bluemix.cl")
-                                         {{-- <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success"><i class="fas fa-upload" style="color: #ffffff;"></i></button></div>
-                                         <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success">+</button></div>
-                                         <div class="col-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success">-</button></div> --}}
                                          <div class="row">
                                             <div class="col-4">
                                                 <button type="submit" id="add_field_button" class="btn btn-success"><i class="fas fa-upload" style="color: #ffffff;"></i></button>
@@ -57,21 +53,6 @@ Stock Sala
                                                 class="btn btn-info bg-success"><i class="fas fa-sync-alt"></i></a>
                                             </div> --}}
                                         </div>
-
-                                         @else
-                                         {{-- <div class="col-md-1">&nbsp;<button type="submit" id="add_field_button" class="btn btn-success"disabled><i class="fas fa-upload" style="color: #ffffff;"></i></button></div> --}}
-                                         <div class="row">
-                                            <div class="col-4">
-                                                <button type="submit" id="add_field_button" class="btn btn-success" disabled><i class="fas fa-upload" style="color: #ffffff;"></i></button>
-                                            </div>
-                                            <div class="col-3">
-                                                <button type="submit" id="vale_mas" class="btn btn-success" disabled>+</button>
-                                            </div>
-                                            <div class="col-3">
-                                                <button type="submit" id="vale_menos" class="btn btn-success" disabled>-</button>
-                                            </div>
-                                        </div>
-                                         @endif
                                 </div>
                                 </div>
                                 <hr>

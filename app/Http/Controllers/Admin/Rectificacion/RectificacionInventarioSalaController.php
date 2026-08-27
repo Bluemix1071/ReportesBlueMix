@@ -534,20 +534,12 @@ public function editartotal(Request $request)
     }
 
     public function StockSala (Request $request){
-        $fechai = DB::select('select curdate() as fechai');
-        $fechades = DB::select('select DATE_SUB(curdate(), INTERVAL 2 month) as fechades');
-
-        // $solicitudaj =  DB::table('solicitud_ajuste')
-        // ->leftJoin('producto', 'solicitud_ajuste.codprod', '=', 'producto.ARCODI')
-        // ->whereBetween('fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
-        // ->where('solicita', 'inventario')
-        // ->orWhere('solicita','Envio de Pendiente')
-        // ->orderBy('folio', 'DESC')
-        // ->get();
+        $fechai   = date('Y-m-d');
+        $fechades = date('Y-m-d', strtotime('-2 months'));
 
         $query = DB::table('solicitud_ajuste')
     ->leftJoin('producto', 'solicitud_ajuste.codprod', '=', 'producto.ARCODI')
-    ->whereBetween('fecha', [$fechades[0]->fechades, $fechai[0]->fechai])
+    ->whereBetween('fecha', [$fechades, $fechai])
     ->orderBy('folio', 'DESC');
 
     if ($request->has('buscar') && $request->get('buscar') != "") {
