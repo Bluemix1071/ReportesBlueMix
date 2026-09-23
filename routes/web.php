@@ -477,6 +477,7 @@ Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'SuperAdmin'])->
     Route::get('/colegios-temporada-2022', 'ListaEscolarController@colegiosTemporada2022')->name('colegios.temporada2022');
     Route::get('/colegios-temporada-2023', 'ListaEscolarController@colegiosTemporada2023')->name('colegios.temporada2023');
     Route::get('/colegios-temporada-2024', 'ListaEscolarController@colegiosTemporada2024')->name('colegios.temporada2024');
+    Route::get('/colegios-temporada-2025', 'ListaEscolarController@colegiosTemporada2025')->name('colegios.temporada2025');
 
 
     Route::get('/ListarConvenio', 'ConvenioMarcoController@ListarConvenio')->name('ListarConvenio');

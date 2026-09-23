@@ -56,6 +56,10 @@ Colegios
                             <a href="{{ route('colegios.temporada2024') }}" title="Temporada 2024-2025" target="_blank" class="btn btn-warning">T. 2024-2025</a>
                         @endif
 
+                        @if (request()->url() !== route('colegios.temporada2025'))
+                            <a href="{{ route('colegios.temporada2025') }}" title="Temporada 2025-2026" target="_blank" class="btn btn-warning">T. 2025-2026</a>
+                        @endif
+
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")
                             <button type="submit" class="btn btn-primary" onclick="submit()">BTS</button>
                         @endif

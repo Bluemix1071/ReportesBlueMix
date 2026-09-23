@@ -101,6 +101,24 @@ class ListaEscolarController extends Controller
         return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
     }
 
+    public function colegiosTemporada2025()
+    {
+        $colegios=DB::select("select colegio.id, colegio.nombre as colegio, comunas.nombre as comuna,colegio.temporada as temporada from colegio
+        inner join comunas on colegio.id_comuna = comunas.id where colegio.temporada='2025-2026'");
+
+        $comunas=DB::select('select * from comunas');
+
+        $reporte=DB::select("
+        select curso.id id_curso,curso.nombre_curso,curso.letra,colegio.id id_colegio,colegio.nombre nombre_colegio,comunas.nombre nombre_comuna from curso
+        left join colegio on curso.id_colegio = colegio.id
+        left join comunas on colegio.id_comuna = comunas.id
+        where colegio.temporada='2025-2026'");
+
+
+        return view('admin.Cotizaciones.Colegios',compact('colegios','comunas','reporte'));
+    }
+
+
 
     public function Reporte(Request $request){
 
