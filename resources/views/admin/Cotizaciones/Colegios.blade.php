@@ -11,7 +11,7 @@ Colegios
 @section('contenido')
 
     <div class="container-fluid">
-        <h3 class="display-3">Colegios Temporada 2025-2026</h3>
+        <h3 class="display-3">Colegios Temporada 2026-2027</h3>
         <div class="row">
           <div class="col-md-12">
             <hr>
@@ -31,6 +31,14 @@ Colegios
                         </a>
                         @elseif(request()->url() == route('colegios.temporada2023'))
                         <a href="{{ route('reportes2023') }}" class="" target="_blank" title="Stock Critico">
+                            <button type="button" class="btn btn-danger">Stock Critico</button>
+                        </a>
+                        @elseif(request()->url() == route('colegios.temporada2024'))
+                        <a href="{{ route('reportes2024') }}" class="" target="_blank" title="Stock Critico">
+                            <button type="button" class="btn btn-danger">Stock Critico</button>
+                        </a>
+                        @elseif(request()->url() == route('colegios.temporada2025'))
+                        <a href="{{ route('reportes2025') }}" class="" target="_blank" title="Stock Critico">
                             <button type="button" class="btn btn-danger">Stock Critico</button>
                         </a>
                         @else
@@ -58,6 +66,10 @@ Colegios
 
                         @if (request()->url() !== route('colegios.temporada2025'))
                             <a href="{{ route('colegios.temporada2025') }}" title="Temporada 2025-2026" target="_blank" class="btn btn-warning">T. 2025-2026</a>
+                        @endif
+
+                        @if (request()->url() !== route('colegios.temporada2026'))
+                            <a href="{{ route('colegios.temporada2026') }}" title="Temporada 2026-2027" target="_blank" class="btn btn-warning">T. 2026-2027</a>
                         @endif
 
                         @if(session()->get('email') == "adquisiciones@bluemix.cl")

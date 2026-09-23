@@ -478,6 +478,7 @@ Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'SuperAdmin'])->
     Route::get('/colegios-temporada-2023', 'ListaEscolarController@colegiosTemporada2023')->name('colegios.temporada2023');
     Route::get('/colegios-temporada-2024', 'ListaEscolarController@colegiosTemporada2024')->name('colegios.temporada2024');
     Route::get('/colegios-temporada-2025', 'ListaEscolarController@colegiosTemporada2025')->name('colegios.temporada2025');
+    Route::get('/colegios-temporada-2026', 'ListaEscolarController@colegiosTemporada2026')->name('colegios.temporada2026');
 
 
     Route::get('/ListarConvenio', 'ConvenioMarcoController@ListarConvenio')->name('ListarConvenio');
@@ -513,6 +514,8 @@ Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'SuperAdmin'])->
     Route::get('/Reportes', 'ListaEscolarController@Reportes')->name('reportes');
     Route::get('/Reportes2022', 'ListaEscolarController@Reportes2022')->name('reportes2022');
     Route::get('/Reportes2023', 'ListaEscolarController@Reportes2023')->name('reportes2023');
+    Route::get('/Reportes2024', 'ListaEscolarController@Reportes2024')->name('reportes2024');
+    Route::get('/Reportes2025', 'ListaEscolarController@Reportes2025')->name('reportes2025');
 
     Route::put('/EditarProducto', 'ConvenioMarcoController@EditarProducto')->name('EditarProducto');
     Route::put('/editarcantidadp', 'ListaEscolarController@editarcantidadp')->name('editarcantidadp');
